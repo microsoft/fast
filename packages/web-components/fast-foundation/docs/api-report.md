@@ -324,7 +324,6 @@ export const disabledCursor = "not-allowed";
 // @public
 export class Disclosure extends FASTElement {
     constructor();
-    ariaControls: string;
     ariaExpanded: true | false;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -339,7 +338,7 @@ export class Disclosure extends FASTElement {
     show(): void;
     title: string;
     toggle(): void;
-    }
+}
 
 // @public
 export const DisclosureTemplate: import("@microsoft/fast-element").ViewTemplate<Disclosure, any>;

@@ -11,7 +11,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <fast-disclosure appearance="hypertext">
+    <fast-disclosure appearance="lightweight">
         <span slot="start">👩🏻‍🦳</span>
         <strong slot="title">Read about White Canary</strong>
         <div>

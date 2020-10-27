@@ -230,7 +230,7 @@ export function createColorPalette(baseColor: any): string[];
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export type DisclosureAppearance = "accent" | "hypertext";
+export type DisclosureAppearance = "accent" | "lightweight";
 
 // @public
 export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;

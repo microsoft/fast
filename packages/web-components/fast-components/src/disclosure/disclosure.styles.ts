@@ -39,7 +39,7 @@ export const DisclosureStyles = css`
         background: ${accentFillHoverBehavior.var};
     }
 
-    :host(.hypertext) .invoker {
+    :host(.lightweight) .invoker {
         background: transparent;
         color: ${accentForegroundRestBehavior.var};
         border-bottom: calc(var(--outline-width) * 1px) solid
@@ -49,11 +49,11 @@ export const DisclosureStyles = css`
         margin: 16px 0;
     }
 
-    :host(.hypertext) .invoker:active {
+    :host(.lightweight) .invoker:active {
         border-bottom-color: ${accentForegroundActiveBehavior.var};
     }
 
-    :host(.hypertext) .invoker:hover {
+    :host(.lightweight) .invoker:hover {
         border-bottom-color: ${accentForegroundHoverBehavior.var};
     }
 

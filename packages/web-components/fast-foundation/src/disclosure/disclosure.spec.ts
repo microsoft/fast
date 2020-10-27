@@ -5,47 +5,46 @@ import { Disclosure, DisclosureTemplate as template } from "./index";
 
 @customElement({
     name: "fast-disclosure",
-    template
+    template,
 })
 class FastDisclosure extends Disclosure {}
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture<FastDisclosure>("fast-disclosure");
+    const { element, connect, disconnect } = await fixture<FastDisclosure>(
+        "fast-disclosure"
+    );
 
     return { element, connect, disconnect };
 }
 
 describe("Disclosure", () => {
-    describe("User interaction", () => {      
-
-        it("should toggle the content using `toggle()`",  async () => {
-            const { element, connect, disconnect } =  await createDisclosure();
-            await connect();                  
+    describe("User interaction", () => {
+        it("should toggle the content using `toggle()`", async () => {
+            const { element, connect, disconnect } = await createDisclosure();
+            await connect();
             element.toggle();
-            await DOM.nextUpdate();      
+            await DOM.nextUpdate();
             expect(element.expanded).to.equal(true);
             await disconnect();
         });
 
         it("should expand and collapse the content using `show()` and `hide()`", async () => {
-            const { element, connect, disconnect } =  await createDisclosure();
-            await connect();            
+            const { element, connect, disconnect } = await createDisclosure();
+            await connect();
             element.show();
-            await DOM.nextUpdate();      
+            await DOM.nextUpdate();
             expect(element.expanded).to.equal(true);
             element.hide();
-            await DOM.nextUpdate();      
+            await DOM.nextUpdate();
             expect(element.expanded).to.equal(false);
             await disconnect();
-        });        
-    });    
+        });
+    });
 
     describe("Accessibility", () => {
         it("should set the `aria-controls` attribute on the internal summary element", async () => {
             const { element, connect, disconnect } = await createDisclosure();
-            const ariaControls = "disclosure-content-hyhogaqp1n";
-
-            element.ariaControls = ariaControls;
+            const ariaControls = "disclosure-content";
 
             await connect();
 
@@ -60,9 +59,9 @@ describe("Disclosure", () => {
 
         it("should set the `aria-expanded` attribute on the internal summary element", async () => {
             const { element, connect, disconnect } = await createDisclosure();
-            const ariaExpanded = true
+            const ariaExpanded = true;
 
-            element.ariaExpanded = ariaExpanded;
+            element.expanded = ariaExpanded;
 
             await connect();
 
@@ -73,6 +72,6 @@ describe("Disclosure", () => {
             ).to.equal(ariaExpanded.toString());
 
             await disconnect();
-        });       
+        });
     });
 });

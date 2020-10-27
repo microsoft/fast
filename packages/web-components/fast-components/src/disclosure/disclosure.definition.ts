@@ -31,7 +31,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                             name: "accent",
                         },
                         {
-                            name: "hypertext",
+                            name: "lightweight",
                         },
                     ],
                     default: "accent",

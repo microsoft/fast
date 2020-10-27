@@ -5,7 +5,7 @@ import { DisclosureStyles as styles } from "./disclosure.styles";
  * Types of anchor appearance.
  * @public
  */
-export type DisclosureAppearance = "accent" | "hypertext";
+export type DisclosureAppearance = "accent" | "lightweight";
 
 /**
  * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},

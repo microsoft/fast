@@ -16,17 +16,6 @@ export class Disclosure extends FASTElement {
     public ariaExpanded: true | false;
 
     /**
-     * Identifies the element (or elements) whose contents or presence are controlled by the current element.
-     *
-     * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-controls}
-     * @public
-     * @remarks
-     * HTML Attribute: aria-controls
-     */
-    @attr({ attribute: "aria-controls" })
-    public ariaControls: string;
-
-    /**
      * Determines if the element should show the extra content or not.
      *
      * @public
@@ -66,7 +55,6 @@ export class Disclosure extends FASTElement {
     constructor() {
         super();
         this.ariaExpanded = false;
-        this.ariaControls = `disclosure-content-${this.uuid()}`;
     }
 
     /**
@@ -109,9 +97,4 @@ export class Disclosure extends FASTElement {
         this.ariaExpanded = this.expanded;
         this.$emit("toggle");
     }
-
-    /**
-     * Generate random UUID
-     */
-    private uuid = (): string => Math.random().toString(36).substr(2, 10);
 }

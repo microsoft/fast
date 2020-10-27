@@ -6,19 +6,17 @@ import { Disclosure } from "./disclosure";
  * @public
  */
 export const DisclosureTemplate = html<Disclosure>`
-    <template>
-        <details class="disclosure" ${ref("details")}>
-            <summary
-                class="invoker"
-                role="button"
-                aria-controls="${x => x.ariaControls}"
-                aria-expanded="${x => x.ariaExpanded}"
-            >
-                <slot name="start"></slot>
-                <slot name="title">${x => x.title}</slot>
-                <slot name="end"></slot>
-            </summary>
-            <div id="${x => x.ariaControls}"><slot></slot></div>
-        </details>
-    </template>
+    <details class="disclosure" ${ref("details")}>
+        <summary
+            class="invoker"
+            role="button"
+            aria-controls="disclosure-content"
+            aria-expanded="${x => x.expanded}"
+        >
+            <slot name="start"></slot>
+            <slot name="title">${x => x.title}</slot>
+            <slot name="end"></slot>
+        </summary>
+        <div id="disclosure-content"><slot></slot></div>
+    </details>
 `;
