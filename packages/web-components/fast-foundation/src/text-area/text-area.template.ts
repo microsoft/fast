@@ -6,11 +6,7 @@ import { TextArea, TextAreaResize } from "./text-area";
  * @public
  */
 export const TextAreaTemplate = html<TextArea>`
-    <template
-        class="
-            ${x => (x.readOnly ? "readonly" : "")}
-            ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
-    >
+    <template>
         <label
             part="label"
             for="control"
