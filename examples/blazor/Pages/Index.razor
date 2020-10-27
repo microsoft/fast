@@ -1,0 +1,55 @@
+﻿@page "/"
+@using System.Timers;
+
+<div class="container">
+  <div class="col-md-8 offset-md-2">
+    <h4 class="mb-3">Contact Us</h4>
+    <form>
+      <div class="row">
+        <div class="col-3">
+          <fluent-text-field @bind-value="FirstName" @bind-value:event="oninput">First Name</fluent-text-field>
+        </div>
+        <div class="col-3">
+          <fluent-text-field @bind-value="LastName" @bind-value:event="oninput">Last Name</fluent-text-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          Full Name: @FirstName @LastName
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <fluent-text-field>Username</fluent-text-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <fluent-text-field type="email">Email</fluent-text-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <fluent-text-area placeholder="Please enter your message here.">Message</fluent-text-area>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <fluent-checkbox>
+            Sign up for our newsletter
+          </fluent-checkbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <fluent-button class="call-to-action" appearance="accent">Send</fluent-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+@code {
+  private string FirstName { get; set; } = "Blazor";
+  private string LastName { get; set; } = "FAST";
+}

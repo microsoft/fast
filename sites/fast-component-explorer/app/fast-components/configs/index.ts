@@ -7,6 +7,9 @@ export { fastAnchorConfig };
 import fastBadgeConfig from "./fast-badge";
 export { fastBadgeConfig };
 
+import fastBreadcrumbConfig from "./fast-breadcrumb";
+export { fastBreadcrumbConfig };
+
 import fastButtonConfig from "./fast-button";
 export { fastButtonConfig };
 

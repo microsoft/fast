@@ -26,10 +26,14 @@ Now that we've got our basic project setup, we need to add our web components sc
 To add a CDN script for `fast-components` use the following markup:
 
 ```html
-<script type="module" src="https://unpkg.com/@@microsoft/fast-components"></script>
+<script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
 ```
 
 The best place to put this is typically in your `index.html` file in the script section at the bottom of the `<body>`.
+
+:::note
+If you are setting up FAST on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor#razor-syntax).
+:::
 
 If you wish to leverage NPM instead, run the following command:
 

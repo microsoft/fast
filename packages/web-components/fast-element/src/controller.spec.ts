@@ -305,4 +305,24 @@ describe("The Controller", () => {
             });
         }
     });
+
+    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+        const { controller, element } = createController({
+            shadowOptions: {
+                mode: "open",
+            },
+            template: templateA,
+        });
+
+        const style = document.createElement("style") as HTMLStyleElement;
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+        controller.addStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+        controller.removeStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+    });
 });

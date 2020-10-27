@@ -2,7 +2,7 @@
     "name": "@microsoft/fast-tooling",
     "description": "A set of utilities to assist in creating web UI",
     "sideEffects": false,
-    "version": "0.11.0",
+    "version": "0.11.1",
     "author": {
         "name": "Microsoft",
         "url": "https://discord.gg/FcSNfg4"
@@ -26,7 +26,7 @@
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
         "start": "yarn build:message-system && webpack-dev-server --history-api-fallback --progress",
-        "test": "yarn eslint && yarn run unit-tests && yarn build",
+        "test": "yarn eslint && yarn unit-tests && yarn build",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
         "unit-tests": "jest --runInBand",
@@ -82,6 +82,7 @@
         "html-webpack-plugin": "^3.2.0",
         "jest": "^25.4.0",
         "lodash-es": "^4.0.0",
+        "mdn-data": "^2.0.11",
         "mini-css-extract-plugin": "^0.9.0",
         "monaco-editor": "^0.20.0",
         "monaco-editor-webpack-plugin": "^1.9.0",
@@ -100,7 +101,7 @@
         "lodash-es": "^4.0.0"
     },
     "dependencies": {
-        "@microsoft/fast-web-utilities": "^4.6.0",
+        "@microsoft/fast-web-utilities": "^4.6.1",
         "vscode-html-languageservice": "^3.1.3"
     }
 }

@@ -119,6 +119,33 @@ export class BaseProgress extends FASTElement {
     value: number;
 }
 
+// @public
+export class Breadcrumb extends FASTElement {
+    // @internal (undocumented)
+    slottedBreadcrumbItems: HTMLElement[];
+    // (undocumented)
+    slottedBreadcrumbItemsChanged(): void;
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "BreadcrumbItem" because one of its declarations is marked as @internal
+//
+// @public
+export class BreadcrumbItem extends Anchor {
+    // @internal (undocumented)
+    separator: boolean;
+}
+
+// @internal
+export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
+}
+
+// @public
+export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
+
+// @public
+export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-incompatible-release-tags) The symbol "Button" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
@@ -302,7 +329,9 @@ export class Dialog extends FASTElement {
     // @internal (undocumented)
     dismiss(): void;
     hidden: boolean;
+    hide(): void;
     modal: boolean;
+    show(): void;
     trapFocus: boolean;
     }
 
@@ -481,11 +510,8 @@ export interface MenuItem extends StartEnd {
 
 // @public
 export enum MenuItemRole {
-    // (undocumented)
     menuitem = "menuitem",
-    // (undocumented)
     menuitemcheckbox = "menuitemcheckbox",
-    // (undocumented)
     menuitemradio = "menuitemradio"
 }
 
@@ -915,17 +941,11 @@ export class Tooltip extends FASTElement {
 
 // @public
 export enum TooltipPosition {
-    // (undocumented)
     bottom = "bottom",
-    // (undocumented)
     end = "end",
-    // (undocumented)
     left = "left",
-    // (undocumented)
     right = "right",
-    // (undocumented)
     start = "start",
-    // (undocumented)
     top = "top"
 }
 

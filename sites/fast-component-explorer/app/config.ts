@@ -13,6 +13,7 @@ import { fastAccordionItemId } from "./fast-components/configs/fast-accordion";
 import { fastTabId, fastTabPanelId } from "./fast-components/configs/fast-tabs";
 import { fastDesignSystemProviderId } from "./fast-components/configs/fast-design-system-provider";
 import { fastTreeItemId } from "./fast-components/configs/fast-tree-view";
+import { fastBreadcrumbItemId } from "./fast-components/configs/fast-breadcrumb";
 
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
@@ -32,6 +33,7 @@ const menu: MenuItem[] = generateMenu(
         fastTabPanelId,
         fastTreeItemId,
         fastDesignSystemProviderId,
+        fastBreadcrumbItemId,
         ...Object.entries(nativeElementSchemas).map(
             ([, nativeElementSchema]: [string, any]) => {
                 return nativeElementSchema.id;
