@@ -201,7 +201,7 @@ export class BindingDirective extends NamedTargetDirective {
      */
     public constructor(public binding: Binding) {
         super();
-        this.isBindingVolatile = Observable.isVolatileBinding(this.bind);
+        this.isBindingVolatile = Observable.isVolatileBinding(this.binding);
     }
 
     /**
