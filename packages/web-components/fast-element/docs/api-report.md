@@ -108,12 +108,11 @@ export class BindingBehavior implements Behavior {
 }
 
 // @public
-export class BindingDirective extends Directive {
+export class BindingDirective extends NamedTargetDirective {
     constructor(binding: Binding);
     // (undocumented)
     binding: Binding;
     createBehavior(target: Node): BindingBehavior;
-    createPlaceholder: (index: number) => string;
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
@@ -350,6 +349,12 @@ export class HTMLView implements ElementView, SyntheticView {
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
+
+// @public
+export abstract class NamedTargetDirective extends Directive {
+    createPlaceholder: (index: number) => string;
+    abstract targetName: string | undefined;
+}
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
