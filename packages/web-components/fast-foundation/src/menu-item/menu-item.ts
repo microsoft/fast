@@ -2,16 +2,9 @@ import { attr, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { MenuItemRole } from "./menu-item.options";
 
-/**
- * Menu items roles.
- * @public
- */
-export enum MenuItemRole {
-    menuitem = "menuitem",
-    menuitemcheckbox = "menuitemcheckbox",
-    menuitemradio = "menuitemradio",
-}
+export { MenuItemRole };
 
 /**
  * A Switch Custom HTML Element.
