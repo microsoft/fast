@@ -52,10 +52,16 @@ export interface CustomPropertyManager {
     unregister(name: string): void;
 
     /**
-     * Write a CSSCustomProperty without registering it
+     * Write a CSSCustomPropertyDefinition without registering it
      * @param definition - The definition to write
      */
     set(definition: CSSCustomPropertyDefinition): void;
+
+    /**
+     * Removes a CSSCustomPropertyDefinition
+     * @param name - The name of the property
+     */
+    remove(name: string): void;
 
     /**
      * Sets all CSSCustomPropertyDefinitions that have been registered
@@ -139,7 +145,7 @@ abstract class CustomPropertyManagerBase implements CustomPropertyManager {
 
             if (cached.count === 0) {
                 this.cssCustomPropertyDefinitions.delete(name);
-                this.deleteCustomProperty(name);
+                this.remove(name);
             }
         }
     }
@@ -154,6 +160,14 @@ abstract class CustomPropertyManagerBase implements CustomPropertyManager {
                 this.owner.evaluate(definition)
             );
         }
+    };
+
+    /**
+     * Removes a CSS custom property from the provider.
+     * @param name - the name of the property to remove
+     */
+    public remove = (name: string): void => {
+        this.customPropertyTarget.removeProperty(`--${name}`);
     };
 
     /**
@@ -172,13 +186,6 @@ abstract class CustomPropertyManagerBase implements CustomPropertyManager {
             });
         });
     }
-
-    /**
-     * Removes a CSS custom property from the provider.
-     */
-    private deleteCustomProperty = (name: string): void => {
-        this.customPropertyTarget.removeProperty(`--${name}`);
-    };
 }
 
 /**
@@ -200,7 +207,7 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
 
         this.styles = ElementStyles.create([sheet]);
 
-        this.customPropertyTarget = (sheet.rules[
+        this.customPropertyTarget = (sheet.cssRules[
             sheet.insertRule(hostSelector)
         ] as CSSStyleRule).style;
     }

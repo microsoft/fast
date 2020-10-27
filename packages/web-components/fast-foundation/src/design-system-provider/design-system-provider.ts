@@ -309,10 +309,7 @@ export class DesignSystemProvider extends FASTElement
 
                 if (manager) {
                     if (typeof property === "string") {
-                        manager.set({
-                            name: property,
-                            value: "",
-                        });
+                        manager.remove(property);
                     }
 
                     manager.setAll();

@@ -239,6 +239,7 @@ export interface CustomPropertyManager {
     isSubscribed?(provider: CustomPropertyManagerClient): boolean;
     readonly owner: CustomPropertyManagerClient | null;
     register(definition: CSSCustomPropertyDefinition): void;
+    remove(name: string): void;
     set(definition: CSSCustomPropertyDefinition): void;
     setAll(): void;
     subscribe?(provider: CustomPropertyManagerClient): void;
