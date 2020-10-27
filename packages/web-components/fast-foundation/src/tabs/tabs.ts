@@ -230,7 +230,7 @@ export class Tabs extends FASTElement {
 
     private handleTabClick = (event: MouseEvent): void => {
         const selectedTab = event.currentTarget as HTMLElement;
-        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
+        if (selectedTab.nodeType === 1) {
             this.prevActiveTabIndex = this.activeTabIndex;
             this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
             this.setComponent();
@@ -247,22 +247,22 @@ export class Tabs extends FASTElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
-                    this.adjustLeft(event);
+                    this.adjustBackward(event);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
-                    this.adjustRight(event);
+                    this.adjustForward(event);
                     break;
             }
         } else {
             switch (keyCode) {
                 case keyCodeArrowUp:
                     event.preventDefault();
-                    this.adjust(-1);
+                    this.adjustBackward(event);
                     break;
                 case keyCodeArrowDown:
                     event.preventDefault();
-                    this.adjust(1);
+                    this.adjustForward(event);
                     break;
             }
         }
@@ -279,11 +279,12 @@ export class Tabs extends FASTElement {
     };
 
     private handleActiveIndicatorPosition() {
-        // Ignore if we click twice on the same tab
+        // Ignore if we click twice on the same tab
         if (this.activeindicator && this.activeTabIndex !== this.prevActiveTabIndex) {
             if (this.ticking) {
                 this.ticking = false;
             } else {
+                this.ticking = true;
                 this.animateActiveIndicator();
             }
         }
@@ -318,18 +319,16 @@ export class Tabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        if (this.isFocusableElement(this.tabs[this.activeTabIndex])) {
-            this.prevActiveTabIndex = this.activeTabIndex;
-            this.activeTabIndex = wrapInBounds(
-                0,
-                this.tabs.length - 1,
-                this.activeTabIndex + adjustment
-            );
-            this.setComponent();
-        }
+        this.prevActiveTabIndex = this.activeTabIndex;
+        this.activeTabIndex = wrapInBounds(
+            0,
+            this.tabs.length - 1,
+            this.activeTabIndex + adjustment
+        );
+        this.setComponent();
     }
 
-    private adjustRight = (e: KeyboardEvent): void => {
+    private adjustForward = (e: KeyboardEvent): void => {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -352,7 +351,7 @@ export class Tabs extends FASTElement {
         }
     };
 
-    private adjustLeft = (e: KeyboardEvent): void => {
+    private adjustBackward = (e: KeyboardEvent): void => {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -374,21 +373,14 @@ export class Tabs extends FASTElement {
     private moveToTabByIndex = (group: HTMLElement[], index: number) => {
         const tab: HTMLElement = group[index] as HTMLElement;
         this.activetab = tab;
+        this.prevActiveTabIndex = this.activeTabIndex;
+        this.activeTabIndex = index;
         tab.focus();
+        this.setComponent();
     };
 
     private focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
-    }
-
-    constructor() {
-        super();
-
-        if (this.$fastController.isConnected) {
-            this.tabIds = this.getTabIds();
-            this.tabpanelIds = this.getTabPanelIds();
-            this.activeTabIndex = this.getActiveIndex();
-        }
     }
 
     /**
@@ -396,6 +388,10 @@ export class Tabs extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        this.tabIds = this.getTabIds();
+        this.tabpanelIds = this.getTabPanelIds();
+        this.activeTabIndex = this.getActiveIndex();
     }
 }
 
