@@ -7,7 +7,7 @@ import {
 import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { SyntheticView } from "../view";
-import { Directive } from "./directive";
+import { NamedTargetDirective } from "./directive";
 import { Behavior } from "./behavior";
 
 function normalBind(
@@ -187,20 +187,13 @@ function updateClassTarget(this: BindingBehavior, value: string): void {
  * A directive that configures data binding to element content and attributes.
  * @public
  */
-export class BindingDirective extends Directive {
+export class BindingDirective extends NamedTargetDirective {
     private cleanedTargetName?: string;
     private originalTargetName?: string;
     private bind: typeof normalBind = normalBind;
     private unbind: typeof normalUnbind = normalUnbind;
     private updateTarget: typeof updateAttributeTarget = updateAttributeTarget;
     private isBindingVolatile: boolean;
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     */
-    public createPlaceholder: (index: number) => string =
-        DOM.createInterpolationPlaceholder;
 
     /**
      * Creates an instance of BindingDirective.
