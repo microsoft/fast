@@ -103,22 +103,22 @@ export const CheckboxStyles = css`
         border-color: ${neutralFocusBehavior.var};
     }
 
-    :host([checked]) .control {
+    :host([aria-checked="true"]) .control {
         background: ${accentFillRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .control:hover {
+    :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .control:active {
+    :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
     }
 
-    :host([checked]:${focusVisible}:not([disabled])) .control {
+    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
@@ -133,7 +133,7 @@ export const CheckboxStyles = css`
         cursor: ${disabledCursor};
     }
 
-    :host([checked]:not(.indeterminate)) .checked-indicator,
+    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
     :host(.indeterminate) .indeterminate-indicator {
         opacity: 1;
     }
@@ -176,27 +176,27 @@ export const CheckboxStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host([checked]:${focusVisible}:not([disabled])) .control {
+            :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host([checked]) .control {
+            :host([aria-checked="true"]) .control {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
-            :host([checked]:not([disabled])) .control:hover, .control:active {
+            :host([aria-checked="true"]:not([disabled])) .control:hover, .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.HighlightText};
             }
-            :host([checked]) .checked-indicator {
+            :host([aria-checked="true"]) .checked-indicator {
                 fill: ${SystemColors.HighlightText};
             }
-            :host([checked]:not([disabled])) .control:hover .checked-indicator {
+            :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
                 fill: ${SystemColors.Highlight}
             }
-            :host([checked]) .indeterminate-indicator {
+            :host([aria-checked="true"]) .indeterminate-indicator {
                 background: ${SystemColors.HighlightText};
             }
-            :host([checked]) .control:hover .indeterminate-indicator {
+            :host([aria-checked="true"]) .control:hover .indeterminate-indicator {
                 background: ${SystemColors.Highlight}
             }
             :host([disabled]) {
@@ -208,12 +208,12 @@ export const CheckboxStyles = css`
                 background: ${SystemColors.Field};
             }
             :host([disabled]) .indeterminate-indicator,
-            :host([checked][disabled]) .control:hover .indeterminate-indicator {
+            :host([aria-checked="true"][disabled]) .control:hover .indeterminate-indicator {
                 forced-color-adjust: none;
                 background: ${SystemColors.GrayText};
             }
             :host([disabled]) .checked-indicator,
-            :host([checked][disabled]) .control:hover .checked-indicator {
+            :host([aria-checked="true"][disabled]) .control:hover .checked-indicator {
                 forced-color-adjust: none;
                 fill: ${SystemColors.GrayText};
             }
