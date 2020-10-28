@@ -61,13 +61,6 @@ export const DisclosureStyles = css`
         border-bottom-color: ${accentForegroundHoverBehavior.var};
     }
 
-    // TODO: is it needed? 🤔
-    // :host(.accent) .invoker:focus {
-    //     border: calc(var(--outline-width) * 1px) solid var(--neutral-focus);
-    //     box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
-    //         var(--neutral-focus-inner-accent);
-    // }
-
     .disclosure[open] .invoker ~ * {
         animation: fadeIn 0.5s ease-in-out;
     }
