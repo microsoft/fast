@@ -52,6 +52,10 @@ export const MenuItemStyles = css`
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
+    :host([checked="true"]) {
+        background: ${accentFillHoverBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
+    }
 
     :host(:active) {
         background: ${accentFillActiveBehavior.var};
