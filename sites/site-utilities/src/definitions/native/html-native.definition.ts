@@ -4,7 +4,7 @@ import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-e
 
 /**
  * These definitions are dependent on a devDependency on "vscode-web-custom-data"
- * speficially the browsers.html-data.json which defines native html elements and their attributes
+ * specifically the browsers.html-data.json which defines native html elements and their attributes
  * as used by vscode
  */
 import * as vcodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
