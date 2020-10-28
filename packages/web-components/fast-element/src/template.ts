@@ -2,7 +2,7 @@ import { compileTemplate } from "./template-compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
 import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Directive } from "./directives/directive";
+import { Directive, NamedTargetDirective } from "./directives/directive";
 import { BindingDirective } from "./directives/binding";
 import { defaultExecutionContext, Binding } from "./observation/observable";
 
@@ -226,10 +226,12 @@ export function html<TSource = any, TParent = any>(
 
         if (typeof value === "function") {
             value = new BindingDirective(value as Binding);
+        }
 
+        if (value instanceof NamedTargetDirective) {
             const match = lastAttributeNameRegex.exec(currentString);
             if (match !== null) {
-                (value as BindingDirective).targetName = match[2];
+                value.targetName = match[2];
             }
         }
 
