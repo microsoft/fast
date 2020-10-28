@@ -17,3 +17,6 @@ babel.config.js
 tsconfig.json
 tsconfig.build.json
 webpack.message-system.config.js
+
+# Temp files
+.tmp/
