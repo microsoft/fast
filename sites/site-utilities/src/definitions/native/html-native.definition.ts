@@ -12,7 +12,7 @@ import * as vcodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.j
 const valueSets: any[] = vcodeHTMLData.valueSets;
 
 export const htmlNativeDefinitions: any = {
-    version: 1, // WebComponentDefinition has this typed as 1, vcodeHTMLData.version could be anything
+    version: vsCodeHTMLData.version, // WebComponentDefinition has this typed as 1, vcodeHTMLData.version could be anything so this will need to check for different versions to determine how to approach the conversion
     tags: vcodeHTMLData.tags,
 };
 
