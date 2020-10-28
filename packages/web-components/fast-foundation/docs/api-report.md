@@ -323,8 +323,6 @@ export const disabledCursor = "not-allowed";
 
 // @public
 export class Disclosure extends FASTElement {
-    constructor();
-    ariaExpanded: true | false;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)

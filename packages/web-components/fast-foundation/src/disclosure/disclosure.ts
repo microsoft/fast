@@ -7,15 +7,6 @@ import { attr, FASTElement } from "@microsoft/fast-element";
  */
 export class Disclosure extends FASTElement {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-expanded
-     */
-    @attr({ attribute: "aria-expanded" })
-    public ariaExpanded: true | false;
-
-    /**
      * Determines if the element should show the extra content or not.
      *
      * @public
@@ -50,11 +41,6 @@ export class Disclosure extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.details.removeEventListener("toggle", this.onToggle);
-    }
-
-    constructor() {
-        super();
-        this.ariaExpanded = false;
     }
 
     /**
@@ -94,7 +80,6 @@ export class Disclosure extends FASTElement {
      */
     protected onToggle() {
         this.expanded = this.details.open;
-        this.ariaExpanded = this.expanded;
         this.$emit("toggle");
     }
 }
