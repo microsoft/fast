@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TextAreaResize } from "@microsoft/fast-foundation";
+import { TextAreaResize } from "@microsoft/fast-foundation/dist/esm/text-area/text-area.options";
 
 export const fastTextAreaDefinition: WebComponentDefinition = {
     version: 1,
