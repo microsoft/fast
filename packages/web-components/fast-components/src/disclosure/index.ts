@@ -71,18 +71,14 @@ export class FASTDisclosure extends Disclosure {
         }
 
         const getCurrentHeight = () => this.details.getBoundingClientRect().height;
+        this.show();
+        this.totalHeight = getCurrentHeight();
+        this.hide();
+        this.height = getCurrentHeight();
+
         if (this.expanded) {
-            this.totalHeight = getCurrentHeight();
-            this.hide();
-            this.height = getCurrentHeight();
             this.show();
-        } else {
-            this.height = getCurrentHeight();
-            this.show();
-            this.totalHeight = getCurrentHeight();
-            this.hide();
         }
-        this.details.style.setProperty("transition", "height 0.35s");
     }
 
     get disclosureHeight(): number {

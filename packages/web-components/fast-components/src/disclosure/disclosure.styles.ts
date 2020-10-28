@@ -10,6 +10,10 @@ import {
 } from "../styles/recipes";
 
 export const DisclosureStyles = css`
+    .disclosure {
+        transition: height 0.35s;
+    }
+
     .disclosure .invoker::-webkit-details-marker {
         display: none;
     }
