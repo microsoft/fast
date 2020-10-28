@@ -48,8 +48,8 @@ export const FlipperStyles = css`
         transition: all 0.1s ease-in-out;
     }
 
-    [direction="next"],
-    [direction="previous"] {
+    .next,
+    .previous {
         position: relative;
         ${
             /* Glyph size and margin-left is temporary - 
