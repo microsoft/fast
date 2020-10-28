@@ -131,26 +131,26 @@ export const SwitchStyles = css`
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host([checked]) .checked-indicator {
+    :host([aria-checked="true"]) .checked-indicator {
         background: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host([checked]) .switch {
+    :host([aria-checked="true"]) .switch {
         background: ${accentFillRestBehavior.var};
         border-color: ${accentFillRestBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .switch:hover {
+    :host([aria-checked="true"]:not([disabled])) .switch:hover {
         background: ${accentFillHoverBehavior.var};
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .switch:active {
+    :host([aria-checked="true"]:not([disabled])) .switch:active {
         background: ${accentFillActiveBehavior.var};
         border-color: ${accentFillActiveBehavior.var};
     }
 
-    :host([checked]:${focusVisible}:not([disabled])) .switch {
+    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
@@ -165,11 +165,11 @@ export const SwitchStyles = css`
         display: none;
     }
 
-    :host([checked]) .unchecked-message {
+    :host([aria-checked="true"]) .unchecked-message {
         display: none;
     }
 
-    :host([checked]) .checked-message {
+    :host([aria-checked="true"]) .checked-message {
         display: block;
     }
 `.withBehaviors(
@@ -201,19 +201,19 @@ export const SwitchStyles = css`
                 background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.Highlight};
             }
-            :host([checked]) .switch {
+            :host([aria-checked="true"]) .switch {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
             }
-            :host([checked]:not([disabled])) .switch:hover,
+            :host([aria-checked="true"]:not([disabled])) .switch:hover,
             :host(:not([disabled])) .switch:active {
                 background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.Highlight};
             }
-            :host([checked]) .checked-indicator {
+            :host([aria-checked="true"]) .checked-indicator {
                 background: ${SystemColors.HighlightText};
             }
-            :host([checked]:not([disabled])) .switch:hover .checked-indicator {
+            :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
                 background: ${SystemColors.Highlight};
             }
             :host([disabled]) {
@@ -223,7 +223,7 @@ export const SwitchStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host([checked]:${focusVisible}:not([disabled])) .switch {
+            :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host([disabled]) .checked-indicator {
@@ -242,7 +242,7 @@ export const SwitchStyles = css`
                 right: calc(((${heightNumber} / 2) + 1) * 1px);
             }
 
-            :host([checked]) .checked-indicator {
+            :host([aria-checked="true"]) .checked-indicator {
                 left: calc(((${heightNumber} / 2) + 1) * 1px);
                 right: 5px;
             }
@@ -253,7 +253,7 @@ export const SwitchStyles = css`
                 left: calc(((${heightNumber} / 2) + 1) * 1px);
             }
 
-            :host([checked]) .checked-indicator {
+            :host([aria-checked="true"]) .checked-indicator {
                 right: calc(((${heightNumber} / 2) + 1) * 1px);
                 left: 5px;
             }
