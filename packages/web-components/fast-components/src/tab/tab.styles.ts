@@ -80,24 +80,24 @@ export const TabStyles = css`
         outline: none;
     }
 
-    :host([orientation="vertical"]) {
+    :host(.vertical) {
         justify-content: end;
         grid-column: 2;
     }
 
-    :host([orientation="vertical"][aria-selected="true"]) {
+    :host(.vertical[aria-selected="true"]) {
         z-index: 2;
     }
 
-    :host([orientation="vertical"]:hover) {
+    :host(.vertical:hover) {
         color: ${neutralForegroundHoverBehavior.var};
     }
 
-    :host([orientation="vertical"]:active) {
+    :host(.vertical:active) {
         color: ${neutralForegroundActiveBehavior.var};
     }
 
-    :host([orientation="vertical"]:hover[aria-selected="true"]) {
+    :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
     accentFillActiveBehavior,
@@ -123,7 +123,7 @@ export const TabStyles = css`
                 fill: currentcolor;
             }
             :host(:hover),
-            :host([orientation="vertical"]:hover),
+            :host(.vertical:hover),
             :host([aria-selected="true"]:hover) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
