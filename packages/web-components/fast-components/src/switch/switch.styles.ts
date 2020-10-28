@@ -46,8 +46,8 @@ export const SwitchStyles = css`
     }
 
     :host([disabled]) .label,
-    :host(.readonly) .label,
-    :host(.readonly) .switch,
+    :host([readonly]) .label,
+    :host([readonly]) .switch,
     :host([disabled]) .switch {
         cursor: ${disabledCursor};
     }
