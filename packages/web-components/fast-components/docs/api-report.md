@@ -9,6 +9,8 @@ import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
+import { Breadcrumb } from '@microsoft/fast-foundation';
+import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Card } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
@@ -257,6 +259,14 @@ export class FASTAnchor extends Anchor {
 
 // @public
 export class FASTBadge extends Badge {
+}
+
+// @public
+export class FASTBreadcrumb extends Breadcrumb {
+}
+
+// @public
+export class FASTBreadcrumbItem extends BreadcrumbItem {
 }
 
 // @public
