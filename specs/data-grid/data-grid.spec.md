@@ -114,7 +114,7 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
 
 *Attributes:*
 - `generate-header`  
-Boolean.  Automatically generate a header element based on provided columns. The default is `true`.  Authors who wish to not have a header row or wish to generate their own can set this to `false`.
+Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum).  Automatically generate a header element based on provided columns. The default is `true`.  Authors who wish to not have a header row or wish to generate their own can set this to `false`.
 
 - `grid-template-columns`  
 String that gets applied to the the css gridTemplateColumns attribute of child rows.  Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
@@ -149,6 +149,9 @@ Static function that creates a basic set of columns from an object representing 
 *parts:*
 - none
 
+*enums:*
+- `GenerateHeaderOptions` - Enumerates available options that control what kind of header the grid should automatically generate: "none, "default" or "sticky". 
+
 **Data grid row**
 - `<fast-data-grid-row>`
 
@@ -160,7 +163,7 @@ String that gets applied to the the css `gridTemplateColumns` attribute for the 
 The index of the row in the parent grid. This is typically set by the parent grid.
 
 - `row-type`  
-The row can either be either "default" or "header" type.  This determines the type of cells the row generates.
+The row can either be either "default", "header" or "sticky-header" type according to the `DataGridRowTypes` enum.  This determines the type of cells the row generates and what css classes get applied to it.
 
 *properties:*
 - `rowData`  
@@ -183,7 +186,7 @@ Default slot for items
 - `cellsSlot`
 
 *enums:*
-- `rowTypes` - Enumerates available row types: "default and "header". 
+- `DataGridRowTypes` - Enumerates available row types: "default, "header" and "sticky-header". 
 
 
 **Data grid cell**
