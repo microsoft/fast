@@ -1,5 +1,3 @@
-import { WebComponentDefinitionTag } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-
 export interface VSCodeNativeHTMLDefinition {
     version: 1.1;
     tags: VSCodeNativeHTMLTag[];

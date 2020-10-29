@@ -8,8 +8,8 @@ import {
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
 /**
- * These definitions are dependent on a devDependency on "vscode-web-custom-data"
- * specifically the browsers.html-data.json which defines native html elements and their attributes
+ * These native html tag definitions are dependent on a devDependency on "vscode-web-custom-data"
+ * specifically the browsers.html-data.json file which defines native html elements and their attributes
  * as used by vscode
  */
 import * as vscodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
