@@ -262,7 +262,7 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 // @public
 export class DataGrid extends FASTElement {
     constructor();
-    columnDefinitions: ColumnDefinition[];
+    columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)

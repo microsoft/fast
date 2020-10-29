@@ -160,7 +160,11 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public rowsData: object[] = [];
-    private rowsDataChanged(): void {}
+    private rowsDataChanged(): void {
+        if (this.columnDefinitions === null && this.rowsData.length > 0) {
+            this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
+        }
+    }
 
     /**
      * The column definitions of the grid
@@ -168,8 +172,12 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnDefinitions: ColumnDefinition[] = [];
+    public columnDefinitions: ColumnDefinition[] | null;
     private columnDefinitionsChanged(): void {
+        if (this.columnDefinitions === null) {
+            this.generatedGridTemplateColumns = "";
+            return;
+        }
         this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
             this.columnDefinitions
         );
@@ -334,14 +342,14 @@ export class DataGrid extends FASTElement {
                 }
                 break;
             case keyCodeEnd:
-                if (e.ctrlKey) {
+                if (e.ctrlKey && this.columnDefinitions !== null) {
                     // focus last cell of last row
                     const rows: NodeListOf<Element> = this.querySelectorAll(
                         '[role="row"]'
                     );
                     this.focusOnCell(
                         rows.length - 1,
-                        this.columnDefinitions?.length - 1,
+                        this.columnDefinitions.length - 1,
                         rows
                     );
                     e.preventDefault();
@@ -359,7 +367,11 @@ export class DataGrid extends FASTElement {
             rows = this.querySelectorAll('[role="row"]');
         }
 
-        if (rows.length === 0 || this.columnDefinitions.length === 0) {
+        if (
+            rows.length === 0 ||
+            this.columnDefinitions === null ||
+            this.columnDefinitions.length === 0
+        ) {
             this.focusRowIndex = 0;
             this.focusColumnIndex = 0;
             return;

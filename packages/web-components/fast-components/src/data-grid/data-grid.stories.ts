@@ -133,7 +133,10 @@ const buttonCellTemplate = html<DataGridCell>`
 
 const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => headerTemplateButtonClick(x)}" style="width: 100%;">
+        <fast-button
+            @click="${x => headerTemplateButtonClick(x)}"
+            style="width: 100%; background: green"
+        >
             ${x =>
                 x.columnDefinition === null
                     ? null
@@ -148,10 +151,8 @@ function reset(): void {
     if (defaultGridElement === null) {
         return;
     }
-    defaultGridElement.columnDefinitions = baseColumns;
+    defaultGridElement.columnDefinitions = null;
     defaultGridElement.rowsData = newDataSet(10);
-    columnWidths = ["1fr", "1fr", "1fr", "1fr"];
-    defaultGridElement.gridTemplateColumns = `${columnWidths[0]} ${columnWidths[1]} ${columnWidths[2]} ${columnWidths[3]}`;
 }
 
 function setDefaultCols(): void {

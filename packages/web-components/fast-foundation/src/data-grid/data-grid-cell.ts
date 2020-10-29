@@ -167,6 +167,7 @@ export class DataGridCell extends FASTElement {
         this.isActiveCell = true;
 
         switch (this.cellType) {
+            case undefined:
             case DataGridCellTypes.default:
                 if (
                     this.columnDefinition.cellInternalFocusQueue !== true &&
