@@ -58,16 +58,16 @@ export const FlipperStyles = css`
         height: 16px;
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
         fill: currentcolor;
         color: ${neutralForegroundRestBehavior.var};
     }
 
-    :host(.disabled)::before,
-    :host(.disabled:hover)::before,
-    :host(.disabled:active)::before {
+    :host([disabled])::before,
+    :host([disabled]:hover)::before,
+    :host([disabled]:active)::before {
         background: ${neutralFillStealthRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
@@ -111,8 +111,8 @@ export const FlipperStyles = css`
             :host {
                 background: ${SystemColors.Canvas};
             }
-            :host .next,
-            :host .previous {
+            :host [direction="next"],
+            :host [direction="previous"] {
                 color: ${SystemColors.ButtonText};
                 fill: currentcolor;
             }
@@ -126,21 +126,21 @@ export const FlipperStyles = css`
                 border-color: ${SystemColors.ButtonText};
                 opacity: 1;
             }
-            :host(:hover) .next,
-            :host(:hover) .previous {
+            :host(:hover) [direction="next"],
+            :host(:hover) [direction="previous"] {
                 forced-color-adjust: none;
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
-            :host(.disabled) {
+            :host([disabled]) {
                 opacity: 1;
             }
-            :host(.disabled)::before,
-            :host(.disabled:hover)::before,
-            :host(.disabled) .next,
-            :host(.disabled) .previous,
-            :host(.disabled:hover) .next,
-            :host(.disabled:hover) .previous {
+            :host([disabled])::before,
+            :host([disabled]:hover)::before,
+            :host([disabled]) [direction="next"],
+            :host([disabled]) [direction="previous"],
+            :host([disabled]:hover) [direction="next"],
+            :host([disabled]:hover) [direction="previous"] {
                 forced-color-adjust: none;
                 background: ${SystemColors.Canvas};
                 border-color: ${SystemColors.GrayText};

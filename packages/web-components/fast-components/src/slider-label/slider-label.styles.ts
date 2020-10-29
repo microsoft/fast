@@ -16,14 +16,14 @@ export const SliderLabelStyles = css`
         position: absolute;
         display: grid;
     }
-    :host(.horizontal) {
+    :host([orientation="horizontal"]) {
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
         height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         width: auto;
     }
-    :host(.vertical) {
+    :host([orientation="vertical"]) {
         justify-self: start;
         grid-column: 2;
         margin-left: 2px;
@@ -34,11 +34,11 @@ export const SliderLabelStyles = css`
         display: grid;
         justify-self: center;
     }
-    :host(.horizontal) .container {
+    :host([orientation="horizontal"]) .container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
-    :host(.vertical) .container {
+    :host([orientation="vertical"]) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
         min-width: calc(var(--thumb-size) * 1px);
@@ -57,11 +57,11 @@ export const SliderLabelStyles = css`
         background: ${neutralOutlineRestBehavior.var};
         justify-self: center;
     }
-    :host(.vertical) .mark {
+    :host([orientation="vertical"]) .mark {
         transform: rotate(90deg);
         align-self: center;
     }
-    :host(.vertical) .label {
+    :host([orientation="vertical"]) .label {
         margin-left: calc((var(--design-unit) / 2) * 2px);
         align-self: center;
     }
