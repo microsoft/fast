@@ -39,6 +39,7 @@ const headerCellItemTemplate = html`
 export enum DataGridRowTypes {
     default = "default",
     header = "header",
+    stickyHeader = "sticky-header",
 }
 
 /**
@@ -73,7 +74,7 @@ export class DataGridRow extends FASTElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: DataGridRowTypes;
+    public rowType: DataGridRowTypes = DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
         }
@@ -162,9 +163,9 @@ export class DataGridRow extends FASTElement {
             this.appendChild(this.cellsPlaceholder);
 
             this.cellItemTemplate =
-                this.rowType === DataGridRowTypes.header
-                    ? headerCellItemTemplate
-                    : defaultCellItemTemplate;
+                this.rowType === DataGridRowTypes.default
+                    ? defaultCellItemTemplate
+                    : headerCellItemTemplate;
 
             this.cellsRepeatBehavior = new RepeatDirective(
                 x => x.columnDefinitions,
