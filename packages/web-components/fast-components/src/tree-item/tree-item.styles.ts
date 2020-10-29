@@ -33,7 +33,7 @@ const ltr = css`
     :host([selected])::after {
         left: calc(var(--focus-outline-width) * 1px);
     }
-    :host(.expanded) > .positioning-region .expand-collapse-glyph {
+    :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(0deg);
     }
 `;
@@ -48,7 +48,7 @@ const rtl = css`
     :host([selected])::after {
         right: calc(var(--focus-outline-width) * 1px);
     }
-    :host(.expanded) > .positioning-region .expand-collapse-glyph {
+    :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(90deg);
     }
 `;
@@ -189,7 +189,7 @@ export const TreeItemStyles = css`
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host(.expanded) > .items {
+    :host([expanded]) > .items {
         display: block;
     }
 
