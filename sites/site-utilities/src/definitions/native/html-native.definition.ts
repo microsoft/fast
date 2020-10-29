@@ -4,6 +4,7 @@ import {
     WebComponentAttributeValues,
     WebComponentDefinition,
     WebComponentDefinitionTag,
+    WebComponentSlot,
 } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
 /**
@@ -11,15 +12,21 @@ import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-e
  * specifically the browsers.html-data.json which defines native html elements and their attributes
  * as used by vscode
  */
+import * as vscodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
 import {
     VSCodeNativeHTMLAttribute,
     VSCodeNativeHTMLDefinition,
     VSCodeNativeHTMLTag,
     VSCodeNativeHTMLValueSet,
 } from "./html-native.vs-code-v1.1-types";
-import * as vscodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
 
 const valueSets: VSCodeNativeHTMLValueSet[] = vscodeHTMLData.valueSets;
+const defaultSlotValue: WebComponentSlot[] = [
+    {
+        name: "",
+        description: "The default slot",
+    },
+];
 
 function getDataTypeForAttribute(attribute: VSCodeNativeHTMLAttribute): DataType {
     /**
@@ -68,7 +75,7 @@ function convertAttributeData(tag: VSCodeNativeHTMLTag): WebComponentAttribute[]
 }
 
 const convertedTags: WebComponentDefinitionTag[] = (vscodeHTMLData as VSCodeNativeHTMLDefinition).tags?.map(
-    (tag: any): WebComponentDefinitionTag => {
+    (tag: VSCodeNativeHTMLTag): WebComponentDefinitionTag => {
         const newWebComponentDefinitionTag: WebComponentDefinitionTag = {
             name: tag.name,
             description: tag.description.value ?? "", // TODO: this ?? might not work if typescript is not 4.0+
@@ -77,19 +84,18 @@ const convertedTags: WebComponentDefinitionTag[] = (vscodeHTMLData as VSCodeNati
         };
         if (!voidElements.includes(tag.name)) {
             Object.assign(newWebComponentDefinitionTag, {
-                slots: [
-                    {
-                        name: "",
-                        description: "The default slot",
-                    },
-                ],
+                slots: defaultSlotValue,
             });
         }
         return newWebComponentDefinitionTag;
     }
 );
 
+/**
+ * WebComponentDefinition has version typed as 1
+ * vcodeHTMLData.version could be anything so this will need to check for different versions to determine how to approach the conversion
+ */
 export const htmlNativeDefinitions: WebComponentDefinition = {
-    version: 1, // WebComponentDefinition has this typed as 1, vcodeHTMLData.version could be anything so this will need to check for different versions to determine how to approach the conversion
+    version: 1,
     tags: convertedTags,
 };
