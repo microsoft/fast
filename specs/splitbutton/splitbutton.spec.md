@@ -14,7 +14,6 @@ A `fast-split-button` is a primary action button and a collection of related act
 
 ![image of a split button as a reaction button from Facebook](images/split-button_example_facebook.png)
 
-
 ### Background
 
 The split button is a UI pattern that has been around a long time. It is a common in Fluent UI and in reaction buttons like Facebook's "Like/Love/Care.." buttons
@@ -210,11 +209,11 @@ Hopefully we can figure that out as we refine the spec.
 ## Resources
 
 *Any related resource links such as web standards, discussion threads, diagrams, etc.*
-- (W3C menu button)[https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-actions-active-descendant.html]
-- (Fluent split button)[https://developer.microsoft.com/en-us/fluentui#/controls/web/button] NOTE that while Fluent's split-button is currently a type of button, their plan is to move it to a separate component to simplify the button component.
-- (Bootstrap split buttons)[https://getbootstrap.com/2.3.2/components.html#buttonDropdowns] - built out of their button group and dropdown button.
-- (MS News React Social Bar)[https://microsoft.visualstudio.com/ICE/_git/msnews-experiences?path=%2Fcomponents%2Fsocial-bar%2Fsrc%2FSocialBar.tsx]
-- (MS News React Content Card reactions)[https://microsoft.visualstudio.com/ICE/_git/msnews-experiences?path=%2Fcomponents%2Fcontent-card-reactions] 
+- [W3C menu button](https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-actions-active-descendant.html)
+- [Fluent split button](https://developer.microsoft.com/en-us/fluentui#/controls/web/button) - Currently a type of button, their plan is to move it to a separate component to simplify the button component
+- [Bootstrap split buttons](https://getbootstrap.com/2.3.2/components.html#buttonDropdowns) - built out of their button group and dropdown button
+- [MS News React Social Bar](https://microsoft.visualstudio.com/ICE/_git/msnews-experiences?path=%2Fcomponents%2Fsocial-bar%2Fsrc%2FSocialBar.tsx)
+- [MS News React Content Card reactions](https://microsoft.visualstudio.com/ICE/_git/msnews-experiences?path=%2Fcomponents%2Fcontent-card-reactions)
 
 ## Next Steps
 
