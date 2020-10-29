@@ -324,7 +324,6 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     connectedCallback(): void;
     // @internal
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    // @internal
     customPropertyManager: CustomPropertyManager;
     designSystem: {};
     // @internal

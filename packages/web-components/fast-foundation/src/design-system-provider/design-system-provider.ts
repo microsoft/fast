@@ -221,9 +221,6 @@ export class DesignSystemProvider extends FASTElement
     /**
      * A reference to the object that manages the CSS custom properties
      * the DesignSystemProvider depends on.
-     *
-     * @internal
-     * @remarks
      */
     @observable
     public customPropertyManager: CustomPropertyManager;
