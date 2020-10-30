@@ -65,23 +65,23 @@ export const TextAreaStyles = css`
         box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
     }
 
-    :host(.filled) .control {
+    :host([appearance="filled"]) .control {
         background: ${neutralFillRestBehavior.var};
     }
 
-    :host(.filled:hover:not([disabled])) .control {
+    :host([appearance="filled"]:hover:not([disabled])) .control {
         background: ${neutralFillHoverBehavior.var};
     }
 
-    :host(.resize-both) .control {
+    :host([resize="both"]) .control {
         resize: both;
     }
 
-    :host(.resize-horizontal) .control {
+    :host([resize="horizontal"]) .control {
         resize: horizontal;
     }
 
-    :host(.resize-vertical) .control {
+    :host([resize="vertical"]) .control {
         resize: vertical;
     }
 

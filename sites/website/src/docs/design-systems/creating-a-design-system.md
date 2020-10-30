@@ -122,3 +122,39 @@ In general, a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovi
 
 ## Done!
 Thats it! Once you've configured all the Design System properties you can use your Design System Provider in your page. See [Using the Design System](/docs/design-systems/using-the-design-system) for more information on how to use the Design System values provided by your DesignSystemProvider.
+
+## Advanced Scenarios
+### Card Scenarios
+Cards are a popular UI pattern but pose an interesting problem because they often *should* be [DesignSystemProviders](/docs/api/fast-foundation.designsystemprovider) instances but often broadcast the *same* design system properties as sibling card elements. This can result in duplicate work if child elements depend on the same CSS custom properties.
+
+To address this, the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) exposes a [customPropertyManager](/docs/api/fast-foundation.designsystemprovider.custompropertymanager) property that can be assigned a [ConstructableStylesCustomPropertyManager](docs/api/fast-foundation.constructablestylescustompropertymanager). This manager instance can be shared between like-provider instances, avoiding duplicate registration and evaluation of CSS custom properties.
+
+```ts
+// my-card.ts
+@designSystemProvider({
+    name: "my-card",
+    template,
+    styles: css`:host { display: block }`
+})
+export class MyCard extends FASTDesignSystemProvider {
+    @designSystemProperty({
+        default: "#FFFFFF"
+    })
+    public backgroundColor: string;
+
+    constructor() {
+        super();
+
+        // If constructable stylesheets are supported
+        if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
+            /**
+             * Simple memoization function based on parent provider and current background color. In non-memoized cases,
+             * will return:
+             * 
+             * new ConstructableStylesCustomPropertyManager(new CSSStyleSheet())
+             */
+            this.customPropertyManager = getReusableCustomPropertyManager(this.provider, this.backgroundColor)
+        }
+    }
+}
+```
