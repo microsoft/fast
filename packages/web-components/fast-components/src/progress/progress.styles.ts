@@ -64,13 +64,13 @@ export const ProgressStyles = css`
         animation: indeterminate-2 2s infinite;
     }
 
-    :host(.paused) .indeterminate-indicator-1,
-    :host(.paused) .indeterminate-indicator-2 {
+    :host([paused]) .indeterminate-indicator-1,
+    :host([paused]) .indeterminate-indicator-2 {
         animation-play-state: paused;
         background-color: ${neutralFillRestBehavior.var};
     }
 
-    :host(.paused) .determinate {
+    :host([paused]) .determinate {
         background-color: ${neutralForegroundHintBehavior.var};
     }
 
@@ -126,9 +126,9 @@ export const ProgressStyles = css`
                 forced-color-adjust: none;
                 background-color: ${SystemColors.FieldText};
             }
-            :host(.paused) .determinate,
-            :host(.paused) .indeterminate-indicator-1,
-            :host(.paused) .indeterminate-indicator-2 {
+            :host([paused]) .determinate,
+            :host([paused]) .indeterminate-indicator-1,
+            :host([paused]) .indeterminate-indicator-2 {
                 background-color: ${SystemColors.GrayText};
             }
         `
