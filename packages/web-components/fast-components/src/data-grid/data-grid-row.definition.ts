@@ -24,6 +24,7 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
                     values: [
                         { name: DataGridRowTypes.default },
                         { name: DataGridRowTypes.header },
+                        { name: DataGridRowTypes.stickyHeader },
                     ],
                     default: undefined,
                     required: false,

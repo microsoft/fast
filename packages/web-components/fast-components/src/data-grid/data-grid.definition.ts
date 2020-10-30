@@ -1,5 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
+import { GenerateHeaderOptions } from "@microsoft/fast-foundation";
 
 export const fastDataGridDefinition: WebComponentDefinition = {
     version: 1,
@@ -20,6 +21,11 @@ export const fastDataGridDefinition: WebComponentDefinition = {
                     description:
                         "String that gets applied to the the css gridTemplateColumns attribute of child rows",
                     type: DataType.string,
+                    values: [
+                        { name: GenerateHeaderOptions.none },
+                        { name: GenerateHeaderOptions.default },
+                        { name: GenerateHeaderOptions.sticky },
+                    ],
                     default: undefined,
                     required: false,
                 },

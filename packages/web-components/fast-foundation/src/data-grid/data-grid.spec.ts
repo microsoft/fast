@@ -32,4 +32,13 @@ describe("Data grid", () => {
 
         await disconnect();
     });
+
+    it("should have a tabIndex of 0 by default", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal(0);
+
+        await disconnect();
+    });
 });

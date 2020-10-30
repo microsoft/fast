@@ -30,4 +30,24 @@ describe("Data grid row", () => {
 
         await disconnect();
     });
+
+    it("should apply 'header' css class when row-type is 'header'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("row-type", "header");
+        await connect();
+
+        expect(element.className).to.contain("header");
+
+        await disconnect();
+    });
+
+    it("should apply 'sticky-header' css class when row-type is 'sticky-header'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("row-type", "sticky-header");
+        await connect();
+
+        expect(element.className).to.contain("header");
+
+        await disconnect();
+    });
 });

@@ -25,4 +25,33 @@ describe("Data grid cell", () => {
 
         await disconnect();
     });
+
+    it("should set role to 'columnheader' when cell-type is 'header'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("cell-type", "header");
+        await connect();
+
+        expect(element.getAttribute("role")).to.equal("columnheader");
+
+        await disconnect();
+    });
+
+    it("should apply 'column-header' css class when cell-type is 'header'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("cell-type", "header");
+        await connect();
+
+        expect(element.className).to.contain("columnheader");
+
+        await disconnect();
+    });
+
+    it("should have a tabIndex of -1 by default", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal(-1);
+
+        await disconnect();
+    });
 });
