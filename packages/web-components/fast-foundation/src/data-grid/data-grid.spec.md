@@ -157,23 +157,23 @@ Static function that creates a basic set of columns from an object representing 
 
 *Attributes:*
 - `grid-template-columns`  
-String that gets applied to the the css `gridTemplateColumns` attribute for the row.  This is typically set by the parent grid.
+String that gets applied to the the css `gridTemplateColumns` attribute for the row. This is typically set by the parent grid.
 
 - `row-index`  
 The index of the row in the parent grid. This is typically set by the parent grid.
 
 - `row-type`  
-The row can either be either "default", "header" or "sticky-header" type according to the `DataGridRowTypes` enum.  This determines the type of cells the row generates and what css classes get applied to it.
+The row can either be either "default", "header" or "sticky-header" type according to the `DataGridRowTypes` enum. This determines the type of cells the row generates and what css classes get applied to it.
 
 *properties:*
 - `rowData`  
 The object that contains the data to be displayed in this row.
 
 - `columnDefinitions`  
-An array of `ColumnDefinition` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
+An array of `ColumnDefinition` objects that define what columns will be displayed in the grid. The order of the columns determines their order in the grid.
 
 - `cellItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data.  The default template uses `fast-data-grid-cell`, this is where authors can change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.
 
 *Slots:*
 - `default`  
@@ -187,7 +187,6 @@ Default slot for items
 
 *enums:*
 - `DataGridRowTypes` - Enumerates available row types: "default, "header" and "sticky-header". 
-
 
 **Data grid cell**
 - `<fast-data-grid-cell>`
