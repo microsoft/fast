@@ -4,7 +4,7 @@ import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beau
 import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
 import {
     AjvMapper,
-    CustomMessageIncomingOutgoing,
+    CustomMessage,
     DataDictionary,
     MessageSystem,
     MessageSystemType,
@@ -217,7 +217,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             action: ViewerCustomAction.response,
             id: previewTheme,
             value: updatedTheme,
-        } as CustomMessageIncomingOutgoing);
+        } as CustomMessage<{}, {}>);
     };
 
     public handleUpdateDirection = (): void => {
@@ -232,7 +232,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             action: ViewerCustomAction.response,
             id: previewDirection,
             value: updatedDirection,
-        } as CustomMessageIncomingOutgoing);
+        } as CustomMessage<{}, {}>);
     };
 
     public handleUpdateTransparency = (): void => {
@@ -245,7 +245,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             action: ViewerCustomAction.response,
             id: previewBackgroundTransparency,
             value: !this.state.transparentBackground,
-        } as CustomMessageIncomingOutgoing);
+        } as CustomMessage<{}, {}>);
     };
 
     public handleUpdateHeight = (updatedHeight: number): void => {
