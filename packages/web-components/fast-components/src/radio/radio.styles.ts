@@ -103,40 +103,40 @@ export const RadioStyles = css`
         border-color: ${neutralFocusBehavior.var};
     }
 
-    :host(.checked) .control {
+    :host([checked]) .control {
         background: ${accentFillRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
     }
 
-    :host(.checked:not([disabled])) .control:hover {
+    :host([checked]:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
     }
 
-    :host(.checked:not([disabled])) .control:active {
+    :host([checked]:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
     }
 
-    :host(.checked:${focusVisible}:not([disabled])) .control {
+    :host([checked]:${focusVisible}:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
         border-color: transparent;
     }
 
-    :host(.disabled) .label,
-    :host(.readonly) .label,
-    :host(.readonly) .control,
-    :host(.disabled) .control {
+    :host([disabled]) .label,
+    :host([readonly]) .label,
+    :host([readonly]) .control,
+    :host([disabled]) .control {
         cursor: ${disabledCursor};
     }
 
-    :host(.checked) .checked-indicator {
+    :host([checked]) .checked-indicator {
         opacity: 1;
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
@@ -155,7 +155,7 @@ export const RadioStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             .control,
-            :host(.checked:not([disabled])) .control {
+            :host([checked]:not([disabled])) .control {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
                 background: ${SystemColors.Field};
@@ -164,17 +164,17 @@ export const RadioStyles = css`
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Field};
             }
-            :host(.checked:not([disabled])) .control:hover,
-            :host(.checked:not([disabled])) .control:active {
+            :host([checked]:not([disabled])) .control:hover,
+            :host([checked]:not([disabled])) .control:active {
                 border-color: ${SystemColors.Highlight};
                 background: ${SystemColors.Highlight};
             }
-            :host(.checked) .checked-indicator {
+            :host([checked]) .checked-indicator {
                 background: ${SystemColors.Highlight};
                 fill: ${SystemColors.Highlight};
             }
-            :host(.checked:not([disabled])) .control:hover .checked-indicator,
-            :host(.checked:not([disabled])) .control:active .checked-indicator {
+            :host([checked]:not([disabled])) .control:hover .checked-indicator,
+            :host([checked]:not([disabled])) .control:active .checked-indicator {
                 background: ${SystemColors.HighlightText};
                 fill: ${SystemColors.HighlightText};
             }
@@ -182,24 +182,24 @@ export const RadioStyles = css`
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.checked:${focusVisible}:not([disabled])) .control {
+            :host([checked]:${focusVisible}:not([disabled])) .control {
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
-            :host(.disabled) {
+            :host([disabled]) {
                 forced-color-adjust: none;
                 opacity: 1;
             }
-            :host(.disabled) .label {
+            :host([disabled]) .label {
                 color: ${SystemColors.GrayText};
             }
-            :host(.disabled) .control,
-            :host(.checked.disabled) .control:hover, .control:active {
+            :host([disabled]) .control,
+            :host([checked][disabled]) .control:hover, .control:active {
                 background: ${SystemColors.Field};
                 border-color: ${SystemColors.GrayText};
             }
-            :host(.disabled) .checked-indicator,
-            :host(.checked.disabled) .control:hover .checked-indicator {
+            :host([disabled]) .checked-indicator,
+            :host([checked][disabled]) .control:hover .checked-indicator {
                 fill: ${SystemColors.GrayText};
                 background: ${SystemColors.GrayText};
             }

@@ -1,4 +1,4 @@
-export * from "./accordion/accordion-item.definition";
+export * from "./accordion-item/accordion-item.definition";
 export * from "./accordion/accordion.definition";
 export * from "./anchor/anchor.definition";
 export * from "./badge/badge.definition";
@@ -13,7 +13,7 @@ export * from "./divider/divider.definition";
 export * from "./flipper/flipper.definition";
 export * from "./menu/menu.definition";
 export * from "./menu-item/menu-item.definition";
-export * from "./progress/progress-ring.definition";
+export * from "./progress-ring/progress-ring.definition";
 export * from "./progress/progress.definition";
 export * from "./radio/radio.definition";
 export * from "./radio-group/radio-group.definition";
