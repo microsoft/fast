@@ -62,6 +62,7 @@ export class DataGridCell extends FASTElement {
     public cellType: DataGridCellTypes;
     private cellTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
+            this.updateCellView();
         }
     }
 
@@ -78,6 +79,7 @@ export class DataGridCell extends FASTElement {
     public gridColumn: string;
     private gridColumnChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
+            this.updateCellStyle();
         }
     }
 
@@ -105,19 +107,7 @@ export class DataGridCell extends FASTElement {
         newValue: ColumnDefinition | null
     ): void {
         if ((this as FASTElement).$fastController.isConnected) {
-            if (newValue === null) {
-                this.disconnectCellView();
-                return;
-            }
-
-            if (oldValue === null) {
-                this.updateCellView();
-                return;
-            }
-
-            if (oldValue.cellTemplate !== newValue.cellTemplate) {
-                this.updateCellView();
-            }
+            this.updateCellView();
         }
     }
 
@@ -142,7 +132,6 @@ export class DataGridCell extends FASTElement {
         }`;
 
         this.updateCellView();
-
         this.updateCellStyle();
     }
 

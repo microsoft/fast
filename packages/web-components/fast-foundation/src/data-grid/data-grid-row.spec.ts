@@ -50,4 +50,15 @@ describe("Data grid row", () => {
 
         await disconnect();
     });
+
+    it("should set css grid-template-columns style to match attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("grid-template-columns", "100px 200px");
+        await connect();
+
+        expect(element.style.gridTemplateColumns).to.equal("100px 200px");
+
+        await disconnect();
+    });
 });
