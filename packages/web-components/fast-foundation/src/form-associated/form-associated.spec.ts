@@ -1,7 +1,8 @@
 import { FormAssociated } from "./form-associated";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { customElement, html, DOM } from "@microsoft/fast-element";
 import { classNames } from "@microsoft/fast-web-utilities";
+import { values } from "lodash-es";
 
 @customElement({
     name: "test-element",
@@ -37,7 +38,7 @@ class CustomInitialValue extends FormAssociated<HTMLInputElement> {
     protected initialValue: string = "foobar";
 }
 
-describe("The value property:", () => {
+describe("FormAssociated:", () => {
     describe("construction and connection:", () => {
         it("should have an undefined value prior to connectedCallback", () => {
             const el: TestElement = document.createElement("test-element") as TestElement;
@@ -181,6 +182,58 @@ describe("The value property:", () => {
             expect(formData.get("test")).to.equal("foobar");
 
             document.body.removeChild(form);
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset it's value property to an empty string if no value attribute is set", () => {
+            const element = document.createElement("test-element") as TestElement;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === null);
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "");
+        });
+
+        it("should reset it's value property to the value of the value attribute if it is set", () => {
+            const element = document.createElement("test-element") as TestElement;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.setAttribute("value", "attr-value");
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === "attr-value");
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+        });
+
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
+            const element = document.createElement("test-element") as TestElement;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "test-value";
+            element.setAttribute("value", "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            element.setAttribute("value", "new-attr-value");
+
+            assert(element.value === "new-attr-value");
         });
     });
 });

@@ -64,7 +64,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * HTML Attribute: checked
      */
     @attr({ attribute: "checked", mode: "boolean" })
-    public checkedAttribute: boolean;
+    public checkedAttribute: boolean = false;
     private checkedAttributeChanged(): void {
         this.defaultChecked = this.checkedAttribute;
     }
@@ -117,7 +117,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
             }
 
             this.$emit("change");
-            this.checkedAttribute = this.checked;
 
             this.validate();
         }
@@ -163,6 +162,11 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
                 }
             }
         }
+    }
+
+    public formResetCallback() {
+        this.checked = !!this.defaultChecked;
+        this.dirtyChecked = false;
     }
 
     private isInsideRadioGroup(): boolean {

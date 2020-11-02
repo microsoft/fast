@@ -42,15 +42,6 @@ export class FASTButton extends Button {
      */
     @attr
     public appearance: ButtonAppearance;
-    public appearanceChanged(
-        oldValue: ButtonAppearance,
-        newValue: ButtonAppearance
-    ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
-        }
-    }
 
     public connectedCallback() {
         super.connectedCallback();
