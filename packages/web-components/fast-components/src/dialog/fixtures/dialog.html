@@ -6,7 +6,8 @@
     </fast-dialog> -->
     <fast-dialog id="foo" aria-label="Simple dialog" modal="true">
         <h2>Dialog with text and button. The button should recieve focus</h2>
-        <button>Button A</button>
-        <button id="element" autofocus>Should autofocus</button>
+        <fast-button tabindex="0">Button A</fast-button>
+        <fast-button tabindex="0" id="element" autofocus>Should autofocus</fast-button>
+        <fast-checkbox>A checkbox</fast-checkbox>
     </fast-dialog>
 </fast-design-system-provider>
