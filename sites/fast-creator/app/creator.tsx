@@ -10,7 +10,7 @@ import { neutralLayerL1, neutralLayerL2 } from "@microsoft/fast-components-style
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
-    CustomMessageIncomingOutgoing,
+    CustomMessage,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -54,6 +54,7 @@ import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -313,7 +314,7 @@ class Creator extends Editor<{}, CreatorState> {
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
 
-            if (!e.data.options || e.data.options.from !== "monaco-adapter") {
+            if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
         }
@@ -444,7 +445,7 @@ class Creator extends Editor<{}, CreatorState> {
             type: MessageSystemType.custom,
             id: previewAccentColor,
             value,
-        } as CustomMessageIncomingOutgoing);
+        } as CustomMessage<{}, {}>);
     };
 
     /**

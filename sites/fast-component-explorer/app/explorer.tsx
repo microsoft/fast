@@ -50,6 +50,7 @@ import { pivotStyleSheetOverrides } from "./explorer.style";
 import { ExplorerProps, ExplorerState } from "./explorer.props";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -299,7 +300,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
 
-            if (!e.data.options || e.data.options.from !== "monaco-adapter") {
+            if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
         }
