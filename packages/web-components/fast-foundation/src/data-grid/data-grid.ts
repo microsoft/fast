@@ -184,7 +184,7 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public columnDefinitions: ColumnDefinition[] | null;
+    public columnDefinitions: ColumnDefinition[] | null = null;
     private columnDefinitionsChanged(): void {
         if (this.columnDefinitions === null) {
             this.generatedGridTemplateColumns = "";
@@ -337,12 +337,12 @@ export class DataGrid extends FASTElement {
                 break;
 
             case keyCodePageUp:
-                // focus up one "page"
+                // TODO: focus up one "page"
                 e.preventDefault();
                 break;
 
             case keyCodePageDown:
-                // focus down one "page"
+                //TODO: focus down one "page"
                 e.preventDefault();
                 break;
 

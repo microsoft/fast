@@ -9,7 +9,6 @@ import {
     DataGridCellTemplate as cellTemplate,
 } from "./index";
 import { newDataRow } from "./data-grid.spec";
-import { DataGridRowTypes } from "./data-grid-row";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 @customElement({
@@ -24,6 +23,30 @@ async function setup() {
     );
     return { element, connect, disconnect };
 }
+
+const arrowRightEvent = new KeyboardEvent("keydown", {
+    key: "ArrowRight",
+    keyCode: KeyCodes.arrowRight,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const arrowLeftEvent = new KeyboardEvent("keydown", {
+    key: "ArrowLeft",
+    keyCode: KeyCodes.arrowLeft,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const homeEvent = new KeyboardEvent("keydown", {
+    key: "Home",
+    keyCode: KeyCodes.home,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const endEvent = new KeyboardEvent("keydown", {
+    key: "End",
+    keyCode: KeyCodes.end,
+    bubbles: true,
+} as KeyboardEventInit);
 
 const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]';
 
@@ -130,18 +153,6 @@ describe("Data grid row", () => {
         ] as ColumnDefinition[];
         (element as DataGridRow).rowData = newDataRow("test");
 
-        const arrowRightEvent = new KeyboardEvent("keydown", {
-            key: "ArrowRight",
-            keyCode: KeyCodes.arrowRight,
-            bubbles: true,
-        } as KeyboardEventInit);
-
-        const arrowLeftEvent = new KeyboardEvent("keydown", {
-            key: "ArrowLeft",
-            keyCode: KeyCodes.arrowLeft,
-            bubbles: true,
-        } as KeyboardEventInit);
-
         await connect();
 
         (element.querySelectorAll(cellQueryString)[0] as HTMLElement).focus();
@@ -189,18 +200,6 @@ describe("Data grid row", () => {
             { columnDataKey: "item3" },
         ] as ColumnDefinition[];
         (element as DataGridRow).rowData = newDataRow("test");
-
-        const homeEvent = new KeyboardEvent("keydown", {
-            key: "Home",
-            keyCode: KeyCodes.home,
-            bubbles: true,
-        } as KeyboardEventInit);
-
-        const endEvent = new KeyboardEvent("keydown", {
-            key: "End",
-            keyCode: KeyCodes.end,
-            bubbles: true,
-        } as KeyboardEventInit);
 
         await connect();
 
