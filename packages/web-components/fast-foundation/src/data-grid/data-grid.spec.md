@@ -2,12 +2,12 @@
 
 ## Overview
 
-The `data grid` component enables authors to display an array of data in a tabular layout.  The layout can include a "header" region where a title can be displayed for each column.   
+The `data grid` component enables authors to display an array of data in a tabular layout. The layout can include a "header" region where a title can be displayed for each column. 
 
 ![](./images/grid.png)
 
 `Data grid` actually consists of three components that work together:
-- `<fast-data-grid>`:  The top level container element
+- `<fast-data-grid>`: The top level container element
 - `<fast-data-grid-row>`: Displays a single row of data associated with a single record or a header row
 - `<fast-data-grid-cell>`: Displays a single cell of data within a row
 
@@ -16,14 +16,14 @@ Any time an author wants to display tabular data.
 
 ### Non-goals
 - The initial version of the component will not support virtualization or pagination to display large data sets but should be architected to support both in the future.
-  
+
 ### Features
 - Generates a data grid layout based on provided data.
 - Authors can take advantage of multiple customization points to control the grid display.
 - Manages keyboard navigation across the grid.
 
 ### Risks and Challenges
-- Unique identifiers are not required per row/data item, this may cause an unstable relationships between data rows and component representations.
+- Unique identifiers are not required per row/data item, this may cause an unstable relationships between data rows and component representations. Authors should be cautious about storing references to grid elements as the data associated with a particular cell or row can change as data is updated.
 
 ### Prior Art/Examples
 
@@ -74,23 +74,23 @@ Note: using a custom `gridColumn` property allows authors to place cells anywher
 
 #### The ColumnDefinition interface
 
-Most **data grid** components use the `ColumnDefinition` interface.  A `ColumnDefinition` is an object that describes the properties of a single column in the grid as follows:
+Most **data grid** components use the `ColumnDefinition` interface. A `ColumnDefinition` is an object that describes the properties of a single column in the grid as follows:
 
-- `columnDataKey`: A string that identifies which data item should be shown in the column.  For example, if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
+- `columnDataKey`: A string that identifies which data item should be shown in the column. For example, if the source data had a field called "Name" the `columnDataKey` for the column that displays the values for "Name" would be "Name".
 
-- `title`:  The title of the column, if not provided the `columnDataKey` is used instead.
+- `title`: The title of the column, if not provided the `columnDataKey` is used instead.
 
-- `headerCellTemplate`:  Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for header cells of this column.
+- `headerCellTemplate`: Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for header cells of this column.
 
-- `headerCellInternalFocusQueue`: Indicates whether the header cell has in internal focus queue.  This should be set to `true` for header cells that host controls that need to use arrow keys or have multiple focusable internal elements.  When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions described [here](https://w3c.github.io/aria-practices/#grid)).
+- `headerCellInternalFocusQueue`: Indicates whether the header cell has in internal focus queue. This should be set to `true` for header cells that host controls that need to use arrow keys or have multiple focusable internal elements. When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions described [here](https://w3c.github.io/aria-practices/#grid)).
 
 headerCellFocusTargetCallback: Callback function that takes the cell node as a parameter and returns the HTMLElement to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `headerCellInternalFocusQueue` is "false" this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is "true" this function is called when the user hits Enter or F2.
 
-- `cellTemplate`:  Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for data cells of this column.
+- `cellTemplate`: Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for data cells of this column.
 
-- `cellInternalFocusQueue`: Indicates whether the cell has in internal focus queue.  This should be set to `true` for cells that host controls that need to use arrow keys or have multiple focusable internal elements.  When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions descrived [here](https://w3c.github.io/aria-practices/#grid)).
+- `cellInternalFocusQueue`: Indicates whether the cell has in internal focus queue. This should be set to `true` for cells that host controls that need to use arrow keys or have multiple focusable internal elements. When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions descrived [here](https://w3c.github.io/aria-practices/#grid)).
 
-- `cellFocusTargetCallback`: Callback function that takes the cell node as a parameter and returns the `HTMLElement` to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements.  When `cellInternalFocusQueue` is "false" this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused.  When `cellInternalFocusQueue` is "true" this function is called when the user hits Enter or F2.
+- `cellFocusTargetCallback`: Callback function that takes the cell node as a parameter and returns the `HTMLElement` to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `cellInternalFocusQueue` is "false" this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is "true" this function is called when the user hits Enter or F2.
 
 Authors can hook up custom events to html elements within cell templates in order to enable user interaction with grid data.
 
@@ -114,20 +114,20 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
 
 *Attributes:*
 - `generate-header`  
-Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum).  Automatically generate a header element based on provided columns. The default is `true`.  Authors who wish to not have a header row or wish to generate their own can set this to `false`.
+Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum). Automatically generate a header element based on provided columns. The default is `true`. Authors who wish to not have a header row or wish to generate their own can set this to `false`.
 
 - `grid-template-columns`  
-String that gets applied to the the css gridTemplateColumns attribute of child rows.  Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
+String that gets applied to the the css gridTemplateColumns attribute of child rows. Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
 
 *properties:*
 - `rowsData`  
-An array of objects that contain the data to be displayed.  Each object corresponds to one row.
+An array of objects that contain the data to be displayed. Each object corresponds to one row.
 
 - `columnDefinitions`  
-An array of `ColumnDefinition` objects that define what columns will be displayed in the grid.  The order of the columns determines their order in the grid.
+An array of `ColumnDefinition` objects that define what columns will be displayed in the grid. The order of the columns determines their order in the grid.
 
 - `rowItemTemplate`  
-Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating rows by iterating over data.  The default template uses `fast-data-grid-row`, this is where authors change that.
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating rows by iterating over data. The default template uses `fast-data-grid-row`, this is where authors change that.
 
 - `focusRowIndex`
 The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified row. Note that the header row if there is one is typically at index 0.
@@ -141,7 +141,7 @@ Custom generated rows can be placed here
 
 *Functions:*
 - `generateColumns(object): ColumnDefinition`   
-Static function that creates a basic set of columns from an object representing a row.  
+Static function that creates a basic set of columns from an object representing a row.
 
 *Events*
 - none
@@ -223,7 +223,7 @@ Default slot for items
 
 ## Implementation
 
-The most basic use case for this component would be to just pass it an array of objects for it to render.  
+The most basic use case for this component would be to just pass it an array of objects for it to render.
 
 For example given a grid component:
 ```html
@@ -305,3 +305,5 @@ This component should have component testing in the @microsoft/fast-foundation p
 
 - Virtualization and/or Pagination for large data sets.
 - Add support for cell selection.
+- Horizontal grid layout?
+- Stable data/element relationships.
