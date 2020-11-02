@@ -194,6 +194,8 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // (undocumented)
+    formResetCallback(): void;
     indeterminate: boolean;
     // @internal
     protected initialValue: string;
@@ -452,6 +454,8 @@ export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaEl
     // @internal
     static get formAssociated(): boolean;
     formDisabledCallback(disabled: boolean): void;
+    // (undocumented)
+    formResetCallback(): void;
     protected initialValue: string;
     protected initialValueChanged(previous: string, next: string): void;
     // (undocumented)
@@ -580,6 +584,8 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // (undocumented)
+    formResetCallback(): void;
     // @internal
     protected initialValue: string;
     // @internal (undocumented)
