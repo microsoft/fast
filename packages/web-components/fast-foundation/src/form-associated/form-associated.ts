@@ -1,3 +1,4 @@
+import { ElementStyles } from "@microsoft/fast-element";
 import { attr, DOM, emptyArray, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
@@ -88,10 +89,12 @@ interface HTMLElement {
 
 const proxySlotName = "form-associated-proxy";
 
+const ElementInternalsKey = "ElementInternals";
 /**
  * @alpha
  */
-export const supportsElementInternals = "ElementInternals" in window;
+export const supportsElementInternals =
+    ElementInternalsKey in window && "setFormData" in window[ElementInternalsKey];
 
 /**
  * Base class for providing Custom Element Form Association.
