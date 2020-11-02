@@ -1,4 +1,3 @@
-import { ElementStyles } from "@microsoft/fast-element";
 import { attr, DOM, emptyArray, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
