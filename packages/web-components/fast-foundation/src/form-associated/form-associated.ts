@@ -93,7 +93,8 @@ const ElementInternalsKey = "ElementInternals";
  * @alpha
  */
 export const supportsElementInternals =
-    ElementInternalsKey in window && "setFormData" in window[ElementInternalsKey];
+    ElementInternalsKey in window &&
+    "setFormValue" in window[ElementInternalsKey].prototype;
 
 /**
  * Base class for providing Custom Element Form Association.
