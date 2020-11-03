@@ -17,6 +17,7 @@ import {
     VSCodeNativeHTMLAttribute,
     VSCodeNativeHTMLDefinition,
     VSCodeNativeHTMLTag,
+    VSCodeNativeHTMLTagDescription,
     VSCodeNativeHTMLValueSet,
 } from "./html-native.vs-code-v1.1-types";
 
@@ -43,13 +44,13 @@ function getDataTypeForAttribute(attribute: VSCodeNativeHTMLAttribute): DataType
 }
 
 function findValueSetValues(
-    valueSetName: string
+    valueSetName?: string
 ): WebComponentAttributeValues[] | undefined {
-    const valueSet: VSCodeNativeHTMLValueSet | undefined = valueSets.find(
+    const valueSet: VSCodeNativeHTMLValueSet | undefined = valueSets !== undefined ? valueSets.find(
         (item: VSCodeNativeHTMLValueSet) => {
             return item.name === valueSetName;
         }
-    );
+    ) : undefined;
     return valueSet && valueSet.values ? valueSet.values : undefined;
 }
 
@@ -78,7 +79,7 @@ const convertedTags: WebComponentDefinitionTag[] = (vscodeHTMLData as VSCodeNati
     (tag: VSCodeNativeHTMLTag): WebComponentDefinitionTag => {
         const newWebComponentDefinitionTag: WebComponentDefinitionTag = {
             name: tag.name,
-            description: tag.description.value ?? "", // TODO: this ?? might not work if typescript is not 4.0+
+            description: (typeof tag.description === "string") ? tag.description : (tag.description as VSCodeNativeHTMLTagDescription).value ?? "", // TODO: this ?? might not work if typescript is not 4.0+
             attributes: convertAttributeData(tag),
             slots: [],
         };

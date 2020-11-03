@@ -1,5 +1,5 @@
 export interface VSCodeNativeHTMLDefinition {
-    version: 1.1;
+    version: number;
     tags: VSCodeNativeHTMLTag[];
 }
 
@@ -14,15 +14,23 @@ export interface VSCodeNativeHTMLValueSet {
 
 export interface VSCodeNativeHTMLAttribute {
     name: string;
-    valueSet: string;
+    valueSet?: string | undefined;
+    description?: VSCodeNativeHTMLTagDescription | string;
 }
 
 export interface VSCodeNativeHTMLTagDescription {
+    kind: string;
     value: string;
+}
+
+export interface VSCodeNativeHTMLReference {
+    name: string,
+    url: string
 }
 
 export interface VSCodeNativeHTMLTag {
     name: string;
-    description: VSCodeNativeHTMLTagDescription;
+    description?: VSCodeNativeHTMLTagDescription | string;
     attributes: VSCodeNativeHTMLAttribute[];
+    references?: VSCodeNativeHTMLReference[];
 }
