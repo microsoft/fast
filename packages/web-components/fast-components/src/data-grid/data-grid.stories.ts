@@ -43,7 +43,7 @@ const customRowItemTemplate = html`
 
 const customCellItemTemplate = html`
     <fast-data-grid-cell
-        style="background: yellow"
+        style="background: brown"
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
