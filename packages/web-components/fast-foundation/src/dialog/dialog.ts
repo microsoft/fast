@@ -109,9 +109,6 @@ export class Dialog extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        // store references to tabbable elements
-        this.tabbableElements = tabbable(this as Element);
-
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
         this.observer.observe(this as Element, { childList: true });
@@ -153,6 +150,9 @@ export class Dialog extends FASTElement {
 
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
+            // store references to tabbable elements
+            this.tabbableElements = tabbable(this as Element);
+
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
 
