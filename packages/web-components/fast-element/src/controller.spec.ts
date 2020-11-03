@@ -6,14 +6,23 @@ import { uniqueElementName, toHTML } from "./__test__/helpers";
 import { html } from "./template";
 import { DOM } from "./dom";
 import { css } from "./styles";
+import { Observable } from "./observation/observable";
 
 describe("The Controller", () => {
-    const templateA = html`a`;
-    const templateB = html`b`;
+    const templateA = html`
+        a
+    `;
+    const templateB = html`
+        b
+    `;
     const cssA = "class-a { color: red; }";
-    const stylesA = css`${cssA}`;
+    const stylesA = css`
+        ${cssA}
+    `;
     const cssB = "class-b { color: blue; }";
-    const stylesB = css`${cssB}`;
+    const stylesB = css`
+        ${cssB}
+    `;
 
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},
@@ -304,6 +313,19 @@ describe("The Controller", () => {
                 );
             });
         }
+    });
+
+    it("should have an observable isConnected property", () => {
+        const { element, controller } = createController();
+        let attached = controller.isConnected;
+        const handler = { handleChange: () => (attached = !attached) };
+        Observable.getNotifier(controller).subscribe(handler, "isConnected");
+
+        expect(attached).to.equal(false);
+        document.body.appendChild(element);
+        expect(attached).to.equal(true);
+        document.body.removeChild(element);
+        expect(attached).to.equal(false);
     });
 
     it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
