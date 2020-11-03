@@ -9,6 +9,7 @@ import { Constructable } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
+import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
@@ -270,8 +271,53 @@ export interface ColumnDefinition {
     title?: string;
 }
 
+// @alpha (undocumented)
+export interface ComponentConfiguration extends ConfigurationOptions {
+    baseName: string;
+    styles?: ElementStyles;
+    template?: ElementViewTemplate;
+    type: typeof FASTElement;
+}
+
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
+
+// @alpha
+export interface Configuration {
+    getDefaultStylesFor(baseName: string): ElementStyles | null;
+    getDefaultTemplateFor(baseName: string): ElementViewTemplate | null;
+    readonly prefix: string;
+    // (undocumented)
+    register(...registrations: ConfigurationRegistry[]): Configuration;
+    registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
+    setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
+    setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
+}
+
+// @alpha
+export class ConfigurationImpl implements Configuration {
+    constructor(options?: ConfigurationOptions);
+    static forComponent(defaultElementConfiguration: ComponentConfiguration): (elementConfiguration?: Partial<Omit<ComponentConfiguration, "type">>) => ConfigurationRegistry;
+    getDefaultStylesFor(name: string): ElementStyles | null;
+    getDefaultTemplateFor(name: string): ElementViewTemplate | null;
+    readonly prefix: string;
+    // (undocumented)
+    register(...registrations: ConfigurationRegistry[]): this;
+    registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
+    setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
+    setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
+    }
+
+// @alpha (undocumented)
+export interface ConfigurationOptions {
+    prefix?: string;
+}
+
+// @alpha (undocumented)
+export interface ConfigurationRegistry {
+    // (undocumented)
+    register(config: Configuration): void;
+}
 
 // @alpha
 export type ConstructableFormAssociated = Constructable<FASTElement & HTMLElement & FormAssociatedProxy>;
@@ -291,6 +337,27 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     subscribe(client: CustomPropertyManagerClient): void;
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
+
+// @alpha (undocumented)
+export interface Container extends ServiceLocator {
+    // (undocumented)
+    createChild(): Container;
+    // (undocumented)
+    getFactory<T extends Constructable>(key: T): Factory<T> | null;
+    // (undocumented)
+    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
+    // (undocumented)
+    register(...params: any[]): Container;
+    // (undocumented)
+    registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
+    // (undocumented)
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
+    // (undocumented)
+    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+}
+
+// @alpha (undocumented)
+export const Container: InterfaceSymbol<Container, any>;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
@@ -465,6 +532,14 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     default: any;
 }
 
+// @alpha (undocumented)
+export interface DefaultableInterfaceSymbol<Key, Type = any> extends InterfaceSymbol<Key, Type> {
+    // (undocumented)
+    noDefault(): InterfaceSymbol<Key, Type>;
+    // (undocumented)
+    withDefault(configure: (builder: ResolverBuilder<Key>) => Resolver<Key>): InterfaceSymbol<Key, Type>;
+}
+
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
@@ -581,6 +656,18 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
+// @alpha (undocumented)
+export const DI: Readonly<{
+    createContainer(): Container;
+    getOrCreateDOMContainer(element?: HTMLElement): Container;
+    createInterface: typeof createInterface;
+    getDesignParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
+    getAnnotationParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
+    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
+    getDependencies(Type: Constructable | Injectable): Key[];
+    inject(...dependencies: Key[]): (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+}>;
+
 // @public
 export class Dialog extends FASTElement {
     ariaDescribedby: string;
@@ -603,6 +690,9 @@ export class Dialog extends FASTElement {
 
 // @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+
+// @alpha
+export const DIConfiguration: InterfaceSymbol<Configuration, any>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -653,8 +743,38 @@ export enum DividerRole {
 // @public
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
+// @alpha (undocumented)
+export interface DOMParentLocatorEventDetail {
+    // (undocumented)
+    container: Container | void;
+}
+
 // @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+
+// @alpha (undocumented)
+export interface Factory<T extends Constructable = any> {
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: Transformer_2<T>): boolean;
+    // (undocumented)
+    readonly Type: T;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "FactoryImpl" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
+    // Warning: (ae-forgotten-export) The symbol "Invoker" needs to be exported by the entry point index.d.ts
+    constructor(Type: T, invoker: Invoker, dependencies: Key[]);
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: (instance: any) => any): boolean;
+    // (undocumented)
+    Type: T;
+}
 
 // @public
 export class Flipper extends FASTElement {
@@ -750,6 +870,18 @@ export interface FormAssociatedProxy {
     valueChanged?(previous: any, next: any): void;
 }
 
+// @alpha
+export class FoundationElement extends FASTElement {
+    protected resolveStyles(): ElementStyles | null;
+    protected resolveTemplate(): ElementViewTemplate | null;
+    styles: ElementStyles | void | null;
+    // (undocumented)
+    protected stylesChanged(): void;
+    template: ElementViewTemplate | void | null;
+    // (undocumented)
+    protected templateChanged(): void;
+}
+
 // @public
 export enum GenerateHeaderOptions {
     // (undocumented)
@@ -769,6 +901,23 @@ export const hidden = ":host([hidden]){display:none}";
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
+// @alpha (undocumented)
+export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+
+// @alpha (undocumented)
+export type Injectable<T = {}> = Constructable<T> & {
+    inject?: Key[];
+};
+
+// @alpha (undocumented)
+export interface InterfaceConfiguration {
+    friendlyName?: string;
+    respectConnection?: boolean;
+}
+
+// @alpha (undocumented)
+export type InterfaceSymbol<Key = any, TBase extends {} = {}> = (target: TBase, property: string, index?: number) => void;
+
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
@@ -777,6 +926,9 @@ export function isListboxOption(el: Element): el is ListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @alpha (undocumented)
+export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
@@ -997,6 +1149,12 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 // @public
 export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
 
+// @alpha (undocumented)
+export type ParentLocator = (owner: any) => Container | null;
+
+// @alpha
+export function prefix(prefix: string, base: string): string;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
@@ -1072,6 +1230,79 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
+// @alpha (undocumented)
+export type RegisterSelf<T extends Constructable> = {
+    register(container: Container): Resolver<InstanceType<T>>;
+    registerInRequestor: boolean;
+};
+
+// @alpha (undocumented)
+export interface Registration<K = any> {
+    // (undocumented)
+    register(container: Container, key?: Key): Resolver<K>;
+}
+
+// @alpha
+export const Registration: Readonly<{
+    instance<T>(key: Key, value: T): Registration<T>;
+    singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
+    transient<T_2 extends Constructable<{}>>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
+    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
+    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
+    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
+}>;
+
+// @alpha (undocumented)
+export interface Registry {
+    // (undocumented)
+    register(container: Container, ...params: unknown[]): void | Resolver | Container;
+}
+
+// @alpha (undocumented)
+export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
+
+// Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
+
+// @alpha (undocumented)
+export interface Resolver<K = any> extends ResolverLike<Container, K> {
+}
+
+// @alpha (undocumented)
+export class ResolverBuilder<K> {
+    constructor(container: Container, key: Key);
+    // (undocumented)
+    aliasTo(destinationKey: Key): Resolver<K>;
+    // (undocumented)
+    cachedCallback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    callback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    instance(value: K): Resolver<K>;
+    // (undocumented)
+    singleton(value: Constructable): Resolver<K>;
+    // (undocumented)
+    transient(value: Constructable): Resolver<K>;
+}
+
+// @alpha (undocumented)
+export const enum ResolverStrategy {
+    // (undocumented)
+    alias = 5,
+    // (undocumented)
+    array = 4,
+    // (undocumented)
+    callback = 3,
+    // (undocumented)
+    instance = 0,
+    // (undocumented)
+    singleton = 1,
+    // (undocumented)
+    transient = 2
+}
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
@@ -1129,6 +1360,27 @@ export enum SelectRole {
 
 // @public
 export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
+
+// @alpha (undocumented)
+export interface ServiceLocator {
+    // (undocumented)
+    get<K extends Key>(key: K): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: Key): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: K | Key): Resolved<K>;
+    // (undocumented)
+    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
+}
+
+// @alpha (undocumented)
+export const ServiceLocator: InterfaceSymbol<ServiceLocator, {}>;
 
 // @public
 export class Skeleton extends FASTElement {
@@ -1500,6 +1752,11 @@ export enum TooltipPosition {
     top = "top"
 }
 
+// @alpha (undocumented)
+type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
+
+export { Transformer_2 as Transformer }
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //
@@ -1574,12 +1831,19 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
+// @alpha
+export function unprefix(name: string): string;
+
 // @beta
 export type VerticalPosition = "top" | "bottom" | "unset";
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
 
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/di/di.d.ts:164:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
