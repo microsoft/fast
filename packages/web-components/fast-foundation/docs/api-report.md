@@ -309,11 +309,11 @@ export class DataGrid extends FASTElement {
     static generateColumns: (row: object) => ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
-    // (undocumented)
+    // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleRowFocus(e: Event): void;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];

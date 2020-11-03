@@ -49,6 +49,7 @@ export enum DataGridCellTypes {
  * A Data Grid Cell Custom HTML Element.
  *
  * @public
+ * @beta
  */
 export class DataGridCell extends FASTElement {
     /**

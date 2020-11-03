@@ -136,7 +136,7 @@ export class DataGrid extends FASTElement {
     }
 
     /**
-     *  Whether the grid should auto generate a header row
+     *  Whether the grid should automatically generate a header row and its type
      *
      * @public
      * @remarks
@@ -306,6 +306,9 @@ export class DataGrid extends FASTElement {
         this.generatedHeader = null;
     }
 
+    /**
+     * @internal
+     */
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
@@ -315,10 +318,16 @@ export class DataGrid extends FASTElement {
         this.isUpdatingFocus = false;
     }
 
+    /**
+     * @internal
+     */
     public handleFocus(e: FocusEvent): void {
         this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
     }
 
+    /**
+     * @internal
+     */
     public handleKeydown(e: KeyboardEvent): void {
         if (e.defaultPrevented) {
             return;

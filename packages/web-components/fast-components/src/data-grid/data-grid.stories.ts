@@ -24,6 +24,15 @@ let columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
 let gridTemplateColumnsDefault = "1fr 1fr 1fr 1fr";
 
+const defaultRowItemTemplate = html`
+    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
+`;
+
+const customRowItemTemplate = html`
+    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
+    <fast-divider style="margin-bottom: 2px; margin-top: 2px;"></fast-divider>
+`;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
         defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
@@ -137,6 +146,20 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (stickyHeaderButton !== null) {
             stickyHeaderButton.onclick = setStickyHeader;
         }
+
+        const defaultRowTemplateButton: Button | null = document.getElementById(
+            "btndefaultrowtemplate"
+        ) as Button;
+        if (defaultRowTemplateButton !== null) {
+            defaultRowTemplateButton.onclick = setDefaultRowItemTemplate;
+        }
+
+        const customRowTemplateButton: Button | null = document.getElementById(
+            "btncustomrowtemplate"
+        ) as Button;
+        if (customRowTemplateButton !== null) {
+            customRowTemplateButton.onclick = setCustomRowItemTemplate;
+        }
     }
 });
 
@@ -225,11 +248,18 @@ function setDefaultHeader(): void {
     defaultGridElement.generateHeader = GenerateHeaderOptions.default;
 }
 
-function setStickyHeader(): void {
+function setDefaultRowItemTemplate(): void {
     if (defaultGridElement === null) {
         return;
     }
-    defaultGridElement.generateHeader = GenerateHeaderOptions.sticky;
+    defaultGridElement.rowItemTemplate = defaultRowItemTemplate;
+}
+
+function setCustomRowItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.rowItemTemplate = customRowItemTemplate;
 }
 
 function headerTemplateButtonClick(cell: DataGridCell): void {
@@ -270,6 +300,13 @@ function cellTemplateButtonClick(cell: DataGridCell): void {
     if (rowIndex > -1) {
         defaultGridElement.rowsData.splice(rowIndex, 1, newRowData);
     }
+}
+
+function setStickyHeader(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.generateHeader = GenerateHeaderOptions.sticky;
 }
 
 function newDataSet(rowCount: number): object[] {

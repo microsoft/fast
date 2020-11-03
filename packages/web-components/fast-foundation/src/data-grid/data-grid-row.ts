@@ -35,6 +35,7 @@ const headerCellItemTemplate = html`
  * Enumerates possible row types
  *
  * @public
+ * @beta
  */
 export enum DataGridRowTypes {
     default = "default",
