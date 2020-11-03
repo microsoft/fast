@@ -9,20 +9,12 @@ import { css } from "./styles";
 import { Observable } from "./observation/observable";
 
 describe("The Controller", () => {
-    const templateA = html`
-        a
-    `;
-    const templateB = html`
-        b
-    `;
+    const templateA = html`a`;
+    const templateB = html`b`;
     const cssA = "class-a { color: red; }";
-    const stylesA = css`
-        ${cssA}
-    `;
+    const stylesA = css`${cssA}`;
     const cssB = "class-b { color: blue; }";
-    const stylesB = css`
-        ${cssB}
-    `;
+    const stylesB = css`${cssB}`;
 
     function createController(
         config: Omit<PartialFASTElementDefinition, "name"> = {},
