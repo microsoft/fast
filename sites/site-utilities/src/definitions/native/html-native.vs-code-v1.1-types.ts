@@ -24,8 +24,8 @@ export interface VSCodeNativeHTMLTagDescription {
 }
 
 export interface VSCodeNativeHTMLReference {
-    name: string,
-    url: string
+    name: string;
+    url: string;
 }
 
 export interface VSCodeNativeHTMLTag {
