@@ -9,7 +9,6 @@
   "scripts": {
     "start": "webpack serve",
     "tdd": "yarn dev & yarn test-chrome:watch",
-    "prepare": "rm -rf dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
