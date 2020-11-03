@@ -129,6 +129,13 @@ An array of `ColumnDefinition` objects that define what columns will be displaye
 - `rowItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating rows by iterating over data. The default template uses `fast-data-grid-row`, this is where authors change that.
 
+- `cellItemTemplate`  
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.  The component applies this to generated rows only.
+
+- `headerCellItemTemplate`  
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that. The component applies this to generated rows only.
+
+
 - `focusRowIndex`
 The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified row. Note that the header row if there is one is typically at index 0.
 
@@ -174,6 +181,9 @@ An array of `ColumnDefinition` objects that define what columns will be displaye
 
 - `cellItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.
+
+- `headerCellItemTemplate`  
+Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.
 
 *Slots:*
 - `default`  
