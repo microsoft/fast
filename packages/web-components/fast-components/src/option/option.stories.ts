@@ -4,6 +4,13 @@ import "./index";
 
 export default {
     title: "Option",
+    decorators: [
+        Story => `
+            <fast-design-system-provider use-defaults>
+                ${Story()}
+            </fast-design-system-provider>
+        `,
+    ],
 };
 
 export const Option = () => Examples;

@@ -301,6 +301,14 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
+export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+    // (undocumented)
+    ariaActiveDescendant: string;
+    ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @public
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
@@ -500,38 +508,48 @@ export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsum
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
+//
 // @public
-export class Listbox extends FASTElement {
-    // (undocumented)
-    activeDescendent: string;
-    // (undocumented)
+export abstract class Listbox extends FASTElement {
+    // @internal (undocumented)
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
-    // (undocumented)
-    focusFirstSelectedOption(): void;
     // @internal (undocumented)
-    handleClick: (e: MouseEvent) => void;
-    // (undocumented)
-    handleFocusIn: (e: FocusEvent) => void;
-    // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    get firstSelectedOption(): Option_2;
+    // @internal (undocumented)
+    focusinHandler(e: FocusEvent): void;
     // (undocumented)
     handleTypeAhead(typedKey: any): void;
     // @internal (undocumented)
-    items: Element[];
-    // (undocumented)
-    protected itemsChanged(oldValue: any, newValue: any): void;
-    // (undocumented)
-    keypressHandler(e: KeyboardEvent): void;
+    keydownHandler(e: KeyboardEvent): void | boolean;
     // @internal (undocumented)
-    listboxItems: Option_2[];
+    options: Option_2[];
     // (undocumented)
-    selectedOption: Option_2;
+    protected optionsChanged(prev: Option_2[], next: Option_2[]): void;
+    selectedIndex: number;
+    selectedOptions: Option_2[];
     // (undocumented)
-    protected selectedOptionIndexChanged(): void;
-    // (undocumented)
-    setSelectedOption: () => void;
+    protected selectedOptionsChanged(prev?: Option_2[], next?: Option_2[]): void;
+    // @internal
+    selectFirstOption(): void;
+    // @internal
+    selectLastOption(): void;
+    // @internal
+    selectNextOption(): void;
+    // @internal
+    selectPreviousOption(): void;
+    // @internal (undocumented)
+    protected setSelectedOption(index?: number): void;
+    static slottedOptionFilter: (n: Option_2) => boolean;
     }
+
+// @internal (undocumented)
+export interface Listbox extends DelegatesARIAListbox {
+}
 
 // @public
 export const ListboxTemplate: import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
@@ -612,22 +630,30 @@ export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, 
 
 // @public
 class Option_2 extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
     defaultSelected: boolean;
     disabled: boolean;
     // (undocumented)
-    handleClick: (e: MouseEvent) => void;
+    get label(): string;
     // (undocumented)
-    get label(): string | null;
+    proxy: HTMLOptionElement;
     selected: boolean;
     selectedAttribute: boolean;
     // (undocumented)
-    get text(): string | null;
+    get text(): string;
     // (undocumented)
     get value(): string;
     valueAttribute: string;
 }
 
 export { Option_2 as Option }
+
+// @public
+export enum OptionRole {
+    // (undocumented)
+    option = "option"
+}
 
 // @public
 export const OptionTemplate: import("@microsoft/fast-element").ViewTemplate<Option_2, any>;
@@ -698,45 +724,48 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-incompatible-release-tags) The symbol "Select" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
 //
 // @public
-export class Select extends FormAssociated<HTMLSelectElement> {
-    // (undocumented)
-    autocomplete: string;
-    // (undocumented)
-    autofocus: boolean;
-    button: HTMLElement;
-    // (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+export class Select extends Listbox {
+    // @internal (undocumented)
+    clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
     connectedCallback(): void;
-    // @internal (undocumented)
-    defaultSlottedNodes: Node[];
-    displayValue: string;
+    get displayValue(): string;
     // (undocumented)
-    focusoutHandler: (e: FocusEvent) => void;
+    focusoutHandler(e: FocusEvent): boolean | void;
+    // (undocumented)
+    keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
-    indicatorContainer: HTMLElement;
-    // (undocumented)
-    keydownHandler: (e: KeyboardEvent) => void;
-    // @internal (undocumented)
-    listbox: Listbox;
+    maxHeight: number;
+    // @internal
     open: boolean;
-    // @internal (undocumented)
-    options: Option_2[];
+    // (undocumented)
+    protected openChanged(): void;
+    positioning: SelectPositioning;
     // (undocumented)
     protected proxy: HTMLSelectElement;
+    // @internal
+    protected selectedOptionsChanged(prev?: Option_2[], next?: Option_2[]): void;
+    setPositioning(force?: SelectPositioning): void;
     // (undocumented)
-    selectedValue: HTMLElement;
-    slottedButtonContainer: Node[];
-    // (undocumented)
-    protected valueChanged(previous: string, next: string): void;
+    value: string;
 }
 
-// @internal
-export interface Select extends StartEnd {
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DelegatesARIASelect" needs to be exported by the entry point index.d.ts
+//
+// @internal (undocumented)
+export interface Select extends FormAssociatedSelect, StartEnd, DelegatesARIASelect {
+}
+
+// @public
+export enum SelectPositioning {
+    // (undocumented)
+    above = "above",
+    // (undocumented)
+    below = "below"
 }
 
 // @public

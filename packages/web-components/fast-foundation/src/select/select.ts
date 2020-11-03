@@ -1,9 +1,11 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable, volatile } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/index";
+import { Listbox } from "../listbox";
+import { Option, OptionRole } from "../option";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { Option } from "../option/option";
-import { Listbox } from "../listbox/listbox";
+import { SelectPositioning } from "./select.options";
 
 /**
  * A Select Custom HTML Element.
@@ -11,214 +13,213 @@ import { Listbox } from "../listbox/listbox";
  *
  * @public
  */
-export class Select extends FormAssociated<HTMLSelectElement> {
+export class Select extends Listbox {
     protected proxy: HTMLSelectElement = document.createElement("select");
-
-    @attr
-    public autocomplete: string = "off";
-
-    @attr({ attribute: "autofocus", mode: "boolean" })
-    public autofocus: boolean = false;
-
     /**
-     * The open attribute
+     * The open attribute.
+     *
+     * @internal
      */
     @attr({ attribute: "open", mode: "boolean" })
-    public open: boolean;
-    private openChanged(): void {
+    public open: boolean = false;
+    protected openChanged() {
+        this.ariaExpanded = this.open ? "true" : "false";
+        if (this.open) {
+            this.setPositioning();
+        }
+    }
+
+    /**
+     *  Reflects the placement for the listbox when the select is open.
+     *
+     * @public
+     */
+    @attr
+    public positioning: SelectPositioning = SelectPositioning.below;
+
+    /**
+     * Calculate and apply listbox positioning based on available viewport space.
+     *
+     * @param force - direction to force the listbox to display
+     * @public
+     */
+    public setPositioning(force?: SelectPositioning): void {
+        if (force) {
+            this.positioning = force;
+        }
+
+        const currentBox = this.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const availableBottom = viewportHeight - currentBox.bottom;
+        this.positioning =
+            currentBox.top > availableBottom
+                ? SelectPositioning.above
+                : SelectPositioning.below;
+
+        if (currentBox.top > availableBottom) {
+            this.positioning = SelectPositioning.above;
+            this.maxHeight = ~~currentBox.top;
+        } else {
+            this.positioning = SelectPositioning.below;
+            this.maxHeight = ~~availableBottom;
+        }
+    }
+
+    /**
+     * The max height for the listbox when opened.
+     *
+     * @internal
+     */
+    @observable
+    public maxHeight: number = 0;
+
+    /**
+     * The value displayed on the button.
+     *
+     * @public
+     */
+    @volatile
+    public get displayValue(): string {
+        if (this.firstSelectedOption) {
+            return this.firstSelectedOption.textContent || this.firstSelectedOption.value;
+        }
+        return "";
+    }
+
+    /**
+     * Sets the value when the options are changed.
+     *
+     * @param prev - The previous value
+     * @param next - the new value
+     * @internal
+     */
+    protected selectedOptionsChanged(prev: Option[] = [], next: Option[] = []): void {
+        super.selectedOptionsChanged(prev, next);
         if (this.$fastController.isConnected) {
-            this.button.setAttribute("aria-expanded", `${this.open}`);
-
-            if (this.open) {
-                this.listbox.focusFirstSelectedOption();
-            }
+            this.value = `${
+                this.firstSelectedOption.value || this.firstSelectedOption.textContent
+            }`;
         }
     }
 
     /**
-     * The container for the indicator icon.
      * @internal
      */
-    @observable
-    public indicatorContainer: HTMLElement;
-
-    /**
-     * @internal
-     */
-    @observable
-    public defaultSlottedNodes: Node[];
-
-    /**
-     * @internal
-     */
-    @observable
-    public listbox: Listbox;
-
-    /**
-     * @internal
-     */
-    @observable
-    public options: Option[];
-
-    /**
-     * The value displayed on the button
-     * @public
-     */
-    @observable
-    public displayValue: string;
-
-    /**
-     * The button element that displays the selected value and triggers the visibility of the listbox.
-     * @public
-     */
-    @observable
-    public button: HTMLElement;
-
-    /**
-     * The slot that holds the contents of the button
-     * @public
-     */
-    @observable
-    public slottedButtonContainer: Node[];
-
-    /**
-     * Update the value and display value when the listbox emits a change event.
-     * @param e - Event object
-     */
-    private listboxChangeHandler = (e: Event): void => {
-        const captured = e.target as Option;
-        this.value = captured.value;
-    };
-
-    protected valueChanged(previous: string, next: string): void {
-        super.valueChanged(previous, next);
-        DOM.queueUpdate(() => {
-            const selectedOption = this.listbox.selectedOption;
-            this.displayValue = selectedOption.textContent || selectedOption.value;
-        });
-    }
-
-    private updateForm(): void {
-        const value = this.value ? this.value : null;
-        this.setFormValue(value, value);
-    }
-
-    public keydownHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
-
-        const keyCode = e.key || e.key.charCodeAt(0);
-
-        if (keyCode === "Escape") {
-            this.open = false;
-            DOM.queueUpdate(() => this.button.focus());
-            return;
-        }
-
-        if ([" ", "Enter"].includes(`${keyCode}`)) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (!this.disabled) {
-                this.open = !this.open;
-            }
-
-            if (this.open) {
-                this.listbox.focusFirstSelectedOption();
-            } else {
-                DOM.queueUpdate(() => this.button.focus());
-            }
-
-            return;
-        }
-
-        // Pass the event to the listbox
-        if (!e.defaultPrevented) {
-            DOM.queueUpdate(() => {
-                e.preventDefault();
-                this.listbox.dispatchEvent(e);
-            });
-        }
-    };
-
-    public focusoutHandler = (e: FocusEvent): void => {
-        const focusTarget = e.relatedTarget as HTMLElement;
-
-        if (!this.open) {
-            return;
-        }
-
-        if (this.isSameNode(focusTarget)) {
-            e.stopPropagation();
-            e.preventDefault();
-            return;
-        }
-
-        if (!this.listbox.listboxItems.includes(focusTarget as Option)) {
-            e.stopPropagation();
-            this.open = false;
-
-            if (!focusTarget) {
-                DOM.queueUpdate(() => this.button.focus());
-            }
-        }
-    }
-
-    public clickHandler = (e: MouseEvent): void => {
+    public clickHandler(e: MouseEvent): boolean | void {
+        // do nothing if the select is disabled
         if (this.disabled) {
             return;
         }
 
-        this.open = !this.open;
+        super.clickHandler(e);
 
         if (this.open) {
-            this.listbox.focusFirstSelectedOption();
+            const captured = (e.target as HTMLElement).closest(
+                `[role=${OptionRole.option}]`
+            ) as Option;
+            if (captured && captured.disabled) {
+                return;
+            }
+        }
+
+        this.open = !this.open;
+
+        return true;
+    }
+
+    public focusoutHandler(e: FocusEvent): boolean | void {
+        if (!this.open) {
+            return true;
+        }
+
+        const focusTarget = e.relatedTarget as HTMLElement;
+        if (this.isSameNode(focusTarget)) {
+            DOM.queueUpdate(() => this.focus());
             return;
         }
 
-        DOM.queueUpdate(() => this.button.focus());
-    };
-
-    @observable
-    public selectedValue: HTMLElement;
-    /**
-     * This will update the text that is in the select's
-     * button by default that renders the selected value
-     *
-     * @param value - This is the value for the <option>
-     */
-    private updateSelectValue(value: string) {
-        this.value = value;
-        if (this.selectedValue) {
-            this.selectedValue.textContent = value;
+        if (!this.options.includes(focusTarget as Option)) {
+            this.open = false;
         }
     }
 
-    public connectedCallback(): void {
+    public keydownHandler(e: KeyboardEvent): boolean | void {
+        super.keydownHandler(e);
+
+        const keyCode: string = e.key || `${e.key.charCodeAt(0)}`;
+
+        if (keyCode === " " || keyCode === "Enter") {
+            this.open = !this.open;
+        }
+
+        if (keyCode === "Escape") {
+            this.open = false;
+        }
+
+        return true;
+    }
+
+    @observable
+    public value: string;
+
+    public connectedCallback() {
         super.connectedCallback();
-
-        this.options = this.listbox.listboxItems;
-
-        this.button.setAttribute("aria-haspopup", "listbox");
-        this.button.setAttribute("aria-expanded", this.open ? "true" : "false");
-        this.button.setAttribute("role", "button");
-        this.button.addEventListener("mousedown", this.clickHandler);
-
-        this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("focusout", this.focusoutHandler);
-
-        this.listbox.addEventListener("change", this.listboxChangeHandler);
-        this.listbox.addEventListener("click", this.clickHandler);
-
-        this.updateForm();
+        DOM.queueUpdate(() => {
+            if (this.proxy instanceof HTMLElement) {
+                this.options.forEach(o => {
+                    const opt = o.proxy;
+                    this.proxy.add(opt);
+                });
+            }
+        });
     }
 }
 
 /**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
+ * Handles proxy element interaction for form association.
+ *
+ * @public
+ */
+class FormAssociatedSelect extends FormAssociated<HTMLSelectElement> {
+    protected proxy: HTMLSelectElement = document.createElement("select");
+
+    protected updateForm(previous, next): void {
+        const value = this.value;
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.value = value;
+        }
+    }
+}
+
+/**
+ * Includes ARIA states and properties relating to the ARIA select role.
+ *
+ * @public
+ */
+class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-expanded
+     */
+    @observable
+    public ariaExpanded: "true" | "false" | undefined;
+
+    /**
+     * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
+     *
+     * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-disabled}
+     * @public
+     * @remarks
+     * HTML Attribute: aria-disabled
+     */
+    @attr({ attribute: "aria-disabled", mode: "fromView" })
+    public ariaDisabled: "true" | "false";
+}
+
+/**
  * @internal
  */
-/* eslint-disable-next-line */
-export interface Select extends StartEnd {}
-applyMixins(Select, StartEnd);
+export interface Select extends FormAssociatedSelect, StartEnd, DelegatesARIASelect {}
+applyMixins(Select, FormAssociatedSelect, StartEnd, DelegatesARIASelect);

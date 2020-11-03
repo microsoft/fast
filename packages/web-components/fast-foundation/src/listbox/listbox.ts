@@ -1,5 +1,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Option } from "../option";
+import { Option, OptionRole } from "../option";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
+import { applyMixins } from "../utilities/apply-mixins";
 
 /**
  * A Listbox Custom HTML Element.
@@ -7,7 +9,7 @@ import { Option } from "../option";
  *
  * @public
  */
-export class Listbox extends FASTElement {
+export abstract class Listbox extends FASTElement {
     /**
      * Disables the radio group and child radios.
      *
@@ -15,263 +17,233 @@ export class Listbox extends FASTElement {
      * @remarks
      * HTML Attribute: disabled
      */
-    @attr({ attribute: "disabled", mode: "boolean" })
+    @attr({ mode: "boolean" })
     public disabled: boolean;
-    private disabledChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
 
-        if (this.disabled) {
-            this.setAttribute("aria-disabled", "true");
-        }
+    /**
+     * The index of the selected option
+     *
+     * @public
+     */
+    public selectedIndex: number = -1;
 
-        if (this.listboxItems.length) {
-            this.listboxItems.forEach((option: Option) => {
-                if (this.disabled) {
-                    option.disabled = true;
-                } else {
-                    option.disabled = false;
-                }
-            });
+    /**
+     * A collection of the selected options
+     *
+     * @public
+     */
+    @observable
+    public selectedOptions: Option[] = [];
+    protected selectedOptionsChanged(prev: Option[] = [], next: Option[] = []) {
+        if (this.$fastController.isConnected) {
+            this.options.forEach(o => (o.selected = next.includes(o)));
         }
     }
 
-    @observable
-    public activeDescendent: string;
-
-    public selectedOption: Option;
-
-    @observable
-    private selectedOptionIndex: number;
-    protected selectedOptionIndexChanged(): void {
-        this.setSelectedOption();
-    }
-
-    public setSelectedOption = (): void => {
-        const selectedOption = this.listboxItems[this.selectedOptionIndex];
+    /**
+     * @param index - option index to select
+     * @internal
+     */
+    protected setSelectedOption(index = this.selectedIndex): void {
+        const selectedOption = this.options[index];
         if (!selectedOption) {
             return;
         }
 
-        this.listboxItems.forEach(el => {
-            const isSameNode = el.isSameNode(selectedOption);
-            el.selected = isSameNode;
-            if (isSameNode) {
-                this.selectedOption = el;
+        const selectedOptions: Option[] = [];
+
+        this.options.forEach(el => {
+            if (el.isSameNode(selectedOption)) {
+                selectedOptions.push(el);
             }
-            this.activeDescendent = isSameNode ? el.id : this.activeDescendent;
         });
 
-        this.focusFirstSelectedOption();
-    };
-
-    public focusFirstSelectedOption(): void {
-        const selectedOption = this.listboxItems[this.selectedOptionIndex];
-        DOM.queueUpdate(() => selectedOption.focus());
+        this.selectedIndex = index;
+        this.selectedOptions = selectedOptions;
+        this.ariaActiveDescendant = this.firstSelectedOption.id;
     }
 
     /**
      * @internal
      */
-    public listboxItems: Option[];
+    public get firstSelectedOption(): Option {
+        return this.selectedOptions[0];
+    }
 
     /**
-     * @internal
+     * A static filter to include only enabled elements
+     * @param n - element to filter
+     * @public
      */
-    private listboxItemsCount: number;
+    public static slottedOptionFilter = (n: Option) =>
+        n.nodeType === Node.ELEMENT_NODE &&
+        n.getAttribute("role") === OptionRole.option &&
+        !n.disabled;
 
     /**
      * @internal
      */
     @observable
-    public items: Element[];
-    protected itemsChanged(oldValue, newValue): void {
-        if (!this.$fastController.isConnected) {
-            return;
+    public options: Option[] = [];
+    protected optionsChanged(prev: Option[], next: Option[]): void {
+        if (this.$fastController.isConnected) {
+            next.forEach((el, i) => (el.id = `${OptionRole.option}-${i}`));
         }
-
-        this.listboxItems = newValue.filter(
-            (n: Option) =>
-                n.nodeType === Node.ELEMENT_NODE &&
-                n.getAttribute("role") === "option" &&
-                !n.disabled
-        );
-        this.listboxItemsCount = this.listboxItems.length;
-        this.setupOptions();
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback() {
         super.connectedCallback();
-        this.addEventListener("click", this.handleClick);
-        this.addEventListener("focusin", this.handleFocusIn);
-        this.addEventListener("keydown", this.handleKeyDown);
-
-        this.listboxItems = (this.items as Option[]).filter(
-            (n: Option) =>
-                n.nodeType === Node.ELEMENT_NODE &&
-                n.getAttribute("role") === "option" &&
-                !n.disabled
-        );
-
-        this.listboxItemsCount = this.listboxItems.length;
-        this.selectedOptionIndex = this.listboxItems.findIndex(el => el.selected) || 0;
-
-        DOM.queueUpdate(() => this.setupOptions());
-
-        // this.addEventListener("keypress", this.keypressHandler);
+        DOM.queueUpdate(() => this.setDefaultSelectedOption());
     }
 
-    private setupOptions(): void {
-        this.listboxItems.forEach((el, i) => {
-            el.setAttribute("tabindex", "0");
-            el.id = `option-${i}`;
-        });
-        this.selectedOptionIndex = 0;
+    /**
+     * @internal
+     */
+    private setDefaultSelectedOption(): void {
+        let selectedIndex = this.options.findIndex(el => el.selected);
+        selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
+        this.setSelectedOption(selectedIndex);
     }
 
-    public keypressHandler(e: KeyboardEvent): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-
-        let captured: Option = e.target! as Option;
-
-        if (!this.listboxItems.includes(captured)) {
-            captured = this.getFocusedOption();
-        }
-
-        if (captured) {
-            if (captured.selected) {
-                captured.setAttribute("tabindex", "0");
-                return;
-            }
-            captured.removeAttribute("tabindex");
-            // captured.setAttribute("tabindex", captured.selected ? "0" : "-1");
-        }
-    }
-
-    public handleFocusIn = (e: FocusEvent): void => {
+    /**
+     * @internal
+     */
+    public focusinHandler(e: FocusEvent): void {
         if (e.target === e.currentTarget) {
             this.setSelectedOption();
+            this.focusAndScrollOptionIntoView();
         }
-    };
-
-    private getFocusedOption(): Option {
-        return this.listboxItems[this.selectedOptionIndex || 0];
     }
 
-    private rejectIfDisabled = (func, e): typeof func => {
-        if (!this.disabled) {
-            return func(e);
-        }
-    };
-
-    public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        if (!e.key) {
-            return;
-        }
-
+    /**
+     * @internal
+     */
+    public keydownHandler(e: KeyboardEvent): void | boolean {
         const keyCode = e.key || e.key.charCodeAt(0);
 
         switch (keyCode) {
-            case "ArrowLeft":
-            case "ArrowUp":
-                return this.selectPreviousOption(e);
+            case "ArrowUp": {
+                // Select the previous selectable option
+                e.preventDefault();
+                this.selectPreviousOption();
+                this.focusAndScrollOptionIntoView();
+                break;
+            }
 
-            case "ArrowDown":
-            case "ArrowRight":
-                return this.selectNextOption(e);
+            case "ArrowDown": {
+                // Select the next selectable option
+                e.preventDefault();
+                this.selectNextOption();
+                this.focusAndScrollOptionIntoView();
+                break;
+            }
+
+            case "End": {
+                // Select the last available option
+                e.preventDefault();
+                this.selectLastOption();
+                this.focusAndScrollOptionIntoView();
+                break;
+            }
 
             case "Home":
-                return this.selectFirstOption(e);
-
-            case "End":
-                return this.selectLastOption(e);
+                // Select the first available option
+                e.preventDefault();
+                this.selectFirstOption();
+                this.focusAndScrollOptionIntoView();
+                break;
 
             case "Tab":
-                if (e.defaultPrevented) {
-                    return;
-                }
+                this.focusAndScrollOptionIntoView();
+                break;
 
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                this.focusFirstSelectedOption();
-                return;
-
-            case " ":
             case "Enter":
             case "Escape":
                 break;
 
             default:
-                e.stopImmediatePropagation();
+                this.handleTypeAhead(keyCode);
         }
-    };
+
+        return true;
+    }
 
     /**
      * Moves focus to the first selectable option
      *
      * @internal
      */
-    private selectFirstOption = (e: KeyboardEvent): void => {
-        e.stopPropagation();
-        this.selectedOptionIndex = 0;
-    };
+    public selectFirstOption(): void {
+        if (!this.disabled) {
+            this.setSelectedOption(0);
+        }
+    }
 
     /**
      * Moves focus to the previous selectable option
      *
      * @internal
      */
-    private selectPreviousOption = (e: KeyboardEvent): void => {
-        e.stopPropagation();
-        if (!this.disabled && this.selectedOptionIndex > 0) {
-            this.selectedOptionIndex -= 1;
+    public selectPreviousOption(): void {
+        if (!this.disabled && this.selectedIndex > 0) {
+            this.setSelectedOption(this.selectedIndex - 1);
         }
-    };
+    }
 
     /**
      * Moves focus to the next selectable option
+     *
      * @internal
      */
-    private selectNextOption(e: KeyboardEvent) {
-        e.stopPropagation();
-        if (!this.disabled && this.selectedOptionIndex < this.listboxItemsCount - 1) {
-            this.selectedOptionIndex += 1;
+    public selectNextOption(): void {
+        if (!this.disabled && this.selectedIndex < this.options.length - 1) {
+            this.setSelectedOption(this.selectedIndex + 1);
         }
     }
 
     /**
      * Moves focus to the last selectable option
-     *
      * @internal
      */
-    private selectLastOption = (e: KeyboardEvent): void => {
-        e.stopPropagation();
+    public selectLastOption(): void {
         if (!this.disabled) {
-            this.selectedOptionIndex = this.listboxItemsCount - 1;
+            this.setSelectedOption(this.options.length - 1);
         }
-    };
+    }
 
     /**
-     *
      * @internal
      */
-    public handleClick = (e: MouseEvent): void => {
-        e.preventDefault();
-
-        const captured = (e.target as HTMLElement).closest("[role='option']");
-        if (!captured) {
+    public clickHandler(e: MouseEvent): boolean | void {
+        // do nothing if the listbox is disabled
+        if (this.disabled) {
             return;
         }
 
-        const selectedIndex = this.listboxItems.findIndex(el => el.isEqualNode(captured));
-        if (selectedIndex !== -1) {
-            this.selectedOptionIndex = selectedIndex;
-            this.selectedOption = this.listboxItems[selectedIndex];
+        const captured = (e.target as HTMLElement).closest(
+            `[role=${OptionRole.option}]`
+        ) as Option;
+        if (captured && !captured.disabled) {
+            const selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
+            this.setSelectedOption(selectedIndex);
+            return true;
         }
-    };
+
+        return;
+    }
+
+    /**
+     * @internal
+     */
+    private focusAndScrollOptionIntoView(): void {
+        if (this.contains(document.activeElement)) {
+            this.firstSelectedOption.focus();
+            this.firstSelectedOption.scrollIntoView({ block: "center" });
+        }
+    }
 
     /**
      * Move focus to an option whose label matches characters typed by the user.
@@ -281,58 +253,77 @@ export class Listbox extends FASTElement {
      *
      * @param typedKey - the key to be evaluated
      */
-    private typeAheadValue: string = "";
-    private typeAheadTimeoutHandler: number = -1;
-    private typeAheadExpired: boolean = false;
-    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
-    public handleTypeAhead(typedKey) {
-        // For every keystroke, reset the timer that triggers when enough
-        // time has elapsed such that the search should restart.
-        window.clearTimeout(this.typeAheadTimeoutHandler);
-        this.typeAheadTimeoutHandler = window.setTimeout(() => {
-            this.typeAheadExpired = true;
-        }, Listbox.TYPE_AHEAD_TIMEOUT_MS);
+    private typeAheadBuffer: string = "";
 
-        if (this.typeAheadExpired) {
-            this.typeAheadValue = "";
+    private typeaheadTimeout: number = -1;
+
+    private typeAheadExpired: boolean = false;
+
+    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+
+    public handleTypeAhead(typedKey) {
+        if (this.typeaheadTimeout) {
+            window.clearTimeout(this.typeaheadTimeout);
         }
 
-        this.typeAheadValue = `${this.typeAheadValue}${typedKey}`;
+        this.typeaheadTimeout = window.setTimeout(
+            () => (this.typeAheadExpired = true),
+            Listbox.TYPE_AHEAD_TIMEOUT_MS
+        );
 
-        const focusedIndex = this.listboxItems.indexOf(document.activeElement as any);
-        const searchStartOffset = this.typeAheadExpired ? 1 : 0;
-        // Try to match first against options that come after the currently
-        // selected option. If none of those match, loop back around starting
-        // from the top of the list. If we're in the middle of a search,
-        // continue matching against the currently focused option before moving
-        // on to the next option.
-        const optionsForSearch = this.listboxItems
-            .slice(focusedIndex + searchStartOffset, this.listboxItems.length)
-            .concat(this.listboxItems.slice(0, focusedIndex + searchStartOffset));
+        if (typedKey.length > 1) {
+            return;
+        }
 
-        const pattern = `^(${this.typeAheadValue.replace(
-            /[-/\\^$*+?.()|[\]{}]/g,
+        if (this.typeAheadExpired) {
+            this.typeAheadBuffer = "";
+        }
+
+        this.typeAheadBuffer = `${this.typeAheadBuffer}${typedKey}`;
+
+        const pattern = `^(${this.typeAheadBuffer.replace(
+            /[.*+\-?^${}()|[\]\\]/g,
             "\\$&"
         )})`;
         const re = new RegExp(pattern, "gi");
 
-        for (const option of optionsForSearch) {
-            // Match against the visible text of the option, rather than
-            // the `value` attribute. For a real <option> element, the
-            // `label` property could be used here.
-            // Chromium/Firefox's native <select>s ignore whitespace at the
-            // beginning/end of the visible text when matching, so trim()
-            // the search text to align with that behavior.
-            const element: any = option;
-            const matches = element.innerText.trim().match(re);
-
-            if (matches) {
-                // this.setFocusOnOption(element);
-                console.log(element);
-                break;
-            }
-        }
+        const selectedIndex = this.options.findIndex(o => o.text!.trim().match(re));
+        this.setSelectedOption(selectedIndex);
 
         this.typeAheadExpired = false;
     }
 }
+
+/**
+ * Includes ARIA states and properties relating to the ARIA button role
+ *
+ * @public
+ */
+export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-pressed
+     */
+    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    public ariaPressed: "true" | "false" | "mixed" | undefined;
+
+    @observable
+    public ariaActiveDescendant: string = "";
+
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-expanded
+     */
+    @observable
+    public ariaExpanded: "true" | "false" | undefined;
+}
+
+/**
+ * @internal
+ */
+export interface Listbox extends DelegatesARIAListbox {}
+applyMixins(Listbox, DelegatesARIAListbox);

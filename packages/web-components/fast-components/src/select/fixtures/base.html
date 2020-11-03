@@ -1,47 +1,104 @@
-<fast-design-system-provider use-defaults>
-    <h1>Select</h1>
-    <h2>Default</h2>
-    <fast-select>
-        <fast-option value="value of option 1">Option One</fast-option>
-        <fast-option>Option Two</fast-option>
-        <fast-option>Option Three</fast-option>
-        <fast-option>Option Four</fast-option>
-    </fast-select>
+<h1>Select</h1>
+<select>
+    <option value="" disabled selected>Choose an option</option>
+    <option>Option Two</option>
+    <option>Option Three</option>
+    <option>Option Four</option>
+</select>
+<h2>Default</h2>
+<fast-select>
+    <fast-option value="value of option 1">Option One</fast-option>
+    <fast-option>Option Two</fast-option>
+    <fast-option>Option Three</fast-option>
+    <fast-option>Option Four</fast-option>
+</fast-select>
 
-    <h2>Disabled</h2>
-    <fast-select disabled>
-        <fast-option>Option One</fast-option>
-        <fast-option>Option Two</fast-option>
-        <fast-option>Option Three</fast-option>
-        <fast-option>Option Four</fast-option>
-    </fast-select>
+<h2>Disabled</h2>
+<fast-select disabled>
+    <fast-option>This option is not selectable</fast-option>
+</fast-select>
 
-    <h2>Selected Option</h2>
-    <fast-select>
-        <fast-option>Option One</fast-option>
-        <fast-option selected>Option Two</fast-option>
-        <fast-option>Option Three</fast-option>
-        <fast-option>Option Four</fast-option>
-    </fast-select>
+<fast-select>
+    <fast-option disabled>This option is disabled</fast-option>
+    <fast-option>This option is not disabled</fast-option>
+</fast-select>
 
-    <h2>Custom Indicator</h2>
-    <fast-select>
-        <svg slot="indicator" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M6.5 7.7h-1v-1h1v1zm4.1 0h-1v-1h1v1zm4.1-1v2.1h-1v2.6l-.1.6-.3.5c-.1.1-.3.3-.5.3l-.6.1H10l-3.5 3v-3H3.9l-.6-.1-.5-.3c-.1-.1-.3-.3-.3-.5l-.1-.6V8.8h-1V6.7h1V5.2l.1-.6.3-.5c.1-.1.3-.3.5-.3l.6-.1h3.6V1.9a.8.8 0 01-.4-.4L7 1V.6l.2-.3.3-.2L8 0l.4.1.3.2.3.3V1l-.1.5-.4.4v1.7h3.6l.6.1.5.3c.1.1.3.3.3.5l.1.6v1.5h1.1zm-2.1-1.5l-.2-.4-.4-.2H3.9l-.4.2-.1.4v6.2l.2.4.4.2h3.6v1.8L9.7 12h2.5l.4-.2.2-.4V5.2zM5.8 8.9l1 .7 1.2.2a5 5 0 001.2-.2l1-.7.7.7c-.4.4-.8.7-1.4.9-.5.2-1 .3-1.6.3s-1.1-.1-1.6-.3A3 3 0 015 9.6l.8-.7z"
-            />
-        </svg>
-        <fast-option>Option One</fast-option>
-        <fast-option>Option Two</fast-option>
-        <fast-option>Option Three</fast-option>
-        <fast-option>Option Four</fast-option>
-    </fast-select>
+<fast-select>
+    <fast-option disabled selected>This option is disabled and selected</fast-option>
+    <fast-option>This option is not disabled and not selected</fast-option>
+</fast-select>
 
-    <h2>Custom Indicator</h2>
-    <fast-select>
-        <fast-option>Option One</fast-option>
-        <fast-option>Option Two</fast-option>
-        <fast-option>Option Three</fast-option>
-        <fast-option>Option Four</fast-option>
-    </fast-select>
-</fast-design-system-provider>
+<h2>Selected Option</h2>
+<fast-select>
+    <fast-option>Option One</fast-option>
+    <fast-option selected>Option Two</fast-option>
+    <fast-option>Option Three</fast-option>
+    <fast-option>Option Four</fast-option>
+</fast-select>
+
+<h2>Custom Indicator</h2>
+<fast-select>
+    <svg slot="indicator" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M6.5 7.7h-1v-1h1v1zm4.1 0h-1v-1h1v1zm4.1-1v2.1h-1v2.6l-.1.6-.3.5c-.1.1-.3.3-.5.3l-.6.1H10l-3.5 3v-3H3.9l-.6-.1-.5-.3c-.1-.1-.3-.3-.3-.5l-.1-.6V8.8h-1V6.7h1V5.2l.1-.6.3-.5c.1-.1.3-.3.5-.3l.6-.1h3.6V1.9a.8.8 0 01-.4-.4L7 1V.6l.2-.3.3-.2L8 0l.4.1.3.2.3.3V1l-.1.5-.4.4v1.7h3.6l.6.1.5.3c.1.1.3.3.3.5l.1.6v1.5h1.1zm-2.1-1.5l-.2-.4-.4-.2H3.9l-.4.2-.1.4v6.2l.2.4.4.2h3.6v1.8L9.7 12h2.5l.4-.2.2-.4V5.2zM5.8 8.9l1 .7 1.2.2a5 5 0 001.2-.2l1-.7.7.7c-.4.4-.8.7-1.4.9-.5.2-1 .3-1.6.3s-1.1-.1-1.6-.3A3 3 0 015 9.6l.8-.7z"
+        />
+    </svg>
+    <fast-option>Option One</fast-option>
+    <fast-option>Option Two</fast-option>
+    <fast-option>Option Three</fast-option>
+    <fast-option>Option Four</fast-option>
+</fast-select>
+
+<h2>Long list</h2>
+<fast-select id="state" name="state">
+    <fast-option value="AL">Alabama</fast-option>
+    <fast-option value="AK">Alaska</fast-option>
+    <fast-option value="AZ">Arizona</fast-option>
+    <fast-option value="AR">Arkansas</fast-option>
+    <fast-option value="CA">California</fast-option>
+    <fast-option value="CO">Colorado</fast-option>
+    <fast-option value="CT">Connecticut</fast-option>
+    <fast-option value="DE">Delaware</fast-option>
+    <fast-option value="FL">Florida</fast-option>
+    <fast-option value="GA">Georgia</fast-option>
+    <fast-option value="HI">Hawaii</fast-option>
+    <fast-option value="ID">Idaho</fast-option>
+    <fast-option value="IL">Illinois</fast-option>
+    <fast-option value="IN">Indiana</fast-option>
+    <fast-option value="IA">Iowa</fast-option>
+    <fast-option value="KS">Kansas</fast-option>
+    <fast-option value="KY">Kentucky</fast-option>
+    <fast-option value="LA">Louisiana</fast-option>
+    <fast-option value="ME">Maine</fast-option>
+    <fast-option value="MD">Maryland</fast-option>
+    <fast-option value="MA">Massachussets</fast-option>
+    <fast-option value="MI">Michigain</fast-option>
+    <fast-option value="MN">Minnesota</fast-option>
+    <fast-option value="MS">Mississippi</fast-option>
+    <fast-option value="MO">Missouri</fast-option>
+    <fast-option value="MT">Montana</fast-option>
+    <fast-option value="NE">Nebraska</fast-option>
+    <fast-option value="NV">Nevada</fast-option>
+    <fast-option value="NH">New Hampshire</fast-option>
+    <fast-option value="NJ">New Jersey</fast-option>
+    <fast-option value="NM">New Mexico</fast-option>
+    <fast-option value="NY">New York</fast-option>
+    <fast-option value="NC">North Carolina</fast-option>
+    <fast-option value="ND">North Dakota</fast-option>
+    <fast-option value="OH">Ohio</fast-option>
+    <fast-option value="OK">Oklahoma</fast-option>
+    <fast-option value="OR">Oregon</fast-option>
+    <fast-option value="PA">Pennsylvania</fast-option>
+    <fast-option value="RI">Rhode Island</fast-option>
+    <fast-option value="SC">South Carolina</fast-option>
+    <fast-option value="SD">South Dakota</fast-option>
+    <fast-option value="TX">Texas</fast-option>
+    <fast-option value="TN">Tennessee</fast-option>
+    <fast-option value="UT">Utah</fast-option>
+    <fast-option value="VT">Vermont</fast-option>
+    <fast-option value="VA">Virginia</fast-option>
+    <fast-option value="WA">Washington</fast-option>
+    <fast-option value="WI">Wisconsin</fast-option>
+    <fast-option value="WV">West Virginia</fast-option>
+    <fast-option value="WY">Wyoming</fast-option>
+</fast-select>

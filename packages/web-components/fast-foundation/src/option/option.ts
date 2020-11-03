@@ -7,6 +7,8 @@ import { attr, FASTElement, observable } from "@microsoft/fast-element";
  * @public
  */
 export class Option extends FASTElement {
+    public proxy: HTMLOptionElement = document.createElement("option");
+
     /**
      * The defaultSelected state of the option.
      * @public
@@ -81,19 +83,22 @@ export class Option extends FASTElement {
     @attr({ attribute: "value", mode: "fromView" })
     public valueAttribute: string;
 
-    public handleClick = (e: MouseEvent): void => {
-        if (this.disabled) {
-            return;
-        }
-
-        this.selected = true;
-    };
-
     public get label() {
-        return this.value ? this.value : this.textContent;
+        return this.value ? this.value : this.textContent ? this.textContent : "";
     }
 
-    public get text(): string | null {
-        return this.textContent;
+    public get text(): string {
+        return this.textContent ? this.textContent : this.value;
+    }
+
+    public connectedCallback() {
+        super.connectedCallback();
+
+        this.proxy.label = this.label;
+        this.proxy.defaultSelected = this.defaultSelected;
+        this.proxy.selected = this.selected;
+        this.proxy.text = this.text;
+        this.proxy.disabled = this.disabled;
+        this.proxy.value = this.value;
     }
 }

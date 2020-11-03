@@ -20,18 +20,19 @@ export const OptionStyles = css`
         box-sizing: border-box;
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
-        height: calc(${heightNumber} * 1px);
+        min-height: calc(${heightNumber} * 1px);
         padding: calc(var(--design-unit) * 2px + 1px);
         position: relative;
+        user-select: none;
     }
 
-    :host(:${focusVisible}),
-    :host(.selected) {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
-            neutralFocusInnerAccentBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
+    :host(:${focusVisible}) {
         background: ${accentFillHoverBehavior.var};
+        border-color: ${neutralFocusBehavior.var};
+        box-shadow:
+            0 0 0 calc(var(--focus-outline-width) * 1px) inset
+            ${neutralFocusInnerAccentBehavior.var};
+
         color: ${accentForegroundCutRestBehavior.var};
     }
 
@@ -55,6 +56,13 @@ export const OptionStyles = css`
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         background: ${neutralFillStealthRestBehavior.var}
+    }
+
+    .content {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 100%;
     }
 `.withBehaviors(
     accentFillActiveBehavior,
