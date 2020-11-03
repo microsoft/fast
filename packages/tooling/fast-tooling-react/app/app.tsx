@@ -3,11 +3,8 @@ import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
 import { NavigationTestPage } from "./pages/navigation";
 import ViewerPage from "./pages/viewer";
 import ViewerContentPage from "./pages/viewer/content";
-import { CSSEditorTestPage } from "./pages/css-editor";
-import { StyleEditorsTestPage } from "./pages/style-editors";
 import { FormTestPage } from "./pages/form";
 import { FormAndNavigationTestPage } from "./pages/form-and-navigation";
-import { CSSPropertyEditorTestPage } from "./pages/css-property-editor";
 import { NavigationMenuTestPage } from "./pages/navigation-menu";
 import { WebComponentTestPage } from "./pages/web-components";
 import WebComponentViewerContent from "./pages/web-components/web-component-viewer-content";
@@ -23,21 +20,6 @@ class App extends React.Component<{}, {}> {
                             exact={true}
                             path={"/navigation-menu"}
                             component={NavigationMenuTestPage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/css-editor"}
-                            component={CSSEditorTestPage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/css-property-editor"}
-                            component={CSSPropertyEditorTestPage}
-                        />
-                        <Route
-                            exact={true}
-                            path={"/style-editors"}
-                            component={StyleEditorsTestPage}
                         />
                         <Route
                             exact={true}
@@ -67,7 +49,7 @@ class App extends React.Component<{}, {}> {
                             component={WebComponentViewerContent}
                         />
                         <Route exact={true} path={"/"}>
-                            <Redirect to={"/web-components"} />
+                            <Redirect to={"/form"} />
                         </Route>
                     </Switch>
                 </div>
@@ -82,15 +64,6 @@ class App extends React.Component<{}, {}> {
                     <ul>
                         <li>
                             <Link to="/navigation-menu">Navigation Menu</Link>
-                        </li>
-                        <li>
-                            <Link to="/css-editor">CSS Editor</Link>
-                        </li>
-                        <li>
-                            <Link to="/css-property-editor">CSS Property Editor</Link>
-                        </li>
-                        <li>
-                            <Link to="/style-editors">Style Editors</Link>
                         </li>
                         <li>
                             <Link to="/form">Form</Link>
