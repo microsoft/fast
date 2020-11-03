@@ -299,6 +299,7 @@ export interface CustomPropertyManagerClient extends FASTElement {
 // @public
 export class DataGrid extends FASTElement {
     constructor();
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -315,6 +316,7 @@ export class DataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    headerCellItemTemplate?: ViewTemplate;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     }
@@ -350,7 +352,9 @@ export enum DataGridCellTypes {
 
 // @public
 export class DataGridRow extends FASTElement {
-    cellItemTemplate?: ViewTemplate | undefined;
+    // @internal
+    activeCellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -365,6 +369,7 @@ export class DataGridRow extends FASTElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
+    headerCellItemTemplate?: ViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;

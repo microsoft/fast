@@ -23,7 +23,7 @@ const defaultCellItemTemplate = html`
     ></fast-data-grid-cell>
 `;
 
-const headerCellItemTemplate = html`
+const defaultHeaderCellItemTemplate = html`
     <fast-data-grid-cell
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -78,6 +78,7 @@ export class DataGridRow extends FASTElement {
     public rowType: DataGridRowTypes = DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
+            this.updateItemTemplate();
         }
     }
 
@@ -106,15 +107,25 @@ export class DataGridRow extends FASTElement {
     }
 
     /**
-     * The template used to render programmatically generated cells.
+     * The template used to render cells in generated rows.
      *
      * @public
      */
     @observable
-    public cellItemTemplate?: ViewTemplate | undefined;
+    public cellItemTemplate?: ViewTemplate;
     private cellItemTemplateChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
+        this.updateItemTemplate();
+    }
+
+    /**
+     * The template used to render header cells in generated rows.
+     *
+     * @public
+     */
+    @observable
+    public headerCellItemTemplate?: ViewTemplate;
+    private headerCellItemTemplateChanged(): void {
+        this.updateItemTemplate();
     }
 
     /**
@@ -137,6 +148,14 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public isActiveRow: boolean = false;
+
+    /**
+     * The cell item template currently in use.
+     *
+     * @internal
+     */
+    @observable
+    public activeCellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
 
     private cellsRepeatBehavior: RepeatBehavior | null = null;
     private cellsPlaceholder: Node | null = null;
@@ -163,14 +182,11 @@ export class DataGridRow extends FASTElement {
             this.cellsPlaceholder = document.createComment("");
             this.appendChild(this.cellsPlaceholder);
 
-            this.cellItemTemplate =
-                this.rowType === DataGridRowTypes.default
-                    ? defaultCellItemTemplate
-                    : headerCellItemTemplate;
+            this.updateItemTemplate();
 
             this.cellsRepeatBehavior = new RepeatDirective(
                 x => x.columnDefinitions,
-                x => x.cellItemTemplate,
+                x => x.activeCellItemTemplate,
                 { positioning: true }
             ).createBehavior(this.cellsPlaceholder);
 
@@ -258,6 +274,17 @@ export class DataGridRow extends FASTElement {
                 }
                 break;
         }
+    }
+
+    private updateItemTemplate(): void {
+        this.activeCellItemTemplate =
+            this.rowType === DataGridRowTypes.default
+                ? this.cellItemTemplate !== undefined
+                    ? this.cellItemTemplate
+                    : defaultCellItemTemplate
+                : this.headerCellItemTemplate !== undefined
+                ? this.headerCellItemTemplate
+                : defaultHeaderCellItemTemplate;
     }
 
     private updateRowStyle = (): void => {

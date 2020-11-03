@@ -84,7 +84,11 @@ export interface ColumnDefinition {
 }
 
 const defaultRowItemTemplate = html`
-    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
+    <fast-data-grid-row
+        :rowData="${x => x}"
+        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
+        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
+    ></fast-data-grid-row>
 `;
 
 /**
@@ -206,7 +210,29 @@ export class DataGrid extends FASTElement {
      */
     @observable
     public rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
-    private rowItemTemplateChanged(): void {}
+
+    /**
+     * The template used to render cells in generated rows.
+     *
+     * @public
+     */
+    @observable
+    public cellItemTemplate?: ViewTemplate;
+
+    /**
+     * The template used to render header cells in generated rows.
+     *
+     * @public
+     */
+    @observable
+    public headerCellItemTemplate?: ViewTemplate;
+    private headerCellItemTemplateChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            if (this.generatedHeader !== null) {
+                this.generatedHeader.headerCellItemTemplate = this.headerCellItemTemplate;
+            }
+        }
+    }
 
     /**
      * The index of the row that will receive focus the next time the

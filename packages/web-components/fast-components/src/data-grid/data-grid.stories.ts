@@ -25,12 +25,38 @@ let columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 let gridTemplateColumnsDefault = "1fr 1fr 1fr 1fr";
 
 const defaultRowItemTemplate = html`
-    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
+    <fast-data-grid-row
+        :rowData="${x => x}"
+        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
+        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
+    ></fast-data-grid-row>
 `;
 
 const customRowItemTemplate = html`
-    <fast-data-grid-row :rowData="${x => x}"></fast-data-grid-row>
-    <fast-divider style="margin-bottom: 2px; margin-top: 2px;"></fast-divider>
+    <fast-data-grid-row
+        :rowData="${x => x}"
+        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
+        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
+    ></fast-data-grid-row>
+    <fast-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
+`;
+
+const customCellItemTemplate = html`
+    <fast-data-grid-cell
+        style="background: yellow"
+        grid-column="${(x, c) => c.index + 1}"
+        :rowData="${(x, c) => c.parent.rowData}"
+        :columnDefinition="${x => x}"
+    ></fast-data-grid-cell>
+`;
+
+const customHeaderCellItemTemplate = html`
+    <fast-data-grid-cell
+        style="background: orange"
+        cell-type="columnheader"
+        grid-column="${(x, c) => c.index + 1}"
+        :columnDefinition="${x => x}"
+    ></fast-data-grid-header-cell>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
@@ -160,6 +186,33 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (customRowTemplateButton !== null) {
             customRowTemplateButton.onclick = setCustomRowItemTemplate;
         }
+
+        const defaultCellTemplateButton: Button | null = document.getElementById(
+            "btndefaultcelltemplate"
+        ) as Button;
+        if (defaultCellTemplateButton !== null) {
+            defaultCellTemplateButton.onclick = setDefaultCellItemTemplate;
+        }
+
+        const customCellTemplateButton: Button | null = document.getElementById(
+            "btncustomcelltemplate"
+        ) as Button;
+        if (customCellTemplateButton !== null) {
+            customCellTemplateButton.onclick = setCustomCellItemTemplate;
+        }
+        const defaultHeaderCellTemplateButton: Button | null = document.getElementById(
+            "btndefaultheadercelltemplate"
+        ) as Button;
+        if (defaultHeaderCellTemplateButton !== null) {
+            defaultHeaderCellTemplateButton.onclick = setDefaultHeaderCellItemTemplate;
+        }
+
+        const customHeaderCellTemplateButton: Button | null = document.getElementById(
+            "btncustomheadercelltemplate"
+        ) as Button;
+        if (customHeaderCellTemplateButton !== null) {
+            customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
+        }
     }
 });
 
@@ -260,6 +313,34 @@ function setCustomRowItemTemplate(): void {
         return;
     }
     defaultGridElement.rowItemTemplate = customRowItemTemplate;
+}
+
+function setDefaultCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.cellItemTemplate = undefined;
+}
+
+function setCustomCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.cellItemTemplate = customCellItemTemplate;
+}
+
+function setDefaultHeaderCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.headerCellItemTemplate = undefined;
+}
+
+function setCustomHeaderCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.headerCellItemTemplate = customHeaderCellItemTemplate;
 }
 
 function headerTemplateButtonClick(cell: DataGridCell): void {
