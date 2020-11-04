@@ -131,6 +131,11 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
+    public formResetCallback() {
+        this.checked = this.checkedAttribute;
+        this.dirtyChecked = false;
+    }
+
     private updateForm(): void {
         const value = this.checked ? this.value : null;
         this.setFormValue(value, value);

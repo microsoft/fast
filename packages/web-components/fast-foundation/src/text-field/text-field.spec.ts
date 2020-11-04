@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
 import { TextFieldType } from "./text-field";
@@ -701,6 +701,58 @@ describe("TextField", () => {
 
                 expect(element.validity.typeMismatch).to.equal(true);
             });
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset it's value property to an empty string if no value attribute is set", () => {
+            const element = document.createElement("fast-text-field") as FASTTextField;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === null);
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "");
+        });
+
+        it("should reset it's value property to the value of the value attribute if it is set", () => {
+            const element = document.createElement("fast-text-field") as FASTTextField;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.setAttribute("value", "attr-value");
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === "attr-value");
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+        });
+
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
+            const element = document.createElement("fast-text-field") as FASTTextField;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "test-value";
+            element.setAttribute("value", "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            element.setAttribute("value", "new-attr-value");
+
+            assert(element.value === "new-attr-value");
         });
     });
 });
