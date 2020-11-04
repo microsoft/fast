@@ -13,7 +13,6 @@ For more information view the [design system provider readme](../../../fast-foun
 |baseHeightMultiplier|number| base-height-multiplier | base-height-multiplier |
 |baseHorizontalSpacingMultiplier|number| base-horizontal-spacing-multiplier | base-horizontal-spacing-multiplier |
 |cornerRadius|number| corner-radius | corner-radius |
-|elevatedCornerRadius|number| elevated-corner-radius | elevated-corner-radius |
 |outlineWidth|number| outline-width | outline-width |
 |focusOutlineWidth|number| focus-outline-width | focus-outline-width |
 |disabledOpacity|number| disabled-opacity | disabled-opacity |

@@ -1,7 +1,11 @@
 import { FASTElementDefinition } from "./fast-definitions";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
-import { defaultExecutionContext, Observable } from "./observation/observable";
+import {
+    defaultExecutionContext,
+    Observable,
+    observable,
+} from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
 import { Mutable } from "./interfaces";
@@ -51,6 +55,7 @@ export class Controller extends PropertyChangeNotifier {
      * Indicates whether or not the custom element has been
      * connected to the document.
      */
+    @observable
     public readonly isConnected: boolean = false;
 
     /**

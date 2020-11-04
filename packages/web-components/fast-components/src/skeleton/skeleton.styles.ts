@@ -18,11 +18,11 @@ export const SkeletonStyles = css`
         --skeleton-animation-timing-default: ease-in-out;
     }
 
-    :host(.rect) {
+    :host([shape="rect"]) {
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
-    :host(.circle) {
+    :host([shape="circle"]) {
         border-radius: 100%;
         overflow: hidden;
     }

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { Slider, SliderTemplate as template } from "./index";
 import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
 import { fixture } from "../fixture";
@@ -263,6 +263,47 @@ describe("Slider", () => {
         await disconnect();
     });
 
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", ".5");
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", ".5");
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = ".5";
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
     describe("methods", () => {
         it("should increment the value when the `increment()` method is invoked", async () => {
             const { element, connect, disconnect } = await setup();
@@ -306,6 +347,58 @@ describe("Slider", () => {
             expect(element.getAttribute("aria-valuenow")).to.equal("45");
 
             await disconnect();
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset it's value property to an empty string if no value attribute is set", () => {
+            const element = document.createElement("fast-slider") as FASTSlider;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "3";
+
+            assert(element.getAttribute("value") === null);
+            assert(element.value === "3");
+
+            form.reset();
+
+            assert(element.value === "5");
+        });
+
+        it("should reset it's value property to the value of the value attribute if it is set", () => {
+            const element = document.createElement("fast-slider") as FASTSlider;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.setAttribute("value", "7");
+            element.value = "8";
+
+            assert(element.getAttribute("value") === "7");
+            assert(element.value === "8");
+
+            form.reset();
+
+            assert(element.value === "7");
+        });
+
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
+            const element = document.createElement("fast-slider") as FASTSlider;
+            const form = document.createElement("form");
+            form.appendChild(element);
+            document.body.appendChild(form);
+            element.value = "7";
+            element.setAttribute("value", "8");
+
+            assert(element.value === "7");
+
+            form.reset();
+
+            assert(element.value === "8");
+
+            element.setAttribute("value", "3");
+
+            assert(element.value === "3");
         });
     });
 });

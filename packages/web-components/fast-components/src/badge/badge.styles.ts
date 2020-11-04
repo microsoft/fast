@@ -21,7 +21,7 @@ export const BadgeStyles = css`
         font-weight: 400;
     }
 
-    :host(.circular) .control {
+    :host([circular]) .control {
         border-radius: 100px;
         padding: 0 calc(var(--design-unit) * 1px);
         ${

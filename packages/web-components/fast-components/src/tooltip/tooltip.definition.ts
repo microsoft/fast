@@ -1,6 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { TooltipPosition } from "@microsoft/fast-foundation";
+import { TooltipPosition } from "@microsoft/fast-foundation/dist/esm/tooltip/tooltip.options";
 
 export const fastTooltipDefinition: WebComponentDefinition = {
     version: 1,

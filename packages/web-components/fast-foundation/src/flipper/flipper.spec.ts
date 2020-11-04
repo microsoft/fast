@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { Flipper, FlipperTemplate as template } from "./index";
+import { customElement, DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
-import { FlipperDirection } from "./flipper";
+import { FlipperDirection } from "./flipper.options";
+import { Flipper, FlipperTemplate as template } from "./index";
 
 @customElement({
     name: "fast-flipper",

@@ -41,19 +41,6 @@ export class FASTTextField extends TextField {
     /**
      * @internal
      */
-    public appearanceChanged(
-        oldValue: TextFieldAppearance,
-        newValue: TextFieldAppearance
-    ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
-        }
-    }
-
-    /**
-     * @internal
-     */
     public connectedCallback() {
         super.connectedCallback();
 

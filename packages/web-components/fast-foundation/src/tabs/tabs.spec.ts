@@ -293,11 +293,46 @@ describe("Tabs", () => {
 
             await connect();
 
-            element.setAttribute("activeId", "03")
+            element.setAttribute("activeId", "03");
 
             expect(
                 element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-selected")
             ).to.equal("true");
+
+            await disconnect();
+        });
+
+        it("should skip updating the active indicator if click twice on the same tab", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+                <fast-tabs>
+                    <fast-tab id="01">Tab one</fast-tab>
+                    <fast-tab id="02">Tab two</fast-tab>
+                    <fast-tab id="03">Tab three</fast-tab>
+                    <fast-tab-panel id="panel01">
+                        Tab one content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel id="panel02">
+                        Tab two content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel id="panel03">
+                        Tab three content. This is for testing.
+                    </fast-tab-panel>
+                </fast-tabs>
+            `);
+
+            await connect();
+
+            const secondTab = element.querySelectorAll("fast-tab")[1] as HTMLElement;
+            expect(secondTab).not.to.be.undefined;
+            [0, 1].forEach(() => {
+                secondTab.click();
+                expect(element.shadowRoot).not.to.be.undefined;
+                expect(
+                    element.shadowRoot
+                        ?.querySelector('[part="activeIndicator"]')
+                        ?.classList.contains("activeIndicatorTransition")
+                ).to.be.false;
+            });
 
             await disconnect();
         });

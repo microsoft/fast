@@ -36,13 +36,13 @@ export const SliderStyles = css`
         outline: none;
         cursor: pointer;
     }
-    :host(.horizontal) .positioning-region {
+    :host([orientation="horizontal"]) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
         grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
-    :host(.vertical) .positioning-region {
+    :host([orientation="vertical"]) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
@@ -76,23 +76,23 @@ export const SliderStyles = css`
     .thumb-cursor:active {
         background: ${neutralForegroundActiveBehavior.var};
     }
-    :host(.horizontal) .thumb-container {
+    :host([orientation="horizontal"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
     }
-    :host(.vertical) .thumb-container {
+    :host([orientation="vertical"]) .thumb-container {
         transform: translateY(calc(var(--thumb-translate) * 1px));
     }
-    :host(.horizontal) {
+    :host([orientation="horizontal"]) {
         min-width: calc(var(--thumb-size) * 1px);
     }
-    :host(.horizontal) .track {
+    :host([orientation="horizontal"]) .track {
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
         margin-top: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
         height: calc(var(--track-width) * 1px);
     }
-    :host(.vertical) .track {
+    :host([orientation="vertical"]) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         width: calc(var(--track-width) * 1px);
@@ -104,7 +104,7 @@ export const SliderStyles = css`
         position: absolute;
         border-radius: calc(var(--corner-radius) * 1px);
     }
-    :host(.vertical) {
+    :host([orientation="vertical"]) {
         height: calc(var(--fast-slider-height) * 1px);
         min-height: calc(var(--thumb-size) * 1px);
         min-width: calc(var(--design-unit) * 20px);

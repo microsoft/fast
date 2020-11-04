@@ -44,6 +44,13 @@ export const L4ColorName = `${propertyNamePrefix}l4-color`;
 const L4ColorValue = "#1B1B1B";
 export const L4CSSProperty = assignCSSCustomProperty(L4ColorName, L4ColorValue);
 
+export const FloatingColorName = `${propertyNamePrefix}floating-color`;
+const FloatingColorValue = "#3B3B3B";
+export const FloatingCSSProperty = assignCSSCustomProperty(
+    FloatingColorName,
+    FloatingColorValue
+);
+
 /**
  * Accent color
  */

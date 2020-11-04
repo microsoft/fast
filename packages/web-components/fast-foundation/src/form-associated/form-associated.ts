@@ -88,10 +88,13 @@ interface HTMLElement {
 
 const proxySlotName = "form-associated-proxy";
 
+const ElementInternalsKey = "ElementInternals";
 /**
  * @alpha
  */
-export const supportsElementInternals = "ElementInternals" in window;
+export const supportsElementInternals =
+    ElementInternalsKey in window &&
+    "setFormValue" in window[ElementInternalsKey].prototype;
 
 /**
  * Base class for providing Custom Element Form Association.
@@ -363,8 +366,11 @@ export abstract class FormAssociated<
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.value = this.initialValue;
-        this.dirtyValue = false;
+
+        if (!this.value) {
+            this.value = this.initialValue;
+            this.dirtyValue = false;
+        }
 
         if (!supportsElementInternals) {
             this.attachProxy();
@@ -427,6 +433,11 @@ export abstract class FormAssociated<
      */
     public formDisabledCallback(disabled: boolean): void {
         this.disabled = disabled;
+    }
+
+    public formResetCallback() {
+        this.value = this.initialValue;
+        this.dirtyValue = false;
     }
 
     private proxyInitialized: boolean = false;
@@ -494,7 +505,7 @@ export abstract class FormAssociated<
         state?: File | string | FormData | null
     ): void {
         if (supportsElementInternals && this.elementInternals) {
-            this.elementInternals.setFormValue(value, state);
+            this.elementInternals.setFormValue(value, state || value);
         }
     }
 
