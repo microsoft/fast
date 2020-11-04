@@ -1,0 +1,22 @@
+{
+    "include": [
+        "src/**/*"
+    ],
+    "compilerOptions": {
+        "declaration": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "outDir": "./.tmp",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "ES5"
+    },
+    "exclude": [
+        "node_modules",
+        "src/message-system",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/__tests__/**"
+    ]
+}

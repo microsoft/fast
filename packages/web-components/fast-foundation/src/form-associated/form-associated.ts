@@ -88,10 +88,13 @@ interface HTMLElement {
 
 const proxySlotName = "form-associated-proxy";
 
+const ElementInternalsKey = "ElementInternals";
 /**
  * @alpha
  */
-export const supportsElementInternals = "ElementInternals" in window;
+export const supportsElementInternals =
+    ElementInternalsKey in window &&
+    "setFormValue" in window[ElementInternalsKey].prototype;
 
 /**
  * Base class for providing Custom Element Form Association.
