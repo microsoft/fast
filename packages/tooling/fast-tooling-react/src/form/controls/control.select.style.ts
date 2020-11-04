@@ -1,5 +1,10 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
-import { defaultFontStyle, selectInputStyle, selectSpanStyle } from "../../style";
+import {
+    defaultFontStyle,
+    selectInputStyle,
+    selectSpanStyle,
+    FloatingCSSProperty,
+} from "../../style";
 
 /**
  * Select class name contract
@@ -21,6 +26,9 @@ const styles: ComponentStyles<SelectControlClassNameContract, {}> = {
     selectControl__disabled: {},
     selectControl_input: {
         ...selectInputStyle,
+        "& option": {
+            background: FloatingCSSProperty,
+        },
     },
     selectControl__default: {},
 };
