@@ -21,6 +21,7 @@ import {
     textColorName,
     L3FillColorName,
     errorColorName,
+    FloatingColorName,
 } from "../../src/style";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
@@ -84,6 +85,7 @@ const CSSpropertyOverrides = {
     [textColorName]: "black",
     [L3FillColorName]: "white",
     [errorColorName]: "green",
+    [FloatingColorName]: "purple",
 };
 
 let fastMessageSystem: MessageSystem;
