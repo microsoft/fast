@@ -1,9 +1,9 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import {
     defaultFontStyle,
+    FloatingCSSProperty,
     selectInputStyle,
     selectSpanStyle,
-    FloatingCSSProperty,
 } from "../../style";
 
 /**
