@@ -83,14 +83,6 @@ export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
 }
 
-const defaultRowItemTemplate = html`
-    <fast-data-grid-row
-        :rowData="${x => x}"
-        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
-        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
-    ></fast-data-grid-row>
-`;
-
 /**
  * Enumerates auto generated header options
  * default option generates a non-sticky header row
@@ -209,7 +201,7 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public rowItemTemplate: ViewTemplate = defaultRowItemTemplate;
+    public rowItemTemplate: ViewTemplate;
 
     /**
      * The template used to render cells in generated rows.
@@ -266,6 +258,14 @@ export class DataGrid extends FASTElement {
         }
     }
 
+    /**
+     * The default cell item template.  Set by the component templates.
+     *
+     * @internal
+     */
+    @observable
+    public defaultRowItemTemplate: ViewTemplate;
+
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
@@ -290,6 +290,10 @@ export class DataGrid extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        if (this.rowItemTemplate === undefined) {
+            this.rowItemTemplate = this.defaultRowItemTemplate;
+        }
 
         this.rowsPlaceholder = document.createComment("");
         this.appendChild(this.rowsPlaceholder);

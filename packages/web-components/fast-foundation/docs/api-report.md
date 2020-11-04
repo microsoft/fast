@@ -303,6 +303,8 @@ export class DataGrid extends FASTElement {
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    defaultRowItemTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -358,6 +360,10 @@ export class DataGridRow extends FASTElement {
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    defaultCellItemTemplate?: ViewTemplate;
+    // @internal
+    defaultHeaderCellItemTemplate?: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -380,7 +386,7 @@ export class DataGridRow extends FASTElement {
     }
 
 // @public
-export const DataGridRowTemplate: import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
+export const DataGridRowTemplate: ViewTemplate<DataGridRow, any>;
 
 // @public
 export enum DataGridRowTypes {

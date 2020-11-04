@@ -15,22 +15,6 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { ColumnDefinition } from "./data-grid";
 
-const defaultCellItemTemplate = html`
-    <fast-data-grid-cell
-        grid-column="${(x, c) => c.index + 1}"
-        :rowData="${(x, c) => c.parent.rowData}"
-        :columnDefinition="${x => x}"
-    ></fast-data-grid-cell>
-`;
-
-const defaultHeaderCellItemTemplate = html`
-    <fast-data-grid-cell
-        cell-type="columnheader"
-        grid-column="${(x, c) => c.index + 1}"
-        :columnDefinition="${x => x}"
-    ></fast-data-grid-header-cell>
-`;
-
 /**
  * Enumerates possible row types
  *
@@ -155,7 +139,23 @@ export class DataGridRow extends FASTElement {
      * @internal
      */
     @observable
-    public activeCellItemTemplate?: ViewTemplate = defaultCellItemTemplate;
+    public activeCellItemTemplate?: ViewTemplate;
+
+    /**
+     * The default cell item template.  Set by the component templates.
+     *
+     * @internal
+     */
+    @observable
+    public defaultCellItemTemplate?: ViewTemplate;
+
+    /**
+     * The default header cell item template.  Set by the component templates.
+     *
+     * @internal
+     */
+    @observable
+    public defaultHeaderCellItemTemplate?: ViewTemplate;
 
     private cellsRepeatBehavior: RepeatBehavior | null = null;
     private cellsPlaceholder: Node | null = null;
@@ -281,10 +281,10 @@ export class DataGridRow extends FASTElement {
             this.rowType === DataGridRowTypes.default
                 ? this.cellItemTemplate !== undefined
                     ? this.cellItemTemplate
-                    : defaultCellItemTemplate
+                    : this.defaultCellItemTemplate
                 : this.headerCellItemTemplate !== undefined
                 ? this.headerCellItemTemplate
-                : defaultHeaderCellItemTemplate;
+                : this.defaultHeaderCellItemTemplate;
     }
 
     private updateRowStyle = (): void => {
