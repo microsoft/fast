@@ -6,8 +6,8 @@ import {
     gutterCSSProperty,
     inactiveTextColorCSSProperty,
     insetStrongBoxShadow,
-    L3CSSProperty,
     L3OutlineColorProperty,
+    L4CSSProperty,
     textColorCSSProperty,
 } from "../style";
 
@@ -27,12 +27,13 @@ export interface NavigationClassNameContract {
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
     navigation: {
-        "font-size": defaultTextSizeCSSProperty,
-        padding: `0 calc(${gutterCSSProperty} / 2)`,
-        "text-indent": "1em",
-        background: L3CSSProperty,
+        background: L4CSSProperty,
         color: textColorCSSProperty,
         height: "100%",
+        padding: `0 calc(${gutterCSSProperty} / 2)`,
+        overflow: "auto",
+        "font-size": defaultTextSizeCSSProperty,
+        "text-indent": "1em",
         "& $navigation_item::before": {
             content: "''",
             height: "100%",

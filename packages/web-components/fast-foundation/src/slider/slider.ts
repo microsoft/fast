@@ -328,10 +328,20 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private setupDefaultValue = (): void => {
-        if (this.value === "") {
-            this.initialValue = `${this.convertToConstrainedValue(
+        if (typeof this.value === "string") {
+            const midpoint = `${this.convertToConstrainedValue(
                 (this.max + this.min) / 2
             )}`;
+
+            if (this.value.length === 0) {
+                this.initialValue = midpoint;
+            } else {
+                const value = parseFloat(this.value);
+
+                if (!Number.isNaN(value) && (value < this.min || value > this.max)) {
+                    this.value = midpoint;
+                }
+            }
         }
     };
 
@@ -354,16 +364,20 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      *  Handle mouse moves during a thumb drag operation
      */
-    private handleMouseMove = (e: MouseEvent): void => {
+    private handleMouseMove = (e: MouseEvent | TouchEvent): void => {
         if (this.readOnly || this.disabled || e.defaultPrevented) {
             return;
         }
 
         // update the value based on current position
+        const sourceEvent =
+            window.TouchEvent && e instanceof TouchEvent
+                ? e.touches[0]
+                : (e as MouseEvent);
         const eventValue: number =
             this.orientation === Orientation.horizontal
-                ? e.pageX - this.trackLeft
-                : e.pageY;
+                ? sourceEvent.pageX - this.trackLeft
+                : sourceEvent.pageY;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
@@ -418,6 +432,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     private convertToConstrainedValue = (value: number): number => {
+        if (isNaN(value)) {
+            value = this.min;
+        }
         let constrainedValue: number = value - this.min;
         const remainderVal: number = constrainedValue % Number(this.step);
         constrainedValue =

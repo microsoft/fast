@@ -271,7 +271,8 @@ export class Tabs extends FASTElement {
     };
 
     private handleActiveIndicatorPosition() {
-        if (this.activeindicator) {
+        // Ignore if we click twice on the same tab
+        if (this.activeindicator && this.activeTabIndex !== this.prevActiveTabIndex) {
             if (this.ticking) {
                 this.activeIndicatorRef.style.transform = "translateX(0px)";
                 this.activeIndicatorRef.classList.remove("activeIndicatorTransition");

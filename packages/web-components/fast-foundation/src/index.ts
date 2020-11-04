@@ -2,6 +2,8 @@ export * from "./accordion/index";
 export * from "./accordion-item/index";
 export * from "./anchor/index";
 export * from "./badge/index";
+export * from "./breadcrumb/index";
+export * from "./breadcrumb-item/index";
 export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";

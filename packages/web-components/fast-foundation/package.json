@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "1.8.0",
+  "version": "1.8.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -22,15 +22,17 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
-    "build": "tsc -p ./tsconfig.json && rollup -c && npm run doc",
+    "build:rollup": "rollup -c",
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
-    "tdd": "npm run dev & npm run test-chrome:watch",
+    "tdd": "yarn dev & yarn test-chrome:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test": "npm run test-chrome:verbose && yarn doc:ci",
+    "test": "yarn test-chrome:verbose && yarn doc:ci",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
@@ -83,8 +85,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.19.0",
-    "@microsoft/fast-web-utilities": "^4.6.0",
+    "@microsoft/fast-element": "^0.19.1",
+    "@microsoft/fast-web-utilities": "^4.6.1",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^4.0.0",
     "tslib": "^1.13.0"

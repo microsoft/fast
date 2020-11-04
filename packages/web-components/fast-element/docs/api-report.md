@@ -108,12 +108,11 @@ export class BindingBehavior implements Behavior {
 }
 
 // @public
-export class BindingDirective extends Directive {
+export class BindingDirective extends NamedTargetDirective {
     constructor(binding: Binding);
     // (undocumented)
     binding: Binding;
     createBehavior(target: Node): BindingBehavior;
-    createPlaceholder: (index: number) => string;
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
@@ -178,7 +177,7 @@ export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    addStyles(styles: ElementStyles): void;
+    addStyles(styles: ElementStyles | HTMLStyleElement): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
@@ -188,7 +187,7 @@ export class Controller extends PropertyChangeNotifier {
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
-    removeStyles(styles: ElementStyles): void;
+    removeStyles(styles: ElementStyles | HTMLStyleElement): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate | null;
@@ -350,6 +349,12 @@ export class HTMLView implements ElementView, SyntheticView {
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
+
+// @public
+export abstract class NamedTargetDirective extends Directive {
+    createPlaceholder: (index: number) => string;
+    abstract targetName: string | undefined;
+}
 
 // @public
 export interface NodeBehaviorOptions<T = any> {

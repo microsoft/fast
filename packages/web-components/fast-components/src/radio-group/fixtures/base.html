@@ -1,6 +1,33 @@
 <fast-design-system-provider use-defaults>
     <h1>Radio Group</h1>
 
+    <button
+        onclick="const rg1 = document.getElementById('vertical'); rg1.setAttribute('value', 'juniper' );"
+    >
+        Set value to Juniper
+    </button>
+    <button
+        onclick="const rg2 = document.getElementById('vertical'); rg2.setAttribute('value', 'hemlock' );"
+    >
+        Set value to hemlock
+    </button>
+    <button
+        onclick="const rg3 = document.getElementById('vertical'); rg3.setAttribute('value', 'fir' );"
+    >
+        Set value to fir
+    </button>
+
+    <button
+        onclick="const rg4 = document.getElementById('hemlock'); rg4.checked = !rg4.checked;"
+    >
+        Toggle Hemlock radio
+    </button>
+    <button
+        onclick="const rg5 = document.getElementById('fir'); rg5.checked = !rg5.checked;"
+    >
+        Toggle fir radio
+    </button>
+
     <h4>Defaults</h4>
     <div>
         <fast-radio-group name="numbers">
@@ -13,14 +40,14 @@
     </div>
 
     <div>
-        <fast-radio-group orientation="vertical" name="trees">
+        <fast-radio-group id="vertical" orientation="vertical" name="trees">
             <label style="color: --var(neutral-foreground-rest);" slot="label">
                 Trees
             </label>
-            <fast-radio value="fir">Fir</fast-radio>
+            <fast-radio id="fir" value="fir">Fir</fast-radio>
             <fast-radio value="juniper">Juniper</fast-radio>
-            <fast-radio value="hemlock">Hemlock</fast-radio>
-            <fast-radio value="pine">Pine</fast-radio>
+            <fast-radio id="hemlock" value="hemlock" checked>Hemlock</fast-radio>
+            <fast-radio value="pine" checked>Pine</fast-radio>
         </fast-radio-group>
     </div>
 

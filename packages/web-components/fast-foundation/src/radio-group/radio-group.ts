@@ -87,6 +87,17 @@ export class RadioGroup extends FASTElement {
      */
     @attr
     public value: string;
+    protected valueChanged(): void {
+        if (this.slottedRadioButtons) {
+            this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
+                if (radio.getAttribute("value") === this.value) {
+                    radio.checked = true;
+                    this.selectedRadio = radio;
+                }
+            });
+        }
+        this.$emit("change");
+    }
 
     /**
      * The orientation of the group
@@ -118,15 +129,6 @@ export class RadioGroup extends FASTElement {
     private isInsideToolbar: boolean = false;
     private direction: Direction;
 
-    constructor() {
-        super();
-        this.addEventListener("keydown", this.keydownHandler);
-        this.addEventListener("change", this.radioChangeHandler);
-        this.addEventListener("keypress", this.keypressHandler);
-        this.addEventListener("click", this.clickHandler);
-        this.addEventListener("focusout", this.focusOutHandler);
-    }
-
     /**
      * @internal
      */
@@ -139,7 +141,27 @@ export class RadioGroup extends FASTElement {
             this.parentToolbar !== undefined && this.parentToolbar !== null;
     }
 
+    public disconnectedCallback(): void {
+        this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
+            radio.removeEventListener("change", this.radioChangeHandler);
+        });
+    }
+
     private setupRadioButtons(): void {
+        const checkedRadios: HTMLElement[] = this.slottedRadioButtons.filter(
+            (radio: HTMLInputElement) => {
+                return radio.hasAttribute("checked");
+            }
+        );
+        const numberOfCheckedRadios: number = checkedRadios ? checkedRadios.length : 0;
+        if (numberOfCheckedRadios > 1) {
+            const lastCheckedRadio: HTMLInputElement = checkedRadios[
+                numberOfCheckedRadios - 1
+            ] as HTMLInputElement;
+            lastCheckedRadio.checked = true;
+        }
+        let foundMatchingVal: boolean = false;
+
         this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
             if (this.name !== undefined) {
                 radio.setAttribute("name", this.name);
@@ -158,26 +180,39 @@ export class RadioGroup extends FASTElement {
                 this.focusedRadio = radio;
                 radio.checked = true;
                 radio.setAttribute("tabindex", "0");
+                foundMatchingVal = true;
             } else {
                 radio.setAttribute("tabindex", "-1");
+                radio.checked = false;
             }
+            radio.addEventListener("change", this.radioChangeHandler);
         });
 
         if (this.value === undefined && this.slottedRadioButtons.length > 0) {
-            this.slottedRadioButtons[0].setAttribute("tabindex", "0");
-            this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
+            const checkedRadios: HTMLElement[] = this.slottedRadioButtons.filter(
+                (radio: HTMLInputElement) => {
+                    return radio.hasAttribute("checked");
+                }
+            );
+            const numberOfCheckedRadios: number =
+                checkedRadios !== null ? checkedRadios.length : 0;
+            if (numberOfCheckedRadios > 0 && !foundMatchingVal) {
+                const lastCheckedRadio: HTMLInputElement = checkedRadios[
+                    numberOfCheckedRadios - 1
+                ] as HTMLInputElement;
+                lastCheckedRadio.checked = true;
+                this.focusedRadio = lastCheckedRadio;
+                lastCheckedRadio.setAttribute("tabindex", "0");
+            } else {
+                this.slottedRadioButtons[0].setAttribute("tabindex", "0");
+                this.focusedRadio = this.slottedRadioButtons[0] as HTMLInputElement;
+            }
         }
     }
 
-    private keypressHandler = (e: KeyboardEvent): void => {
-        const radio: HTMLInputElement | null = e.target as HTMLInputElement;
-        if (radio) {
-            radio.setAttribute("tabindex", radio.checked ? "0" : "-1");
-        }
-    };
-
-    private radioChangeHandler = (e: CustomEvent): void => {
+    private radioChangeHandler = (e: CustomEvent): boolean | void => {
         const changedRadio: HTMLInputElement = e.target as HTMLInputElement;
+
         if (changedRadio.checked) {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio !== changedRadio) {
@@ -187,7 +222,10 @@ export class RadioGroup extends FASTElement {
             });
             this.selectedRadio = changedRadio;
             this.value = changedRadio.value;
+            changedRadio.setAttribute("tabindex", "0");
+            this.focusedRadio = changedRadio;
         }
+        e.stopPropagation();
     };
 
     private moveToRadioByIndex = (group: HTMLElement[], index: number) => {
@@ -218,7 +256,7 @@ export class RadioGroup extends FASTElement {
     };
 
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private focusOutHandler = (e: FocusEvent) => {
+    public focusOutHandler = (e: FocusEvent): boolean | void => {
         const group: HTMLElement[] = this.slottedRadioButtons;
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         const index: number = radio !== null ? group.indexOf(radio) : 0;
@@ -248,9 +286,10 @@ export class RadioGroup extends FASTElement {
                 });
             }
         }
+        return true;
     };
 
-    private clickHandler = (e: MouseEvent): void => {
+    public clickHandler = (e: MouseEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         if (radio) {
             const group: HTMLElement[] = this.slottedRadioButtons;
@@ -362,10 +401,7 @@ export class RadioGroup extends FASTElement {
      *
      * @internal
      */
-    public keydownHandler = (e: KeyboardEvent): void => {
-        if (e.keyCode !== keyCodeTab && e.keyCode !== keyCodeSpace) {
-            e.preventDefault();
-        }
+    public keydownHandler = (e: KeyboardEvent): boolean | void => {
         switch (e.keyCode) {
             case keyCodeEnter:
                 this.checkFocusedRadio();
@@ -387,5 +423,7 @@ export class RadioGroup extends FASTElement {
                 }
                 break;
         }
+
+        return e.keyCode === keyCodeTab || e.keyCode === keyCodeSpace;
     };
 }

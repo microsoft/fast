@@ -1,21 +1,10 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { getDirection } from "../utilities/";
+import { TooltipPosition } from "./tooltip.options";
 
-/**
- * Enumerates possible tooltip positions
- *
- * @public
- */
-export enum TooltipPosition {
-    top = "top",
-    right = "right",
-    bottom = "bottom",
-    left = "left",
-    start = "start",
-    end = "end",
-}
+export { TooltipPosition };
 
 /**
  * An Tooltip Custom HTML Element.

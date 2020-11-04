@@ -78,7 +78,7 @@ export const AccordionItemStyles = css`
             ${neutralFocusBehavior.var};
     }
 
-    :host(.expanded) .region {
+    :host([expanded]) .region {
         display: flex;
     }
 
@@ -95,7 +95,7 @@ export const AccordionItemStyles = css`
         display: flex;
     }
 
-    :host(.expanded) slot[name="collapsed-icon"] {
+    :host([expanded]) slot[name="collapsed-icon"] {
         display: none;
     }
 
@@ -103,7 +103,7 @@ export const AccordionItemStyles = css`
         display: none;
     }
     
-    :host(.expanded) slot[name="expanded-icon"] {
+    :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }
 

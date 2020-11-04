@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.0...@microsoft/fast-components@1.11.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* allow child radio buttons to be changed multiple times from javascript ([#3976](https://github.com/Microsoft/fast/issues/3976)) ([8ea7cc8](https://github.com/Microsoft/fast/commit/8ea7cc81cb34cf52d944136c9dc771fd03997bb1))
+* prevent overlap of focus border with start element contents ([#3994](https://github.com/Microsoft/fast/issues/3994)) ([4fa68cc](https://github.com/Microsoft/fast/commit/4fa68cc573637aded89574ce684ffba12b4ed316)), closes [#3881](https://github.com/Microsoft/fast/issues/3881)
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+* update high contrast outline color on progress bar ([#4025](https://github.com/Microsoft/fast/issues/4025)) ([50d93d1](https://github.com/Microsoft/fast/commit/50d93d1f0492e25cb80f4d14b6e53bfbf81f485f)), closes [#3966](https://github.com/Microsoft/fast/issues/3966)
+
+
+
+
+
 # [1.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.10.0...@microsoft/fast-components@1.11.0) (2020-09-28)
 
 

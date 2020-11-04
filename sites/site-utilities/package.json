@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
@@ -37,6 +37,7 @@
     "babel-jest": "^25.4.0",
     "babel-loader": "^8.0.6",
     "badge-maker": "^3.2.0",
+    "chalk": "^4.1.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
     "favicons": "^6.1.0",
@@ -53,11 +54,12 @@
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.11.0",
+    "@microsoft/fast-components": "^1.11.1",
     "@microsoft/fast-components-react-msft": "^4.32.0",
-    "@microsoft/fast-foundation": "^1.8.0",
-    "@microsoft/fast-tooling": "^0.11.0",
-    "@microsoft/fast-tooling-react": "^2.4.0",
-    "chalk": "^4.1.0"
+    "@microsoft/fast-foundation": "^1.8.1",
+    "@microsoft/fast-tooling": "^0.11.1",
+    "@microsoft/fast-tooling-react": "^2.4.1",
+    "monaco-editor": "^0.21.2",
+    "vscode-html-languageservice": "^3.1.3"
   }
 }

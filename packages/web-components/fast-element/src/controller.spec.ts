@@ -6,6 +6,7 @@ import { uniqueElementName, toHTML } from "./__test__/helpers";
 import { html } from "./template";
 import { DOM } from "./dom";
 import { css } from "./styles";
+import { Observable } from "./observation/observable";
 
 describe("The Controller", () => {
     const templateA = html`a`;
@@ -304,5 +305,38 @@ describe("The Controller", () => {
                 );
             });
         }
+    });
+
+    it("should have an observable isConnected property", () => {
+        const { element, controller } = createController();
+        let attached = controller.isConnected;
+        const handler = { handleChange: () => (attached = !attached) };
+        Observable.getNotifier(controller).subscribe(handler, "isConnected");
+
+        expect(attached).to.equal(false);
+        document.body.appendChild(element);
+        expect(attached).to.equal(true);
+        document.body.removeChild(element);
+        expect(attached).to.equal(false);
+    });
+
+    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+        const { controller, element } = createController({
+            shadowOptions: {
+                mode: "open",
+            },
+            template: templateA,
+        });
+
+        const style = document.createElement("style") as HTMLStyleElement;
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+        controller.addStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+        controller.removeStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
     });
 });

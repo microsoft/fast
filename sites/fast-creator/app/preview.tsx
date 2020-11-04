@@ -20,13 +20,15 @@ import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
+    previewDirection,
+    previewTheme,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { previewAccentColor, previewDirection, previewTheme } from "./creator";
+import { previewAccentColor } from "./creator";
 import { dataSetDictionaryId, htmlMapper } from "./utilities";
 import style from "./preview.style";
 import { createWrapper } from "./utilities/wrapper";

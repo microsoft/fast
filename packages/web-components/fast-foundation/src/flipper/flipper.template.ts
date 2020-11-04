@@ -1,5 +1,6 @@
 import { html, when } from "@microsoft/fast-element";
-import { Flipper, FlipperDirection } from "./flipper";
+import { Flipper } from "./flipper";
+import { FlipperDirection } from "./flipper.options";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.

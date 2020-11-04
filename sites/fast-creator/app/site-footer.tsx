@@ -10,11 +10,13 @@ export { FASTAnchor, SiteNavigation } from "@microsoft/fast-website";
 export class Footer extends React.Component<{}, {}> {
     render(): React.ReactNode {
         return (
-            <fast-design-system-provider
-                class="site-wrapper"
-                use-defaults
-                dangerouslySetInnerHTML={{ __html: FooterTemplate }}
-            ></fast-design-system-provider>
+            <div className={"footer-region"}>
+                <fast-design-system-provider
+                    class="site-wrapper"
+                    use-defaults
+                    dangerouslySetInnerHTML={{ __html: FooterTemplate }}
+                ></fast-design-system-provider>
+            </div>
         );
     }
 }

@@ -18,6 +18,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Checkbox](../packages/web-components/fast-foundation/src/checkbox/checkbox.spec.md) | :white_check_mark: | :white_check_mark: |
 | Combobox | -- | -- |
 | [Dialog](../packages/web-components/fast-foundation/src/dialog/dialog.spec.md) | :white_check_mark: | :white_check_mark: |
+| [Disclosure](../packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md) | :white_check_mark: | -- |
 | [Flipper](../packages/web-components/fast-foundation/src/flipper/flipper.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Form associated custom elements](../packages/web-components/fast-foundation/src/form-associated/form-associated-custom-element.spec.md) | :white_check_mark: | :white_check_mark: |
 | Listbox | -- | -- |
@@ -28,6 +29,7 @@ Here you'll find specifications for custom elements and other library features.
 | [Radio group](../packages/web-components/fast-foundation/src/radio-group/radio-group.spec.md) | :white_check_mark: | :white_check_mark: |
 | Rating | -- | -- |
 | Select | -- | -- |
+| [Skeleton](../packages/web-components/fast-foundation/src/skeleton/skeleton.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Slider](../packages/web-components/fast-foundation/src/slider/slider.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Spin button](../packages/web-components/fast-foundation/src/spin-button/spin-button.spec.md) | :white_check_mark: | -- |
 | [Switch](../packages/web-components/fast-foundation/src/switch/switch.spec.md) | :white_check_mark: | :white_check_mark: |

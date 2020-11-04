@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { RadioGroup, RadioGroupTemplate as template } from "./index";
 import { Radio, RadioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../fixture";
@@ -266,6 +266,44 @@ describe("Radio Group", () => {
         await disconnect();
     });
 
+    it("should mark the last radio defaulted to checked as checked, the rest should not be checked", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <fast-radio-group>
+                <fast-radio value="foo">Foo</fast-radio>
+                <fast-radio value="bar" checked>Bar</fast-radio>
+                <fast-radio value="baz" checked>Baz</fast-radio>
+            </fast-radio-group>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const radios: NodeList = element.querySelectorAll("fast-radio");
+        expect((radios[2] as HTMLInputElement).checked).to.equal(true);
+        expect((radios[1] as HTMLInputElement).checked).to.equal(false);
+    });
+
+    it("should mark radio matching value on radio-group over any checked attributes", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <fast-radio-group value="bar">
+                <fast-radio value="foo">Foo</fast-radio>
+                <fast-radio value="bar" checked>Bar</fast-radio>
+                <fast-radio value="baz" checked>Baz</fast-radio>
+            </fast-radio-group>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const radios: NodeList = element.querySelectorAll("fast-radio");
+        expect((radios[1] as HTMLInputElement).checked).to.equal(true);
+
+        // radio-group explicitly sets non-matching radio's checked to false if a value match was found,
+        // but the attribute should still persist.
+        expect((radios[2] as HTMLInputElement).hasAttribute("checked")).to.equal(true);
+        expect((radios[2] as HTMLInputElement).checked).to.equal(false);
+    });
+
     it("should NOT set a child radio to `checked` if its value does not match the radiogroup `value`", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
             <fast-radio-group value="baz">
@@ -291,6 +329,36 @@ describe("Radio Group", () => {
         expect(
             element.querySelectorAll("fast-radio")[1].getAttribute("aria-checked")
         ).to.equal("false");
+
+        await disconnect();
+    });
+
+    it("should allow resetting of elements by the parent form", async () => {
+        const { element, connect, disconnect } = await fixture(html`
+            <form>
+                <fast-radio-group value="bar" name='foo'>
+                    <fast-radio value="foo">Foo</fast-radio>
+                    <fast-radio value="bar" checked>Bar</fast-radio>
+                    <fast-radio value="baz" ></fast-radio>Baz</fast-radio>
+                </fast-radio-group>
+            </form>
+        `);
+
+        await connect();
+
+        const elements = element.querySelectorAll("fast-radio") as NodeListOf<Radio>;
+
+        elements[0].checked = true;
+
+        assert(element[0].checked === true);
+        assert(element[1].checked === false);
+        assert(element[2].checked === false);
+
+        (element as HTMLFormElement).reset();
+
+        assert(element[0].checked === false);
+        assert(element[1].checked === true);
+        assert(element[2].checked === false);
 
         await disconnect();
     });
