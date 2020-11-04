@@ -1,6 +1,8 @@
 export interface VSCodeNativeHTMLDefinition {
-    version: number;
+    version: 1.1;
     tags: VSCodeNativeHTMLTag[];
+    globalAttributes: VSCodeNativeHTMLAttribute[];
+    valueSets: VSCodeNativeHTMLValueSet[];
 }
 
 export interface VSCodeNativeHTMLValueSetValue {
@@ -14,7 +16,8 @@ export interface VSCodeNativeHTMLValueSet {
 
 export interface VSCodeNativeHTMLAttribute {
     name: string;
-    valueSet?: string | undefined;
+    /** Only making use of these 2 valueSets for now, see 'valueSets' in browsers.html-data.json for available list */
+    valueSet?: "b" | "v" | string | undefined;
     description?: VSCodeNativeHTMLTagDescription | string;
 }
 
