@@ -320,6 +320,74 @@ export const DI = Object.freeze({
                         let value = this[diPropertyKey];
 
                         if (value === void 0) {
+                            const container: Container = DI.createContainer();
+
+                            value = container.get(Interface);
+                            this[diPropertyKey] = value;
+                        }
+
+                        return value;
+                    },
+                });
+            } else {
+                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+                annotationParamtypes[index] = Interface;
+            }
+
+            return target;
+        } as any;
+
+        Interface.$isInterface = true;
+        Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
+
+        Interface.noDefault = function (): InterfaceSymbol<K> {
+            return Interface;
+        };
+
+        Interface.withDefault = function (
+            configure: (builder: ResolverBuilder<K>) => Resolver<K>
+        ): InterfaceSymbol<K> {
+            Interface.withDefault = function (): InterfaceSymbol<K> {
+                throw new Error(
+                    `You can only define one default implementation for an interface: ${Interface}.`
+                );
+            };
+
+            Interface.register = function (container: Container, key?: Key): Resolver<K> {
+                return configure(new ResolverBuilder(container, key ?? Interface));
+            };
+
+            return Interface;
+        };
+
+        Interface.toString = function toString(): string {
+            return `InterfaceSymbol<${Interface.friendlyName}>`;
+        };
+
+        return Interface;
+    },
+    createDOMInterface<K extends Key, T = any>(
+        friendlyName?: string
+    ): DefaultableInterfaceSymbol<K, T> {
+        const Interface: InternalDefaultableInterfaceSymbol<K> = function (
+            target: Injectable<T>,
+            property: string,
+            index: number
+        ): any {
+            if (target === null || new.target !== undefined) {
+                throw new Error(
+                    `No registration for interface: '${Interface.friendlyName}'`
+                );
+            }
+
+            if (property) {
+                const diPropertyKey = `$di_${property}`;
+
+                Reflect.defineProperty(target, property, {
+                    get: function (this: T) {
+                        let value = this[diPropertyKey];
+
+                        if (value === void 0) {
                             let container: Container;
                             // NOTE: Ask Rob why this looks on the instance for this.$container.
                             // It looks like $container is only set by the ContainerImpl so
