@@ -3,15 +3,7 @@
  * for this code.
  */
 import { emptyArray } from "@microsoft/fast-element";
-
-export type Constructable<T = {}> = {
-    new (...args: any[]): T;
-};
-
-export type Class<T, C = {}> = C & {
-    readonly prototype: T;
-    new (...args: any[]): T;
-};
+import { Class, Constructable } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
 const metadataByTarget = new Map<any, Map<any, any>>();

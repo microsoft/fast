@@ -1,13 +1,12 @@
 import { FASTElement } from "@microsoft/fast-element";
 import { DesignTokens, FASTDesignTokenLibrary, IDesignTokens } from "../design-tokens";
 import { DI, Registration } from "../di";
+import { Constructable } from "../interfaces";
 
-export type FASTElementConstructor<T = FASTElement & HTMLElement> = new (
-    ...args: any[]
-) => T;
-
-export function DesignTokenProvider<TBase extends FASTElementConstructor>(Base: TBase) {
-    const c = class extends Base {
+export function DesignTokenProvider<
+    TBase extends Constructable<FASTElement & HTMLElement>
+>(Base: TBase) {
+    const C = class extends Base {
         designTokens: FASTDesignTokenLibrary<IDesignTokens>;
 
         connectedCallback() {
@@ -24,7 +23,7 @@ export function DesignTokenProvider<TBase extends FASTElementConstructor>(Base: 
         }
     };
 
-    DesignTokens(c.prototype, "designTokens");
+    DesignTokens(C.prototype, "designTokens");
 
-    return c;
+    return C;
 }
