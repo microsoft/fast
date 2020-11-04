@@ -17,7 +17,7 @@ function debugService() {
 
 function debugStatus() {
     if [[ $debug == true ]]; then
-        echo ""
+        set -ex
     fi
 }
 
@@ -40,7 +40,7 @@ function getSubscription() {
 }
 
 function setApplication() {
-    if [ -z "$application" ];
+    if [[ -z "$application" ]];
     then
         echo "Select an ${bold}${green}Application${reset}:"    
         select application in ${applications[@]}
@@ -61,7 +61,7 @@ function setApplication() {
 }
 
 function setEnvironment() {
-    if [ -z "$environment" ];
+    if [[ -z "$environment" ]];
     then
         echo "Select ${bold}${green}Environment${reset}:"
         select environment in ${environments[@]}
@@ -82,24 +82,20 @@ function setEnvironment() {
 }
 
 function setLocation() {
-    if [ -z "$region" ];
+    if [[ -z "$location" ]];
     then
         echo "Select ${bold}${green}Location${reset}:"    
         select location in ${locations[@]}
         do
             case $location in
-                westus | eastus)  
-                    resource_group=fast-$location-rg
-                    break ;;
-                centralus)  
-                    resource_group=fast-ops-rg
+                westus | eastus | centralus) 
+                    source inputs.sh -l $location -rg $system-$location-rg
                     break ;;
                 *)
                     echo "${red}invalid entry, try again${reset}" 
                     ;;
             esac
         done
-        source inputs.sh -l $location
     fi
 }
 
@@ -112,14 +108,6 @@ function setService() {
 }
 
 function printStatus() {
-    # # stop script upon command failure
-    # if [ -z "$2" ]; then
-    #     set $2
-    #     echo "${red}"
-    # else
-    #     echo "${green}"
-    # fi
-
     echo ""
     echo "${green}$1 ...${reset}"
     echo ""

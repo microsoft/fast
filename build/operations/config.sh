@@ -10,8 +10,6 @@ File is located at $AZURE_CONFIG_DIR/config and generated on first run of `$ bas
 az configure --defaults output=table disable_confirm_prompt=false enable_log_file=yes log_dir=/log/azure
 
 # TERMINAL CONFIGURATIONS
-
-    set -ex 
     
     black=$(tput setaf 0)
     red=$(tput setaf 1) 

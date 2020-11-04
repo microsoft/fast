@@ -44,8 +44,13 @@ setService "Create $service_type" "$service_name"
 declare -a args=("$service_resource_group" "$service_name")
 debugService args
 
-az monitor log-analytics workspace create --resource-group $service_resource_group \
-    --workspace-name $service_name \
-    --location $service_location \
-    --retention-time $service_retention
-
+title="creating log analytics workspace"
+    printStatus "$title"
+    {
+        az monitor log-analytics workspace create --resource-group $service_resource_group \
+            --workspace-name $service_name \
+            --location $service_location \
+            --retention-time $service_retention
+    } || {
+        printStatus "Error: $title"
+    }

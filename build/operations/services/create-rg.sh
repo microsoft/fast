@@ -8,18 +8,32 @@ regionally pair "East US" and "West US" for indepth details on paired regions.
 # Configure
 service_type="Resource Group"
 service_code="rg"
-service_name=$system-operations-$service_code
 
-# Create locale specific services as denoted during CLI prompting
-service_name=$system-$location-$service_code
+if [[ -z "$name" ]];
+then
+    service_name=$system-$location-$service_code
+else
+    service_name=$name
+fi
+
 setService "Create $service_type" "$service_name"
 
 # Debugging
-declare -a args=("$service_name" "$location")
+declare -a args=(
+    "$service_name" 
+    "$location"
+    )
 debugService args
 
-az group create \
-    --location $location \
-    --name $service_name
+title="creating resource group"
+    printStatus "$title"
+    {
+        az group create \
+            --location $location \
+            --name $service_name
+    
+    } || {
+        printStatus "Error: $title"
+    }
 
 export az_resource_group="$service_name"

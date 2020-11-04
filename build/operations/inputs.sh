@@ -37,7 +37,7 @@ while (( $# > 1 )); do
             ;;
 
         --location | -l)             
-            location=$2    
+            location=$2
             echo "${green}Location ${bold}$location${reset} ${green}set.${reset}" && echo ""
             ;;
   
@@ -75,7 +75,7 @@ while (( $# > 1 )); do
 
             az account set --subscription $subscription
 
-            if [ $debug == true ];
+            if [[ $debug == true ]];
             then
                 az account show --subscription $subscription
             fi

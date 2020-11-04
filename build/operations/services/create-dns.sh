@@ -4,24 +4,56 @@
 Azure DNS is a hosting service for DNS domains that provides name resolution by using Microsoft Azure infrastructure. 
 By hosting your domains in Azure, you can manage your DNS records by using the same credentials, APIs, tools, and 
 billing as your other Azure services.
-
-Ref:
-https://docs.microsoft.com/en-us/azure/dns/
-https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-cli
-https://docs.microsoft.com/en-us/azure/frontdoor/front-door-how-to-onboard-apex-domain
-https://docs.microsoft.com/en-us/azure/dns/dns-getstarted-cli#create-a-dns-record
 '
 
-# TODOs
-# [] Create DNS Zone for development and testing
-# [] Update all entries unrelated to web app dynamic creation
-# [] Gracefull fail if not in use
+# Configure
+service_type="Network DNS"
+service_code="dns"
+service_name=$system.design
 
-echo "creating dns zone ..."
-az network dns zone create --resource-group $resource_group -n $dns_zone
+setService "Create $service_type" "$service_name"
 
-echo "creating dns cname records"
-az network dns record-set cname add-record -g $resource_group -z $dns_zone -n www -a 10.10.10.10
+# Debugging
+declare -a args=(
+    "$service_type"
+    "$se4rvice_code"
+    "$service_name"
+    )
+debugService args
 
-echo "view dns records ..."
-az network dns record-set list -g $resource_group -z $dns_zone
+title="creating dns zone"
+    printStatus "$title"
+    {
+        az network dns zone create \
+            --name $service_name \
+            --resource-group $resource_group \
+            --if-none-match
+
+    } || {
+        printStatus "Error: $title"
+    }
+
+title="creating dns cname records"
+    printStatus "$title"
+    {
+        az network dns record-set cname set-record \
+            --cname "status" \
+            --record-set-name "status" \
+            --resource-group $resource_group \
+            --zone-name $service_name \
+            --if-none-match
+    
+    } || {
+        printStatus "Error: $title"
+    }
+
+title="viewing dns records"
+    
+    printStatus "$title"
+    {
+        az network dns record-set list \
+            --resource-group $resource_group \
+            --zone-name $service_name
+    } || {
+        printStatus "Error: $title"
+    }

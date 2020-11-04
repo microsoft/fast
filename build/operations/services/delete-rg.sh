@@ -1,12 +1,8 @@
 #!/bin/bash
 
-: 'AZURE RESOURCE GROUP => DELETION
+: 'AZURE RESOURCE GROUPS
 For improved isolation and availability in business continuity disaster recovery (BCDR) 
 regionally pair "East US" and "West US" for indepth details on paired regions.
-
-Ref: 
-https://docs.microsoft.com/en-us/azure/best-practices-availability-paired-regions
-https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/app-service-web-app/multi-region#regional-pairing
 '
 
 # Configure
@@ -17,10 +13,21 @@ service=$system-$location-$service_code
 setService "Delete $service_name" "$service"
 
 # Debugging
-declare -a args=("$service" "$location")
+declare -a args=(
+    "$service" 
+    "$location"
+    "$resource_group"
+    )
 debugService args
 
-# Azure CLI
-az group delete \
-    --name $resource_group \
-    --yes
+title="deleting resource group"
+    printStatus "$title"
+    {
+        az group delete \
+            --name $service \
+            --resource-group $service \
+            --yes
+
+    } || {
+        printStatus "Error: $title"
+    }

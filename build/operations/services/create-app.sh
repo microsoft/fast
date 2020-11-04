@@ -51,7 +51,7 @@ for application in ${applications[@]}; do
                 --use-32bit-worker-process false \
                 --startup-file "pm2 start /home/site/wwwroot/server.js --no-daemon"
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
     
     title="configuring web app logs"
@@ -67,7 +67,7 @@ for application in ${applications[@]}; do
                 --resource-group $az_resource_group \
                 --web-server-logging filesystem
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
 
     title="configuring for https"
@@ -78,7 +78,7 @@ for application in ${applications[@]}; do
                 --name $service_name \
                 --resource-group $az_resource_group
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
     
     title="creating slot for staging"
@@ -89,7 +89,7 @@ for application in ${applications[@]}; do
                 --resource-group $az_resource_group \
                 --slot stage
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
 
     title="configuring network access to staging for IPv4 restrictions"
@@ -104,7 +104,7 @@ for application in ${applications[@]}; do
                 --action Allow \
                 --ip-address 147.243.0.0/16
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
     
     title="configuring network access to staging for IPv6 restrictions"
@@ -119,21 +119,12 @@ for application in ${applications[@]}; do
                 --action Allow \
                 --ip-address 2a01:111:2050::/44
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         }
 
-    title="create/configure dns zone and cname records"
+    title="configuring dns zone and cname records"
         printStatus "$title"
         {
-            # Prerequisites
-            az group create \
-                --location "centralus" \
-                --name $operations_resource_group
-
-            az network dns zone create --name $dns_zone \
-                --resource-group=$operations_resource_group \
-                --if-none-match
-            
             az network dns record-set cname set-record --cname $application \
                 --record-set-name $application \
                 --resource-group $operations_resource_group \
@@ -141,7 +132,7 @@ for application in ${applications[@]}; do
                 --if-none-match
 
         } || {
-            printStatus "Error: $title" "-e"
+            printStatus "Error: $title"
         } 
 
     echo "internal|external production sites: http://$service_name.azurewebsites.net => https://$dns_cname.$dns_zone"
