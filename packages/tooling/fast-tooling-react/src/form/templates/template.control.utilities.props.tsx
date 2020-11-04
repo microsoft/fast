@@ -7,6 +7,7 @@ import {
     TreeNavigation,
     ValidationError,
 } from "@microsoft/fast-tooling";
+import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,
@@ -188,6 +189,11 @@ export interface ControlTemplateUtilitiesProps
      * The options passed through the message system
      */
     messageSystemOptions: any | null;
+
+    /**
+     * Localized strings for default controls.
+     */
+    strings: FormStrings;
 }
 
 export interface CommonControlConfig {
@@ -282,6 +288,11 @@ export interface CommonControlConfig {
      * The options passed through the message system
      */
     messageSystemOptions: any | null;
+
+    /**
+     * Localized strings for default controls.
+     */
+    strings: FormStrings;
 }
 
 export interface NumberFieldTypeControlOptions {

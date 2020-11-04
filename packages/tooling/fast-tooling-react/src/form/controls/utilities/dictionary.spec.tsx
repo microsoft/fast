@@ -73,6 +73,7 @@ const dictionaryProps: DictionaryProps = {
         [ControlType.textarea]: TextareaControl,
     },
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

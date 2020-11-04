@@ -161,6 +161,7 @@ const formControlSwitchProps: ControlSwitchProps = {
         [ControlType.textarea]: TextareaControl,
     },
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

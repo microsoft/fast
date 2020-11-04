@@ -99,6 +99,7 @@ const linkedDataProps: LinkedDataControlProps = {
     elementRef: null,
     validationErrors: [],
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

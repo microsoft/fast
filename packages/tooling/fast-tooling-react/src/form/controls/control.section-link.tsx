@@ -44,7 +44,7 @@ class SectionLinkControl extends React.Component<
                 )}
                 onClick={this.handleUpdateSection}
             >
-                Edit: {this.props.label}
+                {this.props.strings.sectionLinkEditLabel}: {this.props.label}
             </a>
         );
     }

@@ -58,6 +58,7 @@ const arrayProps: ArrayControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

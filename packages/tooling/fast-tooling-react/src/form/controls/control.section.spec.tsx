@@ -92,6 +92,7 @@ const sectionControlProps: SectionControlProps = {
     updateValidity: jest.fn(),
     required: false,
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

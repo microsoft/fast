@@ -1,4 +1,5 @@
 import { CombiningKeyword } from "@microsoft/fast-tooling";
+import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
 import { SectionControlConfig } from "../templates";
 
 /**
@@ -87,6 +88,8 @@ export interface FormControlParameters {
      * The invalid message for this property
      */
     invalidMessage: string;
+
+    strings: FormStrings;
 }
 
 export interface FormControlItem {

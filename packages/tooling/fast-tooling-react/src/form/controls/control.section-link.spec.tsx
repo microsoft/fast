@@ -38,6 +38,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: null,
     messageSystemOptions: null,
 };
 

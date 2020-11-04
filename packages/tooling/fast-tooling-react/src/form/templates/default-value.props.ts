@@ -1,3 +1,5 @@
+import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
+
 export interface DefaultValueProps {
     /**
      * The class name
@@ -14,4 +16,9 @@ export interface DefaultValueProps {
      * The disabled state
      */
     disabled: boolean;
+
+    /**
+     * Localized strings
+     */
+    strings: FormStrings;
 }

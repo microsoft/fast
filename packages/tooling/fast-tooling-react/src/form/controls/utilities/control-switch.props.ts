@@ -1,3 +1,4 @@
+import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
 import { ControlTemplateUtilitiesProps, StandardControlPlugin } from "../../templates";
 import { AttributeSettingsMappingToPropertyNames } from "../../types";
 import { Controls } from "./types";
@@ -50,4 +51,9 @@ export interface ControlSwitchProps
      * defaults to true
      */
     softRemove?: boolean;
+
+    /**
+     * Localized strings
+     */
+    strings: FormStrings;
 }
