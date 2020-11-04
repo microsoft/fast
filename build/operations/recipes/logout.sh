@@ -1,4 +1,8 @@
 #!/bin/bash
 
-# LOGOUT OF AZURE CLOUD
+: 'AZURE FAST LOGIN
+Execute login to begin using Azure FAST CLI
+'
+
+# EXECUTE services
 az logout

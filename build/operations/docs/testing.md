@@ -1,13 +1,13 @@
 # Testing Procedures for Azure Web Apps
 ## This test validates that backend is not accessible except by Azure Front Door
-At each step below refresh web page. This procedure should be use for each subdomain. A checkmark indicates Pass.
+At each step below refresh web page. This procedure should be use for each subdomain. A check mark indicates Pass.
 
 1. [ ] https://www.fast.design
-2. [ ] https://app.fast.design
-3. [ ] https://color.fast.design
-4. [ ] https://explore.fast.design
-5. [ ] https://create.fast.design
-6. [ ] @herehttps://motion.fast.design
+2. [ ] https://color.fast.design
+3. [ ] https://explore.fast.design
+4. [ ] https://create.fast.design
+5. [ ] https://motion.fast.design
+6. [ ] https://app.fast.design
 
 #### Validate all regions are turned off.  
 	1. Turn off East Region,

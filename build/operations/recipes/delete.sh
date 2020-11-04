@@ -12,3 +12,5 @@ This will delete all resources within selected location
 
 ## EXECUTE Services
     source $dir/services/delete-rg.sh
+
+echo "${bold}${green}finished.${reset}"

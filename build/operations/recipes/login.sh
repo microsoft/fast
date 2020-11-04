@@ -1,10 +1,20 @@
 #!/bin/bash
 
-# LOGIN TO AZURE CLOUD
+: 'AZURE FAST LOGIN
+Execute login to begin using Azure FAST CLI
+'
+
+# EXECUTE services
 az login
 
-source config.sh
-source inputs.sh --subscription $subscription
+# CONFIGURATION
+    source ./config.sh
+    source ./inputs.sh --subscription $subscription
 
-echo "You were automatically logged into ..."
-az account show
+title="You were automatically logged into:"
+    printStatus "$title"
+    {
+        az account show
+    } || {
+        printStatus "Error: $title"
+    }    

@@ -12,7 +12,7 @@ to construct the right query.
 service_type="Log Analytics"
 service_code="log"
 service_resource_group=$system-analytics-rg
-service_name=$system-operations-$service_code
+service_name=$system-asp-$service_code
 service_location=centralus
 service_retention=90
 
@@ -44,6 +44,7 @@ setService "Create $service_type" "$service_name"
 declare -a args=("$service_resource_group" "$service_name")
 debugService args
 
+# EXECUTE services
 title="creating log analytics workspace"
     printStatus "$title"
     {

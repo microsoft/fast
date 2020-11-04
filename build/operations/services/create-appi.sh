@@ -15,10 +15,11 @@ service_location=centralus
 service_resource_group=$system-analytics-rg
 service_workspace_name=$system-operations-log
 
-# Azure CLI
+# EXECUTE services
 for application in ${applications[@]}; do
     
     service_name=$application-$location-$service_code
+
     setService "Create $service_type" "$service_name"
 
     title="creating app insights"

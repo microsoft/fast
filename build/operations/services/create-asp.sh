@@ -17,14 +17,21 @@ setService "Create $service_type" "$service_name"
 declare -a args=("$resource_group" "$service_name" "$location")
 debugService args
 
-# Azure CLI
-az appservice plan create \
-    --name $service_name \
-    --resource-group $resource_group \
-    --location $location \
-    --sku P3V2 \
-    --only-show-errors \
-    --is-linux
+# EXECUTE services
+title="creating app service plan"
+    printStatus "$title"
+    {
+        az appservice plan create \
+            --name $service_name \
+            --resource-group $resource_group \
+            --location $location \
+            --sku P3V2 \
+            --only-show-errors \
+            --is-linux
+
+    } || {
+        printStatus "Error: $title"
+    }
 
 # In this instance the plan id is required not plan name ref: https://github.com/Azure/azure-cli/issues/6545#issuecomment-712940827
 export az_app_service_plan=$(az appservice plan show --name $service_name --resource-group $resource_group --query "id" -o tsv)
