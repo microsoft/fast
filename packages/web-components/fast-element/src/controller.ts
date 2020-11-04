@@ -3,13 +3,8 @@ import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
 import {
     defaultExecutionContext,
-<<<<<<< HEAD
     Observable,
     observable,
-=======
-    observable,
-    Observable,
->>>>>>> make controller observable
 } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
