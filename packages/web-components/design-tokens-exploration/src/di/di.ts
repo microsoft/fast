@@ -2,7 +2,7 @@
  * Big thanks to https://github.com/EisenbergEffect and the https://github.com/aurelia/aurelia project
  * for this code.
  */
-import { emptyArray } from "@microsoft/fast-element";
+import { Controller, emptyArray, FASTElement, Observable } from "@microsoft/fast-element";
 import { Class, Constructable } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
@@ -251,36 +251,32 @@ const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
 
 export type ParentLocator = (owner: any) => Container | null;
 
-function composedParent<T extends HTMLElement>(element: T): HTMLElement | null {
-    const parentNode = element.parentElement;
+const DILocateParentEventType = "__DI_LOCATE_PARENT__";
+const defaultFriendlyName = "(anonymous)";
 
-    if (parentNode) {
-        return parentNode;
-    } else {
-        const rootNode = element.getRootNode();
-
-        if ((rootNode as ShadowRoot).host instanceof HTMLElement) {
-            // this is shadow-root
-            return (rootNode as ShadowRoot).host as HTMLElement;
-        }
-    }
-
-    return null;
+export interface DOMParentLocatorEventDetail {
+    container: Container | void;
 }
 
 function domParentLocator(element: HTMLElement): Container {
-    let parent: HTMLElement | null = element;
+    const event = new CustomEvent<DOMParentLocatorEventDetail>(DILocateParentEventType, {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: { container: void 0 },
+    });
 
-    /* eslint-disable-next-line */
-    while ((parent = composedParent(parent))) {
-        const container = (parent as any).$container;
+    element.dispatchEvent(event);
 
-        if (container !== void 0) {
-            return container;
-        }
-    }
+    return event.detail.container || DI.getOrCreateDOMContainer();
+}
 
-    return DI.getOrCreateDOMContainer();
+export interface DOMInterfaceConfiguration<K> {
+    friendlyName?: string;
+    resolveOnConnectionChange?:
+        | boolean
+        | ((wasConnected: boolean, isConnected: boolean) => boolean);
+    valueChanged?: (previous: K, next: K) => void;
 }
 
 export const DI = Object.freeze({
@@ -289,20 +285,14 @@ export const DI = Object.freeze({
     },
 
     getOrCreateDOMContainer(element: HTMLElement = document.body): Container {
-        return (
-            (element as any).$container ||
-            new ContainerImpl(
-                element,
-                element === document.body ? () => null : domParentLocator
-            )
-        );
+        return (element as any).$container || new DOMContainerImpl(element);
     },
 
-    createInterface<K extends Key, T = any>(
-        friendlyName?: string
-    ): DefaultableInterfaceSymbol<K, T> {
+    createInterface<K extends Key>(
+        friendlyName: string = defaultFriendlyName
+    ): DefaultableInterfaceSymbol<K> {
         const Interface: InternalDefaultableInterfaceSymbol<K> = function (
-            target: Injectable<T>,
+            target: Injectable,
             property: string,
             index: number
         ): any {
@@ -316,7 +306,7 @@ export const DI = Object.freeze({
                 const diPropertyKey = `$di_${property}`;
 
                 Reflect.defineProperty(target, property, {
-                    get: function (this: T) {
+                    get: function (this: any) {
                         let value = this[diPropertyKey];
 
                         if (value === void 0) {
@@ -338,7 +328,7 @@ export const DI = Object.freeze({
         } as any;
 
         Interface.$isInterface = true;
-        Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
+        Interface.friendlyName = friendlyName;
 
         Interface.noDefault = function (): InterfaceSymbol<K> {
             return Interface;
@@ -366,9 +356,13 @@ export const DI = Object.freeze({
 
         return Interface;
     },
-    createDOMInterface<K extends Key, T = any>(
-        friendlyName?: string
-    ): DefaultableInterfaceSymbol<K, T> {
+    createDOMInterface<K extends Key>(
+        config: DOMInterfaceConfiguration<K> = {}
+    ): DefaultableInterfaceSymbol<K, HTMLElement & FASTElement> {
+        type T = HTMLElement & FASTElement;
+        const friendlyName = config?.friendlyName || defaultFriendlyName;
+        const { resolveOnConnectionChange, valueChanged } = config;
+
         const Interface: InternalDefaultableInterfaceSymbol<K> = function (
             target: Injectable<T>,
             property: string,
@@ -388,27 +382,41 @@ export const DI = Object.freeze({
                         let value = this[diPropertyKey];
 
                         if (value === void 0) {
-                            let container: Container;
-                            // NOTE: Ask Rob why this looks on the instance for this.$container.
-                            // It looks like $container is only set by the ContainerImpl so
-                            // this doesn't appear to be a caching mechanism for the getter. If no Interface should resolve
-                            // dependencies from itself then I *think* this check can simply be removed,
-                            // but there may be something going on here that I'm not aware of.
-                            // For now this works.
-
-                            // let container: Container | undefined = this.$container;
-                            // if (container === void 0 || container.owner === this) {
-                            if (this instanceof HTMLElement) {
-                                container = domParentLocator(this);
-                            } else {
-                                throw new Error(
-                                    "Could not locate container to use during property injection."
-                                );
-                            }
-                            // }
+                            const container = domParentLocator(this);
 
                             value = container.get(Interface);
                             this[diPropertyKey] = value;
+
+                            if (resolveOnConnectionChange) {
+                                const shouldReResolve =
+                                    typeof resolveOnConnectionChange === "function"
+                                        ? resolveOnConnectionChange
+                                        : () => true;
+                                const notifier = Observable.getNotifier(
+                                    this.$fastController
+                                );
+                                const handleChange = (
+                                    source: Controller,
+                                    key: "isConnected"
+                                ): void => {
+                                    if (shouldReResolve(!source[key], source[key])) {
+                                        const newContainer = domParentLocator(this);
+                                        const newValue = newContainer.get(
+                                            Interface
+                                        ) as any;
+                                        const oldValue = this[diPropertyKey];
+
+                                        if (newValue !== oldValue) {
+                                            if (valueChanged) {
+                                                valueChanged(oldValue, newValue);
+                                                this[diPropertyKey] = value;
+                                            }
+                                        }
+                                    }
+                                };
+
+                                notifier.subscribe({ handleChange }, "isConnected");
+                            }
                         }
 
                         return value;
@@ -425,14 +433,14 @@ export const DI = Object.freeze({
         Interface.$isInterface = true;
         Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
 
-        Interface.noDefault = function (): InterfaceSymbol<K> {
+        Interface.noDefault = function (): InterfaceSymbol<K, T> {
             return Interface;
         };
 
         Interface.withDefault = function (
             configure: (builder: ResolverBuilder<K>) => Resolver<K>
-        ): InterfaceSymbol<K> {
-            Interface.withDefault = function (): InterfaceSymbol<K> {
+        ): InterfaceSymbol<K, T> {
+            Interface.withDefault = function (): InterfaceSymbol<K, T> {
                 throw new Error(
                     `You can only define one default implementation for an interface: ${Interface}.`
                 );
@@ -944,7 +952,7 @@ class ContainerImpl implements Container {
     private resolvers: Map<Key, Resolver>;
     private _parent: ContainerImpl | null | undefined = void 0;
 
-    constructor(private owner: any, private locateParent: ParentLocator) {
+    constructor(protected owner: any, protected locateParent: ParentLocator) {
         if (owner !== null) {
             owner.$container = this;
         }
@@ -953,7 +961,7 @@ class ContainerImpl implements Container {
         this.resolvers.set(Container, containerResolver);
     }
 
-    private get parent() {
+    protected get parent() {
         if (this._parent === void 0) {
             this._parent = this.locateParent(this.owner) as ContainerImpl;
         }
@@ -1254,6 +1262,29 @@ class ContainerImpl implements Container {
             handler.resolvers.set(keyAsValue, resolver);
             return resolver;
         }
+    }
+}
+
+class DOMContainerImpl extends ContainerImpl {
+    constructor(protected owner: HTMLElement) {
+        super(owner, domParentLocator);
+
+        owner.addEventListener(DILocateParentEventType, this.resolve);
+    }
+
+    /**
+     * Resolves the Container instance to a container-seeker
+     * @param e - The event object
+     */
+    private resolve = (e: CustomEvent<DOMParentLocatorEventDetail>) => {
+        if (e.target !== this.owner) {
+            e.detail.container = this;
+            e.stopImmediatePropagation();
+        }
+    };
+
+    protected get parent() {
+        return this.owner === document.body ? null : super.parent;
     }
 }
 
