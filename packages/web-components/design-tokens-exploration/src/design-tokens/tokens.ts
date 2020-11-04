@@ -1,15 +1,20 @@
-import { FASTDesignTokenLibrary } from "./library";
 import { DI } from "../di";
+import { FASTDesignTokenLibrary } from "./library";
 
-export interface IDesignTokens {
+export interface DesignTokenConfig {
     backgroundColor: string;
 }
 
-const defaults: IDesignTokens = {
+const defaults: DesignTokenConfig = {
     backgroundColor: "#FFFFFF",
 };
 
-export const DefaultDesignTokens = new FASTDesignTokenLibrary<IDesignTokens>(defaults);
-export const DesignTokens = DI.createInterface<
-    FASTDesignTokenLibrary<IDesignTokens>
->().withDefault(x => x.instance(DefaultDesignTokens));
+export const DefaultDesignTokens = new FASTDesignTokenLibrary<DesignTokenConfig>(
+    defaults
+);
+export const DesignTokens = DI.createDOMInterface<
+    FASTDesignTokenLibrary<DesignTokenConfig>
+>({
+    friendlyName: "DesignTokens",
+    resolveOnConnectionChange: (prev, next) => next, // only re-resolve when connecting
+}).withDefault(x => x.instance(DefaultDesignTokens));
