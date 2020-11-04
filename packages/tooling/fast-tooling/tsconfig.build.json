@@ -3,6 +3,9 @@
     "include": [
         "src/**/*"
     ],
+    "compilerOptions": {
+        "allowJs": true
+    },
     "exclude": [
         "node_modules",
         "src/message-system",
