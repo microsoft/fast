@@ -44,20 +44,21 @@ export type ResolveCallback<T = any> = (
     resolver: Resolver<T>
 ) => T;
 
-export type InterfaceSymbol<K = any> = (
-    target: any,
+export type InterfaceSymbol<Key = any, TBase extends {} = {}> = (
+    target: TBase,
     property: string,
     index?: number
 ) => void;
 
-export interface DefaultableInterfaceSymbol<K> extends InterfaceSymbol<K> {
+export interface DefaultableInterfaceSymbol<Key, Type = any>
+    extends InterfaceSymbol<Key, Type> {
     withDefault(
-        configure: (builder: ResolverBuilder<K>) => Resolver<K>
-    ): InterfaceSymbol<K>;
-    noDefault(): InterfaceSymbol<K>;
+        configure: (builder: ResolverBuilder<Key>) => Resolver<Key>
+    ): InterfaceSymbol<Key, Type>;
+    noDefault(): InterfaceSymbol<Key, Type>;
 }
 
-type InternalDefaultableInterfaceSymbol<K> = DefaultableInterfaceSymbol<K> &
+type InternalDefaultableInterfaceSymbol<K, T = any> = DefaultableInterfaceSymbol<K, T> &
     Partial<
         Registration<K> & {
             friendlyName: string;
@@ -297,9 +298,11 @@ export const DI = Object.freeze({
         );
     },
 
-    createInterface<K extends Key>(friendlyName?: string): DefaultableInterfaceSymbol<K> {
+    createInterface<K extends Key, T = any>(
+        friendlyName?: string
+    ): DefaultableInterfaceSymbol<K, T> {
         const Interface: InternalDefaultableInterfaceSymbol<K> = function (
-            target: Injectable,
+            target: Injectable<T>,
             property: string,
             index: number
         ): any {
@@ -313,7 +316,7 @@ export const DI = Object.freeze({
                 const diPropertyKey = `$di_${property}`;
 
                 Reflect.defineProperty(target, property, {
-                    get: function (this: any) {
+                    get: function (this: T) {
                         let value = this[diPropertyKey];
 
                         if (value === void 0) {
