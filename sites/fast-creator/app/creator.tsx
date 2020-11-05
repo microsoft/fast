@@ -10,7 +10,7 @@ import { neutralLayerL1, neutralLayerL2 } from "@microsoft/fast-components-style
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
-    CustomMessageIncomingOutgoing,
+    CustomMessage,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -48,6 +48,7 @@ import {
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
 import { CreatorState, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
@@ -313,7 +314,7 @@ class Creator extends Editor<{}, CreatorState> {
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
 
-            if (!e.data.options || e.data.options.from !== "monaco-adapter") {
+            if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
         }
@@ -444,7 +445,7 @@ class Creator extends Editor<{}, CreatorState> {
             type: MessageSystemType.custom,
             id: previewAccentColor,
             value,
-        } as CustomMessageIncomingOutgoing);
+        } as CustomMessage<{}, {}>);
     };
 
     /**

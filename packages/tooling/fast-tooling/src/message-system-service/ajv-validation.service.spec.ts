@@ -16,7 +16,7 @@ import {
     UpdateDataMessageOutgoing,
 } from "../message-system";
 import { DataType } from "../data-utilities/types";
-import { AjvMapper } from "./ajv-validation.service";
+import { AjvMapper, ajvValidationId } from "./ajv-validation.service";
 
 describe("AjvMapper", () => {
     test("should not throw", () => {
@@ -642,6 +642,9 @@ describe("AjvMapper", () => {
                 action: SchemaSetValidationAction.response,
                 id,
                 index: 1,
+                options: {
+                    originatorId: ajvValidationId,
+                },
             });
         });
         test("with action type 'request' when there is no valid schema in the schema set", () => {
@@ -680,6 +683,9 @@ describe("AjvMapper", () => {
                 action: SchemaSetValidationAction.response,
                 id,
                 index: -1,
+                options: {
+                    originatorId: ajvValidationId,
+                },
             });
         });
         test("with action type that is not 'request'", () => {

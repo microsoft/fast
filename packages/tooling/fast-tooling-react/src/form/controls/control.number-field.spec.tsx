@@ -36,6 +36,7 @@ const numberFieldProps: NumberFieldControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 describe("NumberFieldControl", () => {

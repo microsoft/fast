@@ -33,6 +33,7 @@ const textareaProps: TextareaControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 describe("TextareaControl", () => {

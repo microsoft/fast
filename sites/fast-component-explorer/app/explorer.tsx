@@ -43,6 +43,7 @@ import {
     upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -299,7 +300,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         ) {
             updatedState.dataDictionary = e.data.dataDictionary;
 
-            if (!e.data.options || e.data.options.from !== "monaco-adapter") {
+            if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
         }

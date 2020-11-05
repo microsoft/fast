@@ -183,6 +183,11 @@ export interface ControlTemplateUtilitiesProps
      * The message system
      */
     messageSystem: MessageSystem;
+
+    /**
+     * The options passed through the message system
+     */
+    messageSystemOptions: any | null;
 }
 
 export interface CommonControlConfig {
@@ -272,6 +277,11 @@ export interface CommonControlConfig {
      * The message system
      */
     messageSystem: MessageSystem;
+
+    /**
+     * The options passed through the message system
+     */
+    messageSystemOptions: any | null;
 }
 
 export interface NumberFieldTypeControlOptions {
