@@ -30,7 +30,7 @@ export interface ExtendedParent extends Parent {
     linkedDataIndex: number;
 }
 
-const monacoAdapterId: string = "monaco-adapter";
+export const monacoAdapterId: string = "fast-tooling::monaco-adapter-service";
 
 export function findDictionaryIdParents(
     dictionaryId: string,
@@ -113,7 +113,7 @@ export class MonacoAdapter extends MessageSystemService<
                 this.dictionaryId = e.data.activeDictionaryId;
                 this.dataDictionary = e.data.dataDictionary;
 
-                if (!e.data.options || e.data.options.from !== monacoAdapterId) {
+                if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                     this.schemaDictionary = e.data.schemaDictionary;
                     this.monacoModelValue = [
                         mapDataDictionaryToMonacoEditorHTML(
@@ -205,7 +205,7 @@ export class MonacoAdapter extends MessageSystemService<
             dataDictionary,
             schemaDictionary: this.schemaDictionary,
             options: {
-                from: monacoAdapterId,
+                originatorId: monacoAdapterId,
             },
             dictionaryId: this.dictionaryId,
         } as InitializeMessageIncoming);

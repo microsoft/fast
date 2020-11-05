@@ -79,6 +79,7 @@ const props: BareControlTemplateProps = {
         [ControlType.textarea]: null,
     },
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 describe("BareControlTemplate", () => {

@@ -29,6 +29,7 @@ const textAlignControlProps: TextAlignControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 const managedClasses: TextAlignControlClassNameContract = {

@@ -99,6 +99,11 @@ export interface FormState {
      * The validation errors if there are any
      */
     validationErrors: Validation;
+
+    /**
+     * The options sent from the last message system message
+     */
+    options: any | null;
 }
 
 export interface ControlPluginConfig {

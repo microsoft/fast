@@ -33,6 +33,7 @@ const checkboxProps: CheckboxControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 describe("CheckboxControl", () => {

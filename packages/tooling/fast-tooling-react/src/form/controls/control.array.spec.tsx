@@ -58,6 +58,7 @@ const arrayProps: ArrayControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 const managedClasses: ArrayControlClassNameContract = {

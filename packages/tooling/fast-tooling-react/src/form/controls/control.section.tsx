@@ -222,6 +222,7 @@ class SectionControl extends React.Component<
                 }
                 displayValidationInline={this.props.displayValidationInline}
                 messageSystem={this.props.messageSystem}
+                messageSystemOptions={this.props.messageSystemOptions}
             />
         );
     };
@@ -341,6 +342,7 @@ class SectionControl extends React.Component<
                     }
                     displayValidationInline={this.props.displayValidationInline}
                     messageSystem={this.props.messageSystem}
+                    messageSystemOptions={this.props.messageSystemOptions}
                 />
             );
         }
