@@ -1,7 +1,9 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Option, OptionRole } from "../option";
+import { ListboxOption } from "../listbox-option/listbox-option";
+import { ListboxOptionRole } from "../listbox-option/listbox-option.options";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
+import { ListboxRole } from "./listbox.options";
 
 /**
  * A Listbox Custom HTML Element.
@@ -9,9 +11,50 @@ import { applyMixins } from "../utilities/apply-mixins";
  *
  * @public
  */
-export abstract class Listbox extends FASTElement {
+export class Listbox extends FASTElement {
     /**
-     * Disables the radio group and child radios.
+     * The index of the selected option
+     *
+     * @public
+     */
+    public selectedIndex: number = -1;
+
+    /**
+     * Typeahead timeout in milliseconds.
+     *
+     * @internal
+     */
+    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+
+    /**
+     * @internal
+     */
+    private typeaheadBuffer: string = "";
+
+    /**
+     * @internal
+     */
+    private typeaheadTimeout: number = -1;
+
+    /**
+     * Flag for the typeahead timeout expiration.
+     *
+     * @internal
+     */
+    protected typeAheadExpired: boolean = true;
+
+    /**
+     * The role of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: role
+     */
+    @attr
+    public role: string = ListboxRole.listbox;
+
+    /**
+     * The disabled state of the listbox.
      *
      * @public
      * @remarks
@@ -21,11 +64,15 @@ export abstract class Listbox extends FASTElement {
     public disabled: boolean;
 
     /**
-     * The index of the selected option
-     *
-     * @public
+     * @internal
      */
-    public selectedIndex: number = -1;
+    @observable
+    public options: ListboxOption[] = [];
+    public optionsChanged(prev, next): void {
+        if (this.$fastController.isConnected) {
+            this.options.forEach((el, i) => (el.id = `${ListboxOptionRole.option}-${i}`));
+        }
+    }
 
     /**
      * A collection of the selected options
@@ -33,62 +80,18 @@ export abstract class Listbox extends FASTElement {
      * @public
      */
     @observable
-    public selectedOptions: Option[] = [];
-    protected selectedOptionsChanged(prev: Option[] = [], next: Option[] = []) {
+    public selectedOptions: ListboxOption[] = [];
+    protected selectedOptionsChanged(prev, next) {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => (o.selected = next.includes(o)));
         }
     }
 
     /**
-     * @param index - option index to select
      * @internal
      */
-    protected setSelectedOption(index = this.selectedIndex): void {
-        const selectedOption = this.options[index];
-        if (!selectedOption) {
-            return;
-        }
-
-        const selectedOptions: Option[] = [];
-
-        this.options.forEach(el => {
-            if (el.isSameNode(selectedOption)) {
-                selectedOptions.push(el);
-            }
-        });
-
-        this.selectedIndex = index;
-        this.selectedOptions = selectedOptions;
-        this.ariaActiveDescendant = this.firstSelectedOption.id;
-    }
-
-    /**
-     * @internal
-     */
-    public get firstSelectedOption(): Option {
+    public get firstSelectedOption(): ListboxOption {
         return this.selectedOptions[0];
-    }
-
-    /**
-     * A static filter to include only enabled elements
-     * @param n - element to filter
-     * @public
-     */
-    public static slottedOptionFilter = (n: Option) =>
-        n.nodeType === Node.ELEMENT_NODE &&
-        n.getAttribute("role") === OptionRole.option &&
-        !n.disabled;
-
-    /**
-     * @internal
-     */
-    @observable
-    public options: Option[] = [];
-    protected optionsChanged(prev: Option[], next: Option[]): void {
-        if (this.$fastController.isConnected) {
-            next.forEach((el, i) => (el.id = `${OptionRole.option}-${i}`));
-        }
     }
 
     /**
@@ -102,10 +105,11 @@ export abstract class Listbox extends FASTElement {
     /**
      * @internal
      */
-    private setDefaultSelectedOption(): void {
-        let selectedIndex = this.options.findIndex(el => el.selected);
-        selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
-        this.setSelectedOption(selectedIndex);
+    private focusAndScrollOptionIntoView(): void {
+        if (this.contains(document.activeElement)) {
+            this.firstSelectedOption.focus();
+            this.firstSelectedOption.scrollIntoView({ block: "center" });
+        }
     }
 
     /**
@@ -121,60 +125,53 @@ export abstract class Listbox extends FASTElement {
     /**
      * @internal
      */
-    public keydownHandler(e: KeyboardEvent): void | boolean {
-        const keyCode = e.key || e.key.charCodeAt(0);
+    private setDefaultSelectedOption(): void {
+        let selectedIndex = this.options.findIndex(el => el.selected);
+        selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
+        this.setSelectedOption(selectedIndex);
+    }
 
-        switch (keyCode) {
-            case "ArrowUp": {
-                // Select the previous selectable option
-                e.preventDefault();
-                this.selectPreviousOption();
-                this.focusAndScrollOptionIntoView();
-                break;
-            }
-
-            case "ArrowDown": {
-                // Select the next selectable option
-                e.preventDefault();
-                this.selectNextOption();
-                this.focusAndScrollOptionIntoView();
-                break;
-            }
-
-            case "End": {
-                // Select the last available option
-                e.preventDefault();
-                this.selectLastOption();
-                this.focusAndScrollOptionIntoView();
-                break;
-            }
-
-            case "Home":
-                // Select the first available option
-                e.preventDefault();
-                this.selectFirstOption();
-                this.focusAndScrollOptionIntoView();
-                break;
-
-            case "Tab":
-                this.focusAndScrollOptionIntoView();
-                break;
-
-            case "Enter":
-            case "Escape":
-                break;
-
-            default:
-                this.handleTypeAhead(keyCode);
+    /**
+     * Sets an option as selected and gives it focus.
+     *
+     * @param index - option index to select
+     * @public
+     */
+    public setSelectedOption(index: number = this.selectedIndex): void {
+        const selectedOption = this.options[index];
+        if (!selectedOption) {
+            return;
         }
 
-        return true;
+        const selectedOptions: ListboxOption[] = [];
+
+        this.options.forEach(el => {
+            if (el.isSameNode(selectedOption)) {
+                selectedOptions.push(el);
+            }
+        });
+
+        this.selectedIndex = index;
+        this.selectedOptions = selectedOptions;
+        this.ariaActiveDescendant = this.firstSelectedOption.id;
+        this.focusAndScrollOptionIntoView();
     }
+
+    /**
+     * A static filter to include only enabled elements
+     *
+     * @param n - element to filter
+     * @public
+     */
+    public static slottedOptionFilter = (n: ListboxOption) =>
+        n.nodeType === Node.ELEMENT_NODE &&
+        n.getAttribute("role") === ListboxOptionRole.option &&
+        !n.disabled;
 
     /**
      * Moves focus to the first selectable option
      *
-     * @internal
+     * @public
      */
     public selectFirstOption(): void {
         if (!this.disabled) {
@@ -183,13 +180,13 @@ export abstract class Listbox extends FASTElement {
     }
 
     /**
-     * Moves focus to the previous selectable option
+     * Moves focus to the last selectable option
      *
      * @internal
      */
-    public selectPreviousOption(): void {
-        if (!this.disabled && this.selectedIndex > 0) {
-            this.setSelectedOption(this.selectedIndex - 1);
+    public selectLastOption(): void {
+        if (!this.disabled) {
+            this.setSelectedOption(this.options.length - 1);
         }
     }
 
@@ -205,43 +202,90 @@ export abstract class Listbox extends FASTElement {
     }
 
     /**
-     * Moves focus to the last selectable option
+     * Moves focus to the previous selectable option
+     *
      * @internal
      */
-    public selectLastOption(): void {
-        if (!this.disabled) {
-            this.setSelectedOption(this.options.length - 1);
+    public selectPreviousOption(): void {
+        if (!this.disabled && this.selectedIndex > 0) {
+            this.setSelectedOption(this.selectedIndex - 1);
         }
     }
 
     /**
+     * Handles click events for listbox options
+     *
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        // do nothing if the listbox is disabled
-        if (this.disabled) {
-            return;
-        }
-
         const captured = (e.target as HTMLElement).closest(
-            `[role=${OptionRole.option}]`
-        ) as Option;
+            `[role=${ListboxOptionRole.option}]`
+        ) as ListboxOption;
+
         if (captured && !captured.disabled) {
             const selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
             this.setSelectedOption(selectedIndex);
             return true;
         }
-
-        return;
     }
 
     /**
+     * Handles keydown actions for listbox navigation and typeahead
+     *
      * @internal
      */
-    private focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement)) {
-            this.firstSelectedOption.focus();
-            this.firstSelectedOption.scrollIntoView({ block: "center" });
+    public keydownHandler(e: KeyboardEvent): boolean | void {
+        if (this.disabled) {
+            return true;
+        }
+
+        const key = e.key || e.key.charCodeAt(0);
+
+        switch (key) {
+            // Select the first available option
+            case "Home": {
+                this.selectFirstOption();
+                break;
+            }
+
+            // Select the next selectable option
+            case "ArrowDown": {
+                this.selectNextOption();
+                break;
+            }
+
+            // Select the previous selectable option
+            case "ArrowUp": {
+                this.selectPreviousOption();
+                break;
+            }
+
+            // Select the last available option
+            case "End": {
+                this.selectLastOption();
+                break;
+            }
+
+            case "Tab": {
+                this.focusAndScrollOptionIntoView();
+                // fall through
+            }
+
+            case "Enter":
+            case "Escape": {
+                return true;
+            }
+
+            case " ": {
+                if (this.typeAheadExpired) {
+                    return true;
+                }
+            }
+
+            // Send key to Typeahead handler
+            default:
+                this.handleTypeAhead(key);
+                return true;
         }
     }
 
@@ -251,17 +295,9 @@ export abstract class Listbox extends FASTElement {
      * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
      * between consecutive keystrokes, the search restarts.
      *
-     * @param typedKey - the key to be evaluated
+     * @param key - the key to be evaluated
      */
-    private typeAheadBuffer: string = "";
-
-    private typeaheadTimeout: number = -1;
-
-    private typeAheadExpired: boolean = false;
-
-    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
-
-    public handleTypeAhead(typedKey) {
+    public handleTypeAhead(key): void {
         if (this.typeaheadTimeout) {
             window.clearTimeout(this.typeaheadTimeout);
         }
@@ -271,17 +307,17 @@ export abstract class Listbox extends FASTElement {
             Listbox.TYPE_AHEAD_TIMEOUT_MS
         );
 
-        if (typedKey.length > 1) {
+        if (key.length > 1) {
             return;
         }
 
         if (this.typeAheadExpired) {
-            this.typeAheadBuffer = "";
+            this.typeaheadBuffer = "";
         }
 
-        this.typeAheadBuffer = `${this.typeAheadBuffer}${typedKey}`;
+        this.typeaheadBuffer += `${key}`;
 
-        const pattern = `^(${this.typeAheadBuffer.replace(
+        const pattern = `^(${this.typeaheadBuffer.replace(
             /[.*+\-?^${}()|[\]\\]/g,
             "\\$&"
         )})`;

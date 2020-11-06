@@ -10,10 +10,10 @@ import { Select } from "./select";
 export const SelectTemplate = html<Select>`
     <template
         class="${x => (x.open ? "open" : "")} ${x =>
-            x.disabled ? "disabled" : ""} ${x => x.positioning}"
-        role="combobox"
+            x.disabled ? "disabled" : ""} ${x => x.position}"
+        role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
-        aria-disabled="${x => x.ariaDisabled}"
+        aria-disabled="${x => x.disabled}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
@@ -35,10 +35,10 @@ export const SelectTemplate = html<Select>`
         >
             ${startTemplate}
             <slot name="button-container">
-                <span class="selected-value" part="selected-value">
+                <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
-                </span>
-                <span class="indicator" part="indicator" aria-hidden="true">
+                </div>
+                <div class="indicator" part="indicator" aria-hidden="true">
                     <slot name="indicator">
                         <svg
                             class="select-indicator"
@@ -51,12 +51,12 @@ export const SelectTemplate = html<Select>`
                             />
                         </svg>
                     </slot>
-                </span>
+                </div>
             </slot>
             ${endTemplate}
         </div>
         <div
-            aria-disabled="${x => (x.disabled ? "true" : null)}"
+            aria-disabled="${x => x.disabled}"
             class="listbox ${x => (x.open ? "hidden" : "")}"
             id="${x => x.id}-listbox"
             part="listbox"

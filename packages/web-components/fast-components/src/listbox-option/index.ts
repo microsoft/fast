@@ -1,6 +1,9 @@
 import { customElement } from "@microsoft/fast-element";
-import { Option, OptionTemplate as template } from "@microsoft/fast-foundation";
-import { OptionStyles as styles } from "./option.styles";
+import {
+    ListboxOption,
+    ListboxOptionTemplate as template,
+} from "@microsoft/fast-foundation";
+import { OptionStyles as styles } from "./listbox-option.styles";
 
 /**
  * The FAST option Custom Element. Implements, {@link @microsoft/fast-foundation#Option}
@@ -17,7 +20,7 @@ import { OptionStyles as styles } from "./option.styles";
     template,
     styles,
 })
-export class FASTOption extends Option {}
+export class FASTOption extends ListboxOption {}
 
 /**
  * Styles for Option

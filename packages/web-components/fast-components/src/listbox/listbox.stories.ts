@@ -1,5 +1,5 @@
 import "../design-system-provider";
-import "../option";
+import "../listbox-option";
 import "./index";
 import Base from "./fixtures/base.html";
 

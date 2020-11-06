@@ -20,9 +20,9 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
+import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
-import { Option as Option_2 } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
@@ -505,7 +505,7 @@ export class FASTMenuItem extends MenuItem {
 }
 
 // @public
-export class FASTOption extends Option_2 {
+export class FASTOption extends ListboxOption {
 }
 
 // @public

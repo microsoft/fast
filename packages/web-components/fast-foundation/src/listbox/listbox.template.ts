@@ -8,9 +8,8 @@ import { Listbox } from "./listbox";
 export const ListboxTemplate = html<Listbox>`
     <template
         aria-activedescendent="${x => x.ariaActiveDescendant}"
-        aria-disabled="${x => x.disabled}"
-        class="listbox ${x => (x.disabled ? "disabled" : "")}"
-        role="listbox"
+        class="listbox"
+        role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"

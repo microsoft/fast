@@ -1,4 +1,6 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { ListboxRole } from "@microsoft/fast-foundation/dist/esm/listbox/listbox.options";
+import { DataType } from "@microsoft/fast-tooling";
 
 export const fastListboxDefinition: WebComponentDefinition = {
     version: 1,
@@ -6,7 +8,22 @@ export const fastListboxDefinition: WebComponentDefinition = {
         {
             name: "fast-listbox",
             description: "The FAST listbox element",
-            attributes: [],
+            attributes: [
+                {
+                    name: "role",
+                    description: "The role attribute",
+                    type: DataType.string,
+                    default: ListboxRole.listbox,
+                    required: true,
+                },
+                {
+                    name: "disabled",
+                    description: "The disabled attribute",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
+            ],
             slots: [
                 {
                     name: "",

@@ -13,4 +13,4 @@ export default {
     ],
 };
 
-export const Option = () => Examples;
+export const ListboxOption = () => Examples;

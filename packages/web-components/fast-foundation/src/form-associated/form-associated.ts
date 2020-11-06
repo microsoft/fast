@@ -110,6 +110,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     disabled: boolean;
     readonly elementInternals: ElementInternals | null;
     readonly formAssociated: boolean;
+    initialValue: string;
     readonly labels: ReadonlyArray<Node[]>;
     name: string;
     required: boolean;
@@ -128,24 +129,46 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 }
 
 /**
+ * Identifies a class as having a proxy element and optional submethods related
+ * to the proxy element.
+ *
+ * @alpha
+ */
+export interface FormAssociatedProxy {
+    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    disabledChanged?(previous: boolean, next: boolean): void;
+    formDisabledCallback?(disabled: boolean): void;
+    formResetCallback?(): void;
+    initialValueChanged?(previous, next): void;
+    valueChanged?(previous, next): void;
+    nameChanged?(previous, next): void;
+}
+
+/**
+ * Combined type to describe a Form-associated element.
+ *
+ * @alpha
+ */
+export type FormAssociatedElement = FormAssociated &
+    FASTElement &
+    HTMLElement &
+    FormAssociatedProxy;
+
+/**
+ * Combined type to describe a Constructable Form-Associated type.
+ *
+ * @alpha
+ */
+export type ConstructableFormAssociated = Constructable<
+    FASTElement & HTMLElement & FormAssociatedProxy
+>;
+
+/**
  * Base function for providing Custom Element Form Association.
  *
  * @alpha
  */
-export function FormAssociated<
-    T extends Constructable<
-        FASTElement &
-            HTMLElement & {
-                proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
-                disabledChanged?(previous: boolean, next: boolean): void;
-                formDisabledCallback?(disabled: boolean): void;
-                formResetCallback?(): void;
-                initialValueChanged?(previous, next): void;
-                valueChanged?(previous, next): void;
-                nameChanged?(previous, next): void;
-            }
-    >
->(BaseCtor: T): T {
+export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T {
     const C = class extends BaseCtor {
         /**
          * The proxy element - this element serves as the communication layer with the parent form
@@ -284,7 +307,7 @@ export function FormAssociated<
          * @remarks
          * HTML Attribute: value
          */
-        protected initialValue: string;
+        public initialValue: string;
 
         /**
          * Invoked when the `initialValue` property changes

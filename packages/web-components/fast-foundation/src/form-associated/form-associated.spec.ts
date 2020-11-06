@@ -38,7 +38,7 @@ class CustomInitialValue extends FormAssociated(
             this.proxy.setAttribute("type", "text");
         }
 
-        protected initialValue: string = "foobar";
+        public initialValue: string = "foobar";
     }
 ) {}
 
