@@ -273,39 +273,45 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     };
 
     private handleMessageSystem = (e: MessageEvent): void => {
-        const updatedState: Partial<ExplorerState> = {};
-
         if (e.data.type === MessageSystemType.navigation) {
             componentLinkedDataId = e.data.activeDictionaryId;
         }
 
         if (
             e.data.type === MessageSystemType.custom &&
-            e.data.action === ViewerCustomAction.response
+            e.data.action === ViewerCustomAction.response &&
+            e.data.value === previewReady
         ) {
-            if (e.data.value === previewReady) {
-                this.fastMessageSystem.postMessage({
-                    type: MessageSystemType.initialize,
-                    dataDictionary: this.state.dataDictionary,
-                    schemaDictionary,
-                });
-                updatedState.previewReady = true;
-                this.updateEditorContent(this.state.dataDictionary);
-            }
-        }
+            const dataDictionary = this.getScenarioData(this.state.componentConfig);
 
-        if (
-            e.data.type === MessageSystemType.data ||
-            e.data.type === MessageSystemType.initialize
+            this.fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary,
+                schemaDictionary,
+            });
+
+            this.setState(
+                {
+                    previewReady: true,
+                },
+                () => {
+                    this.updateEditorContent(dataDictionary);
+                }
+            );
+        } else if (
+            (e.data.type === MessageSystemType.data ||
+                e.data.type === MessageSystemType.initialize) &&
+            (!e.data.options || e.data.options.originatorId !== monacoAdapterId)
         ) {
-            updatedState.dataDictionary = e.data.dataDictionary;
-
-            if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
-                this.updateEditorContent(e.data.dataDictionary);
-            }
+            this.setState(
+                {
+                    dataDictionary: e.data.dataDictionary,
+                },
+                () => {
+                    this.updateEditorContent(e.data.dataDictionary);
+                }
+            );
         }
-
-        this.setState(updatedState as ExplorerState);
     };
 
     private renderPivotItems(): TabsItem[] {
