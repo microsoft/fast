@@ -11,9 +11,9 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 - To display an action related to a page item.
 
 ### Features
-**Placement Logic:** - This component will use *Anchored Region* to be positioned relative to the Popouts anchor element. This way it can be dynamic and adapt to the available space.
+**Placement Logic:** - This component will use *Anchored Region* to be positioned relative to the Popover anchor element. This way it can be dynamic and adapt to the available space.
 
-**Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. Av event would be emitted anytime the popover is dismissed. The popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the popover.
+**Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. Av event would be emitted anytime the Popover is dismissed. The Popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Popover.
 
 
 ### Prior Art/Examples
