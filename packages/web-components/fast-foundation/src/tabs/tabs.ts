@@ -54,6 +54,7 @@ export class Tabs extends FASTElement {
             this.tabs.length <= this.tabpanels.length
         ) {
             this.setTabs();
+            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -73,6 +74,7 @@ export class Tabs extends FASTElement {
             this.tabs.length <= this.tabpanels.length
         ) {
             this.setTabs();
+            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -92,6 +94,7 @@ export class Tabs extends FASTElement {
             this.tabpanels.length <= this.tabs.length
         ) {
             this.setTabs();
+            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -123,6 +126,7 @@ export class Tabs extends FASTElement {
     private ticking: boolean = false;
     private tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
+    private showActiveIndicator: boolean = false;
 
     private change = (): void => {
         this.$emit("change", this.activetab);
@@ -146,6 +150,12 @@ export class Tabs extends FASTElement {
             return 0;
         }
     }
+
+    private setActiveIndicator = (): void => {
+        if (this.showActiveIndicator) {
+            this.activeindicator = true;
+        }
+    };
 
     private setTabs = (): void => {
         this.tabIds = this.getTabIds();
@@ -172,6 +182,9 @@ export class Tabs extends FASTElement {
                 tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
+                }
+                if (this.activeindicator) {
+                    this.showActiveIndicator = true;
                 }
             }
             tab.setAttribute(
@@ -223,6 +236,7 @@ export class Tabs extends FASTElement {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
             this.change();
             this.setTabs();
+            this.setActiveIndicator();
             this.handleActiveIndicatorPosition();
             this.setTabPanels();
             this.focusTab();
