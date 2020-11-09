@@ -5,6 +5,7 @@ import { CheckboxControl } from "./control.checkbox";
 import { CheckboxControlProps } from "./control.checkbox.props";
 import { CheckboxControlClassNameContract } from "./control.checkbox.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -33,7 +34,7 @@ const checkboxProps: CheckboxControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
-    strings: null,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

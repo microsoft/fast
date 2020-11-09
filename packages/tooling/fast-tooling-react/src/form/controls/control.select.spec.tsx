@@ -5,6 +5,7 @@ import { SelectControl } from "./control.select";
 import { SelectControlProps } from "./control.select.props";
 import { SelectControlClassNameContract } from "./control.select.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -35,7 +36,7 @@ const selectProps: SelectControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
-    strings: null,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

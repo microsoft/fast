@@ -6,6 +6,7 @@ import { Alignment } from "./control.align.props";
 import { AlignControl } from "./control.align";
 import { AlignControlClassNameContract } from "./control.align.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -29,7 +30,7 @@ const alignControlProps: AlignControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
-    strings: null,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

@@ -6,6 +6,7 @@ import { ThemeControlProps } from "./control.theme.props";
 import { ThemeControl } from "./control.theme";
 import { ThemeControlClassNameContract } from "./control.theme.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -29,7 +30,7 @@ const themeProps: ThemeControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
-    strings: null,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

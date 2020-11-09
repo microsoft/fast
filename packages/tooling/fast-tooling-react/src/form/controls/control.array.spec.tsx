@@ -8,6 +8,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { ControlType } from "../templates";
 import { DataType, ValidationError } from "@microsoft/fast-tooling";
+import defaultStrings from "../form.strings";
 
 const TestArrayControl: React.FC<any> = (
     props: React.PropsWithChildren<any>
@@ -58,7 +59,7 @@ const arrayProps: ArrayControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
-    strings: null,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 
