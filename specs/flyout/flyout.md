@@ -48,6 +48,7 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 *Attributes*
 - `target` - string, the html id of the HTMLElement that the Popover is attached to, (viewport for anchored region defaults to the parent of the anchor) /
 - `visible` - boolean, whether or not the Popover is visible, defaults to undefined, as this is controlled by the author
+- `delay` - number, the time delay before the popover is shown once triggered
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic
 
     - above-centered, below-centered
