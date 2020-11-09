@@ -1,5 +1,14 @@
 <template title="Default">
     <div>
-        <fast-data-grid></fast-data-grid>
+        <script>
+            (function () {
+                document.getElementById("samplegrid").rowsData = [
+                    { item1: "value 1-1", item2: "value 2-1" },
+                    { item1: "value 1-2", item2: "value 2-2" },
+                    { item1: "value 1-3", item2: "value 2-3" },
+                ];
+            })();
+        </script>
+        <fast-data-grid id="samplegrid"></fast-data-grid>
     </div>
 </template>
