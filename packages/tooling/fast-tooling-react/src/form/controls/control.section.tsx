@@ -28,7 +28,7 @@ import {
     SchemaSetValidationMessageRequest,
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
-import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
+import { FormStrings } from "../form.props";
 
 /**
  * Schema form component definition

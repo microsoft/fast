@@ -7,7 +7,7 @@ import {
     TreeNavigation,
     ValidationError,
 } from "@microsoft/fast-tooling";
-import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
+import { FormStrings } from "../form.props";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,

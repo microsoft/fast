@@ -1,5 +1,5 @@
 import { CombiningKeyword } from "@microsoft/fast-tooling";
-import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
+import { FormStrings } from "../form.props";
 import { SectionControlConfig } from "../templates";
 
 /**

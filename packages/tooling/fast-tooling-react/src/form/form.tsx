@@ -104,7 +104,7 @@ class Form extends React.Component<
             props.messageSystem.add(this.messageSystemConfig);
         }
 
-        if (props.strings !== undefined && props.strings !== null) {
+        if (!!!props.strings) {
             this.strings = props.strings;
         }
 

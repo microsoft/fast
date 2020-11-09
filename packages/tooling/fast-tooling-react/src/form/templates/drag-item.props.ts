@@ -1,4 +1,4 @@
-import { FormStrings } from "@microsoft/fast-tooling-react/src/form/form.props";
+import { FormStrings } from "../form.props";
 import { ArrayAction } from "./types";
 
 export interface DragItemProps {
