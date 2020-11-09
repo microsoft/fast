@@ -49,6 +49,9 @@ export { fastMenuConfig };
 import fastNumberFieldConfig from "./fast-number-field";
 export { fastNumberFieldConfig };
 
+import fastPopoverConfig from "./fast-popover";
+export { fastPopoverConfig };
+
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
 

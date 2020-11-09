@@ -31,6 +31,7 @@ import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { NumberField } from '@microsoft/fast-foundation';
+import { Popover } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
@@ -596,6 +597,10 @@ export class FASTNumberField extends NumberField {
 
 // @public
 export class FASTOption extends ListboxOption {
+}
+
+// @public
+export class FASTPopover extends Popover {
 }
 
 // @public

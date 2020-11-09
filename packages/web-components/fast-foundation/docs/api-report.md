@@ -478,6 +478,9 @@ export function createDataGridTemplate(prefix: string): ViewTemplate;
 export function createMenuItemTemplate(prefix: string): ViewTemplate;
 
 // @public
+export function createPopoverTemplate(prefix: string): ViewTemplate;
+
+// @public
 export function createTooltipTemplate(prefix: string): ViewTemplate;
 
 // @public
@@ -1461,6 +1464,92 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 
 // @alpha (undocumented)
 export type ParentLocator = (owner: any) => Container | null;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Popover" because one of its declarations is marked as @internal
+//
+// @public
+export class Popover extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal
+    currentDirection: Direction;
+    delay: number;
+    // @internal (undocumented)
+    delayTriggered: boolean;
+    // (undocumented)
+    disconnectedCallback(): void;
+    focusTargetOnDismiss: boolean;
+    // @internal
+    handleAnchoredRegionLoaded: (e: Event) => void;
+    // @internal
+    handlePositionChange: (e: Event) => void;
+    // @internal (undocumented)
+    horizontalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    horizontalInset: string;
+    // @internal (undocumented)
+    horizontalPositioningMode: AxisPositioningMode;
+    // @internal (undocumented)
+    horizontalScaling: AxisScalingMode;
+    // @internal (undocumented)
+    popover: HTMLDivElement;
+    // @internal (undocumented)
+    popoverVisible: boolean;
+    position: PopoverPosition;
+    // @internal (undocumented)
+    region: AnchoredRegion;
+    target: string;
+    targetElement: HTMLElement | null;
+    trapFocus: boolean;
+    // @internal (undocumented)
+    verticalDefaultPosition: string | undefined;
+    // @internal (undocumented)
+    verticalInset: string;
+    // @internal (undocumented)
+    verticalPositioningMode: AxisPositioningMode;
+    // @internal (undocumented)
+    verticalScaling: AxisScalingMode;
+    // @internal
+    viewportElement: HTMLElement | null;
+    visible: boolean;
+    }
+
+// @internal
+export interface Popover extends ARIAGlobalStatesAndProperties {
+}
+
+// @public
+export enum PopoverPosition {
+    bottom = "bottom",
+    // (undocumented)
+    bottomLeft = "bottom-left-corner",
+    // (undocumented)
+    bottomLeftAligned = "bottom-left-aligned",
+    // (undocumented)
+    bottomRight = "bottom-right-corner",
+    // (undocumented)
+    bottomRightAligned = "bottom-right-aligned",
+    left = "left",
+    // (undocumented)
+    leftBottomAligned = "left-bottom-aligned",
+    // (undocumented)
+    leftTopAligned = "left-top-aligned",
+    right = "right",
+    // (undocumented)
+    rightBottomAligned = "right-bottom-aligned",
+    // (undocumented)
+    rightTopAligned = "right-top-aligned",
+    top = "top",
+    // (undocumented)
+    topLeft = "top-left-corner",
+    // (undocumented)
+    topLeftAligned = "top-left-aligned",
+    // (undocumented)
+    topRight = "top-right-corner",
+    // (undocumented)
+    topRightAligned = "top-right-aligned"
+}
 
 // @public
 export const ProgressRingTemplate: ViewTemplate<BaseProgress>;
