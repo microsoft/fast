@@ -1025,6 +1025,8 @@ export class Tabs extends FASTElement {
     connectedCallback(): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
+    showActiveIndicator: boolean;
+    // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
     tabpanelsChanged(): void;

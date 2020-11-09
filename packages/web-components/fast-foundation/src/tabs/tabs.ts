@@ -54,7 +54,6 @@ export class Tabs extends FASTElement {
             this.tabs.length <= this.tabpanels.length
         ) {
             this.setTabs();
-            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -74,7 +73,6 @@ export class Tabs extends FASTElement {
             this.tabs.length <= this.tabpanels.length
         ) {
             this.setTabs();
-            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -94,7 +92,6 @@ export class Tabs extends FASTElement {
             this.tabpanels.length <= this.tabs.length
         ) {
             this.setTabs();
-            this.setActiveIndicator();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
         }
@@ -116,6 +113,12 @@ export class Tabs extends FASTElement {
     public activeIndicatorRef: HTMLElement;
 
     /**
+     * @internal
+     */
+    @observable
+    public showActiveIndicator: boolean = true;
+
+    /**
      * A reference to the active tab
      * @public
      */
@@ -126,7 +129,6 @@ export class Tabs extends FASTElement {
     private ticking: boolean = false;
     private tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
-    private showActiveIndicator: boolean = false;
 
     private change = (): void => {
         this.$emit("change", this.activetab);
@@ -151,18 +153,15 @@ export class Tabs extends FASTElement {
         }
     }
 
-    private setActiveIndicator = (): void => {
-        if (this.showActiveIndicator) {
-            this.activeindicator = true;
-        }
-    };
-
     private setTabs = (): void => {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab" && this.isFocusableElement(tab)) {
+                if (this.activeindicator) {
+                    this.showActiveIndicator = true;
+                }
                 const tabId: string | null = this.tabIds[index];
                 const tabpanelId: string | null = this.tabpanelIds[index];
                 tab.setAttribute(
@@ -183,9 +182,8 @@ export class Tabs extends FASTElement {
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
                 }
-                if (this.activeindicator) {
-                    this.showActiveIndicator = true;
-                }
+            } else {
+                this.showActiveIndicator = false;
             }
             tab.setAttribute(
                 "style",
@@ -236,7 +234,6 @@ export class Tabs extends FASTElement {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
             this.change();
             this.setTabs();
-            this.setActiveIndicator();
             this.handleActiveIndicatorPosition();
             this.setTabPanels();
             this.focusTab();
@@ -295,8 +292,8 @@ export class Tabs extends FASTElement {
     };
 
     private handleActiveIndicatorPosition() {
-        // Ignore if we click twice on the same tab
-        if (this.activeindicator && this.activeTabIndex !== this.prevActiveTabIndex) {
+        // Ignore if we click twice on the same tab
+        if (this.showActiveIndicator && this.activeindicator && this.activeTabIndex !== this.prevActiveTabIndex) {
             if (this.ticking) {
                 this.ticking = false;
             } else {
