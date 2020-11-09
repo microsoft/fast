@@ -40,6 +40,9 @@ export { fastListboxConfig };
 import fastMenuConfig from "./fast-menu";
 export { fastMenuConfig };
 
+import fastPopoverConfig from "./fast-popover";
+export { fastPopoverConfig };
+
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
 
