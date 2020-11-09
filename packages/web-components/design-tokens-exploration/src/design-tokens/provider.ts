@@ -11,10 +11,11 @@ export function DesignTokenProvider<
     TBase extends Constructable<FASTElement & HTMLElement>
 >(Base: TBase) {
     const C = class extends Base {
-        designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
+        public designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
 
-        connectedCallback() {
-            super.connectedCallback();
+        constructor(...args: any[]) {
+            super(...args);
+
             const container = DI.getOrCreateDOMContainer(this);
             container.register(
                 Registration.callback(DesignTokens, () => {
@@ -24,6 +25,12 @@ export function DesignTokenProvider<
                     return tokens;
                 })
             );
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            // Subscribe to changes in designTokens
+            // How do I know what should be reflected to CSS custom properties?
         }
     };
 
