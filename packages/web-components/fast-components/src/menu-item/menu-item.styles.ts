@@ -19,6 +19,8 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        position: relative;
+        overflow: visible;
         font-family: var(--body-font);
         outline: none;
         box-sizing: border-box;
@@ -30,7 +32,6 @@ export const MenuItemStyles = css`
         padding: 0;
         margin: 0 calc(var(--design-unit) * 1px);
         white-space: nowrap;
-        overflow: hidden;
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         cursor: pointer;

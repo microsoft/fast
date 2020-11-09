@@ -1190,18 +1190,26 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
     disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     expanded: boolean;
     // @internal (undocumented)
-    handleMenuItemClick: (e: MouseEvent) => void;
+    handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
+    // @internal
+    nested: HTMLSlotElement;
     role: MenuItemRole;
     // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
     //
     // @internal
-    subMenuRegion: AnchoredRegion | string;
-}
+    subMenuRegion: AnchoredRegion;
+    // @internal
+    viewportElement: HTMLElement | null;
+    }
 
 // @internal
 export interface MenuItem extends StartEnd {

@@ -33,6 +33,8 @@ export class Menu extends FASTElement {
 
     private menuItems: Element[];
 
+    private expandedItem: MenuItem | null = null;
+
     /**
      * The index of the focusable element in the items array
      * defaults to -1
@@ -48,6 +50,7 @@ export class Menu extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.addEventListener("expanded-change", this.handleExpandedChanged);
         this.menuItems = this.domChildren();
 
         this.addEventListener("change", this.changeHandler);
@@ -58,6 +61,7 @@ export class Menu extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.removeEventListener("expanded-change", this.handleExpandedChanged);
         this.menuItems = [];
 
         this.removeEventListener("change", this.changeHandler);
@@ -83,23 +87,19 @@ export class Menu extends FASTElement {
             case keyCodeArrowDown:
             case keyCodeArrowRight:
                 // go forward one index
-                e.preventDefault();
                 this.setFocus(this.focusIndex + 1, 1);
                 return;
             case keyCodeArrowUp:
             case keyCodeArrowLeft:
                 // go back one index
-                e.preventDefault();
                 this.setFocus(this.focusIndex - 1, -1);
                 return;
             case keyCodeEnd:
                 // set focus on last item
-                e.preventDefault();
                 this.setFocus(this.domChildren().length - 1, -1);
                 return;
             case keyCodeHome:
                 // set focus on first item
-                e.preventDefault();
                 this.setFocus(0, 1);
                 return;
 
@@ -128,6 +128,32 @@ export class Menu extends FASTElement {
 
             // set the focus index
             this.focusIndex = focusIndex;
+        }
+    };
+
+    private handleExpandedChanged = (e: Event): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        e.preventDefault();
+        const changedItem: MenuItem = (e.target as any) as MenuItem;
+
+        // closing an expanded item without opening another
+        if (
+            this.expandedItem !== null &&
+            changedItem === this.expandedItem &&
+            changedItem.expanded === false
+        ) {
+            this.expandedItem = null;
+            return;
+        }
+
+        if (changedItem.expanded) {
+            if (this.expandedItem !== null) {
+                this.expandedItem.expanded = false;
+            }
+            this.expandedItem = changedItem;
         }
     };
 

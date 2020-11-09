@@ -26,20 +26,15 @@ export const MenuItemTemplate = html<MenuItem>`
             x => x.expanded,
             html<MenuItem>`
                 <fast-anchored-region
-                    vertical-positioning-mode="${x => x.verticalPositioningMode}"
-                    vertical-default-position="${x => x.verticalDefaultPosition}"
-                    vertical-inset="${x => x.verticalInset}"
-                    vertical-scaling="${x => x.verticalScaling}"
-                    horizontal-positioning-mode="${x => x.horizontalPositioningMode}"
-                    horizontal-default-position="${x => x.horizontalDefaultPosition}"
-                    horizontal-scaling="${x => x.horizontalScaling}"
-                    horizontal-inset="${x => x.horizontalInset}"
-                    dir="${x => x.currentDirection}"
+                    anchor="${x => x}"
+                    vertical-positioning-mode="dynamic"
+                    horizontal-positioning-mode="dynamic"
+                    vertical-inset="true"
                     ${ref("subMenuRegion")}
                 >
-                    <div class="nested-menu" part="nested-menu" role="menu">
-                        <slot></slot>
-                    </div>
+                    <fast-menu>
+                        <slot name="nested-menu" ${ref("nested")}></slot>
+                    </fast-menu>
                 </fast-anchored-region>
             `
         )}
