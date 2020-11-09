@@ -581,7 +581,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     connectedCallback(): void;
-    defaultChecked: boolean;
+    defaultChecked: boolean | undefined;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // (undocumented)
@@ -717,6 +717,8 @@ export class SliderLabel extends FASTElement {
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
+    // (undocumented)
+    protected horizontalStyles: import("@microsoft/fast-element").ElementStyles;
     position: string;
     // @internal (undocumented)
     positionStyle: string;
@@ -730,6 +732,8 @@ export class SliderLabel extends FASTElement {
     sliderMinPosition: number;
     // @internal (undocumented)
     sliderOrientation: Orientation;
+    // (undocumented)
+    protected verticalStyles: import("@microsoft/fast-element").ElementStyles;
 }
 
 // @public
@@ -790,6 +794,8 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // (undocumented)
+    formResetCallback(): void;
     // @internal
     protected initialValue: string;
     // @internal (undocumented)
