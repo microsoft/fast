@@ -40,6 +40,8 @@ import {
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
 
+export const formId: string = "fast-tooling-react::form";
+
 /**
  * Schema form component definition
  * @extends React.Component
@@ -109,6 +111,7 @@ class Form extends React.Component<
             navigation: void 0,
             navigationDictionary: void 0,
             validationErrors: {},
+            options: null,
         };
     }
 
@@ -150,6 +153,7 @@ class Form extends React.Component<
                     navigationDictionary: e.data.navigationDictionary,
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.data:
@@ -158,12 +162,14 @@ class Form extends React.Component<
                     dataDictionary: e.data.dataDictionary,
                     navigation: e.data.navigation,
                     navigationDictionary: e.data.navigationDictionary,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.navigation:
                 this.setState({
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.validation:
@@ -172,6 +178,7 @@ class Form extends React.Component<
                         ...this.state.validationErrors,
                         [e.data.dictionaryId]: e.data.validationErrors,
                     },
+                    options: e.data.options,
                 });
                 break;
         }
@@ -448,6 +455,7 @@ class Form extends React.Component<
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             messageSystem: this.props.messageSystem,
+            messageSystemOptions: this.state.options,
         });
 
         return control.render();
@@ -473,6 +481,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.addLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else if (config.linkedDataAction === LinkedDataActionType.reorder) {
                     this.props.messageSystem.postMessage({
@@ -480,6 +491,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.reorderLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else if (config.linkedDataAction === LinkedDataActionType.remove) {
                     this.props.messageSystem.postMessage({
@@ -487,6 +501,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.removeLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 }
             } else if (config.isArray) {
@@ -509,6 +526,9 @@ class Form extends React.Component<
                     action: MessageSystemDataTypeAction.update,
                     dataLocation: config.dataLocation,
                     data: newArray,
+                    options: {
+                        originatorId: formId,
+                    },
                 });
             } else {
                 if (config.value === undefined) {
@@ -516,6 +536,9 @@ class Form extends React.Component<
                         type: MessageSystemType.data,
                         action: MessageSystemDataTypeAction.remove,
                         dataLocation: config.dataLocation,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else {
                     this.props.messageSystem.postMessage({
@@ -523,6 +546,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.update,
                         dataLocation: config.dataLocation,
                         data: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 }
             }

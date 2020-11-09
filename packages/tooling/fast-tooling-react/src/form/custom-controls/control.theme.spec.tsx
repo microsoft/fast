@@ -29,6 +29,7 @@ const themeProps: ThemeControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 const managedClasses: ThemeControlClassNameContract = {

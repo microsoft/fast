@@ -27,6 +27,7 @@ const fileUploadControlProps: FileUploadControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    messageSystemOptions: null,
 };
 
 describe("FileUploadControl", () => {

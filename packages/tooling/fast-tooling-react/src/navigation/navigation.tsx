@@ -36,6 +36,8 @@ import {
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
 
+export const navigationId = "fast-tooling-react::navigation";
+
 class Navigation extends Foundation<
     NavigationHandledProps & ManagedClasses<NavigationClassNameContract>,
     {},
@@ -434,6 +436,9 @@ class Navigation extends Foundation<
                 ].data.filter((value: LinkedData) => {
                     return value.id === dictionaryId;
                 }),
+                options: {
+                    originatorId: navigationId,
+                },
             });
         };
     };
@@ -446,6 +451,9 @@ class Navigation extends Foundation<
             dictionaryId: this.state.linkedDataLocation[0],
             dataLocation: this.state.linkedDataLocation[1],
             index: this.state.linkedDataLocation[2],
+            options: {
+                originatorId: navigationId,
+            },
         });
 
         this.setState({
@@ -522,6 +530,9 @@ class Navigation extends Foundation<
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: dictionaryId,
             activeNavigationConfigId: navigationConfigId,
+            options: {
+                originatorId: navigationId,
+            },
         });
     }
 
