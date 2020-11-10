@@ -4,7 +4,7 @@ const defaultStrings: FormStrings = {
     arrayAddItemTip: "Select to add item",
     arrayAddItemLabel: "Add item",
     linkedDataPlaceholder: "Add",
-    sectionLinkEditLabel: "Edit",
+    sectionLinkEditLabel: "Edit: {0}",
     sectionSelectDefault: "Choose an option",
     sectionSelectLabel: "Configuration",
     sectionAdditionalPropExample: "example",
