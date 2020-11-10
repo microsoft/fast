@@ -19,6 +19,9 @@ export const horizontalSliderStyles = css`
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
+    .label {
+        margin: 2px 0;
+    }
 `;
 
 export const verticalSliderStyles = css`
@@ -40,7 +43,7 @@ export const verticalSliderStyles = css`
         align-self: center;
     }
     .label {
-        margin-left: calc((var(--design-unit) / 2) * 2px);
+        margin-left: calc((var(--design-unit) / 2) * 3px);
         align-self: center;
     }
 `;
@@ -63,7 +66,6 @@ export const SliderLabelStyles = css`
         align-self: center;
         white-space: nowrap;
         max-width: 30px;
-        margin: 2px 0;
     }
     .mark {
         width: calc((var(--design-unit) / 4) * 1px);
