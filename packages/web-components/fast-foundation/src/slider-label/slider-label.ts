@@ -17,9 +17,6 @@ const defaultConfig: SliderConfiguration = {
     disabled: false,
 };
 
-const heightNumber =
-    "(var(--base-height-multiplier) + var(--density)) * var(--design-unit)";
-
 /**
  * A label element intended to be used with the {@link @microsoft/fast-foundation#Slider} component.
  *
