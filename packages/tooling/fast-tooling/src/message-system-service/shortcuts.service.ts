@@ -1,4 +1,4 @@
-import { CustomMessageIncomingOutgoing, MessageSystemType } from "../message-system";
+import { CustomMessage, MessageSystemType } from "../message-system";
 import {
     ShortcutsAction,
     ShortcutsActionCallbackConfig,
@@ -9,10 +9,20 @@ export type shortcutMessageSystemAction = "initialize";
 export type shortcutMessageSystemId = "shortcuts";
 export type shortcutMessageSystemListenerType = "keypress";
 
-export interface ShortcutMessageOutgoing extends CustomMessageIncomingOutgoing {
+export type shortcutMessageId = "fast-tooling::shortcuts-service";
+
+export interface ShortcutOptions {
+    originatorId: shortcutMessageId;
+}
+
+export interface ShortCutOptionsConfig {
+    options: ShortcutOptions;
+}
+
+export interface ShortcutMessageOutgoing extends CustomMessage<{}, {}> {
     id: shortcutMessageSystemId;
     action: shortcutMessageSystemAction;
-    eventListener: () => void;
+    eventListener: (e: KeyboardEvent) => void;
     eventListenerType: shortcutMessageSystemListenerType;
     shortcuts: ShortcutsActionCallbackConfig[];
 }
@@ -55,6 +65,9 @@ export class Shortcuts extends MessageSystemService<ShortcutsActionCallbackConfi
                             };
                         }
                     ),
+                    options: {
+                        originatorId: "fast-tooling::shortcuts-service",
+                    },
                 } as ShortcutMessageOutgoing);
                 break;
         }

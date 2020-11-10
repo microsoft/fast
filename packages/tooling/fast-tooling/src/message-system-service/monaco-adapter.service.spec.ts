@@ -9,6 +9,7 @@ import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
     MonacoAdapter,
+    monacoAdapterId,
 } from "./monaco-adapter.service";
 import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
@@ -382,7 +383,7 @@ describe("MonacoAdapter", () => {
                     dataDictionary,
                     schemaDictionary,
                     options: {
-                        from: "monaco-adapter",
+                        originatorId: monacoAdapterId,
                     },
                 },
             } as any);

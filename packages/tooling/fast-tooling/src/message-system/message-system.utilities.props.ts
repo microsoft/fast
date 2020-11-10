@@ -502,14 +502,15 @@ export interface GetHistoryMessageOutgoing<TConfig = {}>
     history: History;
 }
 
-export interface CustomMessageIncomingOutgoing {
+export interface CustomMessageIncomingOutgoing<OConfig>
+    extends ArbitraryMessageIncoming<OConfig> {
     type: MessageSystemType.custom;
 }
 
 /**
  * The custom message interface
  */
-type CustomMessage<T> = CustomMessageIncomingOutgoing & T;
+export type CustomMessage<T, OConfig> = CustomMessageIncomingOutgoing<OConfig> & T;
 
 /**
  * Incoming navigation dictionary messages to the message system
@@ -580,7 +581,7 @@ export type HistoryMessageOutgoing = GetHistoryMessageOutgoing;
 /**
  * Incoming messages to the message system
  */
-export type MessageSystemIncoming<C = {}> =
+export type MessageSystemIncoming<C = {}, OConfig = {}> =
     | InitializeMessageIncoming
     | DataMessageIncoming
     | HistoryMessageIncoming
@@ -588,12 +589,12 @@ export type MessageSystemIncoming<C = {}> =
     | NavigationDictionaryMessageIncoming
     | DataDictionaryMessageIncoming
     | ValidationMessageIncoming
-    | CustomMessage<C>;
+    | CustomMessage<C, OConfig>;
 
 /**
  * Outgoing messages from the message system
  */
-export type MessageSystemOutgoing<C = {}> =
+export type MessageSystemOutgoing<C = {}, OConfig = {}> =
     | InitializeMessageOutgoing
     | DataMessageOutgoing
     | HistoryMessageOutgoing
@@ -601,4 +602,4 @@ export type MessageSystemOutgoing<C = {}> =
     | NavigationDictionaryMessageOutgoing
     | DataDictionaryMessageOutgoing
     | ValidationMessageOutgoing
-    | CustomMessage<C>;
+    | CustomMessage<C, OConfig>;

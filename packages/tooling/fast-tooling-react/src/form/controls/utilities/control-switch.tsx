@@ -260,6 +260,7 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             controlPlugins: this.props.controlPlugins,
             untitled: this.props.untitled,
             messageSystem: this.props.messageSystem,
+            messageSystemOptions: this.props.messageSystemOptions,
         };
     }
 }
