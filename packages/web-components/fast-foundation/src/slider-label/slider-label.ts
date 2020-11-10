@@ -68,6 +68,7 @@ export class SliderLabel extends FASTElement {
      */
     @observable
     public sliderOrientation: Orientation;
+    protected sliderOrientationChanged(): void {}
 
     /**
      * @internal

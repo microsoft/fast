@@ -82,14 +82,14 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @public
      */
     @observable
-    public defaultChecked: boolean;
+    public defaultChecked: boolean | undefined;
     private defaultCheckedChanged(): void {
         if (this.$fastController.isConnected && !this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
             // but if we are clean when defaultChecked is changed, we want to stay
             // in a clean state, so reset this.dirtyChecked
             if (!this.isInsideRadioGroup()) {
-                this.checked = this.defaultChecked;
+                this.checked = this.defaultChecked ?? false;
                 this.dirtyChecked = false;
             }
         }
@@ -104,7 +104,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     public checked: boolean = this.defaultChecked ?? false;
     private checkedChanged(): void {
         if (this.$fastController.isConnected) {
-            // TODO: temporarily removed as it's causing issues with
             // changing the value via code and from radio-group
             if (!this.dirtyChecked) {
                 this.dirtyChecked = true;
@@ -157,7 +156,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
                 // but if we are clean when defaultChecked is changed, we want to stay
                 // in a clean state, so reset this.dirtyChecked
                 if (!this.isInsideRadioGroup()) {
-                    this.checked = this.defaultChecked;
+                    this.checked = this.defaultChecked ?? false;
                     this.dirtyChecked = false;
                 }
             }
@@ -170,18 +169,10 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     }
 
     private isInsideRadioGroup(): boolean {
-        //return this.name !== undefined && this.name !== null && this.name.length > 0;
         const parent: HTMLElement | null = (this as HTMLElement).closest(
             "[role=radiogroup]"
         );
         return parent !== null;
-    }
-
-    private getParentNode(): HTMLElement | null | undefined {
-        const parentNode: Element | null | undefined = this.parentElement!.closest(
-            "[role='tree']"
-        );
-        return parentNode as HTMLElement;
     }
 
     private updateForm(): void {
