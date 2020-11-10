@@ -1,6 +1,6 @@
 # Popover (aka Flyout)
 ## Overview
-Popover is a focusable floating container that shows over a pages content and displays UI related to what the user is doing adn is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action is required, a Popover can be used to reveal a secondary control or show more detail about an item.
+Popover is a focusable floating container that shows over a pages content and displays UI related to what the user is doing and is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action is required, a Popover can be used to reveal a secondary control or show more detail about an item.
 
 ### Background
 A Popover can be less intrusive to the user experience than a Dialog and should be used instead of a Dialog when information or input is needed to be displayed, but not in the center of the screen, such as in the case of collection of additional info before an action, displaying information that is only relevant some of the time, or displaying more information.
@@ -14,6 +14,8 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 **Placement Logic:** - This component will use *Anchored Region* to be positioned relative to the Popover anchor element. This way it can be dynamic and adapt to the available space.
 
 **Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. An event would be emitted anytime the Popover is dismissed. The Popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Popover.
+
+**Focus Management:** - Should follow the same process for focus management as a Dialog primarily as the Popover's role will be dialog.
 
 
 ### Prior Art/Examples
