@@ -769,7 +769,7 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
     // (undocumented)
     protected customPropertyTarget: CSSStyleDeclaration;
     // (undocumented)
-    readonly sheet: CSSStyleSheet;
+    get sheet(): CSSStyleSheet | null;
     // (undocumented)
     readonly styles: HTMLStyleElement;
 }
@@ -790,6 +790,8 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // (undocumented)
+    formResetCallback(): void;
     // @internal
     protected initialValue: string;
     // @internal (undocumented)
