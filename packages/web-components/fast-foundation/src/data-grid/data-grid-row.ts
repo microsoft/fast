@@ -1,10 +1,9 @@
 import {
     attr,
     FASTElement,
-    html,
+    observable,
     RepeatBehavior,
     RepeatDirective,
-    observable,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -34,7 +33,7 @@ export enum DataGridRowTypes {
  */
 export class DataGridRow extends FASTElement {
     private static cellQueryString =
-        '[role="cell"], [role="gridcell"], [role="columnheader"]';
+        '[role="cell"],[role="gridcell"],[role="columnheader"]';
 
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
@@ -46,7 +45,7 @@ export class DataGridRow extends FASTElement {
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
     private gridTemplateColumnsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateRowStyle();
         }
     }
@@ -61,7 +60,7 @@ export class DataGridRow extends FASTElement {
     @attr({ attribute: "row-type" })
     public rowType: DataGridRowTypes = DataGridRowTypes.default;
     private rowTypeChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateItemTemplate();
         }
     }
@@ -73,10 +72,6 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
-    }
 
     /**
      * The column definitions of the row
@@ -85,10 +80,6 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
-    private columnDefinitionsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
-    }
 
     /**
      * The template used to render cells in generated rows.
@@ -120,10 +111,6 @@ export class DataGridRow extends FASTElement {
      */
     @observable
     public rowIndex: number;
-    private rowIndexChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
-    }
 
     /**
      * Whether focus is on/in a cell within this row.

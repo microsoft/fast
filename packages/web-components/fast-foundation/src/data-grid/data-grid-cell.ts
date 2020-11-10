@@ -1,9 +1,9 @@
 import {
     attr,
     FASTElement,
-    observable,
     html,
     HTMLView,
+    observable,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -62,7 +62,7 @@ export class DataGridCell extends FASTElement {
     @attr({ attribute: "cell-type" })
     public cellType: DataGridCellTypes;
     private cellTypeChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateCellView();
         }
     }
@@ -79,7 +79,7 @@ export class DataGridCell extends FASTElement {
     @attr({ attribute: "grid-column" })
     public gridColumn: string;
     private gridColumnChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateCellStyle();
         }
     }
@@ -91,10 +91,6 @@ export class DataGridCell extends FASTElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-        }
-    }
 
     /**
      * The base data for the column
@@ -107,7 +103,7 @@ export class DataGridCell extends FASTElement {
         oldValue: ColumnDefinition | null,
         newValue: ColumnDefinition | null
     ): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateCellView();
         }
     }

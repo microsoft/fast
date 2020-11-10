@@ -2,10 +2,9 @@ import {
     attr,
     DOM,
     FASTElement,
-    html,
+    observable,
     RepeatBehavior,
     RepeatDirective,
-    observable,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -141,7 +140,7 @@ export class DataGrid extends FASTElement {
     @attr({ attribute: "generate-header" })
     public generateHeader: GenerateHeaderOptions = GenerateHeaderOptions.default;
     private generateHeaderChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
         }
     }
@@ -156,7 +155,7 @@ export class DataGrid extends FASTElement {
     @attr({ attribute: "grid-template-columns" })
     public gridTemplateColumns: string;
     private gridTemplateColumnsChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.updateRowIndexes();
         }
     }
@@ -189,7 +188,7 @@ export class DataGrid extends FASTElement {
         this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
             this.columnDefinitions
         );
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.columnDefinitionsStale = true;
             this.queueRowIndexUpdate();
         }
@@ -219,7 +218,7 @@ export class DataGrid extends FASTElement {
     @observable
     public headerCellItemTemplate?: ViewTemplate;
     private headerCellItemTemplateChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             if (this.generatedHeader !== null) {
                 this.generatedHeader.headerCellItemTemplate = this.headerCellItemTemplate;
             }
@@ -237,7 +236,7 @@ export class DataGrid extends FASTElement {
     @observable
     public focusRowIndex: number = 0;
     private focusRowIndexChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.queueFocusUpdate();
         }
     }
@@ -253,7 +252,7 @@ export class DataGrid extends FASTElement {
     @observable
     public focusColumnIndex: number = 0;
     private focusColumnIndexChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.queueFocusUpdate();
         }
     }
@@ -314,7 +313,7 @@ export class DataGrid extends FASTElement {
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
-        this.observer.observe(this as Element, { childList: true });
+        this.observer.observe(this, { childList: true });
 
         DOM.queueUpdate(this.queueRowIndexUpdate);
     }
@@ -428,14 +427,14 @@ export class DataGrid extends FASTElement {
             return;
         }
 
-        let focusRowIndex = Math.max(0, Math.min(rows.length - 1, rowIndex));
+        const focusRowIndex = Math.max(0, Math.min(rows.length - 1, rowIndex));
         const focusRow: Element = rows[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
             '[role="cell"], [role="gridcell"], [role="columnheader"]'
         );
 
-        let focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
+        const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 
         (cells[focusColumnIndex] as HTMLElement).focus();
 
