@@ -3,6 +3,7 @@ This repo explores cascading design-token infrastructure platformed off dependen
 
 ## TODO:
 ### P1
+- [x] DesignTokenLibrary for getting and setting hierarchial design tokens.
 - [x] Can get access to read/write design tokens using ~~class decorator~~ mixin. (This sets up element as DesignToken container).
 - [ ] DesignTokens get emitted to CSSStyleSheet instances, one sheet per token value.
 - [ ] DesignTokens can be configured to be the product of pure functions that depend on properties of the DesignToken library.
