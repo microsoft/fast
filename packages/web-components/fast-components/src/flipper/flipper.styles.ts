@@ -111,8 +111,8 @@ export const FlipperStyles = css`
             :host {
                 background: ${SystemColors.Canvas};
             }
-            :host [direction="next"],
-            :host [direction="previous"] {
+            :host .next,
+            :host .previous {
                 color: ${SystemColors.ButtonText};
                 fill: currentcolor;
             }
@@ -126,8 +126,8 @@ export const FlipperStyles = css`
                 border-color: ${SystemColors.ButtonText};
                 opacity: 1;
             }
-            :host(:hover) [direction="next"],
-            :host(:hover) [direction="previous"] {
+            :host(:hover) .next,
+            :host(:hover) .previous  {
                 forced-color-adjust: none;
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
@@ -137,10 +137,8 @@ export const FlipperStyles = css`
             }
             :host([disabled])::before,
             :host([disabled]:hover)::before,
-            :host([disabled]) [direction="next"],
-            :host([disabled]) [direction="previous"],
-            :host([disabled]:hover) [direction="next"],
-            :host([disabled]:hover) [direction="previous"] {
+            :host([disabled]) .next,
+            :host([disabled]) .previous {
                 forced-color-adjust: none;
                 background: ${SystemColors.Canvas};
                 border-color: ${SystemColors.GrayText};
