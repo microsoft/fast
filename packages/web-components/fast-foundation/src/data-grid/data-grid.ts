@@ -104,15 +104,12 @@ export class DataGrid extends FASTElement {
      *  generates a basic column definition by examining sample row data
      */
     public static generateColumns = (row: object): ColumnDefinition[] => {
-        const definitions: ColumnDefinition[] = [];
-        const properties: string[] = Object.getOwnPropertyNames(row);
-        properties.forEach((property: string, index: number) => {
-            definitions.push({
+        return Object.getOwnPropertyNames(row).map((property: string, index: number) => {
+            return {
                 columnDataKey: property,
                 gridColumn: `${index}`,
-            });
+            };
         });
-        return definitions;
     };
 
     /**

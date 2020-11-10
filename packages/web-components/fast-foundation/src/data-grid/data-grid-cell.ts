@@ -153,22 +153,6 @@ export class DataGridCell extends FASTElement {
         this.isActiveCell = true;
 
         switch (this.cellType) {
-            case undefined:
-            case DataGridCellTypes.default:
-                if (
-                    this.columnDefinition.cellInternalFocusQueue !== true &&
-                    typeof this.columnDefinition.cellFocusTargetCallback === "function"
-                ) {
-                    // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-                        this
-                    );
-                    if (focusTarget !== null) {
-                        focusTarget.focus();
-                    }
-                }
-                break;
-
             case DataGridCellTypes.columnHeader:
                 if (
                     this.columnDefinition.headerCellInternalFocusQueue !== true &&
@@ -177,6 +161,21 @@ export class DataGridCell extends FASTElement {
                 ) {
                     // move focus to the focus target
                     const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
+                        this
+                    );
+                    if (focusTarget !== null) {
+                        focusTarget.focus();
+                    }
+                }
+                break;
+
+            default:
+                if (
+                    this.columnDefinition.cellInternalFocusQueue !== true &&
+                    typeof this.columnDefinition.cellFocusTargetCallback === "function"
+                ) {
+                    // move focus to the focus target
+                    const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
                         this
                     );
                     if (focusTarget !== null) {

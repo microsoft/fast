@@ -265,10 +265,12 @@ export class DataGridRow extends FASTElement {
 
     private updateItemTemplate(): void {
         this.activeCellItemTemplate =
-            this.rowType === DataGridRowTypes.default
-                ? this.cellItemTemplate !== undefined
-                    ? this.cellItemTemplate
-                    : this.defaultCellItemTemplate
+            this.rowType === DataGridRowTypes.default &&
+            this.cellItemTemplate !== undefined
+                ? this.cellItemTemplate
+                : this.rowType === DataGridRowTypes.default &&
+                  this.cellItemTemplate === undefined
+                ? this.defaultCellItemTemplate
                 : this.headerCellItemTemplate !== undefined
                 ? this.headerCellItemTemplate
                 : this.defaultHeaderCellItemTemplate;
