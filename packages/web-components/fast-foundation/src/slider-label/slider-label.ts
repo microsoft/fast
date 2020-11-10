@@ -1,6 +1,5 @@
 import {
     attr,
-    css,
     FASTElement,
     Notifier,
     Observable,
@@ -27,43 +26,6 @@ const heightNumber =
  * @public
  */
 export class SliderLabel extends FASTElement {
-    protected horizontalStyles = css`
-        :host {
-            align-self: start;
-            grid-row: 2;
-            margin-top: -2px;
-            height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
-            width: auto;
-        }
-        .container {
-            grid-template-rows: auto auto;
-            grid-template-columns: 0;
-        }
-    `;
-
-    protected verticalStyles = css`
-        :host {
-            justify-self: start;
-            grid-column: 2;
-            margin-left: 2px;
-            height: auto;
-            width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
-        }
-        .container {
-            grid-template-columns: auto auto;
-            grid-template-rows: 0;
-            min-width: calc(var(--thumb-size) * 1px);
-            height: calc(var(--thumb-size) * 1px);
-        }
-        .mark {
-            transform: rotate(90deg);
-            align-self: center;
-        }
-        .label {
-            margin-left: calc((var(--design-unit) / 2) * 2px);
-            align-self: center;
-        }
-    `;
     /**
      * @internal
      */
@@ -109,15 +71,7 @@ export class SliderLabel extends FASTElement {
      */
     @observable
     public sliderOrientation: Orientation;
-    private sliderOrientationChanged(): void {
-        if (this.sliderOrientation === Orientation.horizontal) {
-            this.$fastController.addStyles(this.horizontalStyles);
-            this.$fastController.removeStyles(this.verticalStyles);
-        } else {
-            this.$fastController.addStyles(this.verticalStyles);
-            this.$fastController.removeStyles(this.horizontalStyles);
-        }
-    }
+    protected sliderOrientationChanged(): void {}
 
     /**
      * @internal

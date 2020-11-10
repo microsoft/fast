@@ -7,6 +7,44 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+export const horizontalSliderStyles = css`
+    :host {
+        align-self: start;
+        grid-row: 2;
+        margin-top: -2px;
+        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        width: auto;
+    }
+    .container {
+        grid-template-rows: auto auto;
+        grid-template-columns: 0;
+    }
+`;
+
+export const verticalSliderStyles = css`
+    :host {
+        justify-self: start;
+        grid-column: 2;
+        margin-left: 2px;
+        height: auto;
+        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+    }
+    .container {
+        grid-template-columns: auto auto;
+        grid-template-rows: 0;
+        min-width: calc(var(--thumb-size) * 1px);
+        height: calc(var(--thumb-size) * 1px);
+    }
+    .mark {
+        transform: rotate(90deg);
+        align-self: center;
+    }
+    .label {
+        margin-left: calc((var(--design-unit) / 2) * 2px);
+        align-self: center;
+    }
+`;
+
 export const SliderLabelStyles = css`
     ${display("block")} :host {
         color: ${neutralForegroundRestBehavior.var};

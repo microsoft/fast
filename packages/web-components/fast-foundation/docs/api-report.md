@@ -717,8 +717,6 @@ export class SliderLabel extends FASTElement {
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
-    // (undocumented)
-    protected horizontalStyles: import("@microsoft/fast-element").ElementStyles;
     position: string;
     // @internal (undocumented)
     positionStyle: string;
@@ -733,7 +731,7 @@ export class SliderLabel extends FASTElement {
     // @internal (undocumented)
     sliderOrientation: Orientation;
     // (undocumented)
-    protected verticalStyles: import("@microsoft/fast-element").ElementStyles;
+    protected sliderOrientationChanged(): void;
 }
 
 // @public
