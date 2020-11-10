@@ -14,6 +14,8 @@ import {
     neutralFillCard,
 } from "@microsoft/fast-components-styles-msft";
 
+const paletteCache = new Map();
+
 /**
  * The FAST Card Element. Implements {@link @microsoft/fast-foundation#Card},
  * {@link @microsoft/fast-foundation#CardTemplate}
@@ -27,29 +29,26 @@ import {
     name: "fast-card",
     template,
     styles,
-    shadowOptions: {
-        mode: "closed",
-    },
 })
 export class FASTCard extends DesignSystemProvider
     implements Pick<DesignSystem, "backgroundColor" | "neutralPalette"> {
     /**
-     * Background color for the banner component. Sets context for the design system.
-     * @public
+     * @internal
      * @remarks
      * HTML Attribute: background-color
      */
     @designSystemProperty({
-        attribute: "background-color",
+        attribute: false,
+        cssCustomProperty: "background-color",
         default: "#FFFFFF",
     })
     public backgroundColor: string;
 
     /**
-     * Background color for the banner component. Sets context for the design system.
+     * Background color for the card component. Sets context for the design system.
      * @public
      * @remarks
-     * HTML Attribute: background-color
+     * HTML Attribute: card-background-color
      */
     @attr({
         attribute: "card-background-color",
@@ -60,7 +59,13 @@ export class FASTCard extends DesignSystemProvider
             const parsedColor = parseColorHexRGB(this.cardBackgroundColor);
 
             if (parsedColor !== null) {
-                this.neutralPalette = createColorPalette(parsedColor);
+                if (paletteCache.has(parsedColor)) {
+                    this.neutralPalette = paletteCache.get(parsedColor);
+                } else {
+                    const neutralPalette = createColorPalette(parsedColor);
+                    paletteCache.set(parsedColor, neutralPalette);
+                    this.neutralPalette = neutralPalette;
+                }
                 this.backgroundColor = this.cardBackgroundColor;
             }
         } else if (this.provider && this.provider.designSystem) {
