@@ -581,7 +581,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     connectedCallback(): void;
-    defaultChecked: boolean;
+    defaultChecked: boolean | undefined;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // (undocumented)
@@ -730,6 +730,8 @@ export class SliderLabel extends FASTElement {
     sliderMinPosition: number;
     // @internal (undocumented)
     sliderOrientation: Orientation;
+    // (undocumented)
+    protected sliderOrientationChanged(): void;
 }
 
 // @public

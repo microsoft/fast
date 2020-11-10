@@ -515,6 +515,8 @@ export class FASTSlider extends Slider {
 
 // @public
 export class FASTSliderLabel extends SliderLabel {
+    // (undocumented)
+    protected sliderOrientationChanged(): void;
 }
 
 // @public
