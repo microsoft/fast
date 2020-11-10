@@ -82,7 +82,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @public
      */
     @observable
-    public defaultChecked: boolean | undefined = undefined;
+    public defaultChecked: boolean | undefined;
     private defaultCheckedChanged(): void {
         if (this.$fastController.isConnected && !this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
