@@ -1,15 +1,26 @@
-import { attr } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
- * An Button Custom HTML Element.
+ * A form-associated base class for the {@link (Button:class)} component.
+ *
+ * @public
+ */
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        proxy: HTMLInputElement = document.createElement("input");
+    }
+);
+
+/**
+ * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
  * @public
  */
-export class Button extends FormAssociated<HTMLInputElement> {
+export class Button extends FormAssociated {
     /**
      * Determines if the element should receive document focus on page load.
      *
@@ -128,8 +139,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
         previous === "reset" && this.removeEventListener("click", this.handleFormReset);
     }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
-
     /**
      * @internal
      */
@@ -150,7 +159,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
         const attached = this.proxy.isConnected;
 
         if (!attached) {
-            super.attachProxy();
+            this.attachProxy();
         }
 
         // Browser support for requestSubmit is not comprehensive
@@ -160,7 +169,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
             : this.proxy.click();
 
         if (!attached) {
-            super.detachProxy();
+            this.detachProxy();
         }
     };
 
@@ -203,6 +212,5 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
-export interface Button extends StartEnd, DelegatesARIAButton {}
+export interface Button extends _FormAssociated, StartEnd, DelegatesARIAButton {}
 applyMixins(Button, StartEnd, DelegatesARIAButton);

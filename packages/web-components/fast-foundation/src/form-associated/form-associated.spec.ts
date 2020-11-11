@@ -1,8 +1,6 @@
 import { FormAssociated } from "./form-associated";
 import { assert, expect } from "chai";
-import { customElement, html, DOM } from "@microsoft/fast-element";
-import { classNames } from "@microsoft/fast-web-utilities";
-import { values } from "lodash-es";
+import { customElement, FASTElement, html } from "@microsoft/fast-element";
 
 @customElement({
     name: "test-element",
@@ -10,15 +8,19 @@ import { values } from "lodash-es";
         <slot></slot>
     `,
 })
-class TestElement extends FormAssociated<HTMLInputElement> {
-    protected proxy = document.createElement("input");
+class TestElement extends FormAssociated(
+    class extends FASTElement {
+        proxy = document.createElement("input");
 
-    constructor() {
-        super();
+        constructor() {
+            super();
 
-        this.proxy.setAttribute("type", "text");
+            this.proxy.setAttribute("type", "text");
+        }
     }
-}
+) {}
+
+interface TestElement extends FormAssociated {}
 
 @customElement({
     name: "custom-initial-value",
@@ -26,17 +28,21 @@ class TestElement extends FormAssociated<HTMLInputElement> {
         <slot></slot>
     `,
 })
-class CustomInitialValue extends FormAssociated<HTMLInputElement> {
-    protected proxy = document.createElement("input");
+class CustomInitialValue extends FormAssociated(
+    class extends FASTElement {
+        proxy = document.createElement("input");
 
-    constructor() {
-        super();
+        constructor() {
+            super();
 
-        this.proxy.setAttribute("type", "text");
+            this.proxy.setAttribute("type", "text");
+        }
+
+        protected initialValue: string = "foobar";
     }
+) {}
 
-    protected initialValue: string = "foobar";
-}
+interface CustomInitialValue extends FormAssociated {}
 
 describe("FormAssociated:", () => {
     describe("construction and connection:", () => {

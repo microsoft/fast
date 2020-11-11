@@ -1,5 +1,6 @@
 import { attr, DOM, emptyArray, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { Constructable } from "../utilities/constructable";
 
 /**
  * This file enables typing support for ElementInternals APIs.
@@ -81,11 +82,6 @@ declare let ElementInternals: {
     new (): ElementInternals;
 };
 
-interface HTMLElement {
-    attachInternals?(): ElementInternals;
-    click(): void;
-}
-
 const proxySlotName = "form-associated-proxy";
 
 const ElementInternalsKey = "ElementInternals";
@@ -96,438 +92,520 @@ export const supportsElementInternals =
     ElementInternalsKey in window &&
     "setFormValue" in window[ElementInternalsKey].prototype;
 
+const InternalsMap = new Map();
+
 /**
  * Base class for providing Custom Element Form Association.
  *
  * @alpha
  */
-export abstract class FormAssociated<
-    T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-> extends FASTElement {
-    /**
-     * Must evaluate to true to enable elementInternals.
-     * Feature detects API support and resolve respectively
-     *
-     * @internal
-     */
-    public static get formAssociated(): boolean {
-        return supportsElementInternals;
-    }
+export interface FormAssociated {
+    attachProxy(): void;
+    checkValidity(): boolean;
+    connectedCallback(): void;
+    detachProxy(): void;
+    dirtyValue: boolean;
+    disabled: boolean;
+    disabledChanged(previous: boolean, next: boolean): void;
+    disconnectedCallback(): void;
+    formAssociated(): boolean;
+    initialValueChanged?(previous: string, next: string): void;
+    name: string;
+    nameChanged(): void;
+    proxyEventsToBlock: string[];
+    proxyInitialized: boolean;
+    readonly form: HTMLFormElement | null;
+    readonly labels: ReadonlyArray<Node>;
+    readonly validationMessage: string;
+    readonly validity: ValidityState;
+    readonly willValidate: boolean;
+    reportValidity(): boolean;
+    required: boolean;
+    requiredChanged(prev: boolean, next: boolean): void;
+    setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
+    validate(): void;
+    value: string;
+    setFormValue(
+        value: File | string | FormData | null,
+        state?: File | string | FormData | null
+    ): void;
+    stopPropagation(e: Event): void;
+}
 
-    /**
-     * Returns the validity state of the element
-     */
-    public get validity(): ValidityState {
-        return supportsElementInternals
-            ? this.elementInternals.validity
-            : this.proxy.validity;
-    }
-
-    /**
-     * Retrieve a reference to the associated form.
-     * Returns null if not associated to any form.
-     */
-    public get form(): HTMLFormElement | null {
-        return supportsElementInternals ? this.elementInternals.form : this.proxy.form;
-    }
-
-    /**
-     * Retrieve the localized validation message,
-     * or custom validation message if set.
-     */
-    public get validationMessage(): string {
-        return supportsElementInternals
-            ? this.elementInternals.validationMessage
-            : this.proxy.validationMessage;
-    }
-
-    /**
-     * Whether the element will be validated when the
-     * form is submitted
-     */
-    public get willValidate(): boolean {
-        return supportsElementInternals
-            ? this.elementInternals.willValidate
-            : this.proxy.willValidate;
-    }
-
-    /**
-     * A reference to all associated label elements
-     */
-    public get labels(): ReadonlyArray<Node> {
-        if (supportsElementInternals) {
-            return Object.freeze(Array.from(this.elementInternals.labels));
-        } else if (
-            this.proxy instanceof HTMLElement &&
-            this.proxy.ownerDocument &&
-            this.id
-        ) {
-            // Labels associated by wrapping the element: <label><custom-element></custom-element></label>
-            const parentLabels = this.proxy.labels;
-            // Labels associated using the `for` attribute
-            const forLabels = Array.from(
-                (this.proxy.getRootNode() as HTMLDocument | ShadowRoot).querySelectorAll(
-                    `[for='${this.id}']`
-                )
-            );
-
-            const labels = parentLabels
-                ? forLabels.concat(Array.from(parentLabels))
-                : forLabels;
-
-            return Object.freeze(labels);
-        } else {
-            return emptyArray;
-        }
-    }
-
-    /**
-     * Track whether the value has been changed from the initial value
-     */
-    private dirtyValue: boolean = false;
-
-    /**
-     * Stores a reference to the slot element that holds the proxy
-     * element when it is appended.
-     */
-    private proxySlot: HTMLSlotElement | void;
-
-    /**
-     * The value of the element to be associated with the form.
-     */
-    @observable
-    public value: string;
-
-    /**
-     * Invoked when the `value` property changes
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `valueChanged` method
-     * They must be sure to invoke `super.valueChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected valueChanged(previous: string, next: string) {
-        this.dirtyValue = true;
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
-
-        this.setFormValue(this.value);
-        this.validate();
-    }
-
-    /**
-     * The initial value of the form. This value sets the `value` property
-     * only when the `value` property has not been explicitly set.
-     *
-     * @remarks
-     * HTML Attribute: value
-     */
-    @attr({ mode: "fromView", attribute: "value" })
-    protected initialValue: string = "";
-
-    /**
-     * Invoked when the `initialValue` property changes
-     *
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `initialValueChanged` method
-     * They must be sure to invoke `super.initialValueChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected initialValueChanged(previous: string, next: string) {
-        // If the value is clean and the component is connected to the DOM
-        // then set value equal to the attribute value.
-        if (!this.dirtyValue && this.$fastController.isConnected) {
-            this.value = this.initialValue;
-            this.dirtyValue = false;
-        }
-    }
-
-    /**
-     * Sets the element's disabled state. A disabled element will not be included during form submission.
-     *
-     * @remarks
-     * HTML Attribute: disabled
-     */
-    @attr({ mode: "boolean" })
-    public disabled: boolean = false;
-
-    /**
-     * Invoked when the `disabled` property changes
-     *
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `disabledChanged` method
-     * They must be sure to invoke `super.disabledChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected disabledChanged(previous: boolean, next: boolean): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.disabled = this.disabled;
-        }
-
-        DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
-    }
-
-    /**
-     * The name of the element. This element's value will be surfaced during form submission under the provided name.
-     *
-     * @remarks
-     * HTML Attribute: name
-     */
-    @attr
-    public name: string;
-
-    /**
-     * Invoked when the `name` property changes
-     *
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `nameChanged` method
-     * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected nameChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.name = this.name;
-        }
-    }
-
-    /**
-     * Require the field to be completed prior to form submission.
-     *
-     * @remarks
-     * HTML Attribute: required
-     */
-    @attr({ mode: "boolean" })
-    public required: boolean = false;
-
-    /**
-     * Invoked when the `required` property changes
-     *
-     * @param previous - the previous value
-     * @param next - the new value
-     *
-     * @remarks
-     * If elements extending `FormAssociated` implement a `requiredChanged` method
-     * They must be sure to invoke `super.requiredChanged(previous, next)` to ensure
-     * proper functioning of `FormAssociated`
-     */
-    protected requiredChanged(prev: boolean, next: boolean): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.required = this.required;
-        }
-
-        DOM.queueUpdate(() => this.classList.toggle("required", this.required));
-        this.validate();
-    }
-
-    /**
-     * The proxy element - this element serves as the communication layer with the parent form
-     * when form association is not supported by the browser.
-     */
-    protected abstract proxy: T;
-
-    /**
-     * The element internals object. Will only exist
-     * in browsers supporting the attachInternals API
-     */
-    protected elementInternals: ElementInternals;
-
-    /**
-     * These are events that are still fired by the proxy
-     * element based on user / programmatic interaction.
-     *
-     * The proxy implementation should be transparent to
-     * the app author, so block these events from emitting.
-     */
-    private proxyEventsToBlock = ["change", "click"];
-
-    constructor() {
-        super();
-
-        if (supportsElementInternals) {
-            this.elementInternals = (this as any).attachInternals();
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        if (!this.value) {
-            this.value = this.initialValue;
-            this.dirtyValue = false;
-        }
-
-        if (!supportsElementInternals) {
-            this.attachProxy();
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        this.proxyEventsToBlock.forEach(name =>
-            this.proxy.removeEventListener(name, this.stopPropagation)
-        );
-    }
-
-    /**
-     * Return the current validity of the element.
-     */
-    public checkValidity(): boolean {
-        return supportsElementInternals
-            ? this.elementInternals.checkValidity()
-            : this.proxy.checkValidity();
-    }
-
-    /**
-     * Return the current validity of the element.
-     * If false, fires an invalid event at the element.
-     */
-    public reportValidity(): boolean {
-        return supportsElementInternals
-            ? this.elementInternals.reportValidity()
-            : this.proxy.reportValidity();
-    }
-
-    /**
-     * Set the validity of the control. In cases when the elementInternals object is not
-     * available (and the proxy element is used to report validity), this function will
-     * do nothing unless a message is provided, at which point the setCustomValidity method
-     * of the proxy element will be invoked with the provided message.
-     * @param flags - Validity flags
-     * @param message - Optional message to supply
-     * @param anchor - Optional element used by UA to display an interactive validation UI
-     */
-    public setValidity(
-        flags: ValidityStateFlags,
-        message?: string,
-        anchor?: HTMLElement
-    ): void {
-        if (supportsElementInternals) {
-            this.elementInternals.setValidity(flags, message, anchor);
-        } else if (typeof message === "string") {
-            this.proxy.setCustomValidity(message);
-        }
-    }
-
-    /**
-     * Invoked when a connected component's form or fieldset has it's disabled
-     * state changed.
-     * @param disabled - the disabled value of the form / fieldset
-     */
-    public formDisabledCallback(disabled: boolean): void {
-        this.disabled = disabled;
-    }
-
-    public formResetCallback() {
-        this.value = this.initialValue;
-        this.dirtyValue = false;
-    }
-
-    private proxyInitialized: boolean = false;
-
-    /**
-     * Attach the proxy element to the DOM
-     */
-    protected attachProxy() {
-        if (!this.proxyInitialized) {
-            this.proxyInitialized = true;
-            this.proxy.style.display = "none";
-            this.proxyEventsToBlock.forEach(name =>
-                this.proxy.addEventListener(name, this.stopPropagation)
-            );
-
-            // These are typically mapped to the proxy during
-            // property change callbacks, but during initialization
-            // on the initial call of the callback, the proxy is
-            // still undefined. We should find a better way to address this.
-            this.proxy.disabled = this.disabled;
-            this.proxy.required = this.required;
-            if (typeof this.name === "string") {
-                this.proxy.name = this.name;
+/**
+ * Base function for providing Custom Element Form Association.
+ *
+ * @alpha
+ */
+export function FormAssociated<
+    T extends Constructable<
+        FASTElement &
+            HTMLElement & {
+                proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+                initialValueChanged?(previous, next): void;
+                valueChanged?(previous, next): void;
+                formResetCallback?(): void;
+                formDisabledCallback?(disabled: boolean): void;
             }
+    >
+>(BaseCtor: T): T {
+    const C = class extends BaseCtor {
+        /**
+         * The proxy element - this element serves as the communication layer with the parent form
+         * when form association is not supported by the browser.
+         */
+        public proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
-            if (typeof this.value === "string") {
+        /**
+         * Must evaluate to true to enable elementInternals.
+         * Feature detects API support and resolve respectively
+         *
+         * @internal
+         */
+        public static get formAssociated(): boolean {
+            return supportsElementInternals;
+        }
+
+        /**
+         * Returns the validity state of the element
+         */
+        public get validity(): ValidityState {
+            return supportsElementInternals
+                ? this.elementInternals!.validity
+                : this.proxy.validity;
+        }
+
+        /**
+         * Retrieve a reference to the associated form.
+         * Returns null if not associated to any form.
+         */
+        public get form(): HTMLFormElement | null {
+            return supportsElementInternals
+                ? this.elementInternals!.form
+                : this.proxy.form;
+        }
+
+        /**
+         * Retrieve the localized validation message,
+         * or custom validation message if set.
+         */
+        public get validationMessage(): string {
+            return supportsElementInternals
+                ? this.elementInternals!.validationMessage
+                : this.proxy.validationMessage;
+        }
+
+        /**
+         * Whether the element will be validated when the
+         * form is submitted
+         */
+        public get willValidate(): boolean {
+            return supportsElementInternals
+                ? this.elementInternals!.willValidate
+                : this.proxy.willValidate;
+        }
+
+        /**
+         * A reference to all associated label elements
+         */
+        public get labels(): ReadonlyArray<Node> {
+            if (supportsElementInternals) {
+                return Object.freeze(Array.from(this.elementInternals!.labels));
+            } else if (
+                this.proxy instanceof HTMLElement &&
+                this.proxy.ownerDocument &&
+                this.id
+            ) {
+                // Labels associated by wrapping the element: <label><custom-element></custom-element></label>
+                const parentLabels = this.proxy.labels;
+                // Labels associated using the `for` attribute
+                const forLabels = Array.from(
+                    (this.proxy.getRootNode() as
+                        | HTMLDocument
+                        | ShadowRoot).querySelectorAll(`[for='${this.id}']`)
+                );
+
+                const labels = parentLabels
+                    ? forLabels.concat(Array.from(parentLabels))
+                    : forLabels;
+
+                return Object.freeze(labels);
+            } else {
+                return emptyArray;
+            }
+        }
+
+        /**
+         * Track whether the value has been changed from the initial value
+         */
+        public dirtyValue: boolean = false;
+
+        /**
+         * Stores a reference to the slot element that holds the proxy
+         * element when it is appended.
+         */
+        private proxySlot: HTMLSlotElement | void;
+
+        /**
+         * The value of the element to be associated with the form.
+         */
+        public value: string;
+
+        /**
+         * Invoked when the `value` property changes
+         * @param previous - the previous value
+         * @param next - the new value
+         *
+         * @remarks
+         * If elements extending `FormAssociated` implement a `valueChanged` method
+         * They must be sure to invoke `super.valueChanged(previous, next)` to ensure
+         * proper functioning of `FormAssociated`
+         */
+        public valueChanged(previous: string, next: string) {
+            this.dirtyValue = true;
+
+            if (this.proxy instanceof HTMLElement) {
                 this.proxy.value = this.value;
             }
 
-            this.proxy.setAttribute("slot", proxySlotName);
+            this.setFormValue(this.value);
+            this.validate();
 
-            this.proxySlot = document.createElement("slot");
-            this.proxySlot.setAttribute("name", proxySlotName);
+            if (super.valueChanged) {
+                super.valueChanged(previous, next);
+            }
         }
 
-        this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
-        this.appendChild(this.proxy);
-    }
+        /**
+         * The initial value of the form. This value sets the `value` property
+         * only when the `value` property has not been explicitly set.
+         *
+         * @remarks
+         * HTML Attribute: value
+         */
+        protected initialValue: string;
 
-    /**
-     * Detach the proxy element from the DOM
-     */
-    protected detachProxy() {
-        this.removeChild(this.proxy);
-        this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
-    }
+        /**
+         * Invoked when the `initialValue` property changes
+         *
+         * @param previous - the previous value
+         * @param next - the new value
+         *
+         * @remarks
+         * If elements extending `FormAssociated` implement a `initialValueChanged` method
+         * They must be sure to invoke `super.initialValueChanged(previous, next)` to ensure
+         * proper functioning of `FormAssociated`
+         */
+        public initialValueChanged(previous: string, next: string) {
+            // If the value is clean and the component is connected to the DOM
+            // then set value equal to the attribute value.
+            if (!this.dirtyValue) {
+                this.value = this.initialValue;
+                this.dirtyValue = false;
+            }
 
-    /**
-     * Sets the validity of the custom element. By default this uses the proxy element to determine
-     * validity, but this can be extended or replaced in implementation.
-     */
-    protected validate() {
-        if (this.proxy instanceof HTMLElement) {
-            this.setValidity(this.proxy.validity, this.proxy.validationMessage);
+            if (super.initialValueChanged) {
+                super.initialValueChanged(previous, next);
+            }
         }
-    }
 
-    /**
-     * Associates the provided value (and optional state) with the parent form.
-     * @param value - The value to set
-     * @param state - The state object provided to during session restores and when autofilling.
-     */
-    protected setFormValue(
-        value: File | string | FormData | null,
-        state?: File | string | FormData | null
-    ): void {
-        if (supportsElementInternals && this.elementInternals) {
-            this.elementInternals.setFormValue(value, state || value);
+        /**
+         * Sets the element's disabled state. A disabled element will not be included during form submission.
+         *
+         * @remarks
+         * HTML Attribute: disabled
+         */
+        public disabled: boolean = false;
+
+        /**
+         * Invoked when the `disabled` property changes
+         *
+         * @param previous - the previous value
+         * @param next - the new value
+         *
+         * @remarks
+         * If elements extending `FormAssociated` implement a `disabledChanged` method
+         * They must be sure to invoke `super.disabledChanged(previous, next)` to ensure
+         * proper functioning of `FormAssociated`
+         */
+        public disabledChanged(previous: boolean, next: boolean): void {
+            if (this.proxy instanceof HTMLElement) {
+                this.proxy.disabled = this.disabled;
+            }
+
+            DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
         }
-    }
 
-    protected keypressHandler(e: KeyboardEvent): void {
-        switch (e.keyCode) {
-            case keyCodeEnter:
-                if (this.form instanceof HTMLFormElement) {
-                    // Implicit submission
-                    const defaultButton = this.form.querySelector(
-                        "[type=submit]"
-                    ) as HTMLElement | null;
-                    defaultButton?.click();
+        /**
+         * The name of the element. This element's value will be surfaced during form submission under the provided name.
+         *
+         * @remarks
+         * HTML Attribute: name
+         */
+        public name: string;
+
+        /**
+         * Invoked when the `name` property changes
+         *
+         * @param previous - the previous value
+         * @param next - the new value
+         *
+         * @remarks
+         * If elements extending `FormAssociated` implement a `nameChanged` method
+         * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
+         * proper functioning of `FormAssociated`
+         */
+        public nameChanged(): void {
+            if (this.proxy instanceof HTMLElement) {
+                this.proxy.name = this.name;
+            }
+        }
+
+        /**
+         * Require the field to be completed prior to form submission.
+         *
+         * @remarks
+         * HTML Attribute: required
+         */
+        public required: boolean;
+
+        /**
+         * Invoked when the `required` property changes
+         *
+         * @param previous - the previous value
+         * @param next - the new value
+         *
+         * @remarks
+         * If elements extending `FormAssociated` implement a `requiredChanged` method
+         * They must be sure to invoke `super.requiredChanged(previous, next)` to ensure
+         * proper functioning of `FormAssociated`
+         */
+        public requiredChanged(prev: boolean, next: boolean): void {
+            if (this.proxy instanceof HTMLElement) {
+                this.proxy.required = this.required;
+            }
+
+            DOM.queueUpdate(() => this.classList.toggle("required", this.required));
+            this.validate();
+        }
+
+        /**
+         * The element internals object. Will only exist
+         * in browsers supporting the attachInternals API
+         */
+        private get elementInternals(): ElementInternals | null {
+            if (!supportsElementInternals) {
+                return null;
+            }
+
+            let internals = InternalsMap.get(this);
+
+            if (!internals) {
+                internals = (this as any).attachInternals();
+                InternalsMap.set(this, internals);
+            }
+
+            return internals;
+        }
+
+        /**
+         * These are events that are still fired by the proxy
+         * element based on user / programmatic interaction.
+         *
+         * The proxy implementation should be transparent to
+         * the app author, so block these events from emitting.
+         */
+        protected proxyEventsToBlock = ["change", "click"];
+
+        constructor(...args: any[]) {
+            super(...args);
+
+            this.required = false;
+            this.initialValue = this.initialValue || "";
+        }
+
+        /**
+         * @internal
+         */
+        public connectedCallback(): void {
+            super.connectedCallback();
+
+            this.addEventListener("keypress", this._keypressHandler);
+
+            if (!this.value) {
+                this.value = this.initialValue;
+                this.dirtyValue = false;
+            }
+
+            if (!supportsElementInternals) {
+                this.attachProxy();
+            }
+        }
+
+        /**
+         * @internal
+         */
+        public disconnectedCallback(): void {
+            this.proxyEventsToBlock.forEach(name =>
+                this.proxy.removeEventListener(name, this.stopPropagation)
+            );
+        }
+
+        /**
+         * Return the current validity of the element.
+         */
+        public checkValidity(): boolean {
+            return supportsElementInternals
+                ? this.elementInternals!.checkValidity()
+                : this.proxy.checkValidity();
+        }
+
+        /**
+         * Return the current validity of the element.
+         * If false, fires an invalid event at the element.
+         */
+        public reportValidity(): boolean {
+            return supportsElementInternals
+                ? this.elementInternals!.reportValidity()
+                : this.proxy.reportValidity();
+        }
+
+        /**
+         * Set the validity of the control. In cases when the elementInternals object is not
+         * available (and the proxy element is used to report validity), this function will
+         * do nothing unless a message is provided, at which point the setCustomValidity method
+         * of the proxy element will be invoked with the provided message.
+         * @param flags - Validity flags
+         * @param message - Optional message to supply
+         * @param anchor - Optional element used by UA to display an interactive validation UI
+         */
+        public setValidity(
+            flags: ValidityStateFlags,
+            message?: string,
+            anchor?: HTMLElement
+        ): void {
+            if (supportsElementInternals) {
+                this.elementInternals!.setValidity(flags, message, anchor);
+            } else if (typeof message === "string") {
+                this.proxy.setCustomValidity(message);
+            }
+        }
+
+        /**
+         * Invoked when a connected component's form or fieldset has its disabled
+         * state changed.
+         * @param disabled - the disabled value of the form / fieldset
+         */
+        public formDisabledCallback(disabled: boolean): void {
+            this.disabled = disabled;
+        }
+
+        public formResetCallback() {
+            if (super.formResetCallback) {
+                return super.formResetCallback();
+            }
+
+            this.value = this.initialValue;
+            this.dirtyValue = false;
+        }
+
+        protected proxyInitialized: boolean = false;
+
+        /**
+         * Attach the proxy element to the DOM
+         */
+        protected attachProxy() {
+            if (!this.proxyInitialized) {
+                this.proxyInitialized = true;
+                this.proxy.style.display = "none";
+                this.proxyEventsToBlock.forEach(name =>
+                    this.proxy.addEventListener(name, this.stopPropagation)
+                );
+
+                // These are typically mapped to the proxy during
+                // property change callbacks, but during initialization
+                // on the initial call of the callback, the proxy is
+                // still undefined. We should find a better way to address this.
+                this.proxy.disabled = this.disabled;
+                this.proxy.required = this.required;
+                if (typeof this.name === "string") {
+                    this.proxy.name = this.name;
                 }
-                break;
-        }
-    }
 
-    /**
-     * Used to stop propagation of proxy element events
-     * @param e - Event object
-     */
-    private stopPropagation(e: Event): void {
-        e.stopPropagation();
-    }
+                if (typeof this.value === "string") {
+                    this.proxy.value = this.value;
+                }
+
+                this.proxy.setAttribute("slot", proxySlotName);
+
+                this.proxySlot = document.createElement("slot");
+                this.proxySlot.setAttribute("name", proxySlotName);
+            }
+
+            this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
+            this.appendChild(this.proxy);
+        }
+
+        /**
+         * Detach the proxy element from the DOM
+         */
+        public detachProxy() {
+            this.removeChild(this.proxy);
+            this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
+        }
+
+        /**
+         * Sets the validity of the custom element. By default this uses the proxy element to determine
+         * validity, but this can be extended or replaced in implementation.
+         */
+        public validate() {
+            if (this.proxy instanceof HTMLElement) {
+                this.setValidity(this.proxy.validity, this.proxy.validationMessage);
+            }
+        }
+
+        /**
+         * Associates the provided value (and optional state) with the parent form.
+         * @param value - The value to set
+         * @param state - The state object provided to during session restores and when autofilling.
+         */
+        public setFormValue(
+            value: File | string | FormData | null,
+            state?: File | string | FormData | null
+        ): void {
+            if (supportsElementInternals && this.elementInternals) {
+                this.elementInternals.setFormValue(value, state || value);
+            }
+        }
+
+        private _keypressHandler = (e: KeyboardEvent): void => {
+            switch (e.keyCode) {
+                case keyCodeEnter:
+                    if (this.form instanceof HTMLFormElement) {
+                        // Implicit submission
+                        const defaultButton = this.form.querySelector(
+                            "[type=submit]"
+                        ) as HTMLElement | null;
+                        defaultButton?.click();
+                    }
+                    break;
+            }
+        };
+
+        /**
+         * Used to stop propagation of proxy element events
+         * @param e - Event object
+         */
+        public stopPropagation(e: Event): void {
+            e.stopPropagation();
+        }
+    };
+
+    attr({ mode: "boolean" })(C.prototype, "disabled");
+    attr({ mode: "fromView", attribute: "value" })(C.prototype, "initialValue");
+    attr(C.prototype, "name");
+    attr({ mode: "boolean" })(C.prototype, "required");
+    observable(C.prototype, "value");
+
+    return C;
 }

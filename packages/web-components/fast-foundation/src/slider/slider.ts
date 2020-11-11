@@ -1,4 +1,9 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowDown,
@@ -10,12 +15,12 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
 import { getDirection } from "../utilities/";
 import { convertPixelToPercent } from "./slider-utilities";
 
 /**
- * The selection modes of a {@link Slider}
+ * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
  * @public
  */
 export enum SliderMode {
@@ -23,7 +28,7 @@ export enum SliderMode {
 }
 
 /**
- * The configuration structure of {@link Slider}.
+ * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.
  * @public
  */
 export interface SliderConfiguration {
@@ -34,14 +39,24 @@ export interface SliderConfiguration {
     disabled?: boolean;
 }
 
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        /**
+         * Proxy input element for {@link @microsoft/fast-foundation#(FormAssociated:function)}.
+         *
+         * @internal
+         */
+        public proxy: HTMLInputElement = document.createElement("input");
+    }
+);
+
 /**
- * An Switch Custom HTML Element.
+ * A Slider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
  *
  * @public
  */
-export class Slider extends FormAssociated<HTMLInputElement>
-    implements SliderConfiguration {
+export class Slider extends FormAssociated implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -123,11 +138,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public valueTextFormatter: (value: string) => string | null = () => null;
 
     /**
-     * The element's value to be included in form submission changed.
      * @internal
      */
-    protected valueChanged(previous: string, next: string): void {
-        super.valueChanged(previous, next);
+    public valueChanged(previous, next) {
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
@@ -206,8 +219,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
     @attr
     public mode: SliderMode = SliderMode.singleValue;
 
-    protected proxy = document.createElement("input");
-
     /**
      * @internal
      */
@@ -266,7 +277,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
     };
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        super.keypressHandler(e);
         if (e.keyCode !== keyCodeTab) {
             e.preventDefault();
         }
@@ -327,23 +337,25 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
     };
 
-    private setupDefaultValue = (): void => {
-        if (typeof this.value === "string") {
-            const midpoint = `${this.convertToConstrainedValue(
-                (this.max + this.min) / 2
-            )}`;
+    public initialValue: string = "";
 
+    private get midpoint(): string {
+        return `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
+    }
+
+    private setupDefaultValue(): void {
+        if (typeof this.value === "string") {
             if (this.value.length === 0) {
-                this.initialValue = midpoint;
+                this.initialValue = this.midpoint;
             } else {
                 const value = parseFloat(this.value);
 
                 if (!Number.isNaN(value) && (value < this.min || value > this.max)) {
-                    this.value = midpoint;
+                    this.value = this.midpoint;
                 }
             }
         }
-    };
+    }
 
     /**
      *  Handle mouse moves during a thumb drag operation
@@ -444,3 +456,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
         return constrainedValue + this.min;
     };
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface Slider extends _FormAssociated {}

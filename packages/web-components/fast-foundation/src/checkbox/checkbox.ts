@@ -1,14 +1,20 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        proxy: HTMLInputElement = document.createElement("input");
+    }
+);
 
 /**
- * A Switch Custom HTML Element.
+ * A Checkbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#checkbox | ARIA checkbox }.
  *
  * @public
  */
-export class Checkbox extends FormAssociated<HTMLInputElement> {
+export class Checkbox extends FormAssociated {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -29,7 +35,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on"; // Map to proxy element.
+    public initialValue: string = "on";
 
     /**
      * Provides the default checkedness of the input element
@@ -94,8 +100,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.validate();
     }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
-
     /**
      * The indeterminate state of the control
      */
@@ -131,7 +135,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
-    public formResetCallback() {
+    private formResetCallback(): void {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
     }
@@ -145,8 +149,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;
@@ -163,3 +165,11 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         }
     };
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface Checkbox extends _FormAssociated {}

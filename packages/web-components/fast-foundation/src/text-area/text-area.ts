@@ -1,18 +1,29 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import {
+    attr,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
 import { TextAreaResize } from "./text-area.options";
 
 export { TextAreaResize };
 
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        proxy: HTMLTextAreaElement = document.createElement("textarea");
+    }
+);
+
 /**
- * An Text Area Custom HTML Element.
+ * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
  * @public
  */
-export class TextArea extends FormAssociated<HTMLTextAreaElement> {
+export class TextArea extends FormAssociated {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -165,8 +176,6 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @observable
     public defaultSlottedNodes: Node[];
 
-    protected proxy: HTMLTextAreaElement = document.createElement("textarea");
-
     /**
      * @internal
      */
@@ -194,6 +203,5 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
-export interface TextArea extends DelegatesARIATextbox {}
+export interface TextArea extends _FormAssociated, DelegatesARIATextbox {}
 applyMixins(TextArea, DelegatesARIATextbox);

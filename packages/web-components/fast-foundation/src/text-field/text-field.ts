@@ -1,18 +1,30 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import {
+    attr,
+    DOM,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import { TextFieldType } from "./text-field.options";
 
 export { TextFieldType };
 
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        proxy: HTMLInputElement = document.createElement("input");
+    }
+);
+
 /**
- * An Text Field Custom HTML Element.
+ * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
  *
  * @public
  */
-export class TextField extends FormAssociated<HTMLInputElement> {
+export class TextField extends FormAssociated {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -173,8 +185,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
      */
     public control: HTMLInputElement;
 
-    protected proxy = document.createElement("input");
-
     /**
      * @internal
      */
@@ -190,14 +200,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
             });
         }
     }
-
-    /**
-     * @internal
-     */
-    public keypressHandler = (e: KeyboardEvent): boolean => {
-        super.keypressHandler(e);
-        return true;
-    };
 
     /**
      * Handles the internal control's `input` event
@@ -222,11 +224,10 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 }
 
 /**
- * Includes ARIA states and properties relating to the ARIA link role
+ * Includes ARIA states and properties relating to the ARIA textbox role
  *
  * @public
  */
-/* eslint-disable-next-line */
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
 
 /**
@@ -235,6 +236,5 @@ export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
-export interface TextField extends StartEnd, DelegatesARIATextbox {}
+export interface TextField extends _FormAssociated, StartEnd, DelegatesARIATextbox {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);

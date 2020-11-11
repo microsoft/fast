@@ -18,7 +18,7 @@ const defaultConfig: SliderConfiguration = {
 };
 
 /**
- * A label element intended to be used with the {@link @microsoft/fast-foundation#Slider} component.
+ * A label element intended to be used with the {@link @microsoft/fast-foundation#(Slider:class)} component.
  *
  * @public
  */
@@ -35,7 +35,7 @@ export class SliderLabel extends FASTElement {
     public root: HTMLDivElement;
 
     /**
-     * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#Slider}.
+     * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.
      * @public
      * HTML Attribute: position
      */
@@ -55,7 +55,7 @@ export class SliderLabel extends FASTElement {
     public hideMark: boolean = false;
 
     /**
-     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#Slider}.
+     * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.
      *
      * @public
      * HTML Attribute: disabled
@@ -68,7 +68,9 @@ export class SliderLabel extends FASTElement {
      */
     @observable
     public sliderOrientation: Orientation;
-    protected sliderOrientationChanged(): void {}
+    protected sliderOrientationChanged(): void {
+        void 0;
+    }
 
     /**
      * @internal

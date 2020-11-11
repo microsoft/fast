@@ -1,6 +1,12 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+
+const FormAssociated = _FormAssociated(
+    class extends FASTElement {
+        proxy: HTMLInputElement = document.createElement("input");
+    }
+);
 
 /**
  * A Switch Custom HTML Element.
@@ -8,7 +14,7 @@ import { FormAssociated } from "../form-associated/form-associated";
  *
  * @public
  */
-export class Switch extends FormAssociated<HTMLInputElement> {
+export class Switch extends FormAssociated {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -33,7 +39,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on";
+    public initialValue: string = "on";
 
     /**
      * The checked attribute value. This sets the initial checked value.
@@ -96,8 +102,6 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         this.validate();
     }
 
-    protected proxy = document.createElement("input");
-
     /**
      * Tracks whether the "checked" property has been changed.
      * This is necessary to provide consistent behavior with
@@ -130,8 +134,6 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent) => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;
@@ -148,3 +150,11 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         }
     };
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface Switch extends _FormAssociated {}
