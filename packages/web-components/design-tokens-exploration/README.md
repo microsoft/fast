@@ -28,4 +28,15 @@ element.designTokens;
 The above will resolve the FASTDesignTokenLibrary dependency to the designTokens property, however the element isn't connected to the DOM so the default registration will be resolved.
 **How can we invalidate that dependency** after DOM connection so that the DesignToken hierarchy is accurate?
 
-> This problem case has been addressed by the addition of re-resolution behavior to a new `DOMContainer` type and `createDOMInterface` functions. `createDOMInterface` can be provided flag to determine if the container should be re-resolved when element connection changes. It can also be provided a function that receives the previous and next resolved dependency values in case any reconciliation needs to happen when the value changes.
+> This issue is solved by emitting a change notification when the value updates after connection / disconnection. Any concerned implementation can attach a listener to
+the decorated property with `Observable.getNotifier(target).subscribe(...)`.
+
+### @microsoft/fast-element
+We'll need to change the notifier code so that a subscriber receives previous and next values when the `handleChange` is invoked. The signature should become:
+
+```ts
+interface Subscriber<T> {
+    // We should probably enhance the type so source isn't `any` and key exists in source
+    handleChange(source: any, key: string, previous: T, next: T): void; 
+}
+```
