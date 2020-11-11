@@ -16,6 +16,12 @@ interface DesignTokenLibrary<T extends {}> {
     set<K extends keyof T>(key: K, value: T[K]);
 
     /**
+     * Determines if a value exists in the library for a provided key.
+     * @param key The key for which to check if a value exists.
+     */
+    has<K extends keyof T>(key: K): boolean; // TODO can we get some type-guarding here so TS knows T[K] exists?
+
+    /**
      * Deletes a value from an instance.
      *
      * @param key - The key for which to delete the value
@@ -52,6 +58,12 @@ interface InheritableDesignTokenLibrary<T extends {}> extends DesignTokenLibrary
      * @param keys  - the keys that were changed
      */
     handleChange<K extends keyof T>(source, keys: Array<K>): void;
+
+    /**
+     * Determines if a value exists locally in the library for a provided key.
+     * @param key The key for which to check if a local value exists.
+     */
+    hasLocal<K extends keyof T>(key: K): boolean; // TODO can we get some type-guarding here so TS knows T[K] exists?
 }
 
 export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<T> {
@@ -61,11 +73,11 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
     /**
      * {@inheritdoc InheritableDesignTokenLibrary.upstream}
      */
-    public get upstream(): DesignTokenLibrary<T> | null {
+    public get upstream(): InheritableDesignTokenLibrary<T> | null {
         return this.#upstream;
     }
 
-    public set upstream(target: DesignTokenLibrary<T> | null) {
+    public set upstream(target: InheritableDesignTokenLibrary<T> | null) {
         const prev = this.#upstream;
         this.#upstream = target;
 
@@ -78,7 +90,7 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
         }
     }
 
-    #upstream: DesignTokenLibrary<T> | null = null;
+    #upstream: InheritableDesignTokenLibrary<T> | null = null;
 
     /**
      *
@@ -127,6 +139,22 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
         if (prev !== value) {
             this.notifyAll([key]);
         }
+    }
+
+    /**
+     * {@inheritdoc DesignTokenLibrary.has}
+     */
+    public has<K extends keyof T>(key: K): boolean {
+        return (
+            this.hasLocal(key) || (this.upstream ? this.upstream.hasLocal(key) : false)
+        );
+    }
+
+    /**
+     * {@inheritdoc InheritableDesignTokenLibrary.hasLocal}
+     */
+    public hasLocal<K extends keyof T>(key: K): boolean {
+        return this.#local.has(key);
     }
 
     /**
