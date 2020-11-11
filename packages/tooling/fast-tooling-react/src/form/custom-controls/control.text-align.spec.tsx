@@ -15,7 +15,7 @@ configure({ adapter: new Adapter() });
 
 const textAlignControlProps: TextAlignControlProps = {
     type: ControlType.select,
-    options: ["left", "center", "right"],
+    options: ["left", "center", "right", "justify"],
     dataLocation: "",
     navigationConfigId: "",
     dictionaryId: "",
@@ -41,6 +41,7 @@ const managedClasses: TextAlignControlClassNameContract = {
     textAlignControl_input__right: "textAlignControl_input__right",
     textAlignControl_input__center: "textAlignControl_input__center",
     textAlignControl_input__left: "textAlignControl_input__left",
+    textAlignControl_input__justify: "textAlignControl_input__justify",
 };
 
 describe("TextAlignControl", () => {

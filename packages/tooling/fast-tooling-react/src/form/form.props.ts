@@ -133,6 +133,7 @@ export interface FormStrings {
     textAlignLeftLabel: string;
     textAlignCenterLabel: string;
     textAlignRightLabel: string;
+    textAlignJustifyLabel: string;
     themeLightLabel: string;
     themeDarkLabel: string;
     constValueLabel: string;

@@ -9,6 +9,7 @@ enum Direction {
     Left = "left",
     Center = "center",
     Right = "right",
+    Justify = "justify",
 }
 
 /**
@@ -37,6 +38,7 @@ class TextAlignControl extends React.Component<
                 {this.renderInput(Direction.Left)}
                 {this.renderInput(Direction.Center)}
                 {this.renderInput(Direction.Right)}
+                {this.renderInput(Direction.Justify)}
             </div>
         );
     }
@@ -60,6 +62,8 @@ class TextAlignControl extends React.Component<
                 return this.props.managedClasses.textAlignControl_input__center;
             case Direction.Right:
                 return this.props.managedClasses.textAlignControl_input__right;
+            case Direction.Justify:
+                return this.props.managedClasses.textAlignControl_input__justify;
         }
     }
 
@@ -71,6 +75,8 @@ class TextAlignControl extends React.Component<
                 return this.props.strings.textAlignCenterLabel;
             case Direction.Right:
                 return this.props.strings.textAlignRightLabel;
+            case Direction.Justify:
+                return this.props.strings.textAlignJustifyLabel;
         }
     }
 
