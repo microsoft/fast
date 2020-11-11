@@ -14,7 +14,4 @@ export const DefaultDesignTokens = new FASTDesignTokenLibrary<DesignTokenConfig>
 );
 export const DesignTokens = DI.createDOMInterface<
     FASTDesignTokenLibrary<DesignTokenConfig>
->({
-    friendlyName: "DesignTokens",
-    resolveOnConnectionChange: (wasConnected, isConnected) => isConnected,
-}).withDefault(x => x.instance(DefaultDesignTokens));
+>("DesignTokens").withDefault(x => x.instance(DefaultDesignTokens));
