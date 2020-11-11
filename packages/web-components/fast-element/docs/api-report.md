@@ -364,7 +364,7 @@ export interface NodeBehaviorOptions<T = any> {
 
 // @public
 export interface Notifier {
-    notify(args: any): void;
+    notify(property: string, ...args: any[]): void;
     readonly source: any;
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
@@ -402,7 +402,7 @@ export interface PartialFASTElementDefinition {
 // @public
 export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
-    notify(propertyName: string): void;
+    notify(propertyName: string, ...args: any[]): void;
     readonly source: any;
     subscribe(subscriber: Subscriber, propertyToWatch: string): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
@@ -474,14 +474,14 @@ export interface StyleTarget {
 
 // @public
 export interface Subscriber {
-    handleChange(source: any, args: any): void;
+    handleChange(source: any, ...args: any): void;
 }
 
 // @public
 export class SubscriberSet implements Notifier {
     constructor(source: any, initialSubscriber?: Subscriber);
     has(subscriber: Subscriber): boolean;
-    notify(args: any): void;
+    notify(...args: any): void;
     readonly source: any;
     subscribe(subscriber: Subscriber): void;
     unsubscribe(subscriber: Subscriber): void;
