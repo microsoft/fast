@@ -338,7 +338,7 @@ export class DataGrid extends FASTElement {
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
-        const rows: Element[] = Array.from(this.querySelectorAll('[role="row"]'));
+        const rows: Element[] = Array.from(this.getRows());
         this.focusRowIndex = rows.indexOf(e.target as Element);
         this.focusColumnIndex = focusRow.focusColumnIndex;
         this.isUpdatingFocus = false;
@@ -348,7 +348,7 @@ export class DataGrid extends FASTElement {
      * @internal
      */
     public handleFocus(e: FocusEvent): void {
-        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, true);
     }
 
     /**
@@ -358,60 +358,136 @@ export class DataGrid extends FASTElement {
         if (e.defaultPrevented) {
             return;
         }
+
+        let newFocusRowIndex: number;
+        const rows: NodeListOf<Element> = this.getRows();
+
         switch (e.keyCode) {
             case keyCodeArrowUp:
-                // focus up one row
-                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex);
                 e.preventDefault();
+                // focus up one row
+                this.focusOnCell(
+                    this.focusRowIndex - 1,
+                    this.focusColumnIndex,
+                    true,
+                    rows
+                );
                 break;
 
             case keyCodeArrowDown:
-                // focus down one row
-                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex);
                 e.preventDefault();
+                // focus down one row
+                this.focusOnCell(
+                    this.focusRowIndex + 1,
+                    this.focusColumnIndex,
+                    true,
+                    rows
+                );
                 break;
 
             case keyCodePageUp:
-                // TODO: focus up one "page"
                 e.preventDefault();
+                if (rows.length === 0) {
+                    this.focusOnCell(0, 0, false, rows);
+                    break;
+                }
+
+                // TODO: focus up one "page"
+                if (this.focusRowIndex === 0) {
+                    this.focusOnCell(0, this.focusColumnIndex, false, rows);
+                    return;
+                }
+
+                newFocusRowIndex = this.focusRowIndex - 1;
+
+                for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
+                    let thisRow: HTMLElement = rows[newFocusRowIndex] as HTMLElement;
+                    if (thisRow.offsetTop < this.scrollTop) {
+                        this.scrollTop =
+                            thisRow.offsetTop + thisRow.clientHeight - this.clientHeight;
+                        break;
+                    }
+                }
+
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false, rows);
                 break;
 
             case keyCodePageDown:
-                //TODO: focus down one "page"
                 e.preventDefault();
+                if (rows.length === 0) {
+                    this.focusOnCell(0, 0, false);
+                    break;
+                }
+
+                // focus down one "page"
+                const maxIndex = rows.length - 1;
+                const currentGridBottom: number = this.offsetHeight + this.scrollTop;
+                const lastRow: HTMLElement = rows[maxIndex] as HTMLElement;
+
+                if (
+                    this.focusRowIndex >= maxIndex ||
+                    lastRow.offsetTop + lastRow.offsetHeight <= currentGridBottom
+                ) {
+                    this.focusOnCell(maxIndex, this.focusColumnIndex, false, rows);
+                    return;
+                }
+
+                newFocusRowIndex = this.focusRowIndex + 1;
+
+                for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
+                    let thisRow: HTMLElement = rows[newFocusRowIndex] as HTMLElement;
+                    if (thisRow.offsetTop + thisRow.offsetHeight > currentGridBottom) {
+                        let stickyHeaderOffset: number = 0;
+                        if (
+                            this.generateHeader === GenerateHeaderOptions.sticky &&
+                            this.generatedHeader !== null
+                        ) {
+                            stickyHeaderOffset = this.generatedHeader.clientHeight;
+                        }
+                        this.scrollTop = thisRow.offsetTop - stickyHeaderOffset;
+                        break;
+                    }
+                }
+
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false, rows);
+
                 break;
 
             case keyCodeHome:
                 if (e.ctrlKey) {
-                    // focus first cell of first row
-                    this.focusOnCell(0, 0);
                     e.preventDefault();
+                    // focus first cell of first row
+                    this.focusOnCell(0, 0, true, rows);
                 }
                 break;
+
             case keyCodeEnd:
                 if (e.ctrlKey && this.columnDefinitions !== null) {
+                    e.preventDefault();
                     // focus last cell of last row
-                    const rows: NodeListOf<Element> = this.querySelectorAll(
-                        '[role="row"]'
-                    );
                     this.focusOnCell(
                         rows.length - 1,
                         this.columnDefinitions.length - 1,
+                        true,
                         rows
                     );
-                    e.preventDefault();
                 }
                 break;
         }
     }
 
+    private getRows = (): NodeListOf<Element> => {
+        return this.querySelectorAll('[role="row"]');
+    };
+
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
+        scrollIntoView: boolean,
         rows?: NodeListOf<Element>
     ): void => {
         if (rows === undefined) {
-            rows = this.querySelectorAll('[role="row"]');
+            rows = this.getRows();
         }
 
         if (
@@ -433,14 +509,19 @@ export class DataGrid extends FASTElement {
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 
-        (cells[focusColumnIndex] as HTMLElement).focus();
+        const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
 
-        // try to center focused row so it isn't hidden by a sticky header
-        (cells[focusColumnIndex] as HTMLElement).scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "center",
-        });
+        if (
+            scrollIntoView &&
+            this.scrollHeight !== this.clientHeight &&
+            ((focusRowIndex < this.focusRowIndex && this.scrollTop > 0) ||
+                (focusRowIndex > this.focusRowIndex &&
+                    this.scrollTop < this.scrollHeight - this.clientHeight))
+        ) {
+            focusTarget.scrollIntoView({ block: "center", inline: "center" });
+        }
+
+        focusTarget.focus();
     };
 
     private queueFocusUpdate(): void {
@@ -458,7 +539,7 @@ export class DataGrid extends FASTElement {
 
     private updateFocus(): void {
         this.pendingFocusUpdate = false;
-        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex);
+        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, true);
     }
 
     private toggleGeneratedHeader(): void {
@@ -517,7 +598,7 @@ export class DataGrid extends FASTElement {
     };
 
     private updateRowIndexes = (): void => {
-        const rows: NodeListOf<Element> = this.querySelectorAll('[role="row"]');
+        const rows: NodeListOf<Element> = this.getRows();
 
         const newGridTemplateColumns =
             this.gridTemplateColumns === undefined
