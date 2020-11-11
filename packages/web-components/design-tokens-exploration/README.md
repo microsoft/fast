@@ -11,6 +11,7 @@ This repo explores cascading design-token infrastructure platformed off dependen
 - [ ] ElementStyles can declare dependencies on color recipes.
 - [ ] Color recipes can declare dependencies on DesignTokens.
 - [ ] Color recipes emit CSSStyleSheet instances that can get attached.
+- [ ] Design tokens can be set through HTML attributes and DOM properties
 
 ### P2
 - [ ] Can get access to read only design tokens using class decorator or property decorator.

@@ -7,10 +7,4 @@ import { CardTemplate } from "./card.template";
     name: "fast-card",
     template: CardTemplate,
 })
-export class FASTCard extends DesignTokenProvider(Card) {
-    constructor() {
-        super();
-
-        console.log(this.designTokens);
-    }
-}
+export class FASTCard extends DesignTokenProvider(Card) {}
