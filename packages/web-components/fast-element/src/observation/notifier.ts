@@ -8,7 +8,7 @@ export interface Subscriber {
      * @param source - The source of the change.
      * @param args - The event args detailing the change that occurred.
      */
-    handleChange(source: any, args: any): void;
+    handleChange(source: any, ...args: any): void;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface Notifier {
      * In some implementations, the args may be used to target specific subscribers.
      * This is usually in the case where a propertyName was passed during subscription.
      */
-    notify(args: any): void;
+    notify(property: string, ...args: any[]): void;
 
     /**
      * Subscribes to notification of changes in an object's state.
@@ -164,17 +164,17 @@ export class SubscriberSet implements Notifier {
      * Notifies all subscribers.
      * @param args - Data passed along to subscribers during notification.
      */
-    public notify(args: any): void {
+    public notify(...args: any): void {
         const sub1 = this.sub1;
         const sub2 = this.sub2;
         const source = this.source;
 
         if (sub1 !== void 0) {
-            sub1.handleChange(source, args);
+            sub1.handleChange(source, ...args);
         }
 
         if (sub2 !== void 0) {
-            sub2.handleChange(source, args);
+            sub2.handleChange(source, ...args);
         }
     }
 }
@@ -204,11 +204,11 @@ export class PropertyChangeNotifier implements Notifier {
      * Notifies all subscribers, based on the specified property.
      * @param propertyName - The property name, passed along to subscribers during notification.
      */
-    public notify(propertyName: string): void {
+    public notify(propertyName: string, ...args: any[]): void {
         const subscribers = this.subscribers[propertyName];
 
         if (subscribers !== void 0) {
-            subscribers.notify(propertyName);
+            subscribers.notify(propertyName, ...args);
         }
     }
 

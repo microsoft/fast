@@ -2,7 +2,14 @@
  * Big thanks to https://github.com/EisenbergEffect and the https://github.com/aurelia/aurelia project
  * for this code.
  */
-import { Controller, emptyArray, FASTElement, Observable } from "@microsoft/fast-element";
+import {
+    Accessor,
+    Controller,
+    emptyArray,
+    FASTElement,
+    observable,
+    Observable,
+} from "@microsoft/fast-element";
 import { Class, Constructable } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
@@ -271,14 +278,6 @@ function domParentLocator(element: HTMLElement): Container {
     return event.detail.container || DI.getOrCreateDOMContainer();
 }
 
-export interface DOMInterfaceConfiguration<K> {
-    friendlyName?: string;
-    resolveOnConnectionChange?:
-        | boolean
-        | ((wasConnected: boolean, isConnected: boolean) => boolean);
-    valueChanged?: (previous: K, next: K) => void;
-}
-
 export const DI = Object.freeze({
     createContainer(): Container {
         return new ContainerImpl(null, () => null);
@@ -357,11 +356,9 @@ export const DI = Object.freeze({
         return Interface;
     },
     createDOMInterface<K extends Key>(
-        config: DOMInterfaceConfiguration<K> = {}
+        friendlyName: string = defaultFriendlyName
     ): DefaultableInterfaceSymbol<K, HTMLElement & FASTElement> {
         type T = HTMLElement & FASTElement;
-        const friendlyName = config?.friendlyName || defaultFriendlyName;
-        const { resolveOnConnectionChange, valueChanged } = config;
 
         const Interface: InternalDefaultableInterfaceSymbol<K> = function (
             target: Injectable<T>,
@@ -387,38 +384,27 @@ export const DI = Object.freeze({
                             value = container.get(Interface);
                             this[diPropertyKey] = value;
 
-                            if (resolveOnConnectionChange) {
-                                const shouldReResolve =
-                                    typeof resolveOnConnectionChange === "function"
-                                        ? resolveOnConnectionChange
-                                        : () => true;
-                                const notifier = Observable.getNotifier(
-                                    this.$fastController
-                                );
-                                const handleChange = (
-                                    source: Controller,
-                                    key: "isConnected"
-                                ): void => {
-                                    if (shouldReResolve(!source[key], source[key])) {
-                                        const newContainer = domParentLocator(this);
-                                        const newValue = newContainer.get(
-                                            Interface
-                                        ) as any;
-                                        const oldValue = this[diPropertyKey];
+                            const notifier = Observable.getNotifier(this.$fastController);
+                            const handleChange = (
+                                source: Controller,
+                                key: "isConnected"
+                            ): void => {
+                                const newContainer = domParentLocator(this);
+                                const newValue = newContainer.get(Interface) as any;
+                                const oldValue = this[diPropertyKey];
 
-                                        if (newValue !== oldValue) {
-                                            if (valueChanged) {
-                                                valueChanged(oldValue, newValue);
-                                                this[diPropertyKey] = value;
-                                            }
-                                        }
-                                    }
-                                };
+                                if (newValue !== oldValue) {
+                                    this[diPropertyKey] = value;
+                                    Observable.getNotifier(this).notify(
+                                        property,
+                                        oldValue,
+                                        newValue
+                                    );
+                                }
+                            };
 
-                                notifier.subscribe({ handleChange }, "isConnected");
-                            }
+                            notifier.subscribe({ handleChange }, "isConnected");
                         }
-
                         return value;
                     },
                 });
