@@ -133,7 +133,7 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
      * {@inheritdoc DesignTokenLibrary.set}
      */
     public set<K extends keyof T>(key: K, value: T[K]): void {
-        const prev = this.get(key);
+        const prev = this.get(key) || undefined;
         this.#local.set(key, value);
 
         if (prev !== value) {
@@ -161,7 +161,7 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
      * {@inheritdoc DesignTokenLibrary.delete}
      */
     public delete<K extends keyof T>(key: K): void {
-        const prev = this.get(key);
+        const prev = this.get(key) || undefined;
         this.#local.delete(key);
 
         if (this.get(key) !== prev) {
@@ -202,7 +202,7 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
     /**
      * Notifies all subscribers of a change to all the provided keys
      */
-    private notifyAll<K extends keyof T>(keys: Array<K>) {
+    private notifyAll<K extends keyof T>(keys: K[]) {
         if (this.#subscribers.size) {
             this.#subscribers.forEach(x => {
                 x.handleChange(this, keys);
