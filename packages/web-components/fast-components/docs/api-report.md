@@ -266,8 +266,6 @@ export class FASTBreadcrumbItem extends BreadcrumbItem {
 export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
-    appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
-    // (undocumented)
     connectedCallback(): void;
 }
 
@@ -517,6 +515,8 @@ export class FASTSlider extends Slider {
 
 // @public
 export class FASTSliderLabel extends SliderLabel {
+    // (undocumented)
+    protected sliderOrientationChanged(): void;
 }
 
 // @public
@@ -539,16 +539,12 @@ export class FASTTabs extends Tabs {
 export class FASTTextArea extends TextArea {
     appearance: TextAreaAppearance;
     // @internal (undocumented)
-    appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
-    // @internal (undocumented)
     connectedCallback(): void;
 }
 
 // @public
 export class FASTTextField extends TextField {
     appearance: TextFieldAppearance;
-    // @internal (undocumented)
-    appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;
 }
