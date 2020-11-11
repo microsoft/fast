@@ -173,6 +173,7 @@ class Dictionary extends React.Component<
                                     displayValidationBrowserDefault={
                                         this.props.displayValidationBrowserDefault
                                     }
+                                    strings={this.props.strings}
                                 />
                             </div>
                         </React.Fragment>

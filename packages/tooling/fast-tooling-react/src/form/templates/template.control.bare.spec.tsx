@@ -16,6 +16,7 @@ import {
     SelectControl,
     TextareaControl,
 } from "../controls";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -79,6 +80,7 @@ const props: BareControlTemplateProps = {
         [ControlType.textarea]: null,
     },
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

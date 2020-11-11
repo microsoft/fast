@@ -1,3 +1,5 @@
+import { FormStrings } from "../form.props";
+
 export interface ConstValueProps {
     /**
      * The class name
@@ -14,4 +16,9 @@ export interface ConstValueProps {
      * The disabled state
      */
     disabled: boolean;
+
+    /**
+     * Localized strings
+     */
+    strings: FormStrings;
 }

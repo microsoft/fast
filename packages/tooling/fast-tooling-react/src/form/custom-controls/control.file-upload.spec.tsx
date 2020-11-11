@@ -5,6 +5,7 @@ import { FileUploadControl } from "./control.file-upload";
 import { FileUploadControl as StyledFileUploadControl } from "./control.file-upload";
 import { FileUploadControlProps } from "./control.file-upload.props";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -27,6 +28,7 @@ const fileUploadControlProps: FileUploadControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 
