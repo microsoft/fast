@@ -5,6 +5,7 @@ import { NumberFieldControl } from "./control.number-field";
 import { NumberFieldControlProps } from "./control.number-field.props";
 import { NumberFieldControlClassNameContract } from "./control.number-field.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -36,6 +37,7 @@ const numberFieldProps: NumberFieldControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

@@ -25,12 +25,14 @@ import {
     FormClassNameContract,
     FormProps,
     FormState,
+    FormStrings,
 } from "./form.props";
 import { cloneDeep, get } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
 import styles from "./form.style";
+import defaultStrings from "./form.strings";
 import { classNames } from "@microsoft/fast-web-utilities";
 import {
     MessageSystemDataTypeAction,
@@ -85,6 +87,7 @@ class Form extends React.Component<
     } = {};
 
     private messageSystemConfig: Register;
+    private strings: FormStrings = defaultStrings;
 
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
@@ -99,6 +102,10 @@ class Form extends React.Component<
 
         if (props.messageSystem !== undefined) {
             props.messageSystem.add(this.messageSystemConfig);
+        }
+
+        if (!!props.strings) {
+            this.strings = props.strings;
         }
 
         this.state = {
@@ -455,6 +462,7 @@ class Form extends React.Component<
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             messageSystem: this.props.messageSystem,
+            strings: this.strings,
             messageSystemOptions: this.state.options,
         });
 

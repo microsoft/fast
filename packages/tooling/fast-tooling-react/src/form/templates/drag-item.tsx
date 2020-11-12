@@ -26,6 +26,7 @@ const DragItem: React.FC<DragItemProps> = ({
     dropDragItem,
     dragStart,
     dragEnd,
+    strings,
 }: React.PropsWithChildren<DragItemProps>): React.ReactElement => {
     const drag: [
         unknown,
@@ -74,7 +75,7 @@ const DragItem: React.FC<DragItemProps> = ({
             return (
                 <button
                     className={itemRemoveClassName}
-                    aria-label={"Select to remove item"}
+                    aria-label={strings.dragItemRemoveItem}
                     onClick={removeDragItem(ArrayAction.remove, itemIndex)}
                 />
             );

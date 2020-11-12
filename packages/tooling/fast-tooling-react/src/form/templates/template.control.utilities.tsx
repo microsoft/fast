@@ -70,6 +70,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
                     className={className}
                     disabled={this.props.disabled}
                     onChange={this.handleSetConstValue}
+                    strings={this.props.strings}
                 />
             );
         }
@@ -89,6 +90,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
                     className={className}
                     disabled={this.props.disabled}
                     onChange={this.handleSetDefaultValue}
+                    strings={this.props.strings}
                 />
             );
         }
@@ -213,6 +215,7 @@ abstract class ControlTemplateUtilities<P, S> extends React.Component<
             controlPlugins: this.props.controlPlugins,
             untitled: this.props.untitled,
             messageSystem: this.props.messageSystem,
+            strings: this.props.strings,
             messageSystemOptions: this.props.messageSystemOptions,
         };
     }

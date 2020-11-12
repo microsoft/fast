@@ -5,6 +5,7 @@ import { SectionLinkControl } from "./control.section-link";
 import { SectionLinkControlProps } from "./control.section-link.props";
 import { SectionLinkControlClassNameContract } from "./control.section-link.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -38,6 +39,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

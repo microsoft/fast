@@ -6,6 +6,7 @@ import { TextAlignControl } from "./control.text-align";
 import { TextAlignControlProps } from "./control.text-align.props";
 import { TextAlignControlClassNameContract } from "./control.text-align.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -29,6 +30,7 @@ const textAlignControlProps: TextAlignControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

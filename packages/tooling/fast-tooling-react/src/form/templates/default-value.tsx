@@ -16,7 +16,7 @@ class DefaultValue extends React.Component<DefaultValueProps, {}> {
                     fill={"none"}
                     xmlns={"http://www.w3.org/2000/svg"}
                 >
-                    <title>This is the default value, click to set it as the value</title>
+                    <title>{this.props.strings.defaultValueLabel}</title>
                     <path
                         fillRule="evenodd"
                         clipRule="evenodd"

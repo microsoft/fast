@@ -149,7 +149,7 @@ class FileUploadControl extends React.Component<
                 <img
                     key={"thumbnail"}
                     src={this.props.value}
-                    alt={"Image upload thumbnail"}
+                    alt={this.props.strings.fileUploadPreviewAlt}
                 />
             ) : null,
             <input
@@ -160,14 +160,16 @@ class FileUploadControl extends React.Component<
                 onChange={this.handleInputOnChange}
             />,
             <p key={"info"}>
-                Drag your asset here or{" "}
-                <label htmlFor={this.fileId}>browse your files.</label>
+                {this.props.strings.fileUploadDragInstr}{" "}
+                <label htmlFor={this.fileId}>
+                    {this.props.strings.fileUploadBrowseFiles}
+                </label>
             </p>,
         ];
     }
 
     private generateProcessingUI(): JSX.Element {
-        return <p>Uploading...</p>;
+        return <p>{this.props.strings.fileUploadUploading}</p>;
     }
 }
 
