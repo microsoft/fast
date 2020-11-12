@@ -12,6 +12,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { Subscriber } from '@microsoft/fast-element';
 
 // @public
 export class Accordion extends FASTElement {
@@ -225,6 +226,29 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
 
+// @public (undocumented)
+export interface Container extends ServiceLocator {
+    // (undocumented)
+    createChild(): Container;
+    // (undocumented)
+    getFactory<T extends Constructable>(key: T): Factory<T> | null;
+    // (undocumented)
+    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
+    // (undocumented)
+    register(...params: any[]): Container;
+    // Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
+    // (undocumented)
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
+    // (undocumented)
+    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+}
+
+// @public (undocumented)
+export const Container: InterfaceSymbol<Container, any>;
+
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
@@ -245,6 +269,16 @@ export function cssCustomPropertyBehaviorFactory(name: string, value: string | (
 export interface CSSCustomPropertyDefinition {
     name: string;
     value: string | ((...args: any[]) => string);
+}
+
+// @public
+export const CSSCustomPropertyManager: InterfaceSymbol<Key, any>;
+
+// @public (undocumented)
+export interface CSSCustomPropertyManagerInterface {
+    alias(key: string, name: string): void;
+    get(key: string, value: any): ElementStyles;
+    name(key: string): string;
 }
 
 // @public
@@ -285,6 +319,17 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     cssCustomProperty?: string | false;
     default: any;
 }
+
+// @public (undocumented)
+export interface DefaultableInterfaceSymbol<Key, Type = any> extends InterfaceSymbol<Key, Type> {
+    // (undocumented)
+    noDefault(): InterfaceSymbol<Key, Type>;
+    // (undocumented)
+    withDefault(configure: (builder: ResolverBuilder<Key>) => Resolver<Key>): InterfaceSymbol<Key, Type>;
+}
+
+// @public (undocumented)
+export const DefaultDesignTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
 
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
@@ -354,6 +399,300 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
+// @public (undocumented)
+export interface DesignTokenConfig {
+    // (undocumented)
+    backgroundColor: string;
+}
+
+// @public (undocumented)
+export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
+    new (...args: any[]): {
+        designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
+        customPropertyManager: FASTCustomPropertyManager;
+        localSheets: Map<string, ElementStyles>;
+        connectedCallback(): void;
+        handleChange(source: FASTDesignTokenLibrary<DesignTokenConfig>, keys: Array<keyof DesignTokenConfig>): void;
+        readonly $fastController: import("@microsoft/fast-element").Controller;
+        $emit(type: string, detail?: any, options?: Pick<CustomEventInit<any>, "bubbles" | "cancelable" | "composed"> | undefined): boolean | void;
+        disconnectedCallback(): void;
+        attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+        accessKey: string;
+        readonly accessKeyLabel: string;
+        autocapitalize: string;
+        dir: string;
+        draggable: boolean;
+        hidden: boolean;
+        innerText: string;
+        lang: string;
+        readonly offsetHeight: number;
+        readonly offsetLeft: number;
+        readonly offsetParent: Element | null;
+        readonly offsetTop: number;
+        readonly offsetWidth: number;
+        spellcheck: boolean;
+        title: string;
+        translate: boolean;
+        click(): void;
+        addEventListener<K extends "waiting" | "error" | "abort" | "cancel" | "progress" | "ended" | "input" | "select" | "fullscreenchange" | "fullscreenerror" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "focus" | "focusin" | "focusout" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "selectionchange" | "selectstart" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "wheel" | "copy" | "cut" | "paste">(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions | undefined): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined): void;
+        removeEventListener<K_1 extends "waiting" | "error" | "abort" | "cancel" | "progress" | "ended" | "input" | "select" | "fullscreenchange" | "fullscreenerror" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "blur" | "canplay" | "canplaythrough" | "change" | "click" | "close" | "contextmenu" | "cuechange" | "dblclick" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "focus" | "focusin" | "focusout" | "gotpointercapture" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "lostpointercapture" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pause" | "play" | "playing" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "ratechange" | "reset" | "resize" | "scroll" | "securitypolicyviolation" | "seeked" | "seeking" | "selectionchange" | "selectstart" | "stalled" | "submit" | "suspend" | "timeupdate" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "volumechange" | "wheel" | "copy" | "cut" | "paste">(type: K_1, listener: (this: HTMLElement, ev: HTMLElementEventMap[K_1]) => any, options?: boolean | EventListenerOptions | undefined): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions | undefined): void;
+        readonly assignedSlot: HTMLSlotElement | null;
+        readonly attributes: NamedNodeMap;
+        readonly classList: DOMTokenList;
+        className: string;
+        readonly clientHeight: number;
+        readonly clientLeft: number;
+        readonly clientTop: number;
+        readonly clientWidth: number;
+        id: string;
+        readonly localName: string;
+        readonly namespaceURI: string | null;
+        onfullscreenchange: ((this: Element, ev: Event) => any) | null;
+        onfullscreenerror: ((this: Element, ev: Event) => any) | null;
+        outerHTML: string;
+        readonly ownerDocument: Document;
+        readonly prefix: string | null;
+        readonly scrollHeight: number;
+        scrollLeft: number;
+        scrollTop: number;
+        readonly scrollWidth: number;
+        readonly shadowRoot: ShadowRoot | null;
+        slot: string;
+        readonly tagName: string;
+        attachShadow(init: ShadowRootInit): ShadowRoot;
+        closest<K_2 extends "object" | "link" | "small" | "sub" | "sup" | "track" | "progress" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "source" | "span" | "strong" | "style" | "summary" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "u" | "ul" | "var" | "video" | "wbr">(selector: K_2): HTMLElementTagNameMap[K_2] | null;
+        closest<K_3 extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selector: K_3): SVGElementTagNameMap[K_3] | null;
+        closest<E extends Element = Element>(selector: string): E | null;
+        getAttribute(qualifiedName: string): string | null;
+        getAttributeNS(namespace: string | null, localName: string): string | null;
+        getAttributeNames(): string[];
+        getAttributeNode(name: string): Attr | null;
+        getAttributeNodeNS(namespaceURI: string, localName: string): Attr | null;
+        getBoundingClientRect(): DOMRect;
+        getClientRects(): DOMRectList;
+        getElementsByClassName(classNames: string): HTMLCollectionOf<Element>;
+        getElementsByTagName<K_4 extends "object" | "link" | "small" | "sub" | "sup" | "track" | "progress" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "source" | "span" | "strong" | "style" | "summary" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "u" | "ul" | "var" | "video" | "wbr">(qualifiedName: K_4): HTMLCollectionOf<HTMLElementTagNameMap[K_4]>;
+        getElementsByTagName<K_5 extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(qualifiedName: K_5): HTMLCollectionOf<SVGElementTagNameMap[K_5]>;
+        getElementsByTagName(qualifiedName: string): HTMLCollectionOf<Element>;
+        getElementsByTagNameNS(namespaceURI: "http://www.w3.org/1999/xhtml", localName: string): HTMLCollectionOf<HTMLElement>;
+        getElementsByTagNameNS(namespaceURI: "http://www.w3.org/2000/svg", localName: string): HTMLCollectionOf<SVGElement>;
+        getElementsByTagNameNS(namespaceURI: string, localName: string): HTMLCollectionOf<Element>;
+        hasAttribute(qualifiedName: string): boolean;
+        hasAttributeNS(namespace: string | null, localName: string): boolean;
+        hasAttributes(): boolean;
+        hasPointerCapture(pointerId: number): boolean;
+        insertAdjacentElement(position: InsertPosition, insertedElement: Element): Element | null;
+        insertAdjacentHTML(where: InsertPosition, html: string): void;
+        insertAdjacentText(where: InsertPosition, text: string): void;
+        matches(selectors: string): boolean;
+        msGetRegionContent(): any;
+        releasePointerCapture(pointerId: number): void;
+        removeAttribute(qualifiedName: string): void;
+        removeAttributeNS(namespace: string | null, localName: string): void;
+        removeAttributeNode(attr: Attr): Attr;
+        requestFullscreen(options?: FullscreenOptions | undefined): Promise<void>;
+        requestPointerLock(): void;
+        scroll(options?: ScrollToOptions | undefined): void;
+        scroll(x: number, y: number): void;
+        scrollBy(options?: ScrollToOptions | undefined): void;
+        scrollBy(x: number, y: number): void;
+        scrollIntoView(arg?: boolean | ScrollIntoViewOptions | undefined): void;
+        scrollTo(options?: ScrollToOptions | undefined): void;
+        scrollTo(x: number, y: number): void;
+        setAttribute(qualifiedName: string, value: string): void;
+        setAttributeNS(namespace: string | null, qualifiedName: string, value: string): void;
+        setAttributeNode(attr: Attr): Attr | null;
+        setAttributeNodeNS(attr: Attr): Attr | null;
+        setPointerCapture(pointerId: number): void;
+        toggleAttribute(qualifiedName: string, force?: boolean | undefined): boolean;
+        webkitMatchesSelector(selectors: string): boolean;
+        readonly baseURI: string;
+        readonly childNodes: NodeListOf<ChildNode>;
+        readonly firstChild: ChildNode | null;
+        readonly isConnected: boolean;
+        readonly lastChild: ChildNode | null;
+        readonly nextSibling: ChildNode | null;
+        readonly nodeName: string;
+        readonly nodeType: number;
+        nodeValue: string | null;
+        readonly parentElement: HTMLElement | null;
+        readonly parentNode: (Node & ParentNode) | null;
+        readonly previousSibling: ChildNode | null;
+        textContent: string | null;
+        appendChild<T extends Node>(newChild: T): T;
+        cloneNode(deep?: boolean | undefined): Node;
+        compareDocumentPosition(other: Node): number;
+        contains(other: Node | null): boolean;
+        getRootNode(options?: GetRootNodeOptions | undefined): Node;
+        hasChildNodes(): boolean;
+        insertBefore<T_1 extends Node>(newChild: T_1, refChild: Node | null): T_1;
+        isDefaultNamespace(namespace: string | null): boolean;
+        isEqualNode(otherNode: Node | null): boolean;
+        isSameNode(otherNode: Node | null): boolean;
+        lookupNamespaceURI(prefix: string | null): string | null;
+        lookupPrefix(namespace: string | null): string | null;
+        normalize(): void;
+        removeChild<T_2 extends Node>(oldChild: T_2): T_2;
+        replaceChild<T_3 extends Node>(newChild: Node, oldChild: T_3): T_3;
+        readonly ATTRIBUTE_NODE: number;
+        readonly CDATA_SECTION_NODE: number;
+        readonly COMMENT_NODE: number;
+        readonly DOCUMENT_FRAGMENT_NODE: number;
+        readonly DOCUMENT_NODE: number;
+        readonly DOCUMENT_POSITION_CONTAINED_BY: number;
+        readonly DOCUMENT_POSITION_CONTAINS: number;
+        readonly DOCUMENT_POSITION_DISCONNECTED: number;
+        readonly DOCUMENT_POSITION_FOLLOWING: number;
+        readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: number;
+        readonly DOCUMENT_POSITION_PRECEDING: number;
+        readonly DOCUMENT_TYPE_NODE: number;
+        readonly ELEMENT_NODE: number;
+        readonly ENTITY_NODE: number;
+        readonly ENTITY_REFERENCE_NODE: number;
+        readonly NOTATION_NODE: number;
+        readonly PROCESSING_INSTRUCTION_NODE: number;
+        readonly TEXT_NODE: number;
+        dispatchEvent(event: Event): boolean;
+        animate(keyframes: PropertyIndexedKeyframes | Keyframe[] | null, options?: number | KeyframeAnimationOptions | undefined): Animation;
+        getAnimations(): Animation[];
+        after(...nodes: (string | Node)[]): void;
+        before(...nodes: (string | Node)[]): void;
+        remove(): void;
+        replaceWith(...nodes: (string | Node)[]): void;
+        innerHTML: string;
+        readonly nextElementSibling: Element | null;
+        readonly previousElementSibling: Element | null;
+        readonly childElementCount: number;
+        readonly children: HTMLCollection;
+        readonly firstElementChild: Element | null;
+        readonly lastElementChild: Element | null;
+        append(...nodes: (string | Node)[]): void;
+        prepend(...nodes: (string | Node)[]): void;
+        querySelector<K_6 extends "object" | "link" | "small" | "sub" | "sup" | "track" | "progress" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "source" | "span" | "strong" | "style" | "summary" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K_6): HTMLElementTagNameMap[K_6] | null;
+        querySelector<K_7 extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K_7): SVGElementTagNameMap[K_7] | null;
+        querySelector<E_1 extends Element = Element>(selectors: string): E_1 | null;
+        querySelectorAll<K_8 extends "object" | "link" | "small" | "sub" | "sup" | "track" | "progress" | "a" | "abbr" | "address" | "applet" | "area" | "article" | "aside" | "audio" | "b" | "base" | "basefont" | "bdi" | "bdo" | "blockquote" | "body" | "br" | "button" | "canvas" | "caption" | "cite" | "code" | "col" | "colgroup" | "data" | "datalist" | "dd" | "del" | "details" | "dfn" | "dialog" | "dir" | "div" | "dl" | "dt" | "em" | "embed" | "fieldset" | "figcaption" | "figure" | "font" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "head" | "header" | "hgroup" | "hr" | "html" | "i" | "iframe" | "img" | "input" | "ins" | "kbd" | "label" | "legend" | "li" | "main" | "map" | "mark" | "marquee" | "menu" | "meta" | "meter" | "nav" | "noscript" | "ol" | "optgroup" | "option" | "output" | "p" | "param" | "picture" | "pre" | "q" | "rp" | "rt" | "ruby" | "s" | "samp" | "script" | "section" | "select" | "slot" | "source" | "span" | "strong" | "style" | "summary" | "table" | "tbody" | "td" | "template" | "textarea" | "tfoot" | "th" | "thead" | "time" | "title" | "tr" | "u" | "ul" | "var" | "video" | "wbr">(selectors: K_8): NodeListOf<HTMLElementTagNameMap[K_8]>;
+        querySelectorAll<K_9 extends "symbol" | "a" | "script" | "style" | "title" | "circle" | "clipPath" | "defs" | "desc" | "ellipse" | "feBlend" | "feColorMatrix" | "feComponentTransfer" | "feComposite" | "feConvolveMatrix" | "feDiffuseLighting" | "feDisplacementMap" | "feDistantLight" | "feFlood" | "feFuncA" | "feFuncB" | "feFuncG" | "feFuncR" | "feGaussianBlur" | "feImage" | "feMerge" | "feMergeNode" | "feMorphology" | "feOffset" | "fePointLight" | "feSpecularLighting" | "feSpotLight" | "feTile" | "feTurbulence" | "filter" | "foreignObject" | "g" | "image" | "line" | "linearGradient" | "marker" | "mask" | "metadata" | "path" | "pattern" | "polygon" | "polyline" | "radialGradient" | "rect" | "stop" | "svg" | "switch" | "text" | "textPath" | "tspan" | "use" | "view">(selectors: K_9): NodeListOf<SVGElementTagNameMap[K_9]>;
+        querySelectorAll<E_2 extends Element = Element>(selectors: string): NodeListOf<E_2>;
+        oncopy: ((this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any) | null;
+        oncut: ((this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any) | null;
+        onpaste: ((this: DocumentAndElementEventHandlers, ev: ClipboardEvent) => any) | null;
+        readonly style: CSSStyleDeclaration;
+        contentEditable: string;
+        inputMode: string;
+        readonly isContentEditable: boolean;
+        onabort: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onanimationcancel: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
+        onanimationend: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
+        onanimationiteration: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
+        onanimationstart: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
+        onauxclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
+        oncancel: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        oncanplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        oncanplaythrough: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onclose: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        oncontextmenu: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        oncuechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        ondblclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        ondrag: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondragend: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondragenter: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondragexit: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        ondragleave: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondragover: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondragstart: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondrop: ((this: GlobalEventHandlers, ev: DragEvent) => any) | null;
+        ondurationchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onemptied: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onended: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onerror: OnErrorEventHandler;
+        onfocus: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
+        ongotpointercapture: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        oninput: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        oninvalid: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onkeydown: ((this: GlobalEventHandlers, ev: KeyboardEvent) => any) | null;
+        onkeypress: ((this: GlobalEventHandlers, ev: KeyboardEvent) => any) | null;
+        onkeyup: ((this: GlobalEventHandlers, ev: KeyboardEvent) => any) | null;
+        onload: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onloadeddata: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onloadedmetadata: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onloadstart: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onlostpointercapture: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onmousedown: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmouseenter: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmouseleave: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmousemove: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmouseout: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmouseover: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onmouseup: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+        onpause: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onplaying: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onpointercancel: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerdown: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerenter: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerleave: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointermove: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerout: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerover: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onpointerup: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+        onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent<EventTarget>) => any) | null;
+        onratechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onreset: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onresize: ((this: GlobalEventHandlers, ev: UIEvent) => any) | null;
+        onscroll: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onsecuritypolicyviolation: ((this: GlobalEventHandlers, ev: SecurityPolicyViolationEvent) => any) | null;
+        onseeked: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onseeking: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselect: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectionchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onselectstart: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onstalled: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onsubmit: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onsuspend: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        ontimeupdate: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        ontoggle: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        ontouchcancel?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
+        ontouchend?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
+        ontouchmove?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
+        ontouchstart?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
+        ontransitioncancel: ((this: GlobalEventHandlers, ev: TransitionEvent) => any) | null;
+        ontransitionend: ((this: GlobalEventHandlers, ev: TransitionEvent) => any) | null;
+        ontransitionrun: ((this: GlobalEventHandlers, ev: TransitionEvent) => any) | null;
+        ontransitionstart: ((this: GlobalEventHandlers, ev: TransitionEvent) => any) | null;
+        onvolumechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onwaiting: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+        onwheel: ((this: GlobalEventHandlers, ev: WheelEvent) => any) | null;
+        autofocus: boolean;
+        readonly dataset: DOMStringMap;
+        nonce?: string | undefined;
+        tabIndex: number;
+        blur(): void;
+        focus(options?: FocusOptions | undefined): void;
+    };
+} & TBase;
+
+// @public (undocumented)
+export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<DesignTokenConfig>>;
+
+// @public (undocumented)
+export const DI: Readonly<{
+    createContainer(): Container;
+    getOrCreateDOMContainer(element?: HTMLElement): Container;
+    createInterface<K extends Key>(friendlyName?: string): DefaultableInterfaceSymbol<K, any>;
+    createDOMInterface<K_1 extends Key>(friendlyName?: string): DefaultableInterfaceSymbol<K_1, HTMLElement & FASTElement>;
+    getDesignParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
+    getAnnotationParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
+    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
+    getDependencies(Type: Constructable | Injectable): Key[];
+    inject(...dependencies: Key[]): (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+}>;
+
 // @public
 export class Dialog extends FASTElement {
     ariaDescribedby: string;
@@ -406,8 +745,105 @@ export enum DividerRole {
 // @public
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
+// @public (undocumented)
+export interface DOMParentLocatorEventDetail {
+    // (undocumented)
+    container: Container | void;
+}
+
 // @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+
+// @public (undocumented)
+export interface Factory<T extends Constructable = any> {
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: Transformer_2<T>): boolean;
+    // (undocumented)
+    readonly Type: T;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "FactoryImpl" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
+    // Warning: (ae-forgotten-export) The symbol "Invoker" needs to be exported by the entry point index.d.ts
+    constructor(Type: T, invoker: Invoker, dependencies: Key[]);
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: (instance: any) => any): boolean;
+    // (undocumented)
+    Type: T;
+}
+
+// @public (undocumented)
+export class FASTCustomPropertyManager {
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "alias"
+    //
+    // (undocumented)
+    alias(key: string, name: string): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "get"
+    //
+    // (undocumented)
+    get(key: string, value: any): ElementStyles;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "name"
+    //
+    // (undocumented)
+    name(key: string): string;
+    }
+
+// Warning: (ae-forgotten-export) The symbol "InheritableDesignTokenLibrary" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<T> {
+    #constructor(init?: T);
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    delete<K extends keyof T>(key: K): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    get<K extends keyof T>(key: K): T[K] | void;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenLibrary" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    handleChange<K extends keyof T>(source: DesignTokenLibrary<T>, keys: Array<K>): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    has<K extends keyof T>(key: K): boolean;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    hasLocal<K extends keyof T>(key: K): boolean;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    keys<K extends keyof T>(): K[];
+    // (undocumented)
+    private;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    set<K extends keyof T>(key: K, value: T[K]): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    subscribe(subscriber: Subscriber): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    unsubscribe(subscriber: Subscriber): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    get upstream(): InheritableDesignTokenLibrary<T> | null;
+    set upstream(target: InheritableDesignTokenLibrary<T> | null);
+}
 
 // @public
 export class Flipper extends FASTElement {
@@ -494,11 +930,25 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
+// @public (undocumented)
+export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+
+// @public (undocumented)
+export type Injectable<T = {}> = Constructable<T> & {
+    inject?: Key[];
+};
+
+// @public (undocumented)
+export type InterfaceSymbol<Key = any, TBase extends {} = {}> = (target: TBase, property: string, index?: number) => void;
+
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @public (undocumented)
+export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -574,6 +1024,9 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
+// @public (undocumented)
+export type ParentLocator = (owner: any) => Container | null;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
@@ -638,6 +1091,100 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+
+// @public (undocumented)
+export type RegisterSelf<T extends Constructable> = {
+    register(container: Container): Resolver<InstanceType<T>>;
+    registerInRequestor: boolean;
+};
+
+// @public (undocumented)
+export interface Registration<K = any> {
+    // (undocumented)
+    register(container: Container, key?: Key): Resolver<K>;
+}
+
+// @public
+export const Registration: Readonly<{
+    instance<T>(key: Key, value: T): Registration<T>;
+    singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
+    transient<T_2 extends Constructable<{}>>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
+    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
+    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
+    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
+}>;
+
+// @public (undocumented)
+export interface Registry {
+    // (undocumented)
+    register(container: Container, ...params: unknown[]): void | Resolver | Container;
+}
+
+// @public (undocumented)
+export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
+
+// Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
+
+// @public (undocumented)
+export interface Resolver<K = any> extends ResolverLike<Container, K> {
+}
+
+// @public (undocumented)
+export class ResolverBuilder<K> {
+    constructor(container: Container, key: Key);
+    // (undocumented)
+    aliasTo(destinationKey: Key): Resolver<K>;
+    // (undocumented)
+    cachedCallback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    callback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    instance(value: K): Resolver<K>;
+    // (undocumented)
+    singleton(value: Constructable): Resolver<K>;
+    // (undocumented)
+    transient(value: Constructable): Resolver<K>;
+}
+
+// @public (undocumented)
+export const enum ResolverStrategy {
+    // (undocumented)
+    alias = 5,
+    // (undocumented)
+    array = 4,
+    // (undocumented)
+    callback = 3,
+    // (undocumented)
+    instance = 0,
+    // (undocumented)
+    singleton = 1,
+    // (undocumented)
+    transient = 2
+}
+
+// @public (undocumented)
+export interface ServiceLocator {
+    // (undocumented)
+    get<K extends Key>(key: K): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: Key): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: K | Key): Resolved<K>;
+    // (undocumented)
+    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
+}
+
+// @public (undocumented)
+export const ServiceLocator: InterfaceSymbol<ServiceLocator, {}>;
 
 // @public
 export class Skeleton extends FASTElement {
@@ -1015,6 +1562,11 @@ export enum TooltipPosition {
 
 // @public
 export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
+
+// @public (undocumented)
+type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
+
+export { Transformer_2 as Transformer }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal

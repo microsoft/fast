@@ -7,13 +7,11 @@ import {
 import { DI, Registration } from "../di";
 import { Constructable } from "../interfaces";
 import {
-    CustomPropertyManager,
+    CSSCustomPropertyManager,
     FASTCustomPropertyManager,
-} from "../custom-property-manager";
+} from "../css-custom-property-manager";
 
-export function DesignTokenProvider<
-    TBase extends Constructable<FASTElement & HTMLElement>
->(Base: TBase) {
+export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base {
         public designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
         private customPropertyManager: FASTCustomPropertyManager;
@@ -71,7 +69,7 @@ export function DesignTokenProvider<
     };
 
     DesignTokens(C.prototype, "designTokens");
-    CustomPropertyManager(C.prototype, "customPropertyManager");
+    CSSCustomPropertyManager(C.prototype, "customPropertyManager");
 
     return C;
-}
+};

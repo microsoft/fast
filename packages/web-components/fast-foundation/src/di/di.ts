@@ -2,14 +2,7 @@
  * Big thanks to https://github.com/EisenbergEffect and the https://github.com/aurelia/aurelia project
  * for this code.
  */
-import {
-    Accessor,
-    Controller,
-    emptyArray,
-    FASTElement,
-    observable,
-    Observable,
-} from "@microsoft/fast-element";
+import { Controller, emptyArray, FASTElement, Observable } from "@microsoft/fast-element";
 import { Class, Constructable } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.

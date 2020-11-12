@@ -1,4 +1,4 @@
-import { DI } from "../di";
+import { DI, InterfaceSymbol } from "../di";
 import { FASTDesignTokenLibrary } from "./library";
 
 export interface DesignTokenConfig {
@@ -12,6 +12,8 @@ const defaults: DesignTokenConfig = {
 export const DefaultDesignTokens = new FASTDesignTokenLibrary<DesignTokenConfig>(
     defaults
 );
-export const DesignTokens = DI.createDOMInterface<
-    FASTDesignTokenLibrary<DesignTokenConfig>
->("DesignTokens").withDefault(x => x.instance(DefaultDesignTokens));
+export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<
+    DesignTokenConfig
+>> = DI.createDOMInterface<FASTDesignTokenLibrary<DesignTokenConfig>>(
+    "DesignTokens"
+).withDefault(x => x.instance(DefaultDesignTokens));

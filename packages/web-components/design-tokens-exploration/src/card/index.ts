@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { DesignTokenProvider } from "../design-tokens";
+import { DesignTokenProvider } from "@microsoft/fast-foundation";
 import { Card } from "./card";
 import { CardTemplate } from "./card.template";
 

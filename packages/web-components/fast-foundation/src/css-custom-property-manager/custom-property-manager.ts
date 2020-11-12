@@ -1,6 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { DI } from "../di";
-export interface CSSCustomPropertyManager {
+import { DI, InterfaceSymbol, Key } from "../di";
+export interface CSSCustomPropertyManagerInterface {
     /**
      * Retrieves an {@link @microsoft/fast-element#ElementStyles} by key and value. If
      * no entry for the provided key and value exist, one will be created. The returned
@@ -82,6 +82,6 @@ export class FASTCustomPropertyManager {
 /**
  * DI decorator to get the app CustomPropertyManager
  */
-export const CustomPropertyManager = DI.createInterface(
+export const CSSCustomPropertyManager: InterfaceSymbol<Key, any> = DI.createInterface(
     "custom-property-manager"
 ).withDefault(x => x.singleton(FASTCustomPropertyManager));
