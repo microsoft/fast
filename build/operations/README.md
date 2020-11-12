@@ -113,19 +113,19 @@ We use Front Door to route traffic between two regions for web traffic across mu
 How can this be achieved through the Azure Portal, not web app code?
 
 **Cause**
--Issue happens because of URL string within one of the parameters of the HTTP redirect pointing to AAD, which then uses such parameter for redirecting the user accordingly.
--Such URL was the one configured on the WebApp.
+- Issue happens because of URL string within one of the parameters of the HTTP redirect pointing to AAD, which then uses such parameter for redirecting the user accordingly.
+- Such URL was the one configured on the WebApp.
 
 **Resolution**
--We managed to configure custom domain on both the WebApp and FrontDoor, so they both listen on same hostname. Such Hostname or FQDN, would CNAME to FrontDoor's domain.
--This custom domain was now used on the URL string within the AAD redirect so would work as expected. Nevertheless, since such AAD module responds with 302 to every unauthenticated user-agent, the FrontDoor probes would mark backend as unhealthy:
+- We managed to configure custom domain on both the WebApp and FrontDoor, so they both listen on same hostname. Such Hostname or FQDN, would CNAME to FrontDoor's domain.
+- This custom domain was now used on the URL string within the AAD redirect so would work as expected. Nevertheless, since such AAD module responds with 302 to every unauthenticated user-agent, the FrontDoor probes would mark backend as unhealthy:
 
 https://docs.microsoft.com/en-us/azure/frontdoor/front-door-health-probes
 
--When having multiple backends, it would round-robin requests, making it unusable.
--Usually a dummy path is setup in application for the 200 OK probes, but verified with AppServices it cannot be made with the pre-built AAD authentication module. To customize AAD, it's then suggested to implement it a code.
+- When having multiple backends, it would round-robin requests, making it unusable.
+- Usually a dummy path is setup in application for the 200 OK probes, but verified with AppServices it cannot be made with the pre-built AAD authentication module. To customize AAD, it's then suggested to implement it a code.
 
--This scenario doesn't happen with AppGW, since it can just re-write the URL parameter and also allow non-200 OK health responses.
+- This scenario doesn't happen with AppGW, since it can just re-write the URL parameter and also allow non-200 OK health responses.
 
 #### Risks
 * Failure Points: Front Door is a possible failure point in the system. If the service fails, clients cannot access your application during the downtime. Review the Front Door service level agreement (SLA) and determine whether using Front Door alone meets your business requirements for high availability. If not, consider adding another traffic management solution as a fallback. If the Front Door service fails, change your canonical name (CNAME) records in DNS to point to the other traffic management service. This step must be performed manually, and your application will be unavailable until the DNS changes are propagated.
