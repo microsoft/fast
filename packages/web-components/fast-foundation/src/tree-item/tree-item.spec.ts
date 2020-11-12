@@ -30,10 +30,14 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should set the `aria-expanded` attribute equal when `expanded` value is true", async () => {
+    it("should set the `aria-expanded` attribute equal when `expanded` value is true and the tree item has children", async () => {
         const { element, connect, disconnect } = await setup();
+        const child = document.createElement("fast-tree-item");
+
+        child.innerText = "Child";
 
         element.expanded = true;
+        element.appendChild(child);
 
         await connect();
 
@@ -42,8 +46,19 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should NOT set the `aria-expanded` attribute if `expanded` value is not provided", async () => {
+    it("should NOT set the `aria-expanded` attribute if the tree item has no children", async () => {
         const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.getAttribute("aria-expanded")).to.equal(null);
+
+        await disconnect();
+    });
+
+    it("should NOT set the `aria-expanded` attribute if `expanded` value is true but the tree item has no children", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.expanded = true;
 
         await connect();
 
