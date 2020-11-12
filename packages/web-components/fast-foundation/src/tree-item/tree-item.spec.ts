@@ -30,16 +30,15 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should set the `aria-expanded` attribute equal when `expanded` value is true and the tree item has children", async () => {
+    it("should set the `aria-expanded` attribute equal to the `expanded` value when the tree item has children", async () => {
         const { element, connect, disconnect } = await setup();
         const child = document.createElement("fast-tree-item");
 
-        child.innerText = "Child";
-
-        element.expanded = true;
         element.appendChild(child);
+        element.expanded = true;
 
         await connect();
+        await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
@@ -323,7 +322,7 @@ describe("TreeItem", () => {
             await DOM.nextUpdate();
 
             expect(element.expanded).to.equal(false);
-            expect(element.getAttribute("aria-expanded")).to.equal(null);
+            expect(element.getAttribute("aria-expanded")).to.equal("false");
 
             await disconnect();
         });
