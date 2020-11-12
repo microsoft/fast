@@ -1,2 +1,4 @@
+import { ConfigurationImpl } from "@microsoft/fast-foundation";
 import { FASTCard } from "../src/card";
-FASTCard;
+
+const MyAppConfig = new ConfigurationImpl().register(FASTCard());

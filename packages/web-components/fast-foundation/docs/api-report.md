@@ -255,9 +255,6 @@ export class ConfigurationImpl implements Configuration {
 export const ConfigurationInterface: InterfaceSymbol<Key, any>;
 
 // @public (undocumented)
-export const ConfigurationKey: unique symbol;
-
-// @public (undocumented)
 export interface ConfigurationOptions {
     prefix?: string;
 }
@@ -1724,7 +1721,7 @@ export function unprefix(name: string): string;
 // Warnings were encountered during analysis:
 //
 // dist/dts/configuration/configuration.d.ts:68:9 - (ae-forgotten-export) The symbol "Provider" needs to be exported by the entry point index.d.ts
-// dist/dts/configuration/configuration.d.ts:109:9 - (ae-forgotten-export) The symbol "FASTProvider" needs to be exported by the entry point index.d.ts
+// dist/dts/configuration/configuration.d.ts:108:9 - (ae-forgotten-export) The symbol "FASTProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

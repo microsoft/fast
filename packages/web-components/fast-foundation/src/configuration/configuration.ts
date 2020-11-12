@@ -6,7 +6,7 @@ import {
     html,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { DI, InterfaceSymbol, Key, Registration } from "../di";
+import { Container, DI, InterfaceSymbol, Key, Registration } from "../di";
 import { FASTProvider, Provider } from "../provider";
 import { display } from "../utilities";
 
@@ -117,14 +117,12 @@ export function unprefix(name: string) {
     return name.substr(name.indexOf("-") + 1);
 }
 
-export const ConfigurationKey = Symbol();
-
 export class ConfigurationImpl implements Configuration {
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
 
-        const container = DI.createContainer();
-        container.register(Registration.instance(ConfigurationKey, this));
+        const container = DI.getOrCreateDOMContainer(); // TODO DI.createContainer()
+        container.register(Registration.instance(ConfigurationInterface, this));
     }
 
     /**
@@ -146,9 +144,9 @@ export class ConfigurationImpl implements Configuration {
                     };
 
                     configuration
-                        .registerElement(defaultElementConfiguration.type, definition)
-                        .setDefaultTemplateFor(definition.name, conf.template || null)
-                        .setDefaultStylesFor(definition.name, conf.styles || null);
+                        .setDefaultTemplateFor(conf.baseName, conf.template || null)
+                        .setDefaultStylesFor(conf.baseName, conf.styles || null)
+                        .registerElement(defaultElementConfiguration.type, definition);
                 },
             };
         };
@@ -229,6 +227,7 @@ export class ConfigurationImpl implements Configuration {
     private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();
 }
 
-export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(
-    "configuration"
+export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createDOMInterface(
+    // TODO: DI.createInterface
+    "Configuration"
 ).noDefault();
