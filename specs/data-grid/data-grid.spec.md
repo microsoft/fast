@@ -84,13 +84,13 @@ Most **data grid** components use the `ColumnDefinition` interface. A `ColumnDef
 
 - `headerCellInternalFocusQueue`: Indicates whether the header cell has in internal focus queue. This should be set to `true` for header cells that host controls that need to use arrow keys or have multiple focusable internal elements. When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions described [here](https://w3c.github.io/aria-practices/#grid)).
 
-headerCellFocusTargetCallback: Callback function that takes the cell node as a parameter and returns the HTMLElement to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `headerCellInternalFocusQueue` is "false" this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is "true" this function is called when the user hits Enter or F2.
+- `headerCellFocusTargetCallback`: Callback function that takes the cell node as a parameter and returns the HTMLElement to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `headerCellInternalFocusQueue` is `false` this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is `true` this function is called when the user hits Enter or F2.
 
 - `cellTemplate`: Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use for data cells of this column.
 
 - `cellInternalFocusQueue`: Indicates whether the cell has in internal focus queue. This should be set to `true` for cells that host controls that need to use arrow keys or have multiple focusable internal elements. When the user hits the Enter or F2 key the element specified by the `cellFocusTargetCallback` function will be focused (see keyboard interactions descrived [here](https://w3c.github.io/aria-practices/#grid)).
 
-- `cellFocusTargetCallback`: Callback function that takes the cell node as a parameter and returns the `HTMLElement` to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `cellInternalFocusQueue` is "false" this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is "true" this function is called when the user hits Enter or F2.
+- `cellFocusTargetCallback`: Callback function that takes the cell node as a parameter and returns the `HTMLElement` to focus in a custom cell. This enables authors to direct focus in a custom cell with interactive elements. When `cellInternalFocusQueue` is `false` this function is called when the cell is first focused to immediately move focus to a cell element, for example a cell that contains a button could move focus directly to the button when focused. When `cellInternalFocusQueue` is `true` this function is called when the user hits Enter or F2.
 
 Authors can hook up custom events to html elements within cell templates in order to enable user interaction with grid data.
 
@@ -315,5 +315,5 @@ This component should have component testing in the @microsoft/fast-foundation p
 
 - Virtualization and/or Pagination for large data sets.
 - Add support for cell selection.
-- Horizontal grid layout?
+- Investigate a horizontal grid layout?
 - Stable data/element relationships.
