@@ -132,7 +132,11 @@ export class Menu extends FASTElement {
     };
 
     private handleExpandedChanged = (e: Event): void => {
-        if (e.defaultPrevented) {
+        if (
+            e.defaultPrevented ||
+            e.target === null ||
+            (e.target as Element).parentElement !== this
+        ) {
             return;
         }
 
