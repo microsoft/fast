@@ -3,10 +3,10 @@ import {
     ElementStyles,
     ElementViewTemplate,
     FASTElement,
-    FASTElementDefinition,
     html,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { FASTProvider, Provider } from "../provider";
 import { display } from "../utilities";
 
@@ -39,7 +39,7 @@ export interface ComponentConfiguration extends ConfigurationOptions {
     styles?: ElementStyles;
 }
 
-interface Registry {
+export interface ConfigurationRegistry {
     register(config: Configuration): void;
 }
 
@@ -97,16 +97,34 @@ export interface Configuration {
      *
      * @param registrations Registers registries with the Configuration
      */
-    register(...registrations: Registry[]): Configuration;
+    register(...registrations: ConfigurationRegistry[]): Configuration;
 }
 
-function prefix(prefix: string, base: string) {
+/**
+ * Prepends the prefix to the base in spinal case.
+ * @param prefix the prefix string
+ * @param base the base string
+ */
+export function prefix(prefix: string, base: string) {
     return `${prefix}-${base}`;
 }
 
-export class FASTConfiguration implements Configuration {
+/**
+ * Removes any spinal-case prefix from a string
+ * @param name The name from which to remove a prefix
+ */
+export function unprefix(name: string) {
+    return name.substr(name.indexOf("-") + 1);
+}
+
+export const ConfigurationKey = Symbol();
+
+export class ConfigurationImpl implements Configuration {
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
+
+        const container = DI.createContainer();
+        container.register(Registration.instance(ConfigurationKey, this));
     }
 
     /**
@@ -116,7 +134,7 @@ export class FASTConfiguration implements Configuration {
     public static forComponent(defaultElementConfiguration: ComponentConfiguration) {
         return (
             elementConfiguration: Partial<Omit<ComponentConfiguration, "type">> = {}
-        ): Registry => {
+        ): ConfigurationRegistry => {
             return {
                 register(configuration: Configuration) {
                     const conf = {
@@ -179,8 +197,8 @@ export class FASTConfiguration implements Configuration {
         const { prefix: pre, baseName, template, styles } = config;
         const def = {
             name: prefix(pre || this.prefix, baseName || "provider"),
-            template: template || FASTConfiguration.defaultProviderTemplate,
-            styles: styles || FASTConfiguration.defaultProviderStyles,
+            template: template || ConfigurationImpl.defaultProviderTemplate,
+            styles: styles || ConfigurationImpl.defaultProviderStyles,
         };
 
         /* eslint-disable-next-line */
@@ -195,7 +213,7 @@ export class FASTConfiguration implements Configuration {
     }
 
     /** {@inheritdoc Configuration.register} */
-    public register(...registrations: Registry[]) {
+    public register(...registrations: ConfigurationRegistry[]) {
         registrations.forEach(x => x.register(this));
         return this;
     }
@@ -210,3 +228,7 @@ export class FASTConfiguration implements Configuration {
     private stylesRegistry = new Map<string, ElementStyles | null>();
     private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();
 }
+
+export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(
+    "configuration"
+).noDefault();

@@ -1,19 +1,19 @@
 import { css, FASTElement, FASTElementDefinition, html } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FASTProvider, Provider } from "../provider";
-import { FASTConfiguration } from "./index";
+import { ConfigurationImpl } from "./index";
 
-describe("FASTConfiguration", () => {
+describe("ConfigurationImpl", () => {
     it("Should initialize with a default prefix of 'fast'", () => {
-        expect(new FASTConfiguration().prefix).to.equal("fast");
+        expect(new ConfigurationImpl().prefix).to.equal("fast");
     });
 
     it("Should initialize with a provided prefix", () => {
-        expect(new FASTConfiguration({ prefix: "custom" }).prefix).to.equal("custom");
+        expect(new ConfigurationImpl({ prefix: "custom" }).prefix).to.equal("custom");
     });
 
     it("should allow registry and retrieval of a default template by element name", () => {
-        const conf = new FASTConfiguration();
+        const conf = new ConfigurationImpl();
         const template = html``;
 
         conf.setDefaultTemplateFor("my-element", template);
@@ -22,7 +22,7 @@ describe("FASTConfiguration", () => {
     });
 
     it("should allow registry and retrieval of a default style by element name", () => {
-        const conf = new FASTConfiguration();
+        const conf = new ConfigurationImpl();
         const styles = css``;
 
         conf.setDefaultStylesFor("my-element", styles);
@@ -33,20 +33,20 @@ describe("FASTConfiguration", () => {
     it("should allow registration of custom elements with registerElement()", () => {
         class MyEl extends FASTElement {}
 
-        new FASTConfiguration().registerElement(MyEl, { name: "my-element" });
+        new ConfigurationImpl().registerElement(MyEl, { name: "my-element" });
 
         expect(customElements.get("my-element")).to.equal(MyEl);
     });
 
     describe(".forComponent", () => {
         it("should register an element, default template, and default styles for a Configuration", () => {
-            const conf = new FASTConfiguration();
+            const conf = new ConfigurationImpl();
             const styles = css``;
             const template = html``;
             const baseName = "element";
             class MyElement extends FASTElement {}
 
-            const myElement = FASTConfiguration.forComponent({
+            const myElement = ConfigurationImpl.forComponent({
                 styles,
                 template,
                 baseName,
@@ -61,10 +61,10 @@ describe("FASTConfiguration", () => {
         });
 
         it("should provider opportunity to override template, styles, prefix, and baseName of a registry for a configuration", () => {
-            const conf = new FASTConfiguration();
+            const conf = new ConfigurationImpl();
             class MyElement extends FASTElement {}
 
-            const myElement = FASTConfiguration.forComponent({
+            const myElement = ConfigurationImpl.forComponent({
                 styles: css``,
                 template: html``,
                 baseName: "foo",
@@ -93,7 +93,7 @@ describe("FASTConfiguration", () => {
 
     describe(".defineProvider", () => {
         it("should return a FASTProvider custom element constructor with the default tag name 'fast-provider'", done => {
-            const conf = new FASTConfiguration();
+            const conf = new ConfigurationImpl();
             const P = conf.defineProvider();
 
             const element = (document.createElement(

@@ -7,6 +7,8 @@ export * from "./breadcrumb/index";
 export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
+export * from "./configuration";
+export * from "./foundation";
 export * from "./custom-properties/index";
 export * from "./css-custom-property-manager";
 export * from "./design-system-provider/index";

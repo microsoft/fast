@@ -5,6 +5,7 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { FASTProvider, Provider } from "../provider";
+import { Configuration, ConfigurationInterface, unprefix } from "../configuration";
 
 /**
  * Defines a foundation element class that:
@@ -13,6 +14,8 @@ import { FASTProvider, Provider } from "../provider";
  * 3. Allows resolving the element styles from the instance or the FASTProvider
  */
 export abstract class FASTFoundation extends FASTElement {
+    @ConfigurationInterface
+    private configuration: Configuration;
     /**
      * The element's FASTProvider (if it exists)
      */
@@ -50,14 +53,18 @@ export abstract class FASTFoundation extends FASTElement {
      * Resolves the template for the element instance.
      */
     protected resolveTemplate(): ElementViewTemplate | null {
-        return this.$fastProvider?.resolveTemplateFor(this) || null;
+        return this.configuration.getDefaultTemplateFor(
+            unprefix(this.tagName).toLowerCase()
+        );
     }
 
     /**
      * Resolves the default styles for the element instance
      */
-    protected resolveStyles() {
-        return this.$fastProvider?.resolveStylesFor(this) || null;
+    protected resolveStyles(): ElementStyles | null {
+        return this.configuration.getDefaultStylesFor(
+            unprefix(this.tagName).toLowerCase()
+        );
     }
 
     /**

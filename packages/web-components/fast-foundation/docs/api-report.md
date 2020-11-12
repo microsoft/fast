@@ -9,6 +9,7 @@ import { Constructable } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
+import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
@@ -207,8 +208,65 @@ export class Checkbox extends FormAssociatedCheckbox {
 // @public
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
+// @public (undocumented)
+export interface ComponentConfiguration extends ConfigurationOptions {
+    baseName: string;
+    styles?: ElementStyles;
+    template?: ElementViewTemplate;
+    type: typeof FASTElement;
+}
+
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
+
+// @public (undocumented)
+export interface Configuration {
+    defineProvider(): {
+        new (): Provider;
+    };
+    getDefaultStylesFor(name: string): ElementStyles | null;
+    getDefaultTemplateFor(name: string): ElementViewTemplate | null;
+    readonly prefix: string;
+    // (undocumented)
+    register(...registrations: ConfigurationRegistry[]): Configuration;
+    registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
+    setDefaultStylesFor(name: string, styles: ElementStyles | null): Configuration;
+    setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): Configuration;
+}
+
+// @public (undocumented)
+export class ConfigurationImpl implements Configuration {
+    constructor(options?: ConfigurationOptions);
+    defineProvider(config?: Partial<Omit<ComponentConfiguration, "type">>): {
+        new (): FASTProvider;
+    };
+    static forComponent(defaultElementConfiguration: ComponentConfiguration): (elementConfiguration?: Partial<Omit<ComponentConfiguration, "type">>) => ConfigurationRegistry;
+    getDefaultStylesFor(name: string): ElementStyles | null;
+    getDefaultTemplateFor(name: string): ElementViewTemplate | null;
+    readonly prefix: string;
+    // (undocumented)
+    register(...registrations: ConfigurationRegistry[]): this;
+    registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
+    setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
+    setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
+    }
+
+// @public (undocumented)
+export const ConfigurationInterface: InterfaceSymbol<Key, any>;
+
+// @public (undocumented)
+export const ConfigurationKey: unique symbol;
+
+// @public (undocumented)
+export interface ConfigurationOptions {
+    prefix?: string;
+}
+
+// @public (undocumented)
+export interface ConfigurationRegistry {
+    // (undocumented)
+    register(config: Configuration): void;
+}
 
 // Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
 //
@@ -846,6 +904,20 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
 }
 
 // @public
+export abstract class FASTFoundation extends FASTElement {
+    get $fastProvider(): Provider | null;
+    connectedCallback(): void;
+    protected resolveStyles(): ElementStyles | null;
+    protected resolveTemplate(): ElementViewTemplate | null;
+    styles: ElementStyles | void | null;
+    // (undocumented)
+    protected stylesChanged(): void;
+    template: ElementViewTemplate | void | null;
+    // (undocumented)
+    protected templateChanged(): void;
+}
+
+// @public
 export class Flipper extends FASTElement {
     direction: FlipperDirection;
     disabled: boolean;
@@ -1026,6 +1098,9 @@ export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, 
 
 // @public (undocumented)
 export type ParentLocator = (owner: any) => Container | null;
+
+// @public
+export function prefix(prefix: string, base: string): string;
 
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
@@ -1642,6 +1717,14 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
+// @public
+export function unprefix(name: string): string;
+
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/configuration/configuration.d.ts:68:9 - (ae-forgotten-export) The symbol "Provider" needs to be exported by the entry point index.d.ts
+// dist/dts/configuration/configuration.d.ts:109:9 - (ae-forgotten-export) The symbol "FASTProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
