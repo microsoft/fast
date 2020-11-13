@@ -4,18 +4,23 @@ import {
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
 import { TextAreaResize } from "./text-area.options";
 
 export { TextAreaResize };
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (TextArea:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedTextArea extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLTextAreaElement = document.createElement("textarea");
     }
-);
+) {}
 
 /**
  * A Text Area Custom HTML Element.
@@ -23,7 +28,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class TextArea extends FormAssociated {
+export class TextArea extends FormAssociatedTextArea {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -203,5 +208,13 @@ export class TextArea extends FormAssociated {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextArea extends _FormAssociated, DelegatesARIATextbox {}
+export interface FormAssociatedTextArea extends FormAssociated {}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface TextArea extends DelegatesARIATextbox {}
 applyMixins(TextArea, DelegatesARIATextbox);

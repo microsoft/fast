@@ -46,9 +46,9 @@ interface CustomInitialValue extends FormAssociated {}
 
 describe("FormAssociated:", () => {
     describe("construction and connection:", () => {
-        it("should have an undefined value prior to connectedCallback", () => {
+        it("should have an empty string value prior to connectedCallback", () => {
             const el: TestElement = document.createElement("test-element") as TestElement;
-            expect(el.value).to.equal(undefined);
+            expect(el.value).to.equal("");
         });
 
         it("should initialize to the initial value if no value property is set", () => {

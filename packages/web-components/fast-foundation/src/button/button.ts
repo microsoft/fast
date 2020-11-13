@@ -1,5 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -8,11 +8,11 @@ import { applyMixins } from "../utilities/apply-mixins";
  *
  * @public
  */
-const FormAssociated = _FormAssociated(
+export class FormAssociatedButton extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Button Custom HTML Element.
@@ -20,7 +20,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class Button extends FormAssociated {
+export class Button extends FormAssociatedButton {
     /**
      * Determines if the element should receive document focus on page load.
      *
@@ -212,5 +212,13 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Button extends _FormAssociated, StartEnd, DelegatesARIAButton {}
+export interface FormAssociatedButton extends FormAssociated {}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface Button extends StartEnd, DelegatesARIAButton {}
 applyMixins(Button, StartEnd, DelegatesARIAButton);

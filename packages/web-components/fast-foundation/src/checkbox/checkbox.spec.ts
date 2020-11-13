@@ -355,11 +355,11 @@ describe("Checkbox", () => {
             form.appendChild(element);
             element.checked = true;
 
-            assert(element.getAttribute("checked") === null);
-            assert(element.checked);
+            assert.isNull(element.getAttribute("checked"));
+            assert.isTrue(element.checked);
             form.reset();
 
-            assert(!element.checked);
+            assert.isFalse(!!element.checked);
             await disconnect();
         });
 

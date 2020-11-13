@@ -1,12 +1,17 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (Switch:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedSwitch extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Switch Custom HTML Element.
@@ -14,7 +19,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class Switch extends FormAssociated {
+export class Switch extends FormAssociatedSwitch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -157,4 +162,4 @@ export class Switch extends FormAssociated {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Switch extends _FormAssociated {}
+export interface FormAssociatedSwitch extends FormAssociated {}

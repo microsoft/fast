@@ -5,18 +5,23 @@ import {
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import { TextFieldType } from "./text-field.options";
 
 export { TextFieldType };
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (TextField:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedTextField extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Text Field Custom HTML Element.
@@ -24,7 +29,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class TextField extends FormAssociated {
+export class TextField extends FormAssociatedTextField {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -236,5 +241,13 @@ export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextField extends _FormAssociated, StartEnd, DelegatesARIATextbox {}
+export interface FormAssociatedTextField extends FormAssociated {}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface TextField extends StartEnd, DelegatesARIATextbox {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);

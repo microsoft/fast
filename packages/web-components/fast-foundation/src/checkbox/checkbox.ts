@@ -1,12 +1,17 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (Checkbox:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedCheckbox extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Checkbox Custom HTML Element.
@@ -14,7 +19,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class Checkbox extends FormAssociated {
+export class Checkbox extends FormAssociatedCheckbox {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -135,9 +140,13 @@ export class Checkbox extends FormAssociated {
         this.updateForm();
     }
 
-    private formResetCallback(): void {
+    /**
+     * @internal
+     */
+    public formResetCallback(): void {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
+        super.formResetCallback();
     }
 
     private updateForm(): void {
@@ -172,4 +181,4 @@ export class Checkbox extends FormAssociated {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Checkbox extends _FormAssociated {}
+export interface FormAssociatedCheckbox extends FormAssociated {}

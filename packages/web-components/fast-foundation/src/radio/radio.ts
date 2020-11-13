@@ -1,6 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 
 /**
  * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element
@@ -11,11 +11,16 @@ export type RadioControl = Pick<
     "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
 >;
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (Radio:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedRadio extends FormAssociated(
     class extends FASTElement {
         proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Radio Custom HTML Element.
@@ -23,7 +28,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class Radio extends FormAssociated implements RadioControl {
+export class Radio extends FormAssociatedRadio implements RadioControl {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -37,6 +42,12 @@ export class Radio extends FormAssociated implements RadioControl {
             this.proxy.readOnly = this.readOnly;
         }
     }
+
+    /**
+     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
+     */
+    @observable
+    public name: string;
 
     /**
      * The element's value to be included in form submission when checked.
@@ -152,6 +163,9 @@ export class Radio extends FormAssociated implements RadioControl {
         }
     }
 
+    /**
+     * @internal
+     */
     public formResetCallback() {
         this.checked = !!this.defaultChecked;
         this.dirtyChecked = false;
@@ -198,4 +212,4 @@ export class Radio extends FormAssociated implements RadioControl {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Radio extends _FormAssociated {}
+export interface FormAssociatedRadio extends FormAssociated {}

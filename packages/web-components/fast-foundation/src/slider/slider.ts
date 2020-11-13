@@ -15,7 +15,7 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated as _FormAssociated } from "../form-associated/form-associated";
+import { FormAssociated } from "../form-associated/form-associated";
 import { getDirection } from "../utilities/";
 import { convertPixelToPercent } from "./slider-utilities";
 
@@ -39,16 +39,16 @@ export interface SliderConfiguration {
     disabled?: boolean;
 }
 
-const FormAssociated = _FormAssociated(
+/**
+ * A form-associated base class for the {@link (Slider:class)} component.
+ *
+ * @public
+ */
+export class FormAssociatedSlider extends FormAssociated(
     class extends FASTElement {
-        /**
-         * Proxy input element for {@link @microsoft/fast-foundation#(FormAssociated:function)}.
-         *
-         * @internal
-         */
         public proxy: HTMLInputElement = document.createElement("input");
     }
-);
+) {}
 
 /**
  * A Slider Custom HTML Element.
@@ -56,7 +56,7 @@ const FormAssociated = _FormAssociated(
  *
  * @public
  */
-export class Slider extends FormAssociated implements SliderConfiguration {
+export class Slider extends FormAssociatedSlider implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -140,7 +140,9 @@ export class Slider extends FormAssociated implements SliderConfiguration {
     /**
      * @internal
      */
-    public valueChanged(previous, next) {
+    public valueChanged(previous, next): void {
+        super.valueChanged(previous, next);
+
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
@@ -200,6 +202,7 @@ export class Slider extends FormAssociated implements SliderConfiguration {
      * Orientation of the slider
      *
      * @public
+     * @remarks
      * HTML Attribute: orientation
      */
     @attr
@@ -214,6 +217,7 @@ export class Slider extends FormAssociated implements SliderConfiguration {
      * The selection mode
      *
      * @public
+     * @remarks
      * HTML Attribute: mode
      */
     @attr
@@ -249,7 +253,7 @@ export class Slider extends FormAssociated implements SliderConfiguration {
      *
      * @public
      */
-    public increment = (): void => {
+    public increment(): void {
         const newVal: number =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) + Number(this.step)
@@ -258,14 +262,14 @@ export class Slider extends FormAssociated implements SliderConfiguration {
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
-    };
+    }
 
     /**
      * Decrement the value by the step
      *
      * @public
      */
-    public decrement = (): void => {
+    public decrement(): void {
         const newVal =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) - Number(this.step)
@@ -274,8 +278,11 @@ export class Slider extends FormAssociated implements SliderConfiguration {
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;
-    };
+    }
 
+    /**
+     * @internal
+     */
     protected keypressHandler = (e: KeyboardEvent) => {
         if (e.keyCode !== keyCodeTab) {
             e.preventDefault();
@@ -299,7 +306,13 @@ export class Slider extends FormAssociated implements SliderConfiguration {
         }
     };
 
-    private setThumbPositionForOrientation = (direction: Direction): void => {
+    /**
+     * Places the thumb based on the current value
+     *
+     * @public
+     * @param direction - writing mode
+     */
+    private setThumbPositionForOrientation(direction: Direction): void {
         const newPct: number = convertPixelToPercent(
             Number(this.value),
             Number(this.min),
@@ -316,7 +329,7 @@ export class Slider extends FormAssociated implements SliderConfiguration {
                 ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
-    };
+    }
 
     private setupTrackConstraints = (): void => {
         const clientRect: DOMRect = this.track.getBoundingClientRect();
@@ -337,6 +350,9 @@ export class Slider extends FormAssociated implements SliderConfiguration {
         this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
     };
 
+    /**
+     * @internal
+     */
     public initialValue: string = "";
 
     private get midpoint(): string {
@@ -463,4 +479,4 @@ export class Slider extends FormAssociated implements SliderConfiguration {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Slider extends _FormAssociated {}
+export interface FormAssociatedSlider extends FormAssociated {}

@@ -1,6 +1,12 @@
-import { attr, DOM, emptyArray, FASTElement, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    Constructable,
+    DOM,
+    emptyArray,
+    FASTElement,
+    observable,
+} from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
-import { Constructable } from "../utilities/constructable";
 
 /**
  * This file enables typing support for ElementInternals APIs.
@@ -99,37 +105,26 @@ const InternalsMap = new Map();
  *
  * @alpha
  */
-export interface FormAssociated {
-    attachProxy(): void;
-    checkValidity(): boolean;
-    connectedCallback(): void;
-    detachProxy(): void;
+export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     dirtyValue: boolean;
     disabled: boolean;
-    disabledChanged(previous: boolean, next: boolean): void;
-    disconnectedCallback(): void;
-    formAssociated(): boolean;
-    initialValueChanged?(previous: string, next: string): void;
+    readonly elementInternals: ElementInternals | null;
+    readonly formAssociated: boolean;
+    readonly labels: ReadonlyArray<Node[]>;
     name: string;
-    nameChanged(): void;
-    proxyEventsToBlock: string[];
-    proxyInitialized: boolean;
-    readonly form: HTMLFormElement | null;
-    readonly labels: ReadonlyArray<Node>;
-    readonly validationMessage: string;
-    readonly validity: ValidityState;
-    readonly willValidate: boolean;
-    reportValidity(): boolean;
     required: boolean;
-    requiredChanged(prev: boolean, next: boolean): void;
-    setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
-    validate(): void;
     value: string;
-    setFormValue(
-        value: File | string | FormData | null,
-        state?: File | string | FormData | null
-    ): void;
+    attachProxy(): void;
+    detachProxy(): void;
+    disabledChanged?(previous: boolean, next: boolean): void;
+    formDisabledCallback?(disabled: boolean): void;
+    formResetCallback(): void;
+    initialValueChanged?(previous, next): void;
+    nameChanged?(previous, next): void;
+    requiredChanged(prev: boolean, next: boolean): void;
     stopPropagation(e: Event): void;
+    validate(): void;
+    valueChanged(previous, next): void;
 }
 
 /**
@@ -142,10 +137,12 @@ export function FormAssociated<
         FASTElement &
             HTMLElement & {
                 proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+                disabledChanged?(previous: boolean, next: boolean): void;
+                formDisabledCallback?(disabled: boolean): void;
+                formResetCallback?(): void;
                 initialValueChanged?(previous, next): void;
                 valueChanged?(previous, next): void;
-                formResetCallback?(): void;
-                formDisabledCallback?(disabled: boolean): void;
+                nameChanged?(previous, next): void;
             }
     >
 >(BaseCtor: T): T {
@@ -153,6 +150,8 @@ export function FormAssociated<
         /**
          * The proxy element - this element serves as the communication layer with the parent form
          * when form association is not supported by the browser.
+         *
+         * @alpha
          */
         public proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
@@ -168,6 +167,8 @@ export function FormAssociated<
 
         /**
          * Returns the validity state of the element
+         *
+         * @alpha
          */
         public get validity(): ValidityState {
             return supportsElementInternals
@@ -178,6 +179,8 @@ export function FormAssociated<
         /**
          * Retrieve a reference to the associated form.
          * Returns null if not associated to any form.
+         *
+         * @alpha
          */
         public get form(): HTMLFormElement | null {
             return supportsElementInternals
@@ -188,6 +191,8 @@ export function FormAssociated<
         /**
          * Retrieve the localized validation message,
          * or custom validation message if set.
+         *
+         * @alpha
          */
         public get validationMessage(): string {
             return supportsElementInternals
@@ -270,10 +275,6 @@ export function FormAssociated<
 
             this.setFormValue(this.value);
             this.validate();
-
-            if (super.valueChanged) {
-                super.valueChanged(previous, next);
-            }
         }
 
         /**
@@ -296,16 +297,12 @@ export function FormAssociated<
          * They must be sure to invoke `super.initialValueChanged(previous, next)` to ensure
          * proper functioning of `FormAssociated`
          */
-        public initialValueChanged(previous: string, next: string) {
+        public initialValueChanged(previous: string, next: string): void {
             // If the value is clean and the component is connected to the DOM
             // then set value equal to the attribute value.
             if (!this.dirtyValue) {
                 this.value = this.initialValue;
                 this.dirtyValue = false;
-            }
-
-            if (super.initialValueChanged) {
-                super.initialValueChanged(previous, next);
             }
         }
 
@@ -355,7 +352,7 @@ export function FormAssociated<
          * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
          * proper functioning of `FormAssociated`
          */
-        public nameChanged(): void {
+        public nameChanged(previous, next): void {
             if (this.proxy instanceof HTMLElement) {
                 this.proxy.name = this.name;
             }
@@ -501,10 +498,6 @@ export function FormAssociated<
         }
 
         public formResetCallback() {
-            if (super.formResetCallback) {
-                return super.formResetCallback();
-            }
-
             this.value = this.initialValue;
             this.dirtyValue = false;
         }
@@ -514,7 +507,7 @@ export function FormAssociated<
         /**
          * Attach the proxy element to the DOM
          */
-        protected attachProxy() {
+        public attachProxy(): void {
             if (!this.proxyInitialized) {
                 this.proxyInitialized = true;
                 this.proxy.style.display = "none";
@@ -549,7 +542,7 @@ export function FormAssociated<
         /**
          * Detach the proxy element from the DOM
          */
-        public detachProxy() {
+        public detachProxy(): void {
             this.removeChild(this.proxy);
             this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
         }
@@ -558,7 +551,7 @@ export function FormAssociated<
          * Sets the validity of the custom element. By default this uses the proxy element to determine
          * validity, but this can be extended or replaced in implementation.
          */
-        public validate() {
+        public validate(): void {
             if (this.proxy instanceof HTMLElement) {
                 this.setValidity(this.proxy.validity, this.proxy.validationMessage);
             }
@@ -578,7 +571,7 @@ export function FormAssociated<
             }
         }
 
-        private _keypressHandler = (e: KeyboardEvent): void => {
+        private _keypressHandler(e: KeyboardEvent): void {
             switch (e.keyCode) {
                 case keyCodeEnter:
                     if (this.form instanceof HTMLFormElement) {
@@ -590,7 +583,7 @@ export function FormAssociated<
                     }
                     break;
             }
-        };
+        }
 
         /**
          * Used to stop propagation of proxy element events
