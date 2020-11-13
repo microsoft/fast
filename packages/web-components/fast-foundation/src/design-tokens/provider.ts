@@ -1,11 +1,12 @@
 import { ElementStyles, FASTElement } from "@microsoft/fast-element";
-import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
-import { DI, Registration } from "../di";
-import { Constructable } from "../interfaces";
 import {
     CSSCustomPropertyManager,
     FASTCustomPropertyManager,
 } from "../css-custom-property-manager";
+import { FASTDesignTokenLibrary } from "../design-tokens/library";
+import { DI, Registration } from "../di";
+import { Constructable } from "../interfaces";
+import { DesignTokens } from "./tokens";
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base {
@@ -16,8 +17,7 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
         constructor(...args: any[]) {
             super(...args);
 
-            const container = DI.getOrCreateDOMContainer(this);
-            container.register(
+            DI.getOrCreateDOMContainer(this).register(
                 Registration.callback(DesignTokens, () => {
                     const tokens = new FASTDesignTokenLibrary<any>();
                     tokens.upstream = this.designTokens;

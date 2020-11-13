@@ -29,6 +29,8 @@ export class FASTCustomPropertyManager {
     private static cache = new Map<string, Map<any, ElementStyles>>();
     private names = new Map<string, string>();
 
+    constructor(private selector: "host" | "root" = "host") {}
+
     /**
      * {@inheritdoc CustomPropertyManager.get}
      */
@@ -67,7 +69,7 @@ export class FASTCustomPropertyManager {
      * on the host
      */
     private create(key, value): ElementStyles {
-        return css`:host{${this.name(key)}:${value};}`;
+        return css`:${this.selector}{${this.name(key)}:${value};}`;
     }
 
     /**

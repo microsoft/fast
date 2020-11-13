@@ -1,4 +1,4 @@
-interface DesignTokenRegistration<T> {
+export interface DesignTokenRegistration<T> {
     /**
      * The key for which the token can be accessed.
      */
@@ -17,5 +17,5 @@ interface DesignTokenRegistration<T> {
     /**
      * The default value.
      */
-    default?: T;
+    value?: T;
 }
