@@ -4,7 +4,6 @@ import {
     FASTElement,
     observable,
 } from "@microsoft/fast-element";
-import { FASTProvider, Provider } from "../provider";
 import { Configuration, ConfigurationInterface, unprefix } from "../configuration";
 
 /**
@@ -16,12 +15,6 @@ import { Configuration, ConfigurationInterface, unprefix } from "../configuratio
 export abstract class FoundationElement extends FASTElement {
     @ConfigurationInterface
     private configuration: Configuration;
-    /**
-     * The element's FASTProvider (if it exists)
-     */
-    public get $fastProvider(): Provider | null {
-        return this._$fastProvider;
-    }
 
     /**
      * Sets the template of the element instance. When undefined,
@@ -65,18 +58,5 @@ export abstract class FoundationElement extends FASTElement {
         return this.configuration.getDefaultStylesFor(
             unprefix(this.tagName).toLowerCase()
         );
-    }
-
-    /**
-     * Private storage for $fastProvider.
-     */
-    private _$fastProvider: Provider | null = null;
-
-    /**
-     * Invoked when element is connected to the DOM.
-     */
-    public connectedCallback() {
-        this._$fastProvider = FASTProvider.resolveProviderFor(this);
-        super.connectedCallback();
     }
 }

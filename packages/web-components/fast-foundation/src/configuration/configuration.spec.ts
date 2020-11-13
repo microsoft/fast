@@ -1,6 +1,5 @@
 import { css, FASTElement, FASTElementDefinition, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { FASTProvider, Provider } from "../provider";
 import { ConfigurationImpl } from "./index";
 
 describe("ConfigurationImpl", () => {
