@@ -1,17 +1,6 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
-
-/**
- * A form-associated base class for the {@link (Switch:class)} component.
- *
- * @public
- */
-export class FormAssociatedSwitch extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
+import { FormAssociatedSwitch } from "./switch.form-associated";
 
 /**
  * A Switch Custom HTML Element.
@@ -125,6 +114,9 @@ export class Switch extends FormAssociatedSwitch {
         this.updateForm();
     }
 
+    /**
+     * @internal
+     */
     public formResetCallback() {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
@@ -155,11 +147,3 @@ export class Switch extends FormAssociatedSwitch {
         }
     };
 }
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedSwitch extends FormAssociated {}

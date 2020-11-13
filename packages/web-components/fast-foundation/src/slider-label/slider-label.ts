@@ -36,7 +36,9 @@ export class SliderLabel extends FASTElement {
 
     /**
      * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.
+     *
      * @public
+     * @remarks
      * HTML Attribute: position
      */
     @attr
@@ -49,6 +51,7 @@ export class SliderLabel extends FASTElement {
      * Hides the tick mark.
      *
      * @public
+     * @remarks
      * HTML Attribute: hide-mark
      */
     @attr({ attribute: "hide-mark", mode: "boolean" })
@@ -58,6 +61,7 @@ export class SliderLabel extends FASTElement {
      * The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.
      *
      * @public
+     * @remarks
      * HTML Attribute: disabled
      */
     @attr({ attribute: "disabled", mode: "boolean" })
@@ -68,6 +72,10 @@ export class SliderLabel extends FASTElement {
      */
     @observable
     public sliderOrientation: Orientation;
+
+    /**
+     * @internal
+     */
     protected sliderOrientationChanged(): void {
         void 0;
     }

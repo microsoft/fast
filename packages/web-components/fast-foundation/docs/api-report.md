@@ -148,6 +148,7 @@ export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTempl
 export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
 //
 // @public
@@ -178,6 +179,8 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
+//
 // @public
 export class Checkbox extends FormAssociatedCheckbox {
     constructor();
@@ -485,90 +488,6 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     valueChanged(previous: any, next: any): void;
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedButton_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedButton" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedButton extends FormAssociatedButton_base {
-}
-
-// @internal
-export interface FormAssociatedButton extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedCheckbox" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedCheckbox extends FormAssociatedCheckbox_base {
-}
-
-// @internal
-export interface FormAssociatedCheckbox extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedRadio" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedRadio extends FormAssociatedRadio_base {
-}
-
-// @internal
-export interface FormAssociatedRadio extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedSlider" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedSlider extends FormAssociatedSlider_base {
-}
-
-// @internal
-export interface FormAssociatedSlider extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedSwitch_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedSwitch" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedSwitch extends FormAssociatedSwitch_base {
-}
-
-// @internal
-export interface FormAssociatedSwitch extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedTextArea" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedTextArea extends FormAssociatedTextArea_base {
-}
-
-// @internal
-export interface FormAssociatedTextArea extends FormAssociated {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField_base" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FormAssociatedTextField" because one of its declarations is marked as @internal
-//
-// @public
-export class FormAssociatedTextField extends FormAssociatedTextField_base {
-}
-
-// @internal
-export interface FormAssociatedTextField extends FormAssociated {
-}
-
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
@@ -661,6 +580,8 @@ export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplat
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
+//
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     checked: boolean;
@@ -732,6 +653,10 @@ export type SkeletonShape = "rect" | "circle";
 // @public
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Slider" because one of its declarations is marked as @internal
+//
 // @public
 export class Slider extends FormAssociatedSlider implements SliderConfiguration {
     // @internal (undocumented)
@@ -746,7 +671,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     initialValue: string;
     // @internal (undocumented)
     isDragging: boolean;
-    // @internal (undocumented)
+    // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
     max: number;
     min: number;
@@ -773,6 +698,10 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     // @internal (undocumented)
     valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
+}
+
+// @internal (undocumented)
+export interface Slider extends FormAssociatedSlider {
 }
 
 // @public
@@ -812,7 +741,7 @@ export class SliderLabel extends FASTElement {
     sliderMinPosition: number;
     // @internal (undocumented)
     sliderOrientation: Orientation;
-    // (undocumented)
+    // @internal (undocumented)
     protected sliderOrientationChanged(): void;
 }
 
@@ -861,6 +790,8 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSwitch" needs to be exported by the entry point index.d.ts
+//
 // @public
 export class Switch extends FormAssociatedSwitch {
     checked: boolean;
@@ -872,7 +803,7 @@ export class Switch extends FormAssociatedSwitch {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     formResetCallback(): void;
     // @internal
     initialValue: string;
@@ -941,6 +872,7 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
 //
 // @public
@@ -983,6 +915,7 @@ export enum TextAreaResize {
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
 //
 // @public

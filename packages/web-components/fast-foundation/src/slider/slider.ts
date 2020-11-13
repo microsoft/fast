@@ -1,9 +1,4 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    observable,
-} from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowDown,
@@ -15,9 +10,9 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
-import { getDirection } from "../utilities/";
+import { getDirection } from "../utilities/direction";
 import { convertPixelToPercent } from "./slider-utilities";
+import { FormAssociatedSlider } from "./slider.form-associated";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
@@ -40,17 +35,6 @@ export interface SliderConfiguration {
 }
 
 /**
- * A form-associated base class for the {@link (Slider:class)} component.
- *
- * @public
- */
-export class FormAssociatedSlider extends FormAssociated(
-    class extends FASTElement {
-        public proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
-
-/**
  * A Slider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
  *
@@ -59,6 +43,7 @@ export class FormAssociatedSlider extends FormAssociated(
 export class Slider extends FormAssociatedSlider implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     *
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -150,10 +135,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * The minimum allowed value
+     * The minimum allowed value.
      *
      * @defaultValue - 0
      * @public
+     * @remarks
      * HTML Attribute: min
      */
     @attr({ converter: nullableNumberConverter })
@@ -167,10 +153,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * The maximum allowed value
+     * The maximum allowed value.
      *
      * @defaultValue - 10
      * @public
+     * @remarks
      * HTML Attribute: max
      */
     @attr({ converter: nullableNumberConverter })
@@ -183,9 +170,10 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * Value to increment or decrement via arrow keys, mouse click or drag
+     * Value to increment or decrement via arrow keys, mouse click or drag.
      *
      * @public
+     * @remarks
      * HTML Attribute: step
      */
     @attr({ converter: nullableNumberConverter })
@@ -199,7 +187,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * Orientation of the slider
+     * The orientation of the slider.
      *
      * @public
      * @remarks
@@ -214,7 +202,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * The selection mode
+     * The selection mode.
      *
      * @public
      * @remarks
@@ -280,9 +268,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         this.value = decrementedValString;
     }
 
-    /**
-     * @internal
-     */
     protected keypressHandler = (e: KeyboardEvent) => {
         if (e.keyCode !== keyCodeTab) {
             e.preventDefault();
@@ -429,7 +414,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     /**
      * Handle a window mouse up during a drag operation
      */
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private handleWindowMouseUp = (event: MouseEvent): void => {
         this.stopDragging();
     };
@@ -474,9 +458,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 }
 
 /**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface FormAssociatedSlider extends FormAssociated {}
+export interface Slider extends FormAssociatedSlider {}

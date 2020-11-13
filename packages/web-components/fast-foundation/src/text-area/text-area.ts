@@ -1,26 +1,10 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    observable,
-} from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
+import { FormAssociatedTextArea } from "./text-area.form-associated";
 import { TextAreaResize } from "./text-area.options";
 
 export { TextAreaResize };
-
-/**
- * A form-associated base class for the {@link (TextArea:class)} component.
- *
- * @public
- */
-export class FormAssociatedTextArea extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLTextAreaElement = document.createElement("textarea");
-    }
-) {}
 
 /**
  * A Text Area Custom HTML Element.
@@ -201,14 +185,6 @@ export class TextArea extends FormAssociatedTextArea {
         this.$emit("change");
     }
 }
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedTextArea extends FormAssociated {}
 
 /**
  * Mark internal because exporting class and interface of the same name

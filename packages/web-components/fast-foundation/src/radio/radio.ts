@@ -1,6 +1,6 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedRadio } from "./radio.form-associated";
 
 /**
  * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element
@@ -10,17 +10,6 @@ export type RadioControl = Pick<
     HTMLInputElement,
     "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
 >;
-
-/**
- * A form-associated base class for the {@link (Radio:class)} component.
- *
- * @public
- */
-export class FormAssociatedRadio extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
 
 /**
  * A Radio Custom HTML Element.
@@ -205,11 +194,3 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
         }
     };
 }
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedRadio extends FormAssociated {}

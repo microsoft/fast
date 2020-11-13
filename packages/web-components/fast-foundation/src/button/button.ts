@@ -1,18 +1,7 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import { attr } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
-
-/**
- * A form-associated base class for the {@link (Button:class)} component.
- *
- * @public
- */
-export class FormAssociatedButton extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
+import { FormAssociatedButton } from "./button.form-associated";
 
 /**
  * A Button Custom HTML Element.
@@ -205,14 +194,6 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
     @attr({ attribute: "aria-pressed", mode: "fromView" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedButton extends FormAssociated {}
 
 /**
  * Mark internal because exporting class and interface of the same name

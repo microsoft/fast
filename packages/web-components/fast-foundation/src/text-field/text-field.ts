@@ -1,27 +1,10 @@
-import {
-    attr,
-    DOM,
-    FASTElement,
-    nullableNumberConverter,
-    observable,
-} from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+import { FormAssociatedTextField } from "./text-field.form-associated";
 import { TextFieldType } from "./text-field.options";
 
 export { TextFieldType };
-
-/**
- * A form-associated base class for the {@link (TextField:class)} component.
- *
- * @public
- */
-export class FormAssociatedTextField extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
 
 /**
  * A Text Field Custom HTML Element.
@@ -234,14 +217,6 @@ export class TextField extends FormAssociatedTextField {
  * @public
  */
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedTextField extends FormAssociated {}
 
 /**
  * Mark internal because exporting class and interface of the same name

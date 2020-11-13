@@ -1,17 +1,6 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
-
-/**
- * A form-associated base class for the {@link (Checkbox:class)} component.
- *
- * @public
- */
-export class FormAssociatedCheckbox extends FormAssociated(
-    class extends FASTElement {
-        proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
+import { FormAssociatedCheckbox } from "./checkbox.form-associated";
 
 /**
  * A Checkbox Custom HTML Element.
@@ -174,11 +163,3 @@ export class Checkbox extends FormAssociatedCheckbox {
         }
     };
 }
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface FormAssociatedCheckbox extends FormAssociated {}
