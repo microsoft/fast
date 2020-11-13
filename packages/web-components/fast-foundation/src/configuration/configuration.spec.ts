@@ -90,24 +90,4 @@ describe("ConfigurationImpl", () => {
             expect(customElements.get(elName)).to.equal(MyElement);
         });
     });
-
-    describe(".defineProvider", () => {
-        it("should return a FASTProvider custom element constructor with the default tag name 'fast-provider'", done => {
-            const conf = new ConfigurationImpl();
-            const P = conf.defineProvider();
-
-            const element = (document.createElement(
-                "fast-provider"
-            ) as unknown) as Provider;
-            document.body.appendChild((element as unknown) as HTMLElement); // TODO: why do I need to cast?
-
-            window.setTimeout(() => {
-                expect(element instanceof FASTProvider).to.equal(true);
-                expect(element instanceof P).to.equal(true); // TODO: why is this not passing?
-                expect(element.configuration).to.equal(conf); // TODO: why is this not passing?
-
-                done();
-            });
-        });
-    });
 });

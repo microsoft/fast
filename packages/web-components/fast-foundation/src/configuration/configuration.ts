@@ -61,37 +61,32 @@ export interface Configuration {
 
     /**
      * Sets the default template for an element.
-     * @param name The non-prefixed element tag-name.
+     * @param baseName The non-prefixed element tag-name.
      * @param template The template to set as the default template.
      */
     setDefaultTemplateFor(
-        name: string,
+        baseName: string,
         template: ElementViewTemplate | null
     ): Configuration;
 
     /**
      * Gets the template for an element, or null.
-     * @param name The non-prefixed element tag-name.
+     * @param baseName The non-prefixed element tag-name.
      */
-    getDefaultTemplateFor(name: string): ElementViewTemplate | null;
+    getDefaultTemplateFor(baseName: string): ElementViewTemplate | null;
 
     /**
      * Sets the default styles for an element.
-     * @param name The non-prefixed element tag-name.
+     * @param baseName The non-prefixed element tag-name.
      * @param styles The styles to set as the default styles.
      */
-    setDefaultStylesFor(name: string, styles: ElementStyles | null): Configuration;
+    setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
 
     /**
      * Gets the styles for an element, or null.
-     * @param name The non-prefixed element tag-name.
+     * @param baseName The non-prefixed element tag-name.
      */
-    getDefaultStylesFor(name: string): ElementStyles | null;
-
-    /**
-     * Defines a {@link @microsoft/fast-foundation#Provider} for the application.
-     */
-    defineProvider(): { new (): Provider };
+    getDefaultStylesFor(baseName: string): ElementStyles | null;
 
     /**
      *
@@ -186,28 +181,6 @@ export class ConfigurationImpl implements Configuration {
     /** {@inheritdoc Configuration.getDefaultStylesFor}*/
     public getDefaultStylesFor(name: string): ElementStyles | null {
         return this.stylesRegistry.get(name) || null;
-    }
-
-    /** {@inheritdoc Configuration.defineProvider} */
-    public defineProvider(
-        config: Partial<Omit<ComponentConfiguration, "type">> = {}
-    ): { new (): FASTProvider } {
-        const { prefix: pre, baseName, template, styles } = config;
-        const def = {
-            name: prefix(pre || this.prefix, baseName || "provider"),
-            template: template || ConfigurationImpl.defaultProviderTemplate,
-            styles: styles || ConfigurationImpl.defaultProviderStyles,
-        };
-
-        /* eslint-disable-next-line */
-        const that = this;
-        class ConfiguredProvider extends FASTProvider {
-            public readonly configuration = that;
-        }
-
-        FASTElement.define(ConfiguredProvider, def);
-
-        return ConfiguredProvider;
     }
 
     /** {@inheritdoc Configuration.register} */
