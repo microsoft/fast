@@ -15,7 +15,7 @@ configure({ adapter: new Adapter() });
 
 const textAlignControlProps: TextAlignControlProps = {
     type: ControlType.select,
-    options: ["left", "center", "right"],
+    options: ["left", "center", "right", "justify"],
     dataLocation: "",
     navigationConfigId: "",
     dictionaryId: "",
@@ -41,6 +41,7 @@ const managedClasses: TextAlignControlClassNameContract = {
     textAlignControl_input__right: "textAlignControl_input__right",
     textAlignControl_input__center: "textAlignControl_input__center",
     textAlignControl_input__left: "textAlignControl_input__left",
+    textAlignControl_input__justify: "textAlignControl_input__justify",
 };
 
 describe("TextAlignControl", () => {
@@ -52,7 +53,7 @@ describe("TextAlignControl", () => {
     test("should generate HTML input elements", () => {
         const rendered: any = mount(<TextAlignControl {...textAlignControlProps} />);
 
-        expect(rendered.find("input")).toHaveLength(3);
+        expect(rendered.find("input")).toHaveLength(4);
     });
     test("should have an `id` attribute on the HTML input elements and a corresponding to the dataLocation", () => {
         const dataLocation: string = "foo";
@@ -64,6 +65,7 @@ describe("TextAlignControl", () => {
         expect(dataLocation).toMatch(inputs.at(0).prop("id"));
         expect(dataLocation).toMatch(inputs.at(1).prop("id"));
         expect(dataLocation).toMatch(inputs.at(2).prop("id"));
+        expect(dataLocation).toMatch(inputs.at(3).prop("id"));
     });
     test("should fire an `onChange` callback when an input has been changed", () => {
         const handleChange: any = jest.fn();
@@ -89,6 +91,7 @@ describe("TextAlignControl", () => {
         expect(inputs.at(0).prop("disabled")).toBeTruthy();
         expect(inputs.at(1).prop("disabled")).toBeTruthy();
         expect(inputs.at(2).prop("disabled")).toBeTruthy();
+        expect(inputs.at(3).prop("disabled")).toBeTruthy();
         expect(
             rendered.find(`.${managedClasses.textAlignControl__disabled}`)
         ).toHaveLength(1);

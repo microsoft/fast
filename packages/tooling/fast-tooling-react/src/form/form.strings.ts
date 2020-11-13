@@ -16,6 +16,7 @@ const defaultStrings: FormStrings = {
     textAlignLeftLabel: "left align",
     textAlignCenterLabel: "center align",
     textAlignRightLabel: "right align",
+    textAlignJustifyLabel: "justify align",
     themeLightLabel: "theme light",
     themeDarkLabel: "theme dark",
     constValueLabel: "Set the value",
