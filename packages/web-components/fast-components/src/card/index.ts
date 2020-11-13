@@ -8,7 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { CardStyles as styles } from "./card.styles";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { createColorPalette, FASTDesignSystem, neutralFillCard } from "..";
+import { createColorPalette, FASTDesignSystem, neutralFillCard } from "../index";
 
 const paletteCache = new Map();
 
