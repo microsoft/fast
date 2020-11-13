@@ -1,7 +1,7 @@
 import { css, customElement, elements, html } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../fixture";
-import { FASTFoundation } from "./index";
+import { FoundationElement } from "./index";
 
 const styles = css`
     :host {
@@ -15,19 +15,19 @@ const template = html`
 @customElement({
     name: "bare-element",
 })
-class BareElement extends FASTFoundation {}
+class BareElement extends FoundationElement {}
 
 @customElement({
     name: "styled-element",
 })
-class StyledElement extends FASTFoundation {
+class StyledElement extends FoundationElement {
     styles = styles;
 }
 
 @customElement({
     name: "templated-element",
 })
-class TemplatedElement extends FASTFoundation {
+class TemplatedElement extends FoundationElement {
     template = template;
 }
 

@@ -221,25 +221,19 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 
 // @public (undocumented)
 export interface Configuration {
-    defineProvider(): {
-        new (): Provider;
-    };
-    getDefaultStylesFor(name: string): ElementStyles | null;
-    getDefaultTemplateFor(name: string): ElementViewTemplate | null;
+    getDefaultStylesFor(baseName: string): ElementStyles | null;
+    getDefaultTemplateFor(baseName: string): ElementViewTemplate | null;
     readonly prefix: string;
     // (undocumented)
     register(...registrations: ConfigurationRegistry[]): Configuration;
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
-    setDefaultStylesFor(name: string, styles: ElementStyles | null): Configuration;
-    setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): Configuration;
+    setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
+    setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
 }
 
 // @public (undocumented)
 export class ConfigurationImpl implements Configuration {
     constructor(options?: ConfigurationOptions);
-    defineProvider(config?: Partial<Omit<ComponentConfiguration, "type">>): {
-        new (): FASTProvider;
-    };
     static forComponent(defaultElementConfiguration: ComponentConfiguration): (elementConfiguration?: Partial<Omit<ComponentConfiguration, "type">>) => ConfigurationRegistry;
     getDefaultStylesFor(name: string): ElementStyles | null;
     getDefaultTemplateFor(name: string): ElementViewTemplate | null;
@@ -383,9 +377,6 @@ export interface DefaultableInterfaceSymbol<Key, Type = any> extends InterfaceSy
     withDefault(configure: (builder: ResolverBuilder<Key>) => Resolver<Key>): InterfaceSymbol<Key, Type>;
 }
 
-// @public (undocumented)
-export const DefaultDesignTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
-
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
@@ -455,19 +446,13 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
 // @public (undocumented)
-export interface DesignTokenConfig {
-    // (undocumented)
-    backgroundColor: string;
-}
-
-// @public (undocumented)
 export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     new (...args: any[]): {
-        designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
+        designTokens: FASTDesignTokenLibrary<any>;
         customPropertyManager: FASTCustomPropertyManager;
         localSheets: Map<string, ElementStyles>;
         connectedCallback(): void;
-        handleChange(source: FASTDesignTokenLibrary<DesignTokenConfig>, keys: Array<keyof DesignTokenConfig>): void;
+        handleChange(source: FASTDesignTokenLibrary<any>, keys: Array<any>): void;
         readonly $fastController: import("@microsoft/fast-element").Controller;
         $emit(type: string, detail?: any, options?: Pick<CustomEventInit<any>, "bubbles" | "cancelable" | "composed"> | undefined): boolean | void;
         disconnectedCallback(): void;
@@ -733,7 +718,7 @@ export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTM
 } & TBase;
 
 // @public (undocumented)
-export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<DesignTokenConfig>>;
+export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<any>>;
 
 // @public (undocumented)
 export const DI: Readonly<{
@@ -901,20 +886,6 @@ export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<
 }
 
 // @public
-export abstract class FASTFoundation extends FASTElement {
-    get $fastProvider(): Provider | null;
-    connectedCallback(): void;
-    protected resolveStyles(): ElementStyles | null;
-    protected resolveTemplate(): ElementViewTemplate | null;
-    styles: ElementStyles | void | null;
-    // (undocumented)
-    protected stylesChanged(): void;
-    template: ElementViewTemplate | void | null;
-    // (undocumented)
-    protected templateChanged(): void;
-}
-
-// @public
 export class Flipper extends FASTElement {
     direction: FlipperDirection;
     disabled: boolean;
@@ -991,6 +962,21 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     value: string;
     // (undocumented)
     valueChanged(previous: any, next: any): void;
+}
+
+// @public
+export abstract class FoundationElement extends FASTElement {
+    // Warning: (ae-forgotten-export) The symbol "Provider" needs to be exported by the entry point index.d.ts
+    get $fastProvider(): Provider | null;
+    connectedCallback(): void;
+    protected resolveStyles(): ElementStyles | null;
+    protected resolveTemplate(): ElementViewTemplate | null;
+    styles: ElementStyles | void | null;
+    // (undocumented)
+    protected stylesChanged(): void;
+    template: ElementViewTemplate | void | null;
+    // (undocumented)
+    protected templateChanged(): void;
 }
 
 // @public
@@ -1717,11 +1703,6 @@ export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<Tr
 // @public
 export function unprefix(name: string): string;
 
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/configuration/configuration.d.ts:68:9 - (ae-forgotten-export) The symbol "Provider" needs to be exported by the entry point index.d.ts
-// dist/dts/configuration/configuration.d.ts:108:9 - (ae-forgotten-export) The symbol "FASTProvider" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
