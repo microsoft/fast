@@ -255,7 +255,9 @@ export class RadioGroup extends FASTElement {
         (this.previousElementSibling as HTMLInputElement).focus();
     };
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    /**
+     * @internal
+     */
     public focusOutHandler = (e: FocusEvent): boolean | void => {
         const group: HTMLElement[] = this.slottedRadioButtons;
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
@@ -289,6 +291,9 @@ export class RadioGroup extends FASTElement {
         return true;
     };
 
+    /**
+     * @internal
+     */
     public clickHandler = (e: MouseEvent): void => {
         const radio: HTMLInputElement | null = e.target as HTMLInputElement;
         if (radio) {

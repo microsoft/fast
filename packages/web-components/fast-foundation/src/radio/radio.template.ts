@@ -2,7 +2,7 @@ import { html, slotted } from "@microsoft/fast-element";
 import { Radio } from "./radio";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Radio} component.
+ * The template for the {@link @microsoft/fast-foundation#(Radio:class)} component.
  * @public
  */
 export const RadioTemplate = html<Radio>`

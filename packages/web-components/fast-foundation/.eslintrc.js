@@ -6,5 +6,17 @@ module.exports = {
         "@typescript-eslint/typedef": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/class-name-casing": [
+            "error",
+            {
+                allowUnderscorePrefix: true,
+            },
+        ],
+        "@typescript-eslint/no-empty-interface": [
+            "error",
+            {
+                allowSingleExtends: true,
+            },
+        ],
     },
 };
