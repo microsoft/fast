@@ -1,14 +1,11 @@
 import {
-    css,
     ElementStyles,
     ElementViewTemplate,
     FASTElement,
-    html,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { Container, DI, InterfaceSymbol, Key, Registration } from "../di";
-import { FASTProvider, Provider } from "../provider";
-import { display } from "../utilities";
+import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
+import { DI, InterfaceSymbol, Key, Registration } from "../di";
 
 export interface ConfigurationOptions {
     /**
@@ -113,11 +110,14 @@ export function unprefix(name: string) {
 }
 
 export class ConfigurationImpl implements Configuration {
+    private designTokens = new FASTDesignTokenLibrary();
+
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
 
         const container = DI.getOrCreateDOMContainer(); // TODO DI.createContainer()
         container.register(Registration.instance(ConfigurationInterface, this));
+        container.register(Registration.instance(DesignTokens, this.designTokens));
     }
 
     /**
@@ -189,12 +189,6 @@ export class ConfigurationImpl implements Configuration {
         return this;
     }
 
-    private static defaultProviderTemplate: ElementViewTemplate = html`
-        <slot></slot>
-    `;
-    private static defaultProviderStyles: ElementStyles = css`
-        ${display("block")}
-    `;
     private templateRegistry = new Map<string, ElementViewTemplate | null>();
     private stylesRegistry = new Map<string, ElementStyles | null>();
     private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();

@@ -1,4 +1,3 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { FASTFoundation } from "@microsoft/fast-foundation";
 
 /**

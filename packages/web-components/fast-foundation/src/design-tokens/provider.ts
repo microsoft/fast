@@ -1,9 +1,5 @@
 import { ElementStyles, FASTElement } from "@microsoft/fast-element";
-import {
-    DesignTokenConfig,
-    DesignTokens,
-    FASTDesignTokenLibrary,
-} from "../design-tokens";
+import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
 import { DI, Registration } from "../di";
 import { Constructable } from "../interfaces";
 import {
@@ -13,7 +9,7 @@ import {
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base {
-        public designTokens: FASTDesignTokenLibrary<DesignTokenConfig>;
+        public designTokens: FASTDesignTokenLibrary<any>;
         private customPropertyManager: FASTCustomPropertyManager;
         private localSheets = new Map<string, ElementStyles>();
 
@@ -23,7 +19,7 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
             const container = DI.getOrCreateDOMContainer(this);
             container.register(
                 Registration.callback(DesignTokens, () => {
-                    const tokens = new FASTDesignTokenLibrary<DesignTokenConfig>();
+                    const tokens = new FASTDesignTokenLibrary<any>();
                     tokens.upstream = this.designTokens;
 
                     return tokens;
@@ -33,7 +29,6 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
 
         connectedCallback() {
             super.connectedCallback();
-            this.customPropertyManager.alias("backgroundColor", "background-color");
             this.designTokens.subscribe(this);
             // How do I know what should be reflected to CSS custom properties?
         }
@@ -45,10 +40,7 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
          * @param source the source library object
          * @param keys
          */
-        public handleChange(
-            source: FASTDesignTokenLibrary<DesignTokenConfig>,
-            keys: Array<keyof DesignTokenConfig>
-        ) {
+        public handleChange(source: FASTDesignTokenLibrary<any>, keys: Array<any>) {
             keys.forEach(key => {
                 if (source.hasLocal(key)) {
                     const sheet = this.customPropertyManager.get(
