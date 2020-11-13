@@ -124,7 +124,7 @@ export class ConfigurationImpl implements Configuration {
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
 
-        const container = DI.getOrCreateDOMContainer(); // TODO DI.createContainer()
+        const container = DI.getOrCreateDOMContainer();
         container.register(Registration.instance(ConfigurationInterface, this));
         container.register(Registration.instance(DesignTokens, this.designTokens));
     }
@@ -232,7 +232,7 @@ export class ConfigurationImpl implements Configuration {
     private designTokenRegistry = new Map<string, DesignTokenRegistration<any>>();
 }
 
-export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createDOMInterface(
+export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(
     // TODO: DI.createInterface
     "Configuration"
 ).noDefault();

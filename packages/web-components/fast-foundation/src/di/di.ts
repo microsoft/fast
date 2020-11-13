@@ -271,118 +271,77 @@ function domParentLocator(element: HTMLElement): Container {
     return event.detail.container || DI.getOrCreateDOMContainer();
 }
 
-export const DI = Object.freeze({
-    createContainer(): Container {
-        return new ContainerImpl(null, () => null);
-    },
+export interface InterfaceConfiguration {
+    /**
+     * The friendly name for the interface. Useful for debugging.
+     */
+    friendlyName?: string;
 
-    getOrCreateDOMContainer(element: HTMLElement = document.body): Container {
-        return (element as any).$container || new DOMContainerImpl(element);
-    },
+    /**
+     * When true, the dependency will be re-resolved when FASTElement connection changes.
+     * If the resolved value changes due to connection change, a {@link Observable.notify | notification }
+     * will be emitted for the property, with the previous and next values provided to any subscriber.
+     */
+    respectConnection?: boolean;
+}
 
-    createInterface<K extends Key>(
-        friendlyName: string = defaultFriendlyName
-    ): DefaultableInterfaceSymbol<K> {
-        const Interface: InternalDefaultableInterfaceSymbol<K> = function (
-            target: Injectable,
-            property: string,
-            index: number
-        ): any {
-            if (target === null || new.target !== undefined) {
-                throw new Error(
-                    `No registration for interface: '${Interface.friendlyName}'`
-                );
-            }
+function createInterface<K extends Key, T = any>(
+    friendlyName?: string
+): DefaultableInterfaceSymbol<K, T>;
+function createInterface<K extends Key, T = any>(
+    configuration?: InterfaceConfiguration & { respectConnection: false }
+): DefaultableInterfaceSymbol<K, T>;
+function createInterface<K extends Key, T = HTMLElement & FASTElement>(
+    configuration?: InterfaceConfiguration & { respectConnection: true }
+): DefaultableInterfaceSymbol<K, T>;
+function createInterface<K extends Key, T = any>(nameOrConfig?: any) {
+    const friendlyName: string =
+        typeof nameOrConfig === "string"
+            ? nameOrConfig
+            : nameOrConfig?.friendlyName || "(anonymous)";
+    const respectConnection: boolean =
+        typeof nameOrConfig !== "string" ? !!nameOrConfig?.respectConnection : false;
+    const Interface: InternalDefaultableInterfaceSymbol<K> = function (
+        target: Injectable<T>,
+        property: string,
+        index: number
+    ): any {
+        if (target === null || new.target !== undefined) {
+            throw new Error(`No registration for interface: '${Interface.friendlyName}'`);
+        }
 
-            if (property) {
-                const diPropertyKey = `$di_${property}`;
+        if (property) {
+            const diPropertyKey = `$di_${property}`;
 
-                Reflect.defineProperty(target, property, {
-                    get: function (this: any) {
-                        let value = this[diPropertyKey];
+            Reflect.defineProperty(target, property, {
+                get: function (this: T) {
+                    let value = this[diPropertyKey];
 
-                        if (value === void 0) {
-                            const container: Container = DI.createContainer();
+                    if (value === void 0) {
+                        let container: Container | undefined;
 
-                            value = container.get(Interface);
-                            this[diPropertyKey] = value;
+                        if (this instanceof HTMLElement) {
+                            container = domParentLocator(this);
+                        } else {
+                            throw new Error(
+                                "Could not locate container to use during property injection"
+                            );
                         }
 
-                        return value;
-                    },
-                });
-            } else {
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
-                annotationParamtypes[index] = Interface;
-            }
+                        value = container.get(Interface);
+                        this[diPropertyKey] = value;
 
-            return target;
-        } as any;
-
-        Interface.$isInterface = true;
-        Interface.friendlyName = friendlyName;
-
-        Interface.noDefault = function (): InterfaceSymbol<K> {
-            return Interface;
-        };
-
-        Interface.withDefault = function (
-            configure: (builder: ResolverBuilder<K>) => Resolver<K>
-        ): InterfaceSymbol<K> {
-            Interface.withDefault = function (): InterfaceSymbol<K> {
-                throw new Error(
-                    `You can only define one default implementation for an interface: ${Interface}.`
-                );
-            };
-
-            Interface.register = function (container: Container, key?: Key): Resolver<K> {
-                return configure(new ResolverBuilder(container, key ?? Interface));
-            };
-
-            return Interface;
-        };
-
-        Interface.toString = function toString(): string {
-            return `InterfaceSymbol<${Interface.friendlyName}>`;
-        };
-
-        return Interface;
-    },
-    createDOMInterface<K extends Key>(
-        friendlyName: string = defaultFriendlyName
-    ): DefaultableInterfaceSymbol<K, HTMLElement & FASTElement> {
-        type T = HTMLElement & FASTElement;
-
-        const Interface: InternalDefaultableInterfaceSymbol<K> = function (
-            target: Injectable<T>,
-            property: string,
-            index: number
-        ): any {
-            if (target === null || new.target !== undefined) {
-                throw new Error(
-                    `No registration for interface: '${Interface.friendlyName}'`
-                );
-            }
-
-            if (property) {
-                const diPropertyKey = `$di_${property}`;
-
-                Reflect.defineProperty(target, property, {
-                    get: function (this: T) {
-                        let value = this[diPropertyKey];
-
-                        if (value === void 0) {
-                            const container = domParentLocator(this);
-
-                            value = container.get(Interface);
-                            this[diPropertyKey] = value;
-
-                            const notifier = Observable.getNotifier(this.$fastController);
+                        if (respectConnection && this instanceof FASTElement) {
+                            const notifier = Observable.getNotifier(
+                                ((this as unknown) as FASTElement).$fastController
+                            );
                             const handleChange = (
                                 source: Controller,
                                 key: "isConnected"
                             ): void => {
-                                const newContainer = domParentLocator(this);
+                                const newContainer = domParentLocator(
+                                    (this as unknown) as HTMLElement
+                                );
                                 const newValue = newContainer.get(Interface) as any;
                                 const oldValue = this[diPropertyKey];
 
@@ -398,47 +357,64 @@ export const DI = Object.freeze({
 
                             notifier.subscribe({ handleChange }, "isConnected");
                         }
-                        return value;
-                    },
-                });
-            } else {
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
-                annotationParamtypes[index] = Interface;
-            }
+                    }
+                    return value;
+                },
+            });
+        } else {
+            const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+            annotationParamtypes[index] = Interface;
+        }
 
-            return target;
-        } as any;
+        return target;
+    } as any;
 
-        Interface.$isInterface = true;
-        Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
+    Interface.$isInterface = true;
+    Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
 
-        Interface.noDefault = function (): InterfaceSymbol<K, T> {
-            return Interface;
+    Interface.noDefault = function (): InterfaceSymbol<K, T> {
+        return Interface;
+    };
+
+    Interface.withDefault = function (
+        configure: (builder: ResolverBuilder<K>) => Resolver<K>
+    ): InterfaceSymbol<K, T> {
+        Interface.withDefault = function (): InterfaceSymbol<K, T> {
+            throw new Error(
+                `You can only define one default implementation for an interface: ${Interface}.`
+            );
         };
 
-        Interface.withDefault = function (
-            configure: (builder: ResolverBuilder<K>) => Resolver<K>
-        ): InterfaceSymbol<K, T> {
-            Interface.withDefault = function (): InterfaceSymbol<K, T> {
-                throw new Error(
-                    `You can only define one default implementation for an interface: ${Interface}.`
-                );
-            };
-
-            Interface.register = function (container: Container, key?: Key): Resolver<K> {
-                return configure(new ResolverBuilder(container, key ?? Interface));
-            };
-
-            return Interface;
-        };
-
-        Interface.toString = function toString(): string {
-            return `InterfaceSymbol<${Interface.friendlyName}>`;
+        Interface.register = function (container: Container, key?: Key): Resolver<K> {
+            return configure(new ResolverBuilder(container, key ?? Interface));
         };
 
         return Interface;
+    };
+
+    Interface.toString = function toString(): string {
+        return `InterfaceSymbol<${Interface.friendlyName}>`;
+    };
+
+    return Interface;
+}
+
+export const DI = Object.freeze({
+    createContainer(): Container {
+        return new ContainerImpl(null, () => null);
     },
 
+    getOrCreateDOMContainer(element: HTMLElement = document.body): Container {
+        return (
+            (element as any).$container ||
+            new ContainerImpl(
+                element,
+                element === document.body ? () => null : domParentLocator
+            )
+        );
+    },
+
+    createInterface,
     getDesignParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined {
         return (Reflect as any).getOwnMetadata("design:paramtypes", Type);
     },
@@ -938,6 +914,18 @@ class ContainerImpl implements Container {
 
         this.resolvers = new Map();
         this.resolvers.set(Container, containerResolver);
+
+        if (owner instanceof HTMLElement) {
+            owner.addEventListener(
+                DILocateParentEventType,
+                (e: CustomEvent<DOMParentLocatorEventDetail>) => {
+                    if (e.target !== this.owner) {
+                        e.detail.container = this;
+                        e.stopImmediatePropagation();
+                    }
+                }
+            );
+        }
     }
 
     protected get parent() {
@@ -1241,29 +1229,6 @@ class ContainerImpl implements Container {
             handler.resolvers.set(keyAsValue, resolver);
             return resolver;
         }
-    }
-}
-
-class DOMContainerImpl extends ContainerImpl {
-    constructor(protected owner: HTMLElement) {
-        super(owner, domParentLocator);
-
-        owner.addEventListener(DILocateParentEventType, this.resolve);
-    }
-
-    /**
-     * Resolves the Container instance to a container-seeker
-     * @param e - The event object
-     */
-    private resolve = (e: CustomEvent<DOMParentLocatorEventDetail>) => {
-        if (e.target !== this.owner) {
-            e.detail.container = this;
-            e.stopImmediatePropagation();
-        }
-    };
-
-    protected get parent() {
-        return this.owner === document.body ? null : super.parent;
     }
 }
 

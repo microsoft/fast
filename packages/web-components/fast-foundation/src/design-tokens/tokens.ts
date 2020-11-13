@@ -3,4 +3,7 @@ import { FASTDesignTokenLibrary } from "./library";
 
 export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<
     any
->> = DI.createDOMInterface<FASTDesignTokenLibrary<any>>("DesignTokens").noDefault();
+>> = DI.createInterface<FASTDesignTokenLibrary<any>>({
+    friendlyName: "DesignTokens",
+    respectConnection: true,
+}).noDefault();
