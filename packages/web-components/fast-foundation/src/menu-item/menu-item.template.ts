@@ -32,9 +32,7 @@ export const MenuItemTemplate = html<MenuItem>`
                     vertical-inset="true"
                     ${ref("subMenuRegion")}
                 >
-                    <fast-menu>
-                        <slot name="nested-menu" ${ref("nested")}></slot>
-                    </fast-menu>
+                    <slot name="submenu"></slot>
                 </fast-anchored-region>
             `
         )}

@@ -125,16 +125,16 @@ export class MenuItem extends FASTElement {
      */
     public handleMenuItemClick = (e: MouseEvent): boolean => {
         if (e.defaultPrevented) {
-            return true;
+            return false;
         }
 
         this.invoke();
-        return true;
+        return false;
     };
 
     private handleSubmenuChange = (e: Event): void => {
         if (e.target !== null && ((e.target as unknown) as MenuItem) !== this) {
-            this.expanded = false;
+            // this.expanded = false;
         }
     };
 

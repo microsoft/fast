@@ -50,7 +50,6 @@ export class Menu extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.addEventListener("expanded-change", this.handleExpandedChanged);
         this.menuItems = this.domChildren();
 
         this.addEventListener("change", this.changeHandler);
@@ -61,7 +60,6 @@ export class Menu extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        this.removeEventListener("expanded-change", this.handleExpandedChanged);
         this.menuItems = [];
 
         this.removeEventListener("change", this.changeHandler);
@@ -135,7 +133,7 @@ export class Menu extends FASTElement {
         if (
             e.defaultPrevented ||
             e.target === null ||
-            (e.target as Element).parentElement !== this
+            this.menuItems.indexOf(e.target as Element) < 0
         ) {
             return;
         }
@@ -175,12 +173,20 @@ export class Menu extends FASTElement {
             }
 
             this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
+            this.menuItems[item].addEventListener(
+                "expanded-change",
+                this.handleExpandedChanged
+            );
         }
     };
 
     private resetItems = (oldValue: any): void => {
         for (let item: number = 0; item < oldValue.length; item++) {
             oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
+            oldValue[item].removeEventListener(
+                "expanded-change",
+                this.handleExpandedChanged
+            );
         }
     };
 
@@ -227,7 +233,8 @@ export class Menu extends FASTElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        const results: Element[] = Array.from(this.children);
+        return results;
     }
 
     /**
