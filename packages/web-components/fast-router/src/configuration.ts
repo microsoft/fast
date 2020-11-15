@@ -2,7 +2,7 @@ import { html } from "@microsoft/fast-element";
 import { NavigationQueue, PopStateNavigationQueue } from "./navigation";
 import { defaultTransition } from "./transition";
 import { NavigationContributor } from "./contributions";
-import { RouteCollection, RouteLocationResult, Layout } from "./routes";
+import { RouteCollection, RouteLocationResult, Layout, FASTElementConstructor } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
 
 export const defaultLayout = {
@@ -40,4 +40,15 @@ export abstract class RouterConfiguration<TSettings = any> {
     }
 
     protected abstract async configure(): Promise<void>;
+
+    protected cached(ElementType: new () => HTMLElement) {
+        let instance: HTMLElement | null = null;
+        return async () => {
+          if (instance === null) {
+            instance = new ElementType();
+          }
+      
+          return instance as any as HTMLElement;
+        }
+      }
 }

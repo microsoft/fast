@@ -1,4 +1,4 @@
-import { Mutable, ElementStyles, html, HTMLView, ViewTemplate, FASTElementDefinition, defaultExecutionContext } from "@microsoft/fast-element";
+import { Mutable, ElementStyles, html, HTMLView, ViewTemplate, FASTElementDefinition, defaultExecutionContext, FASTElement } from "@microsoft/fast-element";
 import { navigationParticipant } from "./participants";
 import { NavigationTransaction } from "./transaction";
 import { Router } from "./router";
@@ -22,6 +22,23 @@ export class Redirect implements NavigationCommand {
     // TODO: generate new route based on redirect and route params
     Navigation.replace(this.redirect);
   }
+}
+
+function factoryFromElementName(name: string) {
+  return html`<${name} ${navigationParticipant()}></${name}>`;
+}
+
+type ViewFactory = { create(): HTMLView };
+
+function factoryFromElementInstance(element: HTMLElement): ViewFactory {
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(element);
+  const view = new HTMLView(fragment, []);
+  return {
+    create() {
+      return view;
+    }
+  };
 }
 
 export class Render implements NavigationCommand {
@@ -126,30 +143,41 @@ export class Render implements NavigationCommand {
     } else {
       createView = async () => {
         let element = definition.element;
-        let template: ViewTemplate = (definition as any).template;
+        let factory: ViewFactory | null = null;
 
-        if (!template) {
-          if (typeof element === 'function') {
-            let def = FASTElementDefinition.forType(element);
+        if ((definition as any).factory) {
+          factory = (definition as any).factory as ViewFactory;
+        } else if (typeof element === 'function') {
+          // Do not cache it becase the function could return
+          // a different value each time.
+          let def = FASTElementDefinition.forType(element);
 
-            if (def) {
-              element = def.name;
+          if (def) {
+            factory = factoryFromElementName(def.name);
+          } else {
+            element = await (element as Function)();
+
+            if (typeof element === 'string') {
+              factory = factoryFromElementName(element);
+            } else if (element instanceof HTMLElement) {
+              factory = factoryFromElementInstance(element);
             } else {
-              element = await (element as Function)();
-
               def = FASTElementDefinition.forType(element as any);
 
               if (def) {
-                element = def.name;
+                factory = factoryFromElementName(def.name);
+              } else {
+                throw new Error('Invalid value for element in route config.');
               }
             }
           }
-  
-          (definition as any).template = template = 
-            html`<${element} ${navigationParticipant()}></${element}>`;
+        } else if (element instanceof HTMLElement) {
+          (definition as any).factory = factory = factoryFromElementInstance(element);
+        } else {
+          (definition as any).factory = factory = factoryFromElementName(element);
         }
         
-        return template.create();
+        return factory.create();
       }
     }
     

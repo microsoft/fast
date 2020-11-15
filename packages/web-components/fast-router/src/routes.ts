@@ -51,7 +51,8 @@ export type HasElement = {
     element:
         | string
         | FASTElementConstructor
-        | (() => Promise<string | FASTElementConstructor>);
+        | HTMLElement
+        | (() => Promise<string | FASTElementConstructor | HTMLElement>);
 };
 
 export type ElementFallbackRouteDefinition<
