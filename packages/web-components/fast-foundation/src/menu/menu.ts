@@ -56,22 +56,33 @@ export class Menu extends FASTElement {
     }
 
     /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-        this.menuItems = [];
-
-        this.removeEventListener("change", this.changeHandler);
-    }
-
-    /**
      * Focuses the first item in the menu.
      *
      * @public
      */
     public focus(): void {
         this.setFocus(0, 1);
+    }
+
+    /**
+     * Collapses any expanded menu items.
+     *
+     * @public
+     */
+    public collapseExpandedMenus(): void {
+        if (this.expandedItem !== null) {
+            this.expandedItem.expanded = false;
+            this.expandedItem = null;
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.menuItems = [];
+        this.removeEventListener("change", this.changeHandler);
     }
 
     /**
@@ -83,12 +94,10 @@ export class Menu extends FASTElement {
         }
         switch (e.keyCode) {
             case keyCodeArrowDown:
-            case keyCodeArrowRight:
                 // go forward one index
                 this.setFocus(this.focusIndex + 1, 1);
                 return;
             case keyCodeArrowUp:
-            case keyCodeArrowLeft:
                 // go back one index
                 this.setFocus(this.focusIndex - 1, -1);
                 return;

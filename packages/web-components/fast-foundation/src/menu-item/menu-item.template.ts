@@ -1,4 +1,4 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
@@ -9,6 +9,7 @@ import { MenuItem, MenuItemRole } from "./menu-item";
 export const MenuItemTemplate = html<MenuItem>`
     <template
         role="${x => x.role}"
+        aria-haspopup="${x => (x.submenu ? "menu" : void 0)}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
         aria-disabled="${x => x.disabled}"
         aria-expanded="${x => x.expanded}"
@@ -32,7 +33,7 @@ export const MenuItemTemplate = html<MenuItem>`
                     vertical-inset="true"
                     ${ref("subMenuRegion")}
                 >
-                    <slot name="submenu"></slot>
+                    <slot name="submenu" ${slotted("submenuNodes")}></slot>
                 </fast-anchored-region>
             `
         )}

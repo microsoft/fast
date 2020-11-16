@@ -1171,6 +1171,7 @@ export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListE
 
 // @public
 export class Menu extends FASTElement {
+    collapseExpandedMenus(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -1200,9 +1201,10 @@ export class MenuItem extends FASTElement {
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
-    // @internal
-    nested: HTMLSlotElement;
     role: MenuItemRole;
+    submenu: boolean;
+    // @internal
+    submenuNodes: HTMLElement[];
     // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
     //
     // @internal
