@@ -14,7 +14,6 @@ import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
-import { DesignSystem } from '@microsoft/fast-components-styles-msft';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
@@ -270,14 +269,14 @@ export class FASTButton extends Button {
 }
 
 // @public
-export class FASTCard extends DesignSystemProvider implements Pick<DesignSystem, "backgroundColor" | "neutralPalette"> {
+export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {
     // @internal (undocumented)
     backgroundColor: string;
     cardBackgroundColor: string;
     // (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
-    handleChange(source: DesignSystem, name: string): void;
+    handleChange(source: FASTDesignSystem, name: string): void;
     // @internal
     neutralPalette: string[];
 }
