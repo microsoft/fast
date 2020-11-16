@@ -8,11 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { CardStyles as styles } from "./card.styles";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    createColorPalette,
-    DesignSystem,
-    neutralFillCard,
-} from "@microsoft/fast-components-styles-msft";
+import { createColorPalette, FASTDesignSystem, neutralFillCard } from "../index";
 
 const paletteCache = new Map();
 
@@ -31,7 +27,7 @@ const paletteCache = new Map();
     styles,
 })
 export class FASTCard extends DesignSystemProvider
-    implements Pick<DesignSystem, "backgroundColor" | "neutralPalette"> {
+    implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {
     /**
      * @internal
      * @remarks
@@ -70,7 +66,7 @@ export class FASTCard extends DesignSystemProvider
             }
         } else if (this.provider && this.provider.designSystem) {
             this.handleChange(
-                this.provider.designSystem as DesignSystem,
+                this.provider.designSystem as FASTDesignSystem,
                 "backgroundColor"
             );
         }
@@ -90,7 +86,7 @@ export class FASTCard extends DesignSystemProvider
     /**
      * @internal
      */
-    public handleChange(source: DesignSystem, name: string): void {
+    public handleChange(source: FASTDesignSystem, name: string): void {
         if (!this.cardBackgroundColor) {
             this.backgroundColor = neutralFillCard(source);
         }
@@ -103,7 +99,10 @@ export class FASTCard extends DesignSystemProvider
         );
         parentDSNotifier.subscribe(this, "backgroundColor");
         parentDSNotifier.subscribe(this, "neutralPalette");
-        this.handleChange(this.provider?.designSystem as DesignSystem, "backgroundColor");
+        this.handleChange(
+            this.provider?.designSystem as FASTDesignSystem,
+            "backgroundColor"
+        );
     }
 }
 
