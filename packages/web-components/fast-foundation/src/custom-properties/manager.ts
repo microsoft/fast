@@ -15,7 +15,7 @@ const hostSelector = ":host{}";
  *
  * @public
  */
-export interface CustomPropertyManagerClient extends FASTElement {
+export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     /**
      * All registered CSSCustomPropertyDefinitions.
      */
@@ -311,7 +311,7 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
         // If the element isn't connected when the manager is created, the sheet can be null.
         // In those cases, set up notifier for when the element is connected and set up the customPropertyTarget
         // then.
-        controller.isConnected
+        client.isConnected
             ? this.handleConnection.handleChange()
             : Observable.getNotifier(controller).subscribe(
                   this.handleConnection,

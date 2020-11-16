@@ -274,7 +274,7 @@ export interface CustomPropertyManager {
 }
 
 // @public
-export interface CustomPropertyManagerClient extends FASTElement {
+export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
     evaluate(definition: CSSCustomPropertyDefinition): string;
 }
