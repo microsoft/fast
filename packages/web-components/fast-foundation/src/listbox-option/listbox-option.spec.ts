@@ -17,16 +17,6 @@ describe("ListboxOption", () => {
         return { element, connect, disconnect };
     }
 
-    it("should have a role of `option`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.getAttribute("role")).to.equal("option");
-
-        await disconnect();
-    });
-
     it("should set the `aria-selected` attribute equal to the `selected` value", async () => {
         const { element, connect, disconnect } = await setup();
 

@@ -596,7 +596,6 @@ export class ListboxOption extends FASTElement {
     get label(): string;
     // (undocumented)
     proxy: HTMLOptionElement;
-    role: ListboxOptionRole;
     selected: boolean;
     selectedAttribute: boolean;
     // (undocumented)
@@ -613,12 +612,6 @@ export class ListboxOption extends FASTElement {
 
 // @internal (undocumented)
 export interface ListboxOption extends StartEnd {
-}
-
-// @public
-export enum ListboxOptionRole {
-    // (undocumented)
-    option = "option"
 }
 
 // @public

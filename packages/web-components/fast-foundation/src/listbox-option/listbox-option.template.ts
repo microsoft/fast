@@ -10,7 +10,7 @@ export const ListboxOptionTemplate = html<ListboxOption>`
         aria-selected="${x => (x.selected ? true : false)}"
         class="${x => (x.selected ? "selected" : "")} ${x =>
             x.disabled ? "disabled" : ""}"
-        role="${x => x.role}"
+        role="option"
     >
         <span class="content" part="content">
             <slot></slot>

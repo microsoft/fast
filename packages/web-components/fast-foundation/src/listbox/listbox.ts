@@ -1,6 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { ListboxOption } from "../listbox-option/listbox-option";
-import { ListboxOptionRole } from "../listbox-option/listbox-option.options";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
 import { ListboxRole } from "./listbox.options";
@@ -70,7 +69,7 @@ export class Listbox extends FASTElement {
     public options: ListboxOption[] = [];
     public optionsChanged(prev, next): void {
         if (this.$fastController.isConnected) {
-            this.options.forEach((el, i) => (el.id = `${ListboxOptionRole.option}-${i}`));
+            this.options.forEach((el, i) => (el.id = `option-${i}`));
         }
     }
 
@@ -165,7 +164,7 @@ export class Listbox extends FASTElement {
      */
     public static slottedOptionFilter = (n: ListboxOption) =>
         n.nodeType === Node.ELEMENT_NODE &&
-        n.getAttribute("role") === ListboxOptionRole.option &&
+        n.getAttribute("role") === "option" &&
         !n.disabled;
 
     /**
@@ -219,7 +218,7 @@ export class Listbox extends FASTElement {
      */
     public clickHandler(e: MouseEvent): boolean | void {
         const captured = (e.target as HTMLElement).closest(
-            `[role=${ListboxOptionRole.option}]`
+            `[role=option]`
         ) as ListboxOption;
 
         if (captured && !captured.disabled) {

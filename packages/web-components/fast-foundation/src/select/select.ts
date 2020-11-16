@@ -1,6 +1,5 @@
 import { attr, DOM, observable, volatile } from "@microsoft/fast-element";
 import { ListboxOption } from "../listbox-option/listbox-option";
-import { ListboxOptionRole } from "../listbox-option/listbox-option.options";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -127,7 +126,7 @@ export class Select extends FormAssociatedSelect {
 
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
-                `[role=${ListboxOptionRole.option}]`
+                `[role=option]`
             ) as ListboxOption;
             if (captured && captured.disabled) {
                 return;

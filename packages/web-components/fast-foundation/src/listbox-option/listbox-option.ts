@@ -1,7 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { ListboxOptionRole } from "./listbox-option.options";
 
 /**
  * An Option Custom HTML Element.
@@ -47,16 +46,6 @@ export class ListboxOption extends FASTElement {
             this.proxy.disabled = this.disabled;
         }
     }
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    @attr
-    public role: ListboxOptionRole = ListboxOptionRole.option;
 
     /**
      * The selected attribute value. This sets the initial selected value.
