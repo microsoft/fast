@@ -1,14 +1,14 @@
-import { customElement } from "@microsoft/fast-element";
-import { attr, Notifier, Observable } from "@microsoft/fast-element";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { attr, customElement, Notifier, Observable } from "@microsoft/fast-element";
 import {
     designSystemProperty,
     DesignSystemProvider,
-    Card,
     CardTemplate as template,
 } from "@microsoft/fast-foundation";
+import { createColorPalette } from "../color/create-color-palette";
+import { neutralFillCard } from "../color/neutral-fill-card";
+import { FASTDesignSystem } from "../fast-design-system";
 import { CardStyles as styles } from "./card.styles";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { createColorPalette, FASTDesignSystem, neutralFillCard } from "../index";
 
 const paletteCache = new Map();
 
