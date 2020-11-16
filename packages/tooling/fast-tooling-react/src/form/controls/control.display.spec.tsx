@@ -5,6 +5,7 @@ import { DisplayControl } from "./control.display";
 import { DisplayControlProps } from "./control.display.props";
 import { DisplayControlClassNameContract } from "./control.display.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -33,6 +34,7 @@ const displayProps: DisplayControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

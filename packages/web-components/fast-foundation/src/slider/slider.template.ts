@@ -4,13 +4,13 @@ import { Orientation } from "@microsoft/fast-web-utilities";
 import { Slider } from "./slider";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Slider} component.
+ * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
 export const SliderTemplate = html<Slider>`
     <template
         role="slider"
-        class="${x => (x.readOnly ? "readonly" : "")} 
+        class="${x => (x.readOnly ? "readonly" : "")}
         ${x => x.orientation || Orientation.horizontal}"
         tabindex="${x => (x.disabled ? null : 0)}"
         aria-valuetext="${x => x.valueTextFormatter(x.value)}"

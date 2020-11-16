@@ -15,6 +15,7 @@ const parserOptions = {
 
 export default [
     {
+        context: "this",
         input: "src/index-rollup.ts",
         output: [
             {

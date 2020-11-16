@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { Checkbox, CheckboxTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 @customElement({
@@ -345,8 +345,8 @@ describe("Checkbox", () => {
         });
     });
 
-    describe("who's parent form has it's reset() method invoked", () => {
-        it("should set it's checked property to false if the checked attribute is unset", async () => {
+    describe("whose parent form has its reset() method invoked", () => {
+        it("should set its checked property to false if the checked attribute is unset", async () => {
             const { element, connect, disconnect } = await setup();
             await connect();
 
@@ -355,14 +355,15 @@ describe("Checkbox", () => {
             form.appendChild(element);
             element.checked = true;
 
-            assert(element.getAttribute("checked") === null);
-            assert(element.checked);
+            assert.isNull(element.getAttribute("checked"));
+            assert.isTrue(element.checked);
             form.reset();
 
-            assert(!element.checked);
+            assert.isFalse(!!element.checked);
+            await disconnect();
         });
 
-        it("should set it's checked property to true if the checked attribute is set", async () => {
+        it("should set its checked property to true if the checked attribute is set", async () => {
             const { element, connect, disconnect } = await setup();
             await connect();
 
@@ -379,6 +380,7 @@ describe("Checkbox", () => {
             form.reset();
 
             assert(element.checked);
+            await disconnect();
         });
         it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", () => {
             const element = document.createElement("fast-checkbox") as FASTCheckbox;

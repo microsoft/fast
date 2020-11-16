@@ -5,6 +5,11 @@ import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
 
+enum Theme {
+    Light = "light",
+    Dark = "dark",
+}
+
 /**
  * Custom form control definition
  */
@@ -28,8 +33,8 @@ class ThemeControl extends React.Component<
                     this.props.disabled,
                 ])}
             >
-                {this.renderInput("light")}
-                {this.renderInput("dark")}
+                {this.renderInput(Theme.Light)}
+                {this.renderInput(Theme.Dark)}
             </div>
         );
     }
@@ -45,13 +50,22 @@ class ThemeControl extends React.Component<
         );
     }
 
-    private getInputClassName(theme: string): string {
-        return theme === "dark"
+    private getInputClassName(theme: Theme): string {
+        return theme === Theme.Dark
             ? this.props.managedClasses.themeControl_input__dark
             : this.props.managedClasses.themeControl_input__light;
     }
 
-    private renderInput(theme: string): JSX.Element {
+    private getThemeLabel(theme: Theme): string {
+        switch (theme) {
+            case Theme.Dark:
+                return this.props.strings.themeDarkLabel;
+            case Theme.Light:
+                return this.props.strings.themeLightLabel;
+        }
+    }
+
+    private renderInput(theme: Theme): JSX.Element {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: any = this.props.options.find((item: string): any => {
                 return item === theme;
@@ -68,7 +82,7 @@ class ThemeControl extends React.Component<
                         type={"radio"}
                         value={theme}
                         name={this.props.dataLocation}
-                        aria-label={`theme ${theme}`}
+                        aria-label={this.getThemeLabel(theme)}
                         onChange={this.onChange.bind(this, theme)}
                         checked={this.isChecked(theme)}
                         disabled={this.props.disabled}

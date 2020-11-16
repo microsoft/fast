@@ -173,6 +173,11 @@ export function compileTemplate(template: HTMLTemplateElement, directives: Reado
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
 // @public
+export type Constructable<T = {}> = {
+    new (...args: any[]): T;
+};
+
+// @public
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);

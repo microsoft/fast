@@ -1,9 +1,9 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedRadio } from "./radio.form-associated";
 
 /**
- * A structure representing a Radio element
+ * A structure representing a {@link @microsoft/fast-foundation#(Radio:class)} element
  * @public
  */
 export type RadioControl = Pick<
@@ -12,12 +12,12 @@ export type RadioControl = Pick<
 >;
 
 /**
- * An Switch Custom HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
+ * A Radio Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#radio | ARIA radio }.
  *
  * @public
  */
-export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
+export class Radio extends FormAssociatedRadio implements RadioControl {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -33,19 +33,10 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     }
 
     /**
-     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/name | name attribute} for more info.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: name
+     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
      */
-    @attr
-    public name: string; // Map to proxy element
-    protected nameChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.name = this.name;
-        }
-    }
+    @observable
+    public name: string;
 
     /**
      * The element's value to be included in form submission when checked.
@@ -53,7 +44,7 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      *
      * @internal
      */
-    protected initialValue: string = "on"; // Map to proxy element.
+    public initialValue: string = "on";
 
     /**
      * Provides the default checkedness of the input element
@@ -121,8 +112,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         }
     }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
-
     /**
      * Tracks whether the "checked" property has been changed.
      * This is necessary to provide consistent behavior with
@@ -163,6 +152,9 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
         }
     }
 
+    /**
+     * @internal
+     */
     public formResetCallback() {
         this.checked = !!this.defaultChecked;
         this.dirtyChecked = false;
@@ -184,7 +176,6 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
         switch (e.keyCode) {
             case keyCodeSpace:
                 if (!this.checked && !this.readOnly) {

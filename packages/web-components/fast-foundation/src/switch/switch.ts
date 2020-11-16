@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedSwitch } from "./switch.form-associated";
 
 /**
  * A Switch Custom HTML Element.
@@ -8,7 +8,7 @@ import { FormAssociated } from "../form-associated/form-associated";
  *
  * @public
  */
-export class Switch extends FormAssociated<HTMLInputElement> {
+export class Switch extends FormAssociatedSwitch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -33,7 +33,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on";
+    public initialValue: string = "on";
 
     /**
      * The checked attribute value. This sets the initial checked value.
@@ -96,8 +96,6 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         this.validate();
     }
 
-    protected proxy = document.createElement("input");
-
     /**
      * Tracks whether the "checked" property has been changed.
      * This is necessary to provide consistent behavior with
@@ -116,6 +114,9 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
+    /**
+     * @internal
+     */
     public formResetCallback() {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
@@ -130,8 +131,6 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent) => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;
