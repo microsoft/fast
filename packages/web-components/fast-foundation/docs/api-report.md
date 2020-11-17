@@ -221,6 +221,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 
 // @public (undocumented)
 export interface Configuration {
+    attachDesignTokensTo(doc: Document): Configuration;
     getDefaultStylesFor(baseName: string): ElementStyles | null;
     getDefaultTemplateFor(baseName: string): ElementViewTemplate | null;
     readonly prefix: string;
@@ -233,9 +234,10 @@ export interface Configuration {
     setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
 }
 
-// @public (undocumented)
+// @public
 export class ConfigurationImpl implements Configuration {
     constructor(options?: ConfigurationOptions);
+    attachDesignTokensTo(doc: Document): this;
     static forComponent(defaultElementConfiguration: ComponentConfiguration): (elementConfiguration?: Partial<Omit<ComponentConfiguration, "type">>) => ConfigurationRegistry;
     getDefaultStylesFor(name: string): ElementStyles | null;
     getDefaultTemplateFor(name: string): ElementViewTemplate | null;

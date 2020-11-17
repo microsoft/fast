@@ -86,4 +86,4 @@ export class FASTCustomPropertyManager {
  */
 export const CSSCustomPropertyManager: InterfaceSymbol<Key, any> = DI.createInterface(
     "custom-property-manager"
-).withDefault(x => x.singleton(FASTCustomPropertyManager));
+).noDefault();

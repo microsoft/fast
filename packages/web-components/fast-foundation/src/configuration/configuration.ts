@@ -4,10 +4,13 @@ import {
     FASTElement,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import {
+    CSSCustomPropertyManager,
+    FASTCustomPropertyManager,
+} from "../css-custom-property-manager";
 import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
-import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { DesignTokenRegistration } from "../design-tokens/configuration";
-import { FASTCustomPropertyManager } from "../css-custom-property-manager";
+import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { supportsAdoptedStylesheets } from "../feature-detection";
 
 export interface ConfigurationOptions {
@@ -99,6 +102,13 @@ export interface Configuration {
      * @param registrations Registers registries with the Configuration
      */
     register(...registrations: ConfigurationRegistry[]): Configuration;
+
+    /**
+     * Attaches registered design tokens to a document, writing all CSS custom properties.
+     *
+     * @param doc - the Document to attach Design Tokens to
+     */
+    attachDesignTokensTo(doc: Document): Configuration;
 }
 
 /**
@@ -137,13 +147,18 @@ export class ConfigurationImpl implements Configuration {
 
         DI.getOrCreateDOMContainer().register(
             Registration.instance(ConfigurationInterface, this),
-            Registration.instance(DesignTokens, this.designTokens),
-            Registration.instance(FASTCustomPropertyManager, this.customPropertyManager)
+            Registration.callback(DesignTokens, () => {
+                const tokens = new FASTDesignTokenLibrary<any>();
+                tokens.upstream = this.designTokens;
+
+                return tokens;
+            }),
+            Registration.instance(CSSCustomPropertyManager, this.customPropertyManager)
         );
 
-        this.designTokenTarget = this.customPropertySheet[
+        this.designTokenTarget = this.customPropertySheet.cssRules[
             this.customPropertySheet.insertRule(":root{}")
-        ];
+        ] as CSSStyleRule;
     }
 
     /**
@@ -248,13 +263,15 @@ export class ConfigurationImpl implements Configuration {
     public attachDesignTokensTo(doc: Document) {
         if (
             supportsAdoptedStylesheets(doc) &&
-            doc.adoptedStyleSheets.indexOf(this.customPropertySheet) == -(-1)
+            doc.adoptedStyleSheets.indexOf(this.customPropertySheet) === -1
         ) {
             doc.adoptedStyleSheets = [
                 ...doc.adoptedStyleSheets,
                 this.customPropertySheet,
             ];
         }
+
+        return this;
     }
 
     private templateRegistry = new Map<string, ElementViewTemplate | null>();
