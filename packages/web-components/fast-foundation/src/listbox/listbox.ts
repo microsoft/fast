@@ -107,7 +107,7 @@ export class Listbox extends FASTElement {
     private focusAndScrollOptionIntoView(): void {
         if (this.contains(document.activeElement)) {
             this.firstSelectedOption.focus();
-            this.firstSelectedOption.scrollIntoView({ block: "center" });
+            this.firstSelectedOption.scrollIntoView({ block: "nearest" });
         }
     }
 
@@ -282,9 +282,10 @@ export class Listbox extends FASTElement {
             }
 
             // Send key to Typeahead handler
-            default:
+            default: {
                 this.handleTypeAhead(key);
                 return true;
+            }
         }
     }
 
