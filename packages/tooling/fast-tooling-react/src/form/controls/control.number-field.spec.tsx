@@ -105,6 +105,24 @@ describe("NumberFieldControl", () => {
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: 1 });
     });
+    test("should fire an `onChange` callback with undefined value if the input is an empty string", () => {
+        const handleChange: any = jest.fn();
+        const rendered: any = mount(
+            <NumberFieldControl
+                {...numberFieldProps}
+                onChange={handleChange}
+                managedClasses={managedClasses}
+            />
+        );
+
+        rendered
+            .find("input")
+            .at(0)
+            .simulate("change", { target: { value: "" } });
+
+        expect(handleChange).toHaveBeenCalled();
+        expect(handleChange.mock.calls[0][0]).toEqual({ value: undefined });
+    });
     test("should not fire an `onChange` callback if the input is NaN", () => {
         const handleChange: any = jest.fn();
         const rendered: any = mount(
