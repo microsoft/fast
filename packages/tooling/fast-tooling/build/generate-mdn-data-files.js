@@ -8,6 +8,9 @@ import { properties } from "../src/css-data";
 import { isEqual } from "lodash-es";
 
 const outFilePath = path.resolve(__dirname, "../src/css-data.js");
+const propertiesOutFilePath = path.resolve(__dirname, "../src/css-data.properties.ts");
+const syntaxOutFilePath = path.resolve(__dirname, "../src/css-data.syntax.ts");
+const typesOutFilePath = path.resolve(__dirname, "../src/css-data.types.ts");
 const today = new Date();
 const comment = `/**
  * This file is generated from build/generate-mdn-data-files.js
@@ -18,7 +21,7 @@ const comment = `/**
 `;
 
 /**
- * This file generates the file src/css-data.ts
+ * This function generates the file src/css-data.ts
  */
 
 (function () {
@@ -54,6 +57,45 @@ const comment = `/**
                 null,
                 4
             )}`,
+            {},
+            error => {
+                chalk.red(error);
+            }
+        );
+
+        fs.writeFile(
+            propertiesOutFilePath,
+            `${comment}export type Property = ${Object.keys(mdnCSS.properties)
+                .map(propertyItem => {
+                    return `"<'${propertyItem}'>"`;
+                })
+                .join(" | ")};`,
+            {},
+            error => {
+                chalk.red(error);
+            }
+        );
+
+        fs.writeFile(
+            syntaxOutFilePath,
+            `${comment}export type Syntax = ${Object.keys(mdnCSS.syntaxes)
+                .map(syntaxItem => {
+                    return `"<${syntaxItem}>"`;
+                })
+                .join(" | ")};`,
+            {},
+            error => {
+                chalk.red(error);
+            }
+        );
+
+        fs.writeFile(
+            typesOutFilePath,
+            `${comment}export type Type = ${Object.keys(mdnCSS.types)
+                .map(typeItem => {
+                    return `"<${typeItem}>"`;
+                })
+                .join(" | ")};`,
             {},
             error => {
                 chalk.red(error);
