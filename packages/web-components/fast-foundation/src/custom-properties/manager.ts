@@ -1,4 +1,10 @@
-import { DOM, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import {
+    DOM,
+    ElementStyles,
+    FASTElement,
+    Observable,
+    observable,
+} from "@microsoft/fast-element";
 import { CSSCustomPropertyDefinition } from "./behavior";
 
 const hostSelector = ":host{}";
@@ -9,7 +15,7 @@ const hostSelector = ":host{}";
  *
  * @public
  */
-export interface CustomPropertyManagerClient extends FASTElement {
+export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     /**
      * All registered CSSCustomPropertyDefinitions.
      */
@@ -88,9 +94,14 @@ export interface CustomPropertyManager {
 
 abstract class CustomPropertyManagerBase implements CustomPropertyManager {
     /**
+     * A queue of additions and deletions. Operations will be queued when customPropertyTarget is null
+     */
+    protected queue: Set<Function> = new Set();
+
+    /**
      * The CSSStyleDeclaration to which all CSS custom properties are written
      */
-    protected abstract customPropertyTarget: CSSStyleDeclaration;
+    protected abstract customPropertyTarget: CSSStyleDeclaration | null = null;
 
     /**
      * {@inheritdoc CustomPropertyManager.owner}
@@ -153,25 +164,29 @@ abstract class CustomPropertyManagerBase implements CustomPropertyManager {
     /**
      * {@inheritdoc CustomPropertyManager.set}
      */
-    public set = (definition: CSSCustomPropertyDefinition) => {
+    public set(definition: CSSCustomPropertyDefinition) {
         if (this.owner) {
-            this.customPropertyTarget.setProperty(
-                `--${definition.name}`,
-                this.owner.evaluate(definition)
-            );
+            this.customPropertyTarget
+                ? this.customPropertyTarget.setProperty(
+                      `--${definition.name}`,
+                      this.owner.evaluate(definition)
+                  )
+                : this.queue.add(this.set.bind(this, definition));
         }
-    };
+    }
 
     /**
      * Removes a CSS custom property from the provider.
      * @param name - the name of the property to remove
      */
-    public remove = (name: string): void => {
-        this.customPropertyTarget.removeProperty(`--${name}`);
-    };
+    public remove(name: string): void {
+        this.customPropertyTarget
+            ? this.customPropertyTarget.removeProperty(`--${name}`)
+            : this.queue.add(this.remove.bind(this, name));
+    }
 
     /**
-     * {@inheritdoc CustomPropertyManager.set}
+     * {@inheritdoc CustomPropertyManager.setAll}
      */
     public setAll() {
         if (this.ticking) {
@@ -262,28 +277,64 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
  * @public
  */
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
-    public readonly sheet: CSSStyleSheet;
+    private _sheet: CSSStyleSheet | null = null;
+    public get sheet(): CSSStyleSheet | null {
+        return this._sheet;
+    }
+
+    @observable
     protected customPropertyTarget: CSSStyleDeclaration;
+    private customPropertyTargetChanged(
+        prev: CSSStyleDeclaration | null,
+        next: CSSStyleDeclaration | null
+    ) {
+        if (!prev && this.queue.size) {
+            this.queue.forEach(fn => fn());
+            this.queue.clear();
+        }
+    }
+
     public readonly styles: HTMLStyleElement;
 
     constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient) {
         super();
+        const controller = client.$fastController;
 
         // For HTMLStyleElements we need to attach the element
         // to the DOM prior to accessing the HTMLStyleElement.sheet
         // because the property evaluates null if disconnected
-        client.$fastController.addStyles(style);
-        this.sheet = style.sheet!;
+        controller.addStyles(style);
+
         this.styles = style;
-
-        this.customPropertyTarget = (this.sheet.rules[
-            this.sheet.insertRule(hostSelector)
-        ] as CSSStyleRule).style;
-
         this._owner = client;
+
+        // If the element isn't connected when the manager is created, the sheet can be null.
+        // In those cases, set up notifier for when the element is connected and set up the customPropertyTarget
+        // then.
+        client.isConnected
+            ? this.handleConnection.handleChange()
+            : Observable.getNotifier(controller).subscribe(
+                  this.handleConnection,
+                  "isConnected"
+              );
 
         client.cssCustomPropertyDefinitions.forEach(def => {
             this.register(def);
         });
     }
+
+    private handleConnection = {
+        handleChange: () => {
+            this._sheet = this.styles.sheet!;
+
+            this.customPropertyTarget = (this.sheet!.rules[
+                this.sheet!.insertRule(hostSelector)
+            ] as CSSStyleRule).style;
+
+            Observable.getNotifier(this._owner?.$fastController).unsubscribe(
+                this.handleConnection,
+                "isConnected"
+            );
+        },
+    };
 }
