@@ -1191,12 +1191,10 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     expanded: boolean;
+    // @internal (undocumented)
+    handleAnchoredRegionChange: (e: Event) => boolean;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)

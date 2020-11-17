@@ -121,14 +121,12 @@ export class Menu extends FASTElement {
      * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
-        const isNestedEl = this.contains(e.relatedTarget as Element);
-
-        if (!isNestedEl) {
+        if (!this.contains(e.relatedTarget as Element)) {
             // find our first focusable element
             const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
 
             // set the current focus index's tabindex to -1
-            this.menuItems[this.focusIndex].setAttribute("tabindex", "");
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
 
             // set the first focusable element tabindex to 0
             this.menuItems[focusIndex].setAttribute("tabindex", "0");
@@ -177,11 +175,11 @@ export class Menu extends FASTElement {
         }
 
         for (let item: number = 0; item < this.menuItems.length; item++) {
-            if (item === focusIndex) {
-                this.menuItems[item].setAttribute("tabindex", "0");
-            }
-
-            this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
+            this.menuItems[item].setAttribute(
+                "tabindex",
+                item === focusIndex ? "0" : "-1"
+            );
+            // this.menuItems[item].addEventListener("blur", this.handleMenuItemBlur);
             this.menuItems[item].addEventListener(
                 "expanded-change",
                 this.handleExpandedChanged
@@ -191,7 +189,7 @@ export class Menu extends FASTElement {
 
     private resetItems = (oldValue: any): void => {
         for (let item: number = 0; item < oldValue.length; item++) {
-            oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
+            // oldValue[item].removeEventListener("blur", this.handleMenuItemBlur);
             oldValue[item].removeEventListener(
                 "expanded-change",
                 this.handleExpandedChanged
@@ -263,9 +261,9 @@ export class Menu extends FASTElement {
         return this.isMenuItemElement(el);
     };
 
-    private handleMenuItemFocus = (e: KeyboardEvent): void => {
-        const target = e.currentTarget as Element;
-        const focusIndex: number = this.menuItems.indexOf(target);
+    // private handleMenuItemBlur = (e: FocusEvent): void => {
+    //     const target = e.currentTarget as Element;
+    //     const focusIndex: number = this.menuItems.indexOf(target);
 
         if (focusIndex !== this.focusIndex && focusIndex !== -1) {
             this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
@@ -279,17 +277,17 @@ export class Menu extends FASTElement {
             const child: Element = children[focusIndex];
 
             if (this.isFocusableElement(child)) {
+                // change the previous index to -1
+                children[this.focusIndex].setAttribute("tabindex", "-1");
+
+                // update the focus index
+                this.focusIndex = focusIndex;
+
                 // update the tabindex of next focusable element
                 child.setAttribute("tabindex", "0");
 
                 // focus the element
                 child.focus();
-
-                // change the previous index to -1
-                children[this.focusIndex].setAttribute("tabindex", "");
-
-                // update the focus index
-                this.focusIndex = focusIndex;
 
                 break;
             }
