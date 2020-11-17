@@ -274,15 +274,6 @@ export class Tabs extends FASTElement {
         // Ignore if we click twice on the same tab
         if (this.activeindicator && this.activeTabIndex !== this.prevActiveTabIndex) {
             if (this.ticking) {
-                this.activeIndicatorRef.style.transform = "translateX(0px)";
-                this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
-                if (this.isHorizontal()) {
-                    this.activeIndicatorRef.style.gridColumn = `${
-                        this.activeTabIndex + 1
-                    }`;
-                } else {
-                    this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
-                }
                 this.ticking = false;
             } else {
                 this.ticking = true;
