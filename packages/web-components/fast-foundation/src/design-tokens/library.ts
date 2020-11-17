@@ -66,7 +66,7 @@ interface InheritableDesignTokenLibrary<T extends {}> extends DesignTokenLibrary
     hasLocal<K extends keyof T>(key: K): boolean; // TODO can we get some type-guarding here so TS knows T[K] exists?
 }
 
-export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<T> {
+export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
     #local = new Map();
     #subscribers = new Set<Subscriber>();
 

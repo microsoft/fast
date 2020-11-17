@@ -6,9 +6,9 @@ import {
 } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyManager,
-    FASTCustomPropertyManager,
+    CustomPropertyManagerImpl,
 } from "../css-custom-property-manager";
-import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
+import { DesignTokens, DesignTokenLibraryImpl } from "../design-tokens";
 import { DesignTokenRegistration } from "../design-tokens/configuration";
 import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { supportsAdoptedStylesheets } from "../feature-detection";
@@ -137,8 +137,8 @@ export function unprefix(name: string) {
  * - refactor to support browsers that don't support adoptedStyleSheets
  */
 export class ConfigurationImpl implements Configuration {
-    private designTokens = new FASTDesignTokenLibrary<any>();
-    private customPropertyManager = new FASTCustomPropertyManager();
+    private designTokens = new DesignTokenLibraryImpl<any>();
+    private customPropertyManager = new CustomPropertyManagerImpl();
     private customPropertySheet = new CSSStyleSheet();
     private designTokenTarget: CSSStyleRule;
 
@@ -148,7 +148,7 @@ export class ConfigurationImpl implements Configuration {
         DI.getOrCreateDOMContainer().register(
             Registration.instance(ConfigurationInterface, this),
             Registration.callback(DesignTokens, () => {
-                const tokens = new FASTDesignTokenLibrary<any>();
+                const tokens = new DesignTokenLibraryImpl<any>();
                 tokens.upstream = this.designTokens;
 
                 return tokens;

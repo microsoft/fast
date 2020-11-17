@@ -1,16 +1,16 @@
 import { Constructable, ElementStyles, FASTElement } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyManager,
-    FASTCustomPropertyManager,
+    CustomPropertyManagerImpl,
 } from "../css-custom-property-manager";
-import { FASTDesignTokenLibrary } from "../design-tokens/library";
+import { DesignTokenLibraryImpl } from "../design-tokens/library";
 import { DI, Registration } from "../di";
 import { DesignTokens } from "./tokens";
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base {
-        public designTokens: FASTDesignTokenLibrary<any>;
-        private customPropertyManager: FASTCustomPropertyManager;
+        public designTokens: DesignTokenLibraryImpl<any>;
+        private customPropertyManager: CustomPropertyManagerImpl;
         private localSheets = new Map<string, ElementStyles>();
 
         constructor(...args: any[]) {
@@ -18,7 +18,7 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
 
             DI.getOrCreateDOMContainer(this).register(
                 Registration.callback(DesignTokens, () => {
-                    const tokens = new FASTDesignTokenLibrary<any>();
+                    const tokens = new DesignTokenLibraryImpl<any>();
                     tokens.upstream = this.designTokens;
 
                     return tokens;
@@ -39,7 +39,7 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
          * @param source the source library object
          * @param keys
          */
-        public handleChange(source: FASTDesignTokenLibrary<any>, keys: Array<any>) {
+        public handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>) {
             keys.forEach(key => {
                 if (source.hasLocal(key)) {
                     const sheet = this.customPropertyManager.get(

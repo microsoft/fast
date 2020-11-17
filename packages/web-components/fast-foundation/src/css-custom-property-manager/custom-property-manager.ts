@@ -25,17 +25,16 @@ export interface CSSCustomPropertyManagerInterface {
 
     name(key: string): string;
 }
-export class FASTCustomPropertyManager {
+export class CustomPropertyManagerImpl {
     private static cache = new Map<string, Map<any, ElementStyles>>();
     private names = new Map<string, string>();
-
-    constructor(private selector: "host" | "root" = "host") {}
+    private selector = ":host";
 
     /**
      * {@inheritdoc CustomPropertyManager.get}
      */
     public get(key: string, value: any): ElementStyles {
-        let keyCache = FASTCustomPropertyManager.cache.get(key);
+        let keyCache = CustomPropertyManagerImpl.cache.get(key);
 
         if (!keyCache) {
             keyCache = new Map();
@@ -61,7 +60,7 @@ export class FASTCustomPropertyManager {
      * {@inheritdoc CustomPropertyManager.name}
      */
     public name(key: string) {
-        return FASTCustomPropertyManager.format(this.names.get(key) || key);
+        return CustomPropertyManagerImpl.format(this.names.get(key) || key);
     }
 
     /**
