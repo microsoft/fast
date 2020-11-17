@@ -1,11 +1,17 @@
 import { expect } from "chai";
 import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { css, DOM, customElement, html } from "@microsoft/fast-element";
+import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 
 @customElement({
     name: "fast-tabs",
     template,
+    styles: css`
+        .activeIndicatorTransition {
+            transition: transform 0.2s ease-in-out;
+        }
+    `,
 })
 class FASTTabs extends Tabs {}
 
@@ -322,17 +328,36 @@ describe("Tabs", () => {
 
             await connect();
 
+            const activeIndicator = element.shadowRoot?.querySelector(
+                '[part="activeIndicator"]'
+            );
             const secondTab = element.querySelectorAll("fast-tab")[1] as HTMLElement;
             expect(secondTab).not.to.be.undefined;
-            [0, 1].forEach(() => {
-                secondTab.click();
-                expect(element.shadowRoot).not.to.be.undefined;
-                expect(
-                    element.shadowRoot
-                        ?.querySelector('[part="activeIndicator"]')
-                        ?.classList.contains("activeIndicatorTransition")
-                ).to.be.false;
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    secondTab.click();
+                    resolve();
+                }, 1000);
             });
+
+            expect(
+                element.shadowRoot
+                    ?.querySelector('[part="activeIndicator"]')
+                    ?.classList.contains("activeIndicatorTransition")
+            ).to.be.true;
+
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    secondTab.click();
+                    resolve();
+                }, 1000);
+            });
+            expect(element.shadowRoot).not.to.be.undefined;
+            expect(
+                element.shadowRoot
+                    ?.querySelector('[part="activeIndicator"]')
+                    ?.classList.contains("activeIndicatorTransition")
+            ).to.be.false;
 
             await disconnect();
         });

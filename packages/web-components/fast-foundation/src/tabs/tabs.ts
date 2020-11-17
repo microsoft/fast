@@ -276,14 +276,13 @@ export class Tabs extends FASTElement {
             if (this.ticking) {
                 this.ticking = false;
             } else {
-                this.ticking = true;
-
                 this.animateActiveIndicator();
             }
         }
     }
 
     private animateActiveIndicator(): void {
+        this.ticking = true;
         const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
         const translateProperty: string = this.isHorizontal()
             ? "translateX"
