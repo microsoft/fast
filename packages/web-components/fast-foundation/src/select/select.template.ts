@@ -17,11 +17,6 @@ export const SelectTemplate = html<Select>`
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
-        ${children({
-            filter: Listbox.slottedOptionFilter,
-            property: "options",
-            subtree: true,
-        })}
     >
         <div
             aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
