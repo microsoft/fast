@@ -2,7 +2,6 @@ import { expect } from "chai";
 import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { css, DOM, customElement, html } from "@microsoft/fast-element";
-import { cssCustomPropertyBehaviorFactory } from "../custom-properties";
 
 @customElement({
     name: "fast-tabs",
