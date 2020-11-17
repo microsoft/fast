@@ -69,6 +69,9 @@ describe("mapCombinatorType", () => {
         expect(
             mapCombinatorType("<length-percentage> [ / <length-percentage>{1,4} ]?")
         ).toEqual(CombinatorType.juxtaposition);
+        expect(
+            mapCombinatorType("<'mask-border-width'>? [ / <'mask-border-outset'> ]")
+        ).toEqual(CombinatorType.juxtaposition);
     });
     test("should find mandatory items in any order combination type", () => {
         expect(mapCombinatorType("foo && bar && bat")).toEqual(
@@ -82,6 +85,9 @@ describe("mapCombinatorType", () => {
     });
     test("should find exactly one combination type", () => {
         expect(mapCombinatorType("foo | bar | bat")).toEqual(CombinatorType.exactlyOne);
+        expect(mapCombinatorType("[ <custom-ident> <integer>? ]+ | none")).toEqual(
+            CombinatorType.exactlyOne
+        );
     });
     test("should find group combination type", () => {
         expect(mapCombinatorType("[foo bar bat]{1,4}")).toEqual(CombinatorType.brackets);
@@ -93,20 +99,30 @@ describe("mapCombinatorType", () => {
 
 describe("resolveReferenceType", () => {
     test("should resolve a reference of type syntax", () => {
-        expect(resolveReferenceType("<line-style>", ["line-style"], [])).toEqual(
-            "syntax"
-        );
+        expect(
+            resolveReferenceType("<line-style>", CombinatorType.none, ["line-style"], [])
+        ).toEqual("syntax");
     });
     test("should resolve a reference of type types", () => {
-        expect(resolveReferenceType("<length>", [], ["length"])).toEqual("type");
+        expect(
+            resolveReferenceType("<length>", CombinatorType.none, [], ["length"])
+        ).toEqual("type");
     });
     test("should resolve a reference of type property", () => {
-        expect(resolveReferenceType("<'margin-left'>", [], [])).toEqual("property");
+        expect(
+            resolveReferenceType("<'margin-left'>", CombinatorType.none, [], [])
+        ).toEqual("property");
     });
     test("should resolve a reference of type value", () => {
-        expect(resolveReferenceType("<line-style>", [], [])).toEqual("value");
-        expect(resolveReferenceType("<length>", [], [])).toEqual("value");
-        expect(resolveReferenceType("auto", [], [])).toEqual("value");
+        expect(resolveReferenceType("<line-style>", CombinatorType.none, [], [])).toEqual(
+            "value"
+        );
+        expect(resolveReferenceType("<length>", CombinatorType.none, [], [])).toEqual(
+            "value"
+        );
+        expect(resolveReferenceType("auto", CombinatorType.none, [], [])).toEqual(
+            "value"
+        );
     });
 });
 
@@ -123,6 +139,12 @@ describe("resolveCSSPropertySyntaxSplit", () => {
         expect(
             resolveCSSPropertySyntaxSplit("foo | bar", CombinatorType.juxtaposition)
         ).toEqual(["foo", "bar"]);
+        expect(
+            resolveCSSPropertySyntaxSplit(
+                "[ <custom-ident> <integer>? ]+ | none",
+                CombinatorType.juxtaposition
+            )
+        ).toEqual(["[ <custom-ident> <integer>? ]+", "none"]);
     });
     test("should split by juxtaposition", () => {
         expect(
@@ -199,6 +221,49 @@ describe("resolveCSSPropertyReference", () => {
                 type: "group",
             },
         ]);
+
+        expect(
+            resolveCSSPropertyReference(
+                "[ / <'mask-border-width'>? [ / <'mask-border-outset'> ]? ]?",
+                [],
+                []
+            )
+        ).toEqual([
+            {
+                multiplier: {
+                    type: "zeroOrOne",
+                },
+                prepend: "/",
+                ref: [
+                    {
+                        multiplier: {
+                            type: "zeroOrOne",
+                        },
+                        prepend: null,
+                        ref: "<'mask-border-width'>",
+                        refCombinatorType: "none",
+                        type: "property",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: [
+                            {
+                                multiplier: null,
+                                prepend: "/",
+                                ref: "<'mask-border-outset'>",
+                                refCombinatorType: "none",
+                                type: "property",
+                            },
+                        ],
+                        refCombinatorType: "none",
+                        type: "property",
+                    },
+                ],
+                refCombinatorType: "juxtaposition",
+                type: "property",
+            },
+        ]);
     });
 });
 
@@ -215,17 +280,15 @@ describe("resolveCSSPropertySyntax", () => {
                 [],
                 ["color"]
             )
-        ).toEqual([
-            {
-                mapsToProperty: "background-color",
-                percentages: "no",
-                ref: "<color>",
-                multiplier: null,
-                prepend: null,
-                type: "type",
-                refCombinatorType: CombinatorType.none,
-            },
-        ]);
+        ).toEqual({
+            mapsToProperty: "background-color",
+            percentages: "no",
+            ref: "<color>",
+            multiplier: null,
+            prepend: null,
+            type: "type",
+            refCombinatorType: CombinatorType.none,
+        });
     });
     test("should resolve a CSS properties syntax with shorthand properties", () => {
         expect(
@@ -244,35 +307,33 @@ describe("resolveCSSPropertySyntax", () => {
                 [],
                 ["length", "percentage"]
             )
-        ).toEqual([
-            {
-                mapsToProperty: "padding",
-                percentages: "referToWidthOfContainingBlock",
-                refCombinatorType: CombinatorType.exactlyOne,
-                ref: [
-                    {
-                        multiplier: null,
-                        prepend: null,
-                        ref: "<length>",
-                        refCombinatorType: CombinatorType.none,
-                        type: "type",
-                    },
-                    {
-                        multiplier: null,
-                        prepend: null,
-                        ref: "<percentage>",
-                        refCombinatorType: CombinatorType.none,
-                        type: "type",
-                    },
-                ],
-                multiplier: {
-                    type: MultiplierType.atLeastATimesAtMostBTimes,
-                    range: [1, 4],
+        ).toEqual({
+            mapsToProperty: "padding",
+            percentages: "referToWidthOfContainingBlock",
+            refCombinatorType: CombinatorType.exactlyOne,
+            ref: [
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "<length>",
+                    refCombinatorType: CombinatorType.none,
+                    type: "type",
                 },
-                type: "group",
-                prepend: null,
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "<percentage>",
+                    refCombinatorType: CombinatorType.none,
+                    type: "type",
+                },
+            ],
+            multiplier: {
+                type: MultiplierType.atLeastATimesAtMostBTimes,
+                range: [1, 4],
             },
-        ]);
+            type: "mixed",
+            prepend: null,
+        });
     });
 });
 
@@ -290,39 +351,37 @@ describe("mapCSSProperties", () => {
             border: {
                 name: "border",
                 appliesTo: "allElements",
-                syntax: [
-                    {
-                        mapsToProperty: "border",
-                        percentages: "no",
-                        ref: [
-                            {
-                                type: "syntax",
-                                ref: "<line-width>",
-                                refCombinatorType: "none",
-                                prepend: null,
-                                multiplier: null,
-                            },
-                            {
-                                type: "syntax",
-                                ref: "<line-style>",
-                                refCombinatorType: "none",
-                                prepend: null,
-                                multiplier: null,
-                            },
-                            {
-                                type: "syntax",
-                                ref: "<color>",
-                                refCombinatorType: "none",
-                                prepend: null,
-                                multiplier: null,
-                            },
-                        ],
-                        refCombinatorType: "atLeastOneInAnyOrder",
-                        multiplier: null,
-                        prepend: null,
-                        type: "value",
-                    },
-                ],
+                syntax: {
+                    mapsToProperty: "border",
+                    percentages: "no",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<line-width>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<line-style>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<color>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "atLeastOneInAnyOrder",
+                    multiplier: null,
+                    prepend: null,
+                    type: "mixed",
+                },
             },
         });
     });
