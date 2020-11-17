@@ -8,6 +8,7 @@ import { DesignTokens, FASTDesignTokenLibrary } from "../design-tokens";
 import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { DesignTokenRegistration } from "../design-tokens/configuration";
 import { FASTCustomPropertyManager } from "../css-custom-property-manager";
+import { supportsAdoptedStylesheets } from "../feature-detection";
 
 export interface ConfigurationOptions {
     /**
@@ -117,16 +118,32 @@ export function unprefix(name: string) {
     return name.substr(name.indexOf("-") + 1);
 }
 
+/**
+ * App configuration for defining Custom Elements,
+ * associating default styles and templates to elements,
+ * and defining Design Tokens.
+ *
+ * TODO:
+ * - refactor to support browsers that don't support adoptedStyleSheets
+ */
 export class ConfigurationImpl implements Configuration {
     private designTokens = new FASTDesignTokenLibrary<any>();
-    private customPropertyManager = new FASTCustomPropertyManager("root");
+    private customPropertyManager = new FASTCustomPropertyManager();
+    private customPropertySheet = new CSSStyleSheet();
+    private designTokenTarget: CSSStyleRule;
 
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
 
-        const container = DI.getOrCreateDOMContainer();
-        container.register(Registration.instance(ConfigurationInterface, this));
-        container.register(Registration.instance(DesignTokens, this.designTokens));
+        DI.getOrCreateDOMContainer().register(
+            Registration.instance(ConfigurationInterface, this),
+            Registration.instance(DesignTokens, this.designTokens),
+            Registration.instance(FASTCustomPropertyManager, this.customPropertyManager)
+        );
+
+        this.designTokenTarget = this.customPropertySheet[
+            this.customPropertySheet.insertRule(":root{}")
+        ];
     }
 
     /**
@@ -200,30 +217,44 @@ export class ConfigurationImpl implements Configuration {
 
     /** {@inheritdoc Configuration.registerDesignToken} */
     public registerDesignToken<T>(registration: DesignTokenRegistration<T>) {
-        this.designTokenRegistry.set(registration.key, registration);
+        const { key, value, customProperty } = registration;
+        this.designTokenRegistry.set(key, registration);
 
-        if (registration.value) {
-            this.designTokens.set(registration.key, registration.value);
+        if (value) {
+            this.designTokens.set(key, value);
         }
 
-        if (registration.customProperty) {
-            this.customPropertyManager.alias(
-                registration.key,
-                registration.customProperty
-            );
-            const value = this.customPropertyManager.get(
-                registration.key,
-                registration.value
-            );
+        if (customProperty) {
+            if (key !== customProperty) {
+                this.customPropertyManager.alias(key, customProperty);
+            }
 
-            // This is hacky.
-            (document as any).adoptedStyleSheets = [
-                (value as any).styleSheets[0],
-                ...(document as any).adoptedStyleSheets,
-            ];
+            if (value) {
+                this.designTokenTarget.style.setProperty(
+                    this.customPropertyManager.name(key),
+                    value as any
+                );
+            }
         }
 
         return this;
+    }
+
+    /**
+     * Attaches DesignTokens to a document.
+     *
+     * @param doc - the document object to attach DesignTokens to
+     */
+    public attachDesignTokensTo(doc: Document) {
+        if (
+            supportsAdoptedStylesheets(doc) &&
+            doc.adoptedStyleSheets.indexOf(this.customPropertySheet) == -(-1)
+        ) {
+            doc.adoptedStyleSheets = [
+                ...doc.adoptedStyleSheets,
+                this.customPropertySheet,
+            ];
+        }
     }
 
     private templateRegistry = new Map<string, ElementViewTemplate | null>();
@@ -233,6 +264,5 @@ export class ConfigurationImpl implements Configuration {
 }
 
 export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(
-    // TODO: DI.createInterface
     "Configuration"
 ).noDefault();
