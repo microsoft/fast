@@ -1,11 +1,10 @@
-import { ElementStyles, FASTElement } from "@microsoft/fast-element";
+import { Constructable, ElementStyles, FASTElement } from "@microsoft/fast-element";
 import {
     CSSCustomPropertyManager,
     FASTCustomPropertyManager,
 } from "../css-custom-property-manager";
 import { FASTDesignTokenLibrary } from "../design-tokens/library";
 import { DI, Registration } from "../di";
-import { Constructable } from "../interfaces";
 import { DesignTokens } from "./tokens";
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {

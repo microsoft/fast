@@ -288,8 +288,6 @@ export interface Container extends ServiceLocator {
     getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
     // (undocumented)
     register(...params: any[]): Container;
-    // Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
     // (undocumented)
@@ -1712,7 +1710,7 @@ export function unprefix(name: string): string;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/di/di.d.ts:105:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:104:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
