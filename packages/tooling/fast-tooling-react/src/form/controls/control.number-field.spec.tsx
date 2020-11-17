@@ -100,7 +100,7 @@ describe("NumberFieldControl", () => {
         rendered
             .find("input")
             .at(0)
-            .simulate("change", { target: { value: 1 } });
+            .simulate("change", { target: { value: "1" } }); // The target.value from an input text box is always a string.
 
         expect(handleChange).toHaveBeenCalled();
         expect(handleChange.mock.calls[0][0]).toEqual({ value: 1 });
