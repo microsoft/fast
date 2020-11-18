@@ -76,6 +76,10 @@ export const OptionStyles = css`
         opacity: var(--disabled-opacity);
     }
 
+    :host([disabled]:hover) {
+        background-color: inherit;
+    }
+
     .content {
         grid-column-start: 2;
         justify-self: start;
