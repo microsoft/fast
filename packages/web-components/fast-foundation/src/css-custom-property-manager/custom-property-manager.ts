@@ -1,6 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Key } from "../di";
-export interface CSSCustomPropertyManagerInterface {
+export interface CustomPropertyManager {
     /**
      * Retrieves an {@link @microsoft/fast-element#ElementStyles} by key and value. If
      * no entry for the provided key and value exist, one will be created. The returned
@@ -10,24 +10,10 @@ export interface CSSCustomPropertyManagerInterface {
      * @param value The value of the key being resolved.
      */
     get(key: string, value: any): ElementStyles;
-
-    /**
-     * Aliases a key to a new name. The name will be the name of the CSS custom property.
-     * @param key The key to alias
-     * @param name The new to alias the key too
-     */
-    alias(key: string, name: string): void;
-
-    /**
-     * Returns the CSS custom property name (including the '--' prefix) of a key.
-     * @param key The key to get the name of
-     */
-
-    name(key: string): string;
 }
+
 export class CustomPropertyManagerImpl {
     private static cache = new Map<string, Map<any, ElementStyles>>();
-    private names = new Map<string, string>();
     private selector = ":host";
 
     /**
@@ -49,33 +35,20 @@ export class CustomPropertyManagerImpl {
 
         return v;
     }
-    /**
-     * {@inheritdoc CustomPropertyManager.alias}
-     */
-    public alias(key: string, name: string) {
-        this.names.set(key, name);
-    }
-
-    /**
-     * {@inheritdoc CustomPropertyManager.name}
-     */
-    public name(key: string) {
-        return CustomPropertyManagerImpl.format(this.names.get(key) || key);
-    }
 
     /**
      * Creates an ElementStyles with the key/value CSS custom property
      * on the host
      */
     private create(key, value): ElementStyles {
-        return css`${this.selector}{${this.name(key)}:${value};}`;
+        return css`${this.selector}{${CustomPropertyManagerImpl.format(key)}:${value};}`;
     }
 
     /**
      * Formats a name as a CSS custom property
      * @param name The name to format
      */
-    private static format(name: string) {
+    public static format(name: string) {
         return `--${name}`;
     }
 }
@@ -83,6 +56,6 @@ export class CustomPropertyManagerImpl {
 /**
  * DI decorator to get the app CustomPropertyManager
  */
-export const CSSCustomPropertyManager: InterfaceSymbol<Key, any> = DI.createInterface(
+export const DICustomPropertyManager: InterfaceSymbol<Key, any> = DI.createInterface(
     "custom-property-manager"
 ).noDefault();

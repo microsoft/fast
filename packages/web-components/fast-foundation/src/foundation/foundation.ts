@@ -4,7 +4,7 @@ import {
     FASTElement,
     observable,
 } from "@microsoft/fast-element";
-import { Configuration, ConfigurationInterface, unprefix } from "../configuration";
+import { Configuration, DIConfiguration, unprefix } from "../configuration";
 
 /**
  * Defines a foundation element class that:
@@ -13,7 +13,7 @@ import { Configuration, ConfigurationInterface, unprefix } from "../configuratio
  * 3. Allows resolving the element styles from the instance or the FASTProvider
  */
 export class FoundationElement extends FASTElement {
-    @ConfigurationInterface
+    @DIConfiguration
     private configuration: Configuration;
 
     /**

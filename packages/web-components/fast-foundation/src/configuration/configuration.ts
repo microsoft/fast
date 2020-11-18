@@ -5,11 +5,15 @@ import {
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
 import {
-    CSSCustomPropertyManager,
     CustomPropertyManagerImpl,
+    DICustomPropertyManager,
 } from "../css-custom-property-manager";
-import { DesignTokenLibraryImpl, DesignTokens } from "../design-tokens";
-import { DesignTokenDefinition } from "../design-tokens/configuration";
+import { DesignTokenLibraryImpl, DIDesignTokens } from "../design-tokens";
+import {
+    DesignTokenDefinition,
+    DesignTokenRegistryImpl,
+    DIDesignTokenRegistry,
+} from "../design-tokens/registration";
 import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { supportsAdoptedStylesheets } from "../feature-detection";
 
@@ -147,20 +151,26 @@ export class ConfigurationImpl implements Configuration {
     private designTokens = new DesignTokenLibraryImpl<any>();
     private customPropertyManager = new CustomPropertyManagerImpl();
     private customPropertySheet = new CSSStyleSheet();
+    private designTokenRegistration = new DesignTokenRegistryImpl();
+    private templateRegistry = new Map<string, ElementViewTemplate | null>();
+    private stylesRegistry = new Map<string, ElementStyles | null>();
+    private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();
     private designTokenTarget: CSSStyleRule;
 
     constructor(options: ConfigurationOptions = {}) {
         this.prefix = options.prefix || "fast";
 
-        DI.getOrCreateDOMContainer().register(
-            Registration.instance(ConfigurationInterface, this),
-            Registration.callback(DesignTokens, () => {
+        const container = DI.getOrCreateDOMContainer();
+        container.register(
+            Registration.instance(DIConfiguration, this),
+            Registration.instance(DIDesignTokenRegistry, this.designTokenRegistration),
+            Registration.instance(DICustomPropertyManager, this.customPropertyManager),
+            Registration.callback(DIDesignTokens, () => {
                 const tokens = new DesignTokenLibraryImpl<any>();
                 tokens.upstream = this.designTokens;
 
                 return tokens;
-            }),
-            Registration.instance(CSSCustomPropertyManager, this.customPropertyManager)
+            })
         );
 
         this.designTokenTarget = this.customPropertySheet.cssRules[
@@ -240,13 +250,9 @@ export class ConfigurationImpl implements Configuration {
     }
 
     /** {@inheritdoc Configuration.registerDesignToken} */
-    public registerDesignToken<T>(registration: DesignTokenDefinition<T>) {
-        const { key, value, customProperty } = registration;
-        this.designTokenRegistry.set(key, registration);
-
-        if (customProperty && key !== customProperty) {
-            this.customPropertyManager.alias(key, customProperty);
-        }
+    public registerDesignToken(registration: DesignTokenDefinition<any>) {
+        const { key, value } = registration;
+        this.designTokenRegistration.register(registration);
 
         if (value) {
             this.designTokens.set(key, value);
@@ -275,28 +281,27 @@ export class ConfigurationImpl implements Configuration {
         this.designTokens.set(key, value);
     }
 
+    /**
+     * Reacts to changes to Design Tokens, setting
+     * the CSSCustomProperty if it is defined.
+     */
     private designTokenChangeHandler = {
         handleChange: (source, keys: string[]) => {
             keys.forEach(key => {
-                const def = this.designTokenRegistry.get(key);
+                const def = this.designTokenRegistration.getRegistree(key);
                 const value = this.designTokens.get(key);
 
                 if (def && def.customProperty && value) {
                     this.designTokenTarget.style.setProperty(
-                        this.customPropertyManager.name(key),
+                        CustomPropertyManagerImpl.format(def.customProperty),
                         value as any
                     );
                 }
             });
         },
     };
-
-    private templateRegistry = new Map<string, ElementViewTemplate | null>();
-    private stylesRegistry = new Map<string, ElementStyles | null>();
-    private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();
-    private designTokenRegistry = new Map<string, DesignTokenDefinition<any>>();
 }
 
-export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(
+export const DIConfiguration: InterfaceSymbol<Key, any> = DI.createInterface(
     "Configuration"
 ).noDefault();

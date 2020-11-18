@@ -38,7 +38,7 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
  *
  * @public
  */
-export interface CustomPropertyManager {
+export interface CSSCustomPropertyManager {
     /**
      * The CustomPropertyManagerTarget responsible for evaluating CSSCustomPropertyDefinitions
      */
@@ -92,7 +92,7 @@ export interface CustomPropertyManager {
     isSubscribed?(provider: CustomPropertyManagerClient): boolean;
 }
 
-abstract class CustomPropertyManagerBase implements CustomPropertyManager {
+abstract class CustomPropertyManagerBase implements CSSCustomPropertyManager {
     /**
      * A queue of additions and deletions. Operations will be queued when customPropertyTarget is null
      */

@@ -1,23 +1,28 @@
 import { Constructable, ElementStyles, FASTElement } from "@microsoft/fast-element";
 import {
-    CSSCustomPropertyManager,
-    CustomPropertyManagerImpl,
+    CustomPropertyManager,
+    DICustomPropertyManager,
 } from "../css-custom-property-manager";
-import { DesignTokenLibraryImpl } from "../design-tokens/library";
+import {
+    DesignTokenLibraryImpl,
+    InheritableDesignTokenLibrary,
+} from "../design-tokens/library";
 import { DI, Registration } from "../di";
-import { DesignTokens } from "./tokens";
+import { DesignTokenRegistry, DIDesignTokenRegistry } from "./registration";
+import { DIDesignTokens } from "./library";
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base {
-        public designTokens: DesignTokenLibraryImpl<any>;
-        private customPropertyManager: CustomPropertyManagerImpl;
+        public designTokens: InheritableDesignTokenLibrary<any>;
+        private customPropertyManager: CustomPropertyManager;
         private localSheets = new Map<string, ElementStyles>();
+        private designTokenRegistry: DesignTokenRegistry;
 
         constructor(...args: any[]) {
             super(...args);
 
             DI.getOrCreateDOMContainer(this).register(
-                Registration.callback(DesignTokens, () => {
+                Registration.callback(DIDesignTokens, () => {
                     const tokens = new DesignTokenLibraryImpl<any>();
                     tokens.upstream = this.designTokens;
 
@@ -29,7 +34,6 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
         connectedCallback() {
             super.connectedCallback();
             this.designTokens.subscribe(this);
-            // How do I know what should be reflected to CSS custom properties?
         }
 
         /**
@@ -41,9 +45,11 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
          */
         public handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>) {
             keys.forEach(key => {
-                if (source.hasLocal(key)) {
+                const customProperty = this.designTokenRegistry.customProperty(key);
+
+                if (source.hasLocal(key) && customProperty) {
                     const sheet = this.customPropertyManager.get(
-                        key,
+                        customProperty,
                         this.designTokens.get(key)
                     );
                     const prevSheet = this.localSheets.get(key);
@@ -59,8 +65,9 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
         }
     };
 
-    DesignTokens(C.prototype, "designTokens");
-    CSSCustomPropertyManager(C.prototype, "customPropertyManager");
+    DIDesignTokenRegistry(C.prototype, "designTokenRegistry");
+    DIDesignTokens(C.prototype, "designTokens");
+    DICustomPropertyManager(C.prototype, "customPropertyManager");
 
     return C;
 };

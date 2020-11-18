@@ -324,15 +324,10 @@ function createInterface<K extends Key, T = any>(nameOrConfig?: any) {
                     let value = this[diPropertyKey];
 
                     if (value === void 0) {
-                        let container: Container | undefined;
-
-                        if (this instanceof HTMLElement) {
-                            container = domParentLocator(this);
-                        } else {
-                            throw new Error(
-                                "Could not locate container to use during property injection"
-                            );
-                        }
+                        const container: Container =
+                            this instanceof HTMLElement
+                                ? domParentLocator(this)
+                                : DI.getOrCreateDOMContainer();
 
                         value = container.get(Interface);
                         this[diPropertyKey] = value;

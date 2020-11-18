@@ -13,7 +13,7 @@ import {
 } from "../custom-properties/index";
 import {
     ConstructableStylesCustomPropertyManager,
-    CustomPropertyManager,
+    CSSCustomPropertyManager,
     CustomPropertyManagerClient,
     StyleElementCustomPropertyManager,
 } from "../custom-properties/manager";
@@ -223,10 +223,10 @@ export class DesignSystemProvider extends FASTElement
      * the DesignSystemProvider depends on.
      */
     @observable
-    public customPropertyManager: CustomPropertyManager;
+    public customPropertyManager: CSSCustomPropertyManager;
     private customPropertyManagerChanged(
-        prev: CustomPropertyManager | void,
-        next: CustomPropertyManager
+        prev: CSSCustomPropertyManager | void,
+        next: CSSCustomPropertyManager
     ) {
         if (prev && prev.unsubscribe) {
             prev.unsubscribe(this);

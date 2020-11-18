@@ -1,6 +1,7 @@
 import { Subscriber } from "@microsoft/fast-element";
+import { DI, InterfaceSymbol } from "../di";
 
-interface DesignTokenLibrary<T extends {}> {
+export interface DesignTokenLibrary<T extends {}> {
     /**
      * Gets the composed value associated to a key. This method will ask any
      * upstream DesignSystem for the value if a local value does not exist.
@@ -46,7 +47,8 @@ interface DesignTokenLibrary<T extends {}> {
     keys<K extends keyof T>(): Array<K>;
 }
 
-interface InheritableDesignTokenLibrary<T extends {}> extends DesignTokenLibrary<T> {
+export interface InheritableDesignTokenLibrary<T extends {}>
+    extends DesignTokenLibrary<T> {
     /**
      * The upstream object an InheritableDesignTokenLibrary should inherit from.
      */
@@ -210,3 +212,10 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
         }
     }
 }
+
+export const DIDesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<
+    any
+>> = DI.createInterface<DesignTokenLibraryImpl<any>>({
+    friendlyName: "DesignTokens",
+    respectConnection: true,
+}).noDefault();
