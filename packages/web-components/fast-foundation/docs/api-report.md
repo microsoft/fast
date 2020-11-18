@@ -998,6 +998,7 @@ export const SwitchTemplate: import("@microsoft/fast-element").ViewTemplate<Swit
 
 // @public
 export class Tab extends FASTElement {
+    disabled: boolean;
 }
 
 // @public
@@ -1012,7 +1013,6 @@ export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<Ta
 //
 // @public
 export class Tabs extends FASTElement {
-    constructor();
     activeid: string;
     // @internal (undocumented)
     activeidChanged(): void;
@@ -1024,6 +1024,8 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
     orientation: TabsOrientation;
+    // @internal (undocumented)
+    showActiveIndicator: boolean;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
