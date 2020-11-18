@@ -7,7 +7,7 @@ import { Listbox } from "./listbox";
  */
 export const ListboxTemplate = html<Listbox>`
     <template
-        aria-activedescendent="${x => x.ariaActiveDescendant}"
+        aria-activedescendant="${x => x.ariaActiveDescendant}"
         class="listbox"
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"

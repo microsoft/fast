@@ -24,6 +24,7 @@ export class Select extends FormAssociatedSelect {
         this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
             this.setPositioning();
+            super.focusAndScrollOptionIntoView();
         }
     }
 
@@ -180,18 +181,23 @@ export class Select extends FormAssociatedSelect {
         const key = e.key || e.key.charCodeAt(0);
 
         switch (key) {
-            case " ":
+            case " ": {
                 if (!this.typeAheadExpired) {
                     return true;
                 }
+                this.open = !this.open;
+                return;
+            }
 
-            case "Enter":
+            case "Enter": {
                 this.open = !this.open;
                 break;
+            }
 
-            case "Escape":
+            case "Escape": {
                 this.open = false;
                 break;
+            }
         }
 
         return true;

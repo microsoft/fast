@@ -104,7 +104,7 @@ export class Listbox extends FASTElement {
     /**
      * @internal
      */
-    private focusAndScrollOptionIntoView(): void {
+    protected focusAndScrollOptionIntoView(): void {
         if (this.contains(document.activeElement)) {
             this.firstSelectedOption.focus();
             this.firstSelectedOption.scrollIntoView({ block: "nearest" });
@@ -243,24 +243,28 @@ export class Listbox extends FASTElement {
         switch (key) {
             // Select the first available option
             case "Home": {
+                e.preventDefault();
                 this.selectFirstOption();
                 break;
             }
 
             // Select the next selectable option
             case "ArrowDown": {
+                e.preventDefault();
                 this.selectNextOption();
                 break;
             }
 
             // Select the previous selectable option
             case "ArrowUp": {
+                e.preventDefault();
                 this.selectPreviousOption();
                 break;
             }
 
             // Select the last available option
             case "End": {
+                e.preventDefault();
                 this.selectLastOption();
                 break;
             }

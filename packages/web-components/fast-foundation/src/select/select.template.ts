@@ -1,4 +1,4 @@
-import { children, html, slotted } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Select } from "./select";

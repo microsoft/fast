@@ -544,6 +544,8 @@ export class Listbox extends FASTElement {
     // @internal (undocumented)
     get firstSelectedOption(): ListboxOption;
     // @internal (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal (undocumented)
     focusinHandler(e: FocusEvent): void;
     handleTypeAhead(key: any): void;
     // @internal

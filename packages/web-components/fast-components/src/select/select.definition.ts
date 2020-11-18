@@ -31,13 +31,6 @@ export const fastSelectDefinition: WebComponentDefinition = {
                     type: DataType.string,
                     values: Object.keys(SelectPosition).map(x => ({ name: x })),
                 },
-                {
-                    name: "value",
-                    description: "The value attribute",
-                    default: undefined,
-                    required: false,
-                    type: DataType.string,
-                },
             ],
             slots: [
                 {
