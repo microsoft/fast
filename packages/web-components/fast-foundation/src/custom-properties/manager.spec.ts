@@ -155,6 +155,39 @@ describe("StyleElementCustomPropertyManager", () => {
         await disconnect();
     });
 
+    it("should not throw when constructed with a disconnected element", () => {
+        const element = document.createElement("fast-client") as Client;
+
+        expect(() => {
+            new StyleElementCustomPropertyManager(
+                document.createElement("style"),
+                element
+            );
+        }).not.to.throw();
+    });
+
+    it("should queue and apply properties set prior to connection once connected", () => {
+        const element = document.createElement("fast-client") as Client;
+        element.cssCustomPropertyDefinitions.set("my-property", {
+            name: "my-property",
+            value: "value",
+        });
+        const client = new StyleElementCustomPropertyManager(
+            document.createElement("style"),
+            element
+        );
+
+        assert.equal(
+            window.getComputedStyle(element).getPropertyValue("--my-property"),
+            ""
+        );
+        document.body.appendChild(element);
+        assert.equal(
+            window.getComputedStyle(element).getPropertyValue("--my-property"),
+            "value"
+        );
+    });
+
     it("should connect the style element to the DOM during construction", async () => {
         const { element, connect, disconnect } = await setup();
 

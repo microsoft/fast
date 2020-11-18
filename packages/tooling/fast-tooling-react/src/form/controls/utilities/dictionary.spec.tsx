@@ -16,6 +16,7 @@ import {
     SelectControl,
     TextareaControl,
 } from "../../index";
+import defaultStrings from "../../form.strings";
 
 /*
  * Configure Enzyme
@@ -73,6 +74,8 @@ const dictionaryProps: DictionaryProps = {
         [ControlType.textarea]: TextareaControl,
     },
     messageSystem: void 0,
+    strings: defaultStrings,
+    messageSystemOptions: null,
 };
 
 describe("Dictionary", () => {

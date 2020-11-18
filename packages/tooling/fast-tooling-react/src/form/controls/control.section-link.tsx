@@ -1,7 +1,7 @@
 import React from "react";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { classNames } from "@microsoft/fast-web-utilities";
+import { classNames, format } from "@microsoft/fast-web-utilities";
 import styles, {
     SectionLinkControlClassNameContract,
 } from "./control.section-link.style";
@@ -44,7 +44,7 @@ class SectionLinkControl extends React.Component<
                 )}
                 onClick={this.handleUpdateSection}
             >
-                Edit: {this.props.label}
+                {format(this.props.strings.sectionLinkEditLabel, this.props.label)}
             </a>
         );
     }

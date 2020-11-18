@@ -12,7 +12,6 @@ import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
-import { Card } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
@@ -266,13 +265,20 @@ export class FASTBreadcrumbItem extends BreadcrumbItem {
 export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
-    appearanceChanged(oldValue: ButtonAppearance, newValue: ButtonAppearance): void;
-    // (undocumented)
     connectedCallback(): void;
 }
 
 // @public
-export class FASTCard extends Card {
+export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {
+    // @internal (undocumented)
+    backgroundColor: string;
+    cardBackgroundColor: string;
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    handleChange(source: FASTDesignSystem, name: string): void;
+    // @internal
+    neutralPalette: string[];
 }
 
 // @public
@@ -517,6 +523,8 @@ export class FASTSlider extends Slider {
 
 // @public
 export class FASTSliderLabel extends SliderLabel {
+    // (undocumented)
+    protected sliderOrientationChanged(): void;
 }
 
 // @public
@@ -539,16 +547,12 @@ export class FASTTabs extends Tabs {
 export class FASTTextArea extends TextArea {
     appearance: TextAreaAppearance;
     // @internal (undocumented)
-    appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
-    // @internal (undocumented)
     connectedCallback(): void;
 }
 
 // @public
 export class FASTTextField extends TextField {
     appearance: TextFieldAppearance;
-    // @internal (undocumented)
-    appearanceChanged(oldValue: TextFieldAppearance, newValue: TextFieldAppearance): void;
     // @internal (undocumented)
     connectedCallback(): void;
 }

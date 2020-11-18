@@ -74,7 +74,7 @@ class LinkedDataControl extends React.Component<
                         list={this.getLinkedDataInputId()}
                         aria-controls={this.getLinkedDataInputId()}
                         value={this.state.searchTerm}
-                        placeholder={"Add"}
+                        placeholder={this.props.strings.linkedDataPlaceholder}
                         onChange={this.handleSearchTermUpdate}
                         onKeyDown={this.handleLinkedDataKeydown}
                     />
@@ -140,6 +140,7 @@ class LinkedDataControl extends React.Component<
                             dropDragItem={this.handleDropItem}
                             dragStart={this.handleDragStart}
                             dragEnd={this.handleDragEnd}
+                            strings={this.props.strings}
                         >
                             {
                                 this.props.schemaDictionary[

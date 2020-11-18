@@ -351,22 +351,22 @@ describe("Slider", () => {
     });
 
     describe("when the owning form's reset() method is invoked", () => {
-        it("should reset it's value property to an empty string if no value attribute is set", () => {
+        it("should reset its value property to an empty string if no value attribute is set", () => {
             const element = document.createElement("fast-slider") as FASTSlider;
             const form = document.createElement("form");
             form.appendChild(element);
             document.body.appendChild(form);
             element.value = "3";
 
-            assert(element.getAttribute("value") === null);
-            assert(element.value === "3");
+            assert.strictEqual(element.getAttribute("value"), null);
+            assert.strictEqual(element.value, "3");
 
             form.reset();
 
-            assert(element.value === "5");
+            assert.strictEqual(element.value, "5");
         });
 
-        it("should reset it's value property to the value of the value attribute if it is set", () => {
+        it("should reset its value property to the value of the value attribute if it is set", () => {
             const element = document.createElement("fast-slider") as FASTSlider;
             const form = document.createElement("form");
             form.appendChild(element);
@@ -374,15 +374,15 @@ describe("Slider", () => {
             element.setAttribute("value", "7");
             element.value = "8";
 
-            assert(element.getAttribute("value") === "7");
-            assert(element.value === "8");
+            assert.strictEqual(element.getAttribute("value"), "7");
+            assert.strictEqual(element.value, "8");
 
             form.reset();
 
-            assert(element.value === "7");
+            assert.strictEqual(element.value, "7");
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
+        it("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", () => {
             const element = document.createElement("fast-slider") as FASTSlider;
             const form = document.createElement("form");
             form.appendChild(element);
@@ -390,15 +390,15 @@ describe("Slider", () => {
             element.value = "7";
             element.setAttribute("value", "8");
 
-            assert(element.value === "7");
+            assert.strictEqual(element.value, "7");
 
             form.reset();
 
-            assert(element.value === "8");
+            assert.strictEqual(element.value, "8");
 
             element.setAttribute("value", "3");
 
-            assert(element.value === "3");
+            assert.strictEqual(element.value, "3");
         });
     });
 });

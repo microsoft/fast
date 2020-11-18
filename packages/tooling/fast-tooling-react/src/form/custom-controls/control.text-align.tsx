@@ -5,6 +5,13 @@ import styles, { TextAlignControlClassNameContract } from "./control.text-align.
 import { TextAlignControlProps } from "./control.text-align.props";
 import { classNames } from "@microsoft/fast-web-utilities";
 
+enum Direction {
+    Left = "left",
+    Center = "center",
+    Right = "right",
+    Justify = "justify",
+}
+
 /**
  * Custom form control definition
  */
@@ -28,9 +35,10 @@ class TextAlignControl extends React.Component<
                     this.props.disabled,
                 ])}
             >
-                {this.renderInput("left")}
-                {this.renderInput("center")}
-                {this.renderInput("right")}
+                {this.renderInput(Direction.Left)}
+                {this.renderInput(Direction.Center)}
+                {this.renderInput(Direction.Right)}
+                {this.renderInput(Direction.Justify)}
             </div>
         );
     }
@@ -46,18 +54,33 @@ class TextAlignControl extends React.Component<
         );
     }
 
-    private getInputClassName(direction: string): string {
+    private getInputClassName(direction: Direction): string {
         switch (direction) {
-            case "left":
+            case Direction.Left:
                 return this.props.managedClasses.textAlignControl_input__left;
-            case "center":
+            case Direction.Center:
                 return this.props.managedClasses.textAlignControl_input__center;
-            case "right":
+            case Direction.Right:
                 return this.props.managedClasses.textAlignControl_input__right;
+            case Direction.Justify:
+                return this.props.managedClasses.textAlignControl_input__justify;
         }
     }
 
-    private renderInput(direction: string): React.ReactNode {
+    private getDirectionLabel(direction: Direction): string {
+        switch (direction) {
+            case Direction.Left:
+                return this.props.strings.textAlignLeftLabel;
+            case Direction.Center:
+                return this.props.strings.textAlignCenterLabel;
+            case Direction.Right:
+                return this.props.strings.textAlignRightLabel;
+            case Direction.Justify:
+                return this.props.strings.textAlignJustifyLabel;
+        }
+    }
+
+    private renderInput(direction: Direction): React.ReactNode {
         if (this.props.options && Array.isArray(this.props.options)) {
             const option: string = this.props.options.find((item: string) => {
                 return item === direction;
@@ -75,7 +98,7 @@ class TextAlignControl extends React.Component<
                             type={"radio"}
                             value={direction}
                             name={this.props.dataLocation}
-                            aria-label={`${direction} align`}
+                            aria-label={this.getDirectionLabel(direction)}
                             onChange={this.onChange.bind(this, direction)}
                             checked={this.isChecked(direction)}
                             disabled={this.props.disabled}

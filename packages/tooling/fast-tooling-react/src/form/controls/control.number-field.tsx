@@ -23,6 +23,8 @@ class NumberFieldControl extends React.Component<
         managedClasses: {},
     };
 
+    private hasFocus: boolean = false;
+
     /**
      * Renders the component
      */
@@ -50,19 +52,39 @@ class NumberFieldControl extends React.Component<
                 step={this.props.step}
                 disabled={this.props.disabled}
                 ref={this.props.elementRef as React.Ref<HTMLInputElement>}
-                onBlur={this.props.updateValidity}
-                onFocus={this.props.reportValidity}
+                onBlur={this.handleBlur(this.props.updateValidity)}
+                onFocus={this.handleFocus(this.props.reportValidity)}
                 required={this.props.required}
             />
         );
     }
 
+    private handleFocus = (callback: () => void) => {
+        return (): void => {
+            this.hasFocus = true;
+            if (callback) callback();
+        };
+    };
+
+    private handleBlur = (callback: () => void) => {
+        return (): void => {
+            this.hasFocus = false;
+            if (callback) callback();
+            this.forceUpdate();
+        };
+    };
+
     private handleChange = (): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const value: number = parseInt(e.target.value, 10);
+            const input: string = !e.target.value
+                ? ""
+                : e.target.value.replace(/\s/g, "");
+            const value: number = parseInt(input, 10);
 
             if (!isNaN(value)) {
                 this.props.onChange({ value });
+            } else if (input.length === 0) {
+                this.props.onChange({ value: undefined });
             }
         };
     };
@@ -70,7 +92,7 @@ class NumberFieldControl extends React.Component<
     private getValue(value: number | undefined): number | string {
         return typeof value === "number"
             ? value
-            : typeof this.props.default !== "undefined"
+            : typeof this.props.default !== "undefined" && !this.hasFocus
             ? this.props.default
             : "";
     }

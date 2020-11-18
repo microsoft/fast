@@ -51,7 +51,8 @@
     "react": "^16.8.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.9.0"
+    "typescript": "^3.9.0",
+    "vscode-web-custom-data": "^0.3.1"
   },
   "dependencies": {
     "@microsoft/fast-components": "^1.11.1",
