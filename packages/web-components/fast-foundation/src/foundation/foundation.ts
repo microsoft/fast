@@ -12,7 +12,7 @@ import { Configuration, ConfigurationInterface, unprefix } from "../configuratio
  * 2. Allows resolving the element template from the instance or the FASTProvider
  * 3. Allows resolving the element styles from the instance or the FASTProvider
  */
-export abstract class FoundationElement extends FASTElement {
+export class FoundationElement extends FASTElement {
     @ConfigurationInterface
     private configuration: Configuration;
 

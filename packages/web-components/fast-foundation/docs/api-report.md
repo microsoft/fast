@@ -967,7 +967,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 }
 
 // @public
-export abstract class FoundationElement extends FASTElement {
+export class FoundationElement extends FASTElement {
     protected resolveStyles(): ElementStyles | null;
     protected resolveTemplate(): ElementViewTemplate | null;
     styles: ElementStyles | void | null;

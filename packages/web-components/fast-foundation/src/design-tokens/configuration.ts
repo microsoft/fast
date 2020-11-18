@@ -5,11 +5,6 @@ export interface DesignTokenDefinition<T> {
     key: string;
 
     /**
-     * The HTML attribute name
-     */
-    attribute?: string;
-
-    /**
      * The CSS custom property name
      */
     customProperty?: string;

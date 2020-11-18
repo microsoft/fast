@@ -68,7 +68,7 @@ export class CustomPropertyManagerImpl {
      * on the host
      */
     private create(key, value): ElementStyles {
-        return css`:${this.selector}{${this.name(key)}:${value};}`;
+        return css`${this.selector}{${this.name(key)}:${value};}`;
     }
 
     /**
