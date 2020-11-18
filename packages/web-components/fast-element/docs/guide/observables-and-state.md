@@ -167,6 +167,7 @@ notifier.subscribe(handler);
 
 There are a couple of important details to note with array observation:
 
+* The `fast-element` library's ability to observe arrays is opt-in, in order that the functionality remain tree-shakeable. If you use a `repeat` directive anywhere in your code, you will be automatically opted in. However, if you wish to use the above APIs and are not using `repeat`, you will need to enable array observation by importing and calling the `enableArrayObservation()` function.
 * The observation system cannot track changes made directly through an index update. e.g. `arr[3] = 'new value';`. This is due to a limitation in JavaScript. To work around this, update arrays with the equivalent `splice` code e.g. `arr.splice(3, 1, 'new value');`
 * If the array is a property of an object, you will often want to observe both the property and the array. Observing the property will allow you to detect when the array instance is completely replaced on the object, while observing the array will allow you to detect changes in the array instance itself. When the property changes, be sure to unsubscribe to the old array and set up a subscription to the new array instance.
 * Observing an array only notifies on changes to the array itself. It does not notify on changes to properties on objects held within the array. Separate observers would need to be set up for those individual properties. These could be set up and torn down in response to changes in the array though.
