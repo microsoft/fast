@@ -58,11 +58,9 @@ export const TabStyles = css`
         opacity: var(--disabled-opacity);
     }
 
-    :host([disabled]:hover),
-    :host(.disabled:hover) {
-        color: ${neutralForegroundRestBehavior.var};
-        fill: currentcolor; 
-        background: ${neutralFillStealthRestBehavior.var}
+    :host([disabled]:hover) {
+        color: ${neutralForegroundHintBehavior.var};
+        background: ${neutralFillStealthRestBehavior.var};
     }
 
     :host([aria-selected="true"]) {
