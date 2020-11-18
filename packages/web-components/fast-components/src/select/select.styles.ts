@@ -73,7 +73,7 @@ export const SelectStyles = css`
         width: 100%;
     }
 
-    :host(:hover) {
+    :host(:not([disabled]):hover) {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${accentFillHoverBehavior.var};
     }
@@ -89,7 +89,7 @@ export const SelectStyles = css`
             0 0 0 4px ${neutralFocusBehavior.var};
     }
 
-    :host(:${focusVisible}) ::slotted(.selected[role="option"]) {
+    :host(:${focusVisible}) ::slotted(.selected[role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
             neutralFocusInnerAccentBehavior.var
         };
@@ -98,22 +98,22 @@ export const SelectStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: var(--disabled-opacity);
     }
 
-    :host(.disabled) .control {
+    :host([disabled]) .control {
         cursor: ${disabledCursor};
     }
 
-    :host(.disabled:hover) {
+    :host([disabled]:hover) {
         background: ${neutralFillStealthRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
     }
 
-    :host(:not(.disabled)) .control:active {
+    :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActiveBehavior.var};
         border-color: ${accentFillActiveBehavior.var};
     }
@@ -197,6 +197,10 @@ export const SelectStyles = css`
                 forced-color-adjust: none;
             }
 
+            :host([disabled]:hover) {
+                background: ${SystemColors.ButtonFace};
+            }
+
             :host([disabled]) .control {
                 color: ${SystemColors.GrayText};
                 border-color: ${SystemColors.GrayText};
@@ -208,6 +212,14 @@ export const SelectStyles = css`
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
+            }
+
+            ::slotted([role="option"]:not(.selected):not([disabled]):hover) {
+                forced-color-adjust: none;
+                color: ${SystemColors.ButtonText};
+                background: ${SystemColors.ButtonFace};
+                border-color: ${SystemColors.Highlight};
+                box-shadow: none;
             }
         `
     ),

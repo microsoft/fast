@@ -76,12 +76,6 @@ export const OptionStyles = css`
         opacity: var(--disabled-opacity);
     }
 
-    :host([disabled]:hover) {
-        background: ${neutralFillStealthRestBehavior.var};
-        color: ${neutralForegroundRestBehavior.var};
-        fill: currentcolor;
-    }
-
     .content {
         grid-column-start: 2;
         justify-self: start;
@@ -130,7 +124,7 @@ export const OptionStyles = css`
             }
 
             :host([disabled]),
-            :host([disabled]:hover) {
+            :host([disabled]:not(.selected):hover) {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
