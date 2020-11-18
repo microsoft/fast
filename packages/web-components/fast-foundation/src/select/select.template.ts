@@ -20,7 +20,7 @@ export const SelectTemplate = html<Select>`
     >
         <div
             aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
-            aria-controls="${x => x.id}-listbox"
+            aria-controls="listbox"
             aria-expanded="${x => x.ariaExpanded}"
             aria-haspopup="listbox"
             class="control"
@@ -53,7 +53,7 @@ export const SelectTemplate = html<Select>`
         <div
             aria-disabled="${x => x.disabled}"
             class="listbox ${x => (x.open ? "hidden" : "")}"
-            id="${x => x.id}-listbox"
+            id="listbox"
             part="listbox"
             role="listbox"
             style="--max-height: ${x => x.maxHeight}px"

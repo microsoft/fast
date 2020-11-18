@@ -29,6 +29,9 @@ import { heightNumber } from "../styles/size";
 export const SelectStyles = css`
     ${display("inline-flex")} :host {
         --elevation: 14;
+        background: ${neutralFillInputRestBehavior.var};
+        border-radius: calc(var(--corner-radius) * 1px);
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         color: ${neutralForegroundRestBehavior.var};
         contain: contents;
         position: relative;
@@ -59,11 +62,7 @@ export const SelectStyles = css`
 
     .control {
         align-items: center;
-        background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         display: flex;
         font-size: var(--type-ramp-base-font-size);
@@ -74,7 +73,7 @@ export const SelectStyles = css`
         width: 100%;
     }
 
-    .control:hover {
+    :host(:hover) {
         background: ${neutralFillInputHoverBehavior.var};
         border-color: ${accentFillHoverBehavior.var};
     }
@@ -83,7 +82,7 @@ export const SelectStyles = css`
         border-color: ${accentFillFocusBehavior.var};
     }
 
-    :host(:${focusVisible}) .control {
+    :host(:${focusVisible}) {
         border-color: ${accentFillFocusBehavior.var};
         box-shadow:
             0 0 0 2px var(--background-color),
@@ -171,7 +170,7 @@ export const SelectStyles = css`
     .indicator,
     ::slotted(svg) {
         ${`` /* Glyph size is temporary - replace when glyph-size var is added */}
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
         height: 1em;
         min-height: calc(var(--design-unit) * 4px);
         min-width: calc(var(--design-unit) * 4px);
@@ -191,11 +190,16 @@ export const SelectStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             :host([disabled]) {
+                border-color: ${SystemColors.GrayText};
+                background-color: ${SystemColors.ButtonFace};
+                color: ${SystemColors.GrayText};
                 opacity: 1;
+                forced-color-adjust: none;
             }
 
-            .button:disabled {
-                background: ${SystemColors.ButtonFace}
+            :host([disabled]) .control {
+                color: ${SystemColors.GrayText};
+                border-color: ${SystemColors.GrayText};
             }
 
             :host(:${focusVisible}) ::slotted(.selected[role="option"]) {

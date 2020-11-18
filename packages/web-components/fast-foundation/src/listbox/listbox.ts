@@ -1,3 +1,4 @@
+import { uniqueId } from "lodash-es";
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
@@ -69,7 +70,7 @@ export class Listbox extends FASTElement {
     public options: ListboxOption[] = [];
     public optionsChanged(prev, next): void {
         if (this.$fastController.isConnected) {
-            this.options.forEach((el, i) => (el.id = `option-${i}`));
+            this.options.forEach(o => (o.id = o.id || uniqueId("option-")));
         }
     }
 
