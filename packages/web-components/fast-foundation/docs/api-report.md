@@ -232,6 +232,7 @@ export interface Configuration {
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
     setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
     setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
+    setDesignToken(key: string, value: string): any;
 }
 
 // @public
@@ -244,16 +245,12 @@ export class ConfigurationImpl implements Configuration {
     readonly prefix: string;
     // (undocumented)
     register(...registrations: ConfigurationRegistry[]): this;
-    registerDesignToken<T>(registration: DesignTokenDefinition<T>): this;
+    registerDesignToken(registration: DesignTokenDefinition<any>): this;
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
     setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
     setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
-    // (undocumented)
     setDesignToken(key: any, value: any): void;
     }
-
-// @public (undocumented)
-export const ConfigurationInterface: InterfaceSymbol<Key, any>;
 
 // @public (undocumented)
 export interface ConfigurationOptions {
@@ -273,12 +270,21 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     constructor(sheet: CSSStyleSheet);
     // (undocumented)
     protected customPropertyTarget: CSSStyleDeclaration;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "isSubscribed"
+    //
+    // (undocumented)
     isSubscribed(client: CustomPropertyManagerClient): boolean;
     // (undocumented)
     protected readonly sheet: CSSStyleSheet;
     // (undocumented)
     protected styles: ElementStyles;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "subscribe"
+    //
+    // (undocumented)
     subscribe(client: CustomPropertyManagerClient): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "unsubscribe"
+    //
+    // (undocumented)
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
 
@@ -326,13 +332,16 @@ export interface CSSCustomPropertyDefinition {
 }
 
 // @public
-export const CSSCustomPropertyManager: InterfaceSymbol<Key, any>;
-
-// @public (undocumented)
-export interface CSSCustomPropertyManagerInterface {
-    alias(key: string, name: string): void;
-    get(key: string, value: any): ElementStyles;
-    name(key: string): string;
+export interface CSSCustomPropertyManager {
+    isSubscribed?(provider: CustomPropertyManagerClient): boolean;
+    readonly owner: CustomPropertyManagerClient | null;
+    register(definition: CSSCustomPropertyDefinition): void;
+    remove(name: string): void;
+    set(definition: CSSCustomPropertyDefinition): void;
+    setAll(): void;
+    subscribe?(provider: CustomPropertyManagerClient): void;
+    unregister(name: string): void;
+    unsubscribe?(provider: CustomPropertyManagerClient): void;
 }
 
 // @public
@@ -348,17 +357,9 @@ export interface CSSCustomPropertyTarget {
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
-// @public
+// @public (undocumented)
 export interface CustomPropertyManager {
-    isSubscribed?(provider: CustomPropertyManagerClient): boolean;
-    readonly owner: CustomPropertyManagerClient | null;
-    register(definition: CSSCustomPropertyDefinition): void;
-    remove(name: string): void;
-    set(definition: CSSCustomPropertyDefinition): void;
-    setAll(): void;
-    subscribe?(provider: CustomPropertyManagerClient): void;
-    unregister(name: string): void;
-    unsubscribe?(provider: CustomPropertyManagerClient): void;
+    get(key: string, value: any): ElementStyles;
 }
 
 // @public
@@ -369,18 +370,8 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
 
 // @public (undocumented)
 export class CustomPropertyManagerImpl {
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "alias"
-    //
-    // (undocumented)
-    alias(key: string, name: string): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "get"
-    //
-    // (undocumented)
+    static format(name: string): string;
     get(key: string, value: any): ElementStyles;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "name"
-    //
-    // (undocumented)
-    name(key: string): string;
     }
 
 // @public
@@ -435,7 +426,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     connectedCallback(): void;
     // @internal
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    customPropertyManager: CustomPropertyManager;
+    customPropertyManager: CSSCustomPropertyManager;
     designSystem: {};
     // @internal
     designSystemProperties: {
@@ -466,53 +457,31 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
-// Warning: (ae-forgotten-export) The symbol "InheritableDesignTokenLibrary" needs to be exported by the entry point index.d.ts
-//
+// @public (undocumented)
+export interface DesignTokenLibrary<T extends {}> {
+    delete<K extends keyof T>(key: K): void;
+    get<K extends keyof T>(key: K): T[K] | void;
+    has<K extends keyof T>(key: K): boolean;
+    keys<K extends keyof T>(): Array<K>;
+    set<K extends keyof T>(key: K, value: T[K]): any;
+    subscribe(subscriber: Subscriber): void;
+    unsubscribe(subscriber: Subscriber): void;
+}
+
 // @public (undocumented)
 export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
     #constructor(init?: T);
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     delete<K extends keyof T>(key: K): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     get<K extends keyof T>(key: K): T[K] | void;
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenLibrary" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
     handleChange<K extends keyof T>(source: DesignTokenLibrary<T>, keys: Array<K>): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     has<K extends keyof T>(key: K): boolean;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
     hasLocal<K extends keyof T>(key: K): boolean;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     keys<K extends keyof T>(): K[];
     // (undocumented)
     private;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     set<K extends keyof T>(key: K, value: T[K]): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     subscribe(subscriber: Subscriber): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
     unsubscribe(subscriber: Subscriber): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
     get upstream(): InheritableDesignTokenLibrary<T> | null;
     set upstream(target: InheritableDesignTokenLibrary<T> | null);
 }
@@ -520,9 +489,10 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
 // @public (undocumented)
 export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     new (...args: any[]): {
-        designTokens: DesignTokenLibraryImpl<any>;
-        customPropertyManager: CustomPropertyManagerImpl;
+        designTokens: InheritableDesignTokenLibrary<any>;
+        customPropertyManager: CustomPropertyManager;
         localSheets: Map<string, ElementStyles>;
+        designTokenRegistry: DesignTokenRegistry;
         connectedCallback(): void;
         handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>): void;
         readonly $fastController: import("@microsoft/fast-element").Controller;
@@ -790,9 +760,6 @@ export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTM
 } & TBase;
 
 // @public (undocumented)
-export const DesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<any>>;
-
-// @public (undocumented)
 export const DI: Readonly<{
     createContainer(): Container;
     getOrCreateDOMContainer(element?: HTMLElement): Container;
@@ -826,6 +793,20 @@ export class Dialog extends FASTElement {
 
 // @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+
+// @public (undocumented)
+export const DIConfiguration: InterfaceSymbol<Configuration, any>;
+
+// @public
+export const DICustomPropertyManager: InterfaceSymbol<CustomPropertyManager>;
+
+// Warning: (ae-forgotten-export) The symbol "DesignTokenProvider" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const DIDesignTokenProvider: InterfaceSymbol<DesignTokenProvider_2, any>;
+
+// @public (undocumented)
+export const DIDesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<any>>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -985,6 +966,13 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 
 // @public
 export const hidden = ":host([hidden]){display:none}";
+
+// @public (undocumented)
+export interface InheritableDesignTokenLibrary<T extends {}> extends DesignTokenLibrary<T> {
+    handleChange<K extends keyof T>(source: any, keys: Array<K>): void;
+    hasLocal<K extends keyof T>(key: K): boolean;
+    upstream: DesignTokenLibrary<T> | null;
+}
 
 // @public (undocumented)
 export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
@@ -1713,6 +1701,7 @@ export function unprefix(name: string): string;
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/design-tokens/provider.d.ts:14:9 - (ae-forgotten-export) The symbol "DesignTokenRegistry" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:104:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

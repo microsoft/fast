@@ -302,6 +302,6 @@ export class ConfigurationImpl implements Configuration {
     };
 }
 
-export const DIConfiguration: InterfaceSymbol<Key, any> = DI.createInterface(
+export const DIConfiguration: InterfaceSymbol<Configuration, any> = DI.createInterface(
     "Configuration"
 ).noDefault();

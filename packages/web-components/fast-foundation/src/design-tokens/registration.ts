@@ -1,4 +1,4 @@
-import { DI } from "../di";
+import { DI, InterfaceSymbol } from "../di";
 
 export interface DesignTokenDefinition<V = string, K = string> {
     /**
@@ -79,6 +79,6 @@ export class DesignTokenRegistryImpl implements DesignTokenRegistry {
     }
 }
 
-export const DIDesignTokenRegistry = DI.createInterface(
+export const DIDesignTokenRegistry = DI.createInterface<DesignTokenRegistry>(
     "DesignTokenRegistration"
 ).noDefault();

@@ -7,12 +7,16 @@ import {
     DesignTokenLibraryImpl,
     InheritableDesignTokenLibrary,
 } from "../design-tokens/library";
-import { DI, Registration } from "../di";
+import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { DesignTokenRegistry, DIDesignTokenRegistry } from "./registration";
 import { DIDesignTokens } from "./library";
 
+export interface DesignTokenProvider extends FASTElement, HTMLElement {
+    designTokens: InheritableDesignTokenLibrary<any>;
+}
+
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
-    const C = class extends Base {
+    const C = class extends Base implements DesignTokenProvider {
         public designTokens: InheritableDesignTokenLibrary<any>;
         private customPropertyManager: CustomPropertyManager;
         private localSheets = new Map<string, ElementStyles>();
@@ -27,7 +31,8 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
                     tokens.upstream = this.designTokens;
 
                     return tokens;
-                })
+                }),
+                Registration.instance(DIDesignTokenProvider, this)
             );
         }
 
@@ -71,3 +76,8 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
 
     return C;
 };
+
+export const DIDesignTokenProvider: InterfaceSymbol<
+    DesignTokenProvider,
+    any
+> = DI.createInterface("DesignTokenProvider").noDefault();

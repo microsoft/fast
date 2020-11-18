@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { DI, InterfaceSymbol, Key } from "../di";
+import { DI, InterfaceSymbol } from "../di";
 export interface CustomPropertyManager {
     /**
      * Retrieves an {@link @microsoft/fast-element#ElementStyles} by key and value. If
@@ -56,6 +56,6 @@ export class CustomPropertyManagerImpl {
 /**
  * DI decorator to get the app CustomPropertyManager
  */
-export const DICustomPropertyManager: InterfaceSymbol<Key, any> = DI.createInterface(
+export const DICustomPropertyManager: InterfaceSymbol<CustomPropertyManager> = DI.createInterface(
     "custom-property-manager"
 ).noDefault();
