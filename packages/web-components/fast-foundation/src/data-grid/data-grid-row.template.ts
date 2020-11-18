@@ -28,6 +28,6 @@ export const DataGridRowTemplate = html<DataGridRow>`
         role="row"
         class="${x => (x.rowType !== "default" ? x.rowType : "")}"
     >
-        <slot part="cellsSlot" ${slotted("slottedCellElements")}></slot>
+        <slot ${slotted("slottedCellElements")}></slot>
     </template>
 `;

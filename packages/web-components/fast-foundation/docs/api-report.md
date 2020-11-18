@@ -5,6 +5,7 @@
 ```ts
 
 import { Behavior } from '@microsoft/fast-element';
+import { Constructable } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -148,11 +149,11 @@ export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTempl
 export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-incompatible-release-tags) The symbol "Button" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
 //
 // @public
-export class Button extends FormAssociated<HTMLInputElement> {
+export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -162,8 +163,6 @@ export class Button extends FormAssociated<HTMLInputElement> {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     type: "submit" | "reset" | "button";
     }
 
@@ -181,10 +180,10 @@ export class Card extends FASTElement {
 // @public
 export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Checkbox" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class Checkbox extends FormAssociated<HTMLInputElement> {
+export class Checkbox extends FormAssociatedCheckbox {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
@@ -195,15 +194,13 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     formResetCallback(): void;
     indeterminate: boolean;
     // @internal
-    protected initialValue: string;
+    initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     readOnly: boolean;
     }
 
@@ -291,7 +288,7 @@ export interface CustomPropertyManager {
 }
 
 // @public
-export interface CustomPropertyManagerClient extends FASTElement {
+export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
     evaluate(definition: CSSCustomPropertyDefinition): string;
 }
@@ -556,46 +553,58 @@ export const focusVisible: string;
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @alpha
-export abstract class FormAssociated<T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> extends FASTElement {
-    constructor();
-    protected attachProxy(): void;
-    checkValidity(): boolean;
-    // @internal (undocumented)
-    connectedCallback(): void;
-    protected detachProxy(): void;
+export function FormAssociated<T extends Constructable<FASTElement & HTMLElement & {
+    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    disabledChanged?(previous: boolean, next: boolean): void;
+    formDisabledCallback?(disabled: boolean): void;
+    formResetCallback?(): void;
+    initialValueChanged?(previous: any, next: any): void;
+    valueChanged?(previous: any, next: any): void;
+    nameChanged?(previous: any, next: any): void;
+}>>(BaseCtor: T): T;
+
+// Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export interface FormAssociated extends Omit<ElementInternals, "labels"> {
+    // (undocumented)
+    attachProxy(): void;
+    // (undocumented)
+    detachProxy(): void;
+    // (undocumented)
+    dirtyValue: boolean;
+    // (undocumented)
     disabled: boolean;
-    protected disabledChanged(previous: boolean, next: boolean): void;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
-    protected elementInternals: ElementInternals;
-    get form(): HTMLFormElement | null;
-    // @internal
-    static get formAssociated(): boolean;
-    formDisabledCallback(disabled: boolean): void;
+    // (undocumented)
+    disabledChanged?(previous: boolean, next: boolean): void;
+    // (undocumented)
+    readonly elementInternals: ElementInternals | null;
+    // (undocumented)
+    readonly formAssociated: boolean;
+    // (undocumented)
+    formDisabledCallback?(disabled: boolean): void;
     // (undocumented)
     formResetCallback(): void;
-    protected initialValue: string;
-    protected initialValueChanged(previous: string, next: string): void;
     // (undocumented)
-    protected keypressHandler(e: KeyboardEvent): void;
-    get labels(): ReadonlyArray<Node>;
+    initialValueChanged?(previous: any, next: any): void;
+    // (undocumented)
+    readonly labels: ReadonlyArray<Node[]>;
+    // (undocumented)
     name: string;
-    protected nameChanged(): void;
-    protected abstract proxy: T;
-    reportValidity(): boolean;
+    // (undocumented)
+    nameChanged?(previous: any, next: any): void;
+    // (undocumented)
     required: boolean;
-    protected requiredChanged(prev: boolean, next: boolean): void;
-    protected setFormValue(value: File | string | FormData | null, state?: File | string | FormData | null): void;
-    // Warning: (ae-forgotten-export) The symbol "ValidityStateFlags" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "HTMLElement" needs to be exported by the entry point index.d.ts
-    setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement_2): void;
-    protected validate(): void;
-    get validationMessage(): string;
-    get validity(): ValidityState;
+    // (undocumented)
+    requiredChanged(prev: boolean, next: boolean): void;
+    // (undocumented)
+    stopPropagation(e: Event): void;
+    // (undocumented)
+    validate(): void;
+    // (undocumented)
     value: string;
-    protected valueChanged(previous: string, next: string): void;
-    get willValidate(): boolean;
+    // (undocumented)
+    valueChanged(previous: any, next: any): void;
 }
 
 // @public
@@ -700,10 +709,10 @@ export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplat
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Radio" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class Radio extends FormAssociated<HTMLInputElement> implements RadioControl {
+export class Radio extends FormAssociatedRadio implements RadioControl {
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -713,17 +722,13 @@ export class Radio extends FormAssociated<HTMLInputElement> implements RadioCont
     defaultChecked: boolean | undefined;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     formResetCallback(): void;
     // @internal
-    protected initialValue: string;
+    initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
     name: string;
-    // (undocumented)
-    protected nameChanged(): void;
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     readOnly: boolean;
     }
 
@@ -734,14 +739,14 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "read
 export class RadioGroup extends FASTElement {
     // (undocumented)
     childItems: HTMLElement[];
-    // (undocumented)
+    // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
     // (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
+    // @internal (undocumented)
     focusOutHandler: (e: FocusEvent) => boolean | void;
     // @internal
     keydownHandler: (e: KeyboardEvent) => boolean | void;
@@ -777,18 +782,22 @@ export type SkeletonShape = "rect" | "circle";
 // @public
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Slider" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Slider" because one of its declarations is marked as @internal
 //
 // @public
-export class Slider extends FormAssociated<HTMLInputElement> implements SliderConfiguration {
+export class Slider extends FormAssociatedSlider implements SliderConfiguration {
     // @internal (undocumented)
     connectedCallback(): void;
-    decrement: () => void;
+    decrement(): void;
     // @internal (undocumented)
     direction: Direction;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    increment: () => void;
+    increment(): void;
+    // @internal (undocumented)
+    initialValue: string;
     // @internal (undocumented)
     isDragging: boolean;
     // (undocumented)
@@ -799,8 +808,6 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     orientation: Orientation;
     // @internal (undocumented)
     position: string;
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     readOnly: boolean;
     step: number;
     // @internal (undocumented)
@@ -817,9 +824,13 @@ export class Slider extends FormAssociated<HTMLInputElement> implements SliderCo
     trackMinWidth: number;
     // @internal (undocumented)
     trackWidth: number;
-    // @internal
-    protected valueChanged(previous: string, next: string): void;
+    // @internal (undocumented)
+    valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
+}
+
+// @internal (undocumented)
+export interface Slider extends FormAssociatedSlider {
 }
 
 // @public
@@ -859,7 +870,7 @@ export class SliderLabel extends FASTElement {
     sliderMinPosition: number;
     // @internal (undocumented)
     sliderOrientation: Orientation;
-    // (undocumented)
+    // @internal (undocumented)
     protected sliderOrientationChanged(): void;
 }
 
@@ -900,7 +911,7 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
     // (undocumented)
     protected customPropertyTarget: CSSStyleDeclaration;
     // (undocumented)
-    readonly sheet: CSSStyleSheet;
+    get sheet(): CSSStyleSheet | null;
     // (undocumented)
     readonly styles: HTMLStyleElement;
 }
@@ -908,10 +919,10 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
-// Warning: (ae-incompatible-release-tags) The symbol "Switch" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSwitch" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class Switch extends FormAssociated<HTMLInputElement> {
+export class Switch extends FormAssociatedSwitch {
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -921,14 +932,12 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     defaultChecked: boolean;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // (undocumented)
+    // @internal (undocumented)
     formResetCallback(): void;
     // @internal
-    protected initialValue: string;
+    initialValue: string;
     // @internal (undocumented)
     keypressHandler: (e: KeyboardEvent) => void;
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     readOnly: boolean;
     }
 
@@ -992,11 +1001,11 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-incompatible-release-tags) The symbol "TextArea" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
 //
 // @public
-export class TextArea extends FormAssociated<HTMLTextAreaElement> {
+export class TextArea extends FormAssociatedTextArea {
     autofocus: boolean;
     cols: number;
     // @internal
@@ -1013,8 +1022,6 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     minlength: number;
     name: string;
     placeholder: string;
-    // (undocumented)
-    protected proxy: HTMLTextAreaElement;
     readOnly: boolean;
     resize: TextAreaResize;
     rows: number;
@@ -1037,11 +1044,11 @@ export enum TextAreaResize {
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-incompatible-release-tags) The symbol "TextField" is marked as @public, but its signature references "FormAssociated" which is marked as @alpha
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
 //
 // @public
-export class TextField extends FormAssociated<HTMLInputElement> {
+export class TextField extends FormAssociatedTextField {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1053,15 +1060,11 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     handleChange(): void;
     // @internal
     handleTextInput(): void;
-    // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => boolean;
     list: string;
     maxlength: number;
     minlength: number;
     pattern: string;
     placeholder: string;
-    // (undocumented)
-    protected proxy: HTMLInputElement;
     readOnly: boolean;
     size: number;
     spellcheck: boolean;
