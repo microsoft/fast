@@ -98,19 +98,6 @@ export class MenuItem extends FASTElement {
     public submenuNodes: HTMLElement[] = [];
 
     /**
-     * The current viewport element instance
-     *
-     * @internal
-     */
-    @observable
-    public viewportElement: HTMLElement | null = null;
-    private viewportElementChanged(): void {
-        if (this.subMenuRegion !== null && this.subMenuRegion !== undefined) {
-            this.subMenuRegion.viewportElement = this.viewportElement;
-        }
-    }
-
-    /**
      * @internal
      */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {
@@ -133,7 +120,7 @@ export class MenuItem extends FASTElement {
 
             case keyCodeArrowLeft:
                 //close submenu
-                if (this.submenu) {
+                if (this.submenu && this.expanded) {
                     this.expanded = false;
                     this.focus();
                     return false;
@@ -168,6 +155,7 @@ export class MenuItem extends FASTElement {
         DOM.queueUpdate(() => {
             this.setAttribute("tabindex", "-1");
             this.submenuNodes[0].focus();
+            this.subMenuRegion.update();
         });
 
         return false;
@@ -190,7 +178,7 @@ export class MenuItem extends FASTElement {
                     if (this.expanded) {
                         DOM.queueUpdate(this.setRegionProps);
                     }
-                    this.$emit("expanded-change");
+                    this.$emit("expanded-change", this, { bubbles: false });
                 } else {
                     this.$emit("change");
                 }

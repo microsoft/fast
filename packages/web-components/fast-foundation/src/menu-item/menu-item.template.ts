@@ -29,8 +29,10 @@ export const MenuItemTemplate = html<MenuItem>`
                 <fast-anchored-region
                     anchor="${x => x}"
                     vertical-positioning-mode="dynamic"
-                    horizontal-positioning-mode="dynamic"
+                    vertical-default-position="bottom"
                     vertical-inset="true"
+                    horizontal-default-position="right"
+                    horizontal-positioning-mode="dynamic"
                     ${ref("subMenuRegion")}
                 >
                     <slot name="submenu" ${slotted("submenuNodes")}></slot>
