@@ -88,6 +88,29 @@ export const OptionStyles = css`
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .start,
+    .end,
+    ::slotted(svg) {
+        display: flex;
+    }
+
+    ::slotted(svg) {
+        ${
+            /* Glyph size and margin-left is temporary - replace when adaptive typography is figured out */ ""
+        }
+        height: calc(var(--design-unit) * 4px);
+        width: calc(var(--design-unit) * 4px);
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-start: 1ch;
+    }
+
+    ::slotted([slot="start"]) {
+        margin-inline-end: 1ch;
+    }
+
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

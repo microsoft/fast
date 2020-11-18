@@ -1,4 +1,5 @@
 import { html } from "@microsoft/fast-element";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 import { ListboxOption } from "./listbox-option";
 
 /**
@@ -12,8 +13,10 @@ export const ListboxOptionTemplate = html<ListboxOption>`
             x.disabled ? "disabled" : ""}"
         role="option"
     >
+        ${startTemplate}
         <span class="content" part="content">
             <slot></slot>
         </span>
+        ${endTemplate}
     </template>
 `;
