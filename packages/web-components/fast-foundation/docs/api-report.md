@@ -248,6 +248,8 @@ export class ConfigurationImpl implements Configuration {
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
     setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
     setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
+    // (undocumented)
+    setDesignToken(key: any, value: any): void;
     }
 
 // @public (undocumented)

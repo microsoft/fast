@@ -7,7 +7,6 @@ MyAppConfig.register(FASTCard())
     .registerDesignToken({
         key: "backgroundColor",
         customProperty: "background-color",
-        attribute: "background-color",
         value: "#F7F7F7",
     })
     .attachDesignTokensTo(document);

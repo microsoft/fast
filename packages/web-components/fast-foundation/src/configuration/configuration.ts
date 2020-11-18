@@ -92,7 +92,7 @@ export interface Configuration {
     getDefaultStylesFor(baseName: string): ElementStyles | null;
 
     /**
-     * Register a design token for the applicaiton.
+     * Register a design token for the application.
      * @param registration The token registration
      */
     registerDesignToken<T>(registration: DesignTokenDefinition<T>): Configuration;
@@ -109,6 +109,13 @@ export interface Configuration {
      * @param doc - the Document to attach Design Tokens to
      */
     attachDesignTokensTo(doc: Document): Configuration;
+
+    /**
+     * Sets a defined design token to  value.
+     * @param key - the Design Token key
+     * @param value - the Design Token value
+     */
+    setDesignToken(key: string, value: string);
 }
 
 /**
@@ -159,6 +166,8 @@ export class ConfigurationImpl implements Configuration {
         this.designTokenTarget = this.customPropertySheet.cssRules[
             this.customPropertySheet.insertRule(":root{}")
         ] as CSSStyleRule;
+
+        this.designTokens.subscribe(this.designTokenChangeHandler);
     }
 
     /**
@@ -235,31 +244,18 @@ export class ConfigurationImpl implements Configuration {
         const { key, value, customProperty } = registration;
         this.designTokenRegistry.set(key, registration);
 
-        if (value) {
-            this.designTokens.set(key, value);
+        if (customProperty && key !== customProperty) {
+            this.customPropertyManager.alias(key, customProperty);
         }
 
-        if (customProperty) {
-            if (key !== customProperty) {
-                this.customPropertyManager.alias(key, customProperty);
-            }
-
-            if (value) {
-                this.designTokenTarget.style.setProperty(
-                    this.customPropertyManager.name(key),
-                    value as any
-                );
-            }
+        if (value) {
+            this.designTokens.set(key, value);
         }
 
         return this;
     }
 
-    /**
-     * Attaches DesignTokens to a document.
-     *
-     * @param doc - the document object to attach DesignTokens to
-     */
+    /** @inheritdoc Configuration.attachDesignTokensTo */
     public attachDesignTokensTo(doc: Document) {
         if (
             supportsAdoptedStylesheets(doc) &&
@@ -273,6 +269,27 @@ export class ConfigurationImpl implements Configuration {
 
         return this;
     }
+
+    /** @inheritdoc Configuration.setDesignToken */
+    public setDesignToken(key, value) {
+        this.designTokens.set(key, value);
+    }
+
+    private designTokenChangeHandler = {
+        handleChange: (source, keys: string[]) => {
+            keys.forEach(key => {
+                const def = this.designTokenRegistry.get(key);
+                const value = this.designTokens.get(key);
+
+                if (def && def.customProperty && value) {
+                    this.designTokenTarget.style.setProperty(
+                        this.customPropertyManager.name(key),
+                        value as any
+                    );
+                }
+            });
+        },
+    };
 
     private templateRegistry = new Map<string, ElementViewTemplate | null>();
     private stylesRegistry = new Map<string, ElementStyles | null>();
