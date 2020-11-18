@@ -29,7 +29,7 @@ export const ListboxStyles = css`
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
         css`
-            :host(:${focusVisible}) ::slotted(.selected[role="option"]) {
+            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
@@ -37,7 +37,7 @@ export const ListboxStyles = css`
                 fill: currentcolor;
             }
 
-            :host(:${focusVisible}) ::slotted(.selected[role="option"]) {
+            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
@@ -45,7 +45,7 @@ export const ListboxStyles = css`
                 fill: currentcolor;
             }
 
-            ::slotted([role="option"]:not(.selected):not([disabled]):hover) {
+            ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
                 forced-color-adjust: none;
                 color: ${SystemColors.ButtonText};
                 background: ${SystemColors.ButtonFace};

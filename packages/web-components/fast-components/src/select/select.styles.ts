@@ -89,7 +89,7 @@ export const SelectStyles = css`
             0 0 0 4px ${neutralFocusBehavior.var};
     }
 
-    :host(:${focusVisible}) ::slotted(.selected[role="option"]:not([disabled])) {
+    :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
             neutralFocusInnerAccentBehavior.var
         };
@@ -118,24 +118,24 @@ export const SelectStyles = css`
         border-color: ${accentFillActiveBehavior.var};
     }
 
-    :host(.open.above) .listbox,
-    :host(.open.below) .control {
+    :host([open][position="above"]) .listbox,
+    :host([open][position="below"]) .control {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
 
-    :host(.open.above) .control,
-    :host(.open.below) .listbox {
+    :host([open][position="above"]) .control,
+    :host([open][position="below"]) .listbox {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
 
-    :host(.open.above) .listbox {
+    :host([open][position="above"]) .listbox {
         border-bottom: 0;
         bottom: calc(${heightNumber} * 1px);
     }
 
-    :host(.open.below) .listbox {
+    :host([open][position="below"]) .listbox {
         border-top: 0;
         top: calc(${heightNumber} * 1px);
     }
@@ -155,7 +155,7 @@ export const SelectStyles = css`
         width: 100%;
     }
 
-    :host(.open) slot[name="listbox"] {
+    :host([open]) slot[name="listbox"] {
         display: flex;
         position: absolute;
         ${elevation}
@@ -206,7 +206,7 @@ export const SelectStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
 
-            :host(:${focusVisible}) ::slotted(.selected[role="option"]) {
+            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
@@ -214,7 +214,7 @@ export const SelectStyles = css`
                 fill: currentcolor;
             }
 
-            ::slotted([role="option"]:not(.selected):not([disabled]):hover) {
+            ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
                 forced-color-adjust: none;
                 color: ${SystemColors.ButtonText};
                 background: ${SystemColors.ButtonFace};

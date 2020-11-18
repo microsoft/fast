@@ -33,8 +33,15 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    @attr({ attribute: "position", mode: "fromView" })
+    @attr({ attribute: "position" })
     public positionAttribute: SelectPosition;
+
+    /**
+     * Indicates the initial state of the position attribute.
+     *
+     * @internal
+     */
+    private forcedPosition: boolean = false;
 
     /**
      * The role of the element.
@@ -46,8 +53,13 @@ export class Select extends FormAssociatedSelect {
     @attr
     public role: SelectRole = SelectRole.combobox;
 
+    /**
+     * Holds the current state for the calculated position of the listbox.
+     *
+     * @public
+     */
     @observable
-    position: SelectPosition = SelectPosition.below;
+    public position: SelectPosition = SelectPosition.below;
 
     /**
      * Calculate and apply listbox positioning based on available viewport space.
@@ -60,23 +72,18 @@ export class Select extends FormAssociatedSelect {
         const viewportHeight = window.innerHeight;
         const availableBottom = viewportHeight - currentBox.bottom;
 
-        if (this.positionAttribute) {
-            this.position = this.positionAttribute;
-        } else {
-            this.position =
-                currentBox.top > availableBottom
-                    ? SelectPosition.above
-                    : SelectPosition.below;
-        }
+        this.position = this.forcedPosition
+            ? this.positionAttribute
+            : currentBox.top > availableBottom
+            ? SelectPosition.above
+            : SelectPosition.below;
 
-        if (this.position === SelectPosition.above) {
-            this.maxHeight = ~~currentBox.top;
-            return;
-        }
+        this.positionAttribute = this.forcedPosition
+            ? this.positionAttribute
+            : this.position;
 
-        if (this.position === SelectPosition.below) {
-            this.maxHeight = ~~availableBottom;
-        }
+        this.maxHeight =
+            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
     }
 
     /**
@@ -207,6 +214,8 @@ export class Select extends FormAssociatedSelect {
         super.connectedCallback();
 
         this.setProxyOptions();
+
+        this.forcedPosition = !!this.positionAttribute;
     }
 
     public constructor() {

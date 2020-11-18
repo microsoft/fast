@@ -52,7 +52,7 @@ export const SelectTemplate = html<Select>`
         </div>
         <div
             aria-disabled="${x => x.disabled}"
-            class="listbox ${x => (x.open ? "hidden" : "")}"
+            class="listbox"
             id="listbox"
             part="listbox"
             role="listbox"

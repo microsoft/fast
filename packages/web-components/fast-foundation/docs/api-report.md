@@ -791,7 +791,6 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     // (undocumented)
     optionsChanged(prev: any, next: any): void;
-    // (undocumented)
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;

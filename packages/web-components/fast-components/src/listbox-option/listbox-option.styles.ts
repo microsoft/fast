@@ -51,7 +51,7 @@ export const OptionStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.selected) {
+    :host([aria-selected="true"]) {
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
@@ -61,12 +61,12 @@ export const OptionStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(:not(.selected):hover) {
+    :host(:not([aria-selected="true"]):hover) {
         background: ${neutralFillHoverBehavior.var};
         color: ${neutralForegroundHoverBehavior.var};
     }
 
-    :host(:not(.selected):active) {
+    :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHoverBehavior.var};
         color: ${neutralForegroundHoverBehavior.var};
     }
@@ -117,14 +117,14 @@ export const OptionStyles = css`
                 forced-color-adjust: none;
             }
 
-            :host(:not(.selected):hover),
-            :host(.selected) {
+            :host(:not([aria-selected="true"]):hover),
+            :host([aria-selected="true"]) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
             }
 
             :host([disabled]),
-            :host([disabled]:not(.selected):hover) {
+            :host([disabled]:not([aria-selected="true"]):hover) {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
