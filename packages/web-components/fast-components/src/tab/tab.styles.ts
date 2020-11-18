@@ -53,8 +53,7 @@ export const TabStyles = css`
         fill: currentcolor;
     }
 
-    :host([disabled]),
-    :host(.disabled) {
+    :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: var(--disabled-opacity);
     }

@@ -6,12 +6,7 @@ import { Tab } from "./tab";
  * @public
  */
 export const TabTemplate = html<Tab>`
-    <template
-        slot="tab"
-        role="tab"
-        aria-disabled="${x => x.disabled}"
-        class="${x => (x.disabled ? "disabled" : "")}"
-    >
+    <template slot="tab" role="tab" aria-disabled="${x => x.disabled}">
         <slot></slot>
     </template>
 `;

@@ -154,6 +154,7 @@ export class Tabs extends FASTElement {
     }
 
     private setTabs = (): void => {
+        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
@@ -185,12 +186,7 @@ export class Tabs extends FASTElement {
             } else {
                 this.showActiveIndicator = false;
             }
-            tab.setAttribute(
-                "style",
-                this.isHorizontal()
-                    ? `grid-column: ${index + 1};`
-                    : `grid-row: ${index + 1};`
-            );
+            tab.style[gridProperty] = `${index + 1}`;
             !this.isHorizontal()
                 ? tab.classList.add("vertical")
                 : tab.classList.remove("vertical");
@@ -245,7 +241,7 @@ export class Tabs extends FASTElement {
         const selectedTab = event.currentTarget as HTMLElement;
         if (selectedTab.nodeType === 1) {
             this.prevActiveTabIndex = this.activeTabIndex;
-            this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
+            this.activeTabIndex = this.tabs.indexOf(selectedTab);
             this.setComponent();
         }
     };
@@ -292,7 +288,7 @@ export class Tabs extends FASTElement {
     };
 
     private handleActiveIndicatorPosition() {
-        // Ignore if we click twice on the same tab
+        // Ignore if we click twice on the same tab
         if (
             this.showActiveIndicator &&
             this.activeindicator &&
