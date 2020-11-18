@@ -1,4 +1,4 @@
-export interface DesignTokenRegistration<T> {
+export interface DesignTokenDefinition<T> {
     /**
      * The key for which the token can be accessed.
      */

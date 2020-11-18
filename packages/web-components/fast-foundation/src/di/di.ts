@@ -3,11 +3,11 @@
  * for this code.
  */
 import {
+    Constructable,
     Controller,
     emptyArray,
     FASTElement,
     Observable,
-    Constructable,
 } from "@microsoft/fast-element";
 import { Class } from "../interfaces";
 

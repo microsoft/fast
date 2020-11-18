@@ -8,8 +8,8 @@ import {
     CSSCustomPropertyManager,
     CustomPropertyManagerImpl,
 } from "../css-custom-property-manager";
-import { DesignTokens, DesignTokenLibraryImpl } from "../design-tokens";
-import { DesignTokenRegistration } from "../design-tokens/configuration";
+import { DesignTokenLibraryImpl, DesignTokens } from "../design-tokens";
+import { DesignTokenDefinition } from "../design-tokens/configuration";
 import { DI, InterfaceSymbol, Key, Registration } from "../di";
 import { supportsAdoptedStylesheets } from "../feature-detection";
 
@@ -95,7 +95,7 @@ export interface Configuration {
      * Register a design token for the applicaiton.
      * @param registration The token registration
      */
-    registerDesignToken<T>(registration: DesignTokenRegistration<T>): Configuration;
+    registerDesignToken<T>(registration: DesignTokenDefinition<T>): Configuration;
 
     /**
      *
@@ -231,7 +231,7 @@ export class ConfigurationImpl implements Configuration {
     }
 
     /** {@inheritdoc Configuration.registerDesignToken} */
-    public registerDesignToken<T>(registration: DesignTokenRegistration<T>) {
+    public registerDesignToken<T>(registration: DesignTokenDefinition<T>) {
         const { key, value, customProperty } = registration;
         this.designTokenRegistry.set(key, registration);
 
@@ -277,7 +277,7 @@ export class ConfigurationImpl implements Configuration {
     private templateRegistry = new Map<string, ElementViewTemplate | null>();
     private stylesRegistry = new Map<string, ElementStyles | null>();
     private elementRegistry = new Map<typeof FASTElement, PartialFASTElementDefinition>();
-    private designTokenRegistry = new Map<string, DesignTokenRegistration<any>>();
+    private designTokenRegistry = new Map<string, DesignTokenDefinition<any>>();
 }
 
 export const ConfigurationInterface: InterfaceSymbol<Key, any> = DI.createInterface(

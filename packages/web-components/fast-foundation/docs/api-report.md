@@ -227,8 +227,8 @@ export interface Configuration {
     readonly prefix: string;
     // (undocumented)
     register(...registrations: ConfigurationRegistry[]): Configuration;
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenRegistration" needs to be exported by the entry point index.d.ts
-    registerDesignToken<T>(registration: DesignTokenRegistration<T>): Configuration;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenDefinition" needs to be exported by the entry point index.d.ts
+    registerDesignToken<T>(registration: DesignTokenDefinition<T>): Configuration;
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
     setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
     setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
@@ -244,7 +244,7 @@ export class ConfigurationImpl implements Configuration {
     readonly prefix: string;
     // (undocumented)
     register(...registrations: ConfigurationRegistry[]): this;
-    registerDesignToken<T>(registration: DesignTokenRegistration<T>): this;
+    registerDesignToken<T>(registration: DesignTokenDefinition<T>): this;
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
     setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
     setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
@@ -365,6 +365,22 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     evaluate(definition: CSSCustomPropertyDefinition): string;
 }
 
+// @public (undocumented)
+export class CustomPropertyManagerImpl {
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "alias"
+    //
+    // (undocumented)
+    alias(key: string, name: string): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "get"
+    //
+    // (undocumented)
+    get(key: string, value: any): ElementStyles;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "name"
+    //
+    // (undocumented)
+    name(key: string): string;
+    }
+
 // @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
     attribute?: string | false;
@@ -448,14 +464,65 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
+// Warning: (ae-forgotten-export) The symbol "InheritableDesignTokenLibrary" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
+    #constructor(init?: T);
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    delete<K extends keyof T>(key: K): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    get<K extends keyof T>(key: K): T[K] | void;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenLibrary" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    handleChange<K extends keyof T>(source: DesignTokenLibrary<T>, keys: Array<K>): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    has<K extends keyof T>(key: K): boolean;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    hasLocal<K extends keyof T>(key: K): boolean;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    keys<K extends keyof T>(): K[];
+    // (undocumented)
+    private;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    set<K extends keyof T>(key: K, value: T[K]): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    subscribe(subscriber: Subscriber): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
+    //
+    // (undocumented)
+    unsubscribe(subscriber: Subscriber): void;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
+    //
+    // (undocumented)
+    get upstream(): InheritableDesignTokenLibrary<T> | null;
+    set upstream(target: InheritableDesignTokenLibrary<T> | null);
+}
+
 // @public (undocumented)
 export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     new (...args: any[]): {
-        designTokens: FASTDesignTokenLibrary<any>;
-        customPropertyManager: FASTCustomPropertyManager;
+        designTokens: DesignTokenLibraryImpl<any>;
+        customPropertyManager: CustomPropertyManagerImpl;
         localSheets: Map<string, ElementStyles>;
         connectedCallback(): void;
-        handleChange(source: FASTDesignTokenLibrary<any>, keys: Array<any>): void;
+        handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>): void;
         readonly $fastController: import("@microsoft/fast-element").Controller;
         $emit(type: string, detail?: any, options?: Pick<CustomEventInit<any>, "bubbles" | "cancelable" | "composed"> | undefined): boolean | void;
         disconnectedCallback(): void;
@@ -721,7 +788,7 @@ export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTM
 } & TBase;
 
 // @public (undocumented)
-export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<any>>;
+export const DesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<any>>;
 
 // @public (undocumented)
 export const DI: Readonly<{
@@ -818,74 +885,6 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     registerTransformer(transformer: (instance: any) => any): boolean;
     // (undocumented)
     Type: T;
-}
-
-// @public (undocumented)
-export class FASTCustomPropertyManager {
-    constructor(selector?: "host" | "root");
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "alias"
-    //
-    // (undocumented)
-    alias(key: string, name: string): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "get"
-    //
-    // (undocumented)
-    get(key: string, value: any): ElementStyles;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: No member was found with name "name"
-    //
-    // (undocumented)
-    name(key: string): string;
-    }
-
-// Warning: (ae-forgotten-export) The symbol "InheritableDesignTokenLibrary" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export class FASTDesignTokenLibrary<T> implements InheritableDesignTokenLibrary<T> {
-    #constructor(init?: T);
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    delete<K extends keyof T>(key: K): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    get<K extends keyof T>(key: K): T[K] | void;
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenLibrary" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
-    handleChange<K extends keyof T>(source: DesignTokenLibrary<T>, keys: Array<K>): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    has<K extends keyof T>(key: K): boolean;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
-    hasLocal<K extends keyof T>(key: K): boolean;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    keys<K extends keyof T>(): K[];
-    // (undocumented)
-    private;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    set<K extends keyof T>(key: K, value: T[K]): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    subscribe(subscriber: Subscriber): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "DesignTokenLibrary"
-    //
-    // (undocumented)
-    unsubscribe(subscriber: Subscriber): void;
-    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The package "@microsoft/fast-foundation" does not have an export "InheritableDesignTokenLibrary"
-    //
-    // (undocumented)
-    get upstream(): InheritableDesignTokenLibrary<T> | null;
-    set upstream(target: InheritableDesignTokenLibrary<T> | null);
 }
 
 // @public

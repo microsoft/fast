@@ -1,9 +1,9 @@
 import { DI, InterfaceSymbol } from "../di";
-import { FASTDesignTokenLibrary } from "./library";
+import { DesignTokenLibraryImpl } from "./library";
 
-export const DesignTokens: InterfaceSymbol<FASTDesignTokenLibrary<
+export const DesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<
     any
->> = DI.createInterface<FASTDesignTokenLibrary<any>>({
+>> = DI.createInterface<DesignTokenLibraryImpl<any>>({
     friendlyName: "DesignTokens",
     respectConnection: true,
 }).noDefault();

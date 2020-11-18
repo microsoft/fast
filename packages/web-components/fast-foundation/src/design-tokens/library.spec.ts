@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { FASTDesignTokenLibrary } from "./library";
+import { DesignTokenLibraryImpl } from "./library";
 
 interface DS {
     color: string;
@@ -9,12 +9,12 @@ interface DS {
 describe("FASTDesignTokens", () => {
     describe("should initialize", () => {
         it("without any properties are no object is provided to the constructor", () => {
-            const ds = new FASTDesignTokenLibrary();
+            const ds = new DesignTokenLibraryImpl();
 
             assert(ds.keys().length === 0);
         });
         it("with any provided properties set to the provided value", () => {
-            const ds = new FASTDesignTokenLibrary<DS>({
+            const ds = new DesignTokenLibraryImpl<DS>({
                 color: "red",
                 size: 2,
             });
@@ -26,31 +26,31 @@ describe("FASTDesignTokens", () => {
     });
     describe("should get a property value", () => {
         it("that has been set on the implementation", () => {
-            const ds = new FASTDesignTokenLibrary<DS>();
+            const ds = new DesignTokenLibraryImpl<DS>();
             ds.set("color", "red");
 
             assert(ds.get("color") === "red");
         });
 
         it("that is undefined if the value has not been set", () => {
-            const ds = new FASTDesignTokenLibrary<DS>();
+            const ds = new DesignTokenLibraryImpl<DS>();
 
             assert(ds.get("color") === undefined);
         });
 
         it("that has been set on the upstream when no local implementation is set", () => {
-            const upstream = new FASTDesignTokenLibrary<DS>();
+            const upstream = new DesignTokenLibraryImpl<DS>();
             upstream.set("color", "red");
-            const downstream = new FASTDesignTokenLibrary<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
             downstream.upstream = upstream;
 
             assert(downstream.get("color") === "red");
         });
 
         it("from the downstream if it has been set on both the upstream and the downstream", () => {
-            const upstream = new FASTDesignTokenLibrary<DS>();
+            const upstream = new DesignTokenLibraryImpl<DS>();
             upstream.set("color", "red");
-            const downstream = new FASTDesignTokenLibrary<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
             downstream.upstream = upstream;
             downstream.set("color", "blue");
 
@@ -58,9 +58,9 @@ describe("FASTDesignTokens", () => {
         });
 
         it("from itself when defined both on itself and the downstream", () => {
-            const upstream = new FASTDesignTokenLibrary<DS>();
+            const upstream = new DesignTokenLibraryImpl<DS>();
             upstream.set("color", "red");
-            const downstream = new FASTDesignTokenLibrary<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
             downstream.upstream = upstream;
             downstream.set("color", "blue");
 
@@ -68,7 +68,7 @@ describe("FASTDesignTokens", () => {
         });
 
         it("that is undefined if the property is set and then deleted", () => {
-            const ds = new FASTDesignTokenLibrary<DS>();
+            const ds = new DesignTokenLibraryImpl<DS>();
             ds.set("color", "red");
             ds.delete("color");
 
@@ -77,8 +77,8 @@ describe("FASTDesignTokens", () => {
     });
 
     it("should not get notified when attaching to an upstream when no properties on the upstream are set", () => {
-        const upstream = new FASTDesignTokenLibrary<DS>();
-        const downstream = new FASTDesignTokenLibrary<DS>();
+        const upstream = new DesignTokenLibraryImpl<DS>();
+        const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false;
 
         downstream.handleChange = (source, keys) => {
@@ -91,8 +91,8 @@ describe("FASTDesignTokens", () => {
     });
 
     it("should get notified with all set properties of the upstream implementation when attaching", () => {
-        const upstream = new FASTDesignTokenLibrary<DS>();
-        const downstream = new FASTDesignTokenLibrary<DS>();
+        const upstream = new DesignTokenLibraryImpl<DS>();
+        const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
             source = {},
             args = [] as any;
@@ -114,8 +114,8 @@ describe("FASTDesignTokens", () => {
     });
 
     it("should get notified of an upstream property change", () => {
-        const upstream = new FASTDesignTokenLibrary<DS>();
-        const downstream = new FASTDesignTokenLibrary<DS>();
+        const upstream = new DesignTokenLibraryImpl<DS>();
+        const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
             source = {},
             args = [] as any;
@@ -138,8 +138,8 @@ describe("FASTDesignTokens", () => {
     });
 
     it("should notify the downstream of property changes after detachment", () => {
-        const upstream = new FASTDesignTokenLibrary<DS>();
-        const downstream = new FASTDesignTokenLibrary<DS>();
+        const upstream = new DesignTokenLibraryImpl<DS>();
+        const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
             source = {},
             args = [] as any;
@@ -164,8 +164,8 @@ describe("FASTDesignTokens", () => {
 
     describe("should not notify", () => {
         it("if a delete doesn't result in a change", () => {
-            const upstream = new FASTDesignTokenLibrary<DS>();
-            const downstream = new FASTDesignTokenLibrary<DS>();
+            const upstream = new DesignTokenLibraryImpl<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
             upstream.set("color", "red");
             downstream.set("color", "red");
             let calls = 0;
@@ -187,8 +187,8 @@ describe("FASTDesignTokens", () => {
         });
 
         it("if setting a property doesn't result in a change", () => {
-            const upstream = new FASTDesignTokenLibrary<DS>();
-            const downstream = new FASTDesignTokenLibrary<DS>();
+            const upstream = new DesignTokenLibraryImpl<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
             let calls = 0;
             const subscriber = {
                 handleChange: (source, keys) => {
