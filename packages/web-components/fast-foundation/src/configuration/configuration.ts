@@ -14,7 +14,7 @@ import {
     DesignTokenRegistryImpl,
     DIDesignTokenRegistry,
 } from "../design-tokens/registration";
-import { DI, InterfaceSymbol, Key, Registration } from "../di";
+import { DI, InterfaceSymbol, Registration } from "../di";
 import { supportsAdoptedStylesheets } from "../feature-detection";
 
 export interface ConfigurationOptions {

@@ -7,20 +7,21 @@ import {
     DesignTokenLibraryImpl,
     InheritableDesignTokenLibrary,
 } from "../design-tokens/library";
-import { DI, InterfaceSymbol, Key, Registration } from "../di";
+import { DI, InterfaceSymbol, Registration } from "../di";
 import { DesignTokenRegistry, DIDesignTokenRegistry } from "./registration";
 import { DIDesignTokens } from "./library";
 
 export interface DesignTokenProvider extends FASTElement, HTMLElement {
-    designTokens: InheritableDesignTokenLibrary<any>;
+    readonly designTokens: InheritableDesignTokenLibrary<any>;
+    readonly designTokenRegistry: DesignTokenRegistry;
 }
 
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base implements DesignTokenProvider {
-        public designTokens: InheritableDesignTokenLibrary<any>;
+        public readonly designTokens: InheritableDesignTokenLibrary<any>;
+        public readonly designTokenRegistry: DesignTokenRegistry;
         private customPropertyManager: CustomPropertyManager;
         private localSheets = new Map<string, ElementStyles>();
-        private designTokenRegistry: DesignTokenRegistry;
 
         constructor(...args: any[]) {
             super(...args);
