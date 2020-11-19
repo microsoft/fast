@@ -15,6 +15,7 @@ export const fastListboxDefinition: WebComponentDefinition = {
                     type: DataType.string,
                     default: ListboxRole.listbox,
                     required: true,
+                    values: Object.keys(ListboxRole).map(e => ({ name: `${e}` })),
                 },
                 {
                     name: "disabled",

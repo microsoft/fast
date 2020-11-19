@@ -28,6 +28,9 @@ export { fastDividerConfig };
 import fastFlipperConfig from "./fast-flipper";
 export { fastFlipperConfig };
 
+import fastListboxConfig from "./fast-listbox";
+export { fastListboxConfig };
+
 import fastMenuConfig from "./fast-menu";
 export { fastMenuConfig };
 
