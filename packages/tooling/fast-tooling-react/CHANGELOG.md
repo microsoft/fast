@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.4.1...@microsoft/fast-tooling-react@2.5.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+* number field interactions ([#4124](https://github.com/Microsoft/fast/issues/4124)) ([16f677c](https://github.com/Microsoft/fast/commit/16f677c1690c6442f2d3152a4c7790002d54c4c5))
+* tabbing disabled for when linkedDataControl used in form ([#4023](https://github.com/Microsoft/fast/issues/4023)) ([d28fe24](https://github.com/Microsoft/fast/commit/d28fe24595712a6533271c1dd31b9b3a33d64157))
+* updated the background on attribute dropdown in fast tooling used in component explorer ([#4098](https://github.com/Microsoft/fast/issues/4098)) ([e6bd341](https://github.com/Microsoft/fast/commit/e6bd3416cc9f181156c66027b90ee2a517a309bc)), closes [#3979](https://github.com/Microsoft/fast/issues/3979)
+
+
+### Features
+
+* add a utility to map MDN data to a format that will be usable by generated UI ([#4066](https://github.com/Microsoft/fast/issues/4066)) ([faad57e](https://github.com/Microsoft/fast/commit/faad57ee3982832c67d01f1c00047665727e2c6f))
+* add justify text align option ([#4116](https://github.com/Microsoft/fast/issues/4116)) ([17f47c1](https://github.com/Microsoft/fast/commit/17f47c1e623e901a4d63e3b3a01aa29c14716646))
+* adding localization for hard coded strings ([#4104](https://github.com/Microsoft/fast/issues/4104)) ([a37b204](https://github.com/Microsoft/fast/commit/a37b2048d967d54be7781d27693e7495e1027b7f))
+
+
+
+
+
 ## [2.4.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.4.0...@microsoft/fast-tooling-react@2.4.1) (2020-10-14)
 
 

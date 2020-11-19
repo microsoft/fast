@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.1...@microsoft/fast-components@1.12.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* ensure all components opt into body font ([#4134](https://github.com/Microsoft/fast/issues/4134)) ([50dd893](https://github.com/Microsoft/fast/commit/50dd8938d1d75766148e767e9cbb28bc14a7f7bf))
+* ensure tree items with children have a value for aria-expanded ([#4114](https://github.com/Microsoft/fast/issues/4114)) ([e7a7553](https://github.com/Microsoft/fast/commit/e7a7553c8e2fb205927d4d913de0d2790720ced7))
+* fast card should be design system provider ([#4107](https://github.com/Microsoft/fast/issues/4107)) ([fb0a49b](https://github.com/Microsoft/fast/commit/fb0a49b4f4ba52b9c96e1674015cd3e79fb5cd62))
+* flipper icon and menu item text in high contrast mode ([#4110](https://github.com/Microsoft/fast/issues/4110)) ([69ec2cc](https://github.com/Microsoft/fast/commit/69ec2ccabc40acbc5305fe390c8d39a397da6681))
+* move component options to independent modules ([#4048](https://github.com/Microsoft/fast/issues/4048)) ([f8a88a8](https://github.com/Microsoft/fast/commit/f8a88a8b14b2eee4dd26619f7927be73bea94277))
+* radio group orientation "vertical" broken ([#4123](https://github.com/Microsoft/fast/issues/4123)) ([7b38f52](https://github.com/Microsoft/fast/commit/7b38f523250b75d5deaedd347bff3c24247f3de1))
+* remove Card circular dependencies ([#4121](https://github.com/Microsoft/fast/issues/4121)) ([c7059b3](https://github.com/Microsoft/fast/commit/c7059b373f38aee700a767dc3328b609defb3b15))
+* remove duplicate exports causing circular dependencies ([#4053](https://github.com/Microsoft/fast/issues/4053)) ([29de4d8](https://github.com/Microsoft/fast/commit/29de4d83842ab383504adc0fc4873258909ff967))
+* remove hover background-color for disabled hovered options ([#4130](https://github.com/Microsoft/fast/issues/4130)) ([7569d9a](https://github.com/Microsoft/fast/commit/7569d9aca13b70688bb696bbfe3bc2b06ad447a2))
+* removed high contrast work in buttons and add the work in common buttons style ([#4135](https://github.com/Microsoft/fast/issues/4135)) ([a3555e2](https://github.com/Microsoft/fast/commit/a3555e2c673ebe0b7942e5438ed93bea82be331b))
+* revert radio to using class selector instead of attr, update slider-label to use internal styles for orientation ([#4108](https://github.com/Microsoft/fast/issues/4108)) ([c6ecedf](https://github.com/Microsoft/fast/commit/c6ecedf8427caf686bfebe89e78d2a6c2b7153f2))
+* update start and end slot to remove fixed width and height ([#4081](https://github.com/Microsoft/fast/issues/4081)) ([5f267fc](https://github.com/Microsoft/fast/commit/5f267fcb16a6636de67a4056204bf95828cb1d3f)), closes [#3904](https://github.com/Microsoft/fast/issues/3904)
+* Updated Design System reference in fast-card ([#4117](https://github.com/Microsoft/fast/issues/4117)) ([bd9ef7b](https://github.com/Microsoft/fast/commit/bd9ef7b6297d9ffeceb2ccb597b68edf850cba6f))
+* updates the definition for the flipper component for the direction attribute ([#4046](https://github.com/Microsoft/fast/issues/4046)) ([e9e56c2](https://github.com/Microsoft/fast/commit/e9e56c268dea2223674577177bc21c39d17cf184))
+
+
+### Features
+
+* Add disabled attr to fast-tab ([#4013](https://github.com/Microsoft/fast/issues/4013)) ([caef4b1](https://github.com/Microsoft/fast/commit/caef4b15ce729ab1c1762bf0578edcf4d809351c)), closes [#4017](https://github.com/Microsoft/fast/issues/4017)
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+* attribute selectors instead of class selectors ([#4078](https://github.com/Microsoft/fast/issues/4078)) ([bd09fbc](https://github.com/Microsoft/fast/commit/bd09fbc7d1d352f4d27552a4102d6f960708311f))
+* convert FormAssociated to a constructable function ([#4115](https://github.com/Microsoft/fast/issues/4115)) ([da8d54b](https://github.com/Microsoft/fast/commit/da8d54b5a057812622471e1261200b8f9b290d12))
+
+
+
+
+
 ## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.0...@microsoft/fast-components@1.11.1) (2020-10-14)
 
 

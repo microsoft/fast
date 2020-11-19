@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.1...@microsoft/fast-tooling@0.12.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+* assigns children to named slots properly ([#4026](https://github.com/Microsoft/fast/issues/4026)) ([cddf930](https://github.com/Microsoft/fast/commit/cddf930108696eab7481389776aaf5895b9ea8c0))
+
+
+### Features
+
+* add a utility to map MDN data to a format that will be usable by generated UI ([#4066](https://github.com/Microsoft/fast/issues/4066)) ([faad57e](https://github.com/Microsoft/fast/commit/faad57ee3982832c67d01f1c00047665727e2c6f))
+* update generated css data to include more nesting solutions as well as new exports for property, syntax and types lists ([#4125](https://github.com/Microsoft/fast/issues/4125)) ([b814aed](https://github.com/Microsoft/fast/commit/b814aed588eadc0d24185243ac864105d22cd190))
+
+
+
+
+
 ## [0.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.0...@microsoft/fast-tooling@0.11.1) (2020-10-14)
 
 
