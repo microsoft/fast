@@ -50,6 +50,7 @@ export const verticalSliderStyles = css`
 
 export const SliderLabelStyles = css`
     ${display("block")} :host {
+        font-family: var(--body-font);
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
     }

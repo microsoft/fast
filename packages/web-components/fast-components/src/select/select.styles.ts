@@ -141,6 +141,7 @@ export const SelectStyles = css`
     }
 
     .selected-value {
+        font-family: var(--body-font);
         flex: 1 1 auto;
         text-align: start;
     }

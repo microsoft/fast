@@ -19,6 +19,7 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        font-family: var(--body-font);
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
