@@ -25,6 +25,7 @@ import { heightNumber } from "../styles/size";
 
 export const OptionStyles = css`
     ${display("inline-flex")} :host {
+        font-family: var(--body-font);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--focus-outline-width) * 1px) solid transparent;
         box-sizing: border-box;
