@@ -118,6 +118,7 @@ class Dictionary extends React.Component<
                         onFocus={this.handleKeyFocus(propertyName)}
                         onBlur={this.handleKeyBlur(propertyName)}
                         onChange={this.handleKeyChange(propertyName)}
+                        readOnly={this.props.additionalProperties === false}
                     />
                     <button
                         className={dictionary_itemControlRemoveTrigger}
