@@ -6,7 +6,7 @@ interface DS {
     size: number;
 }
 
-describe("FASTDesignTokens", () => {
+describe("DesignTokenLibraryImpl", () => {
     describe("should initialize", () => {
         it("without any properties are no object is provided to the constructor", () => {
             const ds = new DesignTokenLibraryImpl();
@@ -81,9 +81,11 @@ describe("FASTDesignTokens", () => {
         const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false;
 
-        downstream.handleChange = (source, keys) => {
-            called = true;
-        };
+        downstream.subscribe({
+            handleChange: (source, keys) => {
+                called = true;
+            },
+        });
 
         downstream.upstream = upstream;
 
@@ -94,21 +96,20 @@ describe("FASTDesignTokens", () => {
         const upstream = new DesignTokenLibraryImpl<DS>();
         const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
-            source = {},
             args = [] as any;
 
         upstream.set("color", "red");
         upstream.set("size", 4);
 
-        downstream.handleChange = (src, keys) => {
-            called = true;
-            source = src;
-            args = args.concat(keys);
-        };
+        downstream.subscribe({
+            handleChange: (src, keys) => {
+                called = true;
+                args = args.concat(keys);
+            },
+        });
 
         downstream.upstream = upstream;
 
-        assert(source === upstream);
         assert(called);
         expect(args).to.contain("color");
     });
@@ -117,46 +118,44 @@ describe("FASTDesignTokens", () => {
         const upstream = new DesignTokenLibraryImpl<DS>();
         const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
-            source = {},
             args = [] as any;
 
         downstream.upstream = upstream;
 
-        downstream.handleChange = (src, keys) => {
-            called = true;
-            source = src;
-            args = args.concat(keys);
-        };
+        downstream.subscribe({
+            handleChange: (src, keys) => {
+                called = true;
+                args = args.concat(keys);
+            },
+        });
 
         upstream.set("color", "red");
         upstream.set("size", 4);
 
-        // assert(source === upstream);
         assert(called);
-        // expect(args).to.contain("color");
-        // expect(args).to.contain("size");
+        expect(args).to.contain("color");
+        expect(args).to.contain("size");
     });
 
     it("should notify the downstream of property changes after detachment", () => {
         const upstream = new DesignTokenLibraryImpl<DS>();
         const downstream = new DesignTokenLibraryImpl<DS>();
         let called = false,
-            source = {},
             args = [] as any;
 
         upstream.set("color", "red");
         upstream.set("size", 4);
         downstream.upstream = upstream;
 
-        downstream.handleChange = (src, keys) => {
-            called = true;
-            source = src;
-            args = args.concat(keys);
-        };
+        downstream.subscribe({
+            handleChange: (src, keys) => {
+                called = true;
+                args = args.concat(keys);
+            },
+        });
 
         downstream.upstream = null;
 
-        assert(source === upstream);
         assert(called);
         expect(args).to.contain("color");
         expect(args).to.contain("size");
@@ -208,5 +207,12 @@ describe("FASTDesignTokens", () => {
             assert(calls === 1);
             assert(downstream.get("color") === "red");
         });
+    });
+
+    it("should notify subscribers when setting a derived property", () => {});
+    it("should re-evaluate a derived property if any of the properties dependencies change", () => {});
+    it("should notify subscribes of a change when changing a dependency results in a new derived value", () => {});
+    it("should invoke the `evaluate` function with the upstream dependency value when the dependency key is the key being set", () => {
+        // Set background color equal to a function that relies on background color
     });
 });

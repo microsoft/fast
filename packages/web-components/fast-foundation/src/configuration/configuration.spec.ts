@@ -1,5 +1,6 @@
 import { css, FASTElement, FASTElementDefinition, html } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { over } from "lodash-es";
 import { ConfigurationImpl } from "./index";
 
 describe("ConfigurationImpl", () => {
@@ -54,8 +55,8 @@ describe("ConfigurationImpl", () => {
 
             conf.register(myElement());
 
-            expect(conf.getDefaultStylesFor("fast-element")).to.equal(styles);
-            expect(conf.getDefaultTemplateFor("fast-element")).to.equal(template);
+            expect(conf.getDefaultStylesFor("element")).to.equal(styles);
+            expect(conf.getDefaultTemplateFor("element")).to.equal(template);
             expect(customElements.get(`${conf.prefix}-${baseName}`)).to.equal(MyElement);
         });
 
@@ -79,14 +80,19 @@ describe("ConfigurationImpl", () => {
 
             conf.register(myElement(overrides));
 
-            expect(conf.getDefaultStylesFor("fast-foo")).to.equal(null);
-            expect(conf.getDefaultTemplateFor("fast-foo")).to.equal(null);
-            expect(customElements.get(`fast-foo`)).to.equal(undefined);
+            expect(conf.getDefaultStylesFor("foo")).to.equal(null);
+            expect(conf.getDefaultTemplateFor("foo")).to.equal(null);
+            expect(customElements.get(`foo`)).to.equal(undefined);
 
-            const elName = `${overrides.prefix}-${overrides.baseName}`;
-            expect(conf.getDefaultStylesFor(elName)).to.equal(overrides.styles);
-            expect(conf.getDefaultTemplateFor(elName)).to.equal(overrides.template);
-            expect(customElements.get(elName)).to.equal(MyElement);
+            expect(conf.getDefaultStylesFor(overrides.baseName)).to.equal(
+                overrides.styles
+            );
+            expect(conf.getDefaultTemplateFor(overrides.baseName)).to.equal(
+                overrides.template
+            );
+            expect(
+                customElements.get(`${overrides.prefix}-${overrides.baseName}`)
+            ).to.equal(MyElement);
         });
     });
 });
