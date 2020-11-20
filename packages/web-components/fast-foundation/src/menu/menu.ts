@@ -54,6 +54,14 @@ export class Menu extends FASTElement {
     }
 
     /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.menuItems = [];
+    }
+
+    /**
      * Focuses the first item in the menu.
      *
      * @public

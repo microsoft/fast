@@ -1191,7 +1191,11 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
     disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     expanded: boolean;
     // @internal (undocumented)
     handleAnchoredRegionChange: (e: Event) => boolean;
@@ -1199,6 +1203,11 @@ export class MenuItem extends FASTElement {
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
+    // @internal (undocumented)
+    handleMouseOut: (e: MouseEvent) => void;
+    // @internal (undocumented)
+    handleMouseOver: (e: MouseEvent) => void;
+    hoverDelay: number;
     role: MenuItemRole;
     submenu: boolean;
     // @internal

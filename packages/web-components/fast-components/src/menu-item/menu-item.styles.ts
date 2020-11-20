@@ -60,7 +60,8 @@ export const MenuItemStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(:active) {
+    :host(:active),
+    :host(.expanded) {
         background: ${accentFillActiveBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
