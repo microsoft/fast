@@ -19,6 +19,7 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        contain: layout;
         position: relative;
         overflow: visible;
         font-family: var(--body-font);
@@ -91,6 +92,10 @@ export const MenuItemStyles = css`
     .start,
     .end {
         display: flex;
+    }
+
+    .submenu-region {
+        padding: 0 calc(var(--design-unit) * 1px);
     }
 
     ::slotted(svg) {

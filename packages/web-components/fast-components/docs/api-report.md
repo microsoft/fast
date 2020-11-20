@@ -7,7 +7,6 @@
 import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
-import { AnchoredRegion } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
@@ -15,20 +14,15 @@ import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
-import { DataGrid } from '@microsoft/fast-foundation';
-import { DataGridCell } from '@microsoft/fast-foundation';
-import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
-import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
-import { NumberField } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
@@ -215,9 +209,6 @@ export const AccordionStyles: import("@microsoft/fast-element").ElementStyles;
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
-export const AnchoredRegionStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
 export const AnchorStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -239,22 +230,7 @@ export const CheckboxStyles: import("@microsoft/fast-element").ElementStyles;
 export function createColorPalette(baseColor: any): string[];
 
 // @public
-export const DataGridCellStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const DataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export type DisclosureAppearance = "accent" | "lightweight";
-
-// @public
-export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
@@ -274,12 +250,6 @@ export class FASTAnchor extends Anchor {
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
     // (undocumented)
     connectedCallback(): void;
-    // @internal
-    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
-}
-
-// @beta
-export class FASTAnchoredRegion extends AnchoredRegion {
 }
 
 // @public
@@ -299,6 +269,7 @@ export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
     connectedCallback(): void;
+    // (undocumented)
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
 
@@ -317,18 +288,6 @@ export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSys
 
 // @public
 export class FASTCheckbox extends Checkbox {
-}
-
-// @public
-export class FASTDataGrid extends DataGrid {
-}
-
-// @public
-export class FASTDataGridCell extends DataGridCell {
-}
-
-// @public
-export class FASTDataGridRow extends DataGridRow {
 }
 
 // @public
@@ -540,19 +499,6 @@ export class FASTDialog extends Dialog {
 }
 
 // @public
-export class FASTDisclosure extends Disclosure {
-    appearance: DisclosureAppearance;
-    // (undocumented)
-    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
-    // (undocumented)
-    get disclosureHeight(): number;
-    // @override
-    protected onToggle(): void;
-    // @override
-    protected setup(): void;
-    }
-
-// @public
 export class FASTDivider extends Divider {
 }
 
@@ -570,13 +516,6 @@ export class FASTMenu extends Menu {
 
 // @public
 export class FASTMenuItem extends MenuItem {
-}
-
-// @public
-export class FASTNumberField extends NumberField {
-    appearance: NumberFieldAppearance;
-    // @internal (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1067,12 +1006,6 @@ export const neutralOutlineRest: SwatchRecipe;
 
 // @public
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public
-export type NumberFieldAppearance = "filled" | "outline";
-
-// @public
-export const NumberFieldStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const OptionStyles: import("@microsoft/fast-element").ElementStyles;
