@@ -3,6 +3,7 @@ import {
     CombinatorType,
     mapCombinatorType,
     mapCSSProperties,
+    mapCSSSyntaxes,
     mapGroupedEntities,
     mapMultiplierType,
     mapStringLiterals,
@@ -10,6 +11,7 @@ import {
     resolveCSSPropertyReference,
     resolveCSSPropertySyntax,
     resolveCSSPropertySyntaxSplit,
+    resolveCSSSyntax,
     resolveReferenceType,
 } from "./mapping.mdn-data";
 
@@ -381,6 +383,105 @@ describe("mapCSSProperties", () => {
                     multiplier: null,
                     prepend: null,
                     type: "mixed",
+                },
+            },
+        });
+    });
+});
+
+describe("resolveCSSSyntax", () => {
+    test("should resolve a CSS syntax without grouped items", () => {
+        expect(resolveCSSSyntax("xx-small | x-small | small", [], [])).toEqual({
+            ref: [
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "xx-small",
+                    refCombinatorType: "none",
+                    type: "value",
+                },
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "x-small",
+                    refCombinatorType: "none",
+                    type: "value",
+                },
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "small",
+                    refCombinatorType: "none",
+                    type: "value",
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        });
+    });
+    test("should resolve a CSS syntax with grouped items", () => {
+        expect(
+            resolveCSSSyntax("[ common-ligatures | no-common-ligatures ]", [], [])
+        ).toEqual({
+            ref: [
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "common-ligatures",
+                    refCombinatorType: "none",
+                    type: "value",
+                },
+                {
+                    multiplier: null,
+                    prepend: null,
+                    ref: "no-common-ligatures",
+                    refCombinatorType: "none",
+                    type: "value",
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        });
+    });
+});
+
+describe("mapCSSSyntaxes", () => {
+    test("should return a subset of MDN data into a subset of CSS syntaxes", () => {
+        const subsetOfMDNCSS = {
+            properties: {},
+            syntaxes: {
+                "absolute-size": {
+                    syntax: "xx-small | x-small | small",
+                },
+            },
+            types: mdnCSS.types,
+        } as any;
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+            "absolute-size": {
+                name: "absolute-size",
+                value: {
+                    ref: [
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "xx-small",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "x-small",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "small",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
                 },
             },
         });
