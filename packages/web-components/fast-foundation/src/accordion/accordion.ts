@@ -45,6 +45,12 @@ export class Accordion extends FASTElement {
     public expandmode: AccordionExpandMode = AccordionExpandMode.multi;
 
     /**
+     * A reference to the active tab
+     * @public
+     */
+    public activeItem: HTMLElement;
+
+    /**
      * @internal
      */
     @observable
@@ -65,6 +71,15 @@ export class Accordion extends FASTElement {
     private activeItemIndex: number = 0;
     private accordionIds: Array<string | null>;
 
+    private isDisabledElement = (el: Element): el is HTMLElement => {
+        console.log(el);
+        return el.hasAttribute("disabled");
+    };
+
+    private isFocusableElement = (el: Element): el is HTMLElement => {
+        return !this.isDisabledElement(el);
+    };
+
     private change = (): void => {
         this.$emit("change");
     };
@@ -72,21 +87,30 @@ export class Accordion extends FASTElement {
     private setItems = (): void => {
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
-            if (item instanceof AccordionItem) {
+            if (item instanceof AccordionItem && this.isFocusableElement(item)) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
                     this.activeItemIndex !== index
                         ? (item.expanded = false)
                         : (item.expanded = true);
+                    if (this.activeItemIndex === index) {
+                        item.expandbutton.setAttribute("aria-disabled", "true");
+                    } else {
+                        console.log("remove attribiute");
+                        item.expandbutton.removeAttribute("aria-disabled");
+                    }
+                }
+                const itemId: string | null = this.accordionIds[index];
+                item.setAttribute(
+                    "id",
+                    typeof itemId !== "string" ? `accordion-${index + 1}` : itemId
+                );
+                this.activeid = this.accordionIds[this.activeItemIndex] as string;
+                item.addEventListener("keydown", this.handleItemKeyDown);
+                if (this.activeItemIndex === index) {
+                    this.activeItem = item;
                 }
             }
-            const itemId: string | null = this.accordionIds[index];
-            item.setAttribute(
-                "id",
-                typeof itemId !== "string" ? `accordion-${index + 1}` : itemId
-            );
-            this.activeid = this.accordionIds[this.activeItemIndex] as string;
-            item.addEventListener("keydown", this.handleItemKeyDown);
         });
     };
 
@@ -108,6 +132,7 @@ export class Accordion extends FASTElement {
         if (this.isSingleExpandMode()) {
             this.resetItems();
             event.target.expanded = true;
+            event.target.expandbutton.setAttribute("aria-disabled", "true");
         }
         this.activeid = event.target.getAttribute("id");
         this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);
@@ -130,21 +155,70 @@ export class Accordion extends FASTElement {
         switch (keyCode) {
             case keyCodeArrowUp:
                 event.preventDefault();
-                this.adjust(-1);
+                this.adjustBackward(event);
                 break;
             case keyCodeArrowDown:
                 event.preventDefault();
-                this.adjust(1);
+                this.adjustForward(event);
                 break;
             case keyCodeHome:
-                this.activeItemIndex = 0;
-                this.focusItem();
+                this.adjust(-this.activeItemIndex);
                 break;
             case keyCodeEnd:
-                this.activeItemIndex = this.accordionItems.length - 1;
-                this.focusItem();
+                this.adjust(this.accordionItems.length - this.activeItemIndex - 1);
                 break;
         }
+    };
+
+    private adjustForward = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.accordionItems;
+        let index: number = 0;
+        index = this.activeItem ? group.indexOf(this.activeItem) + 1 : 1;
+        console.log("fires", index);
+        if (index === group.length) {
+            index = 0;
+        }
+        while (index < group.length && group.length > 1) {
+            console.log("while", index < group.length && group.length > 1);
+            if (this.isFocusableElement(group[index])) {
+                this.moveToItemByIndex(group, index);
+                console.log("Move tab by index");
+                break;
+            } else if (this.activeItem && index === group.indexOf(this.activeItem)) {
+                break;
+            } else if (index + 1 >= group.length) {
+                index = 0;
+            } else {
+                index += 1;
+            }
+        }
+    };
+
+    private adjustBackward = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.accordionItems;
+        let index: number = 0;
+
+        index = this.activeItem ? group.indexOf(this.activeItem) - 1 : 0;
+        index = index < 0 ? group.length - 1 : index;
+
+        while (index >= 0 && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToItemByIndex(group, index);
+                break;
+            } else if (index - 1 < 0) {
+                index = group.length - 1;
+            } else {
+                index -= 1;
+            }
+        }
+    };
+
+    private moveToItemByIndex = (group: HTMLElement[], index: number) => {
+        const item: HTMLElement = group[index] as HTMLElement;
+        this.activeItem = item;
+        this.activeItemIndex = index;
+        this.setItems();
+        this.focusItem();
     };
 
     private adjust(adjustment: number): void {
@@ -157,9 +231,9 @@ export class Accordion extends FASTElement {
     }
 
     private focusItem(): void {
-        const element: HTMLElement = this.accordionItems[this.activeItemIndex];
-        if (element instanceof AccordionItem) {
-            element.expandbutton.focus();
+        const item: HTMLElement = this.accordionItems[this.activeItemIndex];
+        if (item instanceof AccordionItem && this.isFocusableElement(item)) {
+            item.expandbutton.focus();
         }
     }
 }

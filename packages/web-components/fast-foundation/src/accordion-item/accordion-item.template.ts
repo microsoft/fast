@@ -24,6 +24,8 @@ export const AccordionItemTemplate = html<AccordionItem>`
                 aria-expanded="${x => x.expanded}"
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"
+                ?disabled="${x => x.disabled}"
+                aria-disabled="${x => x.disabled}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >
                 <span class="heading">

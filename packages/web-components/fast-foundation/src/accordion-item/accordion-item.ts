@@ -34,6 +34,15 @@ export class AccordionItem extends FASTElement {
     public expanded: boolean = false;
 
     /**
+     * The disabled state of the accordion item.
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+
+    /**
      * The item ID
      *
      * @public

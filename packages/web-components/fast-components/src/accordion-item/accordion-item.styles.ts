@@ -24,6 +24,10 @@ export const AccordionItemStyles = css`
         line-height: var(--type-ramp-minus-1-line-height);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
+
+    :host([disabled]) {
+        opacity: 0.2;
+    }
     
     .region {
         display: none;

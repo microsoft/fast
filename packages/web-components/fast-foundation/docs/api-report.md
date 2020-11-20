@@ -19,6 +19,7 @@ export class Accordion extends FASTElement {
     accordionItems: HTMLElement[];
     // @internal (undocumented)
     accordionItemsChanged(oldValue: any, newValue: any): void;
+    activeItem: HTMLElement;
     expandmode: AccordionExpandMode;
     }
 
@@ -35,6 +36,7 @@ export enum AccordionExpandMode {
 export class AccordionItem extends FASTElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
+    disabled: boolean;
     // @internal (undocumented)
     expandbutton: HTMLElement;
     expanded: boolean;
