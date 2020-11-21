@@ -463,9 +463,13 @@ export interface DesignTokenLibrary<T extends {}> {
     get<K extends keyof T>(key: K): T[K] | void;
     has<K extends keyof T>(key: K): boolean;
     keys<K extends keyof T>(): Array<K>;
-    set<K extends keyof T>(key: K, value: T[K]): any;
-    subscribe(subscriber: Subscriber): void;
-    unsubscribe(subscriber: Subscriber): void;
+    set<K extends keyof T>(key: K, value: T[K]): void;
+    // Warning: (ae-forgotten-export) The symbol "DerivedTokenValue" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, K, D>): void;
+    subscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
+    unsubscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
 }
 
 // @public (undocumented)
@@ -473,15 +477,19 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
     #constructor(init?: T);
     delete<K extends keyof T>(key: K): void;
     get<K extends keyof T>(key: K): T[K] | void;
-    handleChange<K extends keyof T>(source: DesignTokenLibrary<T>, keys: Array<K>): void;
     has<K extends keyof T>(key: K): boolean;
     hasLocal<K extends keyof T>(key: K): boolean;
     keys<K extends keyof T>(): K[];
     // (undocumented)
     private;
+    // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The reference is ambiguous because "set" has more than one declaration; you need to add a TSDoc member reference selector
+    //
+    // (undocumented)
+    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, K, D>): void;
+    // (undocumented)
     set<K extends keyof T>(key: K, value: T[K]): void;
-    subscribe(subscriber: Subscriber): void;
-    unsubscribe(subscriber: Subscriber): void;
+    subscribe(subscriber: Subscriber, ...tokens: Array<keyof T>): void;
+    unsubscribe(subscriber: Subscriber, ...tokens: Array<keyof T>): void;
     get upstream(): InheritableDesignTokenLibrary<T> | null;
     set upstream(target: InheritableDesignTokenLibrary<T> | null);
 }
@@ -489,10 +497,10 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
 // @public (undocumented)
 export const DesignTokenProvider: <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     new (...args: any[]): {
-        designTokens: InheritableDesignTokenLibrary<any>;
+        readonly designTokens: InheritableDesignTokenLibrary<any>;
+        readonly designTokenRegistry: DesignTokenRegistry;
         customPropertyManager: CustomPropertyManager;
         localSheets: Map<string, ElementStyles>;
-        designTokenRegistry: DesignTokenRegistry;
         connectedCallback(): void;
         handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>): void;
         readonly $fastController: import("@microsoft/fast-element").Controller;
@@ -969,7 +977,6 @@ export const hidden = ":host([hidden]){display:none}";
 
 // @public (undocumented)
 export interface InheritableDesignTokenLibrary<T extends {}> extends DesignTokenLibrary<T> {
-    handleChange<K extends keyof T>(source: any, keys: Array<K>): void;
     hasLocal<K extends keyof T>(key: K): boolean;
     upstream: DesignTokenLibrary<T> | null;
 }
@@ -1701,7 +1708,7 @@ export function unprefix(name: string): string;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-tokens/provider.d.ts:14:9 - (ae-forgotten-export) The symbol "DesignTokenRegistry" needs to be exported by the entry point index.d.ts
+// dist/dts/design-tokens/provider.d.ts:13:9 - (ae-forgotten-export) The symbol "DesignTokenRegistry" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:104:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

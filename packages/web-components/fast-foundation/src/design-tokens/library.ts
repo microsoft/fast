@@ -1,6 +1,15 @@
 import { Subscriber } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol } from "../di";
 
+// Thanks to https://github.com/microsoft/TypeScript/issues/13298#issuecomment-423390349
+type ElementOf<T> = T extends (infer E)[] ? E : T;
+
+type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
+interface DerivedTokenValue<T extends {}, K extends keyof T, D extends Array<keyof T>> {
+    dependencies?: D;
+    derive(values: Pick<T, ElementOf<D>>): T[K];
+}
+
 export interface DesignTokenLibrary<T extends {}> {
     /**
      * Gets the composed value associated to a key. This method will ask any
@@ -14,7 +23,12 @@ export interface DesignTokenLibrary<T extends {}> {
      * @param key - The key for which to set the value
      * @param value - The value to set
      */
-    set<K extends keyof T>(key: K, value: T[K]);
+    set<K extends keyof T>(key: K, value: T[K]): void;
+
+    set<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        value: DerivedTokenValue<T, K, D>
+    ): void;
 
     /**
      * Determines if a value exists in the library for a provided key.
@@ -32,14 +46,16 @@ export interface DesignTokenLibrary<T extends {}> {
     /**
      * Subscribes an instance to changes to the design token library
      * @param subscriber - The subscriber to notify when properties change
+     * @param keys - The list of token keys to subscribe to. If omitted, all
+     * tokens will be subscribed to
      */
-    subscribe(subscriber: Subscriber): void;
+    subscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
 
     /**
      * Un-subscribes an instance to changes to the design token library
      * @param subscriber - The subscriber to notify when properties change
      */
-    unsubscribe(subscriber: Subscriber): void;
+    unsubscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
 
     /**
      * Returns keys for all values that have been set on the DesignTokenLibrary
@@ -55,13 +71,6 @@ export interface InheritableDesignTokenLibrary<T extends {}>
     upstream: DesignTokenLibrary<T> | null;
 
     /**
-     * Invoked when any upstream values change.
-     * @param source - the upstream source object
-     * @param keys  - the keys that were changed
-     */
-    handleChange<K extends keyof T>(source, keys: Array<K>): void;
-
-    /**
      * Determines if a value exists locally in the library for a provided key.
      * @param key The key for which to check if a local value exists.
      */
@@ -69,8 +78,21 @@ export interface InheritableDesignTokenLibrary<T extends {}>
 }
 
 export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
+    private static isDerived<T extends {}, K extends keyof T, D extends Array<keyof T>>(
+        value: StaticTokenValue<T, K> | DerivedTokenValue<T, K, D>
+    ): value is DerivedTokenValue<T, K, D> {
+        return (
+            value && typeof (value as DerivedTokenValue<T, K, D>).derive === "function"
+        );
+    }
+
     #local = new Map();
-    #subscribers = new Set<Subscriber>();
+    #subscribers = new Map<this | keyof T, Set<Subscriber>>();
+    #upstream: InheritableDesignTokenLibrary<T> | null = null;
+    #derivedProperties = new Map<
+        keyof T,
+        Subscriber & DerivedTokenValue<T, keyof T, Array<keyof T>>
+    >();
 
     /**
      * {@inheritdoc InheritableDesignTokenLibrary.upstream}
@@ -84,15 +106,13 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
         this.#upstream = target;
 
         if (prev !== null) {
-            prev.unsubscribe(this);
+            prev.unsubscribe(this.handleUpstreamChange);
         }
 
         if (target) {
-            target.subscribe(this);
+            target.subscribe(this.handleUpstreamChange);
         }
     }
-
-    #upstream: InheritableDesignTokenLibrary<T> | null = null;
 
     /**
      *
@@ -106,23 +126,40 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
         }
     }
 
-    /**
-     * {@inheritdoc InheritableDesignTokenLibrary.handleChange}
-     */
-    public handleChange<K extends keyof T>(
-        source: DesignTokenLibrary<T>,
-        keys: Array<K>
-    ): void {
-        if (this.#subscribers.size) {
-            const changed = keys.filter(key => !this.#local.has(key));
-
-            if (changed.length) {
-                this.#subscribers.forEach(x => {
-                    x.handleChange(this, changed);
-                });
-            }
+    private getOrCreateSubscriberSet(
+        container: Map<this | keyof T, Set<Subscriber>>,
+        key: this | keyof T
+    ): Set<Subscriber> {
+        if (container.has(key)) {
+            return container.get(key)!;
         }
+
+        const set = new Set<Subscriber>();
+        container.set(key, set);
+        return set;
     }
+
+    /**
+     * Invoked when any upstream values change.
+     * @param source - the upstream source object
+     * @param keys  - the keys that were changed
+     */
+    private handleUpstreamChange = {
+        handleChange: <K extends keyof T>(
+            source: DesignTokenLibrary<T>,
+            keys: Array<K>
+        ): void => {
+            if (this.#subscribers.size) {
+                const changed = keys.filter(key => !this.#local.has(key));
+
+                if (changed.length) {
+                    this.getOrCreateSubscriberSet(this.#subscribers, this).forEach(x => {
+                        x.handleChange(this, changed);
+                    });
+                }
+            }
+        },
+    };
 
     /**
      * {@inheritdoc DesignTokenLibrary.get}
@@ -134,12 +171,81 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
     /**
      * {@inheritdoc DesignTokenLibrary.set}
      */
-    public set<K extends keyof T>(key: K, value: T[K]): void {
+    public set<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        value: DerivedTokenValue<T, K, D>
+    ): void;
+    public set<K extends keyof T>(key: K, value: T[K]): void;
+    public set<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        value: DerivedTokenValue<T, K, D> | T[K]
+    ): void {
+        if (this.#derivedProperties.has(key)) {
+            const derived = this.#derivedProperties.get(key)!;
+            const { dependencies } = derived;
+
+            if (dependencies) {
+                this.unsubscribeDerived(key, dependencies, derived);
+            }
+        }
+
+        DesignTokenLibraryImpl.isDerived(value)
+            ? this.setDerived(key, value)
+            : this.setStatic(key, value);
+    }
+
+    /**
+     * {@inheritdoc DesignTokenLibrary.setDerived}
+     */
+    private setDerived<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        value: DerivedTokenValue<T, K, D>
+    ): void {
+        const subscriber = {
+            ...value,
+            handleChange(source: DesignTokenLibrary<T>, keys: Array<keyof T>) {
+                const depChanged =
+                    value.dependencies && keys.some(x => value.dependencies!.includes(x));
+
+                if (depChanged) {
+                    this.commitChange();
+                }
+            },
+            commitChange: () => {
+                const args = value.dependencies
+                    ? value.dependencies.reduce((prev, next) => {
+                          return {
+                              ...prev,
+                              [next]:
+                                  key === next
+                                      ? this.upstream?.get(next)
+                                      : this.get(next),
+                          };
+                      }, {})
+                    : {};
+
+                const v = value.derive(args as any);
+                if (this.#local.get(key) !== v) {
+                    this.#local.set(key, v);
+
+                    this.notify([key]);
+                }
+            },
+        };
+
+        this.#derivedProperties.set(key, subscriber);
+        if (value.dependencies !== undefined) {
+            this.subscribeDerived(key, value.dependencies, subscriber);
+        }
+        subscriber.commitChange();
+    }
+
+    private setStatic<K extends keyof T>(key: K, value: T[K]): void {
         const prev = this.get(key) || undefined;
         this.#local.set(key, value);
 
         if (prev !== value) {
-            this.notifyAll([key]);
+            this.notify([key]);
         }
     }
 
@@ -167,28 +273,34 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
         this.#local.delete(key);
 
         if (this.get(key) !== prev) {
-            this.notifyAll([key]);
+            this.notify([key]);
         }
     }
 
     /**
      * {@inheritdoc DesignTokenLibrary.subscribe}
      */
-    public subscribe(subscriber: Subscriber): void {
-        this.#subscribers.add(subscriber);
-        const keys = this.keys();
+    public subscribe(subscriber: Subscriber, ...tokens: Array<keyof T>): void {
+        const container = this.#subscribers;
 
-        if (keys.length) {
-            subscriber.handleChange(this, keys);
+        if (tokens.length) {
+            tokens.forEach(x =>
+                this.getOrCreateSubscriberSet(container, x).add(subscriber)
+            );
+        } else {
+            this.getOrCreateSubscriberSet(container, this).add(subscriber);
         }
     }
 
     /**
      * {@inheritdoc DesignTokenLibrary.unsubscribe}
      */
-    public unsubscribe(subscriber: Subscriber): void {
-        this.#subscribers.delete(subscriber);
-        subscriber.handleChange(this, this.keys());
+    public unsubscribe(subscriber: Subscriber, ...tokens: Array<keyof T>): void {
+        tokens.length
+            ? tokens.forEach(x =>
+                  this.getOrCreateSubscriberSet(this.#subscribers, x).delete(subscriber)
+              )
+            : this.getOrCreateSubscriberSet(this.#subscribers, this).delete(subscriber);
     }
 
     /**
@@ -204,12 +316,43 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
     /**
      * Notifies all subscribers of a change to all the provided keys
      */
-    private notifyAll<K extends keyof T>(keys: K[]) {
-        if (this.#subscribers.size) {
-            this.#subscribers.forEach(x => {
-                x.handleChange(this, keys);
-            });
-        }
+    private notify<K extends keyof T>(keys: K[]) {
+        const container = this.#subscribers;
+
+        ([this] as Array<this | K>).concat(keys).forEach(x => {
+            const set = this.getOrCreateSubscriberSet(container, x);
+
+            if (set.size) {
+                const k = x === this ? keys : [x];
+                set.forEach(y => {
+                    y.handleChange(this, k);
+                });
+            }
+        });
+    }
+
+    private subscribeDerived<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        dependencies: D,
+        subscriber: Subscriber
+    ): void {
+        dependencies.forEach(x => {
+            x === key
+                ? this.upstream?.subscribe(subscriber, x)
+                : this.subscribe(subscriber, x);
+        });
+    }
+
+    private unsubscribeDerived<K extends keyof T, D extends Array<keyof T>>(
+        key: K,
+        dependencies: D,
+        subscriber: Subscriber
+    ): void {
+        dependencies.forEach(x => {
+            x === key
+                ? this.upstream?.unsubscribe(subscriber, x)
+                : this.unsubscribe(subscriber, x);
+        });
     }
 }
 

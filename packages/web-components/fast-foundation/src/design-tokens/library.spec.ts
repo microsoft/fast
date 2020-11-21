@@ -1,4 +1,5 @@
 import { assert, expect } from "chai";
+import { isWeakSet } from "lodash-es";
 import { DesignTokenLibraryImpl } from "./library";
 
 interface DS {
@@ -76,92 +77,128 @@ describe("DesignTokenLibraryImpl", () => {
         });
     });
 
-    it("should not get notified when attaching to an upstream when no properties on the upstream are set", () => {
-        const upstream = new DesignTokenLibraryImpl<DS>();
-        const downstream = new DesignTokenLibraryImpl<DS>();
-        let called = false;
+    describe("should notify", () => {
+        it("when an upstream property changes", () => {
+            const upstream = new DesignTokenLibraryImpl<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
+            let called = false,
+                args = [] as any;
 
-        downstream.subscribe({
-            handleChange: (source, keys) => {
-                called = true;
-            },
+            downstream.upstream = upstream;
+
+            downstream.subscribe({
+                handleChange: (src, keys) => {
+                    called = true;
+                    args = args.concat(keys);
+                },
+            });
+
+            upstream.set("color", "red");
+            upstream.set("size", 4);
+
+            assert(called);
+            expect(args).to.contain("color");
+            expect(args).to.contain("size");
         });
 
-        downstream.upstream = upstream;
+        it("a subscriber when setting any property", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            let called = 0;
+            lib.subscribe({
+                handleChange() {
+                    called += 1;
+                },
+            });
 
-        assert(!called);
-    });
-
-    it("should get notified with all set properties of the upstream implementation when attaching", () => {
-        const upstream = new DesignTokenLibraryImpl<DS>();
-        const downstream = new DesignTokenLibraryImpl<DS>();
-        let called = false,
-            args = [] as any;
-
-        upstream.set("color", "red");
-        upstream.set("size", 4);
-
-        downstream.subscribe({
-            handleChange: (src, keys) => {
-                called = true;
-                args = args.concat(keys);
-            },
+            lib.set("size", 2);
+            assert(called === 1);
+            lib.set("color", "red");
+            assert(called === 2);
         });
 
-        downstream.upstream = upstream;
+        it("a property subscriber when setting the subscribed property", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            let called = 0;
+            lib.subscribe(
+                {
+                    handleChange() {
+                        called += 1;
+                    },
+                },
+                "size"
+            );
 
-        assert(called);
-        expect(args).to.contain("color");
-    });
-
-    it("should get notified of an upstream property change", () => {
-        const upstream = new DesignTokenLibraryImpl<DS>();
-        const downstream = new DesignTokenLibraryImpl<DS>();
-        let called = false,
-            args = [] as any;
-
-        downstream.upstream = upstream;
-
-        downstream.subscribe({
-            handleChange: (src, keys) => {
-                called = true;
-                args = args.concat(keys);
-            },
+            lib.set("size", 2);
+            assert(called === 1);
         });
 
-        upstream.set("color", "red");
-        upstream.set("size", 4);
+        it("subscribers when setting a derived property", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            let called = false;
+            lib.subscribe({ handleChange: () => (called = !called) });
 
-        assert(called);
-        expect(args).to.contain("color");
-        expect(args).to.contain("size");
-    });
+            assert(!called);
+            lib.set("color", { derive: () => "", dependencies: [] });
 
-    it("should notify the downstream of property changes after detachment", () => {
-        const upstream = new DesignTokenLibraryImpl<DS>();
-        const downstream = new DesignTokenLibraryImpl<DS>();
-        let called = false,
-            args = [] as any;
-
-        upstream.set("color", "red");
-        upstream.set("size", 4);
-        downstream.upstream = upstream;
-
-        downstream.subscribe({
-            handleChange: (src, keys) => {
-                called = true;
-                args = args.concat(keys);
-            },
+            assert(called);
         });
 
-        downstream.upstream = null;
+        it("subscribers when setting a derived property with keys equal to the key being set", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            let k: (keyof DS)[] = [];
+            lib.subscribe({ handleChange: (source, keys) => (k = keys) });
 
-        assert(called);
-        expect(args).to.contain("color");
-        expect(args).to.contain("size");
+            assert(k.length === 0);
+            lib.set("color", { derive: () => "", dependencies: [] });
+
+            assert(k.includes("color"));
+        });
+
+        it("subscribers of a change when changing a dependency results in a new derived value", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            let size = 1;
+            let sizeAsString = size.toString();
+            let calls = 0;
+            let k: Array<Array<keyof DS>> = [];
+
+            lib.set("size", size);
+            lib.set("color", {
+                derive: args => (sizeAsString = args.size.toString()),
+                dependencies: ["size"],
+            });
+            lib.subscribe({
+                handleChange(source, keys) {
+                    calls += 1;
+                    k[calls] = keys;
+                },
+            });
+
+            assert(calls === 0);
+
+            lib.set("size", 2);
+
+            expect(calls).to.equal(2);
+            expect(k[2].length).to.equal(1);
+            assert(k[2].includes("color"));
+        });
     });
 
     describe("should not notify", () => {
+        it("when attaching to an upstream when no properties on the upstream are set", () => {
+            const upstream = new DesignTokenLibraryImpl<DS>();
+            const downstream = new DesignTokenLibraryImpl<DS>();
+            let called = false;
+
+            downstream.subscribe({
+                handleChange: (source, keys) => {
+                    called = true;
+                },
+            });
+
+            downstream.upstream = upstream;
+
+            assert(!called);
+        });
         it("if a delete doesn't result in a change", () => {
             const upstream = new DesignTokenLibraryImpl<DS>();
             const downstream = new DesignTokenLibraryImpl<DS>();
@@ -178,11 +215,11 @@ describe("DesignTokenLibraryImpl", () => {
             downstream.subscribe(subscriber);
 
             assert(downstream.get("color") === "red");
-            assert(calls === 1);
+            assert(calls === 0);
 
             downstream.delete("color");
 
-            assert(calls === 1);
+            assert(calls === 0);
         });
 
         it("if setting a property doesn't result in a change", () => {
@@ -200,19 +237,66 @@ describe("DesignTokenLibraryImpl", () => {
             downstream.subscribe(subscriber);
 
             assert(downstream.get("color") === "red");
-            assert(calls === 1);
+            assert(calls === 0);
 
             downstream.set("color", "red");
 
-            assert(calls === 1);
+            assert(calls === 0);
             assert(downstream.get("color") === "red");
+        });
+
+        it("if subscribing to a specific key that has not been set", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            lib.set("color", "red");
+            let called = false;
+            lib.subscribe(
+                {
+                    handleChange() {
+                        called = !called;
+                    },
+                },
+                "size"
+            );
+
+            assert(!called);
+        });
+        it("with properties that are not subscribed to", () => {
+            const lib = new DesignTokenLibraryImpl<DS>();
+            lib.set("color", "red");
+            lib.set("size", 10);
+            let keys: Array<keyof DS> = [];
+            lib.subscribe(
+                {
+                    handleChange(source, k) {
+                        keys = k;
+                    },
+                },
+                "size"
+            );
+
+            lib.set("size", 0);
+            expect(keys.length).to.equal(1);
+            assert(keys[0] === "size");
         });
     });
 
-    it("should notify subscribers when setting a derived property", () => {});
-    it("should re-evaluate a derived property if any of the properties dependencies change", () => {});
-    it("should notify subscribes of a change when changing a dependency results in a new derived value", () => {});
-    it("should invoke the `evaluate` function with the upstream dependency value when the dependency key is the key being set", () => {
+    it("should re-evaluate a derived property if any of the properties dependencies change", () => {
+        const lib = new DesignTokenLibraryImpl<DS>();
+        let size = 1;
+        let sizeAsString = size.toString();
+
+        lib.set("size", size);
+        lib.set("color", {
+            derive: args => (sizeAsString = args.size.toString()),
+            dependencies: ["size"],
+        });
+        assert(sizeAsString === "1");
+
+        lib.set("size", 2);
+
+        assert(sizeAsString === "2");
+    });
+    it("should invoke the `derive` function with the upstream dependency value when the dependency key is the key being set", () => {
         // Set background color equal to a function that relies on background color
     });
 });
