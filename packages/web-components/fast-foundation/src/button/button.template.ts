@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Button } from "./button";
 
@@ -45,7 +45,10 @@ export const ButtonTemplate = html<Button>`
     >
         ${startTemplate}
         <span class="content" part="content">
-            <slot></slot>
+            <slot
+                ${ref("default")}
+                @slotchange="${x => x.handleDefaultContentChange()}"
+            ></slot>
         </span>
         ${endTemplate}
     </button>
