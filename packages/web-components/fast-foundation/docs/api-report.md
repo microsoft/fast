@@ -407,6 +407,16 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// @public (undocumented)
+export interface DerivedTokenValue<T extends {}, K, D extends Array<keyof T>> {
+    // (undocumented)
+    dependencies?: D;
+    // Warning: (ae-forgotten-export) The symbol "ElementOf" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    derive(values: Pick<T, ElementOf<D>>): K;
+}
+
 // @public
 export interface DesignSystemConsumer {
     // (undocumented)
@@ -464,10 +474,8 @@ export interface DesignTokenLibrary<T extends {}> {
     has<K extends keyof T>(key: K): boolean;
     keys<K extends keyof T>(): Array<K>;
     set<K extends keyof T>(key: K, value: T[K]): void;
-    // Warning: (ae-forgotten-export) The symbol "DerivedTokenValue" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
-    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, K, D>): void;
+    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, T[K], D>): void;
     subscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
     unsubscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
 }
@@ -485,7 +493,7 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
     // Warning: (ae-unresolved-inheritdoc-reference) The @inheritDoc reference could not be resolved: The reference is ambiguous because "set" has more than one declaration; you need to add a TSDoc member reference selector
     //
     // (undocumented)
-    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, K, D>): void;
+    set<K extends keyof T, D extends Array<keyof T>>(key: K, value: DerivedTokenValue<T, T[K], D>): void;
     // (undocumented)
     set<K extends keyof T>(key: K, value: T[K]): void;
     subscribe(subscriber: Subscriber, ...tokens: Array<keyof T>): void;
@@ -1382,6 +1390,9 @@ export class StartEnd {
 
 // @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+
+// @public (undocumented)
+export type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
 
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {

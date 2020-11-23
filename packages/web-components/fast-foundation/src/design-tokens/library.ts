@@ -4,10 +4,10 @@ import { DI, InterfaceSymbol } from "../di";
 // Thanks to https://github.com/microsoft/TypeScript/issues/13298#issuecomment-423390349
 type ElementOf<T> = T extends (infer E)[] ? E : T;
 
-type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
-interface DerivedTokenValue<T extends {}, K extends keyof T, D extends Array<keyof T>> {
+export type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
+export interface DerivedTokenValue<T extends {}, K, D extends Array<keyof T>> {
     dependencies?: D;
-    derive(values: Pick<T, ElementOf<D>>): T[K];
+    derive(values: Pick<T, ElementOf<D>>): K;
 }
 
 export interface DesignTokenLibrary<T extends {}> {
@@ -27,7 +27,7 @@ export interface DesignTokenLibrary<T extends {}> {
 
     set<K extends keyof T, D extends Array<keyof T>>(
         key: K,
-        value: DerivedTokenValue<T, K, D>
+        value: DerivedTokenValue<T, T[K], D>
     ): void;
 
     /**
@@ -79,20 +79,19 @@ export interface InheritableDesignTokenLibrary<T extends {}>
 
 export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
     private static isDerived<T extends {}, K extends keyof T, D extends Array<keyof T>>(
-        value: StaticTokenValue<T, K> | DerivedTokenValue<T, K, D>
-    ): value is DerivedTokenValue<T, K, D> {
+        value: StaticTokenValue<T, K> | DerivedTokenValue<T, T[K], D>
+    ): value is DerivedTokenValue<T, T[K], D> {
         return (
-            value && typeof (value as DerivedTokenValue<T, K, D>).derive === "function"
+            value && typeof (value as DerivedTokenValue<T, T[K], D>).derive === "function"
         );
     }
 
     #local = new Map();
     #subscribers = new Map<this | keyof T, Set<Subscriber>>();
     #upstream: InheritableDesignTokenLibrary<T> | null = null;
-    #derivedProperties = new Map<
-        keyof T,
-        Subscriber & DerivedTokenValue<T, keyof T, Array<keyof T>>
-    >();
+    // TODO is there a better way to get K than an IIFE?
+    #derivedProperties = (<K extends keyof T>() =>
+        new Map<K, Subscriber & DerivedTokenValue<T, T[K], Array<keyof T>>>())();
 
     /**
      * {@inheritdoc InheritableDesignTokenLibrary.upstream}
@@ -173,12 +172,12 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
      */
     public set<K extends keyof T, D extends Array<keyof T>>(
         key: K,
-        value: DerivedTokenValue<T, K, D>
+        value: DerivedTokenValue<T, T[K], D>
     ): void;
     public set<K extends keyof T>(key: K, value: T[K]): void;
     public set<K extends keyof T, D extends Array<keyof T>>(
         key: K,
-        value: DerivedTokenValue<T, K, D> | T[K]
+        value: DerivedTokenValue<T, T[K], D> | T[K]
     ): void {
         if (this.#derivedProperties.has(key)) {
             const derived = this.#derivedProperties.get(key)!;
@@ -199,7 +198,7 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
      */
     private setDerived<K extends keyof T, D extends Array<keyof T>>(
         key: K,
-        value: DerivedTokenValue<T, K, D>
+        value: DerivedTokenValue<T, T[K], D>
     ): void {
         const subscriber = {
             ...value,

@@ -26,9 +26,6 @@
     "eslint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
-    "html-webpack-plugin": "^4.5.0",
-    "tslib": "^1.13.0",
-    "webpack-dev-server": "^3.11.0",
     "@microsoft/api-extractor": "^7.7.13",
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
@@ -37,6 +34,7 @@
     "chai": "^4.2.0",
     "concurrently": "^5.3.0",
     "esm": "^3.2.25",
+    "html-webpack-plugin": "^4.5.0",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -66,11 +64,14 @@
     "ts-loader": "^8.0.7",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
+    "tslib": "^1.13.0",
     "typescript": "^3.9.0",
     "webpack": "^5.3.2",
-    "webpack-cli": "^4.1.0"
+    "webpack-cli": "^4.1.0",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@microsoft/fast-colors": "^5.1.0",
     "@microsoft/fast-element": "^0.19.1",
     "@microsoft/fast-web-utilities": "^4.6.1",
     "@microsoft/tsdoc-config": "^0.13.4",
