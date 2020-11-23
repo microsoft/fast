@@ -1,4 +1,7 @@
-import { mapCSSProperties } from "../.tmp/data-utilities/mapping.mdn-data";
+import {
+    mapCSSProperties,
+    mapCSSSyntaxes,
+} from "../.tmp/data-utilities/mapping.mdn-data";
 import { css as mdnCSS } from "mdn-data";
 import fs from "fs";
 import path from "path";
@@ -50,6 +53,14 @@ const comment = `/**
             outFilePath,
             `${comment}export const properties = ${JSON.stringify(
                 mapCSSProperties({
+                    properties: mdnCSS.properties,
+                    syntaxes: mdnCSS.syntaxes,
+                    types: mdnCSS.types,
+                }),
+                null,
+                4
+            )}\n\nexport const syntaxes = ${JSON.stringify(
+                mapCSSSyntaxes({
                     properties: mdnCSS.properties,
                     syntaxes: mdnCSS.syntaxes,
                     types: mdnCSS.types,
