@@ -29,8 +29,10 @@ export const MenuItemTemplate = html<MenuItem>`
                 <fast-anchored-region
                     anchor="${x => x}"
                     vertical-positioning-mode="dynamic"
+                    vertical-default-position="bottom"
                     vertical-inset="true"
                     horizontal-positioning-mode="dynamic"
+                    horizontal-default-position="end"
                     class="submenu-region"
                     ${ref("subMenuRegion")}
                 >

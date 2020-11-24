@@ -89,6 +89,57 @@
         </fast-menu-item>
     </fast-menu>
 
+    <h4>With nested submenus, rtl</h4>
+    <div dir="rtl">
+        <fast-menu>
+            <fast-menu-item submenu="true">
+                Menu item 1
+                <fast-menu slot="submenu">
+                    <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                    <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                    <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+                </fast-menu>
+            </fast-menu-item>
+            <fast-menu-item submenu="true">
+                Menu item 2
+                <fast-menu slot="submenu">
+                    <fast-menu-item>Nested Menu item 2.1</fast-menu-item>
+                    <fast-menu-item>Nested Menu item 2.2</fast-menu-item>
+                    <fast-menu-item>Nested Menu item 2.3</fast-menu-item>
+                </fast-menu>
+            </fast-menu-item>
+            <fast-menu-item submenu="true">
+                Menu item 3
+                <fast-menu slot="submenu">
+                    <fast-menu-item submenu="true">
+                        Nested Menu item 3.1
+                        <fast-menu slot="submenu">
+                            <fast-menu-item>Nested Menu item 3.1.1</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.1.2</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.1.3</fast-menu-item>
+                        </fast-menu>
+                    </fast-menu-item>
+                    <fast-menu-item submenu="true">
+                        Nested Menu item 3.2
+                        <fast-menu slot="submenu">
+                            <fast-menu-item>Nested Menu item 3.2.1</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.2.2</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.2.3</fast-menu-item>
+                        </fast-menu>
+                    </fast-menu-item>
+                    <fast-menu-item submenu="true">
+                        Nested Menu item 3.3
+                        <fast-menu slot="submenu">
+                            <fast-menu-item>Nested Menu item 3.3.1</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.3.2</fast-menu-item>
+                            <fast-menu-item>Nested Menu item 3.3.3</fast-menu-item>
+                        </fast-menu>
+                    </fast-menu-item>
+                </fast-menu>
+            </fast-menu-item>
+        </fast-menu>
+    </div>
+
     <h4>With standard elements</h4>
     <fast-menu>
         <div role="menuitem">Menu item 1</div>

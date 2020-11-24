@@ -51,10 +51,12 @@ export class MenuItem extends FASTElement {
     @attr({ attribute: "expanded" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
-        if (this.submenu && this.$fastController.isConnected && oldValue === true) {
-            this.submenuNodes.forEach(element => {
-                (element as Menu).collapseExpandedMenus();
-            });
+        if (this.submenu && this.$fastController.isConnected) {
+            if (this.expanded === false) {
+                this.submenuNodes.forEach(element => {
+                    (element as Menu).collapseExpandedItem();
+                });
+            }
         }
     }
 
@@ -84,16 +86,6 @@ export class MenuItem extends FASTElement {
     }
 
     /**
-     * The delay in milliseconds before a submenu expands after a hover event
-     *
-     * @defaultValue - 300
-     * @public
-     * HTML Attribute: hover-delay
-     */
-    @attr
-    public hoverDelay: number = 300;
-
-    /**
      * reference to the anchored region
      *
      * @internal
@@ -107,71 +99,6 @@ export class MenuItem extends FASTElement {
      */
     @observable
     public submenuNodes: HTMLElement[] = [];
-
-    /**
-     * The timer that tracks delay time before the submenu expands on hover
-     */
-    private hoverTimer: number | null = null;
-
-    /**
-     * Indicates whether the menu item is currently being hovered
-     */
-    private isHovered: boolean = false;
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-        if (this.submenu) {
-            this.addEventListener("mouseover", this.handleMouseOver);
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-        if (this.submenu) {
-            this.removeEventListener("mouseover", this.handleMouseOver);
-            this.clearHoverTimer();
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public handleMouseOver = (e: MouseEvent): void => {
-        if (this.expanded || this.isHovered || e.defaultPrevented) {
-            return;
-        }
-
-        e.preventDefault();
-
-        if (this.hoverDelay > 1) {
-            this.addEventListener("mouseout", this.handleMouseOut);
-            this.isHovered = true;
-            if (this.hoverTimer === null) {
-                this.hoverTimer = window.setTimeout((): void => {
-                    this.hoverTimerExpired();
-                }, this.hoverDelay);
-                return;
-            }
-        }
-
-        // no delay, expand right away
-        this.toggleExpanded();
-    };
-
-    /**
-     * @internal
-     */
-    public handleMouseOut = (e: MouseEvent): void => {
-        this.removeEventListener("mouseout", this.handleMouseOut);
-        this.isHovered = false;
-        this.clearHoverTimer();
-    };
 
     /**
      * @internal
@@ -250,21 +177,6 @@ export class MenuItem extends FASTElement {
             DOM.queueUpdate(this.setRegionProps);
         }
         this.$emit("expanded-change", this, { bubbles: false });
-    };
-
-    private hoverTimerExpired = (): void => {
-        this.toggleExpanded();
-        this.clearHoverTimer();
-    };
-
-    /**
-     * clears the hover timer
-     */
-    private clearHoverTimer = (): void => {
-        if (this.hoverTimer !== null) {
-            clearTimeout(this.hoverTimer);
-            this.hoverTimer = null;
-        }
     };
 
     private invoke = (): void => {

@@ -75,7 +75,7 @@ export class Menu extends FASTElement {
      *
      * @public
      */
-    public collapseExpandedMenus(): void {
+    public collapseExpandedItem(): void {
         if (this.expandedItem !== null) {
             this.expandedItem.expanded = false;
             this.expandedItem = null;
@@ -128,7 +128,7 @@ export class Menu extends FASTElement {
      */
     public handleFocusOut = (e: FocusEvent) => {
         if (!this.contains(e.relatedTarget as Element)) {
-            this.collapseExpandedMenus();
+            this.collapseExpandedItem();
 
             // find our first focusable element
             const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
@@ -142,6 +142,14 @@ export class Menu extends FASTElement {
             // set the focus index
             this.focusIndex = focusIndex;
         }
+    };
+
+    private handleItemFocus = (e: FocusEvent) => {
+        this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+
+        const targetItem = e.target as MenuItem;
+        this.focusIndex = this.menuItems.indexOf(targetItem);
+        targetItem.setAttribute("tabindex", "0");
     };
 
     private handleExpandedChanged = (e: Event): void => {
@@ -170,7 +178,10 @@ export class Menu extends FASTElement {
             if (this.expandedItem !== null && this.expandedItem !== changedItem) {
                 this.expandedItem.expanded = false;
             }
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
             this.expandedItem = changedItem;
+            this.focusIndex = this.menuItems.indexOf(changedItem);
+            changedItem.setAttribute("tabindex", "0");
         }
     };
 
@@ -191,6 +202,7 @@ export class Menu extends FASTElement {
                 "expanded-change",
                 this.handleExpandedChanged
             );
+            this.menuItems[item].addEventListener("focus", this.handleItemFocus);
         }
     };
 
@@ -200,6 +212,7 @@ export class Menu extends FASTElement {
                 "expanded-change",
                 this.handleExpandedChanged
             );
+            this.menuItems[item].removeEventListener("focus", this.handleItemFocus);
         }
     };
 
