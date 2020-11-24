@@ -113,13 +113,6 @@ export interface Configuration {
      * @param doc - the Document to attach Design Tokens to
      */
     attachDesignTokensTo(doc: Document): Configuration;
-
-    /**
-     * Sets a defined design token to  value.
-     * @param key - the Design Token key
-     * @param value - the Design Token value
-     */
-    setDesignToken(key: string, value: string);
 }
 
 /**
@@ -148,7 +141,7 @@ export function unprefix(name: string) {
  * - refactor to support browsers that don't support adoptedStyleSheets
  */
 export class ConfigurationImpl implements Configuration {
-    private designTokens = new DesignTokenLibraryImpl<any>();
+    public readonly designTokens = new DesignTokenLibraryImpl<any>();
     private customPropertyManager = new CustomPropertyManagerImpl();
     private customPropertySheet = new CSSStyleSheet();
     private designTokenRegistration = new DesignTokenRegistryImpl();
@@ -274,11 +267,6 @@ export class ConfigurationImpl implements Configuration {
         }
 
         return this;
-    }
-
-    /** @inheritdoc Configuration.setDesignToken */
-    public setDesignToken(key, value) {
-        this.designTokens.set(key, value);
     }
 
     /**

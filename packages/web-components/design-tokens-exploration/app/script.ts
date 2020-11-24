@@ -18,7 +18,7 @@ const picker = document.querySelector("input") as HTMLInputElement;
 if (picker) {
     picker.value = MyAppConfig["designTokens"].get("backgroundColor");
     picker.addEventListener("change", e => {
-        MyAppConfig.setDesignToken(
+        MyAppConfig.designTokens.set(
             "backgroundColor",
             (e.target as HTMLInputElement).value
         );

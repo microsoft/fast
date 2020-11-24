@@ -232,13 +232,14 @@ export interface Configuration {
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): Configuration;
     setDefaultStylesFor(baseName: string, styles: ElementStyles | null): Configuration;
     setDefaultTemplateFor(baseName: string, template: ElementViewTemplate | null): Configuration;
-    setDesignToken(key: string, value: string): any;
 }
 
 // @public
 export class ConfigurationImpl implements Configuration {
     constructor(options?: ConfigurationOptions);
     attachDesignTokensTo(doc: Document): this;
+    // (undocumented)
+    readonly designTokens: DesignTokenLibraryImpl<any>;
     static forComponent(defaultElementConfiguration: ComponentConfiguration): (elementConfiguration?: Partial<Omit<ComponentConfiguration, "type">>) => ConfigurationRegistry;
     getDefaultStylesFor(name: string): ElementStyles | null;
     getDefaultTemplateFor(name: string): ElementViewTemplate | null;
@@ -249,7 +250,6 @@ export class ConfigurationImpl implements Configuration {
     registerElement(type: typeof FASTElement, definition: PartialFASTElementDefinition): this;
     setDefaultStylesFor(name: string, styles: ElementStyles | null): this;
     setDefaultTemplateFor(name: string, template: ElementViewTemplate | null): this;
-    setDesignToken(key: any, value: any): void;
     }
 
 // @public (undocumented)
