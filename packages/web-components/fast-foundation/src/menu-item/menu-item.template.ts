@@ -34,6 +34,7 @@ export const MenuItemTemplate = html<MenuItem>`
                     horizontal-positioning-mode="dynamic"
                     horizontal-default-position="end"
                     class="submenu-region"
+                    dir="${x => x.currentDirection}"
                     ${ref("subMenuRegion")}
                 >
                     <slot name="submenu" ${slotted("submenuNodes")}></slot>

@@ -1,5 +1,6 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import {
+    Direction,
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeEnter,
@@ -10,7 +11,7 @@ import { applyMixins } from "../utilities/apply-mixins";
 import { MenuItemRole } from "./menu-item.options";
 import { AnchoredRegion } from "../anchored-region";
 import { Menu } from "../menu/menu";
-import { times } from "lodash-es";
+import { getDirection } from "../utilities/";
 
 export { MenuItemRole };
 
@@ -56,6 +57,8 @@ export class MenuItem extends FASTElement {
                 this.submenuNodes.forEach(element => {
                     (element as Menu).collapseExpandedItem();
                 });
+            } else {
+                this.currentDirection = getDirection(this);
             }
         }
     }
@@ -99,6 +102,14 @@ export class MenuItem extends FASTElement {
      */
     @observable
     public submenuNodes: HTMLElement[] = [];
+
+    /**
+     * Track current direction to pass to the anchored region
+     *
+     * @internal
+     */
+    @observable
+    public currentDirection: Direction = Direction.ltr;
 
     /**
      * @internal

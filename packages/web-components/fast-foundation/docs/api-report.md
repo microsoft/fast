@@ -1191,6 +1191,8 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
+    // @internal
+    currentDirection: Direction;
     disabled: boolean;
     expanded: boolean;
     // @internal (undocumented)
