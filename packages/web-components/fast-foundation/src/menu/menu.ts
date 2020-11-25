@@ -259,8 +259,7 @@ export class Menu extends FASTElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        const results: Element[] = Array.from(this.children);
-        return results;
+        return Array.from(this.children);
     }
 
     /**
