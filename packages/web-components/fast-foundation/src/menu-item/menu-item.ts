@@ -33,16 +33,6 @@ export class MenuItem extends FASTElement {
     public disabled: boolean;
 
     /**
-     * Whether the item opens a submenu.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: submenu
-     */
-    @attr({ mode: "boolean" })
-    public submenu: boolean;
-
-    /**
      * The expanded state of the element.
      *
      * @public
@@ -52,9 +42,9 @@ export class MenuItem extends FASTElement {
     @attr({ attribute: "expanded" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
-        if (this.submenu && this.$fastController.isConnected) {
+        if (this.submenuElements.length > 0 && this.$fastController.isConnected) {
             if (this.expanded === false) {
-                this.submenuNodes.forEach(element => {
+                this.submenuElements.forEach(element => {
                     (element as Menu).collapseExpandedItem();
                 });
             } else {
@@ -101,7 +91,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     @observable
-    public submenuNodes: HTMLElement[] = [];
+    public submenuElements: HTMLElement[];
 
     /**
      * Track current direction to pass to the anchored region
@@ -127,14 +117,14 @@ export class MenuItem extends FASTElement {
 
             case keyCodeArrowRight:
                 //open/focus on submenu
-                if (this.submenu) {
+                if (this.submenuElements.length > 0) {
                     this.toggleExpanded();
                 }
                 return false;
 
             case keyCodeArrowLeft:
                 //close submenu
-                if (this.submenu && this.expanded) {
+                if (this.expanded) {
                     this.expanded = false;
                     this.focus();
                     return false;
@@ -160,7 +150,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public handleAnchoredRegionChange = (e: Event): boolean => {
-        if (e.defaultPrevented || this.disabled || this.submenuNodes.length === 0) {
+        if (e.defaultPrevented || this.disabled || this.submenuElements.length === 0) {
             return false;
         }
 
@@ -170,8 +160,8 @@ export class MenuItem extends FASTElement {
 
         DOM.queueUpdate(() => {
             this.setAttribute("tabindex", "-1");
-            if (this.submenuNodes.length > 0) {
-                this.submenuNodes[0].focus();
+            if (this.submenuElements.length > 0) {
+                this.submenuElements[0].focus();
             }
             this.subMenuRegion.update();
         });
@@ -180,7 +170,7 @@ export class MenuItem extends FASTElement {
     };
 
     private toggleExpanded = (): void => {
-        if (!this.submenu) {
+        if (this.submenuElements.length === 0) {
             return;
         }
         this.expanded = !this.expanded;
@@ -202,7 +192,7 @@ export class MenuItem extends FASTElement {
                 break;
 
             case MenuItemRole.menuitem:
-                if (this.submenu) {
+                if (this.submenuElements.length > 0) {
                     this.toggleExpanded();
                 } else {
                     this.$emit("change");

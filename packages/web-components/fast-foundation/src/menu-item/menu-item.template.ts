@@ -1,4 +1,4 @@
-import { html, ref, slotted, when } from "@microsoft/fast-element";
+import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
@@ -9,7 +9,8 @@ import { MenuItem, MenuItemRole } from "./menu-item";
 export const MenuItemTemplate = html<MenuItem>`
     <template
         role="${x => x.role}"
-        aria-haspopup="${x => (x.submenu ? "menu" : void 0)}"
+        aria-haspopup="${x =>
+            x.submenuElements && x.submenuElements.length > 0 ? "menu" : void 0}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
         aria-disabled="${x => x.disabled}"
         aria-expanded="${x => x.expanded}"
@@ -17,6 +18,10 @@ export const MenuItemTemplate = html<MenuItem>`
         @click="${(x, c) => x.handleMenuItemClick(c.event as MouseEvent)}"
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
             x.expanded ? "expanded" : ""}"
+        ${children({
+            property: "submenuElements",
+            filter: elements("[slot=submenu]"),
+        })}
     >
         ${startTemplate}
         <span class="content" part="content">
@@ -37,7 +42,7 @@ export const MenuItemTemplate = html<MenuItem>`
                     dir="${x => x.currentDirection}"
                     ${ref("subMenuRegion")}
                 >
-                    <slot name="submenu" ${slotted("submenuNodes")}></slot>
+                    <slot name="submenu"></slot>
                 </fast-anchored-region>
             `
         )}
