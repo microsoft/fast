@@ -1196,7 +1196,7 @@ export class MenuItem extends FASTElement {
     disabled: boolean;
     expanded: boolean;
     // @internal (undocumented)
-    handleAnchoredRegionChange: (e: Event) => boolean;
+    handleAnchoredRegionChange: (e: Event) => void;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)

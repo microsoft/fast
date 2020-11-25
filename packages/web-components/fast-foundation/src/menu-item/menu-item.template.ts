@@ -32,7 +32,7 @@ export const MenuItemTemplate = html<MenuItem>`
             x => x.expanded,
             html<MenuItem>`
                 <fast-anchored-region
-                    anchor="${x => x}"
+                    :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
                     vertical-inset="true"
