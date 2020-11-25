@@ -67,6 +67,10 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                     description:
                         "Contents of the end slot are positioned after the item content",
                 },
+                {
+                    name: "submenu",
+                    description: "The submenu slot",
+                },
             ],
         },
     ],
