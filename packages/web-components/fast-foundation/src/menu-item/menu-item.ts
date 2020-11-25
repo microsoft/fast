@@ -163,7 +163,6 @@ export class MenuItem extends FASTElement {
             if (this.submenuElements.length > 0) {
                 this.submenuElements[0].focus();
             }
-            this.subMenuRegion.update();
         });
 
         return false;
