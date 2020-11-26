@@ -1,4 +1,4 @@
-import { html, slotted, when } from "@microsoft/fast-element";
+import { children, elements, html } from "@microsoft/fast-element";
 import { DataGrid } from "./data-grid";
 
 const defaultRowItemTemplate = html`
@@ -14,7 +14,15 @@ const defaultRowItemTemplate = html`
  * @public
  */
 export const DataGridTemplate = html<DataGrid>`
-    <template role="grid" tabindex="0" :defaultRowItemTemplate=${defaultRowItemTemplate}>
+    <template
+        role="grid"
+        tabindex="0"
+        :defaultRowItemTemplate=${defaultRowItemTemplate}
+        ${children({
+            property: "rowElements",
+            filter: elements("[role=row]"),
+        })}
+    >
         <slot></slot>
     </template>
 `;

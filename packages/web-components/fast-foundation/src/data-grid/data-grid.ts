@@ -262,6 +262,14 @@ export class DataGrid extends FASTElement {
     @observable
     public defaultRowItemTemplate: ViewTemplate;
 
+    /**
+     * Children that are rows
+     *
+     * @internal
+     */
+    @observable
+    public rowElements: HTMLElement[];
+
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
@@ -338,8 +346,7 @@ export class DataGrid extends FASTElement {
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
-        const rows: Element[] = Array.from(this.getRows());
-        this.focusRowIndex = rows.indexOf(e.target as Element);
+        this.focusRowIndex = this.rowElements.indexOf(focusRow);
         this.focusColumnIndex = focusRow.focusColumnIndex;
         this.isUpdatingFocus = false;
     }
@@ -360,48 +367,37 @@ export class DataGrid extends FASTElement {
         }
 
         let newFocusRowIndex: number;
-        const rows: NodeListOf<Element> = this.getRows();
 
         switch (e.keyCode) {
             case keyCodeArrowUp:
                 e.preventDefault();
                 // focus up one row
-                this.focusOnCell(
-                    this.focusRowIndex - 1,
-                    this.focusColumnIndex,
-                    true,
-                    rows
-                );
+                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, true);
                 break;
 
             case keyCodeArrowDown:
                 e.preventDefault();
                 // focus down one row
-                this.focusOnCell(
-                    this.focusRowIndex + 1,
-                    this.focusColumnIndex,
-                    true,
-                    rows
-                );
+                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, true);
                 break;
 
             case keyCodePageUp:
                 e.preventDefault();
-                if (rows.length === 0) {
-                    this.focusOnCell(0, 0, false, rows);
+                if (this.rowElements.length === 0) {
+                    this.focusOnCell(0, 0, false);
                     break;
                 }
 
                 // TODO: focus up one "page"
                 if (this.focusRowIndex === 0) {
-                    this.focusOnCell(0, this.focusColumnIndex, false, rows);
+                    this.focusOnCell(0, this.focusColumnIndex, false);
                     return;
                 }
 
                 newFocusRowIndex = this.focusRowIndex - 1;
 
                 for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
-                    let thisRow: HTMLElement = rows[newFocusRowIndex] as HTMLElement;
+                    let thisRow: HTMLElement = this.rowElements[newFocusRowIndex];
                     if (thisRow.offsetTop < this.scrollTop) {
                         this.scrollTop =
                             thisRow.offsetTop + thisRow.clientHeight - this.clientHeight;
@@ -409,33 +405,35 @@ export class DataGrid extends FASTElement {
                     }
                 }
 
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false, rows);
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
                 break;
 
             case keyCodePageDown:
                 e.preventDefault();
-                if (rows.length === 0) {
+                if (this.rowElements.length === 0) {
                     this.focusOnCell(0, 0, false);
                     break;
                 }
 
                 // focus down one "page"
-                const maxIndex = rows.length - 1;
+                const maxIndex = this.rowElements.length - 1;
                 const currentGridBottom: number = this.offsetHeight + this.scrollTop;
-                const lastRow: HTMLElement = rows[maxIndex] as HTMLElement;
+                const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
 
                 if (
                     this.focusRowIndex >= maxIndex ||
                     lastRow.offsetTop + lastRow.offsetHeight <= currentGridBottom
                 ) {
-                    this.focusOnCell(maxIndex, this.focusColumnIndex, false, rows);
+                    this.focusOnCell(maxIndex, this.focusColumnIndex, false);
                     return;
                 }
 
                 newFocusRowIndex = this.focusRowIndex + 1;
 
                 for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
-                    let thisRow: HTMLElement = rows[newFocusRowIndex] as HTMLElement;
+                    let thisRow: HTMLElement = this.rowElements[
+                        newFocusRowIndex
+                    ] as HTMLElement;
                     if (thisRow.offsetTop + thisRow.offsetHeight > currentGridBottom) {
                         let stickyHeaderOffset: number = 0;
                         if (
@@ -449,7 +447,7 @@ export class DataGrid extends FASTElement {
                     }
                 }
 
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false, rows);
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
 
                 break;
 
@@ -457,7 +455,7 @@ export class DataGrid extends FASTElement {
                 if (e.ctrlKey) {
                     e.preventDefault();
                     // focus first cell of first row
-                    this.focusOnCell(0, 0, true, rows);
+                    this.focusOnCell(0, 0, true);
                 }
                 break;
 
@@ -466,32 +464,22 @@ export class DataGrid extends FASTElement {
                     e.preventDefault();
                     // focus last cell of last row
                     this.focusOnCell(
-                        rows.length - 1,
+                        this.rowElements.length - 1,
                         this.columnDefinitions.length - 1,
-                        true,
-                        rows
+                        true
                     );
                 }
                 break;
         }
     }
 
-    private getRows = (): NodeListOf<Element> => {
-        return this.querySelectorAll('[role="row"]');
-    };
-
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
-        scrollIntoView: boolean,
-        rows?: NodeListOf<Element>
+        scrollIntoView: boolean
     ): void => {
-        if (rows === undefined) {
-            rows = this.getRows();
-        }
-
         if (
-            rows.length === 0 ||
+            this.rowElements.length === 0 ||
             this.columnDefinitions === null ||
             this.columnDefinitions.length === 0
         ) {
@@ -500,8 +488,11 @@ export class DataGrid extends FASTElement {
             return;
         }
 
-        const focusRowIndex = Math.max(0, Math.min(rows.length - 1, rowIndex));
-        const focusRow: Element = rows[focusRowIndex];
+        const focusRowIndex = Math.max(
+            0,
+            Math.min(this.rowElements.length - 1, rowIndex)
+        );
+        const focusRow: Element = this.rowElements[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
             '[role="cell"], [role="gridcell"], [role="columnheader"]'
@@ -598,14 +589,12 @@ export class DataGrid extends FASTElement {
     };
 
     private updateRowIndexes = (): void => {
-        const rows: NodeListOf<Element> = this.getRows();
-
         const newGridTemplateColumns =
             this.gridTemplateColumns === undefined
                 ? this.generatedGridTemplateColumns
                 : this.gridTemplateColumns;
 
-        rows.forEach((element: Element, index: number): void => {
+        this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as DataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;

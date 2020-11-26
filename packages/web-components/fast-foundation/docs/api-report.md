@@ -223,6 +223,9 @@ export interface ColumnDefinition {
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
+// @alpha
+export type ConstructableFormAssociated = Constructable<FASTElement & HTMLElement & FormAssociatedProxy>;
+
 // Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
 //
 // @public
@@ -316,6 +319,8 @@ export class DataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    rowElements: HTMLElement[];
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     }
@@ -353,6 +358,8 @@ export enum DataGridCellTypes {
 export class DataGridRow extends FASTElement {
     // @internal
     activeCellItemTemplate?: ViewTemplate;
+    // @internal
+    cellElements: HTMLElement[];
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
@@ -416,6 +423,19 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 
 // @public
 export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+    ariaExpanded: "true" | "false" | undefined;
+}
+
+// @public
+export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+    // (undocumented)
+    ariaActiveDescendant: string;
+    ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @public
+export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
     ariaExpanded: "true" | "false" | undefined;
 }
 
@@ -553,15 +573,7 @@ export const focusVisible: string;
 export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @alpha
-export function FormAssociated<T extends Constructable<FASTElement & HTMLElement & {
-    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
-    disabledChanged?(previous: boolean, next: boolean): void;
-    formDisabledCallback?(disabled: boolean): void;
-    formResetCallback?(): void;
-    initialValueChanged?(previous: any, next: any): void;
-    valueChanged?(previous: any, next: any): void;
-    nameChanged?(previous: any, next: any): void;
-}>>(BaseCtor: T): T;
+export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
 // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
 //
@@ -586,6 +598,8 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     formResetCallback(): void;
     // (undocumented)
+    initialValue: string;
+    // (undocumented)
     initialValueChanged?(previous: any, next: any): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
@@ -605,6 +619,27 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     value: string;
     // (undocumented)
     valueChanged(previous: any, next: any): void;
+}
+
+// @alpha
+export type FormAssociatedElement = FormAssociated & FASTElement & HTMLElement & FormAssociatedProxy;
+
+// @alpha
+export interface FormAssociatedProxy {
+    // (undocumented)
+    disabledChanged?(previous: boolean, next: boolean): void;
+    // (undocumented)
+    formDisabledCallback?(disabled: boolean): void;
+    // (undocumented)
+    formResetCallback?(): void;
+    // (undocumented)
+    initialValueChanged?(previous: any, next: any): void;
+    // (undocumented)
+    nameChanged?(previous: any, next: any): void;
+    // (undocumented)
+    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    // (undocumented)
+    valueChanged?(previous: any, next: any): void;
 }
 
 // @public
@@ -628,6 +663,103 @@ export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsum
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
+//
+// @public
+export class Listbox extends FASTElement {
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    disabled: boolean;
+    // @internal (undocumented)
+    get firstSelectedOption(): ListboxOption;
+    // @internal (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal (undocumented)
+    focusinHandler(e: FocusEvent): void;
+    handleTypeAhead(key: any): void;
+    // @internal
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal (undocumented)
+    options: ListboxOption[];
+    // (undocumented)
+    optionsChanged(prev: any, next: any): void;
+    role: string;
+    selectedIndex: number;
+    selectedOptions: ListboxOption[];
+    // (undocumented)
+    protected selectedOptionsChanged(prev: any, next: any): void;
+    selectFirstOption(): void;
+    // @internal
+    selectLastOption(): void;
+    // @internal
+    selectNextOption(): void;
+    // @internal
+    selectPreviousOption(): void;
+    setSelectedOption(index?: number): void;
+    static slottedOptionFilter: (n: ListboxOption) => boolean;
+    // @internal
+    protected typeAheadExpired: boolean;
+    }
+
+// @internal (undocumented)
+export interface Listbox extends DelegatesARIAListbox {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
+//
+// @public
+export class ListboxOption extends FASTElement {
+    constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
+    defaultSelected: boolean;
+    // (undocumented)
+    protected defaultSelectedChanged(): void;
+    dirtyValue: boolean;
+    disabled: boolean;
+    // (undocumented)
+    protected disabledChanged(prev: any, next: any): void;
+    // (undocumented)
+    get form(): HTMLFormElement | null;
+    protected initialValue: string;
+    // (undocumented)
+    initialValueChanged(previous: string, next: string): void;
+    // (undocumented)
+    get label(): string;
+    // (undocumented)
+    proxy: HTMLOptionElement;
+    selected: boolean;
+    selectedAttribute: boolean;
+    // (undocumented)
+    protected selectedAttributeChanged(): void;
+    // (undocumented)
+    protected selectedChanged(): void;
+    // (undocumented)
+    get text(): string;
+    // (undocumented)
+    value: string;
+    // (undocumented)
+    valueChanged(previous: string, next: string): void;
+}
+
+// @internal (undocumented)
+export interface ListboxOption extends StartEnd {
+}
+
+// @public
+export const ListboxOptionTemplate: import("@microsoft/fast-element").ViewTemplate<ListboxOption, any>;
+
+// @public
+export enum ListboxRole {
+    // (undocumented)
+    listbox = "listbox"
+}
+
+// @public
+export const ListboxTemplate: import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -767,6 +899,59 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
+//
+// @public
+export class Select extends FormAssociatedSelect {
+    constructor();
+    // @internal (undocumented)
+    clickHandler(e: MouseEvent): boolean | void;
+    // (undocumented)
+    connectedCallback(): void;
+    get displayValue(): string;
+    // (undocumented)
+    focusoutHandler(e: FocusEvent): boolean | void;
+    // (undocumented)
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    maxHeight: number;
+    // @internal
+    open: boolean;
+    // (undocumented)
+    protected openChanged(): void;
+    // (undocumented)
+    optionsChanged(prev: any, next: any): void;
+    position: SelectPosition;
+    positionAttribute: SelectPosition;
+    role: SelectRole;
+    // @internal
+    selectedOptionsChanged(prev: any, next: any): void;
+    setPositioning(): void;
+    }
+
+// @internal (undocumented)
+export interface Select extends StartEnd, DelegatesARIASelect {
+}
+
+// @public
+export enum SelectPosition {
+    // (undocumented)
+    above = "above",
+    // (undocumented)
+    below = "below"
+}
+
+// @public
+export enum SelectRole {
+    // (undocumented)
+    combobox = "combobox"
+}
+
+// @public
+export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
 
 // @public
 export class Skeleton extends FASTElement {
@@ -946,6 +1131,7 @@ export const SwitchTemplate: import("@microsoft/fast-element").ViewTemplate<Swit
 
 // @public
 export class Tab extends FASTElement {
+    disabled: boolean;
 }
 
 // @public
@@ -960,7 +1146,6 @@ export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<Ta
 //
 // @public
 export class Tabs extends FASTElement {
-    constructor();
     activeid: string;
     // @internal (undocumented)
     activeidChanged(): void;
@@ -972,6 +1157,8 @@ export class Tabs extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
     orientation: TabsOrientation;
+    // @internal (undocumented)
+    showActiveIndicator: boolean;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)

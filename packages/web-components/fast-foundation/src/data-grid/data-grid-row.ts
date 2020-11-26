@@ -31,9 +31,6 @@ export enum DataGridRowTypes {
  * @public
  */
 export class DataGridRow extends FASTElement {
-    private static cellQueryString =
-        '[role="cell"],[role="gridcell"],[role="columnheader"]';
-
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
@@ -143,6 +140,14 @@ export class DataGridRow extends FASTElement {
     @observable
     public defaultHeaderCellItemTemplate?: ViewTemplate;
 
+    /**
+     * Children that are cells
+     *
+     * @internal
+     */
+    @observable
+    public cellElements: HTMLElement[];
+
     private cellsRepeatBehavior: RepeatBehavior | null = null;
     private cellsPlaceholder: Node | null = null;
 
@@ -206,10 +211,7 @@ export class DataGridRow extends FASTElement {
 
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
-        const cells: Element[] = Array.from(
-            this.querySelectorAll(DataGridRow.cellQueryString)
-        );
-        this.focusColumnIndex = cells.indexOf(e.target as Element);
+        this.focusColumnIndex = this.cellElements.indexOf(e.target as HTMLElement);
         this.$emit("row-focused", this);
     }
 
@@ -217,45 +219,37 @@ export class DataGridRow extends FASTElement {
         if (e.defaultPrevented) {
             return;
         }
-        let cells: Element[] = [];
         let newFocusColumnIndex: number = 0;
         switch (e.keyCode) {
             case keyCodeArrowLeft:
                 // focus left one cell
-                cells = Array.from(this.querySelectorAll(DataGridRow.cellQueryString));
                 newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
-                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                (this.cellElements[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
                 break;
 
             case keyCodeArrowRight:
                 // focus right one cell
-                cells = Array.from(this.querySelectorAll(DataGridRow.cellQueryString));
                 newFocusColumnIndex = Math.min(
-                    cells.length - 1,
+                    this.cellElements.length - 1,
                     this.focusColumnIndex + 1
                 );
-                (cells[newFocusColumnIndex] as HTMLElement).focus();
+                (this.cellElements[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
                 break;
 
             case keyCodeHome:
                 if (!e.ctrlKey) {
-                    // focus first cell of the row
-                    cells = Array.from(
-                        this.querySelectorAll(DataGridRow.cellQueryString)
-                    );
-                    (cells[0] as HTMLElement).focus();
+                    (this.cellElements[0] as HTMLElement).focus();
                     e.preventDefault();
                 }
                 break;
             case keyCodeEnd:
                 if (!e.ctrlKey) {
                     // focus last cell of the row
-                    cells = Array.from(
-                        this.querySelectorAll(DataGridRow.cellQueryString)
-                    );
-                    (cells[cells.length - 1] as HTMLElement).focus();
+                    (this.cellElements[
+                        this.cellElements.length - 1
+                    ] as HTMLElement).focus();
                     e.preventDefault();
                 }
                 break;

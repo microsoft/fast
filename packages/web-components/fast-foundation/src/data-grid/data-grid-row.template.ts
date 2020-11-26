@@ -1,4 +1,4 @@
-import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted, ViewTemplate } from "@microsoft/fast-element";
 import { DataGridRow } from "./data-grid-row";
 
 const defaultCellItemTemplate: ViewTemplate = html`
@@ -27,6 +27,10 @@ export const DataGridRowTemplate = html<DataGridRow>`
         :defaultHeaderCellItemTemplate=${defaultHeaderCellItemTemplate}
         role="row"
         class="${x => (x.rowType !== "default" ? x.rowType : "")}"
+        ${children({
+            property: "cellElements",
+            filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
+        })}
     >
         <slot ${slotted("slottedCellElements")}></slot>
     </template>
