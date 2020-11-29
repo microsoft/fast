@@ -367,6 +367,9 @@ export class DataGrid extends FASTElement {
         }
 
         let newFocusRowIndex: number;
+        const maxIndex = this.rowElements.length - 1;
+        const currentGridBottom: number = this.offsetHeight + this.scrollTop;
+        const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
 
         switch (e.keyCode) {
             case keyCodeArrowUp:
@@ -387,8 +390,6 @@ export class DataGrid extends FASTElement {
                     this.focusOnCell(0, 0, false);
                     break;
                 }
-
-                // TODO: focus up one "page"
                 if (this.focusRowIndex === 0) {
                     this.focusOnCell(0, this.focusColumnIndex, false);
                     return;
@@ -397,7 +398,7 @@ export class DataGrid extends FASTElement {
                 newFocusRowIndex = this.focusRowIndex - 1;
 
                 for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
-                    let thisRow: HTMLElement = this.rowElements[newFocusRowIndex];
+                    const thisRow: HTMLElement = this.rowElements[newFocusRowIndex];
                     if (thisRow.offsetTop < this.scrollTop) {
                         this.scrollTop =
                             thisRow.offsetTop + thisRow.clientHeight - this.clientHeight;
@@ -416,10 +417,6 @@ export class DataGrid extends FASTElement {
                 }
 
                 // focus down one "page"
-                const maxIndex = this.rowElements.length - 1;
-                const currentGridBottom: number = this.offsetHeight + this.scrollTop;
-                const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
-
                 if (
                     this.focusRowIndex >= maxIndex ||
                     lastRow.offsetTop + lastRow.offsetHeight <= currentGridBottom
@@ -431,7 +428,7 @@ export class DataGrid extends FASTElement {
                 newFocusRowIndex = this.focusRowIndex + 1;
 
                 for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
-                    let thisRow: HTMLElement = this.rowElements[
+                    const thisRow: HTMLElement = this.rowElements[
                         newFocusRowIndex
                     ] as HTMLElement;
                     if (thisRow.offsetTop + thisRow.offsetHeight > currentGridBottom) {
