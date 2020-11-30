@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 11/16/2020
+ * Last modified: 11/20/2020
  */
 export const properties = {
     "--*": {
@@ -18477,6 +18477,8150 @@ export const properties = {
             multiplier: null,
             prepend: null,
             type: "mixed",
+        },
+    },
+};
+
+export const syntaxes = {
+    "absolute-size": {
+        name: "absolute-size",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "xx-small",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "x-small",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "small",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "medium",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "large",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "x-large",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "xx-large",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "xxx-large",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "alpha-value": {
+        name: "alpha-value",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "angle-percentage": {
+        name: "angle-percentage",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<angle>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "angular-color-hint": {
+        name: "angular-color-hint",
+        value: {
+            ref: "<angle-percentage>",
+            refCombinatorType: "none",
+        },
+    },
+    "angular-color-stop": {
+        name: "angular-color-stop",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<color>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<color-stop-angle>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "mandatoryInAnyOrder",
+        },
+    },
+    "angular-color-stop-list": {
+        name: "angular-color-stop-list",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<angular-color-stop>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "group",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<angular-color-hint>",
+                                    refCombinatorType: "none",
+                                    prepend: ",",
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<angular-color-stop>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "animateable-feature": {
+        name: "animateable-feature",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "scroll-position",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "contents",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    attachment: {
+        name: "attachment",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "scroll",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fixed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "local",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "attr()": {
+        name: "attr()",
+        value: {
+            ref: "attr( <attr-name> <type-or-unit>? [, <attr-fallback> ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "attr-matcher": {
+        name: "attr-matcher",
+        value: {
+            ref: [
+                {
+                    type: "group",
+                    ref: "'~' | '|' | '^' | '$' | '*'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "attr-modifier": {
+        name: "attr-modifier",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "i",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "s",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "attribute-selector": {
+        name: "attribute-selector",
+        value: {
+            ref:
+                "'[' <wq-name> ']' | '[' <wq-name> <attr-matcher> [ <string-token> | <ident-token> ] <attr-modifier>? ']'",
+            refCombinatorType: "none",
+        },
+    },
+    "auto-repeat": {
+        name: "auto-repeat",
+        value: {
+            ref:
+                "repeat( [ auto-fill | auto-fit ] , [ <line-names>? <fixed-size> ]+ <line-names>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "auto-track-list": {
+        name: "auto-track-list",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<line-names>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<fixed-size>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<fixed-repeat>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "exactlyOne",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<line-names>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<auto-repeat>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<line-names>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<fixed-size>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<fixed-repeat>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "exactlyOne",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<line-names>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "baseline-position": {
+        name: "baseline-position",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "first",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "last",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "baseline",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "basic-shape": {
+        name: "basic-shape",
+        value: {
+            ref: "<inset()> | <circle()> | <ellipse()> | <polygon()> | <path()>",
+            refCombinatorType: "none",
+        },
+    },
+    "bg-image": {
+        name: "bg-image",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "bg-layer": {
+        name: "bg-layer",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<bg-image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<bg-position>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<bg-size>",
+                            refCombinatorType: "none",
+                            prepend: "/",
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<repeat-style>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<attachment>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "atLeastOneInAnyOrder",
+        },
+    },
+    "bg-position": {
+        name: "bg-position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "left",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "right",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "top",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "bottom",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "left",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "center",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "right",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<length-percentage>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "value",
+                                    ref: "top",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "center",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "bottom",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<length-percentage>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "mixed",
+                                    ref: [
+                                        {
+                                            type: "value",
+                                            ref: "center",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "left",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "right",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                    ],
+                                    refCombinatorType: "exactlyOne",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<length-percentage>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: {
+                                        type: "zeroOrOne",
+                                    },
+                                },
+                            ],
+                            refCombinatorType: "exactlyOne",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "center",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "top",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "bottom",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "brackets",
+        },
+    },
+    "bg-size": {
+        name: "bg-size",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<length-percentage>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "auto",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [1, 2],
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "cover",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "contain",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "blur()": {
+        name: "blur()",
+        value: {
+            ref: "blur( <length> )",
+            refCombinatorType: "none",
+        },
+    },
+    "blend-mode": {
+        name: "blend-mode",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "normal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "multiply",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "screen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "overlay",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darken",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lighten",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "color-dodge",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "color-burn",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "hard-light",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "soft-light",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "difference",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "exclusion",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "hue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "saturation",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "color",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "luminosity",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    box: {
+        name: "box",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "border-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "padding-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "content-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "brightness()": {
+        name: "brightness()",
+        value: {
+            ref: "brightness( <number-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "calc()": {
+        name: "calc()",
+        value: {
+            ref: "calc( <calc-sum> )",
+            refCombinatorType: "none",
+        },
+    },
+    "calc-sum": {
+        name: "calc-sum",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<calc-product>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "group",
+                            ref: "'+' | '-'",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<calc-product>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "calc-product": {
+        name: "calc-product",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<calc-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: "'*' <calc-value> | '/' <number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "calc-value": {
+        name: "calc-value",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<dimension>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<calc-sum>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "cf-final-image": {
+        name: "cf-final-image",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<color>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "cf-mixing-image": {
+        name: "cf-mixing-image",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "mandatoryInAnyOrder",
+        },
+    },
+    "circle()": {
+        name: "circle()",
+        value: {
+            ref: "circle( [ <shape-radius> ]? [ at <position> ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "clamp()": {
+        name: "clamp()",
+        value: {
+            ref: "clamp( <calc-sum>#{3} )",
+            refCombinatorType: "none",
+        },
+    },
+    "class-selector": {
+        name: "class-selector",
+        value: {
+            ref: "'.' <ident-token>",
+            refCombinatorType: "none",
+        },
+    },
+    "clip-source": {
+        name: "clip-source",
+        value: {
+            ref: "<url>",
+            refCombinatorType: "none",
+        },
+    },
+    color: {
+        name: "color",
+        value: {
+            ref:
+                "<rgb()> | <rgba()> | <hsl()> | <hsla()> | <hex-color> | <named-color> | currentcolor | <deprecated-system-color>",
+            refCombinatorType: "none",
+        },
+    },
+    "color-stop": {
+        name: "color-stop",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<color-stop-length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<color-stop-angle>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "color-stop-angle": {
+        name: "color-stop-angle",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<angle-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [1, 2],
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "color-stop-length": {
+        name: "color-stop-length",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [1, 2],
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "color-stop-list": {
+        name: "color-stop-list",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<linear-color-stop>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "group",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<linear-color-hint>",
+                                    refCombinatorType: "none",
+                                    prepend: ",",
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<linear-color-stop>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    combinator: {
+        name: "combinator",
+        value: {
+            ref: "'>' | '+' | '~' | [ '||' ]",
+            refCombinatorType: "none",
+        },
+    },
+    "common-lig-values": {
+        name: "common-lig-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "common-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-common-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "compat-auto": {
+        name: "compat-auto",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "searchfield",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "textarea",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "push-button",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "slider-horizontal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "checkbox",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "radio",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "square-button",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "menulist",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "listbox",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "meter",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "progress-bar",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "composite-style": {
+        name: "composite-style",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "clear",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "copy",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "source-over",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "source-in",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "source-out",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "source-atop",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "destination-over",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "destination-in",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "destination-out",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "destination-atop",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "xor",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "compositing-operator": {
+        name: "compositing-operator",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "add",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "subtract",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "intersect",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "exclude",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "compound-selector": {
+        name: "compound-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<type-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<subclass-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<pseudo-element-selector>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<pseudo-class-selector>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrMore",
+                            },
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "compound-selector-list": {
+        name: "compound-selector-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<compound-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "complex-selector": {
+        name: "complex-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<compound-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<combinator>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<compound-selector>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "complex-selector-list": {
+        name: "complex-selector-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<complex-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "conic-gradient()": {
+        name: "conic-gradient()",
+        value: {
+            ref:
+                "conic-gradient( [ from <angle> ]? [ at <position> ]?, <angular-color-stop-list> )",
+            refCombinatorType: "none",
+        },
+    },
+    "contextual-alt-values": {
+        name: "contextual-alt-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "contextual",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-contextual",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "content-distribution": {
+        name: "content-distribution",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "space-between",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "space-around",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "space-evenly",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "stretch",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "content-list": {
+        name: "content-list",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "contents",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<quote>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<target>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<leader",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "content-position": {
+        name: "content-position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flex-start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flex-end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "content-replacement": {
+        name: "content-replacement",
+        value: {
+            ref: "<image>",
+            refCombinatorType: "none",
+        },
+    },
+    "contrast()": {
+        name: "contrast()",
+        value: {
+            ref: "contrast( [ <number-percentage> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "counter()": {
+        name: "counter()",
+        value: {
+            ref: "counter( <custom-ident>, <counter-style>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "counter-style": {
+        name: "counter-style",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<counter-style-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "symbols",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "counter-style-name": {
+        name: "counter-style-name",
+        value: {
+            ref: "<custom-ident>",
+            refCombinatorType: "none",
+        },
+    },
+    "counters()": {
+        name: "counters()",
+        value: {
+            ref: "counters( <custom-ident>, <string>, <counter-style>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "cross-fade()": {
+        name: "cross-fade()",
+        value: {
+            ref: "cross-fade( <cf-mixing-image> , <cf-final-image>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "cubic-bezier-timing-function": {
+        name: "cubic-bezier-timing-function",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "ease",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ease-in",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ease-out",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ease-in-out",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cubic-bezier",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<number",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: "0,1]>, <number>, <number [0,1",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "deprecated-system-color": {
+        name: "deprecated-system-color",
+        value: {
+            ref:
+                "ActiveBorder | ActiveCaption | AppWorkspace | Background | ButtonFace | ButtonHighlight | ButtonShadow | ButtonText | CaptionText | GrayText | Highlight | HighlightText | InactiveBorder | InactiveCaption | InactiveCaptionText | InfoBackground | InfoText | Menu | MenuText | Scrollbar | ThreeDDarkShadow | ThreeDFace | ThreeDHighlight | ThreeDLightShadow | ThreeDShadow | Window | WindowFrame | WindowText",
+            refCombinatorType: "none",
+        },
+    },
+    "discretionary-lig-values": {
+        name: "discretionary-lig-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "discretionary-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-discretionary-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "display-box": {
+        name: "display-box",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "contents",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "display-inside": {
+        name: "display-inside",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "flow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flow-root",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flex",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "grid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ruby",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "display-internal": {
+        name: "display-internal",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "table-row-group",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-header-group",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-footer-group",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-row",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-cell",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-column-group",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-column",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "table-caption",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ruby-base",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ruby-text",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ruby-base-container",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ruby-text-container",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "display-legacy": {
+        name: "display-legacy",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "inline-block",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inline-list-item",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inline-table",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inline-flex",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inline-grid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "display-listitem": {
+        name: "display-listitem",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<display-outside>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "flow",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "flow-root",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "list-item",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "mandatoryInAnyOrder",
+        },
+    },
+    "display-outside": {
+        name: "display-outside",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "block",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inline",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "run-in",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "drop-shadow()": {
+        name: "drop-shadow()",
+        value: {
+            ref: "drop-shadow( <length>{2,3} <color>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "east-asian-variant-values": {
+        name: "east-asian-variant-values",
+        value: {
+            ref: "jis78 | jis83 | jis90 | jis04 | simplified | traditional",
+            refCombinatorType: "none",
+        },
+    },
+    "east-asian-width-values": {
+        name: "east-asian-width-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "full-width",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "proportional-width",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "element()": {
+        name: "element()",
+        value: {
+            ref: "element( <id-selector> )",
+            refCombinatorType: "none",
+        },
+    },
+    "ellipse()": {
+        name: "ellipse()",
+        value: {
+            ref: "ellipse( [ <shape-radius>{2} ]? [ at <position> ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "ending-shape": {
+        name: "ending-shape",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "circle",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ellipse",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "env()": {
+        name: "env()",
+        value: {
+            ref: "env( <custom-ident> , <declaration-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "explicit-track-list": {
+        name: "explicit-track-list",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<line-names>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<track-size>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<line-names>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "family-name": {
+        name: "family-name",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "feature-tag-value": {
+        name: "feature-tag-value",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "type",
+                            ref: "<integer>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "on",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "off",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "feature-type": {
+        name: "feature-type",
+        value: {
+            ref:
+                "@stylistic | @historical-forms | @styleset | @character-variant | @swash | @ornaments | @annotation",
+            refCombinatorType: "none",
+        },
+    },
+    "feature-value-block": {
+        name: "feature-value-block",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<feature-type>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<feature-value-declaration-list>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "feature-value-block-list": {
+        name: "feature-value-block-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<feature-value-block>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "feature-value-declaration": {
+        name: "feature-value-declaration",
+        value: {
+            ref: "<custom-ident>: <integer>+;",
+            refCombinatorType: "none",
+        },
+    },
+    "feature-value-declaration-list": {
+        name: "feature-value-declaration-list",
+        value: {
+            ref: "<feature-value-declaration>",
+            refCombinatorType: "none",
+        },
+    },
+    "feature-value-name": {
+        name: "feature-value-name",
+        value: {
+            ref: "<custom-ident>",
+            refCombinatorType: "none",
+        },
+    },
+    "fill-rule": {
+        name: "fill-rule",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "nonzero",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "evenodd",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "filter-function": {
+        name: "filter-function",
+        value: {
+            ref:
+                "<blur()> | <brightness()> | <contrast()> | <drop-shadow()> | <grayscale()> | <hue-rotate()> | <invert()> | <opacity()> | <saturate()> | <sepia()>",
+            refCombinatorType: "none",
+        },
+    },
+    "filter-function-list": {
+        name: "filter-function-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<filter-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<url>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "final-bg-layer": {
+        name: "final-bg-layer",
+        value: {
+            ref: [
+                {
+                    type: "property",
+                    ref: "<'background-color'>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<bg-image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<bg-position>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<bg-size>",
+                            refCombinatorType: "none",
+                            prepend: "/",
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<repeat-style>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<attachment>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "atLeastOneInAnyOrder",
+        },
+    },
+    "fit-content()": {
+        name: "fit-content()",
+        value: {
+            ref: "fit-content( [ <length> | <percentage> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "fixed-breadth": {
+        name: "fixed-breadth",
+        value: {
+            ref: "<length-percentage>",
+            refCombinatorType: "none",
+        },
+    },
+    "fixed-repeat": {
+        name: "fixed-repeat",
+        value: {
+            ref:
+                "repeat( [ <positive-integer> ] , [ <line-names>? <fixed-size> ]+ <line-names>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "fixed-size": {
+        name: "fixed-size",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<fixed-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "minmax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<fixed-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<track-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "minmax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<inflexible-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<fixed-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "font-stretch-absolute": {
+        name: "font-stretch-absolute",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "normal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ultra-condensed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "extra-condensed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "condensed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "semi-condensed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "semi-expanded",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "expanded",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "extra-expanded",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ultra-expanded",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "font-variant-css21": {
+        name: "font-variant-css21",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "normal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "small-caps",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "font-weight-absolute": {
+        name: "font-weight-absolute",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "normal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "bold",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<number",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: "1,1000",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "frequency-percentage": {
+        name: "frequency-percentage",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<frequency>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "general-enclosed": {
+        name: "general-enclosed",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "<function-token>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "<any-value>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<any-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "generic-family": {
+        name: "generic-family",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "serif",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "sans-serif",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cursive",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fantasy",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "monospace",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "generic-name": {
+        name: "generic-name",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "serif",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "sans-serif",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cursive",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fantasy",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "monospace",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "geometry-box": {
+        name: "geometry-box",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<shape-box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fill-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "stroke-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "view-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    gradient: {
+        name: "gradient",
+        value: {
+            ref:
+                "<linear-gradient()> | <repeating-linear-gradient()> | <radial-gradient()> | <repeating-radial-gradient()> | <conic-gradient()>",
+            refCombinatorType: "none",
+        },
+    },
+    "grayscale()": {
+        name: "grayscale()",
+        value: {
+            ref: "grayscale( <number-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "grid-line": {
+        name: "grid-line",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "auto",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "type",
+                            ref: "<integer>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "type",
+                            ref: "<custom-ident>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "value",
+                                    ref: "span",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "type",
+                                    ref: "<integer>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "type",
+                                    ref: "<custom-ident>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "mandatoryInAnyOrder",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "mandatoryInAnyOrder",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "historical-lig-values": {
+        name: "historical-lig-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "historical-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-historical-ligatures",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "hsl()": {
+        name: "hsl()",
+        value: {
+            ref:
+                "hsl( <hue> <percentage> <percentage> [ / <alpha-value> ]? ) | hsl( <hue>, <percentage>, <percentage>, <alpha-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "hsla()": {
+        name: "hsla()",
+        value: {
+            ref:
+                "hsla( <hue> <percentage> <percentage> [ / <alpha-value> ]? ) | hsla( <hue>, <percentage>, <percentage>, <alpha-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    hue: {
+        name: "hue",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<angle>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "hue-rotate()": {
+        name: "hue-rotate()",
+        value: {
+            ref: "hue-rotate( <angle> )",
+            refCombinatorType: "none",
+        },
+    },
+    "id-selector": {
+        name: "id-selector",
+        value: {
+            ref: "<hash-token>",
+            refCombinatorType: "none",
+        },
+    },
+    image: {
+        name: "image",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<url>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<image",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<image-set",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<element",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<paint",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<cross-fade",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: ">",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<gradient>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "image()": {
+        name: "image()",
+        value: {
+            ref: "image( <image-tags>? [ <image-src>? , <color>? ]! )",
+            refCombinatorType: "none",
+        },
+    },
+    "image-set()": {
+        name: "image-set()",
+        value: {
+            ref: "image-set( <image-set-option># )",
+            refCombinatorType: "none",
+        },
+    },
+    "image-set-option": {
+        name: "image-set-option",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<image>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "type",
+                            ref: "<string>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<resolution>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "image-src": {
+        name: "image-src",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<url>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "image-tags": {
+        name: "image-tags",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "ltr",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rtl",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "inflexible-breadth": {
+        name: "inflexible-breadth",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "min-content",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "max-content",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "auto",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "inset()": {
+        name: "inset()",
+        value: {
+            ref: "inset( <length-percentage>{1,4} [ round <'border-radius'> ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "invert()": {
+        name: "invert()",
+        value: {
+            ref: "invert( <number-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "keyframes-name": {
+        name: "keyframes-name",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "keyframe-block": {
+        name: "keyframe-block",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<keyframe-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "<declaration-list>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "keyframe-block-list": {
+        name: "keyframe-block-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<keyframe-block>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "keyframe-selector": {
+        name: "keyframe-selector",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "from",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "to",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "leader()": {
+        name: "leader()",
+        value: {
+            ref: "leader( <leader-type> )",
+            refCombinatorType: "none",
+        },
+    },
+    "leader-type": {
+        name: "leader-type",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "dotted",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "solid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "space",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "length-percentage": {
+        name: "length-percentage",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "line-names": {
+        name: "line-names",
+        value: {
+            ref: "'[' <custom-ident>* ']'",
+            refCombinatorType: "none",
+        },
+    },
+    "line-name-list": {
+        name: "line-name-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<line-names>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<name-repeat>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "line-style": {
+        name: "line-style",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "hidden",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "dotted",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "dashed",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "solid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "double",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "groove",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ridge",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "inset",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "outset",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "line-width": {
+        name: "line-width",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "thin",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "medium",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "thick",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "linear-color-hint": {
+        name: "linear-color-hint",
+        value: {
+            ref: "<length-percentage>",
+            refCombinatorType: "none",
+        },
+    },
+    "linear-color-stop": {
+        name: "linear-color-stop",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<color>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<color-stop-length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "linear-gradient()": {
+        name: "linear-gradient()",
+        value: {
+            ref:
+                "linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )",
+            refCombinatorType: "none",
+        },
+    },
+    "mask-layer": {
+        name: "mask-layer",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<mask-reference>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<position>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<bg-size>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: {
+                                        type: "zeroOrOne",
+                                    },
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<repeat-style>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<geometry-box>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<geometry-box>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "no-clip",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "juxtaposition",
+                            prepend: "/",
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<compositing-operator>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<masking-mode>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "atLeastOneInAnyOrder",
+        },
+    },
+    "mask-position": {
+        name: "mask-position",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "left",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "right",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "top",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "bottom",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "mask-reference": {
+        name: "mask-reference",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<mask-source>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "mask-source": {
+        name: "mask-source",
+        value: {
+            ref: "<url>",
+            refCombinatorType: "none",
+        },
+    },
+    "masking-mode": {
+        name: "masking-mode",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "alpha",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "luminance",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "match-source",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "matrix()": {
+        name: "matrix()",
+        value: {
+            ref: "matrix( <number>#{6} )",
+            refCombinatorType: "none",
+        },
+    },
+    "matrix3d()": {
+        name: "matrix3d()",
+        value: {
+            ref: "matrix3d( <number>#{16} )",
+            refCombinatorType: "none",
+        },
+    },
+    "max()": {
+        name: "max()",
+        value: {
+            ref: "max( <calc-sum># )",
+            refCombinatorType: "none",
+        },
+    },
+    "media-and": {
+        name: "media-and",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "and",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<media-in-parens>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "media-condition": {
+        name: "media-condition",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-not>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-and>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-or>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "media-condition-without-or": {
+        name: "media-condition-without-or",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-not>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-and>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "media-feature": {
+        name: "media-feature",
+        value: {
+            ref: "( [ <mf-plain> | <mf-boolean> | <mf-range> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "media-in-parens": {
+        name: "media-in-parens",
+        value: {
+            ref: "( <media-condition> ) | <media-feature> | <general-enclosed>",
+            refCombinatorType: "none",
+        },
+    },
+    "media-not": {
+        name: "media-not",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "not",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<media-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "media-or": {
+        name: "media-or",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "or",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<media-in-parens>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "media-query": {
+        name: "media-query",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-condition>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "not",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "only",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<media-type>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "and",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<media-condition-without-or>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "media-query-list": {
+        name: "media-query-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<media-query>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "media-type": {
+        name: "media-type",
+        value: {
+            ref: "<ident>",
+            refCombinatorType: "none",
+        },
+    },
+    "mf-boolean": {
+        name: "mf-boolean",
+        value: {
+            ref: "<mf-name>",
+            refCombinatorType: "none",
+        },
+    },
+    "mf-name": {
+        name: "mf-name",
+        value: {
+            ref: "<ident>",
+            refCombinatorType: "none",
+        },
+    },
+    "mf-plain": {
+        name: "mf-plain",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<mf-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "mf-range": {
+        name: "mf-range",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<mf-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "property",
+                    ref: "'<' | '>'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "property",
+                    ref: "'<' | '>'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<mf-value>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "mf-value": {
+        name: "mf-value",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<dimension>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<ratio>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "min()": {
+        name: "min()",
+        value: {
+            ref: "min( <calc-sum># )",
+            refCombinatorType: "none",
+        },
+    },
+    "minmax()": {
+        name: "minmax()",
+        value: {
+            ref:
+                "minmax( [ <length> | <percentage> | min-content | max-content | auto ] , [ <length> | <percentage> | <flex> | min-content | max-content | auto ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "named-color": {
+        name: "named-color",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "transparent",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "aliceblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "antiquewhite",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "aqua",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "aquamarine",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "azure",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "beige",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "bisque",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "black",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "blanchedalmond",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "blue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "blueviolet",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "brown",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "burlywood",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cadetblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "chartreuse",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "chocolate",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "coral",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cornflowerblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cornsilk",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "crimson",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cyan",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkcyan",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkgoldenrod",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkgray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkgrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkkhaki",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkmagenta",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkolivegreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkorange",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkorchid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkred",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darksalmon",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkseagreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkslateblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkslategray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkslategrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkturquoise",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "darkviolet",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "deeppink",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "deepskyblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "dimgray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "dimgrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "dodgerblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "firebrick",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "floralwhite",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "forestgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fuchsia",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "gainsboro",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ghostwhite",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "gold",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "goldenrod",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "gray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "green",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "greenyellow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "grey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "honeydew",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "hotpink",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "indianred",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "indigo",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ivory",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "khaki",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lavender",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lavenderblush",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lawngreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lemonchiffon",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightcoral",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightcyan",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightgoldenrodyellow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightgray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightgrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightpink",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightsalmon",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightseagreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightskyblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightslategray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightslategrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightsteelblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lightyellow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lime",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "limegreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "linen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "magenta",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "maroon",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumaquamarine",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumorchid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumpurple",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumseagreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumslateblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumspringgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumturquoise",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mediumvioletred",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "midnightblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mintcream",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mistyrose",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "moccasin",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "navajowhite",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "navy",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "oldlace",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "olive",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "olivedrab",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "orange",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "orangered",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "orchid",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "palegoldenrod",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "palegreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "paleturquoise",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "palevioletred",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "papayawhip",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "peachpuff",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "peru",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "pink",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "plum",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "powderblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "purple",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rebeccapurple",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "red",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rosybrown",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "royalblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "saddlebrown",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "salmon",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "sandybrown",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "seagreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "seashell",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "sienna",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "silver",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "skyblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "slateblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "slategray",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "slategrey",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "snow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "springgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "steelblue",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "tan",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "teal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "thistle",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "tomato",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "turquoise",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "violet",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "wheat",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "white",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "whitesmoke",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "yellow",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "yellowgreen",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "namespace-prefix": {
+        name: "namespace-prefix",
+        value: {
+            ref: "<ident>",
+            refCombinatorType: "none",
+        },
+    },
+    "ns-prefix": {
+        name: "ns-prefix",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "<ident-token>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "'",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrMore",
+                            },
+                        },
+                        {
+                            type: "value",
+                            ref: "'",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "number-percentage": {
+        name: "number-percentage",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "numeric-figure-values": {
+        name: "numeric-figure-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "lining-nums",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "oldstyle-nums",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "numeric-fraction-values": {
+        name: "numeric-fraction-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "diagonal-fractions",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "stacked-fractions",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "numeric-spacing-values": {
+        name: "numeric-spacing-values",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "proportional-nums",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "tabular-nums",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    nth: {
+        name: "nth",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<an-plus-b>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "even",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "odd",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "opacity()": {
+        name: "opacity()",
+        value: {
+            ref: "opacity( [ <number-percentage> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "overflow-position": {
+        name: "overflow-position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "unsafe",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "safe",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "outline-radius": {
+        name: "outline-radius",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "page-body": {
+        name: "page-body",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "<declaration>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "group",
+                    ref: "; <page-body>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<page-margin-box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<page-body>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "page-margin-box": {
+        name: "page-margin-box",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<page-margin-box-type>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "<declaration-list>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "page-margin-box-type": {
+        name: "page-margin-box-type",
+        value: {
+            ref:
+                "@top-left-corner | @top-left | @top-center | @top-right | @top-right-corner | @bottom-left-corner | @bottom-left | @bottom-center | @bottom-right | @bottom-right-corner | @left-top | @left-middle | @left-bottom | @right-top | @right-middle | @right-bottom",
+            refCombinatorType: "none",
+        },
+    },
+    "page-selector-list": {
+        name: "page-selector-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<page-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "page-selector": {
+        name: "page-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<pseudo-page>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+                {
+                    type: "type",
+                    ref: "<ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<pseudo-page>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "path()": {
+        name: "path()",
+        value: {
+            ref: "path( [ <fill-rule>, ]? <string> )",
+            refCombinatorType: "none",
+        },
+    },
+    "paint()": {
+        name: "paint()",
+        value: {
+            ref: "paint( <ident>, <declaration-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "perspective()": {
+        name: "perspective()",
+        value: {
+            ref: "perspective( <length> )",
+            refCombinatorType: "none",
+        },
+    },
+    "polygon()": {
+        name: "polygon()",
+        value: {
+            ref: "polygon( <fill-rule>? , [ <length-percentage> <length-percentage> ]# )",
+            refCombinatorType: "none",
+        },
+    },
+    position: {
+        name: "position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "left",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "right",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "top",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "center",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "bottom",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "value",
+                                    ref: "left",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "center",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "value",
+                                    ref: "right",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<length-percentage>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "mixed",
+                                    ref: [
+                                        {
+                                            type: "value",
+                                            ref: "top",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "center",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "bottom",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "syntax",
+                                            ref: "<length-percentage>",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: {
+                                                type: "zeroOrOne",
+                                            },
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "left",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                        {
+                                            type: "value",
+                                            ref: "right",
+                                            refCombinatorType: "none",
+                                            prepend: null,
+                                            multiplier: null,
+                                        },
+                                    ],
+                                    refCombinatorType: "exactlyOne",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<length-percentage>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "exactlyOne",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "top",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "bottom",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "brackets",
+        },
+    },
+    "pseudo-class-selector": {
+        name: "pseudo-class-selector",
+        value: {
+            ref: "':' <ident-token> | ':' <function-token> <any-value> ')'",
+            refCombinatorType: "none",
+        },
+    },
+    "pseudo-element-selector": {
+        name: "pseudo-element-selector",
+        value: {
+            ref: "':' <pseudo-class-selector>",
+            refCombinatorType: "none",
+        },
+    },
+    "pseudo-page": {
+        name: "pseudo-page",
+        value: {
+            ref: ": [ left | right | first | blank ]",
+            refCombinatorType: "none",
+        },
+    },
+    quote: {
+        name: "quote",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "open-quote",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "close-quote",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-open-quote",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "no-close-quote",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "radial-gradient()": {
+        name: "radial-gradient()",
+        value: {
+            ref:
+                "radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )",
+            refCombinatorType: "none",
+        },
+    },
+    "relative-selector": {
+        name: "relative-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<combinator>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<complex-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "relative-selector-list": {
+        name: "relative-selector-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<relative-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMoreSeparatedByComma",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "relative-size": {
+        name: "relative-size",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "larger",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "smaller",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "repeat-style": {
+        name: "repeat-style",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "repeat-x",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "repeat-y",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "repeat",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "space",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "round",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "no-repeat",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [1, 2],
+                    },
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "repeating-linear-gradient()": {
+        name: "repeating-linear-gradient()",
+        value: {
+            ref:
+                "repeating-linear-gradient( [ <angle> | to <side-or-corner> ]? , <color-stop-list> )",
+            refCombinatorType: "none",
+        },
+    },
+    "repeating-radial-gradient()": {
+        name: "repeating-radial-gradient()",
+        value: {
+            ref:
+                "repeating-radial-gradient( [ <ending-shape> || <size> ]? [ at <position> ]? , <color-stop-list> )",
+            refCombinatorType: "none",
+        },
+    },
+    "rgb()": {
+        name: "rgb()",
+        value: {
+            ref:
+                "rgb( <percentage>{3} [ / <alpha-value> ]? ) | rgb( <number>{3} [ / <alpha-value> ]? ) | rgb( <percentage>#{3} , <alpha-value>? ) | rgb( <number>#{3} , <alpha-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "rgba()": {
+        name: "rgba()",
+        value: {
+            ref:
+                "rgba( <percentage>{3} [ / <alpha-value> ]? ) | rgba( <number>{3} [ / <alpha-value> ]? ) | rgba( <percentage>#{3} , <alpha-value>? ) | rgba( <number>#{3} , <alpha-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "rotate()": {
+        name: "rotate()",
+        value: {
+            ref: "rotate( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "rotate3d()": {
+        name: "rotate3d()",
+        value: {
+            ref: "rotate3d( <number> , <number> , <number> , [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "rotateX()": {
+        name: "rotateX()",
+        value: {
+            ref: "rotateX( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "rotateY()": {
+        name: "rotateY()",
+        value: {
+            ref: "rotateY( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "rotateZ()": {
+        name: "rotateZ()",
+        value: {
+            ref: "rotateZ( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "saturate()": {
+        name: "saturate()",
+        value: {
+            ref: "saturate( <number-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "scale()": {
+        name: "scale()",
+        value: {
+            ref: "scale( <number> , <number>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "scale3d()": {
+        name: "scale3d()",
+        value: {
+            ref: "scale3d( <number> , <number> , <number> )",
+            refCombinatorType: "none",
+        },
+    },
+    "scaleX()": {
+        name: "scaleX()",
+        value: {
+            ref: "scaleX( <number> )",
+            refCombinatorType: "none",
+        },
+    },
+    "scaleY()": {
+        name: "scaleY()",
+        value: {
+            ref: "scaleY( <number> )",
+            refCombinatorType: "none",
+        },
+    },
+    "scaleZ()": {
+        name: "scaleZ()",
+        value: {
+            ref: "scaleZ( <number> )",
+            refCombinatorType: "none",
+        },
+    },
+    "self-position": {
+        name: "self-position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "center",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "self-start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "self-end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flex-start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "flex-end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "shape-radius": {
+        name: "shape-radius",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "closest-side",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "farthest-side",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "skew()": {
+        name: "skew()",
+        value: {
+            ref: "skew( [ <angle> | <zero> ] , [ <angle> | <zero> ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "skewX()": {
+        name: "skewX()",
+        value: {
+            ref: "skewX( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "skewY()": {
+        name: "skewY()",
+        value: {
+            ref: "skewY( [ <angle> | <zero> ] )",
+            refCombinatorType: "none",
+        },
+    },
+    "sepia()": {
+        name: "sepia()",
+        value: {
+            ref: "sepia( <number-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    shadow: {
+        name: "shadow",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "inset",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [2, 4],
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<color>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "mandatoryInAnyOrder",
+        },
+    },
+    "shadow-t": {
+        name: "shadow-t",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "atLeastATimesAtMostBTimes",
+                        range: [2, 3],
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<color>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "mandatoryInAnyOrder",
+        },
+    },
+    shape: {
+        name: "shape",
+        value: {
+            ref: "rect(<top>, <right>, <bottom>, <left>)",
+            refCombinatorType: "none",
+        },
+    },
+    "shape-box": {
+        name: "shape-box",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<box>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "margin-box",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "side-or-corner": {
+        name: "side-or-corner",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "left",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "right",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "top",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "bottom",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "single-animation": {
+        name: "single-animation",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<time>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<timing-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<time>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<single-animation-iteration-count>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<single-animation-direction>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<single-animation-fill-mode>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<single-animation-play-state>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "none",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<keyframes-name>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "atLeastOneInAnyOrder",
+        },
+    },
+    "single-animation-direction": {
+        name: "single-animation-direction",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "normal",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "reverse",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "alternate",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "alternate-reverse",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "single-animation-fill-mode": {
+        name: "single-animation-fill-mode",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "forwards",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "backwards",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "both",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "single-animation-iteration-count": {
+        name: "single-animation-iteration-count",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "infinite",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<number>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "single-animation-play-state": {
+        name: "single-animation-play-state",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "running",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "paused",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "single-transition": {
+        name: "single-transition",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "none",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<single-transition-property>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<time>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<timing-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<time>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "atLeastOneInAnyOrder",
+        },
+    },
+    "single-transition-property": {
+        name: "single-transition-property",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "all",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    size: {
+        name: "size",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "closest-side",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "farthest-side",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "closest-corner",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "farthest-corner",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<length>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "step-position": {
+        name: "step-position",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "jump-start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "jump-end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "jump-none",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "jump-both",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "step-timing-function": {
+        name: "step-timing-function",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "step-start",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "step-end",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "steps",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<integer>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "group",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<step-position>",
+                            refCombinatorType: "none",
+                            prepend: ",",
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "subclass-selector": {
+        name: "subclass-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<id-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<class-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<attribute-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<pseudo-class-selector>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "supports-condition": {
+        name: "supports-condition",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "not",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<supports-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<supports-in-parens>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "value",
+                            ref: "and",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<supports-in-parens>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrMore",
+                            },
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<supports-in-parens>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "value",
+                            ref: "or",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "syntax",
+                            ref: "<supports-in-parens>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "supports-in-parens": {
+        name: "supports-in-parens",
+        value: {
+            ref: "( <supports-condition> ) | <supports-feature> | <general-enclosed>",
+            refCombinatorType: "none",
+        },
+    },
+    "supports-feature": {
+        name: "supports-feature",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<supports-decl>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<supports-selector-fn>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "supports-decl": {
+        name: "supports-decl",
+        value: {
+            ref: "( <declaration> )",
+            refCombinatorType: "none",
+        },
+    },
+    "supports-selector-fn": {
+        name: "supports-selector-fn",
+        value: {
+            ref: "selector( <complex-selector> )",
+            refCombinatorType: "none",
+        },
+    },
+    symbol: {
+        name: "symbol",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<string>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<image>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<custom-ident>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    target: {
+        name: "target",
+        value: {
+            ref: "<target-counter()> | <target-counters()> | <target-text()>",
+            refCombinatorType: "none",
+        },
+    },
+    "target-counter()": {
+        name: "target-counter()",
+        value: {
+            ref:
+                "target-counter( [ <string> | <url> ] , <custom-ident> , <counter-style>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "target-counters()": {
+        name: "target-counters()",
+        value: {
+            ref:
+                "target-counters( [ <string> | <url> ] , <custom-ident> , <string> , <counter-style>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "target-text()": {
+        name: "target-text()",
+        value: {
+            ref:
+                "target-text( [ <string> | <url> ] , [ content | before | after | first-letter ]? )",
+            refCombinatorType: "none",
+        },
+    },
+    "time-percentage": {
+        name: "time-percentage",
+        value: {
+            ref: [
+                {
+                    type: "type",
+                    ref: "<time>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "timing-function": {
+        name: "timing-function",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "linear",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<cubic-bezier-timing-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<step-timing-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "track-breadth": {
+        name: "track-breadth",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "type",
+                    ref: "<flex>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "min-content",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "max-content",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "auto",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "track-list": {
+        name: "track-list",
+        value: {
+            ref: [
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "syntax",
+                            ref: "<line-names>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            type: "mixed",
+                            ref: [
+                                {
+                                    type: "syntax",
+                                    ref: "<track-size>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    type: "syntax",
+                                    ref: "<track-repeat>",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "exactlyOne",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+                {
+                    type: "syntax",
+                    ref: "<line-names>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+            ],
+            refCombinatorType: "juxtaposition",
+        },
+    },
+    "track-repeat": {
+        name: "track-repeat",
+        value: {
+            ref:
+                "repeat( [ <positive-integer> ] , [ <line-names>? <track-size> ]+ <line-names>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "track-size": {
+        name: "track-size",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<track-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "minmax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<inflexible-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<track-breadth>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "fit-content",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "mixed",
+                    ref: [
+                        {
+                            type: "type",
+                            ref: "<length>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            type: "type",
+                            ref: "<percentage>",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "transform-function": {
+        name: "transform-function",
+        value: {
+            ref:
+                "<matrix()> | <translate()> | <translateX()> | <translateY()> | <scale()> | <scaleX()> | <scaleY()> | <rotate()> | <skew()> | <skewX()> | <skewY()> | <matrix3d()> | <translate3d()> | <translateZ()> | <scale3d()> | <scaleZ()> | <rotate3d()> | <rotateX()> | <rotateY()> | <rotateZ()> | <perspective()>",
+            refCombinatorType: "none",
+        },
+    },
+    "transform-list": {
+        name: "transform-list",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<transform-function>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "oneOrMore",
+                    },
+                },
+            ],
+            refCombinatorType: "none",
+        },
+    },
+    "translate()": {
+        name: "translate()",
+        value: {
+            ref: "translate( <length-percentage> , <length-percentage>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "translate3d()": {
+        name: "translate3d()",
+        value: {
+            ref: "translate3d( <length-percentage> , <length-percentage> , <length> )",
+            refCombinatorType: "none",
+        },
+    },
+    "translateX()": {
+        name: "translateX()",
+        value: {
+            ref: "translateX( <length-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "translateY()": {
+        name: "translateY()",
+        value: {
+            ref: "translateY( <length-percentage> )",
+            refCombinatorType: "none",
+        },
+    },
+    "translateZ()": {
+        name: "translateZ()",
+        value: {
+            ref: "translateZ( <length> )",
+            refCombinatorType: "none",
+        },
+    },
+    "type-or-unit": {
+        name: "type-or-unit",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "string",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "color",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "url",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "integer",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "number",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "length",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "angle",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "time",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "frequency",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cap",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ch",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "em",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ex",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ic",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "lh",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rlh",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rem",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vb",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vi",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vw",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vh",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vmin",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "vmax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "mm",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "cm",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "in",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "pt",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "pc",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "px",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "deg",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "grad",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "rad",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "turn",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "ms",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "s",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "z",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "k",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "value",
+                    ref: "z",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "type-selector": {
+        name: "type-selector",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<wq-name>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<ns-prefix>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrMore",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "'",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "var()": {
+        name: "var()",
+        value: {
+            ref: "var( <custom-property-name> , <declaration-value>? )",
+            refCombinatorType: "none",
+        },
+    },
+    "viewport-length": {
+        name: "viewport-length",
+        value: {
+            ref: [
+                {
+                    type: "value",
+                    ref: "auto",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    type: "syntax",
+                    ref: "<length-percentage>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+        },
+    },
+    "wq-name": {
+        name: "wq-name",
+        value: {
+            ref: [
+                {
+                    type: "syntax",
+                    ref: "<ns-prefix>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: {
+                        type: "zeroOrOne",
+                    },
+                },
+                {
+                    type: "value",
+                    ref: "<ident-token>",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "juxtaposition",
         },
     },
 };

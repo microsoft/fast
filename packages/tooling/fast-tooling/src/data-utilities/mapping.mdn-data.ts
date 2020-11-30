@@ -6,7 +6,12 @@
  * The files follow the Value Definition Syntax
  * Defined here: https://developer.mozilla.org/en-US/docs/Web/CSS/Value_definition_syntax
  */
-import { appliesto, MDNCSS, MDNCSSPropertyConfig } from "./mapping.mdn-data.types";
+import {
+    appliesto,
+    MDNCSS,
+    MDNCSSPropertyConfig,
+    MDNCSSSyntaxConfig,
+} from "./mapping.mdn-data.types";
 import { XOR } from "./type.utilities";
 
 // Capture prepended string literals
@@ -192,6 +197,34 @@ export interface CSSSyntaxValue {
 
 export interface CSSSyntaxMap {
     [key: string]: CSSSyntaxValue;
+}
+
+export interface CSSSyntax {
+    /**
+     * The syntax name
+     */
+    name: string;
+
+    /**
+     * A list of syntaxes
+     */
+    value: CSSSyntaxRef;
+}
+
+export interface CSSSyntaxRef {
+    /**
+     * The reference
+     */
+    ref: XOR<string, CSSSyntaxRef[]>;
+
+    /**
+     * The references combinator type
+     */
+    refCombinatorType: CombinatorType;
+}
+
+export interface CSSSyntaxDictionary {
+    [key: string]: CSSSyntax;
 }
 
 /**
@@ -516,6 +549,54 @@ export function mapCSSProperties(mdnCSS: MDNCSS): CSSPropertiesDictionary {
                 return {
                     ...resolvedDictionary,
                     [currentCSSProperty.name]: currentCSSProperty,
+                };
+            },
+            {}
+        );
+}
+
+export function resolveCSSSyntax(
+    value: string,
+    syntaxKeys: string[],
+    typeKeys: string[]
+): CSSSyntaxRef {
+    const normalizedSyntax =
+        mapCombinatorType(value) === CombinatorType.brackets
+            ? mapGroupedEntities(value)
+            : value;
+    const refCombinatorType = mapCombinatorType(normalizedSyntax);
+
+    return {
+        ref: resolveCSSPropertyReference(value, syntaxKeys, typeKeys),
+        refCombinatorType,
+    };
+}
+
+/**
+ * Maps MDN CSS syntaxes to a CSS syntaxes dictionary
+ * for tooling consumption
+ */
+export function mapCSSSyntaxes(mdnCSS: MDNCSS): CSSSyntaxDictionary {
+    const syntaxKeys: string[] = Object.keys(mdnCSS.syntaxes);
+    const typeKeys: string[] = Object.keys(mdnCSS.types);
+
+    return Object.entries(mdnCSS.syntaxes)
+        .map(
+            ([key, value]: [string, MDNCSSSyntaxConfig]): CSSSyntax => {
+                return {
+                    name: key,
+                    value: resolveCSSSyntax(value.syntax, syntaxKeys, typeKeys),
+                };
+            }
+        )
+        .reduce<CSSSyntaxDictionary>(
+            (
+                resolvedDictionary: CSSSyntaxDictionary,
+                currentCSSSyntax: CSSSyntax
+            ): CSSSyntaxDictionary => {
+                return {
+                    ...resolvedDictionary,
+                    [currentCSSSyntax.name]: currentCSSSyntax,
                 };
             },
             {}
