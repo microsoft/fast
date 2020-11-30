@@ -23,32 +23,6 @@ This control is also not intended to be a "one size fits all" approach for contr
 
 ### Risks and Challenges
 
-#### Nesting:
-
-Infinite nesting of menus (submenus) presents a challenge for keyboard navigation and styling.
-
-```html
-<fast-menu>
-    <fast-menu-item>Menu item one</fast-menu-item>
-    <fast-menu-item>Menu item two</fast-menu-item>
-    <fast-menu-item>
-        Menu item three
-        <fast-menu slot="menu">
-            <fast-menu-item>Nested item one</fast-menu-item>
-            <fast-menu-item>Nested item two</fast-menu-item>
-            <fast-menu-item>
-                Nested item three
-                <fast-menu slot="menu">
-                    <fast-menu-item>Nested item one</fast-menu-item>
-                    <fast-menu-item>Nested item two</fast-menu-item>
-                </fast-menu>
-            </fast-menu-item>
-        </fast-menu>
-    </fast-menu-item>
-    <fast-menu-item>Menu item four</fast-menu-item>
-</fast-context-menu>
-```
-
 #### Icon support:
 
 Consider a scenario where we have the following menu - some menu items have glyphs, others do not:
@@ -109,15 +83,14 @@ The third item in the menu has a glyph, which would inset the text from the othe
 
 *Slots:*
 - before - slot which precedes content
-- content - slot for the content (the default slot for the item)
+- default - slot for the content (the default slot for the item)
 - after - slot which comes after content
-- menu - the slot used to generate a submenu
+- submenu - the slot used to generate a submenu
 
 *CSS Parts*
 - before
 - content
 - after
-- menu
 
 *Events:*
 - click (event) - event for when the item has been clicked or invoked via keyboard
@@ -150,12 +123,12 @@ Nested menu:
     <fast-menu-item>Menu item two</fast-menu-item>
     <fast-menu-item>
         Menu item three
-        <fast-menu slot="menu">
+        <fast-menu slot="submenu">
             <fast-menu-item>Nested item one</fast-menu-item>
             <fast-menu-item>Nested item two</fast-menu-item>
             <fast-menu-item>
                 Nested item three
-                <fast-menu slot="menu">
+                <fast-menu slot="submenu">
                     <fast-menu-item>Nested item one</fast-menu-item>
                     <fast-menu-item>Nested item two</fast-menu-item>
                 </fast-menu>
