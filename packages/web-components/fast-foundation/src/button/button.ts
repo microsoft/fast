@@ -173,7 +173,7 @@ export class Button extends FormAssociatedButton {
     public contentContainer: HTMLSpanElement;
     public handleContentChange(): void {
         this.contentContainer.classList.toggle(
-            "default",
+            "content",
             this.content.assignedNodes().length > 0
         );
     }
