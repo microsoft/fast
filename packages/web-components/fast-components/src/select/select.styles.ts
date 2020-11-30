@@ -32,8 +32,10 @@ export const SelectStyles = css`
         background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        box-sizing: border-box;
         color: ${neutralForegroundRestBehavior.var};
         contain: contents;
+        height: calc(${heightNumber} * 1px);
         position: relative;
         user-select: none;
         min-width: 250px;
@@ -69,7 +71,7 @@ export const SelectStyles = css`
         font: inherit;
         line-height: var(--type-ramp-base-line-height);
         min-height: calc(${heightNumber} * 1px);
-        padding: calc(var(--design-unit) * 2.25px);
+        padding: 0 calc(var(--design-unit) * 2.25px);
         width: 100%;
     }
 
