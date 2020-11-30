@@ -169,12 +169,12 @@ export class Button extends FormAssociatedButton {
         this.form?.reset();
     };
 
-    public default: HTMLSlotElement;
-    public defaultContainer: HTMLSpanElement;
-    public handleDefaultContentChange(): void {
-        this.defaultContainer.classList.toggle(
+    public content: HTMLSlotElement;
+    public contentContainer: HTMLSpanElement;
+    public handleContentChange(): void {
+        this.contentContainer.classList.toggle(
             "default",
-            this.default.assignedNodes().length > 0
+            this.content.assignedNodes().length > 0
         );
     }
 }

@@ -45,10 +45,7 @@ export const ButtonTemplate = html<Button>`
     >
         ${startTemplate}
         <span class="content" part="content">
-            <slot
-                ${ref("default")}
-                @slotchange="${x => x.handleDefaultContentChange()}"
-            ></slot>
+            <slot ${ref("content")} @slotchange="${x => x.handleContentChange()}"></slot>
         </span>
         ${endTemplate}
     </button>
