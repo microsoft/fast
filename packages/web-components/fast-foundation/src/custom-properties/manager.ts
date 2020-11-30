@@ -327,9 +327,8 @@ export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase
         handleChange: () => {
             this._sheet = this.styles.sheet!;
 
-            this.customPropertyTarget = (this.sheet!.rules[
-                this.sheet!.insertRule(hostSelector)
-            ] as CSSStyleRule).style;
+            const key = this.sheet!.insertRule(hostSelector);
+            this.customPropertyTarget = (this.sheet!.rules[key] as CSSStyleRule).style;
 
             Observable.getNotifier(this._owner?.$fastController).unsubscribe(
                 this.handleConnection,
