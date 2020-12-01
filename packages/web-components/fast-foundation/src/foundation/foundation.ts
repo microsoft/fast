@@ -11,6 +11,8 @@ import { Configuration, DIConfiguration, unprefix } from "../configuration";
  * 1. Connects the element to the nearest FASTProvider
  * 2. Allows resolving the element template from the instance or the FASTProvider
  * 3. Allows resolving the element styles from the instance or the FASTProvider
+ *
+ * @public
  */
 export class FoundationElement extends FASTElement {
     @DIConfiguration

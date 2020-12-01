@@ -16,6 +16,10 @@ export interface DesignTokenProvider extends FASTElement, HTMLElement {
     readonly designTokenRegistry: DesignTokenRegistry;
 }
 
+/**
+ * DesignTokenProvider mixin
+ * @public
+ */
 export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TBase) => {
     const C = class extends Base implements DesignTokenProvider {
         public readonly designTokens: InheritableDesignTokenLibrary<any>;
@@ -46,8 +50,8 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
          * Handles changes to design tokens, detaching any stale custom property stylesheets
          * and attaching new ones
          * @internal
-         * @param source the source library object
-         * @param keys
+         * @param source - the source library object
+         * @param keys - The changed design-token keys
          */
         public handleChange(source: DesignTokenLibraryImpl<any>, keys: Array<any>) {
             keys.forEach(key => {
@@ -78,6 +82,11 @@ export default <TBase extends Constructable<FASTElement & HTMLElement>>(Base: TB
     return C;
 };
 
+/**
+ * Dependency injection symbol for the DesignTokenProvider
+ *
+ * @public
+ */
 export const DIDesignTokenProvider: InterfaceSymbol<
     DesignTokenProvider,
     any

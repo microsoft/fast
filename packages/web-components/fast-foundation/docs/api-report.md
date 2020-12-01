@@ -219,7 +219,7 @@ export interface ComponentConfiguration extends ConfigurationOptions {
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
-// @public (undocumented)
+// @public
 export interface Configuration {
     attachDesignTokensTo(doc: Document): Configuration;
     getDefaultStylesFor(baseName: string): ElementStyles | null;
@@ -368,7 +368,7 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     evaluate(definition: CSSCustomPropertyDefinition): string;
 }
 
-// @public (undocumented)
+// @public
 export class CustomPropertyManagerImpl {
     static format(name: string): string;
     get(key: string, value: any): ElementStyles;
@@ -407,7 +407,7 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
-// @public (undocumented)
+// @public
 export interface DerivedTokenValue<T extends {}, K, D extends Array<keyof T>> {
     // (undocumented)
     dependencies?: D;
@@ -480,7 +480,7 @@ export interface DesignTokenLibrary<T extends {}> {
     unsubscribe(subscriber: Subscriber, ...keys: Array<keyof T>): void;
 }
 
-// @public (undocumented)
+// @public
 export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
     #constructor(init?: T);
     delete<K extends keyof T>(key: K): void;
@@ -810,7 +810,7 @@ export class Dialog extends FASTElement {
 // @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
 
-// @public (undocumented)
+// @public
 export const DIConfiguration: InterfaceSymbol<Configuration, any>;
 
 // @public
@@ -818,10 +818,10 @@ export const DICustomPropertyManager: InterfaceSymbol<CustomPropertyManager>;
 
 // Warning: (ae-forgotten-export) The symbol "DesignTokenProvider" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @public
 export const DIDesignTokenProvider: InterfaceSymbol<DesignTokenProvider_2, any>;
 
-// @public (undocumented)
+// @public
 export const DIDesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<any>>;
 
 // @public
@@ -1391,7 +1391,7 @@ export class StartEnd {
 // @public
 export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
 
-// @public (undocumented)
+// @public
 export type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
 
 // @public
@@ -1720,7 +1720,7 @@ export function unprefix(name: string): string;
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-tokens/provider.d.ts:13:9 - (ae-forgotten-export) The symbol "DesignTokenRegistry" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:104:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:164:5 - (ae-forgotten-export) The symbol "createInterface" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

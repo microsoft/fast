@@ -42,20 +42,32 @@ if (!("metadata" in Reflect)) {
     };
 }
 
+/**
+ * @public
+ */
 export type Injectable<T = {}> = Constructable<T> & { inject?: Key[] };
 
+/**
+ * @public
+ */
 export type ResolveCallback<T = any> = (
     handler: Container,
     requestor: Container,
     resolver: Resolver<T>
 ) => T;
 
+/**
+ * @public
+ */
 export type InterfaceSymbol<Key = any, TBase extends {} = {}> = (
     target: TBase,
     property: string,
     index?: number
 ) => void;
 
+/**
+ * @public
+ */
 export interface DefaultableInterfaceSymbol<Key, Type = any>
     extends InterfaceSymbol<Key, Type> {
     withDefault(
@@ -80,21 +92,36 @@ interface ResolverLike<C, K = any> {
     getFactory?(container: C): (K extends Constructable ? Factory<K> : never) | null;
 }
 
+/**
+ * @public
+ */
 /* eslint-disable-next-line */
 export interface Resolver<K = any> extends ResolverLike<Container, K> {}
 
+/**
+ * @public
+ */
 export interface Registration<K = any> {
     register(container: Container, key?: Key): Resolver<K>;
 }
 
+/**
+ * @public
+ */
 export type Transformer<K> = (instance: Resolved<K>) => Resolved<K>;
 
+/**
+ * @public
+ */
 export interface Factory<T extends Constructable = any> {
     readonly Type: T;
     registerTransformer(transformer: Transformer<T>): boolean;
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
 }
 
+/**
+ * @public
+ */
 export interface ServiceLocator {
     has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
     get<K extends Key>(key: K): Resolved<K>;
@@ -108,10 +135,16 @@ export interface ServiceLocator {
     ): readonly Resolved<K>[];
 }
 
+/**
+ * @public
+ */
 export interface Registry {
     register(container: Container, ...params: unknown[]): void | Resolver | Container;
 }
 
+/**
+ * @public
+ */
 export interface Container extends ServiceLocator {
     register(...params: any[]): Container;
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
@@ -128,13 +161,22 @@ export interface Container extends ServiceLocator {
     createChild(): Container;
 }
 
+/**
+ * @public
+ */
 export type RegisterSelf<T extends Constructable> = {
     register(container: Container): Resolver<InstanceType<T>>;
     registerInRequestor: boolean;
 };
 
+/**
+ * @public
+ */
 export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
+/**
+ * @public
+ */
 export type Resolved<K> = K extends InterfaceSymbol<infer T>
     ? T
     : K extends Constructable
@@ -144,7 +186,9 @@ export type Resolved<K> = K extends InterfaceSymbol<infer T>
         ? InstanceType<T1>
         : T1
     : K;
-
+/**
+ * @public
+ */
 export const enum ResolverStrategy {
     instance = 0,
     singleton = 1,
@@ -216,6 +260,9 @@ function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
     return clone;
 }
 
+/**
+ * @public
+ */
 export class ResolverBuilder<K> {
     public constructor(private container: Container, private key: Key) {}
 
@@ -255,11 +302,17 @@ export class ResolverBuilder<K> {
 
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
 
+/**
+ * @public
+ */
 export type ParentLocator = (owner: any) => Container | null;
 
 const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const defaultFriendlyName = "(anonymous)";
 
+/**
+ * @public
+ */
 export interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
@@ -276,7 +329,9 @@ function domParentLocator(element: HTMLElement): Container {
 
     return event.detail.container || DI.getOrCreateDOMContainer();
 }
-
+/**
+ * @public
+ */
 export interface InterfaceConfiguration {
     /**
      * The friendly name for the interface. Useful for debugging.
@@ -285,7 +340,7 @@ export interface InterfaceConfiguration {
 
     /**
      * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link Observable.notify | notification }
+     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable.notify | notification }
      * will be emitted for the property, with the previous and next values provided to any subscriber.
      */
     respectConnection?: boolean;
@@ -400,6 +455,9 @@ function createInterface<K extends Key, T = any>(nameOrConfig?: any) {
     return Interface;
 }
 
+/**
+ * @public
+ */
 export const DI = Object.freeze({
     createContainer(): Container {
         return new ContainerImpl(null, () => null);
@@ -567,8 +625,19 @@ export const DI = Object.freeze({
     },
 });
 
+/**
+ * @public
+ */
 export const inject = DI.inject;
+
+/**
+ * @public
+ */
 export const Container = DI.createInterface<Container>("Container").noDefault();
+
+/**
+ * @public
+ */
 export const ServiceLocator = (Container as unknown) as InterfaceSymbol<ServiceLocator>;
 
 class ResolverImpl implements Resolver, Registration {
@@ -1234,7 +1303,7 @@ class ContainerImpl implements Container {
 }
 
 /**
- * you can use the resulting {@linkcode IRegistration} of any of the factory methods
+ * you can use the resulting {@link (Registration:interface)} of any of the factory methods
  * to register with the container, e.g.
  * ```
  * class Foo {}
@@ -1242,30 +1311,32 @@ class ContainerImpl implements Container {
  * container.register(Registration.instance(Foo, new Foo()));
  * container.get(Foo);
  * ```
+ *
+ * @public
  */
 export const Registration = Object.freeze({
     /**
      * allows you to pass an instance.
-     * Every time you request this {@linkcode Key} you will get this instance back.
+     * Every time you request this {@link Key} you will get this instance back.
      * ```
      * Registration.instance(Foo, new Foo()));
      * ```
      *
-     * @param key
-     * @param value
+     * @param key - The dependency key
+     * @param value - The dependency value
      */
     instance<T>(key: Key, value: T): Registration<T> {
         return new ResolverImpl(key, ResolverStrategy.instance, value);
     },
     /**
      * Creates an instance from the class.
-     * Every time you request this {@linkcode Key} you will get the same one back.
+     * Every time you request this {@link Key} you will get the same one back.
      * ```
      * Registration.singleton(Foo, Foo);
      * ```
      *
-     * @param key
-     * @param value
+     * @param key - The dependency key
+     * @param value - The dependency value
      */
     singleton<T extends Constructable>(
         key: Key,
@@ -1275,13 +1346,13 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from a class.
-     * Every time you request this {@linkcode Key} you will get a new instance.
+     * Every time you request this {@link Key} you will get a new instance.
      * ```
      * Registration.instance(Foo, Foo);
      * ```
      *
-     * @param key
-     * @param value
+     * @param key - The dependency key
+     * @param value - The dependency value
      */
     transient<T extends Constructable>(
         key: Key,
@@ -1291,31 +1362,31 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from the method passed.
-     * Every time you request this {@linkcode Key} you will get a new instance.
+     * Every time you request this {@link Key} you will get a new instance.
      * ```
      * Registration.callback(Foo, () => new Foo());
      * Registration.callback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key
-     * @param callback
+     * @param key - The dependency key
+     * @param callback - The callback to invoke
      */
     callback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(key, ResolverStrategy.callback, callback);
     },
     /**
      * Creates an instance from the method passed.
-     * On the first request for the {@linkcode Key} your callback is called and returns an instance.
-     * subsequent requests for the {@linkcode Key}, the initial instance returned will be returned.
-     * If you pass the same {@linkcode Registration} to another container the same cached value will be used.
+     * On the first request for the {@link Key} your callback is called and returns an instance.
+     * subsequent requests for the {@link Key}, the initial instance returned will be returned.
+     * If you pass the same {@link (Registration:interface)} to another container the same cached value will be used.
      * Should all references to the resolver returned be removed, the cache will expire.
      * ```
      * Registration.cachedCallback(Foo, () => new Foo());
      * Registration.cachedCallback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key
-     * @param callback
+     * @param key - The dependency key
+     * @param callback - The callback to invoke
      */
     cachedCallback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(
@@ -1325,8 +1396,8 @@ export const Registration = Object.freeze({
         );
     },
     /**
-     * creates an alternate {@linkcode Key} to retrieve an instance by.
-     * Returns the same scope as the original {@linkcode Key}.
+     * creates an alternate {@link Key} to retrieve an instance by.
+     * Returns the same scope as the original {@link Key}.
      * ```
      * Register.singleton(Foo, Foo)
      * Register.aliasTo(Foo, MyFoos);
@@ -1334,8 +1405,8 @@ export const Registration = Object.freeze({
      * container.getAll(MyFoos) // contains an instance of Foo
      * ```
      *
-     * @param originalKey
-     * @param aliasKey
+     * @param originalKey - The original dependency key
+     * @param aliasKey - The key to alias the original to
      */
     aliasTo<T>(originalKey: T, aliasKey: Key): Registration<Resolved<T>> {
         return new ResolverImpl(aliasKey, ResolverStrategy.alias, originalKey);

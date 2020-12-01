@@ -1,17 +1,26 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol } from "../di";
+
+/**
+ * @public
+ */
 export interface CustomPropertyManager {
     /**
      * Retrieves an {@link @microsoft/fast-element#ElementStyles} by key and value. If
      * no entry for the provided key and value exist, one will be created. The returned
      * styles contain a CSS custom property, where the property name is the key (or the aliased value)
      * and the property value is the provided value.
-     * @param key The key being resolved
-     * @param value The value of the key being resolved.
+     * @param key - The key being resolved
+     * @param value - The value of the key being resolved.
      */
     get(key: string, value: any): ElementStyles;
 }
 
+/**
+ * An implementation of {@link CustomPropertyManager}
+ *
+ * @public
+ */
 export class CustomPropertyManagerImpl {
     private static cache = new Map<string, Map<any, ElementStyles>>();
     private selector = ":host";
@@ -46,7 +55,7 @@ export class CustomPropertyManagerImpl {
 
     /**
      * Formats a name as a CSS custom property
-     * @param name The name to format
+     * @param name - The name to format
      */
     public static format(name: string) {
         return `--${name}`;
@@ -54,8 +63,11 @@ export class CustomPropertyManagerImpl {
 }
 
 /**
- * DI decorator to get the app CustomPropertyManager
+ * Dependency injection interface for {@link CustomPropertyManagerImpl}
+ *
+ * @public
  */
+
 export const DICustomPropertyManager: InterfaceSymbol<CustomPropertyManager> = DI.createInterface(
     "custom-property-manager"
 ).noDefault();

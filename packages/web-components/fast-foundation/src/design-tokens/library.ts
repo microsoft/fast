@@ -4,12 +4,24 @@ import { DI, InterfaceSymbol } from "../di";
 // Thanks to https://github.com/microsoft/TypeScript/issues/13298#issuecomment-423390349
 type ElementOf<T> = T extends (infer E)[] ? E : T;
 
+/**
+ * A static design token value
+ * @public
+ */
 export type StaticTokenValue<T extends {}, K extends keyof T> = T[K];
+
+/**
+ * A design token value derived from other design token values
+ * @public
+ */
 export interface DerivedTokenValue<T extends {}, K, D extends Array<keyof T>> {
     dependencies?: D;
     derive(values: Pick<T, ElementOf<D>>): K;
 }
 
+/**
+ * @public
+ */
 export interface DesignTokenLibrary<T extends {}> {
     /**
      * Gets the composed value associated to a key. This method will ask any
@@ -32,7 +44,7 @@ export interface DesignTokenLibrary<T extends {}> {
 
     /**
      * Determines if a value exists in the library for a provided key.
-     * @param key The key for which to check if a value exists.
+     * @param key - The key for which to check if a value exists.
      */
     has<K extends keyof T>(key: K): boolean; // TODO can we get some type-guarding here so TS knows T[K] exists?
 
@@ -63,6 +75,9 @@ export interface DesignTokenLibrary<T extends {}> {
     keys<K extends keyof T>(): Array<K>;
 }
 
+/**
+ * @public
+ */
 export interface InheritableDesignTokenLibrary<T extends {}>
     extends DesignTokenLibrary<T> {
     /**
@@ -72,11 +87,15 @@ export interface InheritableDesignTokenLibrary<T extends {}>
 
     /**
      * Determines if a value exists locally in the library for a provided key.
-     * @param key The key for which to check if a local value exists.
+     * @param key - The key for which to check if a local value exists.
      */
     hasLocal<K extends keyof T>(key: K): boolean; // TODO can we get some type-guarding here so TS knows T[K] exists?
 }
 
+/**
+ * An implementation of {@link InheritableDesignTokenLibrary} for managing application design tokens
+ * @public
+ */
 export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<T> {
     private static isDerived<T extends {}, K extends keyof T, D extends Array<keyof T>>(
         value: StaticTokenValue<T, K> | DerivedTokenValue<T, T[K], D>
@@ -355,6 +374,10 @@ export class DesignTokenLibraryImpl<T> implements InheritableDesignTokenLibrary<
     }
 }
 
+/**
+ * Dependency injection interface for {@link DesignTokenLibraryImpl}
+ * @public
+ */
 export const DIDesignTokens: InterfaceSymbol<DesignTokenLibraryImpl<
     any
 >> = DI.createInterface<DesignTokenLibraryImpl<any>>({
