@@ -101,7 +101,7 @@ fast-card > fast-button {
 
 ### Enabling two-way bindings
 
-Aurelia knows by default how to listen for changes in native elements. Now we need to teach it how to listen for changes in FAST elements. You can do so by extending its templating syntax. We suggest to create an adpater file and then register it in your `main.ts`. Here is how:
+Aurelia knows by default how to listen for changes in native elements. Now we need to teach it how to listen for changes in FAST elements. You can do so by [extending its templating syntax](https://docs.aurelia.io/examples/integration/ms-fast). We suggest to create an adpater file and then register it in your `main.ts`. Here is how:
 
 First create a `src/aurelia-fast-adapter.ts` file and copy the following code:
 
