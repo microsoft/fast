@@ -117,7 +117,9 @@ class Dictionary extends React.Component<
                         }
                         onFocus={this.handleKeyFocus(propertyName)}
                         onBlur={this.handleKeyBlur(propertyName)}
+                        onKeyDown={this.handleKeyPress()}
                         onChange={this.handleKeyChange(propertyName)}
+                        readOnly={this.props.additionalProperties === false}
                     />
                     <button
                         className={dictionary_itemControlRemoveTrigger}
@@ -226,6 +228,15 @@ class Dictionary extends React.Component<
                 dictionaryId: this.props.dictionaryId,
                 value: void 0,
             });
+        };
+    };
+
+    private handleKeyPress = (): ((e: React.KeyboardEvent<HTMLInputElement>) => void) => {
+        return (e: React.KeyboardEvent<HTMLInputElement>): void => {
+            if (e.keyCode === 13) {
+                e.currentTarget.blur();
+                e.preventDefault();
+            }
         };
     };
 
