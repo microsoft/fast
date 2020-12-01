@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedButton } from "./button.form-associated";
@@ -129,6 +129,16 @@ export class Button extends FormAssociatedButton {
     }
 
     /**
+     *
+     * Default slotted content
+     *
+     * @public
+     * @remarks
+     */
+    @observable
+    public defaultSlottedContent: HTMLElement[];
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
@@ -170,12 +180,9 @@ export class Button extends FormAssociatedButton {
     };
 
     public content: HTMLSlotElement;
-    public contentContainer: HTMLSpanElement;
+    public root: HTMLButtonElement;
     public handleContentChange(): void {
-        this.contentContainer.classList.toggle(
-            "content",
-            this.content.assignedNodes().length > 0
-        );
+        this.root.classList.toggle("content", this.content.assignedNodes().length > 0);
     }
 }
 

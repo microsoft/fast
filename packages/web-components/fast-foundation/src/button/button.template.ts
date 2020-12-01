@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, slotted, elements } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Button } from "./button";
 
@@ -42,10 +42,15 @@ export const ButtonTemplate = html<Button>`
         aria-pressed="${x => x.ariaPressed}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
+        ${ref("root")}
     >
         ${startTemplate}
-        <span class="content" part="content">
-            <slot ${ref("content")} @slotchange="${x => x.handleContentChange()}"></slot>
+        <span part="content">
+            <slot
+                ${slotted({
+                    property: "defaultSlottedContent",
+                })}
+            ></slot>
         </span>
         ${endTemplate}
     </button>
