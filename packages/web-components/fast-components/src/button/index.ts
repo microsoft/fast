@@ -50,6 +50,12 @@ export class FASTButton extends Button {
             this.appearance = "neutral";
         }
     }
+
+    private defaultSlottedContentChanged(oldValue, newValue): void {
+        if (this.defaultSlottedContent.length === 1) {
+            this.classList.toggle("has-svg");
+        }
+    }
 }
 
 /**
