@@ -51,9 +51,9 @@ export class FASTButton extends Button {
         }
     }
 
-    private defaultSlottedContentChanged(oldValue, newValue): void {
+    public defaultSlottedContentChanged(oldValue, newValue): void {
         if (this.defaultSlottedContent.length === 1) {
-            this.classList.toggle("has-svg");
+            this.classList.add("is-svg");
         }
     }
 }
