@@ -99,6 +99,89 @@ fast-card > fast-button {
 }
 ```
 
+### Enabling two-way bindings
+
+Aurelia knows by default how to listen for changes in native elements. Now we need to teach it how to listen for changes in FAST elements. You can do so by extending its templating syntax. We suggest to create an adpater file and then register it in your `main.ts`. Here is how:
+
+First create a `src/aurelia-fast-adapter.ts` file and copy the following code:
+
+```ts
+// aurelia-fast-adapter.ts
+import { IContainer, IAttrSyntaxTransformer, NodeObserverLocator, AppTask } from 'aurelia';
+
+export class AureliaFastAdapter {
+
+  public static register(container: IContainer) {
+    AureliaFastAdapter.extendTemplatingSyntax(container);
+  }
+
+  private static extendTemplatingSyntax(container) {
+    AppTask.with(IContainer).beforeCreate().call(container => {
+      const attrSyntaxTransformer = container.get(IAttrSyntaxTransformer);
+      const nodeObserverLocator = container.get(NodeObserverLocator);
+      attrSyntaxTransformer.useTwoWay((el, property) => {
+        switch (el.tagName) {
+          case 'FAST-SLIDER':
+          case 'FAST-TEXT-FIELD':
+          case 'FAST-TEXT-AREA':
+            return property === 'value';
+          case 'FAST-CHECKBOX':
+          case 'FAST-RADIO':
+          case 'FAST-RADIO-GROUP':
+          case 'FAST-SWITCH':
+            return property === 'checked';
+          case 'FAST-TABS':
+            return property === 'activeid';
+          default:
+            return false;
+        }
+      });
+      // Teach Aurelia what events to use to observe properties of elements.
+      const valuePropertyConfig = { events: ['input', 'change'] };
+      nodeObserverLocator.useConfig({
+        'FAST-CHECKBOX': {
+          value: valuePropertyConfig
+        },
+        'FAST-RADIO': {
+          value: valuePropertyConfig
+        },
+        'FAST-RADIO-GROUP': {
+          value: valuePropertyConfig
+        },
+        'FAST-SLIDER': {
+          value: valuePropertyConfig
+        },
+        'FAST-SWITCH': {
+          value: valuePropertyConfig
+        },
+        'FAST-TABS': {
+          value: valuePropertyConfig
+        },
+        'FAST-TEXT-FIELD': {
+          value: valuePropertyConfig
+        },
+        'FAST-TEXT-AREA': {
+          value: valuePropertyConfig
+        }
+      });
+    }).register(container);
+  }
+}
+```
+
+Then, open your `src/main.ts` file and register your new adapter as such: 
+
+```ts
+// main.ts
+
+import { AureliaFastAdapter } from './aurelia-fast-adapter';
+
+Aurelia
+  .register(AureliaFastAdapter) // add this line
+  // other registrations...
+  .start();
+```
+
 Congratulations! You're now set up to use FAST and Aurelia 2!
 
 ## Aurelia 1
