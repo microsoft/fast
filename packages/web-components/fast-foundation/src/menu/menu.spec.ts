@@ -32,6 +32,23 @@ describe("Menu", () => {
         const { element, connect, disconnect } = await fixture(html<FASTMenu>`
             <fast-menu>
                 <div>I put a div in my menu</div>
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item id="id2">Bar</fast-menu-item>
+                <fast-menu-item>Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+
+        expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
+
+        await disconnect();
+    });
+
+    it("should focus disabled items", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <div>I put a div in my menu</div>
                 <fast-menu-item disabled id="id1">Foo</fast-menu-item>
                 <fast-menu-item id="id2">Bar</fast-menu-item>
                 <fast-menu-item>Baz</fast-menu-item>
