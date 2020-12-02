@@ -196,7 +196,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     indeterminate: boolean;
     // @internal
     initialValue: string;
@@ -568,6 +568,8 @@ export class Listbox extends FASTElement {
     selectNextOption(): void;
     // @internal
     selectPreviousOption(): void;
+    // @internal (undocumented)
+    protected setDefaultSelectedOption(): void;
     setSelectedOption(index?: number): void;
     static slottedOptionFilter: (n: ListboxOption) => boolean;
     // @internal
@@ -724,7 +726,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)
@@ -783,6 +785,8 @@ export class Select extends FormAssociatedSelect {
     get displayValue(): string;
     // (undocumented)
     focusoutHandler(e: FocusEvent): boolean | void;
+    // @internal (undocumented)
+    formResetCallback: () => void;
     // (undocumented)
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
@@ -987,7 +991,7 @@ export class Switch extends FormAssociatedSwitch {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)

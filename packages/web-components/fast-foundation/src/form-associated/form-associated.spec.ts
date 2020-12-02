@@ -1,12 +1,15 @@
 import { FormAssociated } from "./form-associated";
 import { assert, expect } from "chai";
+import { fixture } from "../fixture";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
+
+const template = html`
+    <slot></slot>
+`;
 
 @customElement({
     name: "test-element",
-    template: html`
-        <slot></slot>
-    `,
+    template,
 })
 class TestElement extends FormAssociated(
     class extends FASTElement {
@@ -24,9 +27,7 @@ interface TestElement extends FormAssociated {}
 
 @customElement({
     name: "custom-initial-value",
-    template: html`
-        <slot></slot>
-    `,
+    template,
 })
 class CustomInitialValue extends FormAssociated(
     class extends FASTElement {
@@ -44,191 +45,248 @@ class CustomInitialValue extends FormAssociated(
 
 interface CustomInitialValue extends FormAssociated {}
 
+async function setup(el: string = "test-element") {
+    const { connect, disconnect, element, parent } = await fixture<TestElement>(el);
+
+    return { connect, disconnect, element, parent };
+}
+
 describe("FormAssociated:", () => {
     describe("construction and connection:", () => {
-        it("should have an empty string value prior to connectedCallback", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            expect(el.value).to.equal("");
+        it("should have an empty string value prior to connectedCallback", async () => {
+            const { element } = await setup();
+
+            expect(element.value).to.equal("");
         });
 
-        it("should initialize to the initial value if no value property is set", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            document.body.appendChild(el);
+        it("should initialize to the initial value if no value property is set", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            expect(el.value).to.equal(el["initialValue"]);
+            await connect();
 
-            document.body.removeChild(el);
+            expect(element.value).to.equal(element.initialValue);
+
+            await disconnect();
         });
 
-        it("should initialize to the provided value attribute if set pre-connection", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            el.setAttribute("value", "foobar");
-            document.body.appendChild(el);
+        it("should initialize to the provided value ATTRIBUTE if set pre-connection", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            expect(el.value).to.equal("foobar");
+            element.setAttribute("value", "foobar");
 
-            document.body.removeChild(el);
+            await connect();
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
         });
 
-        it("should initialize to the provided value attribute if set post-connection", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            document.body.appendChild(el);
-            el.setAttribute("value", "foobar");
+        it("should initialize to the provided value ATTRIBUTE if set post-connection", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            expect(el.value).to.equal("foobar");
+            await connect();
 
-            document.body.removeChild(el);
+            element.setAttribute("value", "foobar");
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
         });
 
-        it("should initialize to the provided value property if set pre-connection", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            el.value = "foobar";
-            document.body.appendChild(el);
+        it("should initialize to the provided value PROPERTY if set pre-connection", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            expect(el.value).to.equal("foobar");
+            element.value = "foobar";
 
-            document.body.removeChild(el);
+            await connect();
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
         });
 
-        it("should initialize to the provided value property if set post-connection", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            document.body.appendChild(el);
-            el.value = "foobar";
+        it("should initialize to the provided value PROPERTY if set post-connection", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            expect(el.value).to.equal("foobar");
+            await connect();
 
-            document.body.removeChild(el);
+            element.value = "foobar";
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
         });
 
-        it("should initialize to the initial value when initial value is assigned by extending class", () => {
-            const el: CustomInitialValue = document.createElement(
+        it("should initialize to the initial value when initial value is assigned by extending class", async () => {
+            const { connect, disconnect, element } = await setup("custom-initial-value");
+
+            await connect();
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
+        });
+
+        it("should communicate initial value to the parent form", async () => {
+            const { connect, disconnect, element, parent } = await setup(
                 "custom-initial-value"
-            ) as CustomInitialValue;
-            document.body.appendChild(el);
+            );
 
-            expect(el.value).to.equal("foobar");
+            element.setAttribute("name", "test");
 
-            document.body.removeChild(el);
-        });
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
 
-        it("should communicate initial value to the parent form", () => {
-            const el: CustomInitialValue = document.createElement(
-                "custom-initial-value"
-            ) as CustomInitialValue;
-            el.setAttribute("name", "test");
-            const form: HTMLFormElement = document.createElement("form");
-            form.appendChild(el);
-            document.body.appendChild(form);
+            await connect();
+
             const formData = new FormData(form);
 
             expect(formData.get("test")).to.equal("foobar");
 
-            document.body.removeChild(form);
+            await disconnect();
         });
     });
 
     describe("changes:", () => {
-        it("setting value attribute should set value if value property has not been explicitly set", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            document.body.appendChild(el);
+        it("setting value ATTRIBUTE should set value if value PROPERTY has not been explicitly set", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            el.setAttribute("value", "foobar");
-            expect(el.value).to.equal("foobar");
+            await connect();
 
-            el.setAttribute("value", "barbat");
-            expect(el.value).to.equal("barbat");
+            element.setAttribute("value", "foobar");
 
-            document.body.removeChild(el);
+            expect(element.value).to.equal("foobar");
+
+            element.setAttribute("value", "barbat");
+
+            expect(element.value).to.equal("barbat");
+
+            await disconnect();
         });
 
-        it("setting value attribute should not set value if value property has been explicitly set", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            document.body.appendChild(el);
+        it("setting value ATTRIBUTE should not set value if value PROPERTY has been explicitly set", async () => {
+            const { connect, disconnect, element } = await setup();
 
-            el.value = "foobar";
-            expect(el.value).to.equal("foobar");
+            await connect();
 
-            el.setAttribute("value", "barbat");
-            expect(el.value).to.equal("foobar");
+            element.value = "foobar";
 
-            document.body.removeChild(el);
+            expect(element.value).to.equal("foobar");
+
+            element.setAttribute("value", "barbat");
+
+            expect(element.value).to.equal("foobar");
+
+            await disconnect();
         });
 
-        it("setting value attribute should set parent form value if value property has not been explicitly set", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            el.setAttribute("name", "test");
+        it("setting value ATTRIBUTE should set parent form value if value PROPERTY has not been explicitly set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
 
-            const form: HTMLFormElement = document.createElement("form");
-            form.appendChild(el);
-            document.body.appendChild(form);
+            element.setAttribute("name", "test");
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
 
             let formData = new FormData(form);
+
             expect(formData.get("test")).to.equal("");
 
-            el.setAttribute("value", "foobar");
+            element.setAttribute("value", "foobar");
+
             formData = new FormData(form);
+
             expect(formData.get("test")).to.equal("foobar");
 
-            document.body.removeChild(form);
+            await disconnect();
         });
 
-        it("setting value property should set parent form value", () => {
-            const el: TestElement = document.createElement("test-element") as TestElement;
-            el.setAttribute("name", "test");
+        it("setting value PROPERTY should set parent form value", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+            element.setAttribute("name", "test");
 
-            const form: HTMLFormElement = document.createElement("form");
-            form.appendChild(el);
-            document.body.appendChild(form);
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
 
             let formData = new FormData(form);
+
             expect(formData.get("test")).to.equal("");
 
-            el.value = "foobar";
+            element.value = "foobar";
+
             formData = new FormData(form);
+
             expect(formData.get("test")).to.equal("foobar");
 
-            document.body.removeChild(form);
+            await disconnect();
         });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
-        it("should reset it's value property to an empty string if no value attribute is set", () => {
-            const element = document.createElement("test-element") as TestElement;
+        it("should reset it's value property to an empty string if no value attribute is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === null);
+
             assert(element.value === "test-value");
 
             form.reset();
 
             assert(element.value === "");
+
+            await disconnect();
         });
 
-        it("should reset it's value property to the value of the value attribute if it is set", () => {
-            const element = document.createElement("test-element") as TestElement;
+        it("should reset it's value property to the value of the value attribute if it is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.setAttribute("value", "attr-value");
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === "attr-value");
+
             assert(element.value === "test-value");
 
             form.reset();
 
             assert(element.value === "attr-value");
+
+            await disconnect();
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
-            const element = document.createElement("test-element") as TestElement;
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "test-value";
+
             element.setAttribute("value", "attr-value");
 
             assert(element.value === "test-value");
@@ -240,6 +298,8 @@ describe("FormAssociated:", () => {
             element.setAttribute("value", "new-attr-value");
 
             assert(element.value === "new-attr-value");
+
+            await disconnect();
         });
     });
 });

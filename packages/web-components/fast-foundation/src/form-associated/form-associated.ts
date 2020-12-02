@@ -194,8 +194,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @alpha
          */
         public get validity(): ValidityState {
-            return supportsElementInternals
-                ? this.elementInternals!.validity
+            return this.elementInternals
+                ? this.elementInternals.validity
                 : this.proxy.validity;
         }
 
@@ -206,9 +206,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @alpha
          */
         public get form(): HTMLFormElement | null {
-            return supportsElementInternals
-                ? this.elementInternals!.form
-                : this.proxy.form;
+            return this.elementInternals ? this.elementInternals.form : this.proxy.form;
         }
 
         /**
@@ -218,8 +216,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @alpha
          */
         public get validationMessage(): string {
-            return supportsElementInternals
-                ? this.elementInternals!.validationMessage
+            return this.elementInternals
+                ? this.elementInternals.validationMessage
                 : this.proxy.validationMessage;
         }
 
@@ -228,8 +226,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * form is submitted
          */
         public get willValidate(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.willValidate
+            return this.elementInternals
+                ? this.elementInternals.willValidate
                 : this.proxy.willValidate;
         }
 
@@ -237,7 +235,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * A reference to all associated label elements
          */
         public get labels(): ReadonlyArray<Node> {
-            if (supportsElementInternals) {
+            if (this.elementInternals) {
                 return Object.freeze(Array.from(this.elementInternals!.labels));
             } else if (
                 this.proxy instanceof HTMLElement &&
@@ -457,8 +455,12 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.dirtyValue = false;
             }
 
-            if (!supportsElementInternals) {
+            if (!this.elementInternals) {
                 this.attachProxy();
+            }
+
+            if (this.form) {
+                this.form.addEventListener("reset", this.formResetCallback);
             }
         }
 
@@ -469,14 +471,18 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             this.proxyEventsToBlock.forEach(name =>
                 this.proxy.removeEventListener(name, this.stopPropagation)
             );
+
+            if (this.form) {
+                this.form.removeEventListener("reset", this.formResetCallback);
+            }
         }
 
         /**
          * Return the current validity of the element.
          */
         public checkValidity(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.checkValidity()
+            return this.elementInternals
+                ? this.elementInternals.checkValidity()
                 : this.proxy.checkValidity();
         }
 
@@ -485,8 +491,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * If false, fires an invalid event at the element.
          */
         public reportValidity(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.reportValidity()
+            return this.elementInternals
+                ? this.elementInternals.reportValidity()
                 : this.proxy.reportValidity();
         }
 
@@ -504,8 +510,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             message?: string,
             anchor?: HTMLElement
         ): void {
-            if (supportsElementInternals) {
-                this.elementInternals!.setValidity(flags, message, anchor);
+            if (this.elementInternals) {
+                this.elementInternals.setValidity(flags, message, anchor);
             } else if (typeof message === "string") {
                 this.proxy.setCustomValidity(message);
             }
@@ -516,14 +522,14 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * state changed.
          * @param disabled - the disabled value of the form / fieldset
          */
-        public formDisabledCallback(disabled: boolean): void {
+        public formDisabledCallback = (disabled: boolean): void => {
             this.disabled = disabled;
-        }
+        };
 
-        public formResetCallback() {
+        public formResetCallback = (): void => {
             this.value = this.initialValue;
             this.dirtyValue = false;
-        }
+        };
 
         protected proxyInitialized: boolean = false;
 
@@ -589,7 +595,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             value: File | string | FormData | null,
             state?: File | string | FormData | null
         ): void {
-            if (supportsElementInternals && this.elementInternals) {
+            if (this.elementInternals) {
                 this.elementInternals.setFormValue(value, state || value);
             }
         }
