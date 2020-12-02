@@ -58,12 +58,14 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
+    defaultSlottedContent: HTMLElement[];
     download: string;
     href: string;
     hreflang: string;
     ping: string;
     referrerpolicy: string;
     rel: string;
+    root: HTMLButtonElement;
     target: "_self" | "_blank" | "_parent" | "_top";
     type: string;
 }

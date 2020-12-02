@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Anchor } from "./anchor";
 
@@ -38,10 +38,11 @@ export const AnchorTemplate = html<Anchor>`
         aria-owns="${x => x.ariaOwns}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
+        ${ref("root")}
     >
         ${startTemplate}
         <span class="content" part="content">
-            <slot></slot>
+            <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
         ${endTemplate}
     </a>

@@ -1,4 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -80,6 +80,21 @@ export class Anchor extends FASTElement {
      */
     @attr
     public type: string;
+
+    /**
+     *
+     * Default slotted content
+     *
+     * @public
+     * @remarks
+     */
+    @observable
+    public defaultSlottedContent: HTMLElement[];
+
+    /**
+     * References the root element
+     */
+    public root: HTMLButtonElement;
 }
 
 /**
