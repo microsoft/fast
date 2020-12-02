@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.9.0...@microsoft/fast-foundation@1.10.0) (2020-12-02)
+
+
+### Bug Fixes
+
+* fix type error in custom property manager running on safari ([#4147](https://github.com/Microsoft/fast/issues/4147)) ([6320973](https://github.com/Microsoft/fast/commit/6320973ff0e14165b2f957b42a8feee1f71af9c1))
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
 # [1.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.1...@microsoft/fast-foundation@1.9.0) (2020-11-19)
 
 
