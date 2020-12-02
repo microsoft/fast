@@ -727,18 +727,13 @@ export class AnchoredRegion extends FASTElement {
 
         this.pendingLayoutUpdate = false;
 
+        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
+            AnchoredRegionVerticalPositionLabel.undefined;
         let desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
             AnchoredRegionHorizontalPositionLabel.undefined;
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
-            // identify possible placements
             const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
-
-            // get the available space of each possible placement
-            const horizontalOptionHeights: number[] = [
-                this.getAvailableWidth(horizontalOptions[0]),
-                this.getAvailableWidth(horizontalOptions[1]),
-            ];
 
             if (this.horizontalDefaultPosition !== "unset") {
                 let dirCorrectedHorizontalDefaultPosition: string = this
@@ -782,49 +777,30 @@ export class AnchoredRegion extends FASTElement {
                             : AnchoredRegionHorizontalPositionLabel.right;
                         break;
                 }
+            }
 
-                // if not locked to default position check to see if default "fits"
-                if (this.horizontalPositioningMode !== "locktodefault") {
-                    // minimum required space
-                    const horizontalThreshold: number =
-                        this.horizontalThreshold !== undefined
-                            ? Number(this.horizontalThreshold)
-                            : this.regionDimension.width;
+            const horizontalThreshold: number =
+                this.horizontalThreshold !== undefined
+                    ? Number(this.horizontalThreshold)
+                    : this.regionDimension.width;
 
-                    // if the preferred placement doesn't fit pick the one with the most space
-                    if (
-                        horizontalOptionHeights[
-                            horizontalOptions.indexOf(desiredHorizontalPosition)
-                        ] < horizontalThreshold
-                    ) {
-                        desiredHorizontalPosition =
-                            horizontalOptionHeights[0] > horizontalOptionHeights[1]
-                                ? horizontalOptions[0]
-                                : horizontalOptions[1];
-                    }
-                }
-            } else {
-                // no preference, pick the option with the most space
+            if (
+                desiredHorizontalPosition ===
+                    AnchoredRegionHorizontalPositionLabel.undefined ||
+                (!(this.horizontalPositioningMode === "locktodefault") &&
+                    this.getAvailableWidth(desiredHorizontalPosition) <
+                        horizontalThreshold)
+            ) {
                 desiredHorizontalPosition =
-                    horizontalOptionHeights[0] > horizontalOptionHeights[1]
+                    this.getAvailableWidth(horizontalOptions[0]) >
+                    this.getAvailableWidth(horizontalOptions[1])
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
         }
 
-        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
-            AnchoredRegionVerticalPositionLabel.undefined;
-
         if (this.verticalPositioningMode !== "uncontrolled") {
-            // identify possible placements
             const verticalOptions: AnchoredRegionVerticalPositionLabel[] = this.getVerticalPositioningOptions();
-
-            // get the available space of each possible placement
-            const verticalOptionHeights: number[] = [
-                this.getAvailableHeight(verticalOptions[0]),
-                this.getAvailableHeight(verticalOptions[1]),
-            ];
-
             if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
@@ -839,31 +815,22 @@ export class AnchoredRegion extends FASTElement {
                             : AnchoredRegionVerticalPositionLabel.bottom;
                         break;
                 }
+            }
 
-                // if not locked to default position check to see if default "fits"
-                if (this.verticalPositioningMode !== "locktodefault") {
-                    // minimum required space
-                    const verticalThreshold: number =
-                        this.verticalThreshold !== undefined
-                            ? Number(this.verticalThreshold)
-                            : this.regionDimension.height;
+            const verticalThreshold: number =
+                this.verticalThreshold !== undefined
+                    ? Number(this.verticalThreshold)
+                    : this.regionDimension.height;
 
-                    // if the preferred placement doesn't fit pick the one with the most space
-                    if (
-                        verticalOptionHeights[
-                            verticalOptions.indexOf(desiredVerticalPosition)
-                        ] < verticalThreshold
-                    ) {
-                        desiredVerticalPosition =
-                            verticalOptionHeights[0] > verticalOptionHeights[1]
-                                ? verticalOptions[0]
-                                : verticalOptions[1];
-                    }
-                }
-            } else {
-                // no preference, pick the option with the most space
+            if (
+                desiredVerticalPosition ===
+                    AnchoredRegionVerticalPositionLabel.undefined ||
+                (!(this.verticalPositioningMode === "locktodefault") &&
+                    this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
+            ) {
                 desiredVerticalPosition =
-                    verticalOptionHeights[0] > verticalOptionHeights[1]
+                    this.getAvailableHeight(verticalOptions[0]) >
+                    this.getAvailableHeight(verticalOptions[1])
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
@@ -889,7 +856,7 @@ export class AnchoredRegion extends FASTElement {
         }
 
         if (positionChanged) {
-            this.$emit("change", this, { bubbles: false });
+            this.$emit("positionchange", this, { bubbles: false });
         }
     };
 
