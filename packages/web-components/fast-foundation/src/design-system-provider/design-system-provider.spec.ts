@@ -1,4 +1,4 @@
-import { Observable } from "@microsoft/fast-element";
+import { DOM, Observable } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
 import { ConstructableStylesCustomPropertyManager } from "../custom-properties";
 import { fixture } from "../fixture";
@@ -175,6 +175,8 @@ describe("A DesignSystemProvider", () => {
                     expect(
                         window.getComputedStyle(p).getPropertyValue("--color")
                     ).to.equal("blue");
+
+                    p.remove();
                 });
 
                 it("should not write the default value when the use-defaults attribute is applied but the property is also assigned", () => {
@@ -188,6 +190,8 @@ describe("A DesignSystemProvider", () => {
                     expect(
                         window.getComputedStyle(p).getPropertyValue("--color")
                     ).to.equal("pink");
+
+                    p.remove();
                 });
 
                 it("should not create a CSS custom property when the value is unassigned", () => {
@@ -199,6 +203,8 @@ describe("A DesignSystemProvider", () => {
                     expect(
                         window.getComputedStyle(p).getPropertyValue("--color")
                     ).to.equal("");
+
+                    p.remove();
                 });
 
                 it("should create a CSS custom property equal to the property value when the value is assigned", () => {
@@ -212,6 +218,8 @@ describe("A DesignSystemProvider", () => {
                     expect(
                         window.getComputedStyle(p).getPropertyValue("--color")
                     ).to.equal("red");
+
+                    p.remove();
                 });
 
                 it("should update a CSS custom property equal to the property value when the value is re-assigned", () => {
@@ -235,6 +243,8 @@ describe("A DesignSystemProvider", () => {
                     expect(
                         window.getComputedStyle(p).getPropertyValue("--color")
                     ).to.equal("blue");
+
+                    p.remove();
                 });
             });
         });
@@ -251,12 +261,14 @@ describe("A DesignSystemProvider", () => {
 
             expect(aAccessors.length).to.equal(2);
 
-            window.setTimeout(() => {
+            DOM.queueUpdate(() => {
                 Observable.getAccessors(a.designSystem).forEach(x => {
                     expect(a.designSystem[x.name]).to.equal(n.designSystem[x.name]);
                 });
                 done();
-            }, 0);
+            });
+
+            a.remove();
         });
 
         it("should update it's local design system when a parent DesignSystemProperty is changed and the local property is unset", done => {
@@ -266,7 +278,7 @@ describe("A DesignSystemProvider", () => {
             a.appendChild(b);
             document.body.appendChild(a);
 
-            window.setTimeout(() => {
+            DOM.queueUpdate(() => {
                 a.a = Symbol();
                 Observable.getAccessors(a.designSystem).forEach(x => {
                     expect(b.designSystem[x.name]).not.to.equal(undefined);
@@ -275,6 +287,8 @@ describe("A DesignSystemProvider", () => {
 
                 done();
             });
+
+            a.remove();
         });
 
         it("should update it's local design system when a local DesignSystemProperty is changed", done => {
@@ -285,13 +299,15 @@ describe("A DesignSystemProvider", () => {
             document.body.appendChild(a);
             const value = Symbol();
 
-            window.setTimeout(() => {
+            DOM.queueUpdate(() => {
                 b.a = value;
                 expect(b.designSystem["a"]).to.equal(value);
                 expect(a.designSystem["a"]).equal(a.a);
 
                 done();
             });
+
+            a.remove();
         });
     });
 
@@ -319,6 +335,7 @@ describe("A DesignSystemProvider", () => {
 
             await disconnect();
         });
+
         it("should have a design system that is the union of ancestor's when deeply nested", done => {
             const a = document.createElement("dsp-a") as DSPA;
             const b = document.createElement("dsp-b") as DSPB;
@@ -331,7 +348,7 @@ describe("A DesignSystemProvider", () => {
             a.appendChild(b);
             document.body.appendChild(a);
 
-            window.setTimeout(() => {
+            DOM.queueUpdate(() => {
                 expect(c.designSystem["a"]).not.to.equal(undefined);
                 expect(c.designSystem["b"]).not.to.equal(undefined);
                 expect(c.designSystem["c"]).not.to.equal(undefined);
@@ -344,6 +361,8 @@ describe("A DesignSystemProvider", () => {
 
                 done();
             });
+
+            a.remove();
         });
         it("should propagate property updates through providers where a parent provider doesn't declare the property as a designSystemProperty", done => {
             const a = document.createElement("dsp-a") as DSPA;
@@ -357,7 +376,7 @@ describe("A DesignSystemProvider", () => {
             a.appendChild(b);
             document.body.appendChild(a);
 
-            window.setTimeout(() => {
+            DOM.queueUpdate(() => {
                 expect(c.designSystem["a"]).to.equal(a.designSystem["a"]);
                 const symbol = Symbol();
                 a.a = symbol;
@@ -366,6 +385,8 @@ describe("A DesignSystemProvider", () => {
                 expect(c.designSystem["a"]).to.equal(symbol);
                 done();
             });
+
+            a.remove();
         });
     });
 
@@ -384,6 +405,7 @@ describe("A DesignSystemProvider", () => {
             );
             await disconnect();
         });
+
         it("should write the product of a function value to a CSS custom property after registration", async () => {
             const { a, connect, disconnect } = await setup();
             await connect();
@@ -399,6 +421,7 @@ describe("A DesignSystemProvider", () => {
 
             await disconnect();
         });
+
         it("should evaluate function values with the current designSystem object", async () => {
             const { a, connect, disconnect } = await setup();
             let arg: any;
@@ -419,6 +442,7 @@ describe("A DesignSystemProvider", () => {
 
             await disconnect();
         });
+
         it("should remove the CSSCustomProperty after registration if it has only be registered once", async () => {
             const { a, connect, disconnect } = await setup();
             await connect();
@@ -436,6 +460,7 @@ describe("A DesignSystemProvider", () => {
             );
             await disconnect();
         });
+
         it("should only remove a custom property after it has been unregistered the same number of times it has been registered", async () => {
             const { a, connect, disconnect } = await setup();
             await connect();
