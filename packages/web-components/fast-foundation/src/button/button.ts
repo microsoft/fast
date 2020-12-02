@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedButton } from "./button.form-associated";
@@ -129,6 +129,16 @@ export class Button extends FormAssociatedButton {
     }
 
     /**
+     *
+     * Default slotted content
+     *
+     * @public
+     * @remarks
+     */
+    @observable
+    public defaultSlottedContent: HTMLElement[];
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
@@ -168,6 +178,11 @@ export class Button extends FormAssociatedButton {
     private handleFormReset = () => {
         this.form?.reset();
     };
+
+    /**
+     * References the root element
+     */
+    public root: HTMLButtonElement;
 }
 
 /**

@@ -156,12 +156,14 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    defaultSlottedContent: HTMLElement[];
     formaction: string;
     formenctype: string;
     formId: string;
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
+    root: HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
