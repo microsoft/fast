@@ -62,6 +62,8 @@ export class FASTButton extends Button {
         );
         if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
             this.root.classList.add("icon-only");
+        } else {
+            this.root.classList.remove("icon-only");
         }
     }
 }
