@@ -179,11 +179,10 @@ export class Button extends FormAssociatedButton {
         this.form?.reset();
     };
 
-    public content: HTMLSlotElement;
+    /**
+     * References the root element
+     */
     public root: HTMLButtonElement;
-    public handleContentChange(): void {
-        this.root.classList.toggle("content", this.content.assignedNodes().length > 0);
-    }
 }
 
 /**

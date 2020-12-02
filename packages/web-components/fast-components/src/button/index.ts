@@ -45,15 +45,23 @@ export class FASTButton extends Button {
 
     public connectedCallback() {
         super.connectedCallback();
-
         if (!this.appearance) {
             this.appearance = "neutral";
         }
     }
 
+    /**
+     * Applies 'icon-only' class when there is only an SVG in the default slot
+     *
+     * @public
+     * @remarks
+     */
     public defaultSlottedContentChanged(oldValue, newValue): void {
-        if (this.defaultSlottedContent.length === 1) {
-            this.classList.add("is-svg");
+        const slottedElements = this.defaultSlottedContent.filter(
+            x => x.nodeType === Node.ELEMENT_NODE
+        );
+        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
+            this.root.classList.add("icon-only");
         }
     }
 }
