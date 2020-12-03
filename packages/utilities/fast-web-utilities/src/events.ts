@@ -5,7 +5,7 @@
 
 export const eventAbort: string = "abort";
 export const eventAfterPrint: string = "afterprint";
-export const eventAnimationCancel: string = "afterprint";
+export const eventAnimationCancel: string = "animationcancel";
 export const eventAnimationEnd: string = "animationend";
 export const eventAnimationIteration: string = "animationiteration";
 export const eventAnimationStart: string = "animationstart";
@@ -31,7 +31,7 @@ export const eventCopy: string = "copy";
 export const eventCut: string = "cut";
 export const eventDblClick: string = "dblclick";
 export const eventDeviceChange: string = "devicechange";
-export const eventDeviceMotion: string = "deviceMotion";
+export const eventDeviceMotion: string = "devicemotion";
 export const eventDeviceOrientation: string = "deviceorientation";
 export const eventDischargingTimeChange: string = "dischargingtimechange";
 export const eventDrag: string = "drag";
