@@ -67,9 +67,9 @@ export class FASTAnchor extends Anchor {
             x => x.nodeType === Node.ELEMENT_NODE
         );
         if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
-            this.root.classList.add("icon-only");
+            this.control.classList.add("icon-only");
         } else {
-            this.root.classList.remove("icon-only");
+            this.control.classList.remove("icon-only");
         }
     }
 }
