@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.12.0...@microsoft/fast-components@1.13.0) (2020-12-02)
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
 # [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.1...@microsoft/fast-components@1.12.0) (2020-11-19)
 
 

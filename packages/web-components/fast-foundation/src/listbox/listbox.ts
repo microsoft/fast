@@ -106,7 +106,11 @@ export class Listbox extends FASTElement {
      * @internal
      */
     protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement)) {
+        if (
+            this.$fastController.isConnected &&
+            this.contains(document.activeElement) &&
+            this.firstSelectedOption
+        ) {
             this.firstSelectedOption.focus();
             this.firstSelectedOption.scrollIntoView({ block: "nearest" });
         }
@@ -125,7 +129,7 @@ export class Listbox extends FASTElement {
     /**
      * @internal
      */
-    private setDefaultSelectedOption(): void {
+    protected setDefaultSelectedOption(): void {
         let selectedIndex = this.options.findIndex(el => el.selected);
         selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
         this.setSelectedOption(selectedIndex);

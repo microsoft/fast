@@ -11,11 +11,11 @@ import { TextFieldType } from "./text-field";
 class FASTTextField extends TextField {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTextField>(
+    const { element, connect, disconnect, parent } = await fixture<FASTTextField>(
         "fast-text-field"
     );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("TextField", () => {
@@ -573,27 +573,23 @@ describe("TextField", () => {
                             const { element, connect, disconnect } = await setup();
                             await connect();
                             const value = "";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.minlength = value.length + 1;
+                            element.type = type;
+                            element.value = value;
+                            element.minlength = value.length + 1;
 
-                            expect(el.validity.tooShort).to.equal(false);
+                            expect(element.validity.tooShort).to.equal(false);
+                            await disconnect();
                         });
                         it("should be valid if the value has a length less than the minlength", async () => {
                             const { element, connect, disconnect } = await setup();
                             await connect();
                             const value = "value";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.minlength = value.length + 1;
+                            element.type = type;
+                            element.value = value;
+                            element.minlength = value.length + 1;
 
-                            expect(el.validity.tooShort).to.equal(false);
+                            expect(element.validity.tooShort).to.equal(false);
+                            await disconnect();
                         });
                     });
 
@@ -603,14 +599,13 @@ describe("TextField", () => {
                             await connect();
 
                             const value = "";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.maxlength = value.length;
+                            element.type = type;
+                            element.value = value;
+                            element.maxlength = value.length;
 
-                            expect(el.validity.tooLong).to.equal(false);
+                            expect(element.validity.tooLong).to.equal(false);
+
+                            await disconnect();
                         });
                         it("should be valid if the value has a exceeding the maxlength", async () => {
                             const { element, connect, disconnect } = await setup();
@@ -621,6 +616,7 @@ describe("TextField", () => {
                             element.maxlength = value.length - 1;
 
                             expect(element.validity.tooLong).to.equal(false);
+                            await disconnect();
                         });
                         it("should be valid if the value has a length shorter than maxlength and the element is [required]", async () => {
                             const { element, connect, disconnect } = await setup();
@@ -632,6 +628,7 @@ describe("TextField", () => {
                             element.maxlength = value.length + 1;
 
                             expect(element.validity.tooLong).to.equal(false);
+                            await disconnect();
                         });
                     });
 
@@ -646,6 +643,7 @@ describe("TextField", () => {
                             element.value = value;
 
                             expect(element.validity.patternMismatch).to.equal(false);
+                            await disconnect();
                         });
 
                         it("should be invalid if the value does not match a pattern", async () => {
@@ -658,6 +656,7 @@ describe("TextField", () => {
                             element.value = "foo";
 
                             expect(element.validity.patternMismatch).to.equal(true);
+                            await disconnect();
                         });
                     });
                 });
@@ -671,6 +670,8 @@ describe("TextField", () => {
                 element.value = "";
 
                 expect(element.validity.typeMismatch).to.equal(false);
+
+                await disconnect();
             });
             it("should be a typeMismatch when value is not a valid email", async () => {
                 const { element, connect, disconnect } = await setup();
@@ -680,6 +681,8 @@ describe("TextField", () => {
                 element.value = "foobar";
 
                 expect(element.validity.typeMismatch).to.equal(true);
+
+                await disconnect();
             });
         });
         describe('of [type="url"]', () => {
@@ -691,6 +694,8 @@ describe("TextField", () => {
                 element.value = "";
 
                 expect(element.validity.typeMismatch).to.equal(false);
+
+                await disconnect();
             });
             it("should be a typeMismatch when value is not a valid URL", async () => {
                 const { element, connect, disconnect } = await setup();
@@ -700,16 +705,22 @@ describe("TextField", () => {
                 element.value = "foobar";
 
                 expect(element.validity.typeMismatch).to.equal(true);
+
+                await disconnect();
             });
         });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
-        it("should reset it's value property to an empty string if no value attribute is set", () => {
-            const element = document.createElement("fast-text-field") as FASTTextField;
+        it("should reset it's value property to an empty string if no value attribute is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === null);
@@ -718,29 +729,41 @@ describe("TextField", () => {
             form.reset();
 
             assert(element.value === "");
+
+            await disconnect();
         });
 
-        it("should reset it's value property to the value of the value attribute if it is set", () => {
-            const element = document.createElement("fast-text-field") as FASTTextField;
+        it("should reset it's value property to the value of the value attribute if it is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+            await connect();
+
             element.setAttribute("value", "attr-value");
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === "attr-value");
+
             assert(element.value === "test-value");
 
             form.reset();
 
             assert(element.value === "attr-value");
+
+            await disconnect();
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-text-field") as FASTTextField;
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "test-value";
             element.setAttribute("value", "attr-value");
 
@@ -753,6 +776,7 @@ describe("TextField", () => {
             element.setAttribute("value", "new-attr-value");
 
             assert(element.value === "new-attr-value");
+            await disconnect();
         });
     });
 });

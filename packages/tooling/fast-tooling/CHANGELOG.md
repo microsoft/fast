@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.12.0...@microsoft/fast-tooling@0.13.0) (2020-12-02)
+
+
+### Features
+
+* add a mapping of MDN syntaxes to be used as reference ([#4139](https://github.com/Microsoft/fast/issues/4139)) ([e5b3545](https://github.com/Microsoft/fast/commit/e5b3545864ee9ed5117960cb65feef9fbb4f88a4))
+
+
+
+
+
 # [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.1...@microsoft/fast-tooling@0.12.0) (2020-11-19)
 
 
