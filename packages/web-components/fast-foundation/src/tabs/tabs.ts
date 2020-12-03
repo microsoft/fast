@@ -21,7 +21,7 @@ export enum TabsOrientation {
 }
 
 /**
- * An Tabs Custom HTML Element.
+ * A Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
  *
  * @public

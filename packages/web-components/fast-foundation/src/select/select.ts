@@ -108,6 +108,13 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
+     * @internal
+     */
+    public formResetCallback = (): void => {
+        this.setDefaultSelectedOption();
+    };
+
+    /**
      * Sets the value when the options are changed.
      *
      * @param prev - The previous value

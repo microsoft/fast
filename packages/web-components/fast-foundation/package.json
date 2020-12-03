@@ -27,6 +27,7 @@
     "build": "yarn build:tsc && yarn build:rollup && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "yarn dev & yarn test-chrome:watch",
+    "tdd:firefox": "yarn dev & yarn test-firefox:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
@@ -42,7 +43,8 @@
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
