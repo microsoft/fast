@@ -29,7 +29,7 @@
     "tdd": "yarn dev & yarn test-chrome:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
-    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html,md}\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "start": "start-storybook -p 6006",
