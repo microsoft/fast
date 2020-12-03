@@ -94,7 +94,7 @@ export class Anchor extends FASTElement {
     /**
      * References the root element
      */
-    public root: HTMLButtonElement;
+    public control: HTMLAnchorElement;
 }
 
 /**

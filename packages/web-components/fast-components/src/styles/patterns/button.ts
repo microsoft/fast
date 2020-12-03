@@ -94,8 +94,9 @@ export const BaseButtonStyles = css`
         display: flex;
     }
 
-    a.icon-only {
-        padding-top: 6px;
+    .control.icon-only {
+        padding: 0;
+        line-height: 0;
     }
 
     ::slotted(svg) {

@@ -182,7 +182,7 @@ export class Button extends FormAssociatedButton {
     /**
      * References the root element
      */
-    public root: HTMLButtonElement;
+    public control: HTMLButtonElement;
 }
 
 /**

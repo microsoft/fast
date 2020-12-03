@@ -38,7 +38,7 @@ export const AnchorTemplate = html<Anchor>`
         aria-owns="${x => x.ariaOwns}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
-        ${ref("root")}
+        ${ref("control")}
     >
         ${startTemplate}
         <span class="content" part="content">
