@@ -186,7 +186,7 @@ type order =
     | "perGrammar"
     | "uniqueOrder";
 
-type status = "standard" | "nonstandard" | "experimental" | "obsolete";
+export type status = "standard" | "nonstandard" | "experimental" | "obsolete";
 
 type mediaSingle =
     | "all"
