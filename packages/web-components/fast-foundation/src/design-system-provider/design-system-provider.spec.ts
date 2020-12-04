@@ -388,6 +388,37 @@ describe("A DesignSystemProvider", () => {
 
             a.remove();
         });
+        it("should re-evaluate custom properties when an upstream property changes that does not exist on the downstream is set", async () => {
+            const { a, b, connect, disconnect } = await setup();
+            let result: string = "";
+            a.a = Symbol("initial");
+            a.appendChild(b);
+            await connect();
+
+            b.registerCSSCustomProperty({
+                name: "my-property",
+                value: (args: { a: Symbol }) => {
+                    return (result = args.a.toString());
+                },
+            });
+
+            expect(result).to.equal("Symbol(initial)");
+
+            a.a = Symbol("override");
+
+            await new Promise(resolve => {
+                DOM.queueUpdate(() => {
+                    a.a = Symbol("override");
+
+                    DOM.queueUpdate(() => {
+                        expect(result).to.equal("Symbol(override)");
+                        resolve(true);
+                    });
+                });
+            });
+
+            await disconnect();
+        });
     });
 
     describe("with CSSCustomPropertyDefinition registered", () => {
