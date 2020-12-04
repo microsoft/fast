@@ -556,38 +556,37 @@ export function mapCSSProperties(
     const syntaxKeys: string[] = Object.keys(mdnCSS.syntaxes);
     const typeKeys: string[] = Object.keys(mdnCSS.types);
 
-    return Object.entries(mdnCSS.properties)
-        .map(
-            ([key, value]: [string, MDNCSSPropertyConfig]): CSSProperty => {
-                if (conformsToOptions(cssPropertyMapOptions, key, value)) {
-                    return {
-                        name: key,
-                        appliesTo: value.appliesto,
+    return Object.entries(mdnCSS.properties).reduce<CSSPropertiesDictionary>(
+        (
+            resolvedDictionary: CSSPropertiesDictionary,
+            currentCSSProperty: [string, MDNCSSPropertyConfig]
+        ) => {
+            if (
+                conformsToOptions(
+                    cssPropertyMapOptions,
+                    currentCSSProperty[0],
+                    currentCSSProperty[1]
+                )
+            ) {
+                return {
+                    ...resolvedDictionary,
+                    [currentCSSProperty[0]]: {
+                        name: currentCSSProperty[0],
+                        appliesTo: currentCSSProperty[1].appliesto,
                         syntax: resolveCSSPropertySyntax(
-                            value,
-                            key,
+                            currentCSSProperty[1],
+                            currentCSSProperty[0],
                             syntaxKeys,
                             typeKeys
                         ),
-                    };
-                }
-            }
-        )
-        .filter((value: CSSProperty) => {
-            return value !== undefined;
-        })
-        .reduce<CSSPropertiesDictionary>(
-            (
-                resolvedDictionary: CSSPropertiesDictionary,
-                currentCSSProperty: CSSProperty
-            ): CSSPropertiesDictionary => {
-                return {
-                    ...resolvedDictionary,
-                    [currentCSSProperty.name]: currentCSSProperty,
+                    },
                 };
-            },
-            {}
-        );
+            }
+
+            return resolvedDictionary;
+        },
+        {}
+    );
 }
 
 export function resolveCSSSyntax(
