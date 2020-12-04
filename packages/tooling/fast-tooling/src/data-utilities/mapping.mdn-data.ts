@@ -11,6 +11,7 @@ import {
     MDNCSS,
     MDNCSSPropertyConfig,
     MDNCSSSyntaxConfig,
+    status,
 } from "./mapping.mdn-data.types";
 import { XOR } from "./type.utilities";
 
@@ -225,6 +226,10 @@ export interface CSSSyntaxRef {
 
 export interface CSSSyntaxDictionary {
     [key: string]: CSSSyntax;
+}
+
+export interface CSSPropertyMapOptions {
+    status?: status;
 }
 
 /**
@@ -523,24 +528,54 @@ export function resolveCSSPropertySyntax(
     };
 }
 
+function conformsToOptions(
+    cssPropertyMapOptions: CSSPropertyMapOptions,
+    key: string,
+    value: MDNCSSPropertyConfig
+): boolean {
+    let validatesAgainstOptions: boolean = true;
+
+    if (
+        cssPropertyMapOptions.status !== undefined &&
+        cssPropertyMapOptions.status !== value.status
+    ) {
+        validatesAgainstOptions = false;
+    }
+
+    return validatesAgainstOptions;
+}
+
 /**
  * Maps MDN CSS properties to a CSS properties dictionary
  * for tooling consumption
  */
-export function mapCSSProperties(mdnCSS: MDNCSS): CSSPropertiesDictionary {
+export function mapCSSProperties(
+    mdnCSS: MDNCSS,
+    cssPropertyMapOptions: CSSPropertyMapOptions = {}
+): CSSPropertiesDictionary {
     const syntaxKeys: string[] = Object.keys(mdnCSS.syntaxes);
     const typeKeys: string[] = Object.keys(mdnCSS.types);
 
     return Object.entries(mdnCSS.properties)
         .map(
             ([key, value]: [string, MDNCSSPropertyConfig]): CSSProperty => {
-                return {
-                    name: key,
-                    appliesTo: value.appliesto,
-                    syntax: resolveCSSPropertySyntax(value, key, syntaxKeys, typeKeys),
-                };
+                if (conformsToOptions(cssPropertyMapOptions, key, value)) {
+                    return {
+                        name: key,
+                        appliesTo: value.appliesto,
+                        syntax: resolveCSSPropertySyntax(
+                            value,
+                            key,
+                            syntaxKeys,
+                            typeKeys
+                        ),
+                    };
+                }
             }
         )
+        .filter((value: CSSProperty) => {
+            return value !== undefined;
+        })
         .reduce<CSSPropertiesDictionary>(
             (
                 resolvedDictionary: CSSPropertiesDictionary,
