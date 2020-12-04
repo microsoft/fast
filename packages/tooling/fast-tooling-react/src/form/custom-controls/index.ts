@@ -1,5 +1,7 @@
 import AlignControl from "./control.align";
 import { AlignControlProps } from "./control.align.props";
+import CSSControl from "./control.css";
+import { CSSControlProps } from "./control.css.props";
 // import FileUploadControl from "./control.file-upload";
 // import { FileUploadControlProps } from "./control.file-upload.props";
 import TextAlignControl from "./control.text-align";
@@ -10,6 +12,8 @@ import { TextAlignControlProps } from "./control.text-align.props";
 export {
     AlignControl,
     AlignControlProps,
+    CSSControl,
+    CSSControlProps,
     // FileUploadControl, // TODO: this needs a visual pass
     // FileUploadControlProps,
     TextAlignControl,

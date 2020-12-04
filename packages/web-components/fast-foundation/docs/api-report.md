@@ -399,9 +399,9 @@ export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dial
 export class DirectionalStyleSheetBehavior implements Behavior {
     constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
     // @internal (undocumented)
-    bind(source: typeof FASTElement & HTMLElement): void;
+    bind(source: FASTElement & HTMLElement): void;
     // @internal (undocumented)
-    unbind(source: typeof FASTElement & HTMLElement): void;
+    unbind(source: FASTElement & HTMLElement): void;
 }
 
 // @public
