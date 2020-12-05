@@ -155,7 +155,7 @@ export class AureliaFastAdapter {
           value: valuePropertyConfig
         },
         'FAST-TABS': {
-          value: valuePropertyConfig
+          activeid: valuePropertyConfig
         },
         'FAST-TEXT-FIELD': {
           value: valuePropertyConfig
