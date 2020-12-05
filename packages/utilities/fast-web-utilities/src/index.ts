@@ -1,6 +1,7 @@
 export * from "./aria";
 export * from "./class-names";
 export * from "./dom";
+export * from "./events";
 export * from "./html";
 export * from "./key-codes";
 export * from "./localization";
