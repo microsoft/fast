@@ -1,165 +1,68 @@
+/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
+import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
+
 import React from "react";
-import { PropertyState } from "./control.css.props";
 import {
-    CombinatorType,
-    CSSPropertyRef,
-    CSSPropertyRefType,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
-import { XOR } from "@microsoft/fast-tooling/dist/data-utilities/type.utilities";
-import { syntaxes } from "@microsoft/fast-tooling/dist/css-data";
-
-export interface RenderControlBaseConfig {
-    mapsToProperty: string;
-    combinatorType: CombinatorType;
-    index: number;
-    onChangeHandler: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-    changeHandler: (value: string) => void;
-}
-
-export interface RenderControlConfig extends RenderControlBaseConfig {
-    refKey: string;
-    refType: CSSPropertyRefType;
-}
-
-export interface RenderSelectControlConfig extends RenderControlBaseConfig {
-    values: string[];
-}
-
-export interface RenderAutoSuggestControlConfig extends RenderControlBaseConfig {
-    values: string[];
-}
-
-type ControlConfig = XOR<
-    RenderControlBaseConfig,
-    XOR<
-        RenderControlConfig,
-        XOR<RenderSelectControlConfig, RenderAutoSuggestControlConfig>
-    >
->;
-
-export function renderDefault(config: RenderControlConfig): React.ReactNode {
-    return <input key={config.index} type={"text"} onChange={config.onChangeHandler} />;
-}
-
-export function renderSelect(config: RenderSelectControlConfig): React.ReactNode {
-    return (
-        <select key={config.index} onChange={config.onChangeHandler}>
-            {config.values.map((value: string, index: number) => {
-                return <option key={index}>{value}</option>;
-            })}
-        </select>
-    );
-}
-
-export function renderAutoSuggest(
-    config: RenderAutoSuggestControlConfig
-): React.ReactNode {
-    const listId: string = config.mapsToProperty;
-
-    return (
-        <React.Fragment>
-            <input
-                type={"text"}
-                onChange={config.onChangeHandler}
-                aria-autocomplete={"list"}
-                list={listId}
-                aria-controls={listId}
-            />
-            <datalist id={listId}>
-                {config.values.map((value: string, index: number) => {
-                    return <option key={index}>{value}</option>;
-                })}
-            </datalist>
-        </React.Fragment>
-    );
-}
-
-export function renderDeclarationValue(config: RenderControlBaseConfig): React.ReactNode {
-    return <input key={config.index} type={"text"} onChange={config.onChangeHandler} />;
-}
-
-export function renderNumberInput(config: RenderControlBaseConfig): React.ReactNode {
-    return <input key={config.index} type={"number"} onChange={config.onChangeHandler} />;
-}
-
-export function resolveCSSType(
-    propertyState: PropertyState,
-    combinatorType: CombinatorType,
-    ref: XOR<string, CSSPropertyRef[]>
-): string {
-    return propertyState.values.reduce(
-        (previousPropertyValue: string, currentPropertyValue: string) => {
-            return previousPropertyValue + currentPropertyValue;
-        },
-        ""
-    );
-}
-
-export function resolveCSSSyntax(
-    propertyState: PropertyState,
-    combinatorType: CombinatorType,
-    ref: XOR<string, CSSPropertyRef[]>
-): string {
-    return propertyState.values
-        .reduce((previousPropertyValue: string, currentPropertyValue: string) => {
-            return `${previousPropertyValue} ${currentPropertyValue}`;
-        }, "")
-        .trim();
-}
-
-export function resolveCSSMixed(
-    propertyState: PropertyState,
-    ref: CSSPropertyRef[]
-): string {
-    if (ref[propertyState.index]) {
-        return resolveCSSValue(
-            propertyState,
-            ref[propertyState.index].type,
-            ref[propertyState.index].refCombinatorType,
-            ref[propertyState.index].ref
-        );
-    }
-
-    return "";
-}
-
-export function resolveCSSValue(
-    propertyState: PropertyState,
-    refType: CSSPropertyRefType,
-    combinatorType: CombinatorType,
-    ref: XOR<string, CSSPropertyRef[]>
-): string {
-    switch (refType) {
-        case "value":
-            if (ref === "<declaration-value>") {
-                return propertyState.values[0];
-            }
-
-            return ref as string;
-        case "type":
-            return resolveCSSType(propertyState, combinatorType, ref);
-        case "syntax":
-            return resolveCSSSyntax(propertyState, combinatorType, ref);
-        case "mixed":
-            return resolveCSSMixed(propertyState, ref as CSSPropertyRef[]);
-        default:
-            return "";
-    }
-}
+    RenderControlConfig,
+    RenderRefControlConfig,
+} from "./control.css.utilities.props";
+import { FASTCheckbox, FASTTextField } from "@microsoft/fast-components";
 
 /**
- * Render a control based on type
+ * Ensure tree-shaking doesn't remove these components from the bundle.
  */
-export function resolveControl(config: ControlConfig): React.ReactNode {
-    switch (config.combinatorType) {
-        case CombinatorType.exactlyOne:
-            return renderSelect({
-                ...config,
-                values: syntaxes[config.refKey].value.ref.map((ref): string => {
-                    return ref.ref;
-                }),
-            });
-        default:
-            return renderDefault(config as RenderControlConfig);
-    }
+FASTCheckbox;
+FASTTextField;
+
+function getTextInputChangeHandler(
+    parentChangeHandler: (value: string) => void
+): (e: React.ChangeEvent<HTMLInputElement>) => void {
+    let timer: null | NodeJS.Timer = null;
+
+    const handleCheck = (newValue: string) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            parentChangeHandler(newValue);
+        }, 500);
+    };
+
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleCheck(e.currentTarget.value);
+    };
+}
+
+export function renderDefault(config: RenderControlConfig): React.ReactNode {
+    return (
+        <fast-text-field
+            key={config.key}
+            events={{
+                input: getTextInputChangeHandler(config.handleChange),
+            }}
+        ></fast-text-field>
+    );
+}
+
+function getCheckboxInputChangeHandler(
+    parentChangeHandler: (value: string) => void,
+    value: string
+): (e: React.ChangeEvent<HTMLInputElement>) => void {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("son of a b", e.currentTarget.checked);
+        parentChangeHandler(e.currentTarget.checked ? value : "");
+    };
+}
+
+export function renderZeroOrOne(config: RenderRefControlConfig): React.ReactNode {
+    return (
+        <fast-checkbox
+            events={{
+                change: getCheckboxInputChangeHandler(
+                    config.handleChange,
+                    config.ref.ref as string
+                ),
+            }}
+        >
+            {config.ref.ref}
+        </fast-checkbox>
+    );
 }

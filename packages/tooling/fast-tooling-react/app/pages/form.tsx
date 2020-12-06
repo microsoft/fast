@@ -1,11 +1,7 @@
 import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
-import {
-    ControlConfig,
-    CSSControl,
-    StandardControlPlugin,
-    TextAlignControl,
-} from "../../src";
+import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+import CSSControl from "../../src/form/custom-controls/control.css";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
