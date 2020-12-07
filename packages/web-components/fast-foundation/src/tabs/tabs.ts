@@ -392,7 +392,7 @@ export class Tabs extends FASTElement {
         this.setComponent();
     };
 
-    private focusTab(): void {
+    public focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
     }
 
