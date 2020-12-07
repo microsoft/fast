@@ -216,7 +216,9 @@ export class TextField extends FormAssociatedTextField {
  *
  * @public
  */
-export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+export class DelegatesARIATextbox {}
+
+applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
 
 /**
  * Mark internal because exporting class and interface of the same name
@@ -224,5 +226,8 @@ export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextField extends StartEnd, DelegatesARIATextbox {}
+export interface TextField
+    extends StartEnd,
+        DelegatesARIATextbox,
+        ARIAGlobalStatesAndProperties {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);

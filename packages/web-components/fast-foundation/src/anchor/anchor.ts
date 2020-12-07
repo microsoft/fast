@@ -87,7 +87,7 @@ export class Anchor extends FASTElement {
  *
  * @public
  */
-export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIALink {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information
      * @public
@@ -98,6 +98,8 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
+
 /**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
@@ -105,5 +107,8 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Anchor extends StartEnd, DelegatesARIALink {}
+export interface Anchor
+    extends StartEnd,
+        DelegatesARIALink,
+        ARIAGlobalStatesAndProperties {}
 applyMixins(Anchor, StartEnd, DelegatesARIALink);

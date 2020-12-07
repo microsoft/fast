@@ -236,7 +236,7 @@ export class Select extends FormAssociatedSelect {
  *
  * @public
  */
-export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIASelect {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -247,8 +247,13 @@ export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
+
 /**
  * @internal
  */
-export interface Select extends StartEnd, DelegatesARIASelect {}
+export interface Select
+    extends StartEnd,
+        DelegatesARIASelect,
+        ARIAGlobalStatesAndProperties {}
 applyMixins(Select, StartEnd, DelegatesARIASelect);

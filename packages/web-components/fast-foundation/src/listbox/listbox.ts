@@ -344,7 +344,7 @@ export class Listbox extends FASTElement {
  *
  * @public
  */
-export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIAListbox {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -367,8 +367,10 @@ export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+applyMixins(DelegatesARIAListbox, ARIAGlobalStatesAndProperties);
+
 /**
  * @internal
  */
-export interface Listbox extends DelegatesARIAListbox {}
+export interface Listbox extends DelegatesARIAListbox, ARIAGlobalStatesAndProperties {}
 applyMixins(Listbox, DelegatesARIAListbox);
