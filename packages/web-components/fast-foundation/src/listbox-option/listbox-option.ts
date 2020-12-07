@@ -20,10 +20,6 @@ export class ListboxOption extends FASTElement {
     protected defaultSelectedChanged(): void {
         if (!this.dirtySelected) {
             this.selected = this.defaultSelected;
-
-            if (this.proxy instanceof HTMLOptionElement) {
-                this.proxy.selected = this.defaultSelected;
-            }
         }
     }
 
@@ -41,11 +37,6 @@ export class ListboxOption extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(prev, next): void {
-        if (this.proxy instanceof HTMLOptionElement) {
-            this.proxy.disabled = this.disabled;
-        }
-    }
 
     /**
      * The selected attribute value. This sets the initial selected value.
@@ -58,10 +49,6 @@ export class ListboxOption extends FASTElement {
     public selectedAttribute: boolean;
     protected selectedAttributeChanged(): void {
         this.defaultSelected = this.selectedAttribute;
-
-        if (this.proxy instanceof HTMLOptionElement) {
-            this.proxy.defaultSelected = this.defaultSelected;
-        }
     }
 
     /**
@@ -75,10 +62,6 @@ export class ListboxOption extends FASTElement {
         if (this.$fastController.isConnected) {
             if (!this.dirtySelected) {
                 this.dirtySelected = true;
-            }
-
-            if (this.proxy instanceof HTMLOptionElement) {
-                this.proxy.selected = this.selected;
             }
 
             this.$emit("change");
@@ -120,14 +103,16 @@ export class ListboxOption extends FASTElement {
     public value: string;
     public valueChanged(previous: string, next: string) {
         this.dirtyValue = true;
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
     }
 
     public get form(): HTMLFormElement | null {
         return this.proxy ? this.proxy.form : null;
+    }
+
+    public updateProxy(name: string, value: any): void {
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy[name] = value;
+        }
     }
 
     public constructor(

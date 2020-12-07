@@ -63,6 +63,10 @@ class DefaultObservableAccessor implements Accessor {
                 callback.call(source, oldValue, newValue);
             }
 
+            if (source.updateProxy) {
+                source.updateProxy(this.name, newValue);
+            }
+
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             getNotifier(source).notify(this.name);
         }

@@ -21,11 +21,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
 
     /**
      * The resize mode of the element.
@@ -50,11 +45,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-    private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.autofocus = this.autofocus;
-        }
-    }
 
     /**
      * The {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id | id} of the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form | form} the element is associated to
@@ -71,11 +61,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr
     public list: string;
-    private listChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.setAttribute("list", this.list);
-        }
-    }
 
     /**
      * The maximum number of characters a user can enter.
@@ -85,11 +70,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
-    private maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.maxLength = this.maxlength;
-        }
-    }
 
     /**
      * The minimum number of characters a user can enter.
@@ -99,11 +79,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
-    private minlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.minLength = this.minlength;
-        }
-    }
 
     /**
      * The name of the element.
@@ -153,11 +128,6 @@ export class TextArea extends FormAssociatedTextArea {
      */
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
-    private spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.spellcheck = this.spellcheck;
-        }
-    }
 
     /**
      * @internal

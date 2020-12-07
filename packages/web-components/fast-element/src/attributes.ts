@@ -175,7 +175,7 @@ export class AttributeDefinition implements Accessor {
      * @param source - The source element to access.
      * @param value - The value to set the attribute/property to.
      */
-    public setValue(source: HTMLElement, newValue: any): void {
+    public setValue(source: any, newValue: any): void {
         const oldValue = source[this.fieldName];
         const converter = this.converter;
 
@@ -190,6 +190,10 @@ export class AttributeDefinition implements Accessor {
 
             if (this.hasCallback) {
                 source[this.callbackName](oldValue, newValue);
+            }
+
+            if (source.updateProxy) {
+                source.updateProxy(this.name, newValue);
             }
 
             ((source as any).$fastController as Notifier).notify(this.name);

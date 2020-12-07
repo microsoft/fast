@@ -290,10 +290,6 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public valueChanged(previous: string, next: string) {
             this.dirtyValue = true;
 
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.value = this.value;
-            }
-
             this.setFormValue(this.value);
             this.validate();
         }
@@ -347,10 +343,6 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * proper functioning of `FormAssociated`
          */
         public disabledChanged(previous: boolean, next: boolean): void {
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.disabled = this.disabled;
-            }
-
             DOM.queueUpdate(() => this.classList.toggle("disabled", this.disabled));
         }
 
@@ -361,23 +353,6 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * HTML Attribute: name
          */
         public name: string;
-
-        /**
-         * Invoked when the `name` property changes
-         *
-         * @param previous - the previous value
-         * @param next - the new value
-         *
-         * @remarks
-         * If elements extending `FormAssociated` implement a `nameChanged` method
-         * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
-         * proper functioning of `FormAssociated`
-         */
-        public nameChanged(previous, next): void {
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.name = this.name;
-            }
-        }
 
         /**
          * Require the field to be completed prior to form submission.
@@ -399,10 +374,6 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * proper functioning of `FormAssociated`
          */
         public requiredChanged(prev: boolean, next: boolean): void {
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.required = this.required;
-            }
-
             DOM.queueUpdate(() => this.classList.toggle("required", this.required));
             this.validate();
         }
@@ -566,6 +537,21 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
             this.shadowRoot?.appendChild(this.proxySlot as HTMLSlotElement);
             this.appendChild(this.proxy);
+        }
+
+        /**
+         * Updates attributes on the proxy element
+         * @param name - The name of the attribute to be updated
+         * @param value - The value of the attribute
+         */
+        public updateProxy(name: string, value: any): void {
+            if (this.proxy instanceof HTMLElement) {
+                if (value === null || value === false) {
+                    this.proxy.removeAttribute(name);
+                } else {
+                    this.proxy.setAttribute(name, `${value}`);
+                }
+            }
         }
 
         /**

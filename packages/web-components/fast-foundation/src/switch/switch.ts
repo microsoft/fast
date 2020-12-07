@@ -18,10 +18,6 @@ export class Switch extends FormAssociatedSwitch {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-
         this.readOnly
             ? this.classList.add("readonly")
             : this.classList.remove("readonly");
@@ -84,10 +80,6 @@ export class Switch extends FormAssociatedSwitch {
         }
 
         this.updateForm();
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.checked = this.checked;
-        }
 
         this.$emit("change");
 

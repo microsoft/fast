@@ -26,11 +26,6 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
-    private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
 
     /**
      * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
@@ -101,10 +96,6 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
             }
 
             this.updateForm();
-
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.checked = this.checked;
-            }
 
             this.$emit("change");
 
