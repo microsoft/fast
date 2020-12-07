@@ -29,11 +29,16 @@ const comment = `/**
 
 (function () {
     if (yargs.argv.test) {
-        const updatedCSSProperties = mapCSSProperties({
-            properties: mdnCSS.properties,
-            syntaxes: mdnCSS.syntaxes,
-            types: mdnCSS.types,
-        });
+        const updatedCSSProperties = mapCSSProperties(
+            {
+                properties: mdnCSS.properties,
+                syntaxes: mdnCSS.syntaxes,
+                types: mdnCSS.types,
+            },
+            {
+                status: "standard",
+            }
+        );
 
         if (isEqual(updatedCSSProperties, properties)) {
             console.log(
@@ -52,11 +57,16 @@ const comment = `/**
         fs.writeFile(
             outFilePath,
             `${comment}export const properties = ${JSON.stringify(
-                mapCSSProperties({
-                    properties: mdnCSS.properties,
-                    syntaxes: mdnCSS.syntaxes,
-                    types: mdnCSS.types,
-                }),
+                mapCSSProperties(
+                    {
+                        properties: mdnCSS.properties,
+                        syntaxes: mdnCSS.syntaxes,
+                        types: mdnCSS.types,
+                    },
+                    {
+                        status: "standard",
+                    }
+                ),
                 null,
                 4
             )}\n\nexport const syntaxes = ${JSON.stringify(

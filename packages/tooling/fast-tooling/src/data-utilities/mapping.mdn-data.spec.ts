@@ -387,6 +387,56 @@ describe("mapCSSProperties", () => {
             },
         });
     });
+    describe("options", () => {
+        test("should check for status", () => {
+            const subsetOfMDNCSS = {
+                properties: {
+                    "--*": mdnCSS.properties["--*"],
+                    border: mdnCSS.properties.border,
+                },
+                syntaxes: mdnCSS.syntaxes,
+                types: mdnCSS.types,
+            } as any;
+
+            expect(mapCSSProperties(subsetOfMDNCSS, { status: "standard" })).toEqual({
+                border: {
+                    name: "border",
+                    appliesTo: "allElements",
+                    syntax: {
+                        mapsToProperty: "border",
+                        percentages: "no",
+                        ref: [
+                            {
+                                type: "syntax",
+                                ref: "<line-width>",
+                                refCombinatorType: "none",
+                                prepend: null,
+                                multiplier: null,
+                            },
+                            {
+                                type: "syntax",
+                                ref: "<line-style>",
+                                refCombinatorType: "none",
+                                prepend: null,
+                                multiplier: null,
+                            },
+                            {
+                                type: "syntax",
+                                ref: "<color>",
+                                refCombinatorType: "none",
+                                prepend: null,
+                                multiplier: null,
+                            },
+                        ],
+                        refCombinatorType: "atLeastOneInAnyOrder",
+                        multiplier: null,
+                        prepend: null,
+                        type: "mixed",
+                    },
+                },
+            });
+        });
+    });
 });
 
 describe("resolveCSSSyntax", () => {
