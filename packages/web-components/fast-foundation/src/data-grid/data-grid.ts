@@ -8,6 +8,8 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
+    eventFocus,
+    eventKeyDown,
     keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeEnd,
@@ -313,8 +315,8 @@ export class DataGrid extends FASTElement {
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
-        this.addEventListener("focus", this.handleFocus);
-        this.addEventListener("keydown", this.handleKeydown);
+        this.addEventListener(eventFocus, this.handleFocus);
+        this.addEventListener(eventKeyDown, this.handleKeydown);
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
@@ -330,8 +332,8 @@ export class DataGrid extends FASTElement {
         super.disconnectedCallback();
 
         this.removeEventListener("row-focused", this.handleRowFocus);
-        this.removeEventListener("focus", this.handleFocus);
-        this.removeEventListener("keydown", this.handleKeydown);
+        this.removeEventListener(eventFocus, this.handleFocus);
+        this.removeEventListener(eventKeyDown, this.handleKeydown);
 
         // disconnect observer
         this.observer.disconnect();

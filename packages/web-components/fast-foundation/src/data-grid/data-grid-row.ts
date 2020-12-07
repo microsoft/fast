@@ -7,6 +7,8 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
+    eventFocusOut,
+    eventKeyDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
     keyCodeEnd,
@@ -193,8 +195,8 @@ export class DataGridRow extends FASTElement {
         }
 
         this.addEventListener("cell-focused", this.handleCellFocus);
-        this.addEventListener("focusout", this.handleFocusout);
-        this.addEventListener("keydown", this.handleKeydown);
+        this.addEventListener(eventFocusOut, this.handleFocusout);
+        this.addEventListener(eventKeyDown, this.handleKeydown);
 
         this.updateRowStyle();
 
@@ -214,8 +216,8 @@ export class DataGridRow extends FASTElement {
         super.disconnectedCallback();
 
         this.removeEventListener("cell-focused", this.handleCellFocus);
-        this.removeEventListener("focusout", this.handleFocusout);
-        this.removeEventListener("keydown", this.handleKeydown);
+        this.removeEventListener(eventFocusOut, this.handleFocusout);
+        this.removeEventListener(eventKeyDown, this.handleKeydown);
     }
 
     public handleFocusout(e: FocusEvent): void {

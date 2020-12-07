@@ -157,12 +157,14 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    defaultSlottedContent: HTMLElement[];
     formaction: string;
     formenctype: string;
     formId: string;
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
+    root: HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
@@ -195,7 +197,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     indeterminate: boolean;
     // @internal
     initialValue: string;
@@ -520,9 +522,9 @@ export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dial
 export class DirectionalStyleSheetBehavior implements Behavior {
     constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
     // @internal (undocumented)
-    bind(source: typeof FASTElement & HTMLElement): void;
+    bind(source: FASTElement & HTMLElement): void;
     // @internal (undocumented)
-    unbind(source: typeof FASTElement & HTMLElement): void;
+    unbind(source: FASTElement & HTMLElement): void;
 }
 
 // @public
@@ -699,6 +701,8 @@ export class Listbox extends FASTElement {
     selectNextOption(): void;
     // @internal
     selectPreviousOption(): void;
+    // @internal (undocumented)
+    protected setDefaultSelectedOption(): void;
     setSelectedOption(index?: number): void;
     static slottedOptionFilter: (n: ListboxOption) => boolean;
     // @internal
@@ -855,7 +859,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)
@@ -914,6 +918,8 @@ export class Select extends FormAssociatedSelect {
     get displayValue(): string;
     // (undocumented)
     focusoutHandler(e: FocusEvent): boolean | void;
+    // @internal (undocumented)
+    formResetCallback: () => void;
     // (undocumented)
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
@@ -1118,7 +1124,7 @@ export class Switch extends FormAssociatedSwitch {
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal (undocumented)
-    formResetCallback(): void;
+    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)
