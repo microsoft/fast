@@ -29,6 +29,10 @@ import {
     tooltipSchema,
 } from "../../../src/__tests__/schemas";
 
+export const customControl: ExampleComponent = {
+    schema: customControlSchema,
+};
+
 export const textField: ExampleComponent = {
     schema: textareaSchema,
 };
@@ -113,10 +117,6 @@ import DictionaryDataSet from "../../../src/__tests__/datasets/dictionary";
 export const dictionary: ExampleComponent = {
     schema: dictionarySchema,
     data: DictionaryDataSet,
-};
-
-export const customControl: ExampleComponent = {
-    schema: customControlSchema,
 };
 
 export const tooltip: ExampleComponent = {

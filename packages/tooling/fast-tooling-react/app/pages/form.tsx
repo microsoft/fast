@@ -1,6 +1,7 @@
 import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+import CSSControl from "../../src/form/custom-controls/control.css";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -120,9 +121,15 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     return <AlignControl {...config} />;
                 },
             }),
+            new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.css.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return <CSSControl {...config} />;
+                },
+            }),
         ];
 
-        const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
+        const exampleData: any = getDataFromSchema(testConfigs.customControl.schema);
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -130,7 +137,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 dataDictionary: [
                     {
                         foo: {
-                            schemaId: testConfigs.textField.schema.id,
+                            schemaId: testConfigs.customControl.schema.id,
                             data: exampleData,
                         },
                     },
@@ -145,7 +152,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         this.state = {
-            schema: testConfigs.textField.schema,
+            schema: testConfigs.customControl.schema,
             data: exampleData,
             navigation: void 0,
             showExtendedControls: false,
