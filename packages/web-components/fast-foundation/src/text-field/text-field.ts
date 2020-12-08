@@ -216,7 +216,17 @@ export class TextField extends FormAssociatedTextField {
  *
  * @public
  */
-export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+export class DelegatesARIATextbox {}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
 
 /**
  * Mark internal because exporting class and interface of the same name
