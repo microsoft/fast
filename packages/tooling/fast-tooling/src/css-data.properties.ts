@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 11/20/2020
+ * Last modified: 12/3/2020
  */
 export type Property =
     | "<'--*'>"

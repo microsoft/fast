@@ -108,6 +108,13 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
+     * @internal
+     */
+    public formResetCallback = (): void => {
+        this.setDefaultSelectedOption();
+    };
+
+    /**
      * Sets the value when the options are changed.
      *
      * @param prev - The previous value
@@ -229,7 +236,7 @@ export class Select extends FormAssociatedSelect {
  *
  * @public
  */
-export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIASelect {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -239,6 +246,16 @@ export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
     @observable
     public ariaExpanded: "true" | "false" | undefined;
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
 
 /**
  * @internal
