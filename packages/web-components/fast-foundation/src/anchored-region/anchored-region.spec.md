@@ -206,7 +206,8 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 ) 
 
 *Events:*
-- positionchange
+- loaded - The contents of the anchored region are loaded into the DOM.
+- positionchange - The positioning of the anchored region has changed.
 
 
 Enables developers to update the offset between the anchor and the region as it changes,  for example to promt layout recalculations as a result of scrolling so a scaling region tracks the viewport boundary.  
