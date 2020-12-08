@@ -142,13 +142,13 @@ export class Tooltip extends FASTElement {
      * @internal
      */
     @observable
-    public verticalPositioningMode: AxisPositioningMode = "dynamic";
+    public verticalPositioningMode: AxisPositioningMode = AxisPositioningMode.dynamic;
 
     /**
      * @internal
      */
     @observable
-    public horizontalPositioningMode: AxisPositioningMode = "dynamic";
+    public horizontalPositioningMode: AxisPositioningMode = AxisPositioningMode.dynamic;
 
     /**
      * @internal
@@ -166,13 +166,13 @@ export class Tooltip extends FASTElement {
      * @internal
      */
     @observable
-    public horizontalScaling: AxisScalingMode = "anchor";
+    public horizontalScaling: AxisScalingMode = AxisScalingMode.anchor;
 
     /**
      * @internal
      */
     @observable
-    public verticalScaling: AxisScalingMode = "content";
+    public verticalScaling: AxisScalingMode = AxisScalingMode.content;
 
     /**
      * @internal
@@ -320,39 +320,39 @@ export class Tooltip extends FASTElement {
         switch (this.position) {
             case TooltipPosition.top:
             case TooltipPosition.bottom:
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "dynamic";
+                this.verticalPositioningMode = AxisPositioningMode.locktodefault;
+                this.horizontalPositioningMode = AxisPositioningMode.dynamic;
                 this.verticalDefaultPosition = this.position;
                 this.horizontalDefaultPosition = undefined;
                 this.horizontalInset = "true";
                 this.verticalInset = "false";
-                this.horizontalScaling = "anchor";
-                this.verticalScaling = "content";
+                this.horizontalScaling = AxisScalingMode.anchor;
+                this.verticalScaling = AxisScalingMode.content;
                 break;
 
             case TooltipPosition.right:
             case TooltipPosition.left:
             case TooltipPosition.start:
             case TooltipPosition.end:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
+                this.verticalPositioningMode = AxisPositioningMode.dynamic;
+                this.horizontalPositioningMode = AxisPositioningMode.locktodefault;
                 this.verticalDefaultPosition = undefined;
                 this.horizontalDefaultPosition = this.position;
                 this.horizontalInset = "false";
                 this.verticalInset = "true";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "anchor";
+                this.horizontalScaling = AxisScalingMode.content;
+                this.verticalScaling = AxisScalingMode.anchor;
                 break;
 
             default:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "dynamic";
+                this.verticalPositioningMode = AxisPositioningMode.dynamic;
+                this.horizontalPositioningMode = AxisPositioningMode.dynamic;
                 this.verticalDefaultPosition = undefined;
                 this.horizontalDefaultPosition = undefined;
                 this.horizontalInset = "true";
                 this.verticalInset = "false";
-                this.horizontalScaling = "anchor";
-                this.verticalScaling = "content";
+                this.horizontalScaling = AxisScalingMode.anchor;
+                this.verticalScaling = AxisScalingMode.content;
                 break;
         }
     }

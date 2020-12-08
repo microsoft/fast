@@ -18,11 +18,31 @@ declare global {
     }
 }
 
-export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
-export type AxisScalingMode = "anchor" | "fill" | "content";
-export type GbcrUsage = "always" | "never" | "default";
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
-export type VerticalPosition = "top" | "bottom" | "unset";
+export enum AxisPositioningMode {
+    uncontrolled = "uncontrolled",
+    locktodefault = "locktodefault",
+    dynamic = "dynamic",
+}
+
+export enum AxisScalingMode {
+    anchor = "anchor",
+    fill = "fill",
+    content = "content",
+}
+
+export enum HorizontalPosition {
+    start = "start",
+    end = "end",
+    left = "left",
+    right = "right",
+    unset = "unset",
+}
+
+export enum VerticalPosition {
+    top = "top",
+    bottom = "bottom",
+    unset = "unset",
+}
 
 export interface Dimension {
     height: number;
@@ -105,7 +125,8 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: horizontal-positioning-mode
      */
     @attr({ attribute: "horizontal-positioning-mode" })
-    public horizontalPositioningMode: AxisPositioningMode = "uncontrolled";
+    public horizontalPositioningMode: AxisPositioningMode =
+        AxisPositioningMode.uncontrolled;
     private horizontalPositioningModeChanged(): void {
         this.requestReset();
     }
@@ -118,7 +139,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: horizontal-default-position
      */
     @attr({ attribute: "horizontal-default-position" })
-    public horizontalDefaultPosition: HorizontalPosition = "unset";
+    public horizontalDefaultPosition: HorizontalPosition = HorizontalPosition.unset;
     private horizontalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
@@ -158,7 +179,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: horizontal-scaling
      */
     @attr({ attribute: "horizontal-scaling" })
-    public horizontalScaling: AxisScalingMode = "content";
+    public horizontalScaling: AxisScalingMode = AxisScalingMode.content;
     private horizontalScalingChanged(): void {
         this.updateForAttributeChange();
     }
@@ -174,7 +195,8 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: vertical-positioning-mode
      */
     @attr({ attribute: "vertical-positioning-mode" })
-    public verticalPositioningMode: AxisPositioningMode = "uncontrolled";
+    public verticalPositioningMode: AxisPositioningMode =
+        AxisPositioningMode.uncontrolled;
     private verticalPositioningModeChanged(): void {
         this.requestReset();
     }
@@ -187,7 +209,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: vertical-default-position
      */
     @attr({ attribute: "vertical-default-position" })
-    public verticalDefaultPosition: VerticalPosition = "unset";
+    public verticalDefaultPosition: VerticalPosition = VerticalPosition.unset;
     private verticalDefaultPositionChanged(): void {
         this.updateForAttributeChange();
     }
@@ -227,7 +249,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: vertical-scaling
      */
     @attr({ attribute: "vertical-scaling" })
-    public verticalScaling: AxisScalingMode = "content";
+    public verticalScaling: AxisScalingMode = AxisScalingMode.content;
     private verticalScalingChanged(): void {
         this.updateForAttributeChange();
     }
