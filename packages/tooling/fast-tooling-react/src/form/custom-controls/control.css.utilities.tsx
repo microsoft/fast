@@ -47,7 +47,6 @@ function getCheckboxInputChangeHandler(
     value: string
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("son of a b", e.currentTarget.checked);
         parentChangeHandler(e.currentTarget.checked ? value : "");
     };
 }
