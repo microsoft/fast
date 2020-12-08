@@ -1,6 +1,6 @@
 import {
-    CSSPropertySyntax,
     CSSPropertyRef,
+    CSSPropertySyntax,
 } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
 
 export interface CSSRefProps {
