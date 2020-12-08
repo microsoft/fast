@@ -4,9 +4,15 @@ import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles
 
 export const AvatarStyles = css`
     ${display("flex")} :host {
-        max-width: var(--avatar-size);
-        height: var(--avatar-size);
+        max-width: var(--avatar-size, var(--avatar-size-default));
+        height: var(--avatar-size, var(--avatar-size-default));
         position: relative;
+        --avatar-size-default: calc(
+            (
+                    (var(--base-height-multiplier) + var(--density)) * var(--design-unit) +
+                        (var(--design-unit) * 10)
+                ) * 1px
+        );
         --avatar-text-size: var(--type-ramp-base-font-size);
         --avatar-text-ratio: var(--design-unit);
     }
@@ -46,7 +52,8 @@ export const AvatarStyles = css`
 
     .name {
         font-size: calc(
-            (var(--avatar-text-size) + var(--avatar-size)) / var(--avatar-text-ratio)
+            (var(--avatar-text-size) + var(--avatar-size, var(--avatar-size-default))) /
+                var(--avatar-text-ratio)
         );
         line-height: var(--type-ramp-plus-5-line-height);
         display: block;
