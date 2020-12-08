@@ -247,13 +247,18 @@ export class DelegatesARIASelect {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
 
 /**
  * @internal
  */
-export interface Select
-    extends StartEnd,
-        DelegatesARIASelect,
-        ARIAGlobalStatesAndProperties {}
+export interface Select extends StartEnd, DelegatesARIASelect {}
 applyMixins(Select, StartEnd, DelegatesARIASelect);

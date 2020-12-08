@@ -218,6 +218,14 @@ export class TextField extends FormAssociatedTextField {
  */
 export class DelegatesARIATextbox {}
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
 
 /**
@@ -226,8 +234,5 @@ applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface TextField
-    extends StartEnd,
-        DelegatesARIATextbox,
-        ARIAGlobalStatesAndProperties {}
+export interface TextField extends StartEnd, DelegatesARIATextbox {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);

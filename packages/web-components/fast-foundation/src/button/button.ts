@@ -210,6 +210,14 @@ export class DelegatesARIAButton {
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 
 /**
@@ -218,8 +226,5 @@ applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface Button
-    extends StartEnd,
-        DelegatesARIAButton,
-        ARIAGlobalStatesAndProperties {}
+export interface Button extends StartEnd, DelegatesARIAButton {}
 applyMixins(Button, StartEnd, DelegatesARIAButton);

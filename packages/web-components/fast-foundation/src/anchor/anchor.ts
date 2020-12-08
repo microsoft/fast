@@ -98,6 +98,14 @@ export class DelegatesARIALink {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
 
 /**
@@ -107,8 +115,5 @@ applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
  * @internal
  */
 /* eslint-disable-next-line */
-export interface Anchor
-    extends StartEnd,
-        DelegatesARIALink,
-        ARIAGlobalStatesAndProperties {}
+export interface Anchor extends StartEnd, DelegatesARIALink {}
 applyMixins(Anchor, StartEnd, DelegatesARIALink);

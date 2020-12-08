@@ -367,10 +367,18 @@ export class DelegatesARIAListbox {
     public ariaExpanded: "true" | "false" | undefined;
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAListbox, ARIAGlobalStatesAndProperties);
 
 /**
  * @internal
  */
-export interface Listbox extends DelegatesARIAListbox, ARIAGlobalStatesAndProperties {}
+export interface Listbox extends DelegatesARIAListbox {}
 applyMixins(Listbox, DelegatesARIAListbox);
