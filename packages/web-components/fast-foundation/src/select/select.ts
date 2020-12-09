@@ -141,8 +141,9 @@ export class Select extends FormAssociatedSelect {
 
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
-                `[role=option]`
+                `option,[role=option]`
             ) as ListboxOption;
+
             if (captured && captured.disabled) {
                 return;
             }
@@ -183,8 +184,12 @@ export class Select extends FormAssociatedSelect {
         if (this.proxy instanceof HTMLSelectElement) {
             this.proxy.options.length = 0;
             this.options.forEach(option => {
-                if (option.proxy) {
-                    this.proxy.appendChild(option.proxy);
+                const proxyOption =
+                    option.proxy ||
+                    (option instanceof HTMLOptionElement ? option.cloneNode() : null);
+
+                if (proxyOption) {
+                    this.proxy.appendChild(proxyOption);
                 }
             });
         }

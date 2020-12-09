@@ -1,5 +1,6 @@
-import { uniqueId } from "lodash-es";
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import difference from "lodash-es/difference";
+import uniqueId from "lodash-es/uniqueId";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -67,8 +68,8 @@ export class Listbox extends FASTElement {
      * @internal
      */
     @observable
-    public options: ListboxOption[] = [];
-    public optionsChanged(prev, next): void {
+    public options: ListboxOption[];
+    public optionsChanged(prev: ListboxOption[] = [], next: ListboxOption[]) {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => (o.id = o.id || uniqueId("option-")));
         }
@@ -81,9 +82,16 @@ export class Listbox extends FASTElement {
      */
     @observable
     public selectedOptions: ListboxOption[] = [];
-    protected selectedOptionsChanged(prev, next) {
+    protected selectedOptionsChanged(
+        prev: ListboxOption[] = [],
+        next: ListboxOption[]
+    ): void {
+        if (prev.length && next.length && !difference(prev, next).length) {
+            return;
+        }
+
         if (this.$fastController.isConnected) {
-            this.options.forEach(o => (o.selected = next.includes(o)));
+            this.options.map(o => (o.selected = next.includes(o)));
         }
     }
 
@@ -143,9 +151,6 @@ export class Listbox extends FASTElement {
      */
     public setSelectedOption(index: number = this.selectedIndex): void {
         const selectedOption = this.options[index];
-        if (!selectedOption) {
-            return;
-        }
 
         const selectedOptions: ListboxOption[] = [];
 
@@ -157,7 +162,9 @@ export class Listbox extends FASTElement {
 
         this.selectedIndex = index;
         this.selectedOptions = selectedOptions;
-        this.ariaActiveDescendant = this.firstSelectedOption.id;
+        this.ariaActiveDescendant = this.firstSelectedOption
+            ? this.firstSelectedOption.id
+            : "";
         this.focusAndScrollOptionIntoView();
     }
 
@@ -169,8 +176,8 @@ export class Listbox extends FASTElement {
      */
     public static slottedOptionFilter = (n: ListboxOption) =>
         n.nodeType === Node.ELEMENT_NODE &&
-        n.getAttribute("role") === "option" &&
-        !n.disabled;
+        !n.disabled &&
+        (n.getAttribute("role") === "option" || n instanceof HTMLOptionElement);
 
     /**
      * Moves focus to the first selectable option
@@ -223,7 +230,7 @@ export class Listbox extends FASTElement {
      */
     public clickHandler(e: MouseEvent): boolean | void {
         const captured = (e.target as HTMLElement).closest(
-            `[role=option]`
+            `[role=option],option`
         ) as ListboxOption;
 
         if (captured && !captured.disabled) {
