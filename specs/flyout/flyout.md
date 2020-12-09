@@ -15,13 +15,19 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 **Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. An event would be emitted anytime the Popover is dismissed. The Popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Popover.
 
-**Focus Management:** - Should follow the same process for focus management as a Dialog primarily as the Popover's role will be dialog.
+**Focus Management:** - Should follow the same process for focus management as a Dialog primarily as the Popover's role will be dialog. This includes a trap focus method, which can be optional, and the focus should return to the target that triggers the popover after the popover is closed.
 
 
 ### Prior Art/Examples
+
+##### Popover from Salesforce
+- https://www.lightningdesignsystem.com/components/popovers/
+
+![Popover](./images/salesforce-popover.png)
 ##### Popover from Evergreen
 - triggered by a button
 - https://evergreen.segment.com/components/popover/
+
 ![Popover](./images/evergreen-popover.png)
 
 ##### Microsoft Windows Developer Flyout, Text Only
@@ -34,6 +40,7 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 #### Inline Dialog from ATLAssian
 - https://atlassian.design/components/inline-dialog/examples
+
 ![Popover](./images/atlassian-popover.png)
 
 #### Callout with actions from Fluent UI
@@ -54,23 +61,31 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic
 
     - above-centered, below-centered
+
     ![X](./images/ab-centered.png)
 
     - right-centered, left-centered
+    
     ![X](./images/rl-centered.png)
 
     - top-left-corner, top-right-corner, bottom-right-corner, bottom-left-corner
+
     ![X](./images/corner-positions.png)
 
     - above-left-aligned, below-left-aligned
+
     ![X](./images/ab-left-aligned.png)
+
     - above-right-aligned, below-right-aligned
+
     ![X](./images/ab-right-aligned.png)
 
     - left-top-aligned, right-top-aligned
+
     ![X](./images/rl-top-aligned.png)
 
     - left-bottom-aligned, right-bottom-aligned
+    
     ![X](./images/rl-bottom-aligned.png)
 
 
@@ -82,7 +97,7 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 *Properties*
 - `targetElement` - the reference to the HTMLElement used as an anchor
-- `visible` - boolean, whether or not the Popover is visible
+- `popoverVisible` - boolean, whether or not the Popover is visible
 
 *Slots*
 - default for content
@@ -131,7 +146,7 @@ ${when(
 
 ## Implementation
 ```html
-<fast-popover visible soft-dismiss responsive>
+<fast-popover visible>
     <p>This is a popover</p>
     <fast-button>Action</fast-button>
 </fast-popover>
