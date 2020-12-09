@@ -180,7 +180,15 @@ export class Button extends FormAssociatedButton {
     };
 
     /**
-     * References the root element
+     * @deprecated
+     */
+    public get root() {
+        return this.control;
+    }
+
+    /**
+     * References the control element
+     * @internal
      */
     public control: HTMLButtonElement;
 }
