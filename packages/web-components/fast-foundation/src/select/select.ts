@@ -24,7 +24,18 @@ export class Select extends FormAssociatedSelect {
         this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
             this.setPositioning();
-            super.focusAndScrollOptionIntoView();
+            this.focusAndScrollOptionIntoView();
+        }
+    }
+
+    public valueChanged(prev: string, next: string): void {
+        if (this.$fastController.isConnected) {
+            super.valueChanged(prev, next);
+            const selectedIndex = this.options.findIndex(el => el.value === this.value);
+
+            this.setSelectedOption(selectedIndex);
+
+            this.$emit("change");
         }
     }
 
@@ -111,6 +122,7 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public formResetCallback = (): void => {
+        this.value = this.initialValue;
         this.setDefaultSelectedOption();
     };
 
@@ -122,9 +134,9 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public selectedOptionsChanged(prev, next): void {
-        super.selectedOptionsChanged(prev, next);
         if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption.value;
+            super.selectedOptionsChanged(prev, next);
+            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
         }
     }
 
@@ -227,6 +239,7 @@ export class Select extends FormAssociatedSelect {
 
         this.setProxyOptions();
 
+        this.initialValue = this.initialValue || this.value || "";
         this.forcedPosition = !!this.positionAttribute;
     }
 
@@ -258,7 +271,6 @@ export class DelegatesARIASelect {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
 

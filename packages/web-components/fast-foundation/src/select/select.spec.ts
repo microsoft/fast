@@ -88,6 +88,32 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should emit a 'change' event when the value changes", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.value = "one";
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        const wasChanged = await new Promise(resolve => {
+            // Resolve true when the event listener is handled
+            element.addEventListener("change", () => resolve(true));
+
+            element.value = "two";
+
+            // Resolve false on the next update in case change hasn't happened
+            DOM.queueUpdate(() => resolve(false));
+        });
+
+        expect(wasChanged).to.be.true;
+
+        expect(element.value).to.equal("two");
+
+        await disconnect();
+    });
+
     describe("when the owning form's reset() function is invoked", () => {
         it("should reset the value property to the first enabled option", async () => {
             const { connect, disconnect, element, parent } = await setup();

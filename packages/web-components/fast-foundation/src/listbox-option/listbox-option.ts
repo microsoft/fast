@@ -80,8 +80,6 @@ export class ListboxOption extends FASTElement {
             if (this.proxy instanceof HTMLOptionElement) {
                 this.proxy.selected = this.selected;
             }
-
-            this.$emit("change");
         }
     }
 
