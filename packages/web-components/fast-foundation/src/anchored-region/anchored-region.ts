@@ -18,18 +18,33 @@ declare global {
     }
 }
 
+/**
+ * Defines the base behavior of an anchored region on a particular axis
+ *
+ * @public
+ */
 export enum AxisPositioningMode {
     uncontrolled = "uncontrolled",
     locktodefault = "locktodefault",
     dynamic = "dynamic",
 }
 
+/**
+ * Defines the scaling behavior of an anchored region on a particular axis
+ *
+ * @public
+ */
 export enum AxisScalingMode {
     anchor = "anchor",
     fill = "fill",
     content = "content",
 }
 
+/**
+ * Defines the horizontal positioning options for an anchored region
+ *
+ * @public
+ */
 export enum HorizontalPosition {
     start = "start",
     end = "end",
@@ -38,13 +53,18 @@ export enum HorizontalPosition {
     unset = "unset",
 }
 
+/**
+ * Defines the vertical positioning options for an anchored region
+ *
+ * @public
+ */
 export enum VerticalPosition {
     top = "top",
     bottom = "bottom",
     unset = "unset",
 }
 
-export interface Dimension {
+interface Dimension {
     height: number;
     width: number;
 }
@@ -83,6 +103,11 @@ enum Location {
     bottom = "bottom",
 }
 
+/**
+ * An anchored region Custom HTML Element.
+ *
+ * @public
+ */
 export class AnchoredRegion extends FASTElement {
     /**
      * The HTML id of the anchor element this region is positioned relative to

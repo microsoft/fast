@@ -1,6 +1,10 @@
 import { html, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "./anchored-region";
 
+/**
+ * The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component.
+ * @public
+ */
 export const AnchoredRegionTemplate = html<AnchoredRegion>`
     <template>
         ${when(
