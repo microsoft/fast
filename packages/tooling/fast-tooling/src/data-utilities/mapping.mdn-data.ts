@@ -36,7 +36,7 @@ const bracketsCombinatorRegex = new RegExp(
     /(?<!.)(?:\/|, )?\[(.*)\](#|\?|\*|!|\+|{\d*,\d*})?(?!.)/
 );
 const juxtapositionCombinatorRegex = new RegExp(
-    /(?<!.)((?:(<?'?[a-z-]*'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: ))/
+    /(?<!.)((?:(<?'?[a-z-]*'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: )(?!\||&))/
 );
 const mandatoryInAnyOrderCombinatorRegex = new RegExp(
     /(?<!.)((?:(<?'?[a-z-]*'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: && ))/
@@ -47,6 +47,12 @@ const atLeastOneInAnyOrderCombinatorRegex = new RegExp(
 const exactlyOneCombinatorRegex = new RegExp(
     /(?<!.)((?:(<?'?[a-z-]*'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: \| ))/
 );
+
+/**
+ * Brackets regex
+ */
+const openBracketRegex = new RegExp(/(\[)/g);
+const closeBracketRegex = new RegExp(/(\])/g);
 
 /**
  * Reference types regex
@@ -141,6 +147,23 @@ export interface CSSPropertySyntax extends CSSPropertyRef {
     percentages: string;
 }
 
+export interface CSSBracketsSyntax {
+    /**
+     * The syntax string to evaluate
+     */
+    ref: XOR<string, CSSPropertyRef[]>;
+
+    /**
+     * The multiplier this sytax uses
+     */
+    multiplier: Multiplier | null;
+}
+
+export interface CSSBracketsSyntaxItem {
+    ref: CSSBracketsSyntax[];
+    refCombinatorType: CombinatorType;
+}
+
 export enum CombinatorType {
     brackets = "brackets",
     juxtaposition = "juxtaposition",
@@ -149,6 +172,11 @@ export enum CombinatorType {
     exactlyOne = "exactlyOne",
     none = "none",
 }
+
+const combinatorTypeJuxtaposition: string = " ";
+const combinatorTypeMandatoryInAnyOrder: string = " && ";
+const combinatorTypeAtLeastOneInAnyOrder: string = " || ";
+const combinatorTypeExactyleOne: string = " | ";
 
 export enum MultiplierType {
     zeroOrMore = "zeroOrMore",
@@ -337,6 +365,190 @@ export function mapCombinatorType(syntax: string): CombinatorType {
     }
 
     return CombinatorType.none;
+}
+
+function getCombinatorSplitString(combinatorType: CombinatorType): string {
+    switch (combinatorType) {
+        case CombinatorType.juxtaposition:
+            return combinatorTypeJuxtaposition;
+        case CombinatorType.atLeastOneInAnyOrder:
+            return combinatorTypeAtLeastOneInAnyOrder;
+        case CombinatorType.exactlyOne:
+            return combinatorTypeExactyleOne;
+        case CombinatorType.mandatoryInAnyOrder:
+            return combinatorTypeMandatoryInAnyOrder;
+    }
+}
+
+/**
+ * This normalizes already grouped items by ignoring them and their contents
+ * by treating them as a single value
+ */
+function normalizeSplitForGroupedItems(syntaxSplitByCombinatorType: string[]): string[] {
+    // In the case of grouped items already being present, the split will cause incorrect results
+    if (
+        syntaxSplitByCombinatorType.find((syntaxItem: string) => {
+            return (
+                syntaxItem.match(openBracketRegex) || syntaxItem.match(closeBracketRegex)
+            );
+        })
+    ) {
+        const firstOpenBracket: number = syntaxSplitByCombinatorType.findIndex(
+            (syntaxItem: string) => {
+                return syntaxItem.match(openBracketRegex);
+            }
+        );
+        let bracketCount = 0;
+        let matchingCloseBracket = 0;
+        syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+            const matchedOpenBrackets = syntaxItem.match(openBracketRegex);
+            const matchedCloseBrackets = syntaxItem.match(closeBracketRegex);
+
+            if (matchedOpenBrackets) {
+                bracketCount = bracketCount + matchedOpenBrackets.length;
+            }
+
+            if (matchedCloseBrackets) {
+                bracketCount = bracketCount - matchedCloseBrackets.length;
+
+                if (bracketCount === 0) {
+                    matchingCloseBracket = index;
+                }
+            }
+        });
+        syntaxSplitByCombinatorType = [
+            ...syntaxSplitByCombinatorType.slice(0, firstOpenBracket),
+            syntaxSplitByCombinatorType
+                .slice(firstOpenBracket, matchingCloseBracket + 1)
+                .join(" "),
+        ].concat(syntaxSplitByCombinatorType.slice(matchingCloseBracket + 1));
+    }
+
+    return syntaxSplitByCombinatorType;
+}
+
+/**
+ * This normalizes some variables that might be incorrect due to juxtaposition,
+ * which because it is a single space interferes with methods of splitting
+ * that the other CombinatorTypes do not (" | ", " && ", " || ")
+ */
+function normalizeSplitForJuxtapositionedItems(
+    containsMixedCombinatorTypes: boolean,
+    indexLastSplitOccured: number,
+    syntaxSplitByAllCombinatorTypes: string[],
+    firstCombinatorType: CombinatorType,
+    syntaxSplitByCombinatorType: string[]
+): {
+    containsMixedCombinatorTypes: boolean;
+    indexLastSplitOccured: number;
+    syntaxSplitByAllCombinatorTypes: string[];
+} {
+    if (firstCombinatorType === CombinatorType.juxtaposition) {
+        let nextCombinatorAndSyntax: string | null = null;
+
+        syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+            if (syntaxItem === "|" || syntaxItem === "||" || syntaxItem === "&&") {
+                containsMixedCombinatorTypes = true;
+                indexLastSplitOccured = index - 1;
+                nextCombinatorAndSyntax = ` ${syntaxSplitByCombinatorType
+                    .slice(index)
+                    .join(" ")}`;
+            }
+        });
+
+        if (nextCombinatorAndSyntax !== null) {
+            syntaxSplitByAllCombinatorTypes = syntaxSplitByAllCombinatorTypes
+                .slice(0, indexLastSplitOccured + 1)
+                .concat([nextCombinatorAndSyntax]);
+        }
+    }
+
+    return {
+        containsMixedCombinatorTypes,
+        indexLastSplitOccured,
+        syntaxSplitByAllCombinatorTypes,
+    };
+}
+
+/**
+ * Maps mixed combinator types using brackets
+ *
+ * A pattern like "foo && bar bat"
+ * should result in "[ foo && bar ] bat"
+ */
+export function mapMixedCombinatorTypes(syntax: string): string {
+    // determine the first combinator type
+    let mixedCombinatorTypes: string = syntax.trim();
+    const firstCombinatorType: CombinatorType = mapCombinatorType(mixedCombinatorTypes);
+    const combinatorSplitString: string = getCombinatorSplitString(firstCombinatorType);
+    let syntaxSplitByCombinatorType: string[] = mixedCombinatorTypes.split(
+        combinatorSplitString
+    );
+    let adjoiningCombinatorSplitString: string = "";
+
+    syntaxSplitByCombinatorType = normalizeSplitForGroupedItems(
+        syntaxSplitByCombinatorType
+    );
+    const normalizedForJuxtaposition = normalizeSplitForJuxtapositionedItems(
+        false,
+        0,
+        mapSplit(mixedCombinatorTypes),
+        firstCombinatorType,
+        syntaxSplitByCombinatorType
+    );
+    let {
+        containsMixedCombinatorTypes,
+        indexLastSplitOccured,
+    } = normalizedForJuxtaposition;
+    const { syntaxSplitByAllCombinatorTypes } = normalizedForJuxtaposition;
+
+    // go through, ignore grouped items but save them for recursion later,
+    // until the next combinator that does not match is found
+    syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+        const mappedCombinatorType = mapCombinatorType(syntaxItem);
+
+        if (mappedCombinatorType !== "none" && mappedCombinatorType !== "brackets") {
+            indexLastSplitOccured = index;
+            adjoiningCombinatorSplitString = getCombinatorSplitString(
+                mappedCombinatorType
+            );
+            containsMixedCombinatorTypes =
+                typeof adjoiningCombinatorSplitString !== "undefined";
+
+            return;
+        }
+    });
+
+    // determine if there are multiple combinator types
+    if (containsMixedCombinatorTypes) {
+        // if the split is exactly one, wrap each item in the split
+        if (firstCombinatorType === CombinatorType.exactlyOne) {
+            mixedCombinatorTypes = `${syntaxSplitByCombinatorType
+                .map((syntaxItem: string) => {
+                    const mappedCombinatorType = mapCombinatorType(syntaxItem);
+
+                    if (
+                        mappedCombinatorType !== "none" &&
+                        mappedCombinatorType !== "brackets"
+                    ) {
+                        return `[ ${syntaxItem} ]`;
+                    }
+
+                    return syntaxItem;
+                })
+                .join(combinatorSplitString)}`;
+        } else {
+            mixedCombinatorTypes = `[ ${syntaxSplitByAllCombinatorTypes
+                .slice(0, indexLastSplitOccured + 1)
+                .join(
+                    combinatorSplitString
+                )} ]${adjoiningCombinatorSplitString}${syntaxSplitByAllCombinatorTypes
+                .slice(indexLastSplitOccured + 1)
+                .join(combinatorSplitString)}`;
+        }
+    }
+
+    return mixedCombinatorTypes;
 }
 
 /**
@@ -574,7 +786,12 @@ export function mapCSSProperties(
                         name: currentCSSProperty[0],
                         appliesTo: currentCSSProperty[1].appliesto,
                         syntax: resolveCSSPropertySyntax(
-                            currentCSSProperty[1],
+                            {
+                                ...currentCSSProperty[1],
+                                syntax: mapMixedCombinatorTypes(
+                                    currentCSSProperty[1].syntax
+                                ),
+                            },
                             currentCSSProperty[0],
                             syntaxKeys,
                             typeKeys
