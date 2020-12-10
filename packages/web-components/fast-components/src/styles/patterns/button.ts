@@ -434,8 +434,6 @@ export const OutlineButtonStyles = css`
         box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${neutralFocusBehavior.var};
         border-color: ${neutralFocusBehavior.var};
     }
-    :host([appearance="outline"]) .control:focus-visible {
-    }
 
     :host([appearance="outline"][disabled]) {
         border-color: ${accentFillRestBehavior.var};
