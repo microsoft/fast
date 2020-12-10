@@ -46,31 +46,27 @@ export const TooltipStyles = css`
         justify-content: center;
         align-items: center;
         overflow: visible;
-    }
-
-    :host([position="top"]) fast-anchored-region,
-    :host([position="bottom"]) fast-anchored-region {
         flex-direction: row;
     }
 
-    :host([position="right"]) fast-anchored-region,
-    :host([position="left"]) fast-anchored-region {
+    fast-anchored-region.right,
+    fast-anchored-region.left {
         flex-direction: column;
     }
 
-    :host([position="top"]) .tooltip {
+    fast-anchored-region.top .tooltip {
         margin-bottom: 4px;
     }
 
-    :host([position="bottom"]) .tooltip {
+    fast-anchored-region.bottom .tooltip {
         margin-top: 4px;
     }
 
-    :host([position="left"]) .tooltip {
+    fast-anchored-region.left .tooltip {
         margin-right: 4px;
     }
 
-    :host([position="right"]) .tooltip {
+    fast-anchored-region.right .tooltip {
         margin-left: 4px;
     }
 `.withBehaviors(
