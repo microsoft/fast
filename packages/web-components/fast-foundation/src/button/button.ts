@@ -180,6 +180,7 @@ export class Button extends FormAssociatedButton {
     };
 
     /**
+     * This has been deprecated in favor of control property
      * @deprecated
      */
     public get root() {
