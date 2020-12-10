@@ -97,6 +97,7 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 *Properties*
 - `targetElement` - the reference to the HTMLElement used as an anchor
+- `viewportElement` - the reference to the HTMLElement used as the viewport, required ot setup anchored region properly
 - `popoverVisible` - boolean, whether or not the Popover is visible
 
 *Slots*
@@ -107,9 +108,8 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 ### Anatomy and Appearance
 Parts:
-- `overlay` - the overlay.
-    - *Note:* the overlay div will always be present, but will have different styles whether or not the overlay is enabled.
-- `content` - the region where the content is rendered, has `role=dialog`
+- `popover` - the popover itself, has `role=dialog`
+- `anchored-region` - the anchored region that controls the position of the popover
 
 
 *Template:*
