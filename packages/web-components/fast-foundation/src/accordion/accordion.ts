@@ -74,6 +74,17 @@ export class Accordion extends FASTElement {
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof AccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
+
+                if (this.isSingleExpandMode()) {
+                    if (this.activeItemIndex === index) {
+                        item.expanded = true;
+                        item.setAttribute("aria-disabled", "true");
+                    } else {
+                        item.expanded = false;
+                        item.removeAttribute("aria-disabled");
+                    }
+                }
+
                 if (this.isSingleExpandMode()) {
                     this.activeItemIndex !== index
                         ? (item.expanded = false)
@@ -92,6 +103,9 @@ export class Accordion extends FASTElement {
 
     private resetItems(): void {
         this.accordionItems.forEach((item: AccordionItem, index: number) => {
+            if (item.expanded === true) {
+                item.removeAttribute("aria-disabled");
+            }
             item.expanded = false;
         });
     }
@@ -108,6 +122,7 @@ export class Accordion extends FASTElement {
         if (this.isSingleExpandMode()) {
             this.resetItems();
             event.target.expanded = true;
+            event.target.setAttribute("aria-disabled", "true");
         }
         this.activeid = event.target.getAttribute("id");
         this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);

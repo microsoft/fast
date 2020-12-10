@@ -145,4 +145,46 @@ describe("Accordion item", () => {
 
         await disconnect();
     });
+
+    it("should set the `aria-disabled` attribute when `aria-disabled` value is 'true'", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.ariaDisabled = true;
+
+        await connect();
+
+        expect(
+            element.shadowRoot?.querySelector(".button")?.hasAttribute("aria-disabled")
+        ).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should NOT set `aria-disabled` on the button when `aria-disabled` attribute is not defined", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.ariaDisabled = undefined;
+
+        await connect();
+
+        expect(
+            element.shadowRoot?.querySelector(".button")?.hasAttribute("aria-disabled")
+        ).to.be.false;
+
+        await disconnect();
+    });
+
+    it("should NOT set `aria-disabled` on the button when `aria-disabled` attribute is false", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.ariaDisabled = false;
+
+        await connect();
+
+        expect(
+            element.shadowRoot?.querySelector(".button")?.hasAttribute("aria-disabled")
+        ).to.be.false;
+
+        await disconnect();
+    });
 });

@@ -71,4 +71,32 @@ describe("Accordion", () => {
 
         await disconnect();
     });
+
+    it("should add `aria-disabled` attribute when an accordion-item is expanded on a Accordion with `expand-mode` of `single`", async () => {
+        const { element, connect, disconnect, item1 } = await setup();
+
+        element.expandmode = AccordionExpandMode.single;
+        await connect();
+
+        item1.click();
+        await DOM.nextUpdate();
+
+        expect(item1.hasAttribute("aria-disabled")).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should NOT add `aria-disabled` attribute when an accordion-item is expanded on a Accordion with `expand-mode` of `multi`", async () => {
+        const { element, connect, disconnect, item1 } = await setup();
+
+        element.expandmode = AccordionExpandMode.multi;
+        await connect();
+
+        item1.click();
+        await DOM.nextUpdate();
+
+        expect(item1.hasAttribute("aria-disabled")).to.be.false;
+
+        await disconnect();
+    });
 });

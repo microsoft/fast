@@ -1,4 +1,5 @@
 import { html, ref } from "@microsoft/fast-element";
+import { Accordion, AccordionExpandMode } from "../accordion/accordion";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { AccordionItem } from "./accordion-item";
 
@@ -22,6 +23,7 @@ export const AccordionItemTemplate = html<AccordionItem>`
                 part="button"
                 ${ref("expandbutton")}
                 aria-expanded="${x => x.expanded}"
+                aria-disabled="${x => (x.ariaDisabled ? true : void 0)}"
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"

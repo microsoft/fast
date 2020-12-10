@@ -34,6 +34,15 @@ export class AccordionItem extends FASTElement {
     public expanded: boolean = false;
 
     /**
+     * Set {@link https://www.w3.org/TR/wai-aria-1.1/#aria-disabled}
+     * @public
+     * @remarks
+     * HTML Attribute: aria-disabled
+     */
+    @attr({ attribute: "aria-disabled" })
+    public ariaDisabled?: boolean = undefined;
+
+    /**
      * The item ID
      *
      * @public

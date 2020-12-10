@@ -60,6 +60,7 @@ As defined by the W3C:
   - 4
   - 5
   - 6
+- `aria-disabled` - boolean
 
 *Parts:*
 - panel
