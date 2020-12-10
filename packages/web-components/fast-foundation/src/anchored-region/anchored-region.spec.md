@@ -200,11 +200,17 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - default slot for content
 
 *functions:*
-- update() - forces the anchored region to recalculate positioning.
+- updateAnchorOffset = (
+    horizontalOffsetDelta: number,
+    verticalOffsetDelta: number
+) 
 
 *Events:*
-- loaded - the region and its contents have been added to the DOM and positioned
-- change - the positioning of the anchored region has changed
+- loaded - The contents of the anchored region are loaded into the DOM.
+- positionchange - The positioning of the anchored region has changed.
+
+
+Enables developers to update the offset between the anchor and the region as it changes,  for example to promt layout recalculations as a result of scrolling so a scaling region tracks the viewport boundary.  
 
 
 
