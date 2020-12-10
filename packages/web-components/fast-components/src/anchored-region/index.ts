@@ -10,7 +10,7 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
  * {@link @microsoft/fast-foundation#AnchoredRegionTemplate}
  *
  *
- * @public
+ * @beta
  * @remarks
  * HTML Element: \<fast-anchored-region\>
  */

@@ -21,7 +21,7 @@ declare global {
 /**
  * Defines the base behavior of an anchored region on a particular axis
  *
- * @public
+ * @beta
  */
 export enum AxisPositioningMode {
     uncontrolled = "uncontrolled",
@@ -32,7 +32,7 @@ export enum AxisPositioningMode {
 /**
  * Defines the scaling behavior of an anchored region on a particular axis
  *
- * @public
+ * @beta
  */
 export enum AxisScalingMode {
     anchor = "anchor",
@@ -43,7 +43,7 @@ export enum AxisScalingMode {
 /**
  * Defines the horizontal positioning options for an anchored region
  *
- * @public
+ * @beta
  */
 export enum HorizontalPosition {
     start = "start",
@@ -56,7 +56,7 @@ export enum HorizontalPosition {
 /**
  * Defines the vertical positioning options for an anchored region
  *
- * @public
+ * @beta
  */
 export enum VerticalPosition {
     top = "top",
@@ -106,13 +106,13 @@ enum Location {
 /**
  * An anchored region Custom HTML Element.
  *
- * @public
+ * @beta
  */
 export class AnchoredRegion extends FASTElement {
     /**
      * The HTML id of the anchor element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -127,7 +127,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML id of the viewport element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -145,7 +145,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-positioning-mode
      */
@@ -159,7 +159,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default horizontal position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-default-position
      */
@@ -172,7 +172,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-inset
      */
@@ -186,7 +186,7 @@ export class AnchoredRegion extends FASTElement {
      * How narrow the space allocated to the default position has to be before the widest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-threshold
      */
@@ -199,7 +199,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the width of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-scaling
      */
@@ -215,7 +215,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-positioning-mode
      */
@@ -229,7 +229,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default vertical position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-default-position
      */
@@ -242,7 +242,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-inset
      */
@@ -256,7 +256,7 @@ export class AnchoredRegion extends FASTElement {
      * How short the space allocated to the default position has to be before the tallest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-threshold
      */
@@ -269,7 +269,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the height of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-scaling
      */
@@ -284,7 +284,7 @@ export class AnchoredRegion extends FASTElement {
      * Otherwise the region uses "position: absolute".
      * Fixed placement allows the region to break out of parent containers,
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: fixed-placement
      */
@@ -302,7 +302,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the anchor
      *
-     * @public
+     * @beta
      */
     @observable
     public anchorElement: HTMLElement | null = null;
@@ -313,7 +313,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @public
+     * @beta
      */
     @observable
     public viewportElement: HTMLElement | null = null;

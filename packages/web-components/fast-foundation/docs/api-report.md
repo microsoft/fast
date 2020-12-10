@@ -75,7 +75,7 @@ export class Anchor extends FASTElement {
 export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
-// @public (undocumented)
+// @beta
 export class AnchoredRegion extends FASTElement {
     // @internal (undocumented)
     adoptedCallback(): void;
@@ -108,7 +108,7 @@ export class AnchoredRegion extends FASTElement {
     viewportElement: HTMLElement | null;
     }
 
-// @public (undocumented)
+// @beta
 export const AnchoredRegionTemplate: import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
 
 // @public
@@ -140,7 +140,7 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
-// @public (undocumented)
+// @beta
 export enum AxisPositioningMode {
     // (undocumented)
     dynamic = "dynamic",
@@ -150,7 +150,7 @@ export enum AxisPositioningMode {
     uncontrolled = "uncontrolled"
 }
 
-// @public (undocumented)
+// @beta
 export enum AxisScalingMode {
     // (undocumented)
     anchor = "anchor",
@@ -390,9 +390,10 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
+    // (undocumented)
     ariaActiveDescendant: string;
-    ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
 // @internal
@@ -405,7 +406,6 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 // @public
 export class DelegatesARIASelect {
     ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
 // @internal
@@ -495,14 +495,6 @@ export class Dialog extends FASTElement {
 
 // @public
 export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
-
-// @public (undocumented)
-export interface Dimension {
-    // (undocumented)
-    height: number;
-    // (undocumented)
-    width: number;
-}
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -636,7 +628,7 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
-// @public (undocumented)
+// @beta
 export enum HorizontalPosition {
     // (undocumented)
     end = "end",
@@ -654,9 +646,6 @@ export enum HorizontalPosition {
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
 // @public
-export function isListboxOption(el: Element): el is ListboxOption;
-
-// @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -666,6 +655,8 @@ export function isTreeItemElement(el: Element): el is HTMLElement;
 export class Listbox extends FASTElement {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
+    connectedCallback(): void;
     disabled: boolean;
     // @internal (undocumented)
     get firstSelectedOption(): ListboxOption;
@@ -676,13 +667,12 @@ export class Listbox extends FASTElement {
     handleTypeAhead(key: any): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    // (undocumented)
-    get length(): number;
+    // @internal (undocumented)
     options: ListboxOption[];
+    // (undocumented)
+    optionsChanged(prev: any, next: any): void;
     role: string;
     selectedIndex: number;
-    // (undocumented)
-    selectedIndexChanged(prev: number, next: number): void;
     selectedOptions: ListboxOption[];
     // (undocumented)
     protected selectedOptionsChanged(prev: any, next: any): void;
@@ -695,12 +685,8 @@ export class Listbox extends FASTElement {
     selectPreviousOption(): void;
     // @internal (undocumented)
     protected setDefaultSelectedOption(): void;
-    protected setSelectedOptions(): void;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
-    // @internal (undocumented)
-    slottedOptions: HTMLElement[];
-    // (undocumented)
-    slottedOptionsChanged(prev: any, next: any): void;
+    setSelectedOption(index?: number): void;
+    static slottedOptionFilter: (n: ListboxOption) => boolean;
     // @internal
     protected typeAheadExpired: boolean;
     }
@@ -906,18 +892,17 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 //
 // @public
 export class Select extends FormAssociatedSelect {
-    // @internal
+    constructor();
+    // @internal (undocumented)
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
     connectedCallback(): void;
-    // @internal
-    disabledChanged(prev: boolean, next: boolean): void;
-    displayValue: string;
-    // @internal
+    get displayValue(): string;
+    // (undocumented)
     focusoutHandler(e: FocusEvent): boolean | void;
-    // @internal
+    // @internal (undocumented)
     formResetCallback: () => void;
-    // @internal
+    // (undocumented)
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
     maxHeight: number;
@@ -925,16 +910,14 @@ export class Select extends FormAssociatedSelect {
     open: boolean;
     // (undocumented)
     protected openChanged(): void;
+    // (undocumented)
+    optionsChanged(prev: any, next: any): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
     // @internal
-    selectedIndexChanged(prev: any, next: any): void;
+    selectedOptionsChanged(prev: any, next: any): void;
     setPositioning(): void;
-    // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
-    get value(): string;
-    set value(next: string);
     }
 
 // @internal (undocumented)
@@ -1402,7 +1385,7 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
-// @public (undocumented)
+// @beta
 export enum VerticalPosition {
     // (undocumented)
     bottom = "bottom",

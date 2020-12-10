@@ -3,7 +3,7 @@ import { AnchoredRegion } from "./anchored-region";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component.
- * @public
+ * @beta
  */
 export const AnchoredRegionTemplate = html<AnchoredRegion>`
     <template>
