@@ -1,5 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import difference from "lodash-es/difference";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
@@ -18,7 +17,11 @@ export class Listbox extends FASTElement {
      *
      * @public
      */
+    @observable
     public selectedIndex: number = -1;
+    public selectedIndexChanged(prev, next): void {
+        this.setSelectedOption();
+    }
 
     /**
      * Typeahead timeout in milliseconds.
@@ -70,9 +73,7 @@ export class Listbox extends FASTElement {
     @observable
     public options: ListboxOption[];
     public optionsChanged(prev: ListboxOption[] = [], next: ListboxOption[]) {
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => (o.id = o.id || uniqueId("option-")));
-        }
+        this.options.forEach(o => (o.id = o.id || uniqueId("option-")));
     }
 
     /**
@@ -84,14 +85,12 @@ export class Listbox extends FASTElement {
     public selectedOptions: ListboxOption[] = [];
     protected selectedOptionsChanged(
         prev: ListboxOption[] = [],
-        next: ListboxOption[]
+        next: ListboxOption[] = []
     ): void {
-        if (prev.length && next.length && !difference(prev, next).length) {
-            return;
-        }
-
         if (this.$fastController.isConnected) {
-            this.options.map(o => (o.selected = next.includes(o)));
+            this.options.forEach(o => {
+                o.selected = next.includes(o);
+            });
         }
     }
 
@@ -107,18 +106,14 @@ export class Listbox extends FASTElement {
      */
     public connectedCallback() {
         super.connectedCallback();
-        DOM.queueUpdate(() => this.setDefaultSelectedOption());
+        this.setDefaultSelectedOption();
     }
 
     /**
      * @internal
      */
     protected focusAndScrollOptionIntoView(): void {
-        if (
-            this.$fastController.isConnected &&
-            this.contains(document.activeElement) &&
-            this.firstSelectedOption
-        ) {
+        if (this.contains(document.activeElement) && this.firstSelectedOption) {
             this.firstSelectedOption.focus();
             this.firstSelectedOption.scrollIntoView({ block: "nearest" });
         }
@@ -137,10 +132,12 @@ export class Listbox extends FASTElement {
     /**
      * @internal
      */
-    protected setDefaultSelectedOption(): void {
-        let selectedIndex = this.options.findIndex(el => el.selected);
-        selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
-        this.setSelectedOption(selectedIndex);
+    protected async setDefaultSelectedOption() {
+        const selectedIndex = await Promise.resolve(
+            this.options.findIndex(el => el.selected)
+        );
+        this.selectedIndex = selectedIndex !== -1 ? selectedIndex : 0;
+        this.setSelectedOption();
     }
 
     /**
@@ -149,23 +146,18 @@ export class Listbox extends FASTElement {
      * @param index - option index to select
      * @public
      */
-    public setSelectedOption(index: number = this.selectedIndex): void {
-        const selectedOption = this.options[index];
+    protected setSelectedOption() {
+        if (this.$fastController.isConnected) {
+            const selectedOption = this.options[this.selectedIndex] || null;
 
-        const selectedOptions: ListboxOption[] = [];
-
-        this.options.forEach(el => {
-            if (el.isSameNode(selectedOption)) {
-                selectedOptions.push(el);
-            }
-        });
-
-        this.selectedIndex = index;
-        this.selectedOptions = selectedOptions;
-        this.ariaActiveDescendant = this.firstSelectedOption
-            ? this.firstSelectedOption.id
-            : "";
-        this.focusAndScrollOptionIntoView();
+            this.selectedOptions = this.options.filter(el =>
+                el.isSameNode(selectedOption)
+            );
+            this.ariaActiveDescendant = this.firstSelectedOption
+                ? this.firstSelectedOption.id
+                : "";
+            this.focusAndScrollOptionIntoView();
+        }
     }
 
     /**
@@ -186,7 +178,7 @@ export class Listbox extends FASTElement {
      */
     public selectFirstOption(): void {
         if (!this.disabled) {
-            this.setSelectedOption(0);
+            this.selectedIndex = 0;
         }
     }
 
@@ -197,7 +189,7 @@ export class Listbox extends FASTElement {
      */
     public selectLastOption(): void {
         if (!this.disabled) {
-            this.setSelectedOption(this.options.length - 1);
+            this.selectedIndex = this.options.length - 1;
         }
     }
 
@@ -208,7 +200,7 @@ export class Listbox extends FASTElement {
      */
     public selectNextOption(): void {
         if (!this.disabled && this.selectedIndex < this.options.length - 1) {
-            this.setSelectedOption(this.selectedIndex + 1);
+            this.selectedIndex += 1;
         }
     }
 
@@ -219,7 +211,7 @@ export class Listbox extends FASTElement {
      */
     public selectPreviousOption(): void {
         if (!this.disabled && this.selectedIndex > 0) {
-            this.setSelectedOption(this.selectedIndex - 1);
+            this.selectedIndex = this.selectedIndex - 1;
         }
     }
 
@@ -230,12 +222,11 @@ export class Listbox extends FASTElement {
      */
     public clickHandler(e: MouseEvent): boolean | void {
         const captured = (e.target as HTMLElement).closest(
-            `[role=option],option`
+            `option,[role=option]`
         ) as ListboxOption;
 
         if (captured && !captured.disabled) {
-            const selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
-            this.setSelectedOption(selectedIndex);
+            this.selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
             return true;
         }
     }
@@ -340,7 +331,10 @@ export class Listbox extends FASTElement {
         const re = new RegExp(pattern, "gi");
 
         const selectedIndex = this.options.findIndex(o => o.text!.trim().match(re));
-        this.setSelectedOption(selectedIndex);
+
+        if (selectedIndex > -1) {
+            this.selectedIndex = selectedIndex;
+        }
 
         this.typeAheadExpired = false;
     }

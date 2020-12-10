@@ -1,4 +1,4 @@
-import { attr, DOM, observable, volatile } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
@@ -25,18 +25,70 @@ export class Select extends FormAssociatedSelect {
         if (this.open) {
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
+            this.indexWhenOpened = this.selectedIndex;
         }
     }
 
-    public valueChanged(prev: string, next: string): void {
+    private indexWhenOpened: number;
+
+    private _value: string;
+
+    @volatile
+    public get value() {
+        Observable.track(this, "value");
+        return this._value;
+    }
+
+    public set value(next: string) {
+        const previous = `${this._value}`;
+
         if (this.$fastController.isConnected) {
-            super.valueChanged(prev, next);
-            const selectedIndex = this.options.findIndex(el => el.value === this.value);
+            const selectedIndex = this.options.findIndex(el => el.value === next);
 
-            this.setSelectedOption(selectedIndex);
+            const prevSelectedOption = this.options[this.selectedIndex];
+            const nextSelectedOption = this.options[selectedIndex];
 
+            const prevSelectedValue = prevSelectedOption
+                ? prevSelectedOption.value
+                : null;
+            const nextSelectedValue = nextSelectedOption
+                ? nextSelectedOption.value
+                : null;
+
+            if (selectedIndex === -1 || prevSelectedValue !== nextSelectedValue) {
+                next = "";
+                this.selectedIndex = selectedIndex;
+            }
+
+            if (this.firstSelectedOption) {
+                next = this.firstSelectedOption.value;
+            }
+        }
+
+        super.valueChanged(previous, next);
+        this._value = next;
+        Observable.notify(this, "value");
+    }
+
+    private updateValue(shouldEmit?: boolean) {
+        if (this.$fastController.isConnected) {
+            if (this.firstSelectedOption) {
+                this.value = this.firstSelectedOption.value || "";
+                this.displayValue =
+                    this.firstSelectedOption.textContent ||
+                    this.firstSelectedOption.value ||
+                    "";
+            }
+        }
+
+        if (shouldEmit) {
             this.$emit("change");
         }
+    }
+
+    public selectedIndexChanged(prev, next): void {
+        super.selectedIndexChanged(prev, next);
+        this.updateValue();
     }
 
     /**
@@ -61,7 +113,6 @@ export class Select extends FormAssociatedSelect {
      * @remarks
      * HTML Attribute: role
      */
-    @attr
     public role: SelectRole = SelectRole.combobox;
 
     /**
@@ -110,13 +161,8 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    @volatile
-    public get displayValue(): string {
-        if (this.firstSelectedOption) {
-            return this.firstSelectedOption.textContent || this.firstSelectedOption.value;
-        }
-        return "";
-    }
+    @observable
+    public displayValue: string = "";
 
     /**
      * @internal
@@ -127,20 +173,6 @@ export class Select extends FormAssociatedSelect {
     };
 
     /**
-     * Sets the value when the options are changed.
-     *
-     * @param prev - The previous value
-     * @param next - the new value
-     * @internal
-     */
-    public selectedOptionsChanged(prev, next): void {
-        if (this.$fastController.isConnected) {
-            super.selectedOptionsChanged(prev, next);
-            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-        }
-    }
-
-    /**
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
@@ -148,8 +180,6 @@ export class Select extends FormAssociatedSelect {
         if (this.disabled) {
             return;
         }
-
-        super.clickHandler(e);
 
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
@@ -161,7 +191,13 @@ export class Select extends FormAssociatedSelect {
             }
         }
 
+        super.clickHandler(e);
+
         this.open = !this.open;
+
+        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
+            this.updateValue(true);
+        }
 
         return true;
     }
@@ -213,22 +249,39 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case " ": {
-                if (!this.typeAheadExpired) {
-                    return true;
+                if (this.typeAheadExpired) {
+                    e.preventDefault();
+                    this.open = !this.open;
                 }
-                this.open = !this.open;
-                return;
+                break;
             }
 
             case "Enter": {
+                e.preventDefault();
                 this.open = !this.open;
                 break;
             }
 
             case "Escape": {
-                this.open = false;
+                if (this.open) {
+                    e.preventDefault();
+                    this.open = false;
+                }
                 break;
             }
+
+            case "Tab": {
+                if (!this.open) {
+                    return true;
+                }
+
+                e.preventDefault();
+                this.open = false;
+            }
+        }
+
+        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
+            this.updateValue(true);
         }
 
         return true;

@@ -8,7 +8,7 @@ import { ListboxOption } from "./listbox-option";
  */
 export const ListboxOptionTemplate = html<ListboxOption>`
     <template
-        aria-selected="${x => (x.selected ? true : false)}"
+        aria-selected="${x => x.selected}"
         class="${x => (x.selected ? "selected" : "")} ${x =>
             x.disabled ? "disabled" : ""}"
         role="option"

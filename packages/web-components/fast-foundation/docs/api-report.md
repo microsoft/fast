@@ -555,12 +555,14 @@ export class Listbox extends FASTElement {
     // @internal (undocumented)
     options: ListboxOption[];
     // (undocumented)
-    optionsChanged(prev: any, next: any): void;
+    optionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
     role: string;
     selectedIndex: number;
+    // (undocumented)
+    selectedIndexChanged(prev: any, next: any): void;
     selectedOptions: ListboxOption[];
     // (undocumented)
-    protected selectedOptionsChanged(prev: any, next: any): void;
+    protected selectedOptionsChanged(prev?: ListboxOption[], next?: ListboxOption[]): void;
     selectFirstOption(): void;
     // @internal
     selectLastOption(): void;
@@ -569,8 +571,8 @@ export class Listbox extends FASTElement {
     // @internal
     selectPreviousOption(): void;
     // @internal (undocumented)
-    protected setDefaultSelectedOption(): void;
-    setSelectedOption(index?: number): void;
+    protected setDefaultSelectedOption(): Promise<void>;
+    protected setSelectedOption(): void;
     static slottedOptionFilter: (n: ListboxOption) => boolean;
     // @internal
     protected typeAheadExpired: boolean;
@@ -782,7 +784,7 @@ export class Select extends FormAssociatedSelect {
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
     connectedCallback(): void;
-    get displayValue(): string;
+    displayValue: string;
     // (undocumented)
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal (undocumented)
@@ -800,9 +802,12 @@ export class Select extends FormAssociatedSelect {
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
-    // @internal
-    selectedOptionsChanged(prev: any, next: any): void;
+    // (undocumented)
+    selectedIndexChanged(prev: any, next: any): void;
     setPositioning(): void;
+    // (undocumented)
+    get value(): string;
+    set value(next: string);
     }
 
 // @internal (undocumented)
