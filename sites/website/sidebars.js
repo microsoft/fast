@@ -78,7 +78,7 @@ module.exports = {
                 "design-systems/fast-frame",
                 "design-systems/using-the-design-system",
                 "design-systems/creating-a-design-system",
-                "design-systems/high-contrast-document",
+                "design-systems/high-contrast",
             ],
         },
         {

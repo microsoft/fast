@@ -1,11 +1,11 @@
 ---
-id: high-contrast-document
+id: high-contrast
 title: High Contrast in FAST
 sidebar_label: High Contrast
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/high-contrast.md
 ---
 
-### Styling components using forced-colors.
+## Styling components using forced-colors.
 High contrast mode uses the CSS media feature, `forced-colors`. When `forced-colors` is set to active, the user agent will apply a limited color palette to the component.
 
 **Example:**
@@ -34,7 +34,7 @@ export const ComponentStyles = css`
 );
 ```
 
-### System Color Keyword
+## System Color Keyword
 In `forced-colors` mode, the colors on the component are reduced to a limited color pallete chosen by the user. The system color keyword exposes these user chosen colors.
 
 Below are the system color keywords we use in FAST. The keywords are used as color values on style properties.
@@ -56,7 +56,7 @@ Below are the system color keywords we use in FAST. The keywords are used as col
 | `GrayText`        | Disabled text. (Often, but not necessarily, gray.)                                |
 
 
-FAST uses the [SystemColor](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum when setting the color value keyword in the stylesheet.
+FAST uses the [SystemColors](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum when setting the color value keyword in the stylesheet.
 
 **Example**
 ```css
@@ -73,7 +73,7 @@ export const ComponentStyles = css`
 );
 ```
 
-### Forced colors and Windows High Contrast themes
+## Forced colors and Windows High Contrast themes
 `forced-colors` works with Windows high contrast, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
 
 ![High contrast black theme](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/hc-black_kkp16d.png)
@@ -91,7 +91,7 @@ Here is a 1:1 map between the `forced-colors` keywords and Windows high contrast
 | `ButtonText` `ButtonFace`   | `Button Text`   |
 | `Canvas`                    | `Background`    |
 
-### Quick demo
+## Quick demo
 
 Here is a simple example adding high contrast to style an accent button. It has selectors for rest, active, hover, focus and disabled.
 
@@ -123,7 +123,7 @@ When high contrast is enabled, the system will try to apply the correct color. I
 
 ![Accent button no forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-no-forced-colors_h0peqd.png)
 
-To fix this, we will add `forcedColorsStylesheetBehavior` to `withBehaviors()`, take similar selectors, and add the system color keyword..
+To fix this, we will add `forcedColorsStylesheetBehavior` to `withBehaviors()`, using similar selectors, and adding the system color keyword.
 
 ```css
 export const AccentButtonStyles = css`
@@ -159,12 +159,11 @@ export const AccentButtonStyles = css`
 );
 ```
 
-After adding `forced-colors` and setting the keywords, accent button now has a background in the rest state, and in this case we are using the `Highlight` color. The hover state is reversed from the rest state, focus gets a double border treatment and disabled has opacity set to 1 and using the disabled color, `GrayText`.
+After adding `forced-colors` and applying the keywords, the accent button now has a background to the rest state, and we are using the `Highlight` color. On the hover and active state, the look is reversed from the rest state. Focus gets a double border treatment and disabled has opacity set to 1 and uses the disabled color, `GrayText`, on the border and content.
 
 ![Accent button forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-with-forced-colors_v76kif.png)
 
-## Further resources
-
+### Further resources
 
 **Color contrast comparison chart**
 
@@ -172,8 +171,8 @@ To help determine whether a pair of high contrast colors will meet a color lumin
 This table uses the high contrast theme color resource names you see in Windows Ease of Access.
 
 How to read this table:
-- <mark>YES</mark> - indicates that it is safe to assume this pair of colors will meet high contrast requirements, even in custom themes
-- `YES*` - indicates that this specific pair of colors meets the high contrast requirements in both “HC White” and “HC Black” themes.
+- <mark>YES</mark> - indicates that it is safe to assume this pair of colors will meet high contrast requirements, even in custom themes.
+- `YES*` - indicates that this specific pair of colors meets the high contrast requirements in both `High Contrast Black` and `High Contrast White` themes.
 - NO - indicates that you should never use this pair of colors as they do not meet high contrast requirements in `High Contrast Black` and `High Contrast White` themes.
 
 |                                 | Text             | Hyperlink        | Disabled Text    | Selected Text (Foreground) | Selected Text (Background) | Button Text (Foreground) | Button Text (Background) | Background       |
@@ -189,7 +188,7 @@ How to read this table:
 
 
 
-**Microsoft Edge blog**
+### Microsoft Edge blog
 
 Microsoft Edge blog has an excellent in-depth information on styling for Windows high contrast using forced-colors.
 [Styling for Windows high contrast with new standards for forced colors](https://blogs.windows.com/msedgedev/2020/09/17/styling-for-windows-high-contrast-with-new-standards-for-forced-colors/)
