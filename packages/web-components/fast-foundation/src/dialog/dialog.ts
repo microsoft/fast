@@ -116,7 +116,7 @@ export class Dialog extends FASTElement {
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
         // Ensure the DOM is updated
-        // This helps avoid a delay with `autofocus` elements recieving focus
+        // This helps avoid a delay with `autofocus` elements receiving focus
         DOM.queueUpdate(this.trapFocusChanged);
     }
 
@@ -138,15 +138,11 @@ export class Dialog extends FASTElement {
         }
     }
 
-    private onChildListChange(
-        mutations: MutationRecord[],
-        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        observer: MutationObserver
-    ): void {
-        if (mutations!.length) {
-            this.tabbableElements = tabbable(this as Element);
+    private onChildListChange = (mutations: MutationRecord[]): void => {
+        if (mutations.length) {
+            this.tabbableElements = tabbable(this);
         }
-    }
+    };
 
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {

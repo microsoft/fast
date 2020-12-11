@@ -145,7 +145,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: horizontal-threshold
      */
     @attr({ attribute: "horizontal-threshold" })
-    public horizontalThreshold: string = "";
+    public horizontalThreshold: string;
     private horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -214,7 +214,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: vertical-threshold
      */
     @attr({ attribute: "vertical-threshold" })
-    public verticalThreshold: string = "";
+    public verticalThreshold: string;
     private verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -579,7 +579,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
-            return null;
+            return document.documentElement;
         }
 
         return document.getElementById(this.viewport);
@@ -654,10 +654,6 @@ export class AnchoredRegion extends FASTElement {
             height: regionRect.height,
             width: regionRect.width,
         };
-
-        if (this.viewportElement === null) {
-            this.viewportRect = regionEntry.rootBounds;
-        }
     };
 
     /**
@@ -854,10 +850,13 @@ export class AnchoredRegion extends FASTElement {
 
         this.updateRegionStyle();
 
-        this.initialLayoutComplete = true;
+        if (!this.initialLayoutComplete) {
+            this.initialLayoutComplete = true;
+            DOM.queueUpdate(() => this.$emit("loaded", this, { bubbles: false }));
+        }
 
         if (positionChanged) {
-            this.$emit("change");
+            this.$emit("positionchange", this, { bubbles: false });
         }
     };
 

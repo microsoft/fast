@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "1.9.0",
+  "version": "1.10.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -27,6 +27,7 @@
     "build": "yarn build:tsc && yarn build:rollup && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "yarn dev & yarn test-chrome:watch",
+    "tdd:firefox": "yarn dev & yarn test-firefox:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
@@ -42,7 +43,8 @@
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
@@ -85,7 +87,7 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.20.0",
+    "@microsoft/fast-element": "^0.21.0",
     "@microsoft/fast-web-utilities": "^4.6.1",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^4.0.0",

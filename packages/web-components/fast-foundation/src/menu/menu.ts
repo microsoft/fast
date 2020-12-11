@@ -164,27 +164,15 @@ export class Menu extends FASTElement {
     };
 
     /**
-     * check if the item is disabled
-     */
-    private isDisabledElement = (el: Element): el is HTMLElement => {
-        return this.isMenuItemElement(el) && el.getAttribute("aria-disabled") === "true";
-    };
-
-    /**
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return this.isMenuItemElement(el) && !this.isDisabledElement(el);
+        return this.isMenuItemElement(el);
     };
 
     private handleMenuItemFocus = (e: KeyboardEvent): void => {
         const target = e.currentTarget as Element;
         const focusIndex: number = this.menuItems.indexOf(target);
-
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
 
         if (focusIndex !== this.focusIndex && focusIndex !== -1) {
             this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);

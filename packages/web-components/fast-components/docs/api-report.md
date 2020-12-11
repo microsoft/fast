@@ -269,6 +269,7 @@ export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
     connectedCallback(): void;
+    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
 
 // @public

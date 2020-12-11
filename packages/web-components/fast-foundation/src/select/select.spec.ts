@@ -17,21 +17,24 @@ class FASTSelect extends Select {}
 class FASTOption extends ListboxOption {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSelect>("fast-select");
+    const { element, connect, disconnect, parent } = await fixture<FASTSelect>(
+        "fast-select"
+    );
 
     const option1 = document.createElement("fast-option") as FASTOption;
-    const option2 = document.createElement("fast-option") as FASTOption;
-    const option3 = document.createElement("fast-option") as FASTOption;
-
     option1.value = "one";
+
+    const option2 = document.createElement("fast-option") as FASTOption;
     option2.value = "two";
+
+    const option3 = document.createElement("fast-option") as FASTOption;
     option3.value = "three";
 
     element.appendChild(option1);
     element.appendChild(option2);
     element.appendChild(option3);
 
-    return { element, connect, disconnect, option1, option2, option3 };
+    return { element, connect, disconnect, document, option1, option2, option3, parent };
 }
 
 // TODO: Need to add tests for keyboard handling & focus management
@@ -76,12 +79,9 @@ describe("Select", () => {
 
     it("should NOT have a tabindex when `disabled` is true", async () => {
         const { element, connect, disconnect } = await setup();
-
-        await connect();
-
         element.disabled = true;
 
-        await DOM.nextUpdate();
+        await connect();
 
         expect(element.getAttribute("tabindex")).to.equal(null);
 
@@ -90,36 +90,29 @@ describe("Select", () => {
 
     describe("when the owning form's reset() function is invoked", () => {
         it("should reset the value property to the first enabled option", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            element.value = "one";
+
             const form = document.createElement("form");
-            const select = document.createElement("select") as
-                | FASTSelect
-                | HTMLSelectElement;
 
-            const option1 = document.createElement("option") as
-                | FASTOption
-                | HTMLOptionElement;
-            const option2 = document.createElement("option") as
-                | FASTOption
-                | HTMLOptionElement;
-            option1.value = "1";
-            option2.value = "2";
+            form.appendChild(element);
 
-            select.appendChild(option1);
-            select.appendChild(option2);
-            form.appendChild(select);
-            document.body.appendChild(form);
+            parent.appendChild(form);
 
-            select.value = "1";
-            assert.strictEqual(select.value, "1");
+            await connect();
 
-            select.value = "2";
-            assert.strictEqual(select.value, "2");
+            expect(element.value).to.equal("one");
+
+            element.value = "two";
+
+            expect(element.value).to.equal("two");
 
             form.reset();
 
-            await DOM.nextUpdate();
+            expect(element.value).to.equal("one");
 
-            assert.strictEqual(select.value, "1");
+            await disconnect();
         });
     });
 });
