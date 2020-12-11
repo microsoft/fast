@@ -89,6 +89,40 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should set its value to the first enabled option", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+
+        await disconnect();
+    });
+
+    it("should return the same value when the value property is set before connect", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.value = "two";
+
+        expect(element.value).to.equal("two");
+
+        await connect();
+
+        await disconnect();
+    });
+
+    it("should return the same value when the value property is set after connect", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.value = "two";
+
+        expect(element.value).to.equal("two");
+
+        await disconnect();
+    });
+
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
         it("via arrow down key", async () => {
             const { element, connect, disconnect } = await setup();

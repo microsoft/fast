@@ -13,7 +13,7 @@ export const SelectTemplate = html<Select>`
             x.disabled ? "disabled" : ""} ${x => x.position}"
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
-        aria-disabled="${x => x.disabled}"
+        aria-disabled="${x => x.ariaDisabled}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
@@ -64,7 +64,7 @@ export const SelectTemplate = html<Select>`
                 ${slotted({
                     filter: Listbox.slottedOptionFilter,
                     flatten: true,
-                    property: "options",
+                    property: "slottedOptions",
                 })}
             ></slot>
         </div>
