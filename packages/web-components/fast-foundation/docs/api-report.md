@@ -159,6 +159,7 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
     formaction: string;
@@ -167,6 +168,8 @@ export class Button extends FormAssociatedButton {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
+    // @deprecated (undocumented)
+    get root(): HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
@@ -330,6 +333,7 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
+    // (undocumented)
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
@@ -346,6 +350,10 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 export class DelegatesARIASelect {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @internal
+export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
 }
 
 // @internal
