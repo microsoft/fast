@@ -19,7 +19,7 @@ export const ListboxTemplate = html<Listbox>`
             ${slotted({
                 filter: Listbox.slottedOptionFilter,
                 flatten: true,
-                property: "options",
+                property: "slottedOptions",
             })}
         ></slot>
     </template>
