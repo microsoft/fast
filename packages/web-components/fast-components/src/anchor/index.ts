@@ -59,8 +59,8 @@ export class FASTAnchor extends Anchor {
     /**
      * Applies 'icon-only' class when there is only an SVG in the default slot
      *
-     * @public
-     * @remarks
+     * @internal
+     *
      */
     public defaultSlottedContentChanged(oldValue, newValue): void {
         const slottedElements = this.defaultSlottedContent.filter(
