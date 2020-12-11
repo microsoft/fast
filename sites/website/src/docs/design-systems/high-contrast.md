@@ -6,7 +6,8 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 
 ## Styling components using forced-colors.
-High contrast mode uses the CSS media feature, `forced-colors`. When `forced-colors` is set to active, the user agent will apply a limited color palette to the component.
+High contrast mode uses the CSS media feature, [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors). When [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) is set to active, the user agent will apply a limited color palette to the component.
+
 
 **Example:**
 ```css
@@ -17,7 +18,11 @@ High contrast mode uses the CSS media feature, `forced-colors`. When `forced-col
 }
 ```
 
-FAST has a utility function that is use to construct `forced-colors` in the stylesheet, called [forcedColorsStylesheetBehavior()](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts). This is added in the `withBehavior()` function inside the `css` style.
+FAST has a utility function that is use to construct [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) in the stylesheet, called [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts). This is added in the `withBehavior` function inside the `css` style.
+
+:::note
+The reason for this behavior is to avoid the runtime cost applying forced-color style rules when the UA does not match the forced-colors @media query, FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
+:::
 
 **Example**
 ```css
@@ -35,28 +40,9 @@ export const ComponentStyles = css`
 ```
 
 ## System Color Keyword
-In `forced-colors` mode, the colors on the component are reduced to a limited color pallete chosen by the user. The system color keyword exposes these user chosen colors.
+In [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) mode, the colors on the component are reduced to a limited color pallete, chosen by the user, and the [system color keyword](https://developer.mozilla.org/en-US/docs/web/css/color_value#System_Colors), that are defined by the CSS Color Module Level 4 specification, exposes these user chosen, colors.
 
-Below are the system color keywords we use in FAST. The keywords are used as color values on style properties.
-
-
-| Keyword         | Description                                                                       |
-|-----------------|-----------------------------------------------------------------------------------|
-| `Canvas`          | Background of application content or documents.                                   |
-| `CanvasText`      | Text in application content or documents.                                         |
-| `LinkText`        | Text in non-active, non-visited links. For light backgrounds, traditionally blue. |
-| `VisitedText`     | Text in visited links. For light backgrounds, traditionally purple.               |
-| `ActiveText`      | Text in active links. For light backgrounds, traditionally red.                   |
-| `ButtonFace`      | The face background color for push buttons.                                       |
-| `ButtonText`      | Text on push buttons.                                                             |
-| `Field`           | Background of input fields.                                                       |
-| `FieldText`       | Text in input fields.                                                             |
-| `Highlight`       | Background of selected items/text.                                                |
-| `HighlightText`   | Text of selected items/text.                                                      |
-| `GrayText`        | Disabled text. (Often, but not necessarily, gray.)                                |
-
-
-FAST uses the [SystemColors](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum when setting the color value keyword in the stylesheet.
+Within FAST we created a [SystemColors](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keyword in the stylesheet.
 
 **Example**
 ```css
@@ -74,13 +60,13 @@ export const ComponentStyles = css`
 ```
 
 ## Forced colors and Windows High Contrast themes
-`forced-colors` works with Windows high contrast, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
+[forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) works with Windows high contrast, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
 
 ![High contrast black theme](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/hc-black_kkp16d.png)
 ![High contrast white theme](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/hc-white_fnktij.png)
 
 
-Here is a 1:1 map between the `forced-colors` keywords and Windows high contrast resource names.
+Here is a 1:1 map between the [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) keywords and Windows high contrast resource names.
 
 | forced-colors               | Windows         |
 |-----------------------------|-----------------|
@@ -123,7 +109,7 @@ When high contrast is enabled, the system will try to apply the correct color. I
 
 ![Accent button no forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-no-forced-colors_h0peqd.png)
 
-To fix this, we will add `forcedColorsStylesheetBehavior` to `withBehaviors()`, using similar selectors, and adding the system color keyword.
+To fix this, we will add [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) to `withBehaviors`, using similar selectors, and adding the system color keyword.
 
 ```css
 export const AccentButtonStyles = css`
@@ -159,7 +145,7 @@ export const AccentButtonStyles = css`
 );
 ```
 
-After adding `forced-colors` and applying the keywords, the accent button now has a background to the rest state, and we are using the `Highlight` color. On the hover and active state, the look is reversed from the rest state. Focus gets a double border treatment and disabled has opacity set to 1 and uses the disabled color, `GrayText`, on the border and content.
+After adding [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) and applying the keywords, the accent button now has a background to the rest state, and we are using the `Highlight` color. On the hover and active state, the look is reversed from the rest state. Focus gets a double border treatment and disabled has opacity set to 1 and uses the disabled color, `GrayText`, on the border and content.
 
 ![Accent button forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-with-forced-colors_v76kif.png)
 
@@ -172,8 +158,8 @@ This table uses the high contrast theme color resource names you see in Windows 
 
 How to read this table:
 - <mark>YES</mark> - indicates that it is safe to assume this pair of colors will meet high contrast requirements, even in custom themes.
-- `YES*` - indicates that this specific pair of colors meets the high contrast requirements in both `High Contrast Black` and `High Contrast White` themes.
-- NO - indicates that you should never use this pair of colors as they do not meet high contrast requirements in `High Contrast Black` and `High Contrast White` themes.
+- `YES*` - indicates that this specific pair of colors meets the high contrast requirements in both High Contrast Black and High Contrast White themes.
+- NO - indicates that you should never use this pair of colors as they do not meet high contrast requirements in High Contrast Black and High Contrast White themes.
 
 |                                 | Text             | Hyperlink        | Disabled Text    | Selected Text (Foreground) | Selected Text (Background) | Button Text (Foreground) | Button Text (Background) | Background       |
 |---------------------------------|------------------|------------------|------------------|----------------------------|----------------------------|--------------------------|--------------------------|------------------|
