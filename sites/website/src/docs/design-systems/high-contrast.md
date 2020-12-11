@@ -62,8 +62,8 @@ export const ComponentStyles = css`
 ## Forced colors and Windows High Contrast themes
 [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) works with Windows high contrast, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
 
-![High contrast black theme](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/hc-black_kkp16d.png)
-![High contrast white theme](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/hc-white_fnktij.png)
+![High contrast black theme](https://static.fast.design/assets/high-contrast/hc-black.png)
+![High contrast white theme](https://static.fast.design/assets/high-contrast/hc-white.png)
 
 
 Here is a 1:1 map between the [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) keywords and Windows high contrast resource names.
@@ -81,7 +81,7 @@ Here is a 1:1 map between the [forced-colors](https://developer.mozilla.org/en-U
 
 Here is a simple example adding high contrast to style an accent button. It has selectors for rest, active, hover, focus and disabled.
 
-![Accent button](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent_vmbajs.png)
+![Accent button](https://static.fast.design/assets/accent.png)
 
 ```css
 export const AccentButtonStyles = css`
@@ -107,7 +107,7 @@ export const AccentButtonStyles = css`
 
 When high contrast is enabled, the system will try to apply the correct color. In the case of this accent button, the system is missing a few things. We do not have a background, rest and hover state is the same, focus is not following the button focus design, and the disabled state is too dim.
 
-![Accent button no forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-no-forced-colors_h0peqd.png)
+![Accent button no forced colors](https://static.fast.design/assets/high-contrast/accent-no-forced-colors.png)
 
 To fix this, we will add [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) to `withBehaviors`, using similar selectors, and adding the system color keyword.
 
@@ -147,7 +147,7 @@ export const AccentButtonStyles = css`
 
 After adding [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) and applying the keywords, the accent button now has a background to the rest state, and we are using the `Highlight` color. On the hover and active state, the look is reversed from the rest state. Focus gets a double border treatment and disabled has opacity set to 1 and uses the disabled color, `GrayText`, on the border and content.
 
-![Accent button forced colors](https://res.cloudinary.com/dm4izfqmy/image/upload/v1607550781/highContrast_examples/hc-document/acccent-with-forced-colors_v76kif.png)
+![Accent button forced colors](https://static.fast.design/assets/high-contrast/accent-with-forced-colors.png)
 
 ### Further resources
 
