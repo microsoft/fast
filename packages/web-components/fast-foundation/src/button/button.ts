@@ -190,7 +190,7 @@ export class Button extends FormAssociatedButton {
  *
  * @public
  */
-export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIAButton {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -209,6 +209,16 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
     @attr({ attribute: "aria-pressed", mode: "fromView" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 
 /**
  * Mark internal because exporting class and interface of the same name

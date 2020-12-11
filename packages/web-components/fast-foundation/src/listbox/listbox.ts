@@ -344,7 +344,7 @@ export class Listbox extends FASTElement {
  *
  * @public
  */
-export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIAListbox {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -366,6 +366,16 @@ export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
     @observable
     public ariaExpanded: "true" | "false" | undefined;
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAListbox, ARIAGlobalStatesAndProperties);
 
 /**
  * @internal
