@@ -86,7 +86,6 @@ export class Anchor extends FASTElement {
      * Default slotted content
      *
      * @public
-     * @remarks
      */
     @observable
     public defaultSlottedContent: HTMLElement[];
