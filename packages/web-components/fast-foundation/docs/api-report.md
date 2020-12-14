@@ -58,6 +58,9 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
+    control: HTMLAnchorElement;
+    // @internal
+    defaultSlottedContent: HTMLElement[];
     download: string;
     href: string;
     hreflang: string;
@@ -157,6 +160,8 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
     formaction: string;
     formenctype: string;
@@ -164,7 +169,8 @@ export class Button extends FormAssociatedButton {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    root: HTMLButtonElement;
+    // @deprecated (undocumented)
+    get root(): HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
