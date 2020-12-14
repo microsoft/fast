@@ -158,7 +158,9 @@ export interface Container extends ServiceLocator {
     ): Resolver<T> | null;
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
     getFactory<T extends Constructable>(key: T): Factory<T> | null;
-    createChild(): Container;
+    createChild(
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+    ): Container;
 }
 
 /**
@@ -455,20 +457,55 @@ function createInterface<K extends Key, T = any>(nameOrConfig?: any) {
     return Interface;
 }
 
+export interface ContainerConfiguration {
+    parentLocator: ParentLocator;
+    defaultResolver(key: Key, handler: Container): Resolver;
+}
+
+export const DefaultResolver = {
+    none(key: Key): Resolver {
+        throw Error(
+            `${key.toString()} not registered, did you forget to add @singleton()?`
+        );
+    },
+    singleton(key: Key): Resolver {
+        return new ResolverImpl(key, ResolverStrategy.singleton, key);
+    },
+    transient(key: Key): Resolver {
+        return new ResolverImpl(key, ResolverStrategy.transient, key);
+    },
+};
+
+export const ContainerConfiguration = Object.freeze({
+    default: Object.freeze({
+        parentLocator: () => null,
+        defaultResolver: DefaultResolver.singleton,
+    }),
+});
+
 /**
  * @alpha
  */
 export const DI = Object.freeze({
-    createContainer(): Container {
-        return new ContainerImpl(null, () => null);
+    createContainer(config?: Partial<ContainerConfiguration>): Container {
+        return new ContainerImpl(
+            null,
+            Object.assign({}, ContainerConfiguration.default, config)
+        );
     },
 
-    getOrCreateDOMContainer(element: HTMLElement = document.body): Container {
+    getOrCreateDOMContainer(
+        element: HTMLElement = document.body,
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+    ): Container {
         return (
             (element as any).$container ||
             new ContainerImpl(
                 element,
-                element === document.body ? () => null : domParentLocator
+                Object.assign({}, ContainerConfiguration.default, config, {
+                    parentLocator:
+                        element === document.body ? () => null : domParentLocator,
+                })
             )
         );
     },
@@ -977,7 +1014,7 @@ class ContainerImpl implements Container {
     private resolvers: Map<Key, Resolver>;
     private _parent: ContainerImpl | null | undefined = void 0;
 
-    constructor(protected owner: any, protected locateParent: ParentLocator) {
+    constructor(protected owner: any, protected config: ContainerConfiguration) {
         if (owner !== null) {
             owner.$container = this;
         }
@@ -1000,7 +1037,7 @@ class ContainerImpl implements Container {
 
     protected get parent() {
         if (this._parent === void 0) {
-            this._parent = this.locateParent(this.owner) as ContainerImpl;
+            this._parent = this.config.parentLocator(this.owner) as ContainerImpl;
         }
 
         return this._parent;
@@ -1251,8 +1288,13 @@ class ContainerImpl implements Container {
         factories.set(key, factory);
     }
 
-    public createChild(): Container {
-        return new ContainerImpl(null, () => this);
+    public createChild(
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+    ): Container {
+        return new ContainerImpl(
+            null,
+            Object.assign({}, this.config, config, { parentLocator: () => this })
+        );
     }
 
     private jitRegister(keyAsValue: any, handler: ContainerImpl): Resolver {
@@ -1291,11 +1333,7 @@ class ContainerImpl implements Container {
                 `Attempted to jitRegister an interface: ${keyAsValue.friendlyName}`
             );
         } else {
-            const resolver = new ResolverImpl(
-                keyAsValue,
-                ResolverStrategy.singleton,
-                keyAsValue
-            );
+            const resolver = this.config.defaultResolver(keyAsValue, handler);
             handler.resolvers.set(keyAsValue, resolver);
             return resolver;
         }
