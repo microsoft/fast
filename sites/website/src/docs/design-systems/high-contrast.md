@@ -6,7 +6,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 
 ## Styling components using forced-colors.
-High contrast mode uses the CSS media feature, [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors). When [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) is set to active, the user agent will apply a limited color palette to the component.
+High contrast mode uses the CSS media feature, [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors). When `forced-colors` is set to `active`, the user agent will apply a limited color palette to the component.
 
 
 **Example:**
@@ -18,14 +18,14 @@ High contrast mode uses the CSS media feature, [forced-colors](https://developer
 }
 ```
 
-FAST has a utility function that is use to construct [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) in the stylesheet, called [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts). This is added in the `withBehavior` function inside the `css` style.
+FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in the stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
 
 :::note
 The reason for this behavior is to avoid the runtime cost applying forced-color style rules when the UA does not match the forced-colors @media query, FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
 :::
 
 **Example**
-```css
+```ts
 export const ComponentStyles = css`
     /* ... */
  `.withBehaviors(
@@ -45,7 +45,7 @@ In [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/force
 Within FAST we created a [SystemColors](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keyword in the stylesheet.
 
 **Example**
-```css
+```ts
 export const ComponentStyles = css`
     /* ... */
  `.withBehaviors(
@@ -66,7 +66,7 @@ export const ComponentStyles = css`
 ![High contrast white theme](https://static.fast.design/assets/high-contrast/hc-white.png)
 
 
-Here is a 1:1 map between the [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) keywords and Windows high contrast resource names.
+Here is a 1:1 map between the `forced-colors` keywords and Windows high contrast resource names.
 
 | forced-colors               | Windows         |
 |-----------------------------|-----------------|
@@ -83,7 +83,7 @@ Here is a simple example adding high contrast to style an accent button. It has 
 
 ![Accent button](https://static.fast.design/assets/accent.png)
 
-```css
+```ts
 export const AccentButtonStyles = css`
     :host([appearance="accent"]) {
         background: ${accentFillRestBehavior.var};
@@ -105,13 +105,13 @@ export const AccentButtonStyles = css`
 `
 ```
 
-When high contrast is enabled, the system will try to apply the correct color. In the case of this accent button, the system is missing a few things. We do not have a background, rest and hover state is the same, focus is not following the button focus design, and the disabled state is too dim.
+When high contrast is enabled, the system will try to apply the correct color. In the case of this accent button, the system is missing a few things. We do not have a background, `rest` and `hover` states are the same, `focus` is not following the button's `focus` design, and the `disabled` state is too dim.
 
 ![Accent button no forced colors](https://static.fast.design/assets/high-contrast/accent-no-forced-colors.png)
 
-To fix this, we will add [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) to `withBehaviors`, using similar selectors, and adding the system color keyword.
+To fix this, we will pass a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) object to `withBehaviors`, using similar selectors, and setting property values with `SystemColors` keyword.
 
-```css
+```ts
 export const AccentButtonStyles = css`
     /* ... */
 `.withBehaviors(
@@ -145,7 +145,7 @@ export const AccentButtonStyles = css`
 );
 ```
 
-After adding [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) and applying the keywords, the accent button now has a background to the rest state, and we are using the `Highlight` color. On the hover and active state, the look is reversed from the rest state. Focus gets a double border treatment and disabled has opacity set to 1 and uses the disabled color, `GrayText`, on the border and content.
+After adding `forced-colors` and applying `SystemColors` keywords, the accent button now uses `Highlight` as a background for its `rest` state. On the `hover` and `active` states, the background and color from the `rest` state are swapped. A double border treatment is applied when in the `focus` state, and the `disabled` has opacity set to 1 and uses the disabled color, `GrayText`, for color on the border and content.
 
 ![Accent button forced colors](https://static.fast.design/assets/high-contrast/accent-with-forced-colors.png)
 
