@@ -1,6 +1,3 @@
-/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-
 import React from "react";
 import { CSSRefProps, CSSRefState } from "./control.css-ref.props";
 import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
@@ -15,6 +12,7 @@ import { renderSyntaxControl } from "./control.css.utilities.syntax";
 import { renderValueControl } from "./control.css.utilities.value";
 import { renderPropertyControl } from "./control.css.utilities.property";
 import { properties } from "@microsoft/fast-tooling/dist/css-data";
+import { renderSelection } from "./control.css.utilities";
 
 /**
  * Custom CSS reference definition
@@ -75,27 +73,35 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
 
         return (
             <div>
-                <select onChange={this.handleFormElementOnChange}>
-                    <option key={"init"} value={void 0}></option>
-                    {(this.props.syntax.ref as CSSPropertyRef[]).map(
-                        (refItem: CSSPropertyRef, index: number) => {
-                            if (typeof refItem.ref === "string") {
-                                // This should always be a string, but check in case
-                                return (
-                                    <option key={index} value={index}>
-                                        {refItem.ref}
-                                    </option>
-                                );
-                            }
+                {renderSelection({
+                    key: `${this.state.index}`,
+                    handleChange: this.handleFormElementOnChange,
+                    options: [
+                        {
+                            key: "init",
+                            value: "",
+                            displayName: "",
+                        },
+                        ...(this.props.syntax.ref as CSSPropertyRef[]).map(
+                            (refItem: CSSPropertyRef, index: number) => {
+                                if (typeof refItem.ref === "string") {
+                                    // This should always be a string, but check in case
+                                    return {
+                                        key: `${index}`,
+                                        value: index,
+                                        displayName: refItem.ref,
+                                    };
+                                }
 
-                            return (
-                                <option key={index} value={index}>
-                                    {refItem.type}
-                                </option>
-                            );
-                        }
-                    )}
-                </select>
+                                return {
+                                    key: `${index}`,
+                                    value: index,
+                                    displayName: refItem.type,
+                                };
+                            }
+                        ),
+                    ],
+                })}
                 {cssRef}
             </div>
         );
@@ -151,18 +157,13 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
         return null;
     }
 
-    private handleFormElementOnChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ): void => {
+    private handleFormElementOnChange = (value: string): void => {
         if (
-            (this.props.syntax.ref as CSSPropertyRef[])[e.currentTarget.value] &&
-            (this.props.syntax.ref as CSSPropertyRef[])[e.currentTarget.value].type ===
-                "value"
+            (this.props.syntax.ref as CSSPropertyRef[])[value] &&
+            (this.props.syntax.ref as CSSPropertyRef[])[value].type === "value"
         ) {
-            const index: number = parseInt(e.currentTarget.value, 10);
-            const updatedValues: string[] = [
-                this.props.syntax.ref[e.currentTarget.value].ref,
-            ];
+            const index: number = parseInt(value, 10);
+            const updatedValues: string[] = [this.props.syntax.ref[value].ref];
 
             this.setState(
                 {
@@ -173,7 +174,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                     this.props.onChange(this.state.values[0]);
                 }
             );
-        } else if (e.currentTarget.value === "") {
+        } else if (value === "") {
             this.setState(
                 {
                     index: 0,
@@ -186,7 +187,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
         } else {
             this.setState(
                 {
-                    index: parseInt(e.currentTarget.value, 10),
+                    index: parseInt(value, 10),
                     values: [],
                 },
                 () => {

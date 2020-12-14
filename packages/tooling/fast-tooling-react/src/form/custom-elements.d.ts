@@ -24,6 +24,20 @@ declare namespace JSX {
                 input?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
         };
+        "fast-select": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            events?: {
+                change?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+        };
+        "fast-option": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            value?: string;
+        };
     }
 }
 
