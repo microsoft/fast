@@ -17,8 +17,10 @@ export class Avatar extends FASTElement {
      */
     @attr public name: string;
     protected nameChanged(): void {
-        const result = this.name?.match(/\b\w/g) || [];
-        this.initials = ((result.shift() || "") + (result.pop() || "")).toUpperCase();
+        if (!this.initials) {
+            const result = this.name?.match(/\b\w/g) || [];
+            this.initials = ((result.shift() || "") + (result.pop() || "")).toUpperCase();
+        }
     }
 
     /**
@@ -93,6 +95,5 @@ export class Avatar extends FASTElement {
         if (!this.shape) {
             this.shape = "circle";
         }
-        this.shape;
     }
 }
