@@ -12,6 +12,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export class Accordion extends FASTElement {
@@ -229,6 +230,9 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     subscribe(client: CustomPropertyManagerClient): void;
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
+
+// @public
+export function createTooltipTemplate(prefix: string): ViewTemplate;
 
 // @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
@@ -1245,9 +1249,6 @@ export enum TooltipPosition {
     start = "start",
     top = "top"
 }
-
-// @public
-export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal

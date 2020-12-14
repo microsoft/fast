@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { Tooltip, TooltipTemplate as template } from "@microsoft/fast-foundation";
+import { createTooltipTemplate, Tooltip } from "@microsoft/fast-foundation";
 import { TooltipStyles as styles } from "./tooltip.styles";
 import { FASTAnchoredRegion } from "../anchored-region";
 
@@ -17,7 +17,7 @@ FASTAnchoredRegion;
  */
 @customElement({
     name: "fast-tooltip",
-    template,
+    template: createTooltipTemplate("fast"),
     styles,
 })
 export class FASTTooltip extends Tooltip {}

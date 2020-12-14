@@ -1,15 +1,16 @@
-import { html, ref, when } from "@microsoft/fast-element";
+import { html, ref, when, ViewTemplate } from "@microsoft/fast-element";
 import { Tooltip } from "./tooltip";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component.
+ * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
  * @public
  */
-export const TooltipTemplate = html<Tooltip>`
-    ${when(
-        x => x.tooltipVisible,
-        html<Tooltip>`
-            <fast-anchored-region
+export function createTooltipTemplate(prefix: string): ViewTemplate {
+    return html<Tooltip>`
+        ${when(
+            x => x.tooltipVisible,
+            html<Tooltip>`
+            <${prefix}-anchored-region
                 fixed-placement="true"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
                 vertical-default-position="${x => x.verticalDefaultPosition}"
@@ -25,7 +26,8 @@ export const TooltipTemplate = html<Tooltip>`
                 <div class="tooltip" part="tooltip" role="tooltip">
                     <slot></slot>
                 </div>
-            </fast-anchored-region>
+            </${prefix}-anchored-region>
         `
-    )}
-`;
+        )}
+    `;
+}
