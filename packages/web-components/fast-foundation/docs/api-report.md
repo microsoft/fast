@@ -59,6 +59,7 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 // @public
 export class Anchor extends FASTElement {
     control: HTMLAnchorElement;
+    // @internal
     defaultSlottedContent: HTMLElement[];
     download: string;
     href: string;
@@ -333,7 +334,6 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
-    // (undocumented)
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
@@ -350,10 +350,6 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 export class DelegatesARIASelect {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
-}
-
-// @internal
-export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
 }
 
 // @internal
