@@ -12,6 +12,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export class Accordion extends FASTElement {
@@ -57,6 +58,9 @@ export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<A
 //
 // @public
 export class Anchor extends FASTElement {
+    control: HTMLAnchorElement;
+    // @internal
+    defaultSlottedContent: HTMLElement[];
     download: string;
     href: string;
     hreflang: string;
@@ -156,6 +160,8 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
     formaction: string;
     formenctype: string;
@@ -163,7 +169,8 @@ export class Button extends FormAssociatedButton {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    root: HTMLButtonElement;
+    // @deprecated (undocumented)
+    get root(): HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
@@ -231,6 +238,9 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
 }
 
 // @public
+export function createTooltipTemplate(prefix: string): ViewTemplate;
+
+// @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     // @internal
@@ -294,32 +304,67 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
+//
 // @public
-export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIAButton {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
+// @internal
+export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIALink" because one of its declarations is marked as @internal
+//
 // @public
-export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIALink {
     ariaExpanded: "true" | "false" | undefined;
 }
 
+// @internal
+export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAListbox" because one of its declarations is marked as @internal
+//
 // @public
-export class DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
-    // (undocumented)
+export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
+    ariaDisabled: "true" | "false";
+    ariaExpanded: "true" | "false" | undefined;
+}
+
+// @internal
+export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASelect" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIASelect {
     ariaExpanded: "true" | "false" | undefined;
     ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
-// @public
-export class DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
-    ariaExpanded: "true" | "false" | undefined;
+// @internal
+export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIATextbox" because one of its declarations is marked as @internal
+//
 // @public
-export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIATextbox {
+}
+
+// @internal
+export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
@@ -399,9 +444,9 @@ export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dial
 export class DirectionalStyleSheetBehavior implements Behavior {
     constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
     // @internal (undocumented)
-    bind(source: typeof FASTElement & HTMLElement): void;
+    bind(source: FASTElement & HTMLElement): void;
     // @internal (undocumented)
-    unbind(source: typeof FASTElement & HTMLElement): void;
+    unbind(source: FASTElement & HTMLElement): void;
 }
 
 // @public
@@ -531,6 +576,9 @@ export const hidden = ":host([hidden]){display:none}";
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
 // @public
+export function isListboxOption(el: Element): el is ListboxOption;
+
+// @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -540,8 +588,6 @@ export function isTreeItemElement(el: Element): el is HTMLElement;
 export class Listbox extends FASTElement {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
     // @internal (undocumented)
     get firstSelectedOption(): ListboxOption;
@@ -552,12 +598,13 @@ export class Listbox extends FASTElement {
     handleTypeAhead(key: any): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    // @internal (undocumented)
-    options: ListboxOption[];
     // (undocumented)
-    optionsChanged(prev: any, next: any): void;
+    get length(): number;
+    options: ListboxOption[];
     role: string;
     selectedIndex: number;
+    // (undocumented)
+    selectedIndexChanged(prev: number, next: number): void;
     selectedOptions: ListboxOption[];
     // (undocumented)
     protected selectedOptionsChanged(prev: any, next: any): void;
@@ -570,8 +617,12 @@ export class Listbox extends FASTElement {
     selectPreviousOption(): void;
     // @internal (undocumented)
     protected setDefaultSelectedOption(): void;
-    setSelectedOption(index?: number): void;
-    static slottedOptionFilter: (n: ListboxOption) => boolean;
+    protected setSelectedOptions(): void;
+    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    // @internal (undocumented)
+    slottedOptions: HTMLElement[];
+    // (undocumented)
+    slottedOptionsChanged(prev: any, next: any): void;
     // @internal
     protected typeAheadExpired: boolean;
     }
@@ -777,17 +828,18 @@ export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio
 //
 // @public
 export class Select extends FormAssociatedSelect {
-    constructor();
-    // @internal (undocumented)
+    // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
     connectedCallback(): void;
-    get displayValue(): string;
-    // (undocumented)
+    // @internal
+    disabledChanged(prev: boolean, next: boolean): void;
+    displayValue: string;
+    // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
-    // @internal (undocumented)
+    // @internal
     formResetCallback: () => void;
-    // (undocumented)
+    // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
     maxHeight: number;
@@ -795,14 +847,16 @@ export class Select extends FormAssociatedSelect {
     open: boolean;
     // (undocumented)
     protected openChanged(): void;
-    // (undocumented)
-    optionsChanged(prev: any, next: any): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
     // @internal
-    selectedOptionsChanged(prev: any, next: any): void;
+    selectedIndexChanged(prev: any, next: any): void;
     setPositioning(): void;
+    // @internal
+    slottedOptionsChanged(prev: any, next: any): void;
+    get value(): string;
+    set value(next: string);
     }
 
 // @internal (undocumented)
@@ -1201,9 +1255,6 @@ export enum TooltipPosition {
     start = "start",
     top = "top"
 }
-
-// @public
-export const TooltipTemplate: import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal

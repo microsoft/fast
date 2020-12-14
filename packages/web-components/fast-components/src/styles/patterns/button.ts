@@ -94,6 +94,11 @@ export const BaseButtonStyles = css`
         display: flex;
     }
 
+    .control.icon-only {
+        padding: 0;
+        line-height: 0;
+    }
+
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary -

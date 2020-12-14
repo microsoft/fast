@@ -178,7 +178,8 @@ export const SelectStyles = css`
         width: 1em;
     }
 
-    ::slotted([role="option"]) {
+    ::slotted([role="option"]),
+    ::slotted(option) {
         flex: 0 0 auto;
     }
 
@@ -207,7 +208,8 @@ export const SelectStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
 
-            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
+            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]),
+            :host(:${focusVisible}) ::slotted(option[aria-selected="true"]) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};

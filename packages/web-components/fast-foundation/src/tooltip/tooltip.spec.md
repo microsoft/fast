@@ -46,7 +46,10 @@ Tooltip widgets do not receive focus. A hover that contains focusable elements c
 - `default`
 
 *Events*
-- dismiss - event fired when a user presses escape
+- `dismiss` - Event fired when a user presses escape
+
+*functions*
+- `createTooltipTemplate(string: prefix)` - Generates a `ViewTemplate` for the tooltip based on the provided prefix (ie. "fast", "fluent", etc...). This is required because tooltip uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie. "fast-anchored-region" vs. "fluent-anchored-region", for example).  Note that the appropriate `anchored-region` component must also be declared.
 
 ### Anatomy and Appearance
 
