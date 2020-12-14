@@ -5,13 +5,21 @@ import React from "react";
 import {
     RenderControlConfig,
     RenderRefControlConfig,
+    RenderSelectControlConfig,
 } from "./control.css.utilities.props";
-import { FASTCheckbox, FASTTextField } from "@microsoft/fast-components";
+import {
+    FASTCheckbox,
+    FASTOption,
+    FASTSelect,
+    FASTTextField,
+} from "@microsoft/fast-components";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
 FASTCheckbox;
+FASTOption;
+FASTSelect;
 FASTTextField;
 
 function getTextInputChangeHandler(
@@ -63,5 +71,31 @@ export function renderZeroOrOne(config: RenderRefControlConfig): React.ReactNode
         >
             {config.ref.ref}
         </fast-checkbox>
+    );
+}
+
+function getSelectionChangeHandler(
+    parentChangeHandler: (value: string) => void
+): (e: React.ChangeEvent<HTMLSelectElement>) => void {
+    return (e: React.ChangeEvent<HTMLSelectElement>) => {
+        parentChangeHandler(e.currentTarget.value);
+    };
+}
+
+export function renderSelection(config: RenderSelectControlConfig): React.ReactNode {
+    return (
+        <fast-select
+            events={{
+                change: getSelectionChangeHandler(config.handleChange),
+            }}
+        >
+            {config.options.map(option => {
+                return (
+                    <fast-option value={`${option.value}`} key={option.key}>
+                        {option.displayName}
+                    </fast-option>
+                );
+            })}
+        </fast-select>
     );
 }
