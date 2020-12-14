@@ -1,14 +1,7 @@
 import { expect } from "chai";
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import {
-    DataGrid,
-    DataGridTemplate as Gridtemplate,
-    DataGridRow,
-    DataGridRowTemplate as rowTemplate,
-    DataGridCell,
-    DataGridCellTemplate as cellTemplate,
-} from "./index";
+import { createDataGridTemplate, DataGrid, DataGridRow } from "./index";
 import { ColumnDefinition, GenerateHeaderOptions } from "./data-grid";
 import { DataGridRowTypes } from "./data-grid-row";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
@@ -63,7 +56,7 @@ const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]
 
 @customElement({
     name: "fast-data-grid",
-    template: Gridtemplate,
+    template: createDataGridTemplate("fast"),
 })
 class FASTDataGrid extends DataGrid {}
 

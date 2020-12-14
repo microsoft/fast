@@ -1,28 +1,34 @@
-import { children, elements, html } from "@microsoft/fast-element";
+import { children, elements, html, ViewTemplate } from "@microsoft/fast-element";
 import { DataGrid } from "./data-grid";
 
-const defaultRowItemTemplate = html`
-    <fast-data-grid-row
+function createRowItemTemplate(prefix: string): ViewTemplate {
+    return html`
+    <${prefix}-data-grid-row
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
-    ></fast-data-grid-row>
+    ></${prefix}-data-grid-row>
 `;
+}
 
 /**
- * The template for the {@link @microsoft/fast-foundation#DataGrid} component.
+ * Generates a template for the {@link @microsoft/fast-foundation#DataGrid} component using
+ * the provided prefix.
+ *
  * @public
  */
-export const DataGridTemplate = html<DataGrid>`
-    <template
-        role="grid"
-        tabindex="0"
-        :defaultRowItemTemplate=${defaultRowItemTemplate}
-        ${children({
-            property: "rowElements",
-            filter: elements("[role=row]"),
-        })}
-    >
-        <slot></slot>
-    </template>
-`;
+export function createDataGridTemplate(prefix: string): ViewTemplate {
+    return html<DataGrid>`
+        <template
+            role="grid"
+            tabindex="0"
+            :defaultRowItemTemplate=${createRowItemTemplate(prefix)}
+            ${children({
+                property: "rowElements",
+                filter: elements("[role=row]"),
+            })}
+        >
+            <slot></slot>
+        </template>
+    `;
+}

@@ -1,11 +1,11 @@
 import { customElement } from "@microsoft/fast-element";
 import {
     DataGrid,
-    DataGridTemplate as gridTemplate,
+    createDataGridTemplate,
     DataGridRow,
-    DataGridRowTemplate as gridRowTemplate,
+    createDataGridRowTemplate,
     DataGridCell,
-    DataGridCellTemplate as gridCellTemplate,
+    createDataGridCellTemplate,
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
@@ -20,7 +20,7 @@ import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
  */
 @customElement({
     name: "fast-data-grid",
-    template: gridTemplate,
+    template: createDataGridTemplate("fast"),
     styles: gridStyles,
 })
 export class FASTDataGrid extends DataGrid {}
@@ -40,7 +40,7 @@ export const DataGridStyles = gridStyles;
  */
 @customElement({
     name: "fast-data-grid-row",
-    template: gridRowTemplate,
+    template: createDataGridRowTemplate("fast"),
     styles: rowStyles,
 })
 export class FASTDataGridRow extends DataGridRow {}
@@ -60,7 +60,7 @@ export const DataGridRowStyles = rowStyles;
  */
 @customElement({
     name: "fast-data-grid-cell",
-    template: gridCellTemplate,
+    template: createDataGridCellTemplate("fast"),
     styles: cellStyles,
 })
 export class FASTDataGridCell extends DataGridCell {}

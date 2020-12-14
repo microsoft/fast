@@ -1,37 +1,45 @@
 import { children, elements, html, slotted, ViewTemplate } from "@microsoft/fast-element";
 import { DataGridRow } from "./data-grid-row";
 
-const defaultCellItemTemplate: ViewTemplate = html`
-    <fast-data-grid-cell
+function createCellItemTemplate(prefix: string): ViewTemplate {
+    return html`
+    <${prefix}-data-grid-cell
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
-    ></fast-data-grid-cell>
+    ></${prefix}-data-grid-cell>
 `;
+}
 
-const defaultHeaderCellItemTemplate: ViewTemplate = html`
-    <fast-data-grid-cell
+function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
+    return html`
+    <${prefix}-data-grid-cell
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
         :columnDefinition="${x => x}"
-    ></fast-data-grid-header-cell>
+    ></${prefix}-data-grid-header-cell>
 `;
+}
 
 /**
- * The template for the {@link @microsoft/fast-foundation#DataGridRow} component.
+ * Generates a template for the {@link @microsoft/fast-foundation#DataGridRow} component using
+ * the provided prefix.
+ *
  * @public
  */
-export const DataGridRowTemplate = html<DataGridRow>`
-    <template
-        :defaultCellItemTemplate=${defaultCellItemTemplate}
-        :defaultHeaderCellItemTemplate=${defaultHeaderCellItemTemplate}
-        role="row"
-        class="${x => (x.rowType !== "default" ? x.rowType : "")}"
-        ${children({
-            property: "cellElements",
-            filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
-        })}
-    >
-        <slot ${slotted("slottedCellElements")}></slot>
-    </template>
-`;
+export function createDataGridRowTemplate(prefix: string): ViewTemplate {
+    return html<DataGridRow>`
+        <template
+            :defaultCellItemTemplate=${createCellItemTemplate(prefix)}
+            :defaultHeaderCellItemTemplate=${createHeaderCellItemTemplate(prefix)}
+            role="row"
+            class="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            ${children({
+                property: "cellElements",
+                filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
+            })}
+        >
+            <slot ${slotted("slottedCellElements")}></slot>
+        </template>
+    `;
+}

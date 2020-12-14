@@ -1,19 +1,13 @@
 import { expect } from "chai";
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import {
-    ColumnDefinition,
-    DataGridRow,
-    DataGridRowTemplate as rowTemplate,
-    DataGridCell,
-    DataGridCellTemplate as cellTemplate,
-} from "./index";
+import { ColumnDefinition, createDataGridRowTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 @customElement({
     name: "fast-data-grid-row",
-    template: rowTemplate,
+    template: createDataGridRowTemplate("fast"),
 })
 class FASTDataGridRow extends DataGridRow {}
 
