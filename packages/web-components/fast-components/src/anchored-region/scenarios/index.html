@@ -1,0 +1,28 @@
+<template title="Default">
+    <div
+        id="viewport-default"
+        style="
+            position: relative;
+            height: 400px;
+            width: 400px;
+            background: lightgray;
+            overflow: scroll;
+        "
+    >
+        <div style="height: 1000px; width: 1000px;">
+            <button id="anchor-default" style="margin-left: 500px; margin-top: 500px;">
+                anchor
+            </button>
+            <fast-anchored-region
+                anchor="anchor-default"
+                viewport="viewport-default"
+                vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="dynamic"
+            >
+                <div style="height: 100px; width: 100px; background: yellow;">
+                    Region
+                </div>
+            </fast-anchored-region>
+        </div>
+    </div>
+</template>

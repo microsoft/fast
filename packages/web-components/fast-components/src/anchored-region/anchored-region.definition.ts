@@ -1,6 +1,11 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { AxisPositioningMode } from "@microsoft/fast-foundation";
+import {
+    AxisPositioningMode,
+    AxisScalingMode,
+    HorizontalPosition,
+    VerticalPosition,
+} from "@microsoft/fast-foundation";
 
 export const fastAnchoredRegionDefinition: WebComponentDefinition = {
     version: 1,
@@ -23,18 +28,116 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     default: undefined,
                     required: false,
                 },
-                // {
-                //     name: "horizontal-positioning-mode",
-                //     description: "The horizontal-positioning-mode attribute",
-                //     type: DataType.string,
-                //     values: [
-                //         { name: AxisPositioningMode.uncontrolled },
-                //         { name: AxisPositioningMode.locktodefault },
-                //         { name: AxisPositioningMode.dynamic },
-                //     ],
-                //     default: true,
-                //     required: false,
-                // },
+                {
+                    name: "horizontal-positioning-mode",
+                    description: "The horizontal-positioning-mode attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: AxisPositioningMode.uncontrolled },
+                        { name: AxisPositioningMode.locktodefault },
+                        { name: AxisPositioningMode.dynamic },
+                    ],
+                    default: AxisPositioningMode.uncontrolled,
+                    required: false,
+                },
+                {
+                    name: "horizontal-default-position",
+                    description: "The horizontal-default-position attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: HorizontalPosition.start },
+                        { name: HorizontalPosition.end },
+                        { name: HorizontalPosition.left },
+                        { name: HorizontalPosition.right },
+                        { name: HorizontalPosition.unset },
+                    ],
+                    default: HorizontalPosition.unset,
+                    required: false,
+                },
+                {
+                    name: "horizontal-inset",
+                    description: "The horizontal-inset attribute",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "horizontal-threshold",
+                    description: "The horizontal-threshold attribute",
+                    type: DataType.number,
+                    default: undefined,
+                    required: false,
+                },
+                {
+                    name: "horizontal-scaling",
+                    description: "The horizontal-scaling attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: AxisScalingMode.anchor },
+                        { name: AxisScalingMode.fill },
+                        { name: AxisScalingMode.content },
+                    ],
+                    default: AxisScalingMode.content,
+                    required: false,
+                },
+
+                {
+                    name: "vertical-positioning-mode",
+                    description: "The vertical-positioning-mode attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: AxisPositioningMode.uncontrolled },
+                        { name: AxisPositioningMode.locktodefault },
+                        { name: AxisPositioningMode.dynamic },
+                    ],
+                    default: AxisPositioningMode.uncontrolled,
+                    required: false,
+                },
+                {
+                    name: "vertical-default-position",
+                    description: "The vertical-default-position attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: VerticalPosition.top },
+                        { name: VerticalPosition.bottom },
+                        { name: VerticalPosition.unset },
+                    ],
+                    default: VerticalPosition.unset,
+                    required: false,
+                },
+                {
+                    name: "vertical-inset",
+                    description: "The vertical-inset attribute",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "vertical-threshold",
+                    description: "The vertical-threshold attribute",
+                    type: DataType.number,
+                    default: undefined,
+                    required: false,
+                },
+                {
+                    name: "vertical-scaling",
+                    description: "The vertical-scaling attribute",
+                    type: DataType.string,
+                    values: [
+                        { name: AxisScalingMode.anchor },
+                        { name: AxisScalingMode.fill },
+                        { name: AxisScalingMode.content },
+                    ],
+                    default: AxisScalingMode.content,
+                    required: false,
+                },
+                {
+                    name: "fixed-placement",
+                    description: "The fixed-placement attribute",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
             ],
             slots: [],
         },

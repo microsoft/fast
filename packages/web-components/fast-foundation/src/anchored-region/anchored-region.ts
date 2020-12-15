@@ -191,7 +191,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: horizontal-threshold
      */
     @attr({ attribute: "horizontal-threshold" })
-    public horizontalThreshold: string;
+    public horizontalThreshold: number;
     private horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -261,7 +261,7 @@ export class AnchoredRegion extends FASTElement {
      * HTML Attribute: vertical-threshold
      */
     @attr({ attribute: "vertical-threshold" })
-    public verticalThreshold: string;
+    public verticalThreshold: number;
     private verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -828,7 +828,7 @@ export class AnchoredRegion extends FASTElement {
 
             const horizontalThreshold: number =
                 this.horizontalThreshold !== undefined
-                    ? Number(this.horizontalThreshold)
+                    ? this.horizontalThreshold
                     : this.regionDimension.width;
 
             if (
@@ -866,7 +866,7 @@ export class AnchoredRegion extends FASTElement {
 
             const verticalThreshold: number =
                 this.verticalThreshold !== undefined
-                    ? Number(this.verticalThreshold)
+                    ? this.verticalThreshold
                     : this.regionDimension.height;
 
             if (
