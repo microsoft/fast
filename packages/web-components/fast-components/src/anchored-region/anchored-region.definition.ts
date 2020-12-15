@@ -139,7 +139,12 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     required: false,
                 },
             ],
-            slots: [],
+            slots: [
+                {
+                    name: "",
+                    description: "The default slot",
+                },
+            ],
         },
     ],
 };
