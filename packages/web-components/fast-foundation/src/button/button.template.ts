@@ -42,7 +42,7 @@ export const ButtonTemplate = html<Button>`
         aria-pressed="${x => x.ariaPressed}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
-        ${ref("root")}
+        ${ref("control")}
     >
         ${startTemplate}
         <span part="content">

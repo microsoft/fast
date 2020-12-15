@@ -39,6 +39,7 @@ export const SelectStyles = css`
         position: relative;
         user-select: none;
         min-width: 250px;
+        outline: none;
     }
 
     .listbox {
@@ -80,15 +81,11 @@ export const SelectStyles = css`
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host(:focus) .control {
-        border-color: ${accentFillFocusBehavior.var};
-    }
-
     :host(:${focusVisible}) {
-        border-color: ${accentFillFocusBehavior.var};
-        box-shadow:
-            0 0 0 2px var(--background-color),
-            0 0 0 4px ${neutralFocusBehavior.var};
+        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) ${
+            neutralFocusBehavior.var
+        };
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
@@ -181,7 +178,8 @@ export const SelectStyles = css`
         width: 1em;
     }
 
-    ::slotted([role="option"]) {
+    ::slotted([role="option"]),
+    ::slotted(option) {
         flex: 0 0 auto;
     }
 
@@ -210,7 +208,8 @@ export const SelectStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
 
-            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
+            :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]),
+            :host(:${focusVisible}) ::slotted(option[aria-selected="true"]) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};

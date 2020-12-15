@@ -1,4 +1,4 @@
-import { attr, DOM, observable, volatile } from "@microsoft/fast-element";
+import { attr, Observable, observable } from "@microsoft/fast-element";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
@@ -24,12 +24,92 @@ export class Select extends FormAssociatedSelect {
         this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
             this.setPositioning();
-            super.focusAndScrollOptionIntoView();
+            this.focusAndScrollOptionIntoView();
+            this.indexWhenOpened = this.selectedIndex;
+        }
+    }
+
+    private indexWhenOpened: number;
+
+    /**
+     * The internal value property.
+     *
+     * @internal
+     */
+    private _value: string;
+
+    /**
+     * The value property.
+     *
+     * @public
+     */
+    public get value() {
+        Observable.track(this, "value");
+        return this._value;
+    }
+
+    public set value(next: string) {
+        const prev = `${this._value}`;
+
+        if (this.$fastController.isConnected && this.options) {
+            const selectedIndex = this.options.findIndex(el => el.value === next);
+
+            const prevSelectedOption = this.options[this.selectedIndex];
+            const nextSelectedOption = this.options[selectedIndex];
+
+            const prevSelectedValue = prevSelectedOption
+                ? prevSelectedOption.value
+                : null;
+
+            const nextSelectedValue = nextSelectedOption
+                ? nextSelectedOption.value
+                : null;
+
+            if (selectedIndex === -1 || prevSelectedValue !== nextSelectedValue) {
+                next = "";
+                this.selectedIndex = selectedIndex;
+            }
+
+            if (this.firstSelectedOption) {
+                next = this.firstSelectedOption.value;
+            }
+        }
+
+        if (prev !== next) {
+            this._value = next;
+            super.valueChanged(prev, next);
+            Observable.notify(this, "value");
+        }
+    }
+
+    private updateValue(shouldEmit?: boolean) {
+        if (this.$fastController.isConnected) {
+            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
+            this.displayValue = this.firstSelectedOption
+                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
+                : this.value;
+        }
+
+        if (shouldEmit) {
+            this.$emit("change");
         }
     }
 
     /**
-     *  Reflects the placement for the listbox when the select is open.
+     * Updates the proxy value when the selected index changes.
+     *
+     * @param prev - the previous selected index
+     * @param next - the next selected index
+     *
+     * @internal
+     */
+    public selectedIndexChanged(prev, next): void {
+        super.selectedIndexChanged(prev, next);
+        this.updateValue();
+    }
+
+    /**
+     * Reflects the placement for the listbox when the select is open.
      *
      * @public
      */
@@ -50,7 +130,6 @@ export class Select extends FormAssociatedSelect {
      * @remarks
      * HTML Attribute: role
      */
-    @attr
     public role: SelectRole = SelectRole.combobox;
 
     /**
@@ -99,36 +178,39 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    @volatile
-    public get displayValue(): string {
-        if (this.firstSelectedOption) {
-            return this.firstSelectedOption.textContent || this.firstSelectedOption.value;
+    @observable
+    public displayValue: string = "";
+
+    /**
+     * Synchronize the `aria-disabled` property when the `disabled` property changes.
+     *
+     * @param prev - The previous disabled value
+     * @param next - The next disabled value
+     *
+     * @internal
+     */
+    public disabledChanged(prev: boolean, next: boolean): void {
+        if (super.disabledChanged) {
+            super.disabledChanged(prev, next);
         }
-        return "";
+        this.ariaDisabled = this.disabled ? "true" : "false";
     }
 
     /**
+     * Reset the element to its first selectable option when its parent form is reset.
+     *
      * @internal
      */
     public formResetCallback = (): void => {
+        this.setProxyOptions();
         this.setDefaultSelectedOption();
+        this.value = this.firstSelectedOption.value;
     };
 
     /**
-     * Sets the value when the options are changed.
+     * Handle opening and closing the listbox when the select is clicked.
      *
-     * @param prev - The previous value
-     * @param next - the new value
-     * @internal
-     */
-    public selectedOptionsChanged(prev, next): void {
-        super.selectedOptionsChanged(prev, next);
-        if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption.value;
-        }
-    }
-
-    /**
+     * @param e - the mouse event
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
@@ -137,22 +219,33 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        super.clickHandler(e);
-
         if (this.open) {
             const captured = (e.target as HTMLElement).closest(
-                `[role=option]`
+                `option,[role=option]`
             ) as ListboxOption;
+
             if (captured && captured.disabled) {
                 return;
             }
         }
 
+        super.clickHandler(e);
+
         this.open = !this.open;
+
+        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
+            this.updateValue(true);
+        }
 
         return true;
     }
 
+    /**
+     * Handle focus state when the element or its children lose focus.
+     *
+     * @param e - The focus event
+     * @internal
+     */
     public focusoutHandler(e: FocusEvent): boolean | void {
         if (!this.open) {
             return true;
@@ -160,7 +253,7 @@ export class Select extends FormAssociatedSelect {
 
         const focusTarget = e.relatedTarget as HTMLElement;
         if (this.isSameNode(focusTarget)) {
-            DOM.queueUpdate(() => this.focus());
+            this.focus();
             return;
         }
 
@@ -169,49 +262,85 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
-    public optionsChanged(prev, next): void {
-        super.optionsChanged(prev, next);
-
+    /**
+     * Synchronize the form-associated proxy and update the value property of the element.
+     *
+     * @param prev - the previous collection of slotted option elements
+     * @param next - the next collection of slotted option elements
+     *
+     * @internal
+     */
+    public slottedOptionsChanged(prev, next): void {
+        super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
+        this.updateValue();
     }
 
     /**
-     * Reset and fill the proxy to match the component's options
+     * Reset and fill the proxy to match the component's options.
+     *
      * @internal
      */
     private setProxyOptions(): void {
-        if (this.proxy instanceof HTMLSelectElement) {
+        if (this.proxy instanceof HTMLSelectElement && this.options) {
             this.proxy.options.length = 0;
             this.options.forEach(option => {
-                if (option.proxy) {
-                    this.proxy.appendChild(option.proxy);
+                const proxyOption =
+                    option.proxy ||
+                    (option instanceof HTMLOptionElement ? option.cloneNode() : null);
+
+                if (proxyOption) {
+                    this.proxy.appendChild(proxyOption);
                 }
             });
         }
     }
 
+    /**
+     * Handle keyboard interaction for the select.
+     *
+     * @param e - the keyboard event
+     * @internal
+     */
     public keydownHandler(e: KeyboardEvent): boolean | void {
         super.keydownHandler(e);
         const key = e.key || e.key.charCodeAt(0);
 
         switch (key) {
             case " ": {
-                if (!this.typeAheadExpired) {
-                    return true;
+                if (this.typeAheadExpired) {
+                    e.preventDefault();
+                    this.open = !this.open;
                 }
-                this.open = !this.open;
-                return;
+                break;
             }
 
             case "Enter": {
+                e.preventDefault();
                 this.open = !this.open;
                 break;
             }
 
             case "Escape": {
-                this.open = false;
+                if (this.open) {
+                    e.preventDefault();
+                    this.open = false;
+                }
                 break;
             }
+
+            case "Tab": {
+                if (!this.open) {
+                    return true;
+                }
+
+                e.preventDefault();
+                this.open = false;
+            }
+        }
+
+        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
+            this.updateValue(true);
         }
 
         return true;
@@ -219,15 +348,7 @@ export class Select extends FormAssociatedSelect {
 
     public connectedCallback() {
         super.connectedCallback();
-
-        this.setProxyOptions();
-
         this.forcedPosition = !!this.positionAttribute;
-    }
-
-    public constructor() {
-        super();
-        this.value = this.initialValue;
     }
 }
 
@@ -245,6 +366,15 @@ export class DelegatesARIASelect {
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: aria-pressed
+     */
+    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
 /**
@@ -253,7 +383,6 @@ export class DelegatesARIASelect {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
 
