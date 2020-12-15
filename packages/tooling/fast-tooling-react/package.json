@@ -91,7 +91,7 @@
     "lodash-es": "^4.0.0",
     "prettier": "2.0.2",
     "react": "^16.8.0",
-    "react-dnd-html5-backend": "^9.0.0",
+    "react-dnd-html5-backend": "^9.5.1",
     "react-dom": "^16.8.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
