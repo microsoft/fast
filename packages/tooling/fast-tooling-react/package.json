@@ -120,6 +120,6 @@
     "@microsoft/fast-web-utilities": "^4.6.1",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
-    "react-dnd": "^9.0.0"
+    "react-dnd": "^9.5.1"
   }
 }
