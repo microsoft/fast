@@ -1,28 +1,26 @@
 <template title="Default">
-    <div
-        id="viewport-default"
-        style="
-            position: relative;
-            height: 400px;
-            width: 400px;
-            background: lightgray;
-            overflow: scroll;
-        "
-    >
-        <div style="height: 1000px; width: 1000px;">
-            <button id="anchor-default" style="margin-left: 500px; margin-top: 500px;">
-                anchor
-            </button>
-            <fast-anchored-region
-                anchor="anchor-default"
-                viewport="viewport-default"
-                vertical-positioning-mode="dynamic"
-                horizontal-positioning-mode="dynamic"
-            >
-                <div style="height: 100px; width: 100px; background: yellow;">
-                    Region
-                </div>
-            </fast-anchored-region>
-        </div>
+    <div id="viewport-default" style="height: 100%; width: 100%; position: relative;">
+        <script>
+            function update() {
+                const region = document.getElementById("default-region");
+                region.update();
+            }
+        </script>
+        <button
+            id="anchor-default"
+            style="margin-left: 200px; margin-top: 200px;"
+            onclick="update()"
+        >
+            update position
+        </button>
+        <fast-anchored-region
+            id="default-region"
+            viewport="viewport-default"
+            anchor="anchor-default"
+            vertical-positioning-mode="dynamic"
+            horizontal-positioning-mode="dynamic"
+        >
+            <div style="height: 200px; width: 200px; background: yellow;"></div>
+        </fast-anchored-region>
     </div>
 </template>
