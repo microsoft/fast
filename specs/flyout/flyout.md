@@ -3,7 +3,7 @@
 Popover is a focusable floating container that shows over a pages content and displays UI related to what the user is doing and is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action is required, a Popover can be used to reveal a secondary control or show more detail about an item.
 
 ### Background
-A Popover can be less intrusive to the user experience than a Dialog and should be used instead of a Dialog when information or input is needed to be displayed, but not in the center of the screen, such as in the case of collection of additional info before an action, displaying information that is only relevant some of the time, or displaying more information.
+A Popover can be less intrusive to the user experience than a Dialog and should be used instead of a Dialog when information or input is needed to be displayed, but not in the center of the screen, such as in the case of collection of additional info before an action, displaying information that is only relevant some of the time, or just displaying more information.
 
 ### Use Cases
 - As a popup showing additional info for an item on the page.
@@ -15,7 +15,7 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 **Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. An event would be emitted anytime the Popover is dismissed. The Popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Popover.
 
-**Focus Management:** - Should follow the same process for focus management as a Dialog primarily as the Popover's role will be dialog. This includes a trap focus method, which can be optional, and the focus should return to the target that triggers the popover after the popover is closed.
+**Focus Management:** - Should follow the same process for focus management as a Dialog primarily as the Popover's role will be dialog. This includes a trap focus method, which can be optional. For accessibility the focus should return to the target that triggers the popover after the popover is closed.
 
 
 ### Prior Art/Examples
@@ -105,6 +105,9 @@ A Popover can be less intrusive to the user experience than a Dialog and should 
 
 *Events*
 - `dismiss` - event fired when the Popover is dismissed
+
+*Functions*
+- `createPopoverTemplate(string: prefix)` - generates a `ViewTemplate` for the popover based on the given provided prefix string. This is required as popover uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie "fast-anchored-region", "fluent-anchored-region"). Note that the appropriate `anchored-region` component must also be declared.
 
 ### Anatomy and Appearance
 Parts:
