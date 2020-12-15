@@ -660,6 +660,37 @@ export const DI = Object.freeze({
             }
         };
     },
+
+    /**
+     * Registers the `target` class as a singleton dependency; the class will only be created once. Each
+     * consecutive time the dependency is resolved, the same instance will be returned.
+     *
+     * @param target - The class / constructor function to register as a singleton.
+     * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
+     * @example ```ts
+     * // On an existing class
+     * class Foo { }
+     * DI.singleton(Foo);
+     *
+     * // Inline declaration
+     * const Foo = DI.singleton(class { });
+     * // Foo is now strongly typed with register
+     * Foo.register(container);
+     * ```
+     */
+    singleton<T extends Constructable>(
+        target: T & Partial<RegisterSelf<T>>,
+        options: SingletonOptions = defaultSingletonOptions
+    ): T & RegisterSelf<T> {
+        target.register = function register(
+            container: Container
+        ): Resolver<InstanceType<T>> {
+            const registration = Registration.singleton(target, target);
+            return registration.register(container, target);
+        };
+        target.registerInRequestor = options.scoped;
+        return target as T & RegisterSelf<T>;
+    },
 });
 
 /**
@@ -728,6 +759,118 @@ export const optional = createResolver(
         } else {
             return undefined;
         }
+    }
+);
+
+type SingletonOptions = { scoped: boolean };
+const defaultSingletonOptions = { scoped: false };
+
+function singletonDecorator<T extends Constructable>(
+    target: T & Partial<RegisterSelf<T>>
+): T & RegisterSelf<T> {
+    return DI.singleton(target);
+}
+/**
+ * Registers the decorated class as a singleton dependency; the class will only be created once. Each
+ * consecutive time the dependency is resolved, the same instance will be returned.
+ *
+ * @example ```ts
+ * &#64;singleton()
+ * class Foo { }
+ * ```
+ */
+export function singleton<T extends Constructable>(): typeof singletonDecorator;
+export function singleton<T extends Constructable>(
+    options?: SingletonOptions
+): typeof singletonDecorator;
+/**
+ * Registers the `target` class as a singleton dependency; the class will only be created once. Each
+ * consecutive time the dependency is resolved, the same instance will be returned.
+ *
+ * @param target - The class / constructor function to register as a singleton.
+ *
+ * @example ```ts
+ * &#64;singleton()
+ * class Foo { }
+ * ```
+ */
+export function singleton<T extends Constructable>(
+    target: T & Partial<RegisterSelf<T>>
+): T & RegisterSelf<T>;
+export function singleton<T extends Constructable>(
+    targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions
+): (T & RegisterSelf<T>) | typeof singletonDecorator {
+    if (typeof targetOrOptions === "function") {
+        return DI.singleton(targetOrOptions);
+    }
+    return function <T extends Constructable>($target: T) {
+        return DI.singleton($target, targetOrOptions as SingletonOptions | undefined);
+    };
+}
+
+function createAllResolver(
+    getter: (
+        key: any,
+        handler: Container,
+        requestor: Container,
+        searchAncestors: boolean
+    ) => readonly any[]
+): (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject> {
+    return function (key: any, searchAncestors?: boolean): ReturnType<typeof DI.inject> {
+        searchAncestors = !!searchAncestors;
+        const resolver: ReturnType<typeof DI.inject> &
+            Required<Pick<Resolver, "resolve">> & { $isResolver: true } = function (
+            target: Injectable,
+            property?: string | number,
+            descriptor?: PropertyDescriptor | number
+        ): void {
+            DI.inject(resolver)(target, property, descriptor);
+        };
+
+        resolver.$isResolver = true;
+        resolver.resolve = function (handler: Container, requestor: Container): any {
+            return getter(key, handler, requestor, searchAncestors!);
+        };
+
+        return resolver;
+    };
+}
+
+export const all = createAllResolver(
+    (key: any, handler: Container, requestor: Container, searchAncestors: boolean) =>
+        requestor.getAll(key, searchAncestors)
+);
+
+/**
+ * Lazily inject a dependency depending on whether the [[`Key`]] is present at the time of function call.
+ *
+ * You need to make your argument a function that returns the type, for example
+ * ```ts
+ * class Foo {
+ *   constructor( @lazy('random') public random: () => number )
+ * }
+ * const foo = container.get(Foo); // instanceof Foo
+ * foo.random(); // throws
+ * ```
+ * would throw an exception because you haven't registered `'random'` before calling the method. This, would give you a
+ * new [['Math.random()']] number each time.
+ * ```ts
+ * class Foo {
+ *   constructor( @lazy('random') public random: () => random )
+ * }
+ * container.register(Registration.callback('random', Math.random ));
+ * container.get(Foo).random(); // some random number
+ * container.get(Foo).random(); // another random number
+ * ```
+ * `@lazy` does not manage the lifecycle of the underlying key. If you want a singleton, you have to register as a
+ * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
+ *
+ * - @param key [[`Key`]]
+ * see { @link DI.createInterface } on interactions with interfaces
+ */
+export const lazy = createResolver(
+    (key: Key, handler: Container, requestor: Container) => {
+        return () => requestor.get(key);
     }
 );
 
