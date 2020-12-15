@@ -677,6 +677,60 @@ export const Container = DI.createInterface<Container>("Container").noDefault();
  */
 export const ServiceLocator = (Container as unknown) as InterfaceSymbol<ServiceLocator>;
 
+function createResolver(
+    getter: (key: any, handler: Container, requestor: Container) => any
+): (key: any) => any {
+    return function (key: any): ReturnType<typeof DI.inject> {
+        const resolver: ReturnType<typeof DI.inject> &
+            Partial<Pick<Resolver, "resolve">> & { $isResolver: true } = function (
+            target: Injectable,
+            property?: string | number,
+            descriptor?: PropertyDescriptor | number
+        ): void {
+            DI.inject(resolver)(target, property, descriptor);
+        };
+
+        resolver.$isResolver = true;
+        resolver.resolve = function (handler: Container, requestor: Container): any {
+            return getter(key, handler, requestor);
+        };
+
+        return resolver;
+    };
+}
+
+/**
+ * Allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example
+ * ```ts
+ * class Foo {
+ *   constructor( @inject('mystring') public str: string = 'somestring' )
+ * }
+ * container.get(Foo); // throws
+ * ```
+ * would fail
+ * ```ts
+ * class Foo {
+ *   constructor( @optional('mystring') public str: string = 'somestring' )
+ * }
+ * container.get(Foo).str // somestring
+ * ```
+ * if you use it without a default it will inject `undefined`, so rember to mark your input type as
+ * possibly `undefined`!
+ *
+ * - @param key: [[`Key`]]
+ *
+ * see { @link DI.createInterface } on interactions with interfaces
+ */
+export const optional = createResolver(
+    (key: Key, handler: Container, requestor: Container) => {
+        if (requestor.has(key, true)) {
+            return requestor.get(key);
+        } else {
+            return undefined;
+        }
+    }
+);
+
 class ResolverImpl implements Resolver, Registration {
     public constructor(
         public key: Key,
