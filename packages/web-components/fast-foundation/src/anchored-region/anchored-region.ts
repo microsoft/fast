@@ -64,6 +64,9 @@ export enum VerticalPosition {
     unset = "unset",
 }
 
+/**
+ * used internally to track dimensions of the region
+ */
 interface Dimension {
     height: number;
     width: number;
