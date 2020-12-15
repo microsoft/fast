@@ -18,7 +18,7 @@ High contrast mode uses the CSS media feature, [`forced-colors`](https://develop
 }
 ```
 
-FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in the stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
+FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in a stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
 
 :::note
 The reason for this behavior is to avoid the runtime cost applying forced-color style rules when the UA does not match the forced-colors @media query, FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
@@ -79,7 +79,7 @@ Here is a 1:1 map between the `forced-colors` keywords and Windows high contrast
 
 ## Quick demo
 
-Here is a simple example adding high contrast to style an accent button. It has selectors for rest, active, hover, focus and disabled.
+Here is a simple example of adding high contrast to style an accent button. It has selectors for rest, active, hover, focus, and disabled.
 
 ![Accent button](https://static.fast.design/assets/accent.png)
 
@@ -109,7 +109,7 @@ When high contrast is enabled, the system will try to apply the correct color. I
 
 ![Accent button no forced colors](https://static.fast.design/assets/high-contrast/accent-no-forced-colors.png)
 
-To fix this, we will pass a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) object to `withBehaviors`, using similar selectors, and setting property values with `SystemColors` keyword.
+To fix this, we will pass a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) object to `withBehaviors`, using similar selectors, and setting property values with the `SystemColors` keyword.
 
 ```ts
 export const AccentButtonStyles = css`
@@ -149,12 +149,16 @@ After adding `forced-colors` and applying `SystemColors` keywords, the accent bu
 
 ![Accent button forced colors](https://static.fast.design/assets/high-contrast/accent-with-forced-colors.png)
 
+:::note
+[forced-color-adjust](https://www.w3.org/TR/css-color-adjust-1/#forced), controls whether the UA system theme color override, should be applied to an element and its descendants. 
+The example is set to `none`, because we are overriding to remove the backplate on the text content in the control, that the UA sets on text elements.
+:::
+
 ### Further resources
 
 **Color contrast comparison chart**
 
-To help determine whether a pair of high contrast colors will meet a color luminosity contrast ratio of at least 10:1
-This table uses the high contrast theme color resource names you see in Windows Ease of Access.
+To help determine whether a pair of high contrast colors will meet a color luminosity contrast ratio of at least 10:1, this table uses the high contrast theme color resource names you see in Windows Ease of Access.
 
 How to read this table:
 - <mark>YES</mark> - indicates that it is safe to assume this pair of colors will meet high contrast requirements, even in custom themes.
@@ -176,5 +180,5 @@ How to read this table:
 
 ### Microsoft Edge blog
 
-Microsoft Edge blog has an excellent in-depth information on styling for Windows high contrast using forced-colors.
+Microsoft Edge blog has excellent and in-depth information on styling for Windows high contrast using forced-colors.
 [Styling for Windows high contrast with new standards for forced colors](https://blogs.windows.com/msedgedev/2020/09/17/styling-for-windows-high-contrast-with-new-standards-for-forced-colors/)
