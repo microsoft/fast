@@ -141,24 +141,10 @@ export class ARIAGlobalStatesAndProperties {
 }
 
 // @beta
-export enum AxisPositioningMode {
-    // (undocumented)
-    dynamic = "dynamic",
-    // (undocumented)
-    locktodefault = "locktodefault",
-    // (undocumented)
-    uncontrolled = "uncontrolled"
-}
+export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 // @beta
-export enum AxisScalingMode {
-    // (undocumented)
-    anchor = "anchor",
-    // (undocumented)
-    content = "content",
-    // (undocumented)
-    fill = "fill"
-}
+export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
 export class Badge extends FASTElement {
@@ -629,18 +615,7 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 export const hidden = ":host([hidden]){display:none}";
 
 // @beta
-export enum HorizontalPosition {
-    // (undocumented)
-    end = "end",
-    // (undocumented)
-    left = "left",
-    // (undocumented)
-    right = "right",
-    // (undocumented)
-    start = "start",
-    // (undocumented)
-    unset = "unset"
-}
+export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
@@ -1395,14 +1370,7 @@ export class TreeView extends FASTElement {
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
 // @beta
-export enum VerticalPosition {
-    // (undocumented)
-    bottom = "bottom",
-    // (undocumented)
-    top = "top",
-    // (undocumented)
-    unset = "unset"
-}
+export type VerticalPosition = "top" | "bottom" | "unset";
 
 
 // (No @packageDocumentation comment for this package)
