@@ -47,7 +47,7 @@ export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 export type VerticalPosition = "top" | "bottom" | "unset";
 
 /**
- * used internally to track dimensions of the region
+ * @internal
  */
 interface Dimension {
     height: number;
@@ -57,6 +57,8 @@ interface Dimension {
 /**
  * describes the possible horizontal positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
 type AnchoredRegionHorizontalPositionLabel =
     | "left"
@@ -68,6 +70,8 @@ type AnchoredRegionHorizontalPositionLabel =
 /**
  * describes the possible vertical positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
 type AnchoredRegionVerticalPositionLabel =
     | "top"
@@ -77,7 +81,9 @@ type AnchoredRegionVerticalPositionLabel =
     | "undefined";
 
 /**
- * describes possilbe transform origin settings
+ * describes possible transform origin settings
+ *
+ * @internal
  */
 type Location = "top" | "left" | "right" | "bottom";
 
