@@ -7,7 +7,7 @@ import { Avatar } from "./avatar";
  */
 export const AvatarTemplate = html<Avatar>`
     <div
-        class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
+        class="coin ${x => x.shape}"
         part="coin"
         style="${x =>
             x.fill || x.color
@@ -18,12 +18,7 @@ export const AvatarTemplate = html<Avatar>`
             ${when(
                 x => x.imgSrc,
                 html`
-                    <img
-                        src="${x => x.imgSrc}"
-                        alt="${x => x.alt}"
-                        tabindex="${x => (!x.link ? "0" : void 0)}"
-                        class="image"
-                    />
+                    <img src="${x => x.imgSrc}" alt="${x => x.alt}" class="image" />
                 `
             )}
             <span class="name" part="name">${x => x.initials}</span>

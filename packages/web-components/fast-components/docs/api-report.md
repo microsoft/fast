@@ -7,11 +7,8 @@
 import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
-<<<<<<< HEAD
 import { AnchoredRegion } from '@microsoft/fast-foundation';
-=======
 import { Avatar } from '@microsoft/fast-foundation';
->>>>>>> update api-report
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';

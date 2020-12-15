@@ -737,10 +737,6 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
-<<<<<<< HEAD
-=======
-    // (undocumented)
->>>>>>> update avatar sizing to use design-system-provider settings
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
