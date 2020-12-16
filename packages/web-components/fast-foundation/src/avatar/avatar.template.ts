@@ -10,11 +10,14 @@ export const AvatarTemplate = html<Avatar>`
         class="coin ${x => x.shape}"
         part="coin"
         style="${x =>
-            x.fill || x.color
-                ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
-                : void 0}"
+            x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
     >
-        <a class="link" part="link" href="${x => (x.link ? x.link : void 0)}">
+        <a
+            class="link"
+            part="link"
+            href="${x => (x.link ? x.link : void 0)}"
+            style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
+        >
             ${when(
                 x => x.imgSrc,
                 html`
