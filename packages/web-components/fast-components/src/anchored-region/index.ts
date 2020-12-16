@@ -1,9 +1,8 @@
 import { customElement } from "@microsoft/fast-element";
-// TODO: Update this pathing once we export anchored region from `fast-foundation`
 import {
     AnchoredRegion,
     AnchoredRegionTemplate as template,
-} from "@microsoft/fast-foundation/dist/esm/anchored-region/index";
+} from "@microsoft/fast-foundation";
 import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
 
 /**
@@ -11,7 +10,7 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
  * {@link @microsoft/fast-foundation#AnchoredRegionTemplate}
  *
  *
- * @public
+ * @beta
  * @remarks
  * HTML Element: \<fast-anchored-region\>
  */
