@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.13.0...@microsoft/fast-tooling@0.14.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* added more precision when dealing with brackets ([#4184](https://github.com/Microsoft/fast/issues/4184)) ([bbb4c06](https://github.com/Microsoft/fast/commit/bbb4c068e2f70f2b4116cabcf472f072a5312e8f))
+
+
+### Features
+
+* allow filtering MDN data by status ([#4164](https://github.com/Microsoft/fast/issues/4164)) ([dc58c34](https://github.com/Microsoft/fast/commit/dc58c344bbe449501fde918044352c78f11a64f6))
+
+
+
+
+
 # [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.12.0...@microsoft/fast-tooling@0.13.0) (2020-12-02)
 
 
