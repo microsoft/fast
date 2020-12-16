@@ -140,10 +140,10 @@ export class AureliaFastAdapter {
       const valuePropertyConfig = { events: ['input', 'change'] };
       nodeObserverLocator.useConfig({
         'FAST-CHECKBOX': {
-          value: valuePropertyConfig
+          checked: valuePropertyConfig
         },
         'FAST-RADIO': {
-          value: valuePropertyConfig
+          checked: valuePropertyConfig
         },
         'FAST-RADIO-GROUP': {
           value: valuePropertyConfig
@@ -152,7 +152,7 @@ export class AureliaFastAdapter {
           value: valuePropertyConfig
         },
         'FAST-SWITCH': {
-          value: valuePropertyConfig
+          checked: valuePropertyConfig
         },
         'FAST-TABS': {
           activeid: valuePropertyConfig
