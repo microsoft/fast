@@ -7,6 +7,10 @@ import {
     nativeElementSchemas,
     textSchema,
 } from "@microsoft/site-utilities";
+import {
+    fastDataGridCellId,
+    fastDataGridRowId,
+} from "./fast-components/configs/fast-data-grid";
 import { fastMenuItemId } from "./fast-components/configs/fast-menu";
 import { fastSliderLabelId } from "./fast-components/configs/fast-slider";
 import { fastAccordionItemId } from "./fast-components/configs/fast-accordion";
@@ -28,6 +32,8 @@ const menu: MenuItem[] = generateMenu(
     omit(schemaDictionary, [
         textSchema.id,
         fastAccordionItemId,
+        fastDataGridCellId,
+        fastDataGridRowId,
         fastMenuItemId,
         fastSliderLabelId,
         fastTabId,

@@ -258,6 +258,19 @@ export class Checkbox extends FormAssociatedCheckbox {
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
 // @public
+export interface ColumnDefinition {
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellInternalFocusQueue?: boolean;
+    cellTemplate?: ViewTemplate;
+    columnDataKey: string;
+    gridColumn?: string;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellInternalFocusQueue?: boolean;
+    headerCellTemplate?: ViewTemplate;
+    title?: string;
+}
+
+// @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @alpha
@@ -278,6 +291,15 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     subscribe(client: CustomPropertyManagerClient): void;
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
+
+// @public
+export function createDataGridCellTemplate(prefix: string): ViewTemplate;
+
+// @public
+export function createDataGridRowTemplate(prefix: string): ViewTemplate;
+
+// @public
+export function createDataGridTemplate(prefix: string): ViewTemplate;
 
 // @public
 export function createTooltipTemplate(prefix: string): ViewTemplate;
@@ -334,6 +356,106 @@ export interface CustomPropertyManager {
 export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
     evaluate(definition: CSSCustomPropertyDefinition): string;
+}
+
+// @public
+export class DataGrid extends FASTElement {
+    constructor();
+    cellItemTemplate?: ViewTemplate;
+    columnDefinitions: ColumnDefinition[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultRowItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    focusColumnIndex: number;
+    focusRowIndex: number;
+    static generateColumns: (row: object) => ColumnDefinition[];
+    generateHeader: GenerateHeaderOptions;
+    gridTemplateColumns: string;
+    // @internal (undocumented)
+    handleFocus(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    // @internal (undocumented)
+    handleRowFocus(e: Event): void;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    rowElements: HTMLElement[];
+    rowItemTemplate: ViewTemplate;
+    rowsData: object[];
+    }
+
+// @public
+export class DataGridCell extends FASTElement {
+    cellType: DataGridCellTypes;
+    columnDefinition: ColumnDefinition | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    gridColumn: string;
+    // (undocumented)
+    handleFocusin(e: FocusEvent): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    rowData: object | null;
+    }
+
+// @public
+export enum DataGridCellTypes {
+    // (undocumented)
+    columnHeader = "columnheader",
+    // (undocumented)
+    default = "default"
+}
+
+// @public
+export class DataGridRow extends FASTElement {
+    // @internal
+    activeCellItemTemplate?: ViewTemplate;
+    // @internal
+    cellElements: HTMLElement[];
+    cellItemTemplate?: ViewTemplate;
+    columnDefinitions: ColumnDefinition[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultCellItemTemplate?: ViewTemplate;
+    // @internal
+    defaultHeaderCellItemTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    focusColumnIndex: number;
+    gridTemplateColumns: string;
+    // (undocumented)
+    handleCellFocus(e: Event): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    isActiveRow: boolean;
+    rowData: object | null;
+    rowIndex: number;
+    rowType: DataGridRowTypes;
+    // @internal (undocumented)
+    slottedCellElements: HTMLElement[];
+    }
+
+// @public
+export enum DataGridRowTypes {
+    // (undocumented)
+    default = "default",
+    // (undocumented)
+    header = "header",
+    // (undocumented)
+    stickyHeader = "sticky-header"
 }
 
 // @public
@@ -606,6 +728,16 @@ export interface FormAssociatedProxy {
     proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
     // (undocumented)
     valueChanged?(previous: any, next: any): void;
+}
+
+// @public
+export enum GenerateHeaderOptions {
+    // (undocumented)
+    default = "default",
+    // (undocumented)
+    none = "none",
+    // (undocumented)
+    sticky = "sticky"
 }
 
 // @public

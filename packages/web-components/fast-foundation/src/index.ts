@@ -9,6 +9,7 @@ export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./custom-properties/index";
+export * from "./data-grid/index";
 export * from "./design-system-provider/index";
 export * from "./dialog/index";
 export * from "./divider/index";

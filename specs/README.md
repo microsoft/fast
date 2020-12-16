@@ -17,6 +17,7 @@ Here you'll find specifications for custom elements and other library features.
 | Carousel | -- | -- |
 | [Checkbox](../packages/web-components/fast-foundation/src/checkbox/checkbox.spec.md) | :white_check_mark: | :white_check_mark: |
 | Combobox | -- | -- |
+| [Data grid](../packages/web-components/fast-foundation/src/data-grid/data-grid.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Dialog](../packages/web-components/fast-foundation/src/dialog/dialog.spec.md) | :white_check_mark: | :white_check_mark: |
 | [Disclosure](../packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md) | :white_check_mark: | -- |
 | [Flipper](../packages/web-components/fast-foundation/src/flipper/flipper.spec.md) | :white_check_mark: | :white_check_mark: |
