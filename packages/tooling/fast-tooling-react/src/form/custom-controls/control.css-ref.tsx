@@ -22,7 +22,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
         super(props);
 
         this.state = {
-            index: 0,
+            index: null,
             values: [],
         };
     }
@@ -61,7 +61,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
 
     private renderExactlyOne(): React.ReactNode {
         const cssRef: React.ReactNode =
-            this.state.index !== undefined &&
+            this.state.index !== null &&
             (this.props.syntax.ref as CSSPropertyRef[])[this.state.index] &&
             (this.props.syntax.ref as CSSPropertyRef[])[this.state.index].type !==
                 "value" ? (
@@ -109,7 +109,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
 
     private renderByType(): React.ReactNode {
         if (typeof this.props.syntax.ref === "string") {
-            switch (this.props.syntax.type) {
+            switch ((this.props.syntax as CSSPropertyRef).type) {
                 case "value":
                     return renderValueControl({
                         ref: this.props.syntax,
@@ -118,13 +118,13 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                     });
                 case "type":
                     return renderTypeControl({
-                        type: this.props.syntax.ref as Type,
+                        ref: this.props.syntax,
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
                     });
                 case "syntax":
                     return renderSyntaxControl({
-                        syntax: this.props.syntax.ref as Syntax,
+                        ref: this.props.syntax,
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
                     });
@@ -177,7 +177,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
         } else if (value === "") {
             this.setState(
                 {
-                    index: 0,
+                    index: null,
                     values: [],
                 },
                 () => {
