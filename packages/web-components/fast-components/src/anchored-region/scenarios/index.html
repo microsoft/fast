@@ -1,0 +1,26 @@
+<template title="Default">
+    <div id="viewport-default" style="height: 100%; width: 100%; position: relative;">
+        <script>
+            function update() {
+                const region = document.getElementById("default-region");
+                region.update();
+            }
+        </script>
+        <button
+            id="anchor-default"
+            style="margin-left: 200px; margin-top: 200px;"
+            onclick="update()"
+        >
+            update position
+        </button>
+        <fast-anchored-region
+            id="default-region"
+            viewport="viewport-default"
+            anchor="anchor-default"
+            vertical-positioning-mode="dynamic"
+            horizontal-positioning-mode="dynamic"
+        >
+            <div style="height: 200px; width: 200px; background: yellow;"></div>
+        </fast-anchored-region>
+    </div>
+</template>

@@ -1,6 +1,7 @@
 export * from "./accordion-item/accordion-item.definition";
 export * from "./accordion/accordion.definition";
 export * from "./anchor/anchor.definition";
+export * from "./anchored-region/anchored-region.definition";
 export * from "./badge/badge.definition";
 export * from "./breadcrumb/breadcrumb.definition";
 export * from "./breadcrumb-item/breadcrumb-item.definition";
