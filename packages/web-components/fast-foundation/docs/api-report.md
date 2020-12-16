@@ -149,6 +149,7 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
+<<<<<<< HEAD
 // @beta
 export type AutoUpdateMode = "anchor" | "auto";
 
@@ -158,6 +159,8 @@ export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 // @beta
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
+=======
+>>>>>>> update api-report
 // @public
 export class Avatar extends FASTElement {
     alt: string;
@@ -176,6 +179,12 @@ export class Avatar extends FASTElement {
 
 // @public
 export const AvatarTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
+
+// @beta
+export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+
+// @beta
+export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
 export class Badge extends FASTElement {
