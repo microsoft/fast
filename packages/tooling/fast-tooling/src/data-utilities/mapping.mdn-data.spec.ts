@@ -5,6 +5,7 @@ import {
     mapCSSProperties,
     mapCSSSyntaxes,
     mapGroupedEntities,
+    mapMixedCombinatorTypes,
     mapMultiplierType,
     mapStringLiterals,
     MultiplierType,
@@ -535,5 +536,47 @@ describe("mapCSSSyntaxes", () => {
                 },
             },
         });
+    });
+});
+
+describe("mapMixedCombinatorTypes", () => {
+    test("should add brackets if there are multiple combinator types", () => {
+        const syntax1: string = "foo | bar bat";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual("foo | [ bar bat ]");
+        const syntax2: string = "foo bar | bat";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | bat");
+        const syntax3: string = "foo && bar || bat";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && bar ] || bat");
+        const syntax4: string = "foo || bar && bat";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || bar ] && bat");
+    });
+    test("should not add brackets if all combinator types match", () => {
+        const syntax: string = "foo | bar | bat";
+        expect(mapMixedCombinatorTypes(syntax)).toEqual(syntax);
+    });
+    test("should add brackets if brackets already exist and there are multiple combinator types", () => {
+        const syntax1: string = "[ foo | bar ] bat && baz";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual("[ [ foo | bar ] bat ] && baz");
+        const syntax2: string = "[ foo bar ] | bat && baz";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | [ bat && baz ]");
+        const syntax3: string = "foo && baz [ bar || bat ]";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && baz ] [ bar || bat ]");
+        const syntax4: string = "foo || [ bar && bat ] baz";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || [ bar && bat ] ] baz");
+    });
+    test("should not add brackets if brackets already exist and all combinator types match", () => {
+        const syntax1: string = "[ [ foo | bar ] bat ] && baz";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
+        const syntax2: string = "[ [ foo bar ] | bat ] && baz";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual(syntax2);
+        const syntax3: string = "[ foo && baz ] [ bar || bat ]";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual(syntax3);
+        const syntax4: string = "[ foo || [ bar && bat ] ] baz";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual(syntax4);
+    });
+    test("should not add brackets if multiple brackets exist and all combinator types match", () => {
+        const syntax1: string =
+            "foo | [ [ bar | baz ] || [ qux | quux | quuz | corge | grault ] ] | garply";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
     });
 });
