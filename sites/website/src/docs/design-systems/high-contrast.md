@@ -21,7 +21,7 @@ High contrast mode uses the CSS media feature, [`forced-colors`](https://develop
 FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in a stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
 
 :::note
-The reason for this behavior is to avoid the runtime cost applying forced-color style rules when the UA does not match the forced-colors @media query, FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
+The reason for this behavior is to avoid the runtime cost of applying forced-color style rules when the UA does not match the forced-colors @media query, FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
 :::
 
 **Example**
