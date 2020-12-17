@@ -86,23 +86,19 @@ describe("DI.createInterface() -> container.get()", function () {
     beforeEach(function () {
         callbackCount = 0;
         container = DI.createContainer();
-        ITransient = DI.createInterface<ITransient>("ITransient").withDefault(x =>
+        ITransient = DI.createInterface<ITransient>("ITransient", x =>
             x.transient(Transient)
         );
-        ISingleton = DI.createInterface<ISingleton>("ISingleton").withDefault(x =>
+        ISingleton = DI.createInterface<ISingleton>("ISingleton", x =>
             x.singleton(Singleton)
         );
         instance = new Instance();
-        IInstance = DI.createInterface<IInstance>("IInstance").withDefault(x =>
-            x.instance(instance)
-        );
+        IInstance = DI.createInterface<IInstance>("IInstance", x => x.instance(instance));
         callback = chai.spy(() => new Callback());
-        ICallback = DI.createInterface<ICallback>("ICallback").withDefault(x =>
-            x.callback(callback)
+        ICallback = DI.createInterface<ICallback>("ICallback", x => x.callback(callback));
+        ICachedCallback = DI.createInterface<ICachedCallback>("ICachedCallback", x =>
+            x.cachedCallback(callbackToCache)
         );
-        ICachedCallback = DI.createInterface<ICachedCallback>(
-            "ICachedCallback"
-        ).withDefault(builder => builder.cachedCallback(callbackToCache));
         chai.spy.on(container, "get");
     });
 
@@ -258,7 +254,7 @@ describe("DI.createInterface() -> container.get()", function () {
 
         it(`InterfaceSymbol alias to transient registration returns a new instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias").withDefault(x =>
+            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
                 x.aliasTo(ITransient)
             );
 
@@ -278,7 +274,7 @@ describe("DI.createInterface() -> container.get()", function () {
 
         it(`InterfaceSymbol alias to singleton registration returns the same instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias").withDefault(x =>
+            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
                 x.aliasTo(ISingleton)
             );
 
@@ -298,7 +294,7 @@ describe("DI.createInterface() -> container.get()", function () {
 
         it(`InterfaceSymbol alias to instance registration returns the same instance each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias").withDefault(x =>
+            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
                 x.aliasTo(IInstance)
             );
 
@@ -320,7 +316,7 @@ describe("DI.createInterface() -> container.get()", function () {
         // TODO: make test work
         it(`InterfaceSymbol alias to callback registration is invoked each time`, function () {
             interface IAlias {}
-            const IAlias = DI.createInterface<IAlias>("IAlias").withDefault(x =>
+            const IAlias = DI.createInterface<IAlias>("IAlias", x =>
                 x.aliasTo(ICallback)
             );
 
@@ -438,8 +434,9 @@ describe("DI.createInterface() -> container.get()", function () {
 
         function register(cls: any) {
             ITransientParent = DI.createInterface<ITransientParent>(
-                "ITransientParent"
-            ).withDefault(x => x.transient(cls));
+                "ITransientParent",
+                x => x.transient(cls)
+            );
         }
 
         it(`transient child registration returns a new instance each time`, function () {
@@ -561,8 +558,9 @@ describe("DI.createInterface() -> container.get()", function () {
 
         function register(cls: any) {
             ISingletonParent = DI.createInterface<ISingletonParent>(
-                "ISingletonParent"
-            ).withDefault(x => x.singleton(cls));
+                "ISingletonParent",
+                x => x.singleton(cls)
+            );
         }
 
         it(`transient child registration is reused by the singleton parent`, function () {
@@ -676,9 +674,9 @@ describe("DI.createInterface() -> container.get()", function () {
 
         function register(cls: any) {
             instanceParent = container.get(cls);
-            IInstanceParent = DI.createInterface<IInstanceParent>(
-                "IInstanceParent"
-            ).withDefault(x => x.instance(instanceParent));
+            IInstanceParent = DI.createInterface<IInstanceParent>("IInstanceParent", x =>
+                x.instance(instanceParent)
+            );
         }
 
         it(`transient registration is reused by the instance parent`, function () {

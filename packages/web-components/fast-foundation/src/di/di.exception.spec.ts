@@ -7,7 +7,7 @@ describe("DI Exception", function () {
 
         interface Foo {}
 
-        const Foo = DI.createInterface<Foo>("Foo").noDefault();
+        const Foo = DI.createInterface<Foo>("Foo");
 
         class Bar {
             public constructor(@Foo public readonly foo: Foo) {}
@@ -23,9 +23,9 @@ describe("DI Exception", function () {
         interface Foo {
             parent: Foo | null;
         }
-        const Foo = DI.createInterface<Foo>("IFoo").withDefault(x =>
-            x.singleton(FooImpl)
-        );
+
+        const Foo = DI.createInterface<Foo>("IFoo", x => x.singleton(FooImpl));
+
         class FooImpl {
             public constructor(@optional(Foo) public parent: Foo) {}
         }

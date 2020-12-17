@@ -234,6 +234,6 @@ export class ConfigurationImpl implements Configuration {
  * @alpha
  */
 
-export const DIConfiguration: InterfaceSymbol<Configuration, any> = DI.createInterface(
+export const DIConfiguration: InterfaceSymbol<Configuration> = DI.createInterface(
     "Configuration"
-).noDefault();
+);
