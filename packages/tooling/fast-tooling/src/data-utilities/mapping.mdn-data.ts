@@ -256,7 +256,7 @@ export interface CSSSyntaxRef {
     /**
      * The reference
      */
-    ref: XOR<string, CSSSyntaxRef[]>;
+    ref: XOR<string, CSSPropertyRef[]>;
 
     /**
      * The references combinator type

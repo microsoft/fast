@@ -1,11 +1,7 @@
 import { Type } from "@microsoft/fast-tooling/dist/css-data.types";
 import { renderDefault } from "./control.css.utilities";
-import { RenderControlConfig } from "./control.css.utilities.props";
+import { RenderRefControlConfig } from "./control.css.utilities.props";
 import React from "react";
-
-export interface RenderTypeControlConfig extends RenderControlConfig {
-    type: Type;
-}
 
 /**
  * The type control, for a list of available types refer to:
@@ -14,8 +10,8 @@ export interface RenderTypeControlConfig extends RenderControlConfig {
  * These are provided from the @microsoft/fast-tooling package
  * as TypeScript type.
  */
-export function renderTypeControl(config: RenderTypeControlConfig): React.ReactNode {
-    switch (config.type) {
+export function renderTypeControl(config: RenderRefControlConfig): React.ReactNode {
+    switch (config.ref.ref as Type) {
         case "<an-plus-b>":
         case "<angle-percentage>":
         case "<angle>":
