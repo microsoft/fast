@@ -1,7 +1,9 @@
 import {
     CSSPropertyRef,
     CSSPropertySyntax,
+    CSSSyntaxRef,
 } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { XOR } from "@microsoft/fast-tooling/dist/data-utilities/type.utilities";
 
 export interface CSSRefProps {
     /**
@@ -20,7 +22,7 @@ export interface CSSRefProps {
     /**
      * The syntax or reference used to determine the form element UI
      */
-    syntax: CSSPropertySyntax | CSSPropertyRef;
+    syntax: XOR<CSSPropertySyntax, XOR<CSSPropertyRef, CSSSyntaxRef>>;
 }
 
 export interface CSSRefState {
@@ -29,7 +31,7 @@ export interface CSSRefState {
      * this will be used when multiple form element UI options are available
      * according to the syntax.
      */
-    index: number;
+    index: number | null;
 
     /**
      * The values available, since CSS can comprise of multiple values for example:
