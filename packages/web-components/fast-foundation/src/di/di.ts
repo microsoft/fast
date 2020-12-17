@@ -953,7 +953,8 @@ const InstrinsicTypeNames = new Set<string>([
 const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const factories = new Map<Key, Factory>();
 
-class ContainerImpl implements Container {
+/* @internal */
+export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;

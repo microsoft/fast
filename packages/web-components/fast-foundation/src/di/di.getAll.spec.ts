@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { all, DI, Container, Registration } from "./di";
 
-describe("1-kernel/di.getAll.spec.ts", function () {
+describe("Container#.getAll", function () {
     let container: Container;
 
     // eslint-disable-next-line mocha/no-hooks
