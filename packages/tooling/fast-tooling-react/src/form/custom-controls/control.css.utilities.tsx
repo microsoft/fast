@@ -3,7 +3,6 @@ import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped c
 
 import React from "react";
 import {
-    RenderControlConfig,
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
@@ -39,7 +38,7 @@ function getTextInputChangeHandler(
     };
 }
 
-export function renderDefault(config: RenderControlConfig): React.ReactNode {
+export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-text-field
             key={config.key}

@@ -1,4 +1,8 @@
-import { CSSPropertyRef } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import {
+    CSSPropertyRef,
+    CSSSyntaxRef,
+} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { XOR } from "@microsoft/fast-tooling/dist/data-utilities/type.utilities";
 
 export interface RenderControlConfig {
     /**
@@ -16,7 +20,7 @@ export interface RenderControlConfig {
 }
 
 export interface RenderRefControlConfig extends RenderControlConfig {
-    ref: CSSPropertyRef;
+    ref: XOR<CSSPropertyRef, CSSSyntaxRef>;
 }
 
 interface SelectControlOptions {

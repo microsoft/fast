@@ -1,11 +1,8 @@
 import React from "react";
 import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
-import { RenderControlConfig } from "./control.css.utilities.props";
-import { renderDefault } from "./control.css.utilities";
-
-interface RenderSyntaxControlConfig extends RenderControlConfig {
-    syntax: Syntax;
-}
+import { syntaxes } from "@microsoft/fast-tooling/dist/css-data";
+import { RenderRefControlConfig } from "./control.css.utilities.props";
+import { CSSRef } from "@microsoft/fast-tooling-react/src/form/custom-controls/control.css-ref";
 
 /**
  * The syntax control, for a list of syntaxes available refer to:
@@ -14,8 +11,8 @@ interface RenderSyntaxControlConfig extends RenderControlConfig {
  * These are provided from the @microsoft/fast-tooling package
  * as TypeScript type.
  */
-export function renderSyntaxControl(config: RenderSyntaxControlConfig): React.ReactNode {
-    switch (config.syntax) {
+export function renderSyntaxControl(config: RenderRefControlConfig): React.ReactNode {
+    switch (config.ref.ref as Syntax) {
         case "<absolute-size>":
         case "<alpha-value>":
         case "<angular-color-hint>":
@@ -269,6 +266,12 @@ export function renderSyntaxControl(config: RenderSyntaxControlConfig): React.Re
         case "<viewport-length>":
         case "<wq-name>":
         default:
-            return renderDefault(config);
+            return (
+                <CSSRef
+                    key={config.ref.ref as string}
+                    syntax={syntaxes[config.ref.ref.slice(1, -1) as string].value}
+                    onChange={config.handleChange}
+                />
+            );
     }
 }
