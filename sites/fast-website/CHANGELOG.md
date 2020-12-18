@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.8](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.7...@microsoft/fast-website@1.3.8) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.6...@microsoft/fast-website@1.3.7) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
 ## [1.3.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.5...@microsoft/fast-website@1.3.6) (2020-12-02)
 
 **Note:** Version bump only for package @microsoft/fast-website

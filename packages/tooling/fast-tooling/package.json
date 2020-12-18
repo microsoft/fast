@@ -2,7 +2,7 @@
     "name": "@microsoft/fast-tooling",
     "description": "A set of utilities to assist in creating web UI",
     "sideEffects": false,
-    "version": "0.13.0",
+    "version": "0.14.0",
     "author": {
         "name": "Microsoft",
         "url": "https://discord.gg/FcSNfg4"
@@ -104,7 +104,7 @@
         "lodash-es": "^4.0.0"
     },
     "dependencies": {
-        "@microsoft/fast-web-utilities": "^4.6.1",
+        "@microsoft/fast-web-utilities": "^4.7.0",
         "vscode-html-languageservice": "^3.1.3"
     }
 }

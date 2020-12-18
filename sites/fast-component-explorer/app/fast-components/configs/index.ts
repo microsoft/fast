@@ -4,6 +4,9 @@ export { fastAccordionConfig };
 import fastAnchorConfig from "./fast-anchor";
 export { fastAnchorConfig };
 
+import fastAnchoredRegionConfig from "./fast-anchored-region";
+export { fastAnchoredRegionConfig };
+
 import fastBadgeConfig from "./fast-badge";
 export { fastBadgeConfig };
 
@@ -21,6 +24,9 @@ export { fastCheckboxConfig };
 
 import fastDialogConfig from "./fast-dialog";
 export { fastDialogConfig };
+
+import fastDataGridConfig from "./fast-data-grid";
+export { fastDataGridConfig };
 
 import fastDividerConfig from "./fast-divider";
 export { fastDividerConfig };

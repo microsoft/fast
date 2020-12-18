@@ -1,5 +1,6 @@
 export * from "./accordion/index";
 export * from "./anchor/index";
+export * from "./anchored-region/index";
 export * from "./badge/index";
 export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
@@ -7,6 +8,7 @@ export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./color/index";
+export * from "./data-grid/index";
 export * from "./design-system-provider/index";
 export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
 export * from "./dialog/index";

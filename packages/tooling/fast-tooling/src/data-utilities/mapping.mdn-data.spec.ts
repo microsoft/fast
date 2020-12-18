@@ -5,6 +5,7 @@ import {
     mapCSSProperties,
     mapCSSSyntaxes,
     mapGroupedEntities,
+    mapMixedCombinatorTypes,
     mapMultiplierType,
     mapStringLiterals,
     MultiplierType,
@@ -535,5 +536,223 @@ describe("mapCSSSyntaxes", () => {
                 },
             },
         });
+    });
+    test("should return a subset of MDN data into a subset of CSS syntaxes with parenthesis", () => {
+        const subsetOfMDNCSS = {
+            properties: {},
+            syntaxes: {
+                color: {
+                    syntax:
+                        "<rgb()> | <rgba()> | <hsl()> | <hsla()> | <hex-color> | <named-color> | currentcolor | <deprecated-system-color>",
+                },
+                "rgb()": {
+                    syntax: "foo",
+                },
+                "rgba()": {
+                    syntax: "bar",
+                },
+                "hsl()": {
+                    syntax: "baz",
+                },
+                "hsla()": {
+                    syntax: "qux",
+                },
+                "deprecated-system-color": {
+                    syntax: "quux",
+                },
+            },
+            types: mdnCSS.types,
+        } as any;
+
+        expect(mapCSSSyntaxes(subsetOfMDNCSS).color).toEqual({
+            name: "color",
+            value: {
+                ref: [
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<rgb()>",
+                        refCombinatorType: "none",
+                        type: "syntax",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<rgba()>",
+                        refCombinatorType: "none",
+                        type: "syntax",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<hsl()>",
+                        refCombinatorType: "none",
+                        type: "syntax",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<hsla()>",
+                        refCombinatorType: "none",
+                        type: "syntax",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<hex-color>",
+                        refCombinatorType: "none",
+                        type: "value",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<named-color>",
+                        refCombinatorType: "none",
+                        type: "value",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "currentcolor",
+                        refCombinatorType: "none",
+                        type: "value",
+                    },
+                    {
+                        multiplier: null,
+                        prepend: null,
+                        ref: "<deprecated-system-color>",
+                        refCombinatorType: "none",
+                        type: "syntax",
+                    },
+                ],
+                refCombinatorType: "exactlyOne",
+            },
+        });
+    });
+    test("should return a subset of MDN data into a subset of CSS syntaxes with numerals", () => {
+        const subsetOfMDNCSS = {
+            properties: {},
+            syntaxes: {
+                foo: {
+                    syntax: "3d | 2d | 42",
+                },
+            },
+            types: mdnCSS.types,
+        } as any;
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+            foo: {
+                name: "foo",
+                value: {
+                    ref: [
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "3d",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "2d",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "42",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                },
+            },
+        });
+    });
+    test("should return a subset of MDN data into a subset of CSS syntaxes with capital letters", () => {
+        const subsetOfMDNCSS = {
+            properties: {},
+            syntaxes: {
+                foo: {
+                    syntax: "Foo | bAr | baT",
+                },
+            },
+            types: mdnCSS.types,
+        } as any;
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+            foo: {
+                name: "foo",
+                value: {
+                    ref: [
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "Foo",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "bAr",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "baT",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
+                },
+            },
+        });
+    });
+});
+
+describe("mapMixedCombinatorTypes", () => {
+    test("should add brackets if there are multiple combinator types", () => {
+        const syntax1: string = "foo | bar bat";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual("foo | [ bar bat ]");
+        const syntax2: string = "foo bar | bat";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | bat");
+        const syntax3: string = "foo && bar || bat";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && bar ] || bat");
+        const syntax4: string = "foo || bar && bat";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || bar ] && bat");
+    });
+    test("should not add brackets if all combinator types match", () => {
+        const syntax: string = "foo | bar | bat";
+        expect(mapMixedCombinatorTypes(syntax)).toEqual(syntax);
+    });
+    test("should add brackets if brackets already exist and there are multiple combinator types", () => {
+        const syntax1: string = "[ foo | bar ] bat && baz";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual("[ [ foo | bar ] bat ] && baz");
+        const syntax2: string = "[ foo bar ] | bat && baz";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | [ bat && baz ]");
+        const syntax3: string = "foo && baz [ bar || bat ]";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && baz ] [ bar || bat ]");
+        const syntax4: string = "foo || [ bar && bat ] baz";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || [ bar && bat ] ] baz");
+    });
+    test("should not add brackets if brackets already exist and all combinator types match", () => {
+        const syntax1: string = "[ [ foo | bar ] bat ] && baz";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
+        const syntax2: string = "[ [ foo bar ] | bat ] && baz";
+        expect(mapMixedCombinatorTypes(syntax2)).toEqual(syntax2);
+        const syntax3: string = "[ foo && baz ] [ bar || bat ]";
+        expect(mapMixedCombinatorTypes(syntax3)).toEqual(syntax3);
+        const syntax4: string = "[ foo || [ bar && bat ] ] baz";
+        expect(mapMixedCombinatorTypes(syntax4)).toEqual(syntax4);
+    });
+    test("should not add brackets if multiple brackets exist and all combinator types match", () => {
+        const syntax1: string =
+            "foo | [ [ bar | baz ] || [ qux | quux | quuz | corge | grault ] ] | garply";
+        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
     });
 });

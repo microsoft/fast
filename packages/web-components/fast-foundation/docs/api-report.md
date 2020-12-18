@@ -75,6 +75,42 @@ export class Anchor extends FASTElement {
 export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
+// @beta
+export class AnchoredRegion extends FASTElement {
+    // @internal (undocumented)
+    adoptedCallback(): void;
+    anchor: string;
+    anchorElement: HTMLElement | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    fixedPlacement: boolean;
+    horizontalDefaultPosition: HorizontalPosition;
+    horizontalInset: boolean;
+    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionHorizontalPositionLabel" needs to be exported by the entry point index.d.ts
+    horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    horizontalPositioningMode: AxisPositioningMode;
+    horizontalScaling: AxisScalingMode;
+    horizontalThreshold: number;
+    // @internal
+    initialLayoutComplete: boolean;
+    update: () => void;
+    updateAnchorOffset: (horizontalOffsetDelta: number, verticalOffsetDelta: number) => void;
+    verticalDefaultPosition: VerticalPosition;
+    verticalInset: boolean;
+    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionVerticalPositionLabel" needs to be exported by the entry point index.d.ts
+    verticalPosition: AnchoredRegionVerticalPositionLabel;
+    verticalPositioningMode: AxisPositioningMode;
+    verticalScaling: AxisScalingMode;
+    verticalThreshold: number;
+    viewport: string;
+    viewportElement: HTMLElement | null;
+    }
+
+// @beta
+export const AnchoredRegionTemplate: import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
+
 // @public
 export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
 
@@ -103,6 +139,12 @@ export class ARIAGlobalStatesAndProperties {
     ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
     ariaRoledescription: string;
 }
+
+// @beta
+export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+
+// @beta
+export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
 export class Badge extends FASTElement {
@@ -216,6 +258,19 @@ export class Checkbox extends FormAssociatedCheckbox {
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
 // @public
+export interface ColumnDefinition {
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellInternalFocusQueue?: boolean;
+    cellTemplate?: ViewTemplate;
+    columnDataKey: string;
+    gridColumn?: string;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellInternalFocusQueue?: boolean;
+    headerCellTemplate?: ViewTemplate;
+    title?: string;
+}
+
+// @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @alpha
@@ -236,6 +291,15 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     subscribe(client: CustomPropertyManagerClient): void;
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
+
+// @public
+export function createDataGridCellTemplate(prefix: string): ViewTemplate;
+
+// @public
+export function createDataGridRowTemplate(prefix: string): ViewTemplate;
+
+// @public
+export function createDataGridTemplate(prefix: string): ViewTemplate;
 
 // @public
 export function createTooltipTemplate(prefix: string): ViewTemplate;
@@ -292,6 +356,106 @@ export interface CustomPropertyManager {
 export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
     cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
     evaluate(definition: CSSCustomPropertyDefinition): string;
+}
+
+// @public
+export class DataGrid extends FASTElement {
+    constructor();
+    cellItemTemplate?: ViewTemplate;
+    columnDefinitions: ColumnDefinition[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultRowItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    focusColumnIndex: number;
+    focusRowIndex: number;
+    static generateColumns: (row: object) => ColumnDefinition[];
+    generateHeader: GenerateHeaderOptions;
+    gridTemplateColumns: string;
+    // @internal (undocumented)
+    handleFocus(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    // @internal (undocumented)
+    handleRowFocus(e: Event): void;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    rowElements: HTMLElement[];
+    rowItemTemplate: ViewTemplate;
+    rowsData: object[];
+    }
+
+// @public
+export class DataGridCell extends FASTElement {
+    cellType: DataGridCellTypes;
+    columnDefinition: ColumnDefinition | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    gridColumn: string;
+    // (undocumented)
+    handleFocusin(e: FocusEvent): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    rowData: object | null;
+    }
+
+// @public
+export enum DataGridCellTypes {
+    // (undocumented)
+    columnHeader = "columnheader",
+    // (undocumented)
+    default = "default"
+}
+
+// @public
+export class DataGridRow extends FASTElement {
+    // @internal
+    activeCellItemTemplate?: ViewTemplate;
+    // @internal
+    cellElements: HTMLElement[];
+    cellItemTemplate?: ViewTemplate;
+    columnDefinitions: ColumnDefinition[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultCellItemTemplate?: ViewTemplate;
+    // @internal
+    defaultHeaderCellItemTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    focusColumnIndex: number;
+    gridTemplateColumns: string;
+    // (undocumented)
+    handleCellFocus(e: Event): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    isActiveRow: boolean;
+    rowData: object | null;
+    rowIndex: number;
+    rowType: DataGridRowTypes;
+    // @internal (undocumented)
+    slottedCellElements: HTMLElement[];
+    }
+
+// @public
+export enum DataGridRowTypes {
+    // (undocumented)
+    default = "default",
+    // (undocumented)
+    header = "header",
+    // (undocumented)
+    stickyHeader = "sticky-header"
 }
 
 // @public
@@ -578,10 +742,23 @@ export interface FormAssociatedProxy {
 }
 
 // @public
+export enum GenerateHeaderOptions {
+    // (undocumented)
+    default = "default",
+    // (undocumented)
+    none = "none",
+    // (undocumented)
+    sticky = "sticky"
+}
+
+// @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
 // @public
 export const hidden = ":host([hidden]){display:none}";
+
+// @beta
+export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
@@ -1274,13 +1451,9 @@ export class Tooltip extends FASTElement {
     horizontalInset: string;
     // @internal (undocumented)
     horizontalPositioningMode: AxisPositioningMode;
-    // Warning: (ae-forgotten-export) The symbol "AxisScalingMode" needs to be exported by the entry point index.d.ts
-    //
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
     position: TooltipPosition;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegion" needs to be exported by the entry point index.d.ts
-    //
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
@@ -1289,8 +1462,6 @@ export class Tooltip extends FASTElement {
     verticalDefaultPosition: string | undefined;
     // @internal (undocumented)
     verticalInset: string;
-    // Warning: (ae-forgotten-export) The symbol "AxisPositioningMode" needs to be exported by the entry point index.d.ts
-    //
     // @internal (undocumented)
     verticalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
@@ -1383,6 +1554,9 @@ export class TreeView extends FASTElement {
 
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+
+// @beta
+export type VerticalPosition = "top" | "bottom" | "unset";
 
 
 // (No @packageDocumentation comment for this package)

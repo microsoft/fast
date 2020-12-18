@@ -1,0 +1,463 @@
+import { FASTDesignSystemProvider } from "../design-system-provider";
+import { STORY_RENDERED } from "@storybook/core-events";
+import addons from "@storybook/addons";
+import DataGridTemplate from "./fixtures/base.html";
+import { html } from "@microsoft/fast-element";
+import {
+    GenerateHeaderOptions,
+    Button,
+    DataGrid,
+    DataGridCell,
+    ColumnDefinition,
+    DataGridRow,
+} from "@microsoft/fast-foundation";
+import { FASTDataGrid } from "./";
+
+// Prevent tree-shaking
+FASTDataGrid;
+FASTDesignSystemProvider;
+
+let defaultGridElement: DataGrid | null = null;
+let defaultRowData: object = newDataRow("default");
+
+let columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
+
+let gridTemplateColumnsDefault = "1fr 1fr 1fr 1fr";
+
+const defaultRowItemTemplate = html`
+    <fast-data-grid-row
+        :rowData="${x => x}"
+        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
+        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
+    ></fast-data-grid-row>
+`;
+
+const customRowItemTemplate = html`
+    <fast-data-grid-row
+        :rowData="${x => x}"
+        :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
+        :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
+    ></fast-data-grid-row>
+    <fast-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
+`;
+
+const customCellItemTemplate = html`
+    <fast-data-grid-cell
+        style="background: brown"
+        grid-column="${(x, c) => c.index + 1}"
+        :rowData="${(x, c) => c.parent.rowData}"
+        :columnDefinition="${x => x}"
+    ></fast-data-grid-cell>
+`;
+
+const customHeaderCellItemTemplate = html`
+    <fast-data-grid-cell
+        style="background: orange"
+        cell-type="columnheader"
+        grid-column="${(x, c) => c.index + 1}"
+        :columnDefinition="${x => x}"
+    ></fast-data-grid-header-cell>
+`;
+
+addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
+    if (name.toLowerCase().startsWith("data-grid")) {
+        defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
+        reset();
+
+        const defaultGridRow: DataGridRow | null = document.getElementById(
+            "defaultGridRow"
+        ) as DataGridRow;
+        if (defaultGridRow !== null) {
+            defaultGridRow.rowData = defaultRowData;
+        }
+
+        const defaultRow: DataGridRow | null = document.getElementById(
+            "defaultRow"
+        ) as DataGridRow;
+        if (defaultRow !== null) {
+            defaultRow.columnDefinitions = baseColumns;
+            defaultRow.rowData = defaultRowData;
+        }
+
+        const defaultHeader: DataGridRow | null = document.getElementById(
+            "defaultHeader"
+        ) as DataGridRow;
+        if (defaultHeader !== null) {
+            defaultHeader.columnDefinitions = baseColumns;
+        }
+
+        const rowWithCellTemplate: DataGridRow | null = document.getElementById(
+            "cellTemplateRow"
+        ) as DataGridRow;
+        if (rowWithCellTemplate !== null) {
+            rowWithCellTemplate.columnDefinitions = templateColumns;
+            rowWithCellTemplate.rowData = defaultRowData;
+        }
+
+        const headerWithCellTemplate: DataGridRow | null = document.getElementById(
+            "headerTemplateRow"
+        ) as DataGridRow;
+        if (headerWithCellTemplate !== null) {
+            headerWithCellTemplate.columnDefinitions = templateColumns;
+        }
+
+        const defaultCell: DataGridCell | null = document.getElementById(
+            "defaultCell"
+        ) as DataGridCell;
+        if (rowWithCellTemplate !== null) {
+            defaultCell.columnDefinition = { columnDataKey: "rowId" };
+            defaultCell.rowData = defaultRowData;
+        }
+
+        const headerCell: DataGridCell | null = document.getElementById(
+            "headerCell"
+        ) as DataGridCell;
+        if (rowWithCellTemplate !== null) {
+            headerCell.columnDefinition = {
+                columnDataKey: "name",
+                title: "Name",
+            };
+        }
+
+        const resetButton: Button | null = document.getElementById("btnreset") as Button;
+        if (resetButton !== null) {
+            resetButton.onclick = reset;
+        }
+
+        const defaultColsButton: Button | null = document.getElementById(
+            "btndefaultcols"
+        ) as Button;
+        if (defaultColsButton !== null) {
+            defaultColsButton.onclick = setDefaultCols;
+        }
+
+        const templateColsButton: Button | null = document.getElementById(
+            "btntemplatecols"
+        ) as Button;
+        if (templateColsButton !== null) {
+            templateColsButton.onclick = setTemplateCols;
+        }
+
+        const addRowButton: Button | null = document.getElementById(
+            "btnaddrow"
+        ) as Button;
+        if (addRowButton !== null) {
+            addRowButton.onclick = addRow;
+        }
+
+        const removeRowButton: Button | null = document.getElementById(
+            "btnremoverow"
+        ) as Button;
+        if (removeRowButton !== null) {
+            removeRowButton.onclick = removeRow;
+        }
+
+        const noHeaderButton: Button | null = document.getElementById(
+            "btnnoheader"
+        ) as Button;
+        if (noHeaderButton !== null) {
+            noHeaderButton.onclick = setNoHeader;
+        }
+
+        const defaultHeaderButton: Button | null = document.getElementById(
+            "btndefaultheader"
+        ) as Button;
+        if (defaultHeaderButton !== null) {
+            defaultHeaderButton.onclick = setDefaultHeader;
+        }
+
+        const stickyHeaderButton: Button | null = document.getElementById(
+            "btnstickyheader"
+        ) as Button;
+        if (stickyHeaderButton !== null) {
+            stickyHeaderButton.onclick = setStickyHeader;
+        }
+
+        const defaultRowTemplateButton: Button | null = document.getElementById(
+            "btndefaultrowtemplate"
+        ) as Button;
+        if (defaultRowTemplateButton !== null) {
+            defaultRowTemplateButton.onclick = setDefaultRowItemTemplate;
+        }
+
+        const customRowTemplateButton: Button | null = document.getElementById(
+            "btncustomrowtemplate"
+        ) as Button;
+        if (customRowTemplateButton !== null) {
+            customRowTemplateButton.onclick = setCustomRowItemTemplate;
+        }
+
+        const defaultCellTemplateButton: Button | null = document.getElementById(
+            "btndefaultcelltemplate"
+        ) as Button;
+        if (defaultCellTemplateButton !== null) {
+            defaultCellTemplateButton.onclick = setDefaultCellItemTemplate;
+        }
+
+        const customCellTemplateButton: Button | null = document.getElementById(
+            "btncustomcelltemplate"
+        ) as Button;
+        if (customCellTemplateButton !== null) {
+            customCellTemplateButton.onclick = setCustomCellItemTemplate;
+        }
+        const defaultHeaderCellTemplateButton: Button | null = document.getElementById(
+            "btndefaultheadercelltemplate"
+        ) as Button;
+        if (defaultHeaderCellTemplateButton !== null) {
+            defaultHeaderCellTemplateButton.onclick = setDefaultHeaderCellItemTemplate;
+        }
+
+        const customHeaderCellTemplateButton: Button | null = document.getElementById(
+            "btncustomheadercelltemplate"
+        ) as Button;
+        if (customHeaderCellTemplateButton !== null) {
+            customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
+        }
+    }
+});
+
+const buttonCellTemplate = html<DataGridCell>`
+    <template>
+        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
+            ${x =>
+                x.rowData === null ||
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
+                    ? null
+                    : x.rowData[x.columnDefinition.columnDataKey]}
+        </fast-button>
+    </template>
+`;
+
+const buttonHeaderCellTemplate = html<DataGridCell>`
+    <template>
+        <fast-button
+            @click="${x => headerTemplateButtonClick(x)}"
+            style="width: 100%; background: green"
+        >
+            ${x =>
+                x.columnDefinition === null
+                    ? null
+                    : x.columnDefinition.title === undefined
+                    ? x.columnDefinition.columnDataKey
+                    : x.columnDefinition.title}
+        </fast-button>
+    </template>
+`;
+
+function reset(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.columnDefinitions = null;
+    defaultGridElement.rowsData = newDataSet(10);
+}
+
+function setDefaultCols(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.columnDefinitions = baseColumns;
+}
+
+function setTemplateCols(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.columnDefinitions = templateColumns;
+}
+
+function addRow(): void {
+    if (defaultGridElement === null || defaultGridElement.rowsData === null) {
+        return;
+    }
+    defaultGridElement.rowsData.push(
+        newDataRow(`${defaultGridElement.rowsData.length + 1}`)
+    );
+}
+
+function removeRow(): void {
+    if (
+        defaultGridElement === null ||
+        defaultGridElement.rowsData === null ||
+        defaultGridElement.rowsData.length === 0
+    ) {
+        return;
+    }
+    defaultGridElement.rowsData.pop();
+}
+
+function setNoHeader(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.generateHeader = GenerateHeaderOptions.none;
+}
+
+function setDefaultHeader(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.generateHeader = GenerateHeaderOptions.default;
+}
+
+function setDefaultRowItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.rowItemTemplate = defaultRowItemTemplate;
+}
+
+function setCustomRowItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.rowItemTemplate = customRowItemTemplate;
+}
+
+function setDefaultCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.cellItemTemplate = undefined;
+}
+
+function setCustomCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.cellItemTemplate = customCellItemTemplate;
+}
+
+function setDefaultHeaderCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.headerCellItemTemplate = undefined;
+}
+
+function setCustomHeaderCellItemTemplate(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.headerCellItemTemplate = customHeaderCellItemTemplate;
+}
+
+function headerTemplateButtonClick(cell: DataGridCell): void {
+    if (
+        cell.columnDefinition === null ||
+        defaultGridElement === null ||
+        defaultGridElement.columnDefinitions === null
+    ) {
+        return;
+    }
+
+    const index: number = defaultGridElement.columnDefinitions.indexOf(
+        cell.columnDefinition
+    );
+
+    if (columnWidths[index] === "1fr") {
+        columnWidths.splice(index, 1, "2fr");
+    } else {
+        columnWidths.splice(index, 1, "1fr");
+    }
+
+    defaultGridElement.gridTemplateColumns = `${columnWidths[0]} ${columnWidths[1]} ${columnWidths[2]} ${columnWidths[3]}`;
+}
+
+function cellTemplateButtonClick(cell: DataGridCell): void {
+    if (
+        cell.columnDefinition === null ||
+        cell.rowData === null ||
+        defaultGridElement === null
+    ) {
+        return;
+    }
+    const newRowData: object = { ...cell.rowData };
+    newRowData[cell.columnDefinition.columnDataKey] = "clicked";
+
+    const rowIndex: number = defaultGridElement.rowsData.indexOf(cell.rowData);
+
+    if (rowIndex > -1) {
+        defaultGridElement.rowsData.splice(rowIndex, 1, newRowData);
+    }
+}
+
+function setStickyHeader(): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    defaultGridElement.generateHeader = GenerateHeaderOptions.sticky;
+}
+
+function newDataSet(rowCount: number): object[] {
+    const newRows: object[] = [];
+    for (let i = 0; i <= rowCount; i++) {
+        newRows.push(newDataRow(`${i + 1}`));
+    }
+    return newRows;
+}
+
+function newDataRow(id: string): object {
+    return {
+        rowId: `rowid-${id}`,
+        item1: `value 1-${id}`,
+        item2: `value 2-${id}`,
+        item3: `value 3-${id}`,
+        item4: `value 4-${id}`,
+        item5: `value 5-${id}`,
+        item6: `value 6-${id}`,
+    };
+}
+
+const baseColumns: ColumnDefinition[] = [
+    { columnDataKey: "rowId" },
+    { columnDataKey: "item1" },
+    { columnDataKey: "item2" },
+    { columnDataKey: "item3" },
+];
+
+const templateColumns: ColumnDefinition[] = [
+    {
+        title: "RowID",
+        columnDataKey: "rowId",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+    {
+        title: "Column 1",
+        columnDataKey: "item1",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+    {
+        title: "Column 2",
+        columnDataKey: "item2",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+    {
+        title: "Column 3",
+        columnDataKey: "item3",
+        cellTemplate: buttonCellTemplate,
+        cellFocusTargetCallback: getFocusTarget,
+        headerCellTemplate: buttonHeaderCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
+    },
+];
+
+function getFocusTarget(cell: DataGridCell): HTMLElement {
+    return cell.querySelector("fast-button") as HTMLElement;
+}
+
+export default {
+    title: "Data grid",
+};
+
+export const base = () => DataGridTemplate;

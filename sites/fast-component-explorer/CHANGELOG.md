@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.0...@microsoft/fast-component-explorer@0.15.1) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.1...@microsoft/fast-component-explorer@0.15.0) (2020-12-16)
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+
+
+
+
+
 ## [0.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.0...@microsoft/fast-component-explorer@0.14.1) (2020-12-02)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

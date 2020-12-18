@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.0...@microsoft/fast-components@1.14.1) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-components
+
+
+
+
+
+# [1.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.13.0...@microsoft/fast-components@1.14.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* anchored region default viewport ([#4146](https://github.com/Microsoft/fast/issues/4146)) ([a6806e9](https://github.com/Microsoft/fast/commit/a6806e9ed289e7ce570a542de5da9b6e0ba9e60b))
+* disabled menu items should be focusable ([#4154](https://github.com/Microsoft/fast/issues/4154)) ([b971a18](https://github.com/Microsoft/fast/commit/b971a18281ba33f094a8dbc59a799a3e9c82ccb8))
+* inconsistent focus styling ([#4179](https://github.com/Microsoft/fast/issues/4179)) ([4c2a15a](https://github.com/Microsoft/fast/commit/4c2a15aea8f0c21f99b752ce2fa1a5a66a5f73ac))
+* select should match native behavior for value changes and change event emitting ([#4176](https://github.com/Microsoft/fast/issues/4176)) ([07f5eaa](https://github.com/Microsoft/fast/commit/07f5eaa93b907cc4f712c954e8f6669c391a8d7f))
+* select-indicator glyph sizing ([#4171](https://github.com/Microsoft/fast/issues/4171)) ([93b6d87](https://github.com/Microsoft/fast/commit/93b6d876624fbf9d401064e489b4c7c482c1fc52))
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+* add default slot changed to anchor ([#4159](https://github.com/Microsoft/fast/issues/4159)) ([8a264ec](https://github.com/Microsoft/fast/commit/8a264ec2a22d4f02e901a260b85f77c381a52231))
+
+
+
+
+
 # [1.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.12.0...@microsoft/fast-components@1.13.0) (2020-12-02)
 
 

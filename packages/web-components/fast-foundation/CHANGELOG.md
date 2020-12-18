@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.0...@microsoft/fast-foundation@1.11.1) (2020-12-17)
+
+
+### Bug Fixes
+
+* update applyMixin function to ensure metadata for attrs are copied and applied correctly ([#4200](https://github.com/Microsoft/fast/issues/4200)) ([dcbd6a5](https://github.com/Microsoft/fast/commit/dcbd6a57d73691ced50c22db2b909ee6b6f96e1f))
+
+
+
+
+
+# [1.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.10.0...@microsoft/fast-foundation@1.11.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* anchored region default viewport ([#4146](https://github.com/Microsoft/fast/issues/4146)) ([a6806e9](https://github.com/Microsoft/fast/commit/a6806e9ed289e7ce570a542de5da9b6e0ba9e60b))
+* select should match native behavior for value changes and change event emitting ([#4176](https://github.com/Microsoft/fast/issues/4176)) ([07f5eaa](https://github.com/Microsoft/fast/commit/07f5eaa93b907cc4f712c954e8f6669c391a8d7f))
+* **dialog:** accidental improperly bound this in callback ([#4168](https://github.com/Microsoft/fast/issues/4168)) ([9d54fe9](https://github.com/Microsoft/fast/commit/9d54fe9c078cd3e16291a8c599d8d53f0df52670))
+* **fast-foundation:** ensure global aria attrs are applied ([#4172](https://github.com/Microsoft/fast/issues/4172)) ([dd3a1c9](https://github.com/Microsoft/fast/commit/dd3a1c9f9f5c96c1d7eb67a1f57f5f72136791cc))
+* disabled menu items should be focusable ([#4154](https://github.com/Microsoft/fast/issues/4154)) ([b971a18](https://github.com/Microsoft/fast/commit/b971a18281ba33f094a8dbc59a799a3e9c82ccb8))
+* ensure DSP subscribes to upstream DSP properties ([#4143](https://github.com/Microsoft/fast/issues/4143)) ([b403909](https://github.com/Microsoft/fast/commit/b403909282c115c99bf3dc66d5a9ff8715086dc7))
+* formassociated tests on firefox ([#4158](https://github.com/Microsoft/fast/issues/4158)) ([b3266fb](https://github.com/Microsoft/fast/commit/b3266fb5d12a200aeee5afb2ae44979db3c051f6))
+* remove shadowRoot in direction utility ([#4157](https://github.com/Microsoft/fast/issues/4157)) ([041ae70](https://github.com/Microsoft/fast/commit/041ae70ba3a8ba7280b1a571ba8952f443e724e2))
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+* add default slot changed to anchor ([#4159](https://github.com/Microsoft/fast/issues/4159)) ([8a264ec](https://github.com/Microsoft/fast/commit/8a264ec2a22d4f02e901a260b85f77c381a52231))
+* add loaded event to anchored region ([#4165](https://github.com/Microsoft/fast/issues/4165)) ([b54ac1b](https://github.com/Microsoft/fast/commit/b54ac1b09ccff95fc58ab84204a138dbfac9b8ba))
+
+
+
+
+
 # [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.9.0...@microsoft/fast-foundation@1.10.0) (2020-12-02)
 
 
