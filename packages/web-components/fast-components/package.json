@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "1.14.0",
+  "version": "1.14.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -103,7 +103,7 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.0",
     "@microsoft/fast-element": "^0.21.1",
-    "@microsoft/fast-foundation": "^1.11.0",
+    "@microsoft/fast-foundation": "^1.11.1",
     "@microsoft/fast-web-utilities": "^4.7.0",
     "tslib": "^1.13.0"
   },
