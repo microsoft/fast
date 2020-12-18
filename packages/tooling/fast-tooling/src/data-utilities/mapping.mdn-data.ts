@@ -725,19 +725,10 @@ export function resolveCSSPropertySyntax(
         typeKeys
     );
 
-    if (typeof ref !== "string" && ref.length === 1) {
+    if (combinatorType === "none" && typeof ref !== "string") {
         return {
             mapsToProperty: cssProperty,
             percentages: mdnCSSPropertyConfig.percentages,
-            refCombinatorType: combinatorType,
-            multiplier: mapMultiplierType(mdnCSSPropertyConfig.syntax),
-            prepend: mapStringLiterals(mdnCSSPropertyConfig.syntax),
-            type: resolveReferenceType(
-                mdnCSSPropertyConfig.syntax,
-                combinatorType,
-                syntaxKeys,
-                typeKeys
-            ),
             ...ref[0],
         };
     }
