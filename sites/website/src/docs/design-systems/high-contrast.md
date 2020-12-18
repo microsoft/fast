@@ -21,7 +21,7 @@ High contrast mode uses the CSS media feature, [`forced-colors`](https://develop
 FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in a stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
 
 :::note
-The reason for this behavior is to avoid the runtime cost of applying forced-color style rules when the UA does not match the forced-colors @media query. FAST exposes a behavior that conditionally adds and removes stylesheets based on the forced-colors @media query. forced-colors stylesheets can then be conditionally applied where necessary.
+The reason for this behavior is to avoid the runtime cost of applying `forced-color` style rules when the UA does not match the `forced-colors` @media query. FAST exposes a behavior that conditionally adds and removes stylesheets based on this media query, so forced-colors' stylesheets can then be conditionally applied where necessary.
 :::
 
 **Example**
@@ -40,9 +40,9 @@ export const ComponentStyles = css`
 ```
 
 ## System Color Keyword
-In [forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) mode, the colors on the component are reduced to a limited color pallete, chosen by the user, and the [system color keyword](https://developer.mozilla.org/en-US/docs/web/css/color_value#System_Colors), that are defined by the CSS Color Module Level 4 specification, exposes these user chosen, colors.
+In `forced-colors` mode, the colors on the component are reduced to a limited color palette chosen by the user. The [System Color keywords](https://developer.mozilla.org/en-US/docs/web/css/color_value#System_Colors) defined by the CSS Color Module Level 4 specification expose these user-chosen colors.
 
-Within FAST we created a [SystemColors](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keyword in the stylesheet.
+FAST provides a [`SystemColors`](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keywords in a `forced-colors` stylesheet.
 
 **Example**
 ```ts
@@ -60,7 +60,7 @@ export const ComponentStyles = css`
 ```
 
 ## Forced colors and Windows High Contrast themes
-[forced-colors](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) works with Windows high contrast, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
+`forced-colors` works with Windows high contrast mode in Windows, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
 
 ![High contrast black theme](https://static.fast.design/assets/high-contrast/hc-black.png)
 ![High contrast white theme](https://static.fast.design/assets/high-contrast/hc-white.png)
