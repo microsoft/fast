@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 12/16/2020
+ * Last modified: 12/18/2020
  */
 export const properties = {
     "-webkit-line-clamp": {
@@ -265,23 +265,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-animation>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-animation>",
         },
     },
     "animation-delay": {
@@ -290,23 +280,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-delay",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<time>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "type",
+            ref: "<time>",
         },
     },
     "animation-direction": {
@@ -315,23 +295,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-direction",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-animation-direction>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-animation-direction>",
         },
     },
     "animation-duration": {
@@ -340,23 +310,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-duration",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<time>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "type",
+            ref: "<time>",
         },
     },
     "animation-fill-mode": {
@@ -365,23 +325,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-fill-mode",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-animation-fill-mode>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-animation-fill-mode>",
         },
     },
     "animation-iteration-count": {
@@ -390,23 +340,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-iteration-count",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-animation-iteration-count>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-animation-iteration-count>",
         },
     },
     "animation-name": {
@@ -445,23 +385,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-play-state",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-animation-play-state>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-animation-play-state>",
         },
     },
     "animation-timing-function": {
@@ -470,23 +400,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "animation-timing-function",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<timing-function>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<timing-function>",
         },
     },
     "backdrop-filter": {
@@ -589,23 +509,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-attachment",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<attachment>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<attachment>",
         },
     },
     "background-blend-mode": {
@@ -614,23 +524,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-blend-mode",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<blend-mode>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<blend-mode>",
         },
     },
     "background-clip": {
@@ -639,23 +539,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-clip",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<box>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<box>",
         },
     },
     "background-color": {
@@ -677,23 +567,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-image",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<bg-image>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<bg-image>",
         },
     },
     "background-origin": {
@@ -702,23 +582,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-origin",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<box>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<box>",
         },
     },
     "background-position": {
@@ -727,23 +597,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-position",
             percentages: "referToSizeOfBackgroundPositioningAreaMinusBackgroundImageSize",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<bg-position>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<bg-position>",
         },
     },
     "background-repeat": {
@@ -752,23 +612,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-repeat",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<repeat-style>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<repeat-style>",
         },
     },
     "background-size": {
@@ -777,23 +627,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "background-size",
             percentages: "relativeToBackgroundPositioningArea",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<bg-size>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<bg-size>",
         },
     },
     "block-size": {
@@ -885,18 +725,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-block-color",
             percentages: "no",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'border-top-color'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -904,6 +732,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'border-top-color'>",
         },
     },
     "border-block-style": {
@@ -1134,18 +963,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-bottom-left-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1153,6 +970,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-bottom-right-radius": {
@@ -1161,18 +979,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-bottom-right-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1180,6 +986,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-bottom-style": {
@@ -1242,18 +1049,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-color",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<color>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 4],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1261,6 +1056,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<color>",
         },
     },
     "border-end-end-radius": {
@@ -1269,18 +1065,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-end-end-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1288,6 +1072,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-end-start-radius": {
@@ -1296,18 +1081,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-end-start-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1315,6 +1088,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-image": {
@@ -1638,18 +1412,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-inline-color",
             percentages: "no",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'border-top-color'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -1657,6 +1419,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'border-top-color'>",
         },
     },
     "border-inline-style": {
@@ -2030,18 +1793,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-start-end-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2049,6 +1800,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-start-start-radius": {
@@ -2057,18 +1809,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-start-start-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2076,6 +1816,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-style": {
@@ -2084,18 +1825,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-style",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<line-style>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 4],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2103,6 +1832,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<line-style>",
         },
     },
     "border-top": {
@@ -2159,18 +1889,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-top-left-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2178,6 +1896,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-top-right-radius": {
@@ -2186,18 +1905,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-top-right-radius",
             percentages: "referToDimensionOfBorderBox",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<length-percentage>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2205,6 +1912,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<length-percentage>",
         },
     },
     "border-top-style": {
@@ -2239,18 +1947,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "border-width",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<line-width>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 4],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -2258,6 +1954,7 @@ export const properties = {
             },
             prepend: null,
             type: "syntax",
+            ref: "<line-width>",
         },
     },
     bottom: {
@@ -5445,23 +5142,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "grid-auto-columns",
             percentages: "referToDimensionOfContentArea",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<track-size>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMore",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMore",
             },
             prepend: null,
             type: "syntax",
+            ref: "<track-size>",
         },
     },
     "grid-auto-flow": {
@@ -5513,23 +5200,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "grid-auto-rows",
             percentages: "referToDimensionOfContentArea",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<track-size>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMore",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMore",
             },
             prepend: null,
             type: "syntax",
+            ref: "<track-size>",
         },
     },
     "grid-column": {
@@ -6182,18 +5859,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "inset",
             percentages: "logicalHeightOfContainingBlock",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'top'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 4],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -6201,6 +5866,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'top'>",
         },
     },
     "inset-block": {
@@ -6209,18 +5875,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "inset-block",
             percentages: "logicalHeightOfContainingBlock",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'top'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -6228,6 +5882,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'top'>",
         },
     },
     "inset-block-end": {
@@ -6262,18 +5917,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "inset-inline",
             percentages: "logicalWidthOfContainingBlock",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'top'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -6281,6 +5924,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'top'>",
         },
     },
     "inset-inline-end": {
@@ -6939,18 +6583,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "margin-block",
             percentages: "dependsOnLayoutModel",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'margin-left'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -6958,6 +6590,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'margin-left'>",
         },
     },
     "margin-block-end": {
@@ -7027,18 +6660,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "margin-inline",
             percentages: "dependsOnLayoutModel",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'margin-left'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -7046,6 +6667,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'margin-left'>",
         },
     },
     "margin-inline-end": {
@@ -7185,23 +6807,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask",
             percentages: ["mask-position"],
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<mask-layer>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<mask-layer>",
         },
     },
     "mask-border": {
@@ -7531,23 +7143,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-composite",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<compositing-operator>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<compositing-operator>",
         },
     },
     "mask-image": {
@@ -7556,23 +7158,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-image",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<mask-reference>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<mask-reference>",
         },
     },
     "mask-mode": {
@@ -7581,23 +7173,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-mode",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<masking-mode>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<masking-mode>",
         },
     },
     "mask-origin": {
@@ -7606,23 +7188,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-origin",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<geometry-box>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<geometry-box>",
         },
     },
     "mask-position": {
@@ -7631,23 +7203,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-position",
             percentages: "referToSizeOfMaskPaintingArea",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<position>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<position>",
         },
     },
     "mask-repeat": {
@@ -7656,23 +7218,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-repeat",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<repeat-style>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<repeat-style>",
         },
     },
     "mask-size": {
@@ -7681,23 +7233,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "mask-size",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<bg-size>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<bg-size>",
         },
     },
     "mask-type": {
@@ -9044,18 +8586,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "padding-block",
             percentages: "logicalWidthOfContainingBlock",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'padding-left'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -9063,6 +8593,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'padding-left'>",
         },
     },
     "padding-block-end": {
@@ -9125,18 +8656,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "padding-inline",
             percentages: "logicalWidthOfContainingBlock",
-            ref: [
-                {
-                    type: "property",
-                    ref: "<'padding-left'>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -9144,6 +8663,7 @@ export const properties = {
             },
             prepend: null,
             type: "property",
+            ref: "<'padding-left'>",
         },
     },
     "padding-inline-end": {
@@ -10134,18 +9654,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "scroll-margin",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<length>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 4],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -10153,6 +9661,7 @@ export const properties = {
             },
             prepend: null,
             type: "type",
+            ref: "<length>",
         },
     },
     "scroll-margin-block": {
@@ -10161,18 +9670,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "scroll-margin-block",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<length>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -10180,6 +9677,7 @@ export const properties = {
             },
             prepend: null,
             type: "type",
+            ref: "<length>",
         },
     },
     "scroll-margin-block-start": {
@@ -10227,18 +9725,6 @@ export const properties = {
         syntax: {
             mapsToProperty: "scroll-margin-inline",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<length>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "atLeastATimesAtMostBTimes",
-                        range: [1, 2],
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
@@ -10246,6 +9732,7 @@ export const properties = {
             },
             prepend: null,
             type: "type",
+            ref: "<length>",
         },
     },
     "scroll-margin-inline-start": {
@@ -12295,23 +11782,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "transition",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<single-transition>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<single-transition>",
         },
     },
     "transition-delay": {
@@ -12320,23 +11797,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "transition-delay",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<time>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "type",
+            ref: "<time>",
         },
     },
     "transition-duration": {
@@ -12345,23 +11812,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "transition-duration",
             percentages: "no",
-            ref: [
-                {
-                    type: "type",
-                    ref: "<time>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "type",
+            ref: "<time>",
         },
     },
     "transition-property": {
@@ -12402,23 +11859,13 @@ export const properties = {
         syntax: {
             mapsToProperty: "transition-timing-function",
             percentages: "no",
-            ref: [
-                {
-                    type: "syntax",
-                    ref: "<timing-function>",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: {
-                        type: "oneOrMoreSeparatedByComma",
-                    },
-                },
-            ],
             refCombinatorType: "none",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
             },
             prepend: null,
             type: "syntax",
+            ref: "<timing-function>",
         },
     },
     translate: {
