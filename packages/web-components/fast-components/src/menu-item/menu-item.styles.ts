@@ -9,12 +9,15 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
+    accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     heightNumber,
+    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/index";
 
 export const MenuItemStyles = css`
@@ -25,7 +28,7 @@ export const MenuItemStyles = css`
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
-        grid-template-columns: minmax(42px, auto) 1fr minmax(42px, auto);
+        grid-template-columns: minmax(60px, auto) 1fr minmax(42px, auto);
         grid-template-rows: auto;
         justify-items: center;
         align-items: center;
@@ -110,14 +113,117 @@ export const MenuItemStyles = css`
     :host(:active)::slotted(svg) {
         fill: ${accentForegroundCutRestBehavior.var};
     }
+
+    .start-container {
+        display: grid;
+        grid-template-columns: minmax(33px, auto) 1fr;
+        grid-template-rows: auto;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .start {
+        grid-column-start: 2;
+        margin-inline-start: 4px;
+    }
+
+    :host .checkbox {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border-radius: calc(var(--corner-radius) * 1px);
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host(:hover) .checkbox {
+        border-color: ${accentForegroundCutRestBehavior.var};
+    }
+
+    :host([checked="true"]) .checkbox {
+        display: none;
+    }
+
+    :host([checked="true"]) .checkbox-checked {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border-radius: calc(var(--corner-radius) * 1px);
+        border: calc(var(--outline-width) * 1px) solid ${
+            accentForegroundCutRestBehavior.var
+        };
+        background: ${accentForegroundCutRestBehavior.var};
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host([checked="true"]) .checkbox-indicator{
+        width: 100%;
+        height: 100%;
+        display: block;
+        fill: ${accentFillRestBehavior.var};
+        pointer-events: none;
+    }
+
+    :host .radio {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border-radius: 999px;
+        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host(:hover) .radio {
+        border-color: ${accentForegroundCutRestBehavior.var};
+    }
+
+    :host([checked="true"]) .radio {
+        display: none;
+    }
+
+    :host([checked="true"] .radio-checked {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border-radius: 999px;
+        border: calc(var(--outline-width) * 1px) solid ${
+            accentForegroundCutRestBehavior.var
+        };
+        background: ${accentForegroundCutRestBehavior.var};
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host([checked="true"] .radio-indicator {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        border-radius: 999px;
+        display: inline-block;
+        background: ${accentFillRestBehavior.var};
+        pointer-events: none;
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,
+    accentFillRestBehavior,
     accentForegroundCutRestBehavior,
+    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host {
