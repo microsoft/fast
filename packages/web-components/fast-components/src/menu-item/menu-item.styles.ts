@@ -134,7 +134,9 @@ export const MenuItemStyles = css`
         height: 20px;
         box-sizing: border-box;
         border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${
+            accentForegroundCutRestBehavior.var
+        };
         outline: none;
         margin-inline-start: 10px;
     }
@@ -175,7 +177,9 @@ export const MenuItemStyles = css`
         height: 20px;
         box-sizing: border-box;
         border-radius: 999px;
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${
+            accentForegroundCutRestBehavior.var
+        };
         outline: none;
         margin-inline-start: 10px;
     }
