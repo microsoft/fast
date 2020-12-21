@@ -183,13 +183,14 @@ export class Tabs extends FASTElement {
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
                 }
-            } else {
-                this.showActiveIndicator = false;
             }
             tab.style[gridProperty] = `${index + 1}`;
             !this.isHorizontal()
                 ? tab.classList.add("vertical")
                 : tab.classList.remove("vertical");
+            this.showActiveIndicator = !!this.tabs.find(
+                tab => tab.slot === "tab" && this.isFocusableElement(tab)
+            );
         });
     };
 
