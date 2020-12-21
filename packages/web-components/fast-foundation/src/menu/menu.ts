@@ -279,20 +279,6 @@ export class Menu extends FASTElement {
         return this.isMenuItemElement(el);
     };
 
-    // private handleMenuItemBlur = (e: FocusEvent): void => {
-    //     const target = e.currentTarget as Element;
-    //     const focusIndex: number = this.menuItems.indexOf(target);
-
-    //     if (this.isDisabledElement(target)) {
-    //         target.blur();
-    //         return;
-    //     }
-
-    //     if (focusIndex !== this.focusIndex && focusIndex !== -1) {
-    //         this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
-    //     }
-    // };
-
     private setFocus(focusIndex: number, adjustment: number): void {
         const children: Element[] = this.menuItems;
 
