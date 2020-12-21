@@ -22,7 +22,7 @@ export const DisclosureStyles = css`
         list-style-type: none;
     }
 
-    :host(.accent) .invoker {
+    :host([appearance="accent"]) .invoker {
         background: ${accentFillRestBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
         font-family: var(--body-font);
@@ -35,15 +35,15 @@ export const DisclosureStyles = css`
         max-width: max-content;
     }
 
-    :host(.accent) .invoker:active {
+    :host([appearance="accent"]) .invoker:active {
         background: ${accentFillActiveBehavior.var};
     }
 
-    :host(.accent) .invoker:hover {
+    :host([appearance="accent"]) .invoker:hover {
         background: ${accentFillHoverBehavior.var};
     }
 
-    :host(.lightweight) .invoker {
+    :host([appearance="lightweight"]) .invoker {
         background: transparent;
         color: ${accentForegroundRestBehavior.var};
         border-bottom: calc(var(--outline-width) * 1px) solid
@@ -53,11 +53,11 @@ export const DisclosureStyles = css`
         margin: 16px 0;
     }
 
-    :host(.lightweight) .invoker:active {
+    :host([appearance="lightweight"]) .invoker:active {
         border-bottom-color: ${accentForegroundActiveBehavior.var};
     }
 
-    :host(.lightweight) .invoker:hover {
+    :host([appearance="lightweight"]) .invoker:hover {
         border-bottom-color: ${accentForegroundHoverBehavior.var};
     }
 
