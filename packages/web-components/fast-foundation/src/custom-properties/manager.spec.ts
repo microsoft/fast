@@ -20,12 +20,13 @@ class Client extends FASTElement implements CustomPropertyManagerClient {
 }
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Client>("fast-client");
+    const { connect, disconnect, element, parent } = await fixture<Client>("fast-client");
 
     return {
         element,
         connect,
         disconnect,
+        parent,
     };
 }
 
@@ -48,18 +49,23 @@ describe("ConstructableStylesCustomPropertyManager", () => {
             await disconnect();
         });
         it("should keep the first subscriber as the owner after multiple subscribers", async () => {
-            const { element, connect, disconnect } = await setup();
+            const { connect, disconnect, element, parent } = await setup();
+
             const clone = element.cloneNode() as Client;
-            document.body.appendChild(clone);
+
+            parent.appendChild(clone);
+
             const manager = new ConstructableStylesCustomPropertyManager(
                 new CSSStyleSheet()
             );
 
             await connect();
+
             manager.subscribe(element);
             manager.subscribe(clone);
 
             expect(manager.owner).to.equal(element);
+
             await disconnect();
         });
         it("should evaluate and write the value of all CSSCustomPropertyDefinitions in the client", async () => {
@@ -69,6 +75,7 @@ describe("ConstructableStylesCustomPropertyManager", () => {
             );
 
             await connect();
+
             element.cssCustomPropertyDefinitions.set("my-property", {
                 name: "my-property",
                 value: "value",
@@ -79,6 +86,7 @@ describe("ConstructableStylesCustomPropertyManager", () => {
             expect(
                 window.getComputedStyle(element).getPropertyValue("--my-property")
             ).to.equal("value");
+
             await disconnect();
         });
     });
@@ -90,28 +98,34 @@ describe("ConstructableStylesCustomPropertyManager", () => {
             );
 
             await connect();
+
             manager.subscribe(element);
             manager.unsubscribe(element);
 
             expect(manager.owner).to.equal(null);
+
             await disconnect();
         });
         it("of the owner should set the owner to the subsequent subscriber", async () => {
-            const { element, connect, disconnect } = await setup();
+            const { connect, disconnect, element, parent } = await setup();
             const b = element.cloneNode() as Client;
             const c = element.cloneNode() as Client;
-            document.body.appendChild(b);
-            document.body.appendChild(c);
+
+            parent.appendChild(b);
+            parent.appendChild(c);
+
             const manager = new ConstructableStylesCustomPropertyManager(
                 new CSSStyleSheet()
             );
 
             await connect();
+
             manager.subscribe(element);
             manager.subscribe(b);
             manager.subscribe(c);
 
             manager.unsubscribe(element);
+
             expect(manager.owner).to.equal(b);
 
             await disconnect();
@@ -134,6 +148,7 @@ describe("ConstructableStylesCustomPropertyManager", () => {
             expect(
                 window.getComputedStyle(element).getPropertyValue("--my-property")
             ).to.equal("");
+
             await disconnect();
         });
     });
@@ -153,6 +168,45 @@ describe("StyleElementCustomPropertyManager", () => {
         );
 
         await disconnect();
+    });
+
+    it("should not throw when constructed with a disconnected element", () => {
+        const element = document.createElement("fast-client") as Client;
+
+        expect(() => {
+            new StyleElementCustomPropertyManager(
+                document.createElement("style"),
+                element
+            );
+        }).not.to.throw();
+    });
+
+    it("should queue and apply properties set prior to connection once connected", () => {
+        const element = document.createElement("fast-client") as Client;
+
+        element.cssCustomPropertyDefinitions.set("my-property", {
+            name: "my-property",
+            value: "value",
+        });
+
+        const client = new StyleElementCustomPropertyManager(
+            document.createElement("style"),
+            element
+        );
+
+        assert.equal(
+            window.getComputedStyle(element).getPropertyValue("--my-property"),
+            ""
+        );
+
+        document.body.appendChild(element);
+
+        assert.equal(
+            window.getComputedStyle(element).getPropertyValue("--my-property"),
+            "value"
+        );
+
+        element.remove();
     });
 
     it("should connect the style element to the DOM during construction", async () => {

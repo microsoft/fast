@@ -87,7 +87,7 @@ export class ARIAGlobalStatesAndProperties {
     public ariaDetails: string;
 
     /**
-     * Identifies the element that provides a detailed, extended description for the object.
+     * Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
      *
      * {@link https://www.w3.org/TR/wai-aria-1.1/#aria-disabled}
      * @public

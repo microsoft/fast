@@ -103,22 +103,22 @@ export const RadioStyles = css`
         border-color: ${neutralFocusBehavior.var};
     }
 
-    :host([checked]) .control {
+    :host([aria-checked="true"]) .control {
         background: ${accentFillRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .control:hover {
+    :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
     }
 
-    :host([checked]:not([disabled])) .control:active {
+    :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
     }
 
-    :host([checked]:${focusVisible}:not([disabled])) .control {
+    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
             neutralFocusBehavior.var
         };
@@ -132,7 +132,7 @@ export const RadioStyles = css`
         cursor: ${disabledCursor};
     }
 
-    :host([checked]) .checked-indicator {
+    :host([aria-checked="true"]) .checked-indicator {
         opacity: 1;
     }
 

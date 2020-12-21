@@ -10,12 +10,12 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
-import { getDirection } from "../utilities/";
+import { getDirection } from "../utilities/direction";
 import { convertPixelToPercent } from "./slider-utilities";
+import { FormAssociatedSlider } from "./slider.form-associated";
 
 /**
- * The selection modes of a {@link Slider}
+ * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
  * @public
  */
 export enum SliderMode {
@@ -23,7 +23,7 @@ export enum SliderMode {
 }
 
 /**
- * The configuration structure of {@link Slider}.
+ * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.
  * @public
  */
 export interface SliderConfiguration {
@@ -35,15 +35,15 @@ export interface SliderConfiguration {
 }
 
 /**
- * An Switch Custom HTML Element.
+ * A Slider Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#slider | ARIA slider }.
  *
  * @public
  */
-export class Slider extends FormAssociated<HTMLInputElement>
-    implements SliderConfiguration {
+export class Slider extends FormAssociatedSlider implements SliderConfiguration {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     *
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -123,11 +123,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     public valueTextFormatter: (value: string) => string | null = () => null;
 
     /**
-     * The element's value to be included in form submission changed.
      * @internal
      */
-    protected valueChanged(previous: string, next: string): void {
+    public valueChanged(previous, next): void {
         super.valueChanged(previous, next);
+
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
@@ -135,10 +135,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * The minimum allowed value
+     * The minimum allowed value.
      *
      * @defaultValue - 0
      * @public
+     * @remarks
      * HTML Attribute: min
      */
     @attr({ converter: nullableNumberConverter })
@@ -152,10 +153,11 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * The maximum allowed value
+     * The maximum allowed value.
      *
      * @defaultValue - 10
      * @public
+     * @remarks
      * HTML Attribute: max
      */
     @attr({ converter: nullableNumberConverter })
@@ -168,9 +170,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * Value to increment or decrement via arrow keys, mouse click or drag
+     * Value to increment or decrement via arrow keys, mouse click or drag.
      *
      * @public
+     * @remarks
      * HTML Attribute: step
      */
     @attr({ converter: nullableNumberConverter })
@@ -184,9 +187,10 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * Orientation of the slider
+     * The orientation of the slider.
      *
      * @public
+     * @remarks
      * HTML Attribute: orientation
      */
     @attr
@@ -198,15 +202,14 @@ export class Slider extends FormAssociated<HTMLInputElement>
     }
 
     /**
-     * The selection mode
+     * The selection mode.
      *
      * @public
+     * @remarks
      * HTML Attribute: mode
      */
     @attr
     public mode: SliderMode = SliderMode.singleValue;
-
-    protected proxy = document.createElement("input");
 
     /**
      * @internal
@@ -238,7 +241,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
      *
      * @public
      */
-    public increment = (): void => {
+    public increment(): void {
         const newVal: number =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) + Number(this.step)
@@ -247,14 +250,14 @@ export class Slider extends FormAssociated<HTMLInputElement>
         const incrementedValString: string =
             incrementedVal < Number(this.max) ? `${incrementedVal}` : `${this.max}`;
         this.value = incrementedValString;
-    };
+    }
 
     /**
      * Decrement the value by the step
      *
      * @public
      */
-    public decrement = (): void => {
+    public decrement(): void {
         const newVal =
             this.direction !== Direction.rtl && this.orientation !== Orientation.vertical
                 ? Number(this.value) - Number(this.step)
@@ -263,10 +266,9 @@ export class Slider extends FormAssociated<HTMLInputElement>
         const decrementedValString: string =
             decrementedVal > Number(this.min) ? `${decrementedVal}` : `${this.min}`;
         this.value = decrementedValString;
-    };
+    }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        super.keypressHandler(e);
         if (e.keyCode !== keyCodeTab) {
             e.preventDefault();
         }
@@ -289,7 +291,13 @@ export class Slider extends FormAssociated<HTMLInputElement>
         }
     };
 
-    private setThumbPositionForOrientation = (direction: Direction): void => {
+    /**
+     * Places the thumb based on the current value
+     *
+     * @public
+     * @param direction - writing mode
+     */
+    private setThumbPositionForOrientation(direction: Direction): void {
         const newPct: number = convertPixelToPercent(
             Number(this.value),
             Number(this.min),
@@ -306,7 +314,7 @@ export class Slider extends FormAssociated<HTMLInputElement>
                 ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
-    };
+    }
 
     private setupTrackConstraints = (): void => {
         const clientRect: DOMRect = this.track.getBoundingClientRect();
@@ -327,23 +335,28 @@ export class Slider extends FormAssociated<HTMLInputElement>
         this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
     };
 
-    private setupDefaultValue = (): void => {
-        if (typeof this.value === "string") {
-            const midpoint = `${this.convertToConstrainedValue(
-                (this.max + this.min) / 2
-            )}`;
+    /**
+     * @internal
+     */
+    public initialValue: string = "";
 
+    private get midpoint(): string {
+        return `${this.convertToConstrainedValue((this.max + this.min) / 2)}`;
+    }
+
+    private setupDefaultValue(): void {
+        if (typeof this.value === "string") {
             if (this.value.length === 0) {
-                this.initialValue = midpoint;
+                this.initialValue = this.midpoint;
             } else {
                 const value = parseFloat(this.value);
 
                 if (!Number.isNaN(value) && (value < this.min || value > this.max)) {
-                    this.value = midpoint;
+                    this.value = this.midpoint;
                 }
             }
         }
-    };
+    }
 
     /**
      *  Handle mouse moves during a thumb drag operation
@@ -401,7 +414,6 @@ export class Slider extends FormAssociated<HTMLInputElement>
     /**
      * Handle a window mouse up during a drag operation
      */
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     private handleWindowMouseUp = (event: MouseEvent): void => {
         this.stopDragging();
     };
@@ -444,3 +456,8 @@ export class Slider extends FormAssociated<HTMLInputElement>
         return constrainedValue + this.min;
     };
 }
+
+/**
+ * @internal
+ */
+export interface Slider extends FormAssociatedSlider {}

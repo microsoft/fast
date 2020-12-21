@@ -6,7 +6,13 @@
  * The files follow the Value Definition Syntax
  * Defined here: https://developer.mozilla.org/en-US/docs/Web/CSS/Value_definition_syntax
  */
-import { appliesto, MDNCSS, MDNCSSPropertyConfig } from "./mapping.mdn-data.types";
+import {
+    appliesto,
+    MDNCSS,
+    MDNCSSPropertyConfig,
+    MDNCSSSyntaxConfig,
+    status,
+} from "./mapping.mdn-data.types";
 import { XOR } from "./type.utilities";
 
 // Capture prepended string literals
@@ -30,15 +36,23 @@ const bracketsCombinatorRegex = new RegExp(
     /(?<!.)(?:\/|, )?\[(.*)\](#|\?|\*|!|\+|{\d*,\d*})?(?!.)/
 );
 const juxtapositionCombinatorRegex = new RegExp(
-    /(?<!.)(?:(<?'?[a-z-]*'?>?)(?:\*|\+|\?|{\d*,\d*}|#|!)?(?: ))/
+    /(?<!.)((?:(<?'?[a-zA-Z-\d?]*(?!})(?:\(\))?'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: )(?!\||&))/
 );
 const mandatoryInAnyOrderCombinatorRegex = new RegExp(
-    /(?<!.)(?:(<?'?[a-z-]*'?>?)(?: && ))/
+    /(?<!.)((?:(<?'?[a-zA-Z-\d?]*(?!})(?:\(\))?'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: && ))/
 );
 const atLeastOneInAnyOrderCombinatorRegex = new RegExp(
-    /(?<!.)(?:(<?'?[a-z-]*'?>?)(?: \|\| ))/
+    /(?<!.)((?:(<?'?[a-zA-Z-\d?]*(?!})(?:\(\))?'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: \|\| ))/
 );
-const exactlyOneCombinatorRegex = new RegExp(/(?<!.)(?:(<?'?[a-z-]*'?>?)(?: \| ))/);
+const exactlyOneCombinatorRegex = new RegExp(
+    /(?<!.)((?:(<?'?[a-zA-Z-\d?]*(?!})(?:\(\))?'?>?)|((?:\/|, )?\[(.*)\]))(#|\?|\*|!|\+|{\d*,\d*})?(?: \| ))/
+);
+
+/**
+ * Brackets regex
+ */
+const openBracketRegex = new RegExp(/(\[)/g);
+const closeBracketRegex = new RegExp(/(\])/g);
 
 /**
  * Reference types regex
@@ -50,7 +64,7 @@ const syntaxOrTypeRefRegex = new RegExp(/<(.*)>/);
  * Split regex (splits all combination types)
  */
 const splitRegex = new RegExp(
-    /((?:\/|, )?\[.*?\](?:\*|\+|\?|{\d*,\d*}|#|!)?)|((?:<?'?[a-z-]*'?>?)(?:\*|\+|\?|{\d*,\d*}|#|!)?)/g
+    /((?:\/|, )?(\[.*\])(?:\*|\+|\?|{\d*,\d*}|#|!)?)|((?:<?'?[a-zA-Z-\d?]*(?!})(?:\(\))?'?>?)(?:\*|\+|\?|{\d*,\d*}|#|!)?)/g
 );
 
 export interface CSSProperty {
@@ -67,7 +81,7 @@ export interface CSSProperty {
     /**
      * A list of syntaxes
      */
-    syntax: CSSPropertySyntax[];
+    syntax: CSSPropertySyntax;
 }
 
 /**
@@ -84,8 +98,15 @@ export interface CSSPropertiesDictionary {
  * - CSS property such as <'margin-left'> which refers to another CSS property
  * - CSS value, such as auto which is a direct value representation
  * - CSS group, for example [ auto <length> ]?
+ * - mixed, for example any one of the previous values
  */
-export type CSSPropertyRefType = "syntax" | "type" | "property" | "value" | "group";
+export type CSSPropertyRefType =
+    | "syntax"
+    | "type"
+    | "property"
+    | "value"
+    | "group"
+    | "mixed";
 
 export interface CSSPropertyRef {
     /**
@@ -126,6 +147,23 @@ export interface CSSPropertySyntax extends CSSPropertyRef {
     percentages: string;
 }
 
+export interface CSSBracketsSyntax {
+    /**
+     * The syntax string to evaluate
+     */
+    ref: XOR<string, CSSPropertyRef[]>;
+
+    /**
+     * The multiplier this sytax uses
+     */
+    multiplier: Multiplier | null;
+}
+
+export interface CSSBracketsSyntaxItem {
+    ref: CSSBracketsSyntax[];
+    refCombinatorType: CombinatorType;
+}
+
 export enum CombinatorType {
     brackets = "brackets",
     juxtaposition = "juxtaposition",
@@ -134,6 +172,11 @@ export enum CombinatorType {
     exactlyOne = "exactlyOne",
     none = "none",
 }
+
+const combinatorTypeJuxtaposition: string = " ";
+const combinatorTypeMandatoryInAnyOrder: string = " && ";
+const combinatorTypeAtLeastOneInAnyOrder: string = " || ";
+const combinatorTypeExactyleOne: string = " | ";
 
 export enum MultiplierType {
     zeroOrMore = "zeroOrMore",
@@ -183,6 +226,38 @@ export interface CSSSyntaxValue {
 
 export interface CSSSyntaxMap {
     [key: string]: CSSSyntaxValue;
+}
+
+export interface CSSSyntax {
+    /**
+     * The syntax name
+     */
+    name: string;
+
+    /**
+     * A list of syntaxes
+     */
+    value: CSSSyntaxRef;
+}
+
+export interface CSSSyntaxRef {
+    /**
+     * The reference
+     */
+    ref: XOR<string, CSSSyntaxRef[]>;
+
+    /**
+     * The references combinator type
+     */
+    refCombinatorType: CombinatorType;
+}
+
+export interface CSSSyntaxDictionary {
+    [key: string]: CSSSyntax;
+}
+
+export interface CSSPropertyMapOptions {
+    status?: status;
 }
 
 /**
@@ -292,6 +367,190 @@ export function mapCombinatorType(syntax: string): CombinatorType {
     return CombinatorType.none;
 }
 
+function getCombinatorSplitString(combinatorType: CombinatorType): string {
+    switch (combinatorType) {
+        case CombinatorType.juxtaposition:
+            return combinatorTypeJuxtaposition;
+        case CombinatorType.atLeastOneInAnyOrder:
+            return combinatorTypeAtLeastOneInAnyOrder;
+        case CombinatorType.exactlyOne:
+            return combinatorTypeExactyleOne;
+        case CombinatorType.mandatoryInAnyOrder:
+            return combinatorTypeMandatoryInAnyOrder;
+    }
+}
+
+/**
+ * This normalizes already grouped items by ignoring them and their contents
+ * by treating them as a single value
+ */
+function normalizeSplitForGroupedItems(syntaxSplitByCombinatorType: string[]): string[] {
+    // In the case of grouped items already being present, the split will cause incorrect results
+    if (
+        syntaxSplitByCombinatorType.find((syntaxItem: string) => {
+            return (
+                syntaxItem.match(openBracketRegex) || syntaxItem.match(closeBracketRegex)
+            );
+        })
+    ) {
+        const firstOpenBracket: number = syntaxSplitByCombinatorType.findIndex(
+            (syntaxItem: string) => {
+                return syntaxItem.match(openBracketRegex);
+            }
+        );
+        let bracketCount = 0;
+        let matchingCloseBracket = 0;
+        syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+            const matchedOpenBrackets = syntaxItem.match(openBracketRegex);
+            const matchedCloseBrackets = syntaxItem.match(closeBracketRegex);
+
+            if (matchedOpenBrackets) {
+                bracketCount = bracketCount + matchedOpenBrackets.length;
+            }
+
+            if (matchedCloseBrackets) {
+                bracketCount = bracketCount - matchedCloseBrackets.length;
+
+                if (bracketCount === 0) {
+                    matchingCloseBracket = index;
+                }
+            }
+        });
+        syntaxSplitByCombinatorType = [
+            ...syntaxSplitByCombinatorType.slice(0, firstOpenBracket),
+            syntaxSplitByCombinatorType
+                .slice(firstOpenBracket, matchingCloseBracket + 1)
+                .join(" "),
+        ].concat(syntaxSplitByCombinatorType.slice(matchingCloseBracket + 1));
+    }
+
+    return syntaxSplitByCombinatorType;
+}
+
+/**
+ * This normalizes some variables that might be incorrect due to juxtaposition,
+ * which because it is a single space interferes with methods of splitting
+ * that the other CombinatorTypes do not (" | ", " && ", " || ")
+ */
+function normalizeSplitForJuxtapositionedItems(
+    containsMixedCombinatorTypes: boolean,
+    indexLastSplitOccured: number,
+    syntaxSplitByAllCombinatorTypes: string[],
+    firstCombinatorType: CombinatorType,
+    syntaxSplitByCombinatorType: string[]
+): {
+    containsMixedCombinatorTypes: boolean;
+    indexLastSplitOccured: number;
+    syntaxSplitByAllCombinatorTypes: string[];
+} {
+    if (firstCombinatorType === CombinatorType.juxtaposition) {
+        let nextCombinatorAndSyntax: string | null = null;
+
+        syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+            if (syntaxItem === "|" || syntaxItem === "||" || syntaxItem === "&&") {
+                containsMixedCombinatorTypes = true;
+                indexLastSplitOccured = index - 1;
+                nextCombinatorAndSyntax = ` ${syntaxSplitByCombinatorType
+                    .slice(index)
+                    .join(" ")}`;
+            }
+        });
+
+        if (nextCombinatorAndSyntax !== null) {
+            syntaxSplitByAllCombinatorTypes = syntaxSplitByAllCombinatorTypes
+                .slice(0, indexLastSplitOccured + 1)
+                .concat([nextCombinatorAndSyntax]);
+        }
+    }
+
+    return {
+        containsMixedCombinatorTypes,
+        indexLastSplitOccured,
+        syntaxSplitByAllCombinatorTypes,
+    };
+}
+
+/**
+ * Maps mixed combinator types using brackets
+ *
+ * A pattern like "foo && bar bat"
+ * should result in "[ foo && bar ] bat"
+ */
+export function mapMixedCombinatorTypes(syntax: string): string {
+    // determine the first combinator type
+    let mixedCombinatorTypes: string = syntax.trim();
+    const firstCombinatorType: CombinatorType = mapCombinatorType(mixedCombinatorTypes);
+    const combinatorSplitString: string = getCombinatorSplitString(firstCombinatorType);
+    let syntaxSplitByCombinatorType: string[] = mixedCombinatorTypes.split(
+        combinatorSplitString
+    );
+    let adjoiningCombinatorSplitString: string = "";
+
+    syntaxSplitByCombinatorType = normalizeSplitForGroupedItems(
+        syntaxSplitByCombinatorType
+    );
+    const normalizedForJuxtaposition = normalizeSplitForJuxtapositionedItems(
+        false,
+        0,
+        mapSplit(mixedCombinatorTypes),
+        firstCombinatorType,
+        syntaxSplitByCombinatorType
+    );
+    let {
+        containsMixedCombinatorTypes,
+        indexLastSplitOccured,
+    } = normalizedForJuxtaposition;
+    const { syntaxSplitByAllCombinatorTypes } = normalizedForJuxtaposition;
+
+    // go through, ignore grouped items but save them for recursion later,
+    // until the next combinator that does not match is found
+    syntaxSplitByCombinatorType.forEach((syntaxItem: string, index: number) => {
+        const mappedCombinatorType = mapCombinatorType(syntaxItem);
+
+        if (mappedCombinatorType !== "none" && mappedCombinatorType !== "brackets") {
+            indexLastSplitOccured = index;
+            adjoiningCombinatorSplitString = getCombinatorSplitString(
+                mappedCombinatorType
+            );
+            containsMixedCombinatorTypes =
+                typeof adjoiningCombinatorSplitString !== "undefined";
+
+            return;
+        }
+    });
+
+    // determine if there are multiple combinator types
+    if (containsMixedCombinatorTypes) {
+        // if the split is exactly one, wrap each item in the split
+        if (firstCombinatorType === CombinatorType.exactlyOne) {
+            mixedCombinatorTypes = `${syntaxSplitByCombinatorType
+                .map((syntaxItem: string) => {
+                    const mappedCombinatorType = mapCombinatorType(syntaxItem);
+
+                    if (
+                        mappedCombinatorType !== "none" &&
+                        mappedCombinatorType !== "brackets"
+                    ) {
+                        return `[ ${syntaxItem} ]`;
+                    }
+
+                    return syntaxItem;
+                })
+                .join(combinatorSplitString)}`;
+        } else {
+            mixedCombinatorTypes = `[ ${syntaxSplitByAllCombinatorTypes
+                .slice(0, indexLastSplitOccured + 1)
+                .join(
+                    combinatorSplitString
+                )} ]${adjoiningCombinatorSplitString}${syntaxSplitByAllCombinatorTypes
+                .slice(indexLastSplitOccured + 1)
+                .join(combinatorSplitString)}`;
+        }
+    }
+
+    return mixedCombinatorTypes;
+}
+
 /**
  * Maps an entity group if one exists
  */
@@ -306,9 +565,14 @@ export function mapGroupedEntities(syntax: string): string {
  */
 export function resolveReferenceType(
     syntax: string,
+    combinatorType: CombinatorType,
     syntaxKeys: string[],
     typeKeys: string[]
 ): CSSPropertyRefType {
+    if (combinatorType !== "none") {
+        return "mixed";
+    }
+
     const syntaxOrType = syntax.match(syntaxOrTypeRefRegex);
 
     if (syntax.match(propertyRefRegex) !== null) {
@@ -377,13 +641,28 @@ export function resolveCSSPropertyReference(
                 return syntax;
             }
 
+            const normalizedSyntax = syntax
+                .replace(stringLiteralRegex, "")
+                .replace(allMultiplierRegex, "");
+            const refCombinatorType = mapCombinatorType(normalizedSyntax);
+
             return [
                 {
-                    type: resolveReferenceType(syntax, syntaxKeys, typeKeys),
-                    ref: syntax
-                        .replace(stringLiteralRegex, "")
-                        .replace(allMultiplierRegex, ""),
-                    refCombinatorType: mapCombinatorType(syntax),
+                    type: resolveReferenceType(
+                        syntax,
+                        combinatorType,
+                        syntaxKeys,
+                        typeKeys
+                    ),
+                    ref:
+                        refCombinatorType === CombinatorType.none
+                            ? normalizedSyntax
+                            : resolveCSSPropertyReference(
+                                  normalizedSyntax,
+                                  syntaxKeys,
+                                  typeKeys
+                              ),
+                    refCombinatorType,
                     prepend: stringLiteral,
                     multiplier,
                 },
@@ -400,21 +679,23 @@ export function resolveCSSPropertyReference(
                 (itemSyntax: string) => {
                     const stringLiteral: "/" | "," | null = mapStringLiterals(itemSyntax);
                     const itemMultiplier = mapMultiplierType(itemSyntax);
+                    const nSyntax = itemSyntax
+                        .replace(stringLiteralRegex, "")
+                        .replace(allMultiplierRegex, "");
                     const normalizedSyntax =
-                        mapCombinatorType(itemSyntax) === CombinatorType.brackets
-                            ? mapGroupedEntities(itemSyntax)
-                            : itemSyntax;
+                        mapCombinatorType(nSyntax) === CombinatorType.brackets
+                            ? mapGroupedEntities(nSyntax)
+                            : nSyntax;
                     const itemCombinatorType = mapCombinatorType(normalizedSyntax);
 
                     return {
-                        type: resolveReferenceType(itemSyntax, syntaxKeys, typeKeys),
-                        ref: resolveCSSPropertyReference(
-                            itemSyntax
-                                .replace(stringLiteralRegex, "")
-                                .replace(allMultiplierRegex, ""),
+                        type: resolveReferenceType(
+                            itemSyntax,
+                            itemCombinatorType,
                             syntaxKeys,
                             typeKeys
                         ),
+                        ref: resolveCSSPropertyReference(nSyntax, syntaxKeys, typeKeys),
                         refCombinatorType: itemCombinatorType,
                         prepend: stringLiteral,
                         multiplier: itemMultiplier,
@@ -432,55 +713,141 @@ export function resolveCSSPropertySyntax(
     cssProperty: string,
     syntaxKeys: string[],
     typeKeys: string[]
-): CSSPropertySyntax[] {
+): CSSPropertySyntax {
     const normalizedSyntax =
         mapCombinatorType(mdnCSSPropertyConfig.syntax) === CombinatorType.brackets
             ? mapGroupedEntities(mdnCSSPropertyConfig.syntax)
             : mdnCSSPropertyConfig.syntax;
+    const combinatorType = mapCombinatorType(normalizedSyntax);
 
-    return [
-        {
-            mapsToProperty: cssProperty,
-            percentages: mdnCSSPropertyConfig.percentages,
-            ref: resolveCSSPropertyReference(
-                mdnCSSPropertyConfig.syntax,
-                syntaxKeys,
-                typeKeys
-            ),
-            refCombinatorType: mapCombinatorType(normalizedSyntax),
-            multiplier: mapMultiplierType(mdnCSSPropertyConfig.syntax),
-            prepend: mapStringLiterals(mdnCSSPropertyConfig.syntax),
-            type: resolveReferenceType(mdnCSSPropertyConfig.syntax, syntaxKeys, typeKeys),
-        },
-    ];
+    return {
+        mapsToProperty: cssProperty,
+        percentages: mdnCSSPropertyConfig.percentages,
+        ref: resolveCSSPropertyReference(
+            mdnCSSPropertyConfig.syntax,
+            syntaxKeys,
+            typeKeys
+        ),
+        refCombinatorType: combinatorType,
+        multiplier: mapMultiplierType(mdnCSSPropertyConfig.syntax),
+        prepend: mapStringLiterals(mdnCSSPropertyConfig.syntax),
+        type: resolveReferenceType(
+            mdnCSSPropertyConfig.syntax,
+            combinatorType,
+            syntaxKeys,
+            typeKeys
+        ),
+    };
+}
+
+function conformsToOptions(
+    cssPropertyMapOptions: CSSPropertyMapOptions,
+    key: string,
+    value: MDNCSSPropertyConfig
+): boolean {
+    let validatesAgainstOptions: boolean = true;
+
+    if (
+        cssPropertyMapOptions.status !== undefined &&
+        cssPropertyMapOptions.status !== value.status
+    ) {
+        validatesAgainstOptions = false;
+    }
+
+    return validatesAgainstOptions;
 }
 
 /**
  * Maps MDN CSS properties to a CSS properties dictionary
  * for tooling consumption
  */
-export function mapCSSProperties(mdnCSS: MDNCSS): CSSPropertiesDictionary {
+export function mapCSSProperties(
+    mdnCSS: MDNCSS,
+    cssPropertyMapOptions: CSSPropertyMapOptions = {}
+): CSSPropertiesDictionary {
     const syntaxKeys: string[] = Object.keys(mdnCSS.syntaxes);
     const typeKeys: string[] = Object.keys(mdnCSS.types);
 
-    return Object.entries(mdnCSS.properties)
+    return Object.entries(mdnCSS.properties).reduce<CSSPropertiesDictionary>(
+        (
+            resolvedDictionary: CSSPropertiesDictionary,
+            currentCSSProperty: [string, MDNCSSPropertyConfig]
+        ) => {
+            if (
+                conformsToOptions(
+                    cssPropertyMapOptions,
+                    currentCSSProperty[0],
+                    currentCSSProperty[1]
+                )
+            ) {
+                return {
+                    ...resolvedDictionary,
+                    [currentCSSProperty[0]]: {
+                        name: currentCSSProperty[0],
+                        appliesTo: currentCSSProperty[1].appliesto,
+                        syntax: resolveCSSPropertySyntax(
+                            {
+                                ...currentCSSProperty[1],
+                                syntax: mapMixedCombinatorTypes(
+                                    currentCSSProperty[1].syntax
+                                ),
+                            },
+                            currentCSSProperty[0],
+                            syntaxKeys,
+                            typeKeys
+                        ),
+                    },
+                };
+            }
+
+            return resolvedDictionary;
+        },
+        {}
+    );
+}
+
+export function resolveCSSSyntax(
+    value: string,
+    syntaxKeys: string[],
+    typeKeys: string[]
+): CSSSyntaxRef {
+    const normalizedSyntax =
+        mapCombinatorType(value) === CombinatorType.brackets
+            ? mapGroupedEntities(value)
+            : value;
+    const refCombinatorType = mapCombinatorType(normalizedSyntax);
+
+    return {
+        ref: resolveCSSPropertyReference(value, syntaxKeys, typeKeys),
+        refCombinatorType,
+    };
+}
+
+/**
+ * Maps MDN CSS syntaxes to a CSS syntaxes dictionary
+ * for tooling consumption
+ */
+export function mapCSSSyntaxes(mdnCSS: MDNCSS): CSSSyntaxDictionary {
+    const syntaxKeys: string[] = Object.keys(mdnCSS.syntaxes);
+    const typeKeys: string[] = Object.keys(mdnCSS.types);
+
+    return Object.entries(mdnCSS.syntaxes)
         .map(
-            ([key, value]: [string, MDNCSSPropertyConfig]): CSSProperty => {
+            ([key, value]: [string, MDNCSSSyntaxConfig]): CSSSyntax => {
                 return {
                     name: key,
-                    appliesTo: value.appliesto,
-                    syntax: resolveCSSPropertySyntax(value, key, syntaxKeys, typeKeys),
+                    value: resolveCSSSyntax(value.syntax, syntaxKeys, typeKeys),
                 };
             }
         )
-        .reduce<CSSPropertiesDictionary>(
+        .reduce<CSSSyntaxDictionary>(
             (
-                resolvedDictionary: CSSPropertiesDictionary,
-                currentCSSProperty: CSSProperty
-            ): CSSPropertiesDictionary => {
+                resolvedDictionary: CSSSyntaxDictionary,
+                currentCSSSyntax: CSSSyntax
+            ): CSSSyntaxDictionary => {
                 return {
                     ...resolvedDictionary,
-                    [currentCSSProperty.name]: currentCSSProperty,
+                    [currentCSSSyntax.name]: currentCSSSyntax,
                 };
             },
             {}

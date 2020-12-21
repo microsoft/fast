@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.2...@microsoft/site-utilities@0.6.3) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.6.2](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.1...@microsoft/site-utilities@0.6.2) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.0...@microsoft/site-utilities@0.6.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+# [0.6.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.5.1...@microsoft/site-utilities@0.6.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+
+
+### Features
+
+* pull in and convert vscode native html component definitions ([#4070](https://github.com/Microsoft/fast/issues/4070)) ([dfa12c8](https://github.com/Microsoft/fast/commit/dfa12c811f576f0016000d08c63ab197a02215b5))
+
+
+
+
+
 ## [0.5.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.5.0...@microsoft/site-utilities@0.5.1) (2020-10-14)
 
 

@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "1.11.1",
+  "version": "1.14.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -36,7 +36,9 @@
     "build-storybook": "build-storybook",
     "generate-default-palettes": "node -r esm build/generate-default-palettes.js",
     "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node -r esm build/generate-open-ui-definition",
-    "test": "yarn test-chrome:verbose && yarn doc:ci",
+    "test": "yarn test-chrome:verbose && yarn doc:ci && yarn test:diff",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
+    "test:diff:error": "echo \"You have untracked files, try running yarn prepare.\" && exit 1",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:watch": "mocha --reporter min --exit dist/esm/__test__/setup-node.js --watch './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
@@ -51,7 +53,7 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
-    "@microsoft/fast-tooling": "^0.11.1",
+    "@microsoft/fast-tooling": "^0.14.0",
     "@storybook/addons": "^5.1.3",
     "@storybook/cli": "^5.1.3",
     "@storybook/html": "^5.1.3",
@@ -75,7 +77,7 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
     "karma-coverage-istanbul-reporter": "^3.0.0",
-    "karma-firefox-launcher": "^1.3.0",
+    "karma-firefox-launcher": "^2.1.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-source-map-support": "^1.4.0",
@@ -100,9 +102,9 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.0",
-    "@microsoft/fast-element": "^0.19.1",
-    "@microsoft/fast-foundation": "^1.8.1",
-    "@microsoft/fast-web-utilities": "^4.6.1",
+    "@microsoft/fast-element": "^0.21.1",
+    "@microsoft/fast-foundation": "^1.11.1",
+    "@microsoft/fast-web-utilities": "^4.7.0",
     "tslib": "^1.13.0"
   },
   "peerDependencies": {

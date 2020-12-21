@@ -173,6 +173,11 @@ export function compileTemplate(template: HTMLTemplateElement, directives: Reado
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
 // @public
+export type Constructable<T = {}> = {
+    new (...args: any[]): T;
+};
+
+// @public
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
@@ -269,6 +274,9 @@ export interface ElementViewTemplate {
 //
 // @internal
 export const emptyArray: readonly never[];
+
+// @public
+export function enableArrayObservation(): void;
 
 // @public
 export class ExecutionContext<TParent = any, TGrandparent = any> {
@@ -425,8 +433,6 @@ export function repeat<TSource = any, TItem = any>(itemsBinding: Binding<TSource
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
-    // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
-    //
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
@@ -462,6 +468,13 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
 
 // @public
 export interface SlottedBehaviorOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
+}
+
+// @public
+export interface Splice {
+    addedCount: number;
+    index: number;
+    removed: any[];
 }
 
 // @public

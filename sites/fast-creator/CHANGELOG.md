@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.4.2...@microsoft/fast-creator@0.4.3) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
+## [0.4.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.4.1...@microsoft/fast-creator@0.4.2) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
+## [0.4.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.4.0...@microsoft/fast-creator@0.4.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
+# [0.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.3.4...@microsoft/fast-creator@0.4.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+
+
+### Features
+
+* extend the creator using the site-utilities Editor abstract class ([#4014](https://github.com/Microsoft/fast/issues/4014)) ([66dc138](https://github.com/Microsoft/fast/commit/66dc13878a143bc9a565f3d05d0611a6f6e666b7)), closes [#3564](https://github.com/Microsoft/fast/issues/3564)
+
+
+
+
+
 ## [0.3.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.3.3...@microsoft/fast-creator@0.3.4) (2020-10-14)
 
 **Note:** Version bump only for package @microsoft/fast-creator

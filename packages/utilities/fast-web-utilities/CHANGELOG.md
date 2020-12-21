@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.6.1...@microsoft/fast-web-utilities@4.7.0) (2020-12-16)
+
+
+### Features
+
+* add standard event types as exported strings ([#4161](https://github.com/Microsoft/fast/issues/4161)) ([f2d9087](https://github.com/Microsoft/fast/commit/f2d9087296401d613ff4aa85d8eb4c0d54e73be0))
+
+
+
+
+
 ## [4.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.6.0...@microsoft/fast-web-utilities@4.6.1) (2020-10-14)
 
 **Note:** Version bump only for package @microsoft/fast-web-utilities

@@ -1,21 +1,65 @@
-import { expect } from "chai";
-import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
+import { assert, expect } from "chai";
+import { css, DOM, customElement, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { Tab, TabTemplate } from "../tab";
+import { TabPanel, TabPanelTemplate } from "../tab-panel";
+import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
+
+@customElement({
+    name: "fast-tab",
+    template: TabTemplate,
+})
+class FASTTab extends Tab {}
+
+@customElement({
+    name: "fast-tab-panel",
+    template: TabPanelTemplate,
+})
+class FASTTabPanel extends TabPanel {}
 
 @customElement({
     name: "fast-tabs",
     template,
+    styles: css`
+        .activeIndicatorTransition {
+            transition: transform 1ms;
+        }
+    `,
 })
 class FASTTabs extends Tabs {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
 
-    return { element, connect, disconnect };
+    for (let i = 1; i < 4; i++) {
+        const tab = document.createElement("fast-tab") as FASTTab;
+        tab.id = `tab${i}`;
+
+        const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
+        panel.id = `panel${i}`;
+        element.appendChild(panel);
+        element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+    }
+
+    const [tabPanel1, tabPanel2, tabPanel3] = Array.from(
+        element.querySelectorAll("fast-tab-panel")
+    );
+    const [tab1, tab2, tab3] = Array.from(element.querySelectorAll("fast-tab"));
+
+    return {
+        element,
+        connect,
+        disconnect,
+        tab1,
+        tab2,
+        tab3,
+        tabPanel1,
+        tabPanel2,
+        tabPanel3,
+    };
 }
 
-// TODO: Need to add tests for keyboard handling, activeIndicator position, and focus managemen
+// TODO: Need to add tests for keyboard handling, activeIndicator position, and focus management
 describe("Tabs", () => {
     it("should have an internal element with a role of `tablist`", async () => {
         const { element, connect, disconnect } = await setup();
@@ -32,7 +76,7 @@ describe("Tabs", () => {
         const { element, connect, disconnect } = await setup();
         await connect();
 
-        expect(element.orientation).to.equal(`${TabsOrientation.horizontal}`);
+        expect(element.orientation).to.equal(TabsOrientation.horizontal);
 
         await disconnect();
     });
@@ -43,15 +87,13 @@ describe("Tabs", () => {
 
         await connect();
 
-        expect(element.classList.contains(`${TabsOrientation.horizontal}`)).to.equal(
-            true
-        );
+        expect(element.classList.contains(TabsOrientation.horizontal)).to.equal(true);
 
         element.orientation = TabsOrientation.vertical;
 
         await DOM.nextUpdate();
 
-        expect(element.classList.contains(`${TabsOrientation.vertical}`)).to.equal(true);
+        expect(element.classList.contains(TabsOrientation.vertical)).to.equal(true);
         await disconnect();
     });
 
@@ -193,234 +235,121 @@ describe("Tabs", () => {
 
     describe("active tab", () => {
         it("should set an `aria-selected` attribute on the active tab when `activeId` is provided", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel>
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tab2 } = await setup();
 
             await connect();
 
-            expect(
-                element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-selected")
-            ).to.equal("true");
+            element.activeid = "tab2";
+
+            expect(tab2.getAttribute("aria-selected")).to.equal("true");
 
             await disconnect();
         });
 
         it("should default the first tab as the active index if `activeId` is NOT provided", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs>
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel>
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { connect, disconnect, tab1 } = await setup();
 
             await connect();
 
-            expect(
-                element.querySelector("fast-tab")?.getAttribute("aria-selected")
-            ).to.equal("true");
+            expect(tab1.getAttribute("aria-selected")).to.equal("true");
 
             await disconnect();
         });
 
         it("should set an `aria-selected` attribute on the active tab when `activeId` is provided", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel>
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tab2 } = await setup();
+
+            element.activeid = "tab2";
 
             await connect();
 
-            expect(
-                element.querySelectorAll("fast-tab")[1]?.getAttribute("aria-selected")
-            ).to.equal("true");
+            expect(tab2.getAttribute("aria-selected")).to.equal("true");
 
             await disconnect();
         });
 
         it("should update `aria-selected` attribute on the active tab when `activeId` is updated", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel id="panel01">
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel02">
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel03">
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tab2, tab3 } = await setup();
+
+            element.setAttribute("activeId", "tab2");
 
             await connect();
 
-            element.setAttribute("activeId", "03");
+            expect(tab2.getAttribute("aria-selected")).to.equal("true");
 
-            expect(
-                element.querySelectorAll("fast-tab")[2]?.getAttribute("aria-selected")
-            ).to.equal("true");
+            element.setAttribute("activeId", "tab3");
+
+            expect(tab3.getAttribute("aria-selected")).to.equal("true");
 
             await disconnect();
         });
 
         it("should skip updating the active indicator if click twice on the same tab", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs>
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel id="panel01">
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel02">
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel03">
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tab2 } = await setup();
 
             await connect();
 
-            const secondTab = element.querySelectorAll("fast-tab")[1] as HTMLElement;
-            expect(secondTab).not.to.be.undefined;
-            [0, 1].forEach(() => {
-                secondTab.click();
-                expect(element.shadowRoot).not.to.be.undefined;
-                expect(
-                    element.shadowRoot
-                        ?.querySelector('[part="activeIndicator"]')
-                        ?.classList.contains("activeIndicatorTransition")
-                ).to.be.false;
+            const activeIndicator = element.shadowRoot!.querySelector(
+                '[part="activeIndicator"]'
+            )!;
+
+            await new Promise(resolve => {
+                activeIndicator.addEventListener("transitionend", resolve, {
+                    once: true,
+                });
+
+                tab2.click();
+
+                expect(activeIndicator.classList.contains("activeIndicatorTransition")).to
+                    .be.true;
             });
+
+            await DOM.nextUpdate();
+
+            tab2.click();
+
+            expect(activeIndicator.classList.contains("activeIndicatorTransition")).to.be
+                .false;
 
             await disconnect();
         });
     });
 
     describe("active tabpanel", () => {
-        it("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeId` is provided", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel id="panel01">
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel02">
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel03">
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+        it("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async () => {
+            const { element, connect, disconnect, tabPanel2 } = await setup();
 
             await connect();
 
-            expect(
-                element
-                    .querySelectorAll("fast-tab-panel")[1]
-                    ?.getAttribute("aria-labelledby")
-            ).to.equal("02");
+            element.activeid = "tab2";
+
+            expect(tabPanel2.getAttribute("aria-labelledby")).to.equal("tab2");
 
             await disconnect();
         });
 
         it("should set an attribute of hidden if the tabpanel is not active", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel id="panel01">
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel02">
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel03">
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tabPanel1, tabPanel3 } = await setup();
 
             await connect();
 
-            expect(
-                element.querySelectorAll("fast-tab-panel")[0]?.hasAttribute("hidden")
-            ).to.equal(true);
-            expect(
-                element.querySelectorAll("fast-tab-panel")[2]?.hasAttribute("hidden")
-            ).to.equal(true);
+            element.activeid = "tab2";
+
+            expect(tabPanel1.hasAttribute("hidden")).to.equal(true);
+
+            expect(tabPanel3.hasAttribute("hidden")).to.equal(true);
 
             await disconnect();
         });
 
         it("should NOT set an attribute of hidden if the tabpanel is active", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTTabs>`
-                <fast-tabs activeId="02">
-                    <fast-tab id="01">Tab one</fast-tab>
-                    <fast-tab id="02">Tab two</fast-tab>
-                    <fast-tab id="03">Tab three</fast-tab>
-                    <fast-tab-panel id="panel01">
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel02">
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel id="panel03">
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect, tabPanel2 } = await setup();
 
             await connect();
 
-            expect(
-                element.querySelectorAll("fast-tab-panel")[1]?.hasAttribute("hidden")
-            ).to.equal(false);
+            element.activeid = "tab2";
+
+            expect(tabPanel2.hasAttribute("hidden")).to.equal(false);
 
             await disconnect();
         });

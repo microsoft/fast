@@ -18,9 +18,11 @@ class FASTSlider extends Slider {}
 class FASTSliderLabel extends SliderLabel {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
+    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(
+        "fast-slider"
+    );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 // TODO: Need to add tests for keyboard handling, position, and focus management
@@ -351,54 +353,73 @@ describe("Slider", () => {
     });
 
     describe("when the owning form's reset() method is invoked", () => {
-        it("should reset it's value property to an empty string if no value attribute is set", () => {
-            const element = document.createElement("fast-slider") as FASTSlider;
+        it("should reset its value property to an empty string if no value attribute is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "3";
 
-            assert(element.getAttribute("value") === null);
-            assert(element.value === "3");
+            assert.strictEqual(element.getAttribute("value"), null);
+            assert.strictEqual(element.value, "3");
 
             form.reset();
 
-            assert(element.value === "5");
+            assert.strictEqual(element.value, "5");
+
+            await disconnect();
         });
 
-        it("should reset it's value property to the value of the value attribute if it is set", () => {
-            const element = document.createElement("fast-slider") as FASTSlider;
+        it("should reset its value property to the value of the value attribute if it is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.setAttribute("value", "7");
             element.value = "8";
 
-            assert(element.getAttribute("value") === "7");
-            assert(element.value === "8");
+            assert.strictEqual(element.getAttribute("value"), "7");
+            assert.strictEqual(element.value, "8");
 
             form.reset();
 
-            assert(element.value === "7");
+            assert.strictEqual(element.value, "7");
+
+            await disconnect();
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-slider") as FASTSlider;
+        it("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "7";
+
             element.setAttribute("value", "8");
 
-            assert(element.value === "7");
+            assert.strictEqual(element.value, "7");
 
             form.reset();
 
-            assert(element.value === "8");
+            assert.strictEqual(element.value, "8");
 
             element.setAttribute("value", "3");
 
-            assert(element.value === "3");
+            assert.strictEqual(element.value, "3");
+
+            await disconnect();
         });
     });
 });

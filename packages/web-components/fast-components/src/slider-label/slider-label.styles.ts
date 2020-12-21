@@ -7,23 +7,25 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SliderLabelStyles = css`
-    ${display("block")} :host {
-        color: ${neutralForegroundRestBehavior.var};
-        fill: currentcolor;
-    }
-    .root {
-        position: absolute;
-        display: grid;
-    }
-    :host([orientation="horizontal"]) {
+export const horizontalSliderStyles = css`
+    :host {
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
         height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
         width: auto;
     }
-    :host([orientation="vertical"]) {
+    .container {
+        grid-template-rows: auto auto;
+        grid-template-columns: 0;
+    }
+    .label {
+        margin: 2px 0;
+    }
+`;
+
+export const verticalSliderStyles = css`
+    :host {
         justify-self: start;
         grid-column: 2;
         margin-left: 2px;
@@ -31,39 +33,46 @@ export const SliderLabelStyles = css`
         width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
     }
     .container {
-        display: grid;
-        justify-self: center;
-    }
-    :host([orientation="horizontal"]) .container {
-        grid-template-rows: auto auto;
-        grid-template-columns: 0;
-    }
-    :host([orientation="vertical"]) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
         min-width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
+    }
+    .mark {
+        transform: rotate(90deg);
+        align-self: center;
+    }
+    .label {
+        margin-left: calc((var(--design-unit) / 2) * 3px);
+        align-self: center;
+    }
+`;
+
+export const SliderLabelStyles = css`
+    ${display("block")} :host {
+        font-family: var(--body-font);
+        color: ${neutralForegroundRestBehavior.var};
+        fill: currentcolor;
+    }
+    .root {
+        position: absolute;
+        display: grid;
+    }
+    .container {
+        display: grid;
+        justify-self: center;
     }
     .label {
         justify-self: center;
         align-self: center;
         white-space: nowrap;
         max-width: 30px;
-        margin: 2px 0;
     }
     .mark {
         width: calc((var(--design-unit) / 4) * 1px);
         height: calc(${heightNumber} * 0.25 * 1px);
         background: ${neutralOutlineRestBehavior.var};
         justify-self: center;
-    }
-    :host([orientation="vertical"]) .mark {
-        transform: rotate(90deg);
-        align-self: center;
-    }
-    :host([orientation="vertical"]) .label {
-        margin-left: calc((var(--design-unit) / 2) * 2px);
-        align-self: center;
     }
     :host(.disabled) {
         opacity: var(--disabled-opacity);

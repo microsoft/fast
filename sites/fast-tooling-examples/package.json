@@ -3,7 +3,7 @@
   "description": "A website of tooling examples from the FAST tooling packages",
   "sideEffects": false,
   "private": true,
-  "version": "0.4.7",
+  "version": "0.4.11",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -27,7 +27,7 @@
     "test": "yarn convert:readme && yarn eslint && yarn build"
   },
   "devDependencies": {
-    "@microsoft/site-utilities": "^0.5.1",
+    "@microsoft/site-utilities": "^0.6.3",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
@@ -49,9 +49,9 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.11.1",
-    "@microsoft/fast-tooling": "^0.11.1",
-    "@microsoft/fast-tooling-react": "^2.4.1",
+    "@microsoft/fast-components": "^1.14.1",
+    "@microsoft/fast-tooling": "^0.14.0",
+    "@microsoft/fast-tooling-react": "^2.5.2",
     "focus-visible": "^4.1.5",
     "react": "^16.13.1",
     "react-dnd": "^9.0.0",

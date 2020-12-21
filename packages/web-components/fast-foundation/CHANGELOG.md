@@ -3,6 +3,89 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.0...@microsoft/fast-foundation@1.11.1) (2020-12-17)
+
+
+### Bug Fixes
+
+* update applyMixin function to ensure metadata for attrs are copied and applied correctly ([#4200](https://github.com/Microsoft/fast/issues/4200)) ([dcbd6a5](https://github.com/Microsoft/fast/commit/dcbd6a57d73691ced50c22db2b909ee6b6f96e1f))
+
+
+
+
+
+# [1.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.10.0...@microsoft/fast-foundation@1.11.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* anchored region default viewport ([#4146](https://github.com/Microsoft/fast/issues/4146)) ([a6806e9](https://github.com/Microsoft/fast/commit/a6806e9ed289e7ce570a542de5da9b6e0ba9e60b))
+* select should match native behavior for value changes and change event emitting ([#4176](https://github.com/Microsoft/fast/issues/4176)) ([07f5eaa](https://github.com/Microsoft/fast/commit/07f5eaa93b907cc4f712c954e8f6669c391a8d7f))
+* **dialog:** accidental improperly bound this in callback ([#4168](https://github.com/Microsoft/fast/issues/4168)) ([9d54fe9](https://github.com/Microsoft/fast/commit/9d54fe9c078cd3e16291a8c599d8d53f0df52670))
+* **fast-foundation:** ensure global aria attrs are applied ([#4172](https://github.com/Microsoft/fast/issues/4172)) ([dd3a1c9](https://github.com/Microsoft/fast/commit/dd3a1c9f9f5c96c1d7eb67a1f57f5f72136791cc))
+* disabled menu items should be focusable ([#4154](https://github.com/Microsoft/fast/issues/4154)) ([b971a18](https://github.com/Microsoft/fast/commit/b971a18281ba33f094a8dbc59a799a3e9c82ccb8))
+* ensure DSP subscribes to upstream DSP properties ([#4143](https://github.com/Microsoft/fast/issues/4143)) ([b403909](https://github.com/Microsoft/fast/commit/b403909282c115c99bf3dc66d5a9ff8715086dc7))
+* formassociated tests on firefox ([#4158](https://github.com/Microsoft/fast/issues/4158)) ([b3266fb](https://github.com/Microsoft/fast/commit/b3266fb5d12a200aeee5afb2ae44979db3c051f6))
+* remove shadowRoot in direction utility ([#4157](https://github.com/Microsoft/fast/issues/4157)) ([041ae70](https://github.com/Microsoft/fast/commit/041ae70ba3a8ba7280b1a571ba8952f443e724e2))
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+* add default slot changed to anchor ([#4159](https://github.com/Microsoft/fast/issues/4159)) ([8a264ec](https://github.com/Microsoft/fast/commit/8a264ec2a22d4f02e901a260b85f77c381a52231))
+* add loaded event to anchored region ([#4165](https://github.com/Microsoft/fast/issues/4165)) ([b54ac1b](https://github.com/Microsoft/fast/commit/b54ac1b09ccff95fc58ab84204a138dbfac9b8ba))
+
+
+
+
+
+# [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.9.0...@microsoft/fast-foundation@1.10.0) (2020-12-02)
+
+
+### Bug Fixes
+
+* fix type error in custom property manager running on safari ([#4147](https://github.com/Microsoft/fast/issues/4147)) ([6320973](https://github.com/Microsoft/fast/commit/6320973ff0e14165b2f957b42a8feee1f71af9c1))
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
+# [1.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.1...@microsoft/fast-foundation@1.9.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* active indicator losing track if double click ([#4085](https://github.com/Microsoft/fast/issues/4085)) ([fcecc75](https://github.com/Microsoft/fast/commit/fcecc759ed1cdddd3a5c73d38514dfce7edf432d))
+* active indicator no longer animating ([#4126](https://github.com/Microsoft/fast/issues/4126)) ([49e2608](https://github.com/Microsoft/fast/commit/49e26089c9275c5794af5d4e47427237363d333f))
+* corrects ElementInternals feature detection ([#4087](https://github.com/Microsoft/fast/issues/4087)) ([58b3e54](https://github.com/Microsoft/fast/commit/58b3e540c77eafa95ade021fd90b184d6f929a50))
+* ensure form elements reset when the parent form's reset() method is invoked. ([#4075](https://github.com/Microsoft/fast/issues/4075)) ([f19894e](https://github.com/Microsoft/fast/commit/f19894e746f0e1b7cffcce9d1269b9e6080f723a))
+* ensure StyleElementCustomPropertyManager works with disconnected elements ([#4112](https://github.com/Microsoft/fast/issues/4112)) ([e903bfa](https://github.com/Microsoft/fast/commit/e903bfa38b3ce2e8689c4eef4b552d9e7f8a9b88))
+* ensure tree items with children have a value for aria-expanded ([#4114](https://github.com/Microsoft/fast/issues/4114)) ([e7a7553](https://github.com/Microsoft/fast/commit/e7a7553c8e2fb205927d4d913de0d2790720ced7))
+* fast-slider sets value to NaN if developer tools open ([#4033](https://github.com/Microsoft/fast/issues/4033)) ([35d6903](https://github.com/Microsoft/fast/commit/35d6903cdc73fb4c5283bdfc5dcb0955b09d9b4c))
+* handle initially set value in FormAssociated ([#4047](https://github.com/Microsoft/fast/issues/4047)) ([bf7e874](https://github.com/Microsoft/fast/commit/bf7e87403883efcd438902bbfb43a74491a47b3f))
+* move component options to independent modules ([#4048](https://github.com/Microsoft/fast/issues/4048)) ([f8a88a8](https://github.com/Microsoft/fast/commit/f8a88a8b14b2eee4dd26619f7927be73bea94277))
+* revert radio to using class selector instead of attr, update slider-label to use internal styles for orientation ([#4108](https://github.com/Microsoft/fast/issues/4108)) ([c6ecedf](https://github.com/Microsoft/fast/commit/c6ecedf8427caf686bfebe89e78d2a6c2b7153f2))
+
+
+### Features
+
+* Add disabled attr to fast-tab ([#4013](https://github.com/Microsoft/fast/issues/4013)) ([caef4b1](https://github.com/Microsoft/fast/commit/caef4b15ce729ab1c1762bf0578edcf4d809351c)), closes [#4017](https://github.com/Microsoft/fast/issues/4017)
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+* add show and hide methods to dialog ([#4030](https://github.com/Microsoft/fast/issues/4030)) ([00b69ff](https://github.com/Microsoft/fast/commit/00b69fff994035e769906563190cca86e3ae61f7))
+* convert FormAssociated to a constructable function ([#4115](https://github.com/Microsoft/fast/issues/4115)) ([da8d54b](https://github.com/Microsoft/fast/commit/da8d54b5a057812622471e1261200b8f9b290d12))
+* enable shared CSSStyleSheets in DesignSystemProvider ([#4065](https://github.com/Microsoft/fast/issues/4065)) ([5579c2e](https://github.com/Microsoft/fast/commit/5579c2ef424f8f63e00c8e29b5c4d43acb32c6db))
+
+
+
+
+
 ## [1.8.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.0...@microsoft/fast-foundation@1.8.1) (2020-10-14)
 
 

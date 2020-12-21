@@ -18,13 +18,38 @@ declare global {
     }
 }
 
+/**
+ * Defines the base behavior of an anchored region on a particular axis
+ *
+ * @beta
+ */
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+
+/**
+ * Defines the scaling behavior of an anchored region on a particular axis
+ *
+ * @beta
+ */
 export type AxisScalingMode = "anchor" | "fill" | "content";
-export type GbcrUsage = "always" | "never" | "default";
+
+/**
+ * Defines the horizontal positioning options for an anchored region
+ *
+ * @beta
+ */
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
+
+/**
+ * Defines the vertical positioning options for an anchored region
+ *
+ * @beta
+ */
 export type VerticalPosition = "top" | "bottom" | "unset";
 
-export interface Dimension {
+/**
+ * @internal
+ */
+interface Dimension {
     height: number;
     width: number;
 }
@@ -32,42 +57,46 @@ export interface Dimension {
 /**
  * describes the possible horizontal positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
-enum AnchoredRegionHorizontalPositionLabel {
-    left = "left",
-    insetLeft = "insetLeft",
-    insetRight = "insetRight",
-    right = "right",
-    undefined = "undefined",
-}
+type AnchoredRegionHorizontalPositionLabel =
+    | "left"
+    | "insetLeft"
+    | "insetRight"
+    | "right"
+    | "undefined";
 
 /**
  * describes the possible vertical positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
-enum AnchoredRegionVerticalPositionLabel {
-    top = "top",
-    insetTop = "insetTop",
-    insetBottom = "insetBottom",
-    bottom = "bottom",
-    undefined = "undefined",
-}
+type AnchoredRegionVerticalPositionLabel =
+    | "top"
+    | "insetTop"
+    | "insetBottom"
+    | "bottom"
+    | "undefined";
 
 /**
- * location enum for transform origin settings
+ * describes possible transform origin settings
+ *
+ * @internal
  */
-enum Location {
-    top = "top",
-    left = "left",
-    right = "right",
-    bottom = "bottom",
-}
+type Location = "top" | "left" | "right" | "bottom";
 
+/**
+ * An anchored region Custom HTML Element.
+ *
+ * @beta
+ */
 export class AnchoredRegion extends FASTElement {
     /**
      * The HTML id of the anchor element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -82,7 +111,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML id of the viewport element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -100,7 +129,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-positioning-mode
      */
@@ -113,7 +142,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default horizontal position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-default-position
      */
@@ -126,7 +155,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-inset
      */
@@ -140,12 +169,12 @@ export class AnchoredRegion extends FASTElement {
      * How narrow the space allocated to the default position has to be before the widest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-threshold
      */
     @attr({ attribute: "horizontal-threshold" })
-    public horizontalThreshold: string = "";
+    public horizontalThreshold: number;
     private horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -153,7 +182,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the width of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-scaling
      */
@@ -169,7 +198,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-positioning-mode
      */
@@ -182,7 +211,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default vertical position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-default-position
      */
@@ -195,7 +224,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-inset
      */
@@ -209,12 +238,12 @@ export class AnchoredRegion extends FASTElement {
      * How short the space allocated to the default position has to be before the tallest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-threshold
      */
     @attr({ attribute: "vertical-threshold" })
-    public verticalThreshold: string = "";
+    public verticalThreshold: number;
     private verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -222,7 +251,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the height of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-scaling
      */
@@ -237,7 +266,7 @@ export class AnchoredRegion extends FASTElement {
      * Otherwise the region uses "position: absolute".
      * Fixed placement allows the region to break out of parent containers,
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: fixed-placement
      */
@@ -255,7 +284,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the anchor
      *
-     * @public
+     * @beta
      */
     @observable
     public anchorElement: HTMLElement | null = null;
@@ -266,7 +295,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @public
+     * @beta
      */
     @observable
     public viewportElement: HTMLElement | null = null;
@@ -474,8 +503,8 @@ export class AnchoredRegion extends FASTElement {
         this.regionWidth = "fit-content";
         this.regionHeight = "fit-content";
 
-        this.xTransformOrigin = Location.left;
-        this.yTransformOrigin = Location.top;
+        this.xTransformOrigin = "left";
+        this.yTransformOrigin = "top";
 
         this.viewportRect = null;
         this.regionDimension = { height: 0, width: 0 };
@@ -487,8 +516,8 @@ export class AnchoredRegion extends FASTElement {
         this.anchorHeight = 0;
         this.anchorWidth = 0;
 
-        this.verticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
-        this.horizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
+        this.verticalPosition = "undefined";
+        this.horizontalPosition = "undefined";
 
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
@@ -579,7 +608,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
-            return null;
+            return document.documentElement;
         }
 
         return document.getElementById(this.viewport);
@@ -654,10 +683,6 @@ export class AnchoredRegion extends FASTElement {
             height: regionRect.height,
             width: regionRect.width,
         };
-
-        if (this.viewportElement === null) {
-            this.viewportRect = regionEntry.rootBounds;
-        }
     };
 
     /**
@@ -731,10 +756,9 @@ export class AnchoredRegion extends FASTElement {
 
         this.pendingLayoutUpdate = false;
 
-        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
-            AnchoredRegionVerticalPositionLabel.undefined;
+        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel = "undefined";
         let desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
-            AnchoredRegionHorizontalPositionLabel.undefined;
+            "undefined";
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
             const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
@@ -771,26 +795,25 @@ export class AnchoredRegion extends FASTElement {
                 switch (dirCorrectedHorizontalDefaultPosition) {
                     case "left":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? AnchoredRegionHorizontalPositionLabel.insetLeft
-                            : AnchoredRegionHorizontalPositionLabel.left;
+                            ? "insetLeft"
+                            : "left";
                         break;
 
                     case "right":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? AnchoredRegionHorizontalPositionLabel.insetRight
-                            : AnchoredRegionHorizontalPositionLabel.right;
+                            ? "insetRight"
+                            : "right";
                         break;
                 }
             }
 
             const horizontalThreshold: number =
                 this.horizontalThreshold !== undefined
-                    ? Number(this.horizontalThreshold)
+                    ? this.horizontalThreshold
                     : this.regionDimension.width;
 
             if (
-                desiredHorizontalPosition ===
-                    AnchoredRegionHorizontalPositionLabel.undefined ||
+                desiredHorizontalPosition === "undefined" ||
                 (!(this.horizontalPositioningMode === "locktodefault") &&
                     this.getAvailableWidth(desiredHorizontalPosition) <
                         horizontalThreshold)
@@ -808,27 +831,24 @@ export class AnchoredRegion extends FASTElement {
             if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
-                        desiredVerticalPosition = this.verticalInset
-                            ? AnchoredRegionVerticalPositionLabel.insetTop
-                            : AnchoredRegionVerticalPositionLabel.top;
+                        desiredVerticalPosition = this.verticalInset ? "insetTop" : "top";
                         break;
 
                     case "bottom":
                         desiredVerticalPosition = this.verticalInset
-                            ? AnchoredRegionVerticalPositionLabel.insetBottom
-                            : AnchoredRegionVerticalPositionLabel.bottom;
+                            ? "insetBottom"
+                            : "bottom";
                         break;
                 }
             }
 
             const verticalThreshold: number =
                 this.verticalThreshold !== undefined
-                    ? Number(this.verticalThreshold)
+                    ? this.verticalThreshold
                     : this.regionDimension.height;
 
             if (
-                desiredVerticalPosition ===
-                    AnchoredRegionVerticalPositionLabel.undefined ||
+                desiredVerticalPosition === "undefined" ||
                 (!(this.verticalPositioningMode === "locktodefault") &&
                     this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
             ) {
@@ -854,10 +874,13 @@ export class AnchoredRegion extends FASTElement {
 
         this.updateRegionStyle();
 
-        this.initialLayoutComplete = true;
+        if (!this.initialLayoutComplete) {
+            this.initialLayoutComplete = true;
+            DOM.queueUpdate(() => this.$emit("loaded", this, { bubbles: false }));
+        }
 
         if (positionChanged) {
-            this.$emit("change");
+            this.$emit("positionchange", this, { bubbles: false });
         }
     };
 
@@ -866,39 +889,15 @@ export class AnchoredRegion extends FASTElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
-        this.classList.toggle(
-            "top",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.top
-        );
-        this.classList.toggle(
-            "bottom",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.bottom
-        );
-        this.classList.toggle(
-            "inset-top",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
-        );
-        this.classList.toggle(
-            "inset-bottom",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetBottom
-        );
+        this.classList.toggle("top", this.verticalPosition === "top");
+        this.classList.toggle("bottom", this.verticalPosition === "bottom");
+        this.classList.toggle("inset-top", this.verticalPosition === "insetTop");
+        this.classList.toggle("inset-bottom", this.verticalPosition === "insetBottom");
 
-        this.classList.toggle(
-            "left",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.left
-        );
-        this.classList.toggle(
-            "right",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.right
-        );
-        this.classList.toggle(
-            "inset-left",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetLeft
-        );
-        this.classList.toggle(
-            "inset-right",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetRight
-        );
+        this.classList.toggle("left", this.horizontalPosition === "left");
+        this.classList.toggle("right", this.horizontalPosition === "right");
+        this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
+        this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
@@ -939,26 +938,26 @@ export class AnchoredRegion extends FASTElement {
 
         let right: number | null = null;
         let left: number | null = null;
-        let xTransformOrigin: string = Location.left;
+        let xTransformOrigin: string = "left";
 
         switch (desiredHorizontalPosition) {
-            case AnchoredRegionHorizontalPositionLabel.left:
-                xTransformOrigin = Location.right;
+            case "left":
+                xTransformOrigin = "right";
                 right = layoutParentWidth - this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.insetLeft:
-                xTransformOrigin = Location.right;
+            case "insetLeft":
+                xTransformOrigin = "right";
                 right = layoutParentWidth - this.anchorWidth - this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.insetRight:
-                xTransformOrigin = Location.left;
+            case "insetRight":
+                xTransformOrigin = "left";
                 left = this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.right:
-                xTransformOrigin = Location.left;
+            case "right":
+                xTransformOrigin = "left";
                 left = this.anchorWidth + this.baseHorizontalOffset;
                 break;
         }
@@ -997,26 +996,26 @@ export class AnchoredRegion extends FASTElement {
 
         let top: number | null = null;
         let bottom: number | null = null;
-        let yTransformOrigin: string = Location.top;
+        let yTransformOrigin: string = "top";
 
         switch (desiredVerticalPosition) {
-            case AnchoredRegionVerticalPositionLabel.top:
-                yTransformOrigin = Location.bottom;
+            case "top":
+                yTransformOrigin = "bottom";
                 bottom = layoutParentHeight - this.baseVerticalOffset;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.insetTop:
-                yTransformOrigin = Location.bottom;
+            case "insetTop":
+                yTransformOrigin = "bottom";
                 bottom = layoutParentHeight - this.baseVerticalOffset - this.anchorHeight;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.insetBottom:
-                yTransformOrigin = Location.top;
+            case "insetBottom":
+                yTransformOrigin = "top";
                 top = this.baseVerticalOffset;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.bottom:
-                yTransformOrigin = Location.top;
+            case "bottom":
+                yTransformOrigin = "top";
                 top = this.baseVerticalOffset + this.anchorHeight;
                 break;
         }
@@ -1049,22 +1048,22 @@ export class AnchoredRegion extends FASTElement {
             this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
         } else {
             switch (this.horizontalPosition) {
-                case AnchoredRegionHorizontalPositionLabel.undefined:
+                case "undefined":
                     this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
                     break;
-                case AnchoredRegionHorizontalPositionLabel.left:
+                case "left":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorLeft - regionRect.right);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.insetLeft:
+                case "insetLeft":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorRight - regionRect.right);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.insetRight:
+                case "insetRight":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorLeft - regionRect.left);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.right:
+                case "right":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorRight - regionRect.left);
                     break;
@@ -1075,22 +1074,22 @@ export class AnchoredRegion extends FASTElement {
             this.baseVerticalOffset = this.anchorTop - regionRect.top;
         } else {
             switch (this.verticalPosition) {
-                case AnchoredRegionVerticalPositionLabel.undefined:
+                case "undefined":
                     this.baseVerticalOffset = this.anchorTop - regionRect.top;
                     break;
-                case AnchoredRegionVerticalPositionLabel.top:
+                case "top":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorTop - regionRect.bottom);
                     break;
-                case AnchoredRegionVerticalPositionLabel.insetTop:
+                case "insetTop":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorBottom - regionRect.bottom);
                     break;
-                case AnchoredRegionVerticalPositionLabel.insetBottom:
+                case "insetBottom":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorTop - regionRect.top);
                     break;
-                case AnchoredRegionVerticalPositionLabel.bottom:
+                case "bottom":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorBottom - regionRect.top);
                     break;
@@ -1103,16 +1102,10 @@ export class AnchoredRegion extends FASTElement {
      */
     private getHorizontalPositioningOptions = (): AnchoredRegionHorizontalPositionLabel[] => {
         if (this.horizontalInset) {
-            return [
-                AnchoredRegionHorizontalPositionLabel.insetLeft,
-                AnchoredRegionHorizontalPositionLabel.insetRight,
-            ];
+            return ["insetLeft", "insetRight"];
         }
 
-        return [
-            AnchoredRegionHorizontalPositionLabel.left,
-            AnchoredRegionHorizontalPositionLabel.right,
-        ];
+        return ["left", "right"];
     };
 
     /**
@@ -1120,16 +1113,10 @@ export class AnchoredRegion extends FASTElement {
      */
     private getVerticalPositioningOptions = (): AnchoredRegionVerticalPositionLabel[] => {
         if (this.verticalInset) {
-            return [
-                AnchoredRegionVerticalPositionLabel.insetTop,
-                AnchoredRegionVerticalPositionLabel.insetBottom,
-            ];
+            return ["insetTop", "insetBottom"];
         }
 
-        return [
-            AnchoredRegionVerticalPositionLabel.top,
-            AnchoredRegionVerticalPositionLabel.bottom,
-        ];
+        return ["top", "bottom"];
     };
 
     /**
@@ -1144,13 +1131,13 @@ export class AnchoredRegion extends FASTElement {
                 this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
 
             switch (positionOption) {
-                case AnchoredRegionHorizontalPositionLabel.left:
+                case "left":
                     return spaceLeft;
-                case AnchoredRegionHorizontalPositionLabel.insetLeft:
+                case "insetLeft":
                     return spaceLeft + this.anchorWidth;
-                case AnchoredRegionHorizontalPositionLabel.insetRight:
+                case "insetRight":
                     return spaceRight + this.anchorWidth;
-                case AnchoredRegionHorizontalPositionLabel.right:
+                case "right":
                     return spaceRight;
             }
         }
@@ -1170,13 +1157,13 @@ export class AnchoredRegion extends FASTElement {
                 this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
 
             switch (positionOption) {
-                case AnchoredRegionVerticalPositionLabel.top:
+                case "top":
                     return spaceAbove;
-                case AnchoredRegionVerticalPositionLabel.insetTop:
+                case "insetTop":
                     return spaceAbove + this.anchorHeight;
-                case AnchoredRegionVerticalPositionLabel.insetBottom:
+                case "insetBottom":
                     return spaceBelow + this.anchorHeight;
-                case AnchoredRegionVerticalPositionLabel.bottom:
+                case "bottom":
                     return spaceBelow;
             }
         }

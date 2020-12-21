@@ -21,6 +21,7 @@ import {
     TextareaControl,
 } from "../index";
 import { DataType } from "@microsoft/fast-tooling";
+import defaultStrings from "../form.strings";
 
 const TestSectionControl: any = (
     props: React.PropsWithChildren<SectionControlProps>
@@ -92,6 +93,7 @@ const sectionControlProps: SectionControlProps = {
     updateValidity: jest.fn(),
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

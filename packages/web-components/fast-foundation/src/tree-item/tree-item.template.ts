@@ -14,7 +14,8 @@ export const TreeItemTemplate = html<TreeItem>`
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
-        aria-expanded="${x => (x.expanded ? x.expanded : void 0)}"
+        aria-expanded="${x =>
+            x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"

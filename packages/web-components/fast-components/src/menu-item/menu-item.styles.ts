@@ -19,6 +19,7 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        font-family: var(--body-font);
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
@@ -119,6 +120,7 @@ export const MenuItemStyles = css`
         css`
             :host {
                 border-color: transparent;
+                color: ${SystemColors.ButtonText};
                 forced-color-adjust: none;
             }
             :host(:hover) {

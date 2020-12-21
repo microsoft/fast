@@ -417,7 +417,10 @@ export class Tooltip extends FASTElement {
             return;
         }
         if (this.region !== null && this.region !== undefined) {
-            (this.region as any).removeEventListener("change", this.handlePositionChange);
+            (this.region as any).removeEventListener(
+                "positionchange",
+                this.handlePositionChange
+            );
             this.region.viewportElement = null;
             this.region.anchorElement = null;
         }
@@ -436,6 +439,9 @@ export class Tooltip extends FASTElement {
         this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
-        (this.region as any).addEventListener("change", this.handlePositionChange);
+        (this.region as any).addEventListener(
+            "positionchange",
+            this.handlePositionChange
+        );
     };
 }

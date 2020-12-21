@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.0...@microsoft/fast-component-explorer@0.15.1) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.1...@microsoft/fast-component-explorer@0.15.0) (2020-12-16)
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+
+
+
+
+
+## [0.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.0...@microsoft/fast-component-explorer@0.14.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.13.1...@microsoft/fast-component-explorer@0.14.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+
+
+### Features
+
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+
+
+
+
+
 ## [0.13.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.13.0...@microsoft/fast-component-explorer@0.13.1) (2020-10-14)
 
 

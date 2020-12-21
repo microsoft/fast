@@ -210,8 +210,21 @@ export class DesignSystemProvider extends FASTElement
             DesignSystemProvider.isDesignSystemProvider(next)
         ) {
             const notifier = Observable.getNotifier(next.designSystem);
+            const localAccessors = Observable.getAccessors(this.designSystem).reduce(
+                (prev, next) => {
+                    return { ...prev, [next.name]: next };
+                },
+                {}
+            );
+            const localNotifier = Observable.getNotifier(this.designSystem);
             Observable.getAccessors(next.designSystem).forEach(x => {
                 notifier.subscribe(this.providerDesignSystemChangeHandler, x.name);
+
+                // Hook up parallel design system property to react to changes to this property
+                if (!localAccessors[x.name]) {
+                    observable(this.designSystem, x.name);
+                    localNotifier.subscribe(this.localDesignSystemChangeHandler, x.name);
+                }
             });
 
             this.syncDesignSystemWithProvider();

@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { Checkbox, CheckboxTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 @customElement({
@@ -11,9 +11,11 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 class FASTCheckbox extends Checkbox {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTCheckbox>("fast-checkbox");
+    const { connect, disconnect, element, parent } = await fixture<FASTCheckbox>(
+        "fast-checkbox"
+    );
 
-    return { element, connect, disconnect };
+    return { connect, disconnect, element, parent };
 }
 
 describe("Checkbox", () => {
@@ -276,19 +278,16 @@ describe("Checkbox", () => {
     describe("events", () => {
         it("should fire an event on click", async () => {
             const { element, connect, disconnect } = await setup();
-            let wasClicked: boolean = false;
 
             await connect();
 
-            element.addEventListener("click", e => {
-                e.preventDefault();
+            const wasClicked = await new Promise(resolve => {
+                element.addEventListener("click", () => resolve(true));
 
-                wasClicked = true;
+                element.click();
+
+                DOM.queueUpdate(() => resolve(false));
             });
-
-            await DOM.nextUpdate();
-
-            element.click();
 
             expect(wasClicked).to.equal(true);
 
@@ -297,7 +296,7 @@ describe("Checkbox", () => {
 
         it("should fire an event when spacebar is invoked", async () => {
             const { element, connect, disconnect } = await setup();
-            let wasInvoked: boolean = false;
+
             const event = new KeyboardEvent("keydown", {
                 key: "space",
                 keyCode: KeyCodes.space,
@@ -305,15 +304,14 @@ describe("Checkbox", () => {
 
             await connect();
 
-            element.addEventListener("keydown", e => {
-                e.preventDefault();
+            const wasInvoked = await new Promise(resolve => {
+                element.addEventListener("keydown", () => resolve(true));
 
-                wasInvoked = true;
+                element.dispatchEvent(event);
+
+                // Resolve false on the next update in case the event hasn't happened
+                DOM.queueUpdate(() => resolve(false));
             });
-
-            await DOM.nextUpdate();
-
-            element.dispatchEvent(event);
 
             expect(wasInvoked).to.equal(true);
 
@@ -345,30 +343,35 @@ describe("Checkbox", () => {
         });
     });
 
-    describe("who's parent form has it's reset() method invoked", () => {
-        it("should set it's checked property to false if the checked attribute is unset", async () => {
-            const { element, connect, disconnect } = await setup();
-            await connect();
+    describe("whose parent form has its reset() method invoked", () => {
+        it("should set its checked property to false if the checked attribute is unset", async () => {
+            const { connect, disconnect, element, parent } = await setup();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
             form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
             element.checked = true;
 
-            assert(element.getAttribute("checked") === null);
-            assert(element.checked);
+            assert.isNull(element.getAttribute("checked"));
+            assert.isTrue(element.checked);
             form.reset();
 
-            assert(!element.checked);
+            assert.isFalse(!!element.checked);
+            await disconnect();
         });
 
-        it("should set it's checked property to true if the checked attribute is set", async () => {
-            const { element, connect, disconnect } = await setup();
-            await connect();
+        it("should set its checked property to true if the checked attribute is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
             form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
             element.setAttribute("checked", "");
 
             assert(element.getAttribute("checked") === "");
@@ -379,12 +382,18 @@ describe("Checkbox", () => {
             form.reset();
 
             assert(element.checked);
+            await disconnect();
         });
-        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-checkbox") as FASTCheckbox;
+
+        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.checked = true;
             element.removeAttribute("checked");
 
@@ -397,6 +406,8 @@ describe("Checkbox", () => {
             element.setAttribute("checked", "");
 
             assert(element.value);
+
+            await disconnect();
         });
     });
 });

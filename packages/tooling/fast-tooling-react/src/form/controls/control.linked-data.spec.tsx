@@ -13,6 +13,7 @@ import { LinkedDataControlProps } from "./control.linked-data.props";
 import { LinkedDataControlClassNameContract } from "./control.linked-data.style";
 import { ControlType } from "../templates";
 import { LinkedDataActionType } from "../templates/types";
+import defaultStrings from "../form.strings";
 
 const LinkedDataFormControlWithDragAndDrop: React.FC<any> = (
     props: React.PropsWithChildren<any>
@@ -99,6 +100,7 @@ const linkedDataProps: LinkedDataControlProps = {
     elementRef: null,
     validationErrors: [],
     messageSystem: void 0,
+    strings: defaultStrings,
     messageSystemOptions: null,
 };
 

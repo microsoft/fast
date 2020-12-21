@@ -13,7 +13,7 @@ export const TabsTemplate = html<Tabs>`
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
             ${when(
-                x => x.activeindicator,
+                x => x.showActiveIndicator,
                 html<Tabs>`
                     <div
                         ${ref("activeIndicatorRef")}

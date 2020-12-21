@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/microsoft/fast-dna/compare/fast-site@0.3.0...fast-site@0.4.0) (2020-11-19)
+
+
+### Features
+
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/microsoft/fast-dna/issues/3627)) ([e2e142c](https://github.com/microsoft/fast-dna/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* enable shared CSSStyleSheets in DesignSystemProvider ([#4065](https://github.com/microsoft/fast-dna/issues/4065)) ([5579c2e](https://github.com/microsoft/fast-dna/commit/5579c2ef424f8f63e00c8e29b5c4d43acb32c6db))
+
+
+
+
+
 # [0.3.0](https://github.com/microsoft/fast/compare/fast-site@0.2.1...fast-site@0.3.0) (2020-09-28)
 
 

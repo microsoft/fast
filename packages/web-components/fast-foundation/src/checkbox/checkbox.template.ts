@@ -2,7 +2,7 @@ import { html, slotted } from "@microsoft/fast-element";
 import { Checkbox } from "./checkbox";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Checkbox} component.
+ * The template for the {@link @microsoft/fast-foundation#(Checkbox:class)} component.
  * @public
  */
 export const CheckboxTemplate = html<Checkbox>`

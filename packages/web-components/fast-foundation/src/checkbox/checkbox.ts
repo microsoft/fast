@@ -1,14 +1,14 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedCheckbox } from "./checkbox.form-associated";
 
 /**
- * A Switch Custom HTML Element.
+ * A Checkbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#checkbox | ARIA checkbox }.
  *
  * @public
  */
-export class Checkbox extends FormAssociated<HTMLInputElement> {
+export class Checkbox extends FormAssociatedCheckbox {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -29,7 +29,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on"; // Map to proxy element.
+    public initialValue: string = "on";
 
     /**
      * Provides the default checkedness of the input element
@@ -94,8 +94,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.validate();
     }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
-
     /**
      * The indeterminate state of the control
      */
@@ -131,10 +129,13 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
-    public formResetCallback() {
+    /**
+     * @internal
+     */
+    public formResetCallback = (): void => {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
-    }
+    };
 
     private updateForm(): void {
         const value = this.checked ? this.value : null;
@@ -145,8 +146,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;

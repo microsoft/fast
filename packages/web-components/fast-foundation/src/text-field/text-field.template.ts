@@ -28,7 +28,6 @@ export const TextFieldTemplate = html<TextField>`
                 class="control"
                 part="control"
                 id="control"
-                @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
                 ?autofocus="${x => x.autofocus}"

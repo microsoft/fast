@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "1.8.1",
+  "version": "1.11.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -27,12 +27,15 @@
     "build": "yarn build:tsc && yarn build:rollup && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "yarn dev & yarn test-chrome:watch",
+    "tdd:firefox": "yarn dev & yarn test-firefox:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test": "yarn test-chrome:verbose && yarn doc:ci",
+    "test": "yarn test-chrome:verbose && yarn doc:ci && yarn test:diff",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
+    "test:diff:error": "echo \"You have untracked files, try running yarn prepare.\" && exit 1",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
@@ -42,7 +45,8 @@
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
@@ -61,7 +65,7 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
     "karma-coverage-istanbul-reporter": "^3.0.0",
-    "karma-firefox-launcher": "^1.3.0",
+    "karma-firefox-launcher": "^2.1.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-source-map-support": "^1.4.0",
@@ -85,8 +89,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.19.1",
-    "@microsoft/fast-web-utilities": "^4.6.1",
+    "@microsoft/fast-element": "^0.21.1",
+    "@microsoft/fast-web-utilities": "^4.7.0",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^4.0.0",
     "tslib": "^1.13.0"
