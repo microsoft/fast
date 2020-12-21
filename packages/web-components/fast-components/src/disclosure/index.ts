@@ -55,7 +55,7 @@ export class FASTDisclosure extends Disclosure {
      * Set disclosure height while transitioning
      * @override
      */
-    onToggle() {
+    protected onToggle() {
         super.onToggle();
         this.details.style.setProperty("height", `${this.disclosureHeight}px`);
     }
@@ -64,7 +64,7 @@ export class FASTDisclosure extends Disclosure {
      * Calculate disclosure height before and after expanded
      * @override
      */
-    setup() {
+    protected setup() {
         super.setup();
         if (!this.appearance) {
             this.appearance = "accent";
