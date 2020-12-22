@@ -158,6 +158,7 @@ export class Tabs extends FASTElement {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
+        this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab" && this.isFocusableElement(tab)) {
                 if (this.activeindicator) {
@@ -188,9 +189,6 @@ export class Tabs extends FASTElement {
             !this.isHorizontal()
                 ? tab.classList.add("vertical")
                 : tab.classList.remove("vertical");
-            this.showActiveIndicator = !!this.tabs.find(
-                tab => tab.slot === "tab" && this.isFocusableElement(tab)
-            );
         });
     };
 
