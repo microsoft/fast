@@ -52,6 +52,11 @@ export class MenuItem extends FASTElement {
      */
     @attr
     public checked: boolean;
+    private checkedChanged(oldValue, newValue): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("change");
+        }
+    }
 
     /**
      * @internal
@@ -89,9 +94,11 @@ export class MenuItem extends FASTElement {
                     this.checked = true;
                 }
                 break;
-        }
 
-        this.$emit("change");
+            case MenuItemRole.menuitem:
+                this.$emit("change");
+                break;
+        }
     };
 }
 
