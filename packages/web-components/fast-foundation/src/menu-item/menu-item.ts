@@ -54,17 +54,6 @@ export class MenuItem extends FASTElement {
     public checked: boolean;
 
     /**
-     * The name of the radio group this item belongs to.
-     * Typically only relevant when the menu item's role is set to "menuitemradio"
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: group
-     */
-    @attr
-    public group: string;
-
-    /**
      * @internal
      */
     public handleMenuItemKeyDown = (e: KeyboardEvent): boolean => {

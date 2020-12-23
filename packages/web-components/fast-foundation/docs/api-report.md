@@ -910,7 +910,6 @@ export class MenuItem extends FASTElement {
     checked: boolean;
     disabled: boolean;
     expanded: boolean;
-    group: string;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => void;
     // @internal (undocumented)
