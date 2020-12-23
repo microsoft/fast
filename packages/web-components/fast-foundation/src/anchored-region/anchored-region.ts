@@ -1,6 +1,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities";
+import { IntersectionService } from "./intersection-service";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -367,6 +368,8 @@ export class AnchoredRegion extends FASTElement {
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
 
+    private static intersectionService: IntersectionService = new IntersectionService();
+
     /**
      * @internal
      */
@@ -459,7 +462,6 @@ export class AnchoredRegion extends FASTElement {
     private initialize(): void {
         this.initializeResizeDetector();
         this.initializeIntersectionDetector();
-        // this.setInitialState();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
