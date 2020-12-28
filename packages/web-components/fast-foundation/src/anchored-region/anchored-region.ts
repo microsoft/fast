@@ -404,7 +404,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
     };
 
     /**
@@ -461,7 +461,6 @@ export class AnchoredRegion extends FASTElement {
      */
     private initialize(): void {
         this.initializeResizeDetector();
-        this.initializeIntersectionDetector();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
@@ -528,18 +527,6 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * initialize intersection detector
-     */
-    private initializeIntersectionDetector = (): void => {
-        this.disconnectIntersectionDetector();
-        this.intersectionDetector = new IntersectionObserver(this.handleIntersection, {
-            root: null,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-    };
-
-    /**
      * starts observers
      */
     private startObservers = (): void => {
@@ -549,7 +536,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
@@ -560,34 +547,47 @@ export class AnchoredRegion extends FASTElement {
     /**
      * starts intersection observer
      */
-    private startIntersectionObserver = (): void => {
+    private requestPositionUpdates = (): void => {
         if (this.anchorElement === null || this.pendingPositioningUpdate) {
             return;
         }
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.observe(this);
-            this.intersectionDetector.observe(this.anchorElement);
-            if (this.viewportElement !== null) {
-                this.intersectionDetector.observe(this.viewportElement);
-            }
+        AnchoredRegion.intersectionService.requestPosition(this, this.handleIntersection);
+        AnchoredRegion.intersectionService.requestPosition(
+            this.anchorElement,
+            this.handleIntersection
+        );
+        if (this.viewportElement !== null) {
+            AnchoredRegion.intersectionService.requestPosition(
+                this.viewportElement,
+                this.handleIntersection
+            );
         }
-    };
-
-    /**
-     * stops intersection observer
-     */
-    private stopIntersectionObserver = (): void => {
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.disconnect();
-            this.pendingPositioningUpdate = false;
-        }
+        this.pendingPositioningUpdate = true;
     };
 
     /**
      * stops observers
      */
     private stopObservers = (): void => {
-        this.stopIntersectionObserver();
+        if (this.pendingPositioningUpdate) {
+            this.pendingPositioningUpdate = false;
+            AnchoredRegion.intersectionService.cancelRequestPosition(
+                this,
+                this.handleIntersection
+            );
+            if (this.anchorElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.anchorElement,
+                    this.handleIntersection
+                );
+            }
+            if (this.viewportElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.viewportElement,
+                    this.handleIntersection
+                );
+            }
+        }
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
@@ -627,7 +627,11 @@ export class AnchoredRegion extends FASTElement {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-        this.stopIntersectionObserver();
+        if (!this.pendingPositioningUpdate) {
+            return;
+        }
+
+        this.pendingPositioningUpdate = false;
 
         let regionRect: DOMRect | ClientRect | null = null;
 

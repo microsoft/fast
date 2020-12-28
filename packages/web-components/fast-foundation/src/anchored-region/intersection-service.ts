@@ -9,14 +9,11 @@ export class IntersectionService {
     private observedElements: Element[] = [];
     private callbacksByElement: any[] = [];
 
-    private pendingCallbacks: any[] = [];
-    private pendingCallbackParams: any[] = [];
-
     constructor() {
         this.initializeIntersectionDetector();
     }
 
-    public requestPositionUpdate = (
+    public requestPosition = (
         target: Element,
         callback: (entries: IntersectionObserverEntry[]) => void
     ): void => {
@@ -30,6 +27,17 @@ export class IntersectionService {
         }
 
         this.callbacksByElement[targetIndex].push(callback);
+    };
+
+    public cancelRequestPosition = (target: Element, callback: any): void => {
+        const targetIndex: number = this.observedElements.indexOf(target);
+        if (targetIndex === -1) {
+            return;
+        }
+
+        const callbacks: any[] = this.callbacksByElement[targetIndex];
+        const callBackIndex: number = callbacks.indexOf(callback);
+        callbacks.splice(callBackIndex, 1);
     };
 
     /**
@@ -60,11 +68,9 @@ export class IntersectionService {
             );
             if (targetElementIndex !== -1) {
                 this.callbacksByElement[targetElementIndex].forEach((callback: any) => {
-                    let targetCallbackIndex: number = this.pendingCallbacks.indexOf(
-                        callback
-                    );
+                    let targetCallbackIndex: number = pendingCallbacks.indexOf(callback);
                     if (targetCallbackIndex === -1) {
-                        targetCallbackIndex = this.pendingCallbacks.length;
+                        targetCallbackIndex = pendingCallbacks.length;
                         pendingCallbacks.push(callback);
                         pendingCallbackParams.push([]);
                     }
@@ -73,11 +79,11 @@ export class IntersectionService {
                 this.observedElements.splice(targetElementIndex, 1);
                 this.callbacksByElement.splice(targetElementIndex, 1);
             }
+        });
 
-            // execute callbacks
-            this.pendingCallbacks.forEach((callback: any, index: number) => {
-                callback(pendingCallbackParams[index]);
-            });
+        // execute callbacks
+        pendingCallbacks.forEach((callback: any, index: number) => {
+            callback(pendingCallbackParams[index]);
         });
     };
 }
