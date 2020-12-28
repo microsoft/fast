@@ -356,7 +356,7 @@ describe("Tabs", () => {
     });
 
     describe("disabled tab", () => {
-        it("should not display an active indicator if every tabs are disabled", async () => {
+        it("should not display an active indicator if all tabs are disabled", async () => {
             const { element, connect, disconnect } = await fixture<FASTTabs>(html<
                 FASTTabs
             >`
