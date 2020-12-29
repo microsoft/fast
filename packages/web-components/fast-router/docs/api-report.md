@@ -300,6 +300,8 @@ export class RecognizedRoute<TSettings = any> {
     readonly endpoint: Endpoint<TSettings>;
     // (undocumented)
     readonly params: Readonly<Record<string, string | undefined>>;
+    // (undocumented)
+    get settings(): TSettings | null;
 }
 
 // @public (undocumented)
@@ -344,7 +346,7 @@ export interface Route {
 export class RouteCollection<TSettings = any> {
     constructor(owner: RouterConfiguration);
     // (undocumented)
-    fallback(definition: FallbackRouteDefinition<TSettings>): void;
+    fallback(definitionOrPath: FallbackRouteDefinition<TSettings> | string): void;
     // (undocumented)
     find(path: string): RouteLocationResult<TSettings> | null;
     // (undocumented)

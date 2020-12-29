@@ -15,6 +15,7 @@ import {
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
 import { NavigationTransaction } from "./transaction";
+import { Navigation } from "./navigation";
 
 export type LayoutDefinition = {
     template?: ViewTemplate;
@@ -145,15 +146,19 @@ export class RouteCollection<TSettings = any> {
         }
     }
 
-    public fallback(definition: FallbackRouteDefinition<TSettings>) {
-        if (typeof definition === "function") {
-            this.fallbackCommand = { execute: definition };
-        } else if ("command" in definition) {
-            this.fallbackCommand = definition.command;
-        } else if ("redirect" in definition) {
-            this.fallbackCommand = new Redirect(definition.redirect);
+    public fallback(definitionOrPath: FallbackRouteDefinition<TSettings> | string) {
+        if (typeof definitionOrPath === "string") {
+            this.fallbackCommand = {
+                execute: async () => Navigation.replace(definitionOrPath),
+            };
+        } else if (typeof definitionOrPath === "function") {
+            this.fallbackCommand = { execute: definitionOrPath };
+        } else if ("command" in definitionOrPath) {
+            this.fallbackCommand = definitionOrPath.command;
+        } else if ("redirect" in definitionOrPath) {
+            this.fallbackCommand = new Redirect(definitionOrPath.redirect);
         } else {
-            this.fallbackCommand = Render.fromDefinition(this.owner, definition);
+            this.fallbackCommand = Render.fromDefinition(this.owner, definitionOrPath);
         }
     }
 
