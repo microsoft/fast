@@ -27,6 +27,10 @@ export class RecognizedRoute<TSettings = any> {
         public readonly endpoint: Endpoint<TSettings>,
         public readonly params: Readonly<Record<string, string | undefined>>
     ) {}
+
+    public get settings() {
+        return this.endpoint.settings;
+    }
 }
 
 class Candidate<T> {
