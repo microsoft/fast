@@ -1,4 +1,10 @@
-import { RouteRecognizer, RecognizedRoute, Endpoint } from "./recognizer";
+import {
+    RouteRecognizer,
+    RecognizedRoute,
+    Endpoint,
+    ConfigurableRoute,
+    Route,
+} from "./recognizer";
 import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
 import {
     ViewTemplate,
@@ -8,7 +14,7 @@ import {
 } from "@microsoft/fast-element";
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
-import { NavigationTransaction } from './transaction';
+import { NavigationTransaction } from "./transaction";
 
 export type LayoutDefinition = {
     template?: ViewTemplate;
@@ -24,10 +30,7 @@ export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;
 };
 
-export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & {
-    path: string;
-    caseSensitive?: boolean;
-};
+export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & Route;
 
 export type IgnorableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings>;
 
@@ -87,8 +90,8 @@ export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSet
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
     SupportsSettings<TSettings>;
 
-export type FallbackRouteDefinition<TSettings = any> = 
-    ElementFallbackRouteDefinition<TSettings>
+export type FallbackRouteDefinition<TSettings = any> =
+    | ElementFallbackRouteDefinition<TSettings>
     | TemplateFallbackRouteDefinition<TSettings>
     | RedirectRouteDefinition<TSettings>
     | CommandFallbackRouteDefinition<TSettings>
@@ -110,7 +113,7 @@ export type RouteLocationResult<TSettings = any> = {
 
 export class RouteCollection<TSettings = any> {
     private recognizer = new RouteRecognizer<TSettings>();
-    private configToCommand = new Map<any, NavigationCommand>();
+    private configToCommand = new Map<string, NavigationCommand>();
     private fallbackCommand: NavigationCommand | null = null;
     private fallbackSettings: TSettings | null = null;
 
@@ -121,13 +124,8 @@ export class RouteCollection<TSettings = any> {
             definitionOrString = { path: definitionOrString };
         }
 
-        const path = {
-            value: definitionOrString.path,
-            caseSensitive: definitionOrString.caseSensitive === true,
-        };
-
-        this.configToCommand.set(path, new Ignore());
-        this.recognizer.add(path, false, definitionOrString.settings);
+        this.configToCommand.set(definitionOrString.path, new Ignore());
+        this.recognizer.add(definitionOrString, definitionOrString.settings);
     }
 
     public map(...routes: MappableRouteDefinition<TSettings>[]) {
@@ -142,18 +140,13 @@ export class RouteCollection<TSettings = any> {
                 command = Render.fromDefinition(this.owner, route);
             }
 
-            const path = {
-                value: route.path,
-                caseSensitive: route.caseSensitive === true,
-            };
-
-            this.configToCommand.set(path, command);
-            this.recognizer.add(path, false, route.settings);
+            this.configToCommand.set(route.path, command);
+            this.recognizer.add(route, route.settings);
         }
     }
 
     public fallback(definition: FallbackRouteDefinition<TSettings>) {
-        if (typeof definition === 'function') {
+        if (typeof definition === "function") {
             this.fallbackCommand = { execute: definition };
         } else if ("command" in definition) {
             this.fallbackCommand = definition.command;
@@ -178,13 +171,11 @@ export class RouteCollection<TSettings = any> {
             return {
                 route: new RecognizedRoute<TSettings>(
                     new Endpoint<TSettings>(
-                        true,
-                        { value: "*" },
+                        new ConfigurableRoute("*", false),
                         [],
                         this.fallbackSettings
                     ),
-                    {},
-                    null
+                    {}
                 ),
                 command: this.fallbackCommand,
             };

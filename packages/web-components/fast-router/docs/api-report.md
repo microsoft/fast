@@ -27,6 +27,15 @@ export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand & Suppo
 export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & HasCommand;
 
 // @public (undocumented)
+export class ConfigurableRoute implements Route {
+    constructor(path: string, caseSensitive: boolean);
+    // (undocumented)
+    readonly caseSensitive: boolean;
+    // (undocumented)
+    readonly path: string;
+}
+
+// @public (undocumented)
 export const defaultLayout: {
     template: import("@microsoft/fast-element").ViewTemplate<any, any>;
     styles: null;
@@ -51,19 +60,19 @@ export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<T
 
 // @public (undocumented)
 export class Endpoint<TSettings = any> {
-    constructor(collectsResidue: boolean, path: Path, paramNames: readonly string[], settings: TSettings | null);
-    // (undocumented)
-    readonly collectsResidue: boolean;
+    constructor(route: ConfigurableRoute, paramNames: readonly string[], settings: TSettings | null);
     // (undocumented)
     readonly paramNames: readonly string[];
     // (undocumented)
-    readonly path: Path;
+    get path(): string;
+    // (undocumented)
+    readonly route: ConfigurableRoute;
     // (undocumented)
     readonly settings: TSettings | null;
 }
 
 // @public (undocumented)
-export type FallbackRouteDefinition<TSettings = any> = ElementFallbackRouteDefinition<TSettings> | TemplateFallbackRouteDefinition<TSettings> | RedirectRouteDefinition<TSettings> | CommandFallbackRouteDefinition<TSettings>;
+export type FallbackRouteDefinition<TSettings = any> = ElementFallbackRouteDefinition<TSettings> | TemplateFallbackRouteDefinition<TSettings> | RedirectRouteDefinition<TSettings> | CommandFallbackRouteDefinition<TSettings> | ((transaction: NavigationTransaction) => Promise<void>);
 
 // @public (undocumented)
 export type FASTElementConstructor = new () => FASTElement;
@@ -104,7 +113,7 @@ export type HasCommand = {
 
 // @public (undocumented)
 export type HasElement = {
-    element: string | FASTElementConstructor | (() => Promise<string | FASTElementConstructor>);
+    element: string | FASTElementConstructor | HTMLElement | (() => Promise<string | FASTElementConstructor | HTMLElement>);
 };
 
 // @public (undocumented)
@@ -221,10 +230,10 @@ export class NavigationMessage {
 // Warning: (ae-forgotten-export) The symbol "NavigationParticipantDirective" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export function navigationParticipant(): NavigationParticipantDirective;
+export function navigationParticipant(options?: ParticipantOptions): NavigationParticipantDirective;
 
 // @public (undocumented)
-export type NavigationPhase = 'tryEnter' | 'tryLeave';
+export type NavigationPhase = "tryEnter" | "tryLeave";
 
 // @public (undocumented)
 export interface NavigationQueue {
@@ -262,16 +271,13 @@ export class NavigationTransaction<TSettings = any> implements NavigationAttempt
 }
 
 // @public (undocumented)
-export type Path = {
-    value: string;
-    caseSensitive?: boolean;
+export type ParticipantOptions = {
+    lifecycle?: boolean;
+    parameters?: boolean;
 };
 
 // @public (undocumented)
-export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & {
-    path: string;
-    caseSensitive?: boolean;
-};
+export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & Route;
 
 // @public (undocumented)
 export class PopStateNavigationQueue implements NavigationQueue, NavigationHandler {
@@ -289,19 +295,11 @@ export class PopStateNavigationQueue implements NavigationQueue, NavigationHandl
 
 // @public (undocumented)
 export class RecognizedRoute<TSettings = any> {
-    constructor(endpoint: Endpoint<TSettings>, params: {
-        [key: string]: unknown;
-    }, residue: string | null);
+    constructor(endpoint: Endpoint<TSettings>, params: Readonly<Record<string, string | undefined>>);
     // (undocumented)
     readonly endpoint: Endpoint<TSettings>;
     // (undocumented)
-    readonly params: {
-        [key: string]: unknown;
-    };
-    // (undocumented)
-    readonly residue: string | null;
-    // (undocumented)
-    get settings(): TSettings | null;
+    readonly params: Readonly<Record<string, string | undefined>>;
 }
 
 // @public (undocumented)
@@ -333,6 +331,14 @@ export class Render implements NavigationCommand {
 
 // @public (undocumented)
 export type RenderableRouteDefinition<TSettings = any> = ElementRouteDefinition<TSettings> | TemplateRouteDefinition<TSettings>;
+
+// @public (undocumented)
+export interface Route {
+    // (undocumented)
+    readonly caseSensitive?: boolean;
+    // (undocumented)
+    readonly path: string;
+}
 
 // @public (undocumented)
 export class RouteCollection<TSettings = any> {
@@ -374,6 +380,8 @@ export interface Router extends FASTElement, HTMLElement {
 // @public (undocumented)
 export abstract class RouterConfiguration<TSettings = any> {
     // (undocumented)
+    protected cached(ElementType: new () => HTMLElement): () => Promise<HTMLElement>;
+    // (undocumented)
     protected abstract configure(): Promise<void>;
     // (undocumented)
     readonly contributors: NavigationContributor<TSettings>[];
@@ -394,7 +402,7 @@ export abstract class RouterConfiguration<TSettings = any> {
 // @public (undocumented)
 export class RouteRecognizer<TSettings> {
     // (undocumented)
-    add(path: Path, collectResidue: boolean, settings?: TSettings): void;
+    add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
     // (undocumented)
     recognize(path: string): RecognizedRoute<TSettings> | null;
     }

@@ -1,53 +1,60 @@
-export type Path = {
-    value: string;
-    caseSensitive?: boolean;
-};
+export interface Route {
+    readonly path: string;
+    readonly caseSensitive?: boolean;
+}
+
+export class ConfigurableRoute implements Route {
+    public constructor(
+        public readonly path: string,
+        public readonly caseSensitive: boolean
+    ) {}
+}
 
 export class Endpoint<TSettings = any> {
     public constructor(
-        public readonly collectsResidue: boolean,
-        public readonly path: Path,
+        public readonly route: ConfigurableRoute,
         public readonly paramNames: readonly string[],
         public readonly settings: TSettings | null
     ) {}
+
+    public get path() {
+        return this.route.path;
+    }
 }
 
 export class RecognizedRoute<TSettings = any> {
     public constructor(
         public readonly endpoint: Endpoint<TSettings>,
-        public readonly params: { [key: string]: unknown },
-        public readonly residue: string | null
+        public readonly params: Readonly<Record<string, string | undefined>>
     ) {}
-
-    get settings(): TSettings | null {
-        return this.endpoint.settings;
-    }
 }
 
-const RESIDUE = "fast$residue" as const;
-
-class Candidate {
-    public head: AnyState;
-    public endpoint: Endpoint;
+class Candidate<T> {
+    public head: AnyState<T>;
+    public endpoint: Endpoint<T>;
 
     public constructor(
         private readonly chars: string[],
-        private readonly states: AnyState[],
-        private readonly skippedStates: DynamicState[],
-        private readonly result: RecognizeResult
+        private readonly states: AnyState<T>[],
+        private readonly skippedStates: DynamicState<T>[],
+        private readonly result: RecognizeResult<T>
     ) {
         this.head = states[states.length - 1];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         this.endpoint = this.head?.endpoint!;
     }
 
     public advance(ch: string): void {
         const { chars, states, skippedStates, result } = this;
-        let stateToAdd: AnyState | null = null;
+        let stateToAdd: AnyState<T> | null = null;
 
         let matchCount = 0;
         const state = states[states.length - 1];
 
-        function $process(nextState: AnyState, skippedState: DynamicState | null): void {
+        function $process(
+            nextState: AnyState<T>,
+            skippedState: DynamicState<T> | null
+        ): void {
             if (nextState.isMatch(ch)) {
                 if (++matchCount === 1) {
                     stateToAdd = nextState;
@@ -97,8 +104,8 @@ class Candidate {
         if (stateToAdd !== null) {
             states.push((this.head = stateToAdd));
             chars.push(ch);
-            if ((stateToAdd as AnyState).endpoint !== null) {
-                this.endpoint = (stateToAdd as AnyState).endpoint!;
+            if ((stateToAdd as AnyState<T>).endpoint !== null) {
+                this.endpoint = (stateToAdd as AnyState<T>).endpoint!;
             }
         }
 
@@ -109,8 +116,8 @@ class Candidate {
 
     public finalize(): void {
         function collectSkippedStates(
-            skippedStates: DynamicState[],
-            state: AnyState
+            skippedStates: DynamicState<T>[],
+            state: AnyState<T>
         ): void {
             const nextStates = state.nextStates;
             if (nextStates !== null) {
@@ -186,7 +193,7 @@ class Candidate {
      * Parameter name is `b` because the method should be used like so: `states.sort((a, b) => a.compareTo(b))`.
      * This will bring the candidate with the highest score to the first position of the array.
      */
-    public compareTo(b: Candidate): -1 | 1 | 0 {
+    public compareTo(b: Candidate<T>): -1 | 1 | 0 {
         const statesA = this.states;
         const statesB = b.states;
 
@@ -265,26 +272,32 @@ class Candidate {
         }
 
         // This should only be possible with a single pattern with multiple consecutive star segments.
-        // TODO: probably want to warn or even throw here, but unload it be for now.
+        // TODO: probably want to warn or even throw here, but leave it be for now.
         return 0;
     }
 }
 
-class RecognizeResult {
-    private readonly candidates: Candidate[] = [];
+function hasEndpoint<T>(candidate: Candidate<T>): boolean {
+    return candidate.head.endpoint !== null;
+}
+
+function compareChains<T>(a: Candidate<T>, b: Candidate<T>): -1 | 1 | 0 {
+    return a.compareTo(b);
+}
+
+class RecognizeResult<T> {
+    private readonly candidates: Candidate<T>[] = [];
 
     public get isEmpty(): boolean {
         return this.candidates.length === 0;
     }
 
-    public constructor(rootState: SeparatorState) {
+    public constructor(rootState: SeparatorState<T>) {
         this.candidates = [new Candidate([""], [rootState], [], this)];
     }
 
-    public getSolution(): Candidate | null {
-        const candidates = this.candidates.filter(function (candidate) {
-            return candidate.head.endpoint !== null;
-        });
+    public getSolution(): Candidate<T> | null {
+        const candidates = this.candidates.filter(hasEndpoint);
         if (candidates.length === 0) {
             return null;
         }
@@ -293,18 +306,16 @@ class RecognizeResult {
             candidate.finalize();
         }
 
-        candidates.sort(function (a, b) {
-            return a.compareTo(b);
-        });
+        candidates.sort(compareChains);
 
         return candidates[0];
     }
 
-    public add(candidate: Candidate): void {
+    public add(candidate: Candidate<T>): void {
         this.candidates.push(candidate);
     }
 
-    public remove(candidate: Candidate): void {
+    public remove(candidate: Candidate<T>): void {
         this.candidates.splice(this.candidates.indexOf(candidate), 1);
     }
 
@@ -318,36 +329,38 @@ class RecognizeResult {
 }
 
 export class RouteRecognizer<TSettings> {
-    private readonly rootState: SeparatorState = new State(
+    private readonly rootState: SeparatorState<TSettings> = new State(
         null,
         null,
         ""
-    ) as SeparatorState;
-    private readonly cache: Map<string, RecognizedRoute<TSettings> | null> = new Map();
+    ) as SeparatorState<TSettings>;
+    private readonly cache: Map<string, RecognizedRoute<TSettings> | null> = new Map<
+        string,
+        RecognizedRoute<TSettings> | null
+    >();
 
-    public add(path: Path, collectResidue: boolean, settings?: TSettings): void {
-        this.$add(path, false, settings);
-        if (collectResidue) {
-            this.$add(path, true, settings);
+    public add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void {
+        if (routeOrRoutes instanceof Array) {
+            for (const route of routeOrRoutes) {
+                this.$add(route, settings);
+            }
+        } else {
+            this.$add(routeOrRoutes as Route, settings);
         }
 
         // Clear the cache whenever there are state changes, because the recognizeResults could be arbitrarily different as a result
         this.cache.clear();
     }
 
-    private $add(path: Path, collectResidue: boolean, settings?: TSettings): void {
-        const analyzablePath = collectResidue ? `${path.value}/*${RESIDUE}` : path.value;
+    private $add(route: Route, settings?: TSettings): void {
+        const path = route.path;
+        const $route = new ConfigurableRoute(route.path, route.caseSensitive === true);
 
         // Normalize leading, trailing and double slashes by ignoring empty segments
-        const parts =
-            analyzablePath === ""
-                ? [""]
-                : analyzablePath.split("/").filter(function (part) {
-                      return part.length > 0;
-                  });
+        const parts = path === "" ? [""] : path.split("/").filter(isNotEmpty);
         const paramNames: string[] = [];
 
-        let state = this.rootState as AnyState;
+        let state = this.rootState as AnyState<TSettings>;
 
         for (const part of parts) {
             // Each segment always begins with a slash, so we represent this with a non-segment state
@@ -359,27 +372,30 @@ export class RouteRecognizer<TSettings> {
                     const isOptional = part.endsWith("?");
                     const name = isOptional ? part.slice(1, -1) : part.slice(1);
                     paramNames.push(name);
-                    state = new DynamicSegment(name, isOptional).appendTo(state);
+                    state = new DynamicSegment<TSettings>(name, isOptional).appendTo(
+                        state
+                    );
                     break;
                 }
                 case "*": {
                     // dynamic route
                     const name = part.slice(1);
                     paramNames.push(name);
-                    state = new StarSegment(name).appendTo(state);
+                    state = new StarSegment<TSettings>(name).appendTo(state);
                     break;
                 }
                 default: {
                     // standard path route
-                    state = new StaticSegment(part, path.caseSensitive === true).appendTo(
-                        state
-                    );
+                    state = new StaticSegment<TSettings>(
+                        part,
+                        $route.caseSensitive
+                    ).appendTo(state);
                     break;
                 }
             }
         }
 
-        const endpoint = new Endpoint(collectResidue, path, paramNames, settings || null);
+        const endpoint = new Endpoint<TSettings>($route, paramNames, settings || null);
 
         state.setEndpoint(endpoint);
     }
@@ -420,46 +436,39 @@ export class RouteRecognizer<TSettings> {
 
         const { endpoint } = candidate;
         const params = candidate.getParams();
-        let residue: string | null;
-        if (Reflect.has(params, RESIDUE)) {
-            residue = params[RESIDUE] ?? null;
-            Reflect.deleteProperty(params, RESIDUE);
-        } else {
-            residue = null;
-        }
 
-        return new RecognizedRoute(endpoint, params, residue);
+        return new RecognizedRoute<TSettings>(endpoint, params);
     }
 }
 
-type StaticState = State & {
+type StaticState<T> = State<T> & {
     readonly isSeparator: false;
     readonly isDynamic: false;
     readonly isOptional: false;
 
-    readonly prevState: StaticState | SeparatorState;
-    readonly segment: StaticSegment;
+    readonly prevState: StaticState<T> | SeparatorState<T>;
+    readonly segment: StaticSegment<T>;
 };
 
-type DynamicState = State & {
+type DynamicState<T> = State<T> & {
     readonly isSeparator: false;
     readonly isDynamic: true;
     readonly isOptional: true | false;
 
-    readonly prevState: SeparatorState;
-    readonly segment: DynamicSegment;
+    readonly prevState: SeparatorState<T>;
+    readonly segment: DynamicSegment<T>;
 };
 
-type StarState = State & {
+type StarState<T> = State<T> & {
     readonly isSeparator: false;
     readonly isDynamic: true;
     readonly isOptional: false;
 
-    readonly prevState: SeparatorState;
-    readonly segment: StarSegment;
+    readonly prevState: SeparatorState<T>;
+    readonly segment: StarSegment<T>;
 };
 
-type SeparatorState = State & {
+type SeparatorState<T> = State<T> & {
     readonly isSeparator: true;
     readonly isDynamic: false;
     readonly isOptional: false;
@@ -468,30 +477,30 @@ type SeparatorState = State & {
     readonly segment: null;
 };
 
-type AnyState = StaticState | DynamicState | StarState | SeparatorState;
+type AnyState<T> = StaticState<T> | DynamicState<T> | StarState<T> | SeparatorState<T>;
 
-type SegmentToState<S> = S extends StaticSegment
-    ? StaticState
-    : S extends DynamicSegment
-    ? DynamicState
-    : S extends StarSegment
-    ? StarState
+type SegmentToState<S, T> = S extends StaticSegment<T>
+    ? StaticState<T>
+    : S extends DynamicSegment<T>
+    ? DynamicState<T>
+    : S extends StarSegment<T>
+    ? StarState<T>
     : S extends null
-    ? SeparatorState
+    ? SeparatorState<T>
     : never;
 
-class State {
-    public nextStates: AnyState[] | null = null;
+class State<T> {
+    public nextStates: AnyState<T>[] | null = null;
     public readonly isSeparator: boolean;
     public readonly isDynamic: boolean;
     public readonly isOptional: boolean;
 
-    public endpoint: Endpoint | null = null;
+    public endpoint: Endpoint<T> | null = null;
     public readonly length: number;
 
     public constructor(
-        public readonly prevState: AnyState | null,
-        public readonly segment: AnySegment | null,
+        public readonly prevState: AnyState<T> | null,
+        public readonly segment: AnySegment<T> | null,
         public readonly value: string
     ) {
         switch (segment?.kind) {
@@ -522,11 +531,11 @@ class State {
         }
     }
 
-    public append<S extends AnySegment | null>(
+    public append<S extends AnySegment<T> | null>(
         segment: S,
         value: string
-    ): SegmentToState<S> {
-        let state: AnyState | undefined;
+    ): SegmentToState<S, T> {
+        let state: AnyState<T> | undefined;
         let nextStates = this.nextStates;
         if (nextStates === null) {
             state = void 0;
@@ -539,17 +548,17 @@ class State {
 
         if (state === void 0) {
             nextStates.push(
-                (state = new State(this as AnyState, segment, value) as AnyState)
+                (state = new State(this as AnyState<T>, segment, value) as AnyState<T>)
             );
         }
 
-        return state as SegmentToState<S>;
+        return state as SegmentToState<S, T>;
     }
 
-    public setEndpoint(this: AnyState, endpoint: Endpoint): void {
+    public setEndpoint(this: AnyState<T>, endpoint: Endpoint<T>): void {
         if (this.endpoint !== null) {
             throw new Error(
-                `Cannot add ambiguous route. The pattern ${endpoint.path.value} clashes with ${this.endpoint.path.value}`
+                `Cannot add ambiguous route. The pattern '${endpoint.route.path}' clashes with '${this.endpoint.route.path}'`
             );
         }
         this.endpoint = endpoint;
@@ -576,7 +585,11 @@ class State {
     }
 }
 
-type AnySegment = StaticSegment | DynamicSegment | StarSegment;
+function isNotEmpty(segment: string): boolean {
+    return segment.length > 0;
+}
+
+type AnySegment<T> = StaticSegment<T> | DynamicSegment<T> | StarSegment<T>;
 
 const enum SegmentKind {
     star = 1,
@@ -584,7 +597,7 @@ const enum SegmentKind {
     static = 3,
 }
 
-class StaticSegment {
+class StaticSegment<T> {
     public get kind(): SegmentKind.static {
         return SegmentKind.static;
     }
@@ -594,7 +607,7 @@ class StaticSegment {
         public readonly caseSensitive: boolean
     ) {}
 
-    public appendTo(state: AnyState): StaticState {
+    public appendTo(state: AnyState<T>): StaticState<T> {
         const {
             value,
             value: { length },
@@ -614,10 +627,10 @@ class StaticSegment {
             }
         }
 
-        return state as StaticState;
+        return state as StaticState<T>;
     }
 
-    public equals(b: AnySegment): boolean {
+    public equals(b: AnySegment<T>): boolean {
         return (
             b.kind === SegmentKind.static &&
             b.caseSensitive === this.caseSensitive &&
@@ -626,20 +639,20 @@ class StaticSegment {
     }
 }
 
-class DynamicSegment {
+class DynamicSegment<T> {
     public get kind(): SegmentKind.dynamic {
         return SegmentKind.dynamic;
     }
 
     public constructor(public readonly name: string, public readonly optional: boolean) {}
 
-    public appendTo(state: AnyState): DynamicState {
+    public appendTo(state: AnyState<T>): DynamicState<T> {
         state = state.append(/* segment */ this, /* value   */ "/");
 
         return state;
     }
 
-    public equals(b: AnySegment): boolean {
+    public equals(b: AnySegment<T>): boolean {
         return (
             b.kind === SegmentKind.dynamic &&
             b.optional === this.optional &&
@@ -648,20 +661,20 @@ class DynamicSegment {
     }
 }
 
-class StarSegment {
+class StarSegment<T> {
     public get kind(): SegmentKind.star {
         return SegmentKind.star;
     }
 
     public constructor(public readonly name: string) {}
 
-    public appendTo(state: AnyState): StarState {
+    public appendTo(state: AnyState<T>): StarState<T> {
         state = state.append(/* segment */ this, /* value   */ "");
 
         return state;
     }
 
-    public equals(b: AnySegment): boolean {
+    public equals(b: AnySegment<T>): boolean {
         return b.kind === SegmentKind.star && b.name === this.name;
     }
 }
