@@ -1,16 +1,40 @@
 import { FASTElement, HTMLView } from "@microsoft/fast-element";
-import { NavigationAttempt } from "./transaction";
 import { NavigationCommand } from "./commands";
 import { RecognizedRoute } from "./recognizer";
+import {
+    NavigationContributor,
+    NavigationPhaseHook,
+    NavigationPhaseName,
+} from "./navigation-process";
+import { RouteLocationResult } from "./routes";
+import { composedParent } from "@microsoft/fast-foundation";
 
 export interface Router extends FASTElement, HTMLElement {
     readonly route: RecognizedRoute | null;
     readonly command: NavigationCommand | null;
     readonly view: HTMLView | null;
 
-    addNavigationParticipant(participant: any): void;
-    removeNavigationParticipant(participant: any): void;
+    addContributor(contributor: NavigationContributor): void;
+    removeContributor(contributor: NavigationContributor): void;
 
-    tryLeave(attempt: NavigationAttempt): Promise<void>;
-    tryEnter(attempt: NavigationAttempt): Promise<void>;
+    findRoute<TSettings = any>(
+        path: string
+    ): Promise<RouteLocationResult<TSettings> | null>;
+    findContributors<T extends NavigationPhaseName>(
+        phase: T
+    ): Record<T, NavigationPhaseHook>[];
 }
+
+export const Router = Object.freeze({
+    findParent(element: HTMLElement): Router | null {
+        let parentNode: HTMLElement | null = element;
+
+        while ((parentNode = composedParent(parentNode))) {
+            if (parentNode.tagName === "FAST-ROUTER") {
+                return parentNode as Router;
+            }
+        }
+
+        return null;
+    },
+});

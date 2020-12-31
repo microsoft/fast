@@ -14,8 +14,7 @@ import {
 } from "@microsoft/fast-element";
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
-import { NavigationTransaction } from "./transaction";
-import { Navigation } from "./navigation";
+import { Router } from "./router";
 
 export type LayoutDefinition = {
     template?: ViewTemplate;
@@ -94,9 +93,10 @@ export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
 export type FallbackRouteDefinition<TSettings = any> =
     | ElementFallbackRouteDefinition<TSettings>
     | TemplateFallbackRouteDefinition<TSettings>
-    | RedirectRouteDefinition<TSettings>
-    | CommandFallbackRouteDefinition<TSettings>
-    | ((transaction: NavigationTransaction) => Promise<void>);
+    | Pick<RedirectRouteDefinition<TSettings>, "redirect">
+    | CommandFallbackRouteDefinition<TSettings>;
+
+export type DefinitionCallback = () => Promise<FallbackRouteDefinition>;
 
 export type RenderableRouteDefinition<TSettings = any> =
     | ElementRouteDefinition<TSettings>
@@ -111,6 +111,19 @@ export type RouteLocationResult<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
     command: NavigationCommand;
 };
+
+function getFallbackCommand(
+    config: RouterConfiguration,
+    definition: FallbackRouteDefinition
+): NavigationCommand {
+    if ("command" in definition) {
+        return definition.command;
+    } else if ("redirect" in definition) {
+        return new Redirect(definition.redirect);
+    } else {
+        return Render.fromDefinition(config, definition);
+    }
+}
 
 export class RouteCollection<TSettings = any> {
     private recognizer = new RouteRecognizer<TSettings>();
@@ -146,19 +159,21 @@ export class RouteCollection<TSettings = any> {
         }
     }
 
-    public fallback(definitionOrPath: FallbackRouteDefinition<TSettings> | string) {
-        if (typeof definitionOrPath === "string") {
+    public fallback(
+        definitionOrCallback: FallbackRouteDefinition<TSettings> | DefinitionCallback
+    ) {
+        const owner = this.owner;
+
+        if (typeof definitionOrCallback === "function") {
             this.fallbackCommand = {
-                execute: async () => Navigation.replace(definitionOrPath),
+                async createContributor(router: Router, route: RecognizedRoute) {
+                    const input = await definitionOrCallback();
+                    const command = getFallbackCommand(owner, input);
+                    return command.createContributor(router, route);
+                },
             };
-        } else if (typeof definitionOrPath === "function") {
-            this.fallbackCommand = { execute: definitionOrPath };
-        } else if ("command" in definitionOrPath) {
-            this.fallbackCommand = definitionOrPath.command;
-        } else if ("redirect" in definitionOrPath) {
-            this.fallbackCommand = new Redirect(definitionOrPath.redirect);
         } else {
-            this.fallbackCommand = Render.fromDefinition(this.owner, definitionOrPath);
+            this.fallbackCommand = getFallbackCommand(owner, definitionOrCallback);
         }
     }
 

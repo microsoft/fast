@@ -1,14 +1,21 @@
 import { html } from "@microsoft/fast-element";
-import { NavigationQueue, PopStateNavigationQueue } from "./navigation";
-import { defaultTransition } from "./transition";
-import { NavigationContributor } from "./contributions";
 import {
-    RouteCollection,
-    RouteLocationResult,
-    Layout,
-    FASTElementConstructor,
-} from "./routes";
+    NavigationMessage,
+    NavigationQueue,
+    PopStateNavigationQueue,
+} from "./navigation";
+import { defaultTransition } from "./transition";
+import { RouteCollection, RouteLocationResult, Layout } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
+import {
+    DefaultNavigationProcess,
+    isNavigationPhaseContributor,
+    NavigationContributor,
+    NavigationPhaseHook,
+    NavigationPhaseName,
+    NavigationProcess,
+} from "./navigation-process";
+import { Router } from "./router";
 
 export const defaultLayout = {
     template: html`
@@ -35,6 +42,13 @@ export abstract class RouterConfiguration<TSettings = any> {
         return new DefaultLinkHandler();
     }
 
+    public createNavigationProcess(
+        router: Router,
+        message: NavigationMessage
+    ): NavigationProcess {
+        return new DefaultNavigationProcess(router, message);
+    }
+
     public async findRoute(path: string): Promise<RouteLocationResult<TSettings> | null> {
         if (!this.isConfigured) {
             await this.configure();
@@ -42,6 +56,14 @@ export abstract class RouterConfiguration<TSettings = any> {
         }
 
         return this.routes.find(path);
+    }
+
+    public findContributors<T extends NavigationPhaseName>(
+        phase: T
+    ): Record<T, NavigationPhaseHook<TSettings>>[] {
+        return this.contributors.filter(x =>
+            isNavigationPhaseContributor(x, phase)
+        ) as any;
     }
 
     protected abstract configure(): Promise<void>;

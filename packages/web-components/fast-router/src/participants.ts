@@ -1,5 +1,5 @@
 import { Behavior, Directive, DOM, ExecutionContext } from "@microsoft/fast-element";
-import { findParentRouter } from "./enlistment";
+import { NavigationContributor } from "./navigation-process";
 import { Router } from "./router";
 
 export type ParticipantOptions = {
@@ -9,7 +9,7 @@ export type ParticipantOptions = {
 
 const defaultOptions: ParticipantOptions = {
     lifecycle: true,
-    parameters: true
+    parameters: true,
 };
 
 class NavigationParticipantDirective extends Directive {
@@ -18,10 +18,7 @@ class NavigationParticipantDirective extends Directive {
     }
 
     createPlaceholder(index: number) {
-        return DOM.createCustomAttributePlaceholder(
-            'fast-navigation-participant',
-            index
-        );
+        return DOM.createCustomAttributePlaceholder("fast-navigation-participant", index);
     }
 
     createBehavior(target: HTMLElement) {
@@ -32,12 +29,15 @@ class NavigationParticipantDirective extends Directive {
 class NavigationParticipantBehavior implements Behavior {
     private router: Router | null = null;
 
-    constructor(private participant: HTMLElement, private options: Required<ParticipantOptions>) { }
+    constructor(
+        private participant: HTMLElement,
+        private options: Required<ParticipantOptions>
+    ) {}
 
     bind(source: unknown, context: ExecutionContext): void {
         if (this.options.lifecycle) {
-            this.router = findParentRouter(this.participant)!;
-            this.router.addNavigationParticipant(this.participant);
+            this.router = Router.findParent(this.participant)!;
+            this.router.addContributor(this.participant as NavigationContributor);
         }
 
         if (this.options.parameters) {
@@ -52,7 +52,7 @@ class NavigationParticipantBehavior implements Behavior {
 
     unbind(source: unknown): void {
         if (this.router !== null) {
-            this.router.removeNavigationParticipant(this.participant);
+            this.router.removeContributor(this.participant as NavigationContributor);
         }
     }
 }
