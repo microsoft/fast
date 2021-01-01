@@ -82,24 +82,24 @@ export const NumberFieldStyles = css`
         fill: currentcolor;
     }
 
-    .step_up,
-    .step_down {
+    .step-up,
+    .step-down {
         padding: 4px 10px;
         cursor: pointer;
     }
 
-    .step_up:before,
-    .step_down:before {
+    .step-up:before,
+    .step-down:before {
         content: '';
         display: block;
         border: solid transparent 6px;
     }
 
-    .step_up:before {
+    .step-up:before {
         border-bottom-color: ${neutralForegroundRestBehavior.var};
     }
 
-    .step_down:before {
+    .step-down:before {
         border-top-color: ${neutralForegroundRestBehavior.var};
     }
 

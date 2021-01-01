@@ -66,8 +66,8 @@ export const NumberFieldTemplate = html<NumberField>`
                 ${ref("control")}
             />
             <div class="controls">
-                <div class="step_up" @click="${x => x.stepUp()}"></div>
-                <div class="step_down" @click="${x => x.stepDown()}"></div>
+                <div class="step-up" @click="${x => x.stepUp()}"></div>
+                <div class="step-down" @click="${x => x.stepDown()}"></div>
             </div>
             ${endTemplate}
         </div>

@@ -31,6 +31,7 @@ module.exports = {
                         "components/flipper",
                         "components/menu",
                         "components/menu-item",
+                        "components/number-field",
                         "components/progress",
                         "components/radio",
                         "components/radio-group",
