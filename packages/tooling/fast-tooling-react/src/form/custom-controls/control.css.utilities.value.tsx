@@ -1,4 +1,4 @@
-import { renderDefault, renderZeroOrOne } from "./control.css.utilities";
+import { renderDefault, renderCheckbox } from "./control.css.utilities";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
 import React from "react";
 
@@ -9,7 +9,7 @@ export function renderValueControl(config: RenderRefControlConfig): React.ReactN
     if (config.ref.multiplier) {
         switch (config.ref.multiplier.type) {
             case "zeroOrOne":
-                return renderZeroOrOne({
+                return renderCheckbox({
                     ...config,
                 });
         }
