@@ -120,6 +120,56 @@ describe("Menu item", () => {
         await disconnect();
     });
 
+    it("should toggle the aria-checked attribute of checkbox item when clicked", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.role = MenuItemRole.menuitemcheckbox;
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal(null);
+
+        element.click();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("true");
+
+        element.click();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("false");
+
+        await disconnect();
+    });
+
+    it("should aria-checked attribute of radio item to true when clicked", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.role = MenuItemRole.menuitemradio;
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal(null);
+
+        element.click();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("true");
+
+        element.click();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("true");
+
+        await disconnect();
+    });
+
     describe("events", () => {
         it("should fire an event on click", async () => {
             const { element, connect, disconnect } = await setup();
