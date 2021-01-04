@@ -9,7 +9,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItemRole } from "../menu-item/index";
+import { MenuItem, MenuItemRole } from "../menu-item/index";
 
 /**
  * A Menu Custom HTML Element.
@@ -49,6 +49,8 @@ export class Menu extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.menuItems = this.domChildren();
+
+        this.addEventListener("change", this.changeHandler);
     }
 
     /**
@@ -57,6 +59,8 @@ export class Menu extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.menuItems = [];
+
+        this.removeEventListener("change", this.changeHandler);
     }
 
     /**
@@ -143,6 +147,45 @@ export class Menu extends FASTElement {
     private resetItems = (oldValue: any): void => {
         for (let item: number = 0; item < oldValue.length; item++) {
             oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
+        }
+    };
+
+    /**
+     * handle change from child element
+     */
+    private changeHandler = (e: CustomEvent): void => {
+        const changedMenuItem: MenuItem = e.target as MenuItem;
+        const changeItemIndex: number = this.menuItems.indexOf(changedMenuItem);
+
+        if (changeItemIndex === -1) {
+            return;
+        }
+
+        if (
+            changedMenuItem.role === "menuitemradio" &&
+            changedMenuItem.checked === true
+        ) {
+            for (let i = changeItemIndex - 1; i >= 0; --i) {
+                const item: Element = this.menuItems[i];
+                const role: string | null = item.getAttribute("role");
+                if (role === MenuItemRole.menuitemradio) {
+                    (item as MenuItem).checked = false;
+                }
+                if (role === "separator") {
+                    break;
+                }
+            }
+            const maxIndex: number = this.menuItems.length - 1;
+            for (let i = changeItemIndex + 1; i <= maxIndex; ++i) {
+                const item: Element = this.menuItems[i];
+                const role: string | null = item.getAttribute("role");
+                if (role === MenuItemRole.menuitemradio) {
+                    (item as MenuItem).checked = false;
+                }
+                if (role === "separator") {
+                    break;
+                }
+            }
         }
     };
 

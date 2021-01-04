@@ -354,4 +354,60 @@ describe("Tabs", () => {
             await disconnect();
         });
     });
+
+    describe("disabled tab", () => {
+        it("should not display an active indicator if all tabs are disabled", async () => {
+            const { element, connect, disconnect } = await fixture<FASTTabs>(html<
+                FASTTabs
+            >`
+                <fast-tabs>
+                    <fast-tab disabled>Tab one</fast-tab>
+                    <fast-tab disabled>Tab two</fast-tab>
+                    <fast-tab disabled>Tab three</fast-tab>
+                    <fast-tab-panel>
+                        Tab one content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab two content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab three content. This is for testing.
+                    </fast-tab-panel>
+                </fast-tabs>
+            `);
+
+            await connect();
+
+            expect(element.showActiveIndicator).to.be.false;
+
+            await disconnect();
+        });
+
+        it("should display an active indicator if the last tab is disabled", async () => {
+            const { element, connect, disconnect } = await fixture<FASTTabs>(html<
+                FASTTabs
+            >`
+                <fast-tabs>
+                    <fast-tab>Tab one</fast-tab>
+                    <fast-tab>Tab two</fast-tab>
+                    <fast-tab disabled>Tab three</fast-tab>
+                    <fast-tab-panel>
+                        Tab one content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab two content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab three content. This is for testing.
+                    </fast-tab-panel>
+                </fast-tabs>
+            `);
+
+            await connect();
+
+            expect(element.showActiveIndicator).to.be.true;
+
+            await disconnect();
+        });
+    });
 });
