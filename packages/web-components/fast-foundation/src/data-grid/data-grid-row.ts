@@ -15,17 +15,7 @@ import {
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 import { ColumnDefinition } from "./data-grid";
-
-/**
- * Enumerates possible row types
- *
- * @public
- */
-export enum DataGridRowTypes {
-    default = "default",
-    header = "header",
-    stickyHeader = "sticky-header",
-}
+import { DataGridRowTypes } from "./data-grid.options";
 
 /**
  * A Data Grid Row Custom HTML Element.
