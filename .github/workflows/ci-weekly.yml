@@ -11,7 +11,7 @@ on:
   - ci-os-validation
 
 Jobs: 
-  Os-Validation:
+  node_version:
     strategy:
       matrix:
         os:[windows-latest, macos-latest]
@@ -24,7 +24,7 @@ Jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.0
       with:
-        node-version: '10'
+        node-version: ${{matrix.node_version}}
 
     - name: Install Lerna
       run: npm i -g lerna
