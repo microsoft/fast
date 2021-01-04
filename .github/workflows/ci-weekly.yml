@@ -1,56 +1,59 @@
-name: CI - FAST Validation
+name: CI - FAST
 
 on:
-  schedule:
-  - cron: 0 7 * * 3
   push: 
-  - master
-  - ci-os-validation
+    branches:
+    - master
+    - releases/*
   pull_request:
-  - master 
-  - ci-os-validation
+    branches:
+    - master
+    - releases/*
+    - features/*
 
-Jobs: 
-  node_version:
-    strategy:
-      matrix:
-        os:[windows-latest, macos-latest]
-        node_version: [10,12]
+jobs:
+  build_linux:
+    runs-on: windows-latest
 
-    runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.0
-      with:
-        node-version: ${{matrix.node_version}}
+    - name: Add or Update packages
+      run: sudo yarn global add lerna
 
-    - name: Install Lerna
-      run: npm i -g lerna
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
 
     - name: Install package dependencies / prepare workspaces
-      run: |
-        yarn install --frozen-lockfile
+      run: yarn install --frozen-lockfile
 
-    - name: Ensure Prettier formatting
+    - name: Testing Prettier format
       run: lerna run prettier:diff
 
-    - name: Execute unit tests
+    - name: Testing unit tests
       run: lerna run test --stream
 
-  code_scan:
-    name: Validate Security
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+    - name: Collect and upload code coverage to Code Climate
+      uses: paambaati/codeclimate-action@v2.6.0
+      env: 
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
-        languages: javascript
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+        coverageCommand: lerna run coverage
+        coverageLocations: |
+          ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
+          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
+        debug: false
