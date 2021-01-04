@@ -11,42 +11,22 @@ import React from "react";
  * as TypeScript type.
  */
 export function renderTypeControl(config: RenderRefControlConfig): React.ReactNode {
+    // some types omitted as they default to syntax definitions
     switch (config.ref.ref as Type) {
-        case "<an-plus-b>":
-        case "<angle-percentage>":
         case "<angle>":
-        case "<basic-shape>":
-        case "<blend-mode>":
         case "<color>":
         case "<custom-ident>":
         case "<dimension>":
-        case "<display-box>":
-        case "<display-inside>":
-        case "<display-internal>":
-        case "<display-legacy>":
-        case "<display-listitem>":
-        case "<display-outside>":
-        case "<filter-function>":
         case "<flex>":
-        case "<frequency-percentage>":
-        case "<frequency>":
-        case "<gradient>":
         case "<ident>":
-        case "<image>":
         case "<integer>":
-        case "<length-percentage>":
         case "<length>":
         case "<number>":
         case "<percentage>":
-        case "<position>":
         case "<ratio>":
         case "<resolution>":
-        case "<shape>":
         case "<string>":
-        case "<time-percentage>":
         case "<time>":
-        case "<timing-function>":
-        case "<transform-function>":
         case "<url>":
         default:
             return renderDefault(config);
