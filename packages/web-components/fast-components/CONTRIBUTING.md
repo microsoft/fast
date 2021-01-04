@@ -34,7 +34,7 @@ The file can have as many `template` elements as needed as long as the `title` a
 
 ### Component Definition
 
-Each component must have a **definition**. This file describes the components API.
+Each component must have a **definition** written in the [VSCode customData](https://github.com/microsoft/vscode-custom-data) format. This is used in @microsoft/fast-tooling, and for integration with the Monaco editor.
 
 First create a `.ts` (typescript) file using spinal-case. This should be the name of your component, append with `.definition`:
 ```
