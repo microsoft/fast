@@ -1,0 +1,19 @@
+name: os validation
+on: 
+  push: 
+    branches: [all-os-validation]
+jobs:
+  ubuntu-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Node Js Set-up
+        uses: actions/setup-node@2.1.4
+      - name: Install Learna
+        run: npm i -g lerna
+      - name: Install packagedepencency/prepareworkspace
+        run: yarn install --frozen-lockfile
+      - name: Ensure Prettier formatting
+        run: lerna run prettier:diff
+      - name: Execute unit tests
+        run: lerna run test --stream
