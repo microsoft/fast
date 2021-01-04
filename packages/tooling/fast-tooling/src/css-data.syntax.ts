@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 12/16/2020
+ * Last modified: 12/18/2020
  */
 export type Syntax =
     | "<absolute-size>"
