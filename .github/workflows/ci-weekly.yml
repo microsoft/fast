@@ -12,14 +12,14 @@ on:
     - features/*
 
 jobs:
-  build_linux:
+  build_windows:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Add or Update packages
-      run: sudo yarn global add lerna
+      run: yarn global add lerna
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
