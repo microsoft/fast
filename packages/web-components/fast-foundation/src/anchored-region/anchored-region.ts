@@ -344,7 +344,6 @@ export class AnchoredRegion extends FASTElement {
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
-    private intersectionDetector: IntersectionObserver | null = null;
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private viewportRect: ClientRect | DOMRect | null;
@@ -384,8 +383,8 @@ export class AnchoredRegion extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
+        this.stopObservers();
         this.disconnectResizeDetector();
-        this.disconnectIntersectionDetector();
     }
 
     /**
@@ -545,7 +544,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * starts intersection observer
+     * get position updates
      */
     private requestPositionUpdates = (): void => {
         if (this.anchorElement === null || this.pendingPositioningUpdate) {
@@ -591,18 +590,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
-    };
-
-    /**
-     * disconnect intersection observer
-     */
-    private disconnectIntersectionDetector = (): void => {
-        if (this.intersectionDetector === null) {
-            return;
-        }
-
-        this.intersectionDetector.disconnect();
-        this.intersectionDetector = null;
     };
 
     /**

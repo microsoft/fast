@@ -13,6 +13,11 @@ export class IntersectionService {
         this.initializeIntersectionDetector();
     }
 
+    /**
+     * Request the position of a target element
+     *
+     * @internal
+     */
     public requestPosition = (
         target: Element,
         callback: (entries: IntersectionObserverEntry[]) => void
@@ -29,12 +34,18 @@ export class IntersectionService {
         this.callbacksByElement[targetIndex].push(callback);
     };
 
+    /**
+     * Cancel a position request
+     *
+     * @internal
+     */
     public cancelRequestPosition = (target: Element, callback: any): void => {
         const targetIndex: number = this.observedElements.indexOf(target);
         if (targetIndex === -1) {
             return;
         }
 
+        // remove the callback associated with the request
         const callbacks: any[] = this.callbacksByElement[targetIndex];
         const callBackIndex: number = callbacks.indexOf(callback);
         callbacks.splice(callBackIndex, 1);
