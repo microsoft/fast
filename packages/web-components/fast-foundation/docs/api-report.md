@@ -508,17 +508,6 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIANumberbox" because one of its declarations is marked as @internal
-//
-// @public
-export class DelegatesARIANumberbox {
-}
-
-// @internal
-export interface DelegatesARIANumberbox extends ARIAGlobalStatesAndProperties {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASelect" because one of its declarations is marked as @internal
 //
 // @public
@@ -982,7 +971,7 @@ export class NumberField extends FormAssociatedNumberField {
 }
 
 // @internal
-export interface NumberField extends StartEnd, DelegatesARIANumberbox {
+export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public

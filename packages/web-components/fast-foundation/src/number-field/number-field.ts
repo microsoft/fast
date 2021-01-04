@@ -1,11 +1,12 @@
 import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+import { DelegatesARIATextbox } from "../text-field/index";
 import { FormAssociatedNumberField } from "./number-field.form-associated";
 
 /**
  * A Number Field Custom HTML Element.
- * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="number" /> element }.
+ * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number | <input type="number" /> element }.
  *
  * @public
  */
@@ -220,27 +221,10 @@ export class NumberField extends FormAssociatedNumberField {
 }
 
 /**
- * Includes ARIA states and properties relating to the ARIA textbox role
- *
- * @public
- */
-export class DelegatesARIANumberbox {}
-
-/**
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
-export interface DelegatesARIANumberbox extends ARIAGlobalStatesAndProperties {}
-applyMixins(DelegatesARIANumberbox, ARIAGlobalStatesAndProperties);
-
-/**
- * Mark internal because exporting class and interface of the same name
- * confuses API documenter.
- * TODO: https://github.com/microsoft/fast/issues/3317
- * @internal
- */
-export interface NumberField extends StartEnd, DelegatesARIANumberbox {}
-applyMixins(NumberField, StartEnd, DelegatesARIANumberbox);
+export interface NumberField extends StartEnd, DelegatesARIATextbox {}
+applyMixins(NumberField, StartEnd, DelegatesARIATextbox);
