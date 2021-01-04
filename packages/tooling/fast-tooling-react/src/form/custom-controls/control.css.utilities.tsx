@@ -21,6 +21,10 @@ FASTOption;
 FASTSelect;
 FASTTextField;
 
+export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
+    return renderTextInput(config);
+}
+
 function getTextInputChangeHandler(
     parentChangeHandler: (value: string) => void
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
@@ -38,7 +42,7 @@ function getTextInputChangeHandler(
     };
 }
 
-export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
+export function renderTextInput(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-text-field
             key={config.key}
@@ -58,7 +62,7 @@ function getCheckboxInputChangeHandler(
     };
 }
 
-export function renderZeroOrOne(config: RenderRefControlConfig): React.ReactNode {
+export function renderCheckbox(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-checkbox
             events={{
