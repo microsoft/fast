@@ -2,6 +2,7 @@ name: os validation
 on: 
   push: 
     branches: [all-os-validation]
+    
 jobs:
   ubuntu-validation:
     runs-on: ubuntu-latest
