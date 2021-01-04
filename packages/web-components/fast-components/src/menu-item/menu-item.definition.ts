@@ -25,7 +25,7 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "role",
-                    type: DataType.boolean,
+                    type: DataType.string,
                     description: "The role attribute",
                     default: MenuItemRole.menuitem,
                     values: [
