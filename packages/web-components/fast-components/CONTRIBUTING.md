@@ -46,8 +46,6 @@ my-component/
   └─ my-component.styles.ts
 ```
 
-Next add your export from the file to the component's `index.ts`.
-
 Next add your file's export to [./src/component-definitions.ts](./src/component-definitions.ts):
 
 ```js
