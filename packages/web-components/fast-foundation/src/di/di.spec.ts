@@ -4,6 +4,7 @@ import {
     DI,
     FactoryImpl,
     inject,
+    Registration,
     ResolverImpl,
     ResolverStrategy,
     singleton,
@@ -784,164 +785,145 @@ describe(`The Container class`, function () {
     // });
 });
 
-// describe(`The Registration object`, function () {
+describe(`The Registration object`, function () {
+    it(`instance() returns the correct resolver`, function () {
+        const value = {};
+        const actual = Registration.instance("key", value);
+        expect(actual["key"]).eq("key", `actual['key']`);
+        expect(actual["strategy"]).eq(ResolverStrategy.instance, `actual['strategy']`);
+        expect(actual["state"]).eq(value, `actual['state']`);
+    });
 
-//   it(`instance() returns the correct resolver`, function () {
-//     const value = {};
-//     const actual = Registration.instance('key', value);
-//     assert.strictEqual(actual['key'], 'key', `actual['key']`);
-//     assert.strictEqual(actual['strategy'], ResolverStrategy.instance, `actual['strategy']`);
-//     assert.strictEqual(actual['state'], value, `actual['state']`);
-//   });
+    it(`singleton() returns the correct resolver`, function () {
+        class Foo {}
+        const actual = Registration.singleton("key", Foo);
+        expect(actual["key"]).eq("key", `actual['key']`);
+        expect(actual["strategy"]).eq(ResolverStrategy.singleton, `actual['strategy']`);
+        expect(actual["state"]).eq(Foo, `actual['state']`);
+    });
 
-//   it(`singleton() returns the correct resolver`, function () {
-//     class Foo {}
-//     const actual = Registration.singleton('key', Foo);
-//     assert.strictEqual(actual['key'], 'key', `actual['key']`);
-//     assert.strictEqual(actual['strategy'], ResolverStrategy.singleton, `actual['strategy']`);
-//     assert.strictEqual(actual['state'], Foo, `actual['state']`);
-//   });
+    it(`transient() returns the correct resolver`, function () {
+        class Foo {}
+        const actual = Registration.transient("key", Foo);
+        expect(actual["key"]).eq("key", `actual['key']`);
+        expect(actual["strategy"]).eq(ResolverStrategy.transient, `actual['strategy']`);
+        expect(actual["state"]).eq(Foo, `actual['state']`);
+    });
 
-//   it(`transient() returns the correct resolver`, function () {
-//     class Foo {}
-//     const actual = Registration.transient('key', Foo);
-//     assert.strictEqual(actual['key'], 'key', `actual['key']`);
-//     assert.strictEqual(actual['strategy'], ResolverStrategy.transient, `actual['strategy']`);
-//     assert.strictEqual(actual['state'], Foo, `actual['state']`);
-//   });
+    it(`callback() returns the correct resolver`, function () {
+        const callback = () => {
+            return;
+        };
+        const actual = Registration.callback("key", callback);
+        expect(actual["key"]).eq("key", `actual['key']`);
+        expect(actual["strategy"]).eq(ResolverStrategy.callback, `actual['strategy']`);
+        expect(actual["state"]).eq(callback, `actual['state']`);
+    });
 
-//   it(`callback() returns the correct resolver`, function () {
-//     const callback = () => { return; };
-//     const actual = Registration.callback('key', callback);
-//     assert.strictEqual(actual['key'], 'key', `actual['key']`);
-//     assert.strictEqual(actual['strategy'], ResolverStrategy.callback, `actual['strategy']`);
-//     assert.strictEqual(actual['state'], callback, `actual['state']`);
-//   });
+    it(`alias() returns the correct resolver`, function () {
+        const actual = Registration.aliasTo("key", "key2");
+        expect(actual["key"]).eq("key2", `actual['key']`);
+        expect(actual["strategy"]).eq(ResolverStrategy.alias, `actual['strategy']`);
+        expect(actual["state"]).eq("key", `actual['state']`);
+    });
+});
 
-//   it(`alias() returns the correct resolver`, function () {
-//     const actual = Registration.aliasTo('key', 'key2');
-//     assert.strictEqual(actual['key'], 'key2', `actual['key']`);
-//     assert.strictEqual(actual['strategy'], ResolverStrategy.alias, `actual['strategy']`);
-//     assert.strictEqual(actual['state'], 'key', `actual['state']`);
-//   });
-// });
-
-// describe(`The classInvokers object`, function () {
-//   const container = { get(t) {
-//     return new t();
-//   } } as any as IContainer;
-//   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
-
-//   class Dep1 {}
-//   class Dep2 {}
-//   class Dep3 {}
-//   class Dep4 {}
-//   class Dep5 {}
-//   class Dep6 {}
-
-//   it(`invoke() handles 0 deps`, function () {
-//     const actual = classInvokers[0].invoke(container, Foo, []) as Foo;
-//     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
-//   });
-
-//   it(`invoke() handles 1 dep`, function () {
-//     const actual = classInvokers[1].invoke(container, Foo, [Dep1]) as Foo;
-//     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
-//     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-//   });
-
-//   it(`invoke() handles 2 deps`, function () {
-//     const actual = classInvokers[2].invoke(container, Foo, [Dep1, Dep2]) as Foo;
-//     assert.strictEqual(actual.args.length, 2, `actual.args.length`);
-//     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-//     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-//   });
-
-//   it(`invoke() handles 3 deps`, function () {
-//     const actual = classInvokers[3].invoke(container, Foo, [Dep1, Dep2, Dep3]) as Foo;
-//     assert.strictEqual(actual.args.length, 3, `actual.args.length`);
-//     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-//     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-//     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-//   });
-
-//   it(`invoke() handles 4 deps`, function () {
-//     const actual = classInvokers[4].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4]) as Foo;
-//     assert.strictEqual(actual.args.length, 4, `actual.args.length`);
-//     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-//     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-//     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-//     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
-//   });
-
-//   it(`invoke() handles 5 deps`, function () {
-//     const actual = classInvokers[5].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5]) as Foo;
-//     assert.strictEqual(actual.args.length, 5, `actual.args.length`);
-//     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-//     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-//     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-//     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
-//     assert.instanceOf(actual.args[4], Dep5, `actual.args[4]`);
-//   });
-
-//   it(`invoke() does not handle 6 deps`, function () {
-//     assert.throws(() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6]), /undefined/, `() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6])`);
-//   });
-
-// });
-
-// describe(`The invokeWithDynamicDependencies function`, function () {
-//   const container = { get(t) {
-//     return `static${t}`;
-//   } } as any as IContainer;
-//   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
-
-//   const deps = [class Dep1 {}, class Dep2 {}, class Dep3 {}];
-
-//   it(_`throws when staticDeps is null`, function () {
-//     assert.throws(() => invokeWithDynamicDependencies(container, Foo, null, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, null, [])`);
-//   });
-
-//   it(_`throws when any of the staticDeps is null`, function () {
-//     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [null], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [null], [])`);
-//   });
-
-//   it(_`throws when any of the staticDeps is undefined`, function () {
-//     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [undefined], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [undefined], [])`);
-//   });
-
-//   it(_`throws when staticDeps is undefined`, function () {
-//     assert.throws(() => invokeWithDynamicDependencies(container, Foo, undefined, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, undefined, [])`);
-//   });
-
-//   it(_`handles staticDeps is ${deps}`, function () {
-//     const actual = invokeWithDynamicDependencies(container, Foo, deps, []);
-//     assert.deepStrictEqual(actual.args, deps.map(d => `static${d}`), `actual.args`);
-//   });
-
-//   it(`handles dynamicDeps is null`, function () {
-//     const actual = invokeWithDynamicDependencies(container, Foo, [], null);
-//     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
-//     assert.strictEqual(actual.args[0], null, `actual.args[0]`);
-//   });
-
-//   it(`handles dynamicDeps is undefined`, function () {
-//     const actual = invokeWithDynamicDependencies(container, Foo, [], undefined);
-//     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
-//   });
-
-//   it(_`handles dynamicDeps is ${deps}`, function () {
-//     const actual = invokeWithDynamicDependencies(container, Foo, [], deps);
-//     assert.deepStrictEqual(actual.args, deps, `actual.args`);
-//   });
-
-//   it(_`handles staticDeps is ${deps} and dynamicDeps is ${deps}`, function () {
-//     const actual = invokeWithDynamicDependencies(container, Foo, deps, deps);
-//     assert.strictEqual(actual.args[0], `static${deps[0]}`, `actual.args[0]`);
-//     assert.strictEqual(actual.args[1], `static${deps[1]}`, `actual.args[1]`);
-//     assert.strictEqual(actual.args[2], `static${deps[2]}`, `actual.args[2]`);
-//     assert.strictEqual(actual.args[3], deps[0], `actual.args[3]`);
-//     assert.strictEqual(actual.args[4], deps[1], `actual.args[4]`);
-//     assert.strictEqual(actual.args[5], deps[2], `actual.args[5]`);
-//   });
-// });
+describe(`The classInvokers object`, function () {
+    //   const container = { get(t) {
+    //     return new t();
+    //   } } as any as IContainer;
+    //   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
+    //   class Dep1 {}
+    //   class Dep2 {}
+    //   class Dep3 {}
+    //   class Dep4 {}
+    //   class Dep5 {}
+    //   class Dep6 {}
+    //   it(`invoke() handles 0 deps`, function () {
+    //     const actual = classInvokers[0].invoke(container, Foo, []) as Foo;
+    //     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
+    //   });
+    //   it(`invoke() handles 1 dep`, function () {
+    //     const actual = classInvokers[1].invoke(container, Foo, [Dep1]) as Foo;
+    //     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
+    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
+    //   });
+    //   it(`invoke() handles 2 deps`, function () {
+    //     const actual = classInvokers[2].invoke(container, Foo, [Dep1, Dep2]) as Foo;
+    //     assert.strictEqual(actual.args.length, 2, `actual.args.length`);
+    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
+    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
+    //   });
+    //   it(`invoke() handles 3 deps`, function () {
+    //     const actual = classInvokers[3].invoke(container, Foo, [Dep1, Dep2, Dep3]) as Foo;
+    //     assert.strictEqual(actual.args.length, 3, `actual.args.length`);
+    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
+    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
+    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
+    //   });
+    //   it(`invoke() handles 4 deps`, function () {
+    //     const actual = classInvokers[4].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4]) as Foo;
+    //     assert.strictEqual(actual.args.length, 4, `actual.args.length`);
+    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
+    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
+    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
+    //     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
+    //   });
+    //   it(`invoke() handles 5 deps`, function () {
+    //     const actual = classInvokers[5].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5]) as Foo;
+    //     assert.strictEqual(actual.args.length, 5, `actual.args.length`);
+    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
+    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
+    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
+    //     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
+    //     assert.instanceOf(actual.args[4], Dep5, `actual.args[4]`);
+    //   });
+    //   it(`invoke() does not handle 6 deps`, function () {
+    //     assert.throws(() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6]), /undefined/, `() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6])`);
+    //   });
+    // });
+    // describe(`The invokeWithDynamicDependencies function`, function () {
+    //   const container = { get(t) {
+    //     return `static${t}`;
+    //   } } as any as IContainer;
+    //   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
+    //   const deps = [class Dep1 {}, class Dep2 {}, class Dep3 {}];
+    //   it(_`throws when staticDeps is null`, function () {
+    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, null, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, null, [])`);
+    //   });
+    //   it(_`throws when any of the staticDeps is null`, function () {
+    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [null], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [null], [])`);
+    //   });
+    //   it(_`throws when any of the staticDeps is undefined`, function () {
+    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [undefined], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [undefined], [])`);
+    //   });
+    //   it(_`throws when staticDeps is undefined`, function () {
+    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, undefined, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, undefined, [])`);
+    //   });
+    //   it(_`handles staticDeps is ${deps}`, function () {
+    //     const actual = invokeWithDynamicDependencies(container, Foo, deps, []);
+    //     assert.deepStrictEqual(actual.args, deps.map(d => `static${d}`), `actual.args`);
+    //   });
+    //   it(`handles dynamicDeps is null`, function () {
+    //     const actual = invokeWithDynamicDependencies(container, Foo, [], null);
+    //     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
+    //     assert.strictEqual(actual.args[0], null, `actual.args[0]`);
+    //   });
+    //   it(`handles dynamicDeps is undefined`, function () {
+    //     const actual = invokeWithDynamicDependencies(container, Foo, [], undefined);
+    //     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
+    //   });
+    //   it(_`handles dynamicDeps is ${deps}`, function () {
+    //     const actual = invokeWithDynamicDependencies(container, Foo, [], deps);
+    //     assert.deepStrictEqual(actual.args, deps, `actual.args`);
+    //   });
+    //   it(_`handles staticDeps is ${deps} and dynamicDeps is ${deps}`, function () {
+    //     const actual = invokeWithDynamicDependencies(container, Foo, deps, deps);
+    //     assert.strictEqual(actual.args[0], `static${deps[0]}`, `actual.args[0]`);
+    //     assert.strictEqual(actual.args[1], `static${deps[1]}`, `actual.args[1]`);
+    //     assert.strictEqual(actual.args[2], `static${deps[2]}`, `actual.args[2]`);
+    //     assert.strictEqual(actual.args[3], deps[0], `actual.args[3]`);
+    //     assert.strictEqual(actual.args[4], deps[1], `actual.args[4]`);
+    //     assert.strictEqual(actual.args[5], deps[2], `actual.args[5]`);
+    //   });
+});
