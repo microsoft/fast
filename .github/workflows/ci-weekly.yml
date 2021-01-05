@@ -41,8 +41,7 @@ jobs:
       run: |
         lerna run format:check
         lerna run format
-        lerna run prettier:diff
-
+        
     - name: Testing unit tests
       run: lerna run test --stream
 
