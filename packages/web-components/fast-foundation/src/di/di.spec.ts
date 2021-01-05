@@ -374,67 +374,68 @@ describe(`The Resolver class`, function () {
     });
 });
 
-// describe(`The Factory class`, function () {
+describe(`The Factory class`, function () {
+    describe(`construct()`, function () {
+        for (const staticCount of [0, 1, 2, 3, 4, 5, 6, 7]) {
+            for (const dynamicCount of [0, 1, 2]) {
+                const container = DI.createContainer();
+                it(`instantiates a type with ${staticCount} static deps and ${dynamicCount} dynamic deps`, function () {
+                    class Bar {}
+                    class Foo {
+                        public static inject = Array(staticCount).fill(Bar);
+                        public args: any[];
+                        constructor(...args: any[]) {
+                            this.args = args;
+                        }
+                    }
+                    const sut = new FactoryImpl(Foo, DI.getDependencies(Foo));
+                    const dynamicDeps = dynamicCount
+                        ? Array(dynamicCount).fill({})
+                        : undefined;
 
-//   describe(`create()`, function () {
-//     for (const count of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-//       it(`returns a new Factory with ${count} deps`, function () {
-//         class Bar {}
-//         class Foo {public static inject = Array(count).map(c => Bar); }
-//         const actual = Factory.create(Foo);
-//         assert.instanceOf(actual, Factory, `actual`);
-//         assert.strictEqual(actual.Type, Foo, `actual.Type`);
-//         if (count < 6) {
-//           assert.strictEqual(actual['invoker'], classInvokers[count], `actual['invoker']`);
-//         } else {
-//           assert.strictEqual(actual['invoker'], fallbackInvoker, `actual['invoker']`);
-//         }
-//         assert.notStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-//         assert.deepStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-//       });
-//     }
-//   });
+                    const actual = sut.construct(container, dynamicDeps);
 
-//   describe(`construct()`, function () {
-//     for (const staticCount of [0, 1, 2, 3, 4, 5, 6, 7]) {
-//       for (const dynamicCount of [0, 1, 2]) {
-//         const container = new Container();
-//         it(`instantiates a type with ${staticCount} static deps and ${dynamicCount} dynamic deps`, function () {
-//           class Bar {}
-//           class Foo {public static inject = Array(staticCount).fill(Bar); public args: any[]; constructor(...args: any[]) {this.args = args; }}
-//           const sut = Factory.create(Foo);
-//           const dynamicDeps = dynamicCount ? Array(dynamicCount).fill({}) : undefined;
+                    for (let i = 0, ii = Foo.inject.length; i < ii; ++i) {
+                        expect(actual.args[i]).instanceOf(
+                            DI.getDependencies(Foo)[i],
+                            `actual.args[i]`
+                        );
+                    }
 
-//           const actual = sut.construct(container, dynamicDeps);
+                    for (
+                        let i = 0, ii = dynamicDeps ? dynamicDeps.length : 0;
+                        i < ii;
+                        ++i
+                    ) {
+                        expect(actual.args[DI.getDependencies(Foo).length + i]).eq(
+                            dynamicDeps![i],
+                            `actual.args[Foo.inject.length + i]`
+                        );
+                    }
+                });
+            }
+        }
+    });
 
-//           for (let i = 0, ii = Foo.inject.length; i < ii; ++i) {
-//             assert.instanceOf(actual.args[i], Foo.inject[i], `actual.args[i]`);
-//           }
-//           for (let i = 0, ii = dynamicDeps ? dynamicDeps.length : 0; i < ii; ++i) {
-//             assert.strictEqual(actual.args[Foo.inject.length + i], dynamicDeps[i], `actual.args[Foo.inject.length + i]`);
-//           }
-//         });
-//       }
-//     }
-//   });
-
-//   describe(`registerTransformer()`, function () {
-//     it(`registers the transformer`, function () {
-//       const container = new Container();
-//       class Foo {public bar; public baz; }
-//       const sut = Factory.create(Foo);
-//       // eslint-disable-next-line prefer-object-spread
-//       sut.registerTransformer(foo2 => Object.assign(foo2, { bar: 1 }));
-//       // eslint-disable-next-line prefer-object-spread
-//       sut.registerTransformer(foo2 => Object.assign(foo2, { baz: 2 }));
-//       const foo = sut.construct(container);
-//       assert.strictEqual(foo.bar, 1, `foo.bar`);
-//       assert.strictEqual(foo.baz, 2, `foo.baz`);
-//       assert.instanceOf(foo, Foo, `foo`);
-//     });
-//   });
-
-// });
+    describe(`registerTransformer()`, function () {
+        it(`registers the transformer`, function () {
+            const container = DI.createContainer();
+            class Foo {
+                public bar;
+                public baz;
+            }
+            const sut = new FactoryImpl(Foo, DI.getDependencies(Foo));
+            // eslint-disable-next-line prefer-object-spread
+            sut.registerTransformer(foo2 => Object.assign(foo2, { bar: 1 }));
+            // eslint-disable-next-line prefer-object-spread
+            sut.registerTransformer(foo2 => Object.assign(foo2, { baz: 2 }));
+            const foo = sut.construct(container);
+            expect(foo.bar).eq(1, `foo.bar`);
+            expect(foo.baz).eq(2, `foo.baz`);
+            expect(foo).instanceOf(Foo, `foo`);
+        });
+    });
+});
 
 describe(`The Container class`, function () {
     // function createFixture() {
