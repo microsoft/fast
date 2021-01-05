@@ -38,7 +38,10 @@ jobs:
       run: yarn install --frozen-lockfile
 
     - name: Testing Prettier format
-      run: lerna run prettier:diff
+      run: |
+        learna run format:check
+        learna run format
+        lerna run prettier:diff
 
     - name: Testing unit tests
       run: lerna run test --stream

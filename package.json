@@ -48,7 +48,9 @@
     "test": "yarn eslint && yarn unit-tests",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
+    "format:check": "prettier --check\"**/*.{js,jsx,css,ts,tsx,html,yaml}\"",
+    "format": "prettier --write\"**/*.{js,jsx,css,ts,tsx,html,yaml}\""
   },
   "husky": {
     "hooks": {
