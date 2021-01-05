@@ -39,8 +39,8 @@ jobs:
 
     - name: Testing Prettier format
       run: |
-        learna run format:check
-        learna run format
+        lerna run format:check
+        lerna run format
         lerna run prettier:diff
 
     - name: Testing unit tests
