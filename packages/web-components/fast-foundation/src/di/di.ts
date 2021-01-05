@@ -340,7 +340,7 @@ export const DI = Object.freeze({
             if (inject === void 0) {
                 // design:paramtypes is set by tsc when emitDecoratorMetadata is enabled.
                 const designParamtypes = DI.getDesignParamtypes(Type);
-                // au:annotation:di:paramtypes is set by the parameter decorator from DI.createInterface or by @inject
+                // di:paramtypes is set by the parameter decorator from DI.createInterface or by @inject
                 const annotationParamtypes = DI.getAnnotationParamtypes(Type);
                 if (designParamtypes === void 0) {
                     if (annotationParamtypes === void 0) {
@@ -355,14 +355,14 @@ export const DI = Object.freeze({
                             dependencies = [];
                         }
                     } else {
-                        // No design:paramtypes so just use the au:annotation:di:paramtypes
+                        // No design:paramtypes so just use the di:paramtypes
                         dependencies = cloneArrayWithPossibleProps(annotationParamtypes);
                     }
                 } else if (annotationParamtypes === void 0) {
-                    // No au:annotation:di:paramtypes so just use the design:paramtypes
+                    // No di:paramtypes so just use the design:paramtypes
                     dependencies = cloneArrayWithPossibleProps(designParamtypes);
                 } else {
-                    // We've got both, so merge them (in case of conflict on same index, au:annotation:di:paramtypes take precedence)
+                    // We've got both, so merge them (in case of conflict on same index, di:paramtypes take precedence)
                     dependencies = cloneArrayWithPossibleProps(designParamtypes);
                     let len = annotationParamtypes.length;
                     let auAnnotationParamtype: Key;

@@ -8,6 +8,10 @@ function decorator(): ClassDecorator {
     return (target: any) => target;
 }
 
+function simulateTSCompilerDesignParamTypes(target: any, deps: any[]) {
+    (Reflect as any).defineMetadata("design:paramtypes", deps, target);
+}
+
 describe(`The DI object`, function () {
     describe(`createContainer()`, function () {
         it(`returns an instance of Container`, function () {
@@ -129,49 +133,81 @@ describe(`The inject decorator`, function () {
     class Dep2 {}
     class Dep3 {}
 
-    // it(`can decorate classes with explicit dependencies`, function () {
-    //   @inject(Dep1, Dep2, Dep3)
-    //   class Foo {}
+    it(`can decorate classes with explicit dependencies`, function () {
+        @inject(Dep1, Dep2, Dep3)
+        class Foo {}
 
-    //   assert.deepStrictEqual(DI.getDependencies(Foo), [Dep1, Dep2, Dep3], `Foo['inject']`);
-    // });
+        expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3], `Foo['inject']`);
+    });
 
-    // it(`can decorate classes with implicit dependencies`, function () {
-    //   @inject()
-    //   class Foo { constructor(dep1: Dep1, dep2: Dep2, dep3: Dep3) { return; } }
+    it(`can decorate classes with implicit dependencies`, function () {
+        @inject()
+        class Foo {
+            constructor(dep1: Dep1, dep2: Dep2, dep3: Dep3) {
+                return;
+            }
+        }
 
-    //   assert.deepStrictEqual(Foo['inject'], [Dep1, Dep2, Dep3], `Foo['inject']`);
-    // });
+        simulateTSCompilerDesignParamTypes(Foo, [Dep1, Dep2, Dep3]);
 
-    // it(`can decorate constructor parameters explicitly`, function () {
-    //   class Foo { public constructor(@inject(Dep1)dep1, @inject(Dep2)dep2, @inject(Dep3)dep3) { return; } }
+        expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3]);
+    });
 
-    //   assert.deepStrictEqual(DI.getDependencies(Foo), [Dep1, Dep2, Dep3], `Foo['inject']`);
-    // });
+    it(`can decorate constructor parameters explicitly`, function () {
+        class Foo {
+            public constructor(
+                @inject(Dep1) dep1,
+                @inject(Dep2) dep2,
+                @inject(Dep3) dep3
+            ) {
+                return;
+            }
+        }
 
-    // it(`can decorate constructor parameters implicitly`, function () {
-    //   class Foo { constructor(@inject() dep1: Dep1, @inject() dep2: Dep2, @inject() dep3: Dep3) { return; } }
+        expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3], `Foo['inject']`);
+    });
 
-    //   assert.deepStrictEqual(Foo['inject'], [Dep1, Dep2, Dep3], `Foo['inject']`);
-    // });
+    it(`can decorate constructor parameters implicitly`, function () {
+        class Foo {
+            constructor(
+                @inject() dep1: Dep1,
+                @inject() dep2: Dep2,
+                @inject() dep3: Dep3
+            ) {
+                return;
+            }
+        }
 
-    // it(`can decorate properties explicitly`, function () {
-    //   // @ts-ignore
-    //   class Foo { @inject(Dep1)public dep1; @inject(Dep2)public dep2; @inject(Dep3)public dep3; }
+        simulateTSCompilerDesignParamTypes(Foo, [Dep1, Dep2, Dep3]);
 
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep1'], Dep1, `Foo['inject'].dep1`);
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep2'], Dep2, `Foo['inject'].dep2`);
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep3'], Dep3, `Foo['inject'].dep3`);
-    // });
+        expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3]);
+    });
 
-    // it(`cannot decorate properties implicitly`, function () {
-    //   // @ts-ignore
-    //   class Foo { @inject()public dep1: Dep1; @inject()public dep2: Dep2; @inject()public dep3: Dep3; }
+    it(`can decorate properties explicitly`, function () {
+        // @ts-ignore
+        class Foo {
+            @inject(Dep1) public dep1;
+            @inject(Dep2) public dep2;
+            @inject(Dep3) public dep3;
+        }
 
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep1'], undefined, `Foo['inject'].dep1`);
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep2'], undefined, `Foo['inject'].dep2`);
-    //   assert.strictEqual(DI.getDependencies(Foo)['dep3'], undefined, `Foo['inject'].dep3`);
-    // });
+        expect(DI.getDependencies(Foo)["dep1"]).eq(Dep1, `Foo['inject'].dep1`);
+        expect(DI.getDependencies(Foo)["dep2"]).eq(Dep2, `Foo['inject'].dep2`);
+        expect(DI.getDependencies(Foo)["dep3"]).eq(Dep3, `Foo['inject'].dep3`);
+    });
+
+    it(`cannot decorate properties implicitly`, function () {
+        // @ts-ignore
+        class Foo {
+            @inject() public dep1: Dep1;
+            @inject() public dep2: Dep2;
+            @inject() public dep3: Dep3;
+        }
+
+        expect(DI.getDependencies(Foo)["dep1"]).eq(undefined, `Foo['inject'].dep1`);
+        expect(DI.getDependencies(Foo)["dep2"]).eq(undefined, `Foo['inject'].dep2`);
+        expect(DI.getDependencies(Foo)["dep3"]).eq(undefined, `Foo['inject'].dep3`);
+    });
 });
 
 describe(`The transient decorator`, function () {
