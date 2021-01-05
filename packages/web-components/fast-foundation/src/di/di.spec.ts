@@ -1,4 +1,14 @@
-import { ContainerImpl, DI, inject, Registration, singleton, transient } from "./di";
+import {
+    Container,
+    ContainerImpl,
+    DI,
+    FactoryImpl,
+    inject,
+    ResolverImpl,
+    ResolverStrategy,
+    singleton,
+    transient,
+} from "./di";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
 
@@ -183,190 +193,186 @@ describe(`The inject decorator`, function () {
         expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3]);
     });
 
-    it(`can decorate properties explicitly`, function () {
-        // @ts-ignore
-        class Foo {
-            @inject(Dep1) public dep1;
-            @inject(Dep2) public dep2;
-            @inject(Dep3) public dep3;
-        }
+    // it(`can decorate properties explicitly`, function () {
+    //     // @ts-ignore
+    //     class Foo {
+    //         @inject(Dep1) public dep1;
+    //         @inject(Dep2) public dep2;
+    //         @inject(Dep3) public dep3;
+    //     }
 
-        expect(DI.getDependencies(Foo)["dep1"]).eq(Dep1, `Foo['inject'].dep1`);
-        expect(DI.getDependencies(Foo)["dep2"]).eq(Dep2, `Foo['inject'].dep2`);
-        expect(DI.getDependencies(Foo)["dep3"]).eq(Dep3, `Foo['inject'].dep3`);
-    });
+    //     expect(DI.getDependencies(Foo)["dep1"]).eq(Dep1, `Foo['inject'].dep1`);
+    //     expect(DI.getDependencies(Foo)["dep2"]).eq(Dep2, `Foo['inject'].dep2`);
+    //     expect(DI.getDependencies(Foo)["dep3"]).eq(Dep3, `Foo['inject'].dep3`);
+    // });
 
-    it(`cannot decorate properties implicitly`, function () {
-        // @ts-ignore
-        class Foo {
-            @inject() public dep1: Dep1;
-            @inject() public dep2: Dep2;
-            @inject() public dep3: Dep3;
-        }
+    // it(`cannot decorate properties implicitly`, function () {
+    //     // @ts-ignore
+    //     class Foo {
+    //         @inject() public dep1: Dep1;
+    //         @inject() public dep2: Dep2;
+    //         @inject() public dep3: Dep3;
+    //     }
 
-        expect(DI.getDependencies(Foo)["dep1"]).eq(undefined, `Foo['inject'].dep1`);
-        expect(DI.getDependencies(Foo)["dep2"]).eq(undefined, `Foo['inject'].dep2`);
-        expect(DI.getDependencies(Foo)["dep3"]).eq(undefined, `Foo['inject'].dep3`);
-    });
+    //     expect(DI.getDependencies(Foo)["dep1"]).eq(undefined, `Foo['inject'].dep1`);
+    //     expect(DI.getDependencies(Foo)["dep2"]).eq(undefined, `Foo['inject'].dep2`);
+    //     expect(DI.getDependencies(Foo)["dep3"]).eq(undefined, `Foo['inject'].dep3`);
+    // });
 });
 
 describe(`The transient decorator`, function () {
-    // it(`works as a plain decorator`, function () {
-    //   @transient
-    //   class Foo {}
-    //   assert.instanceOf(Foo['register'], Function, `Foo['register']`);
-    //   const container = DI.createContainer();
-    //   const foo1 = container.get(Foo);
-    //   const foo2 = container.get(Foo);
-    //   assert.notStrictEqual(foo1, foo2, `foo1`);
-    // });
-    // it(`works as an invocation`, function () {
-    //   @transient()
-    //   class Foo {}
-    //   assert.instanceOf(Foo['register'], Function, `Foo['register']`);
-    //   const container = DI.createContainer();
-    //   const foo1 = container.get(Foo);
-    //   const foo2 = container.get(Foo);
-    //   assert.notStrictEqual(foo1, foo2, `foo1`);
-    // });
+    it(`works as a plain decorator`, function () {
+        @transient
+        class Foo {}
+        expect(Foo["register"]).instanceOf(Function, `Foo['register']`);
+        const container = DI.createContainer();
+        const foo1 = container.get(Foo);
+        const foo2 = container.get(Foo);
+        expect(foo1).not.eq(foo2, `foo1`);
+    });
+    it(`works as an invocation`, function () {
+        @transient()
+        class Foo {}
+        expect(Foo["register"]).instanceOf(Function, `Foo['register']`);
+        const container = DI.createContainer();
+        const foo1 = container.get(Foo);
+        const foo2 = container.get(Foo);
+        expect(foo1).not.eq(foo2, `foo1`);
+    });
 });
 
 describe(`The singleton decorator`, function () {
-    // it(`works as a plain decorator`, function () {
-    //   @singleton
-    //   class Foo {}
-    //   assert.instanceOf(Foo['register'], Function, `Foo['register']`);
-    //   const container = DI.createContainer();
-    //   const foo1 = container.get(Foo);
-    //   const foo2 = container.get(Foo);
-    //   assert.strictEqual(foo1, foo2, `foo1`);
-    // });
-    // it(`works as an invocation`, function () {
-    //   @singleton()
-    //   class Foo {}
-    //   assert.instanceOf(Foo['register'], Function, `Foo['register']`);
-    //   const container = DI.createContainer();
-    //   const foo1 = container.get(Foo);
-    //   const foo2 = container.get(Foo);
-    //   assert.strictEqual(foo1, foo2, `foo1`);
-    // });
+    it(`works as a plain decorator`, function () {
+        @singleton
+        class Foo {}
+        expect(Foo["register"]).instanceOf(Function, `Foo['register']`);
+        const container = DI.createContainer();
+        const foo1 = container.get(Foo);
+        const foo2 = container.get(Foo);
+        expect(foo1).eq(foo2, `foo1`);
+    });
+    it(`works as an invocation`, function () {
+        @singleton()
+        class Foo {}
+        expect(Foo["register"]).instanceOf(Function, `Foo['register']`);
+        const container = DI.createContainer();
+        const foo1 = container.get(Foo);
+        const foo2 = container.get(Foo);
+        expect(foo1).eq(foo2, `foo1`);
+    });
 });
 
-// describe(`The Resolver class`, function () {
-//   let container: IContainer;
-//   let registerResolver: ReturnType<typeof spy>;
+describe(`The Resolver class`, function () {
+    let container: Container;
 
-//   beforeEach(function () {
-//     container = DI.createContainer();
-//     registerResolver = spy(container, 'registerResolver');
-//   });
+    beforeEach(function () {
+        container = DI.createContainer();
+        chai.spy.on(container, "registerResolver");
+    });
 
-//   afterEach(function () {
-//     registerResolver.restore();
-//   });
+    describe(`register()`, function () {
+        it(`registers the resolver to the container with the provided key`, function () {
+            const sut = new ResolverImpl("foo", 0, null);
+            sut.register(container, "bar");
+            expect(container.registerResolver).called.with("bar", sut);
+        });
 
-//   describe(`register()`, function () {
-//     it(`registers the resolver to the container with the provided key`, function () {
-//       const sut = new Resolver('foo', 0, null);
-//       sut.register(container, 'bar');
-//       expect(registerResolver).to.have.been.calledWith('bar', sut);
-//     });
+        it(`registers the resolver to the container with its own`, function () {
+            const sut = new ResolverImpl("foo", 0, null);
+            sut.register(container);
+            expect(container.registerResolver).called.with("foo", sut);
+        });
+    });
 
-//     it(`registers the resolver to the container with its own`, function () {
-//       const sut = new Resolver('foo', 0, null);
-//       sut.register(container);
-//       expect(registerResolver).to.have.been.calledWith('foo', sut);
-//     });
-//   });
+    describe(`resolve()`, function () {
+        it(`instance - returns state`, function () {
+            const state = {};
+            const sut = new ResolverImpl("foo", ResolverStrategy.instance, state);
+            const actual = sut.resolve(container, container);
+            expect(actual).eq(state, `actual`);
+        });
 
-//   describe(`resolve()`, function () {
-//     it(`instance - returns state`, function () {
-//       const state = {};
-//       const sut = new Resolver('foo', ResolverStrategy.instance, state);
-//       const actual = sut.resolve(container, container);
-//       assert.strictEqual(actual, state, `actual`);
-//     });
+        it(`singleton - returns an instance of the type and sets strategy to instance`, function () {
+            class Foo {}
+            const sut = new ResolverImpl("foo", ResolverStrategy.singleton, Foo);
+            const actual = sut.resolve(container, container);
+            expect(actual).instanceOf(Foo, `actual`);
 
-//     it(`singleton - returns an instance of the type and sets strategy to instance`, function () {
-//       class Foo {}
-//       const sut = new Resolver('foo', ResolverStrategy.singleton, Foo);
-//       const actual = sut.resolve(container, container);
-//       assert.instanceOf(actual, Foo, `actual`);
+            const actual2 = sut.resolve(container, container);
+            expect(actual2).eq(actual, `actual2`);
+        });
 
-//       const actual2 = sut.resolve(container, container);
-//       assert.strictEqual(actual2, actual, `actual2`);
-//     });
+        it(`transient - always returns a new instance of the type`, function () {
+            class Foo {}
+            const sut = new ResolverImpl("foo", ResolverStrategy.transient, Foo);
+            const actual1 = sut.resolve(container, container);
+            expect(actual1).instanceOf(Foo, `actual1`);
 
-//     it(`transient - always returns a new instance of the type`, function () {
-//       class Foo {}
-//       const sut = new Resolver('foo', ResolverStrategy.transient, Foo);
-//       const actual1 = sut.resolve(container, container);
-//       assert.instanceOf(actual1, Foo, `actual1`);
+            const actual2 = sut.resolve(container, container);
+            expect(actual2).instanceOf(Foo, `actual2`);
+            expect(actual2).not.eq(actual1, `actual2`);
+        });
 
-//       const actual2 = sut.resolve(container, container);
-//       assert.instanceOf(actual2, Foo, `actual2`);
-//       assert.notStrictEqual(actual2, actual1, `actual2`);
-//     });
+        it(`array - calls resolve() on the first item in the state array`, function () {
+            const resolver = { resolve: chai.spy() };
+            const sut = new ResolverImpl("foo", ResolverStrategy.array, [resolver]);
+            sut.resolve(container, container);
+            expect(resolver.resolve).called.with(container, container);
+        });
 
-//     it(`array - calls resolve() on the first item in the state array`, function () {
-//       const resolver = { resolve: spy() };
-//       const sut = new Resolver('foo', ResolverStrategy.array, [resolver]);
-//       sut.resolve(container, container);
-//       expect(resolver.resolve).to.have.been.calledWith(container, container);
-//     });
+        it(`throws for unknown strategy`, function () {
+            const sut = new ResolverImpl("foo", -1, null);
+            expect(() => sut.resolve(container, container)).throws();
+        });
+    });
 
-//     it(`throws for unknown strategy`, function () {
-//       const sut = new Resolver('foo', -1, null);
-//       assert.throws(() => sut.resolve(container, container), /6/, `() => sut.resolve(container, container)`);
-//     });
-//   });
+    describe(`getFactory()`, function () {
+        it(`returns a new singleton Factory if it does not exist`, function () {
+            class Foo {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.singleton, Foo);
+            const actual = sut.getFactory(container)!;
+            expect(actual).instanceOf(FactoryImpl, `actual`);
+            expect(actual.Type).eq(Foo, `actual.Type`);
+        });
 
-//   describe(`getFactory()`, function () {
-//     it(`returns a new singleton Factory if it does not exist`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.singleton, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.instanceOf(actual, Factory, `actual`);
-//       assert.strictEqual(actual.Type, Foo, `actual.Type`);
-//     });
+        it(`returns a new transient Factory if it does not exist`, function () {
+            class Foo {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.transient, Foo);
+            const actual = sut.getFactory(container)!;
+            expect(actual).instanceOf(FactoryImpl, `actual`);
+            expect(actual.Type).eq(Foo, `actual.Type`);
+        });
 
-//     it(`returns a new transient Factory if it does not exist`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.transient, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.instanceOf(actual, Factory, `actual`);
-//       assert.strictEqual(actual.Type, Foo, `actual.Type`);
-//     });
+        it(`returns a null for instance strategy`, function () {
+            class Foo {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.instance, Foo);
+            const actual = sut.getFactory(container);
+            expect(actual).eq(null, `actual`);
+        });
 
-//     it(`returns a null for instance strategy`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.instance, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.strictEqual(actual, null, `actual`);
-//     });
+        it(`returns a null for array strategy`, function () {
+            class Foo {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.array, Foo);
+            const actual = sut.getFactory(container);
+            expect(actual).eq(null, `actual`);
+        });
 
-//     it(`returns a null for array strategy`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.array, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.strictEqual(actual, null, `actual`);
-//     });
+        it(`returns the alias resolved factory for alias strategy`, function () {
+            class Foo {}
+            class Bar {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.alias, Bar);
+            const actual = sut.getFactory(container)!;
+            expect(actual.Type).eq(Bar, `actual`);
+        });
 
-//     it(`returns a null for alias strategy`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.alias, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.strictEqual(actual, null, `actual`);
-//     });
-
-//     it(`returns a null for callback strategy`, function () {
-//       class Foo {}
-//       const sut = new Resolver(Foo, ResolverStrategy.callback, Foo);
-//       const actual = sut.getFactory(container);
-//       assert.strictEqual(actual, null, `actual`);
-//     });
-//   });
-// });
+        it(`returns a null for callback strategy`, function () {
+            class Foo {}
+            const sut = new ResolverImpl(Foo, ResolverStrategy.callback, Foo);
+            const actual = sut.getFactory(container);
+            expect(actual).eq(null, `actual`);
+        });
+    });
+});
 
 // describe(`The Factory class`, function () {
 
