@@ -6,8 +6,8 @@ import {
 import { OptionStyles as styles } from "./listbox-option.styles";
 
 /**
- * The FAST option Custom Element. Implements, {@link @microsoft/fast-foundation#Option}
- * {@link @microsoft/fast-foundation#OptionTemplate}
+ * The FAST option Custom Element. Implements {@link @microsoft/fast-foundation#ListboxOption}
+ * {@link @microsoft/fast-foundation#ListboxOptionTemplate}
  *
  *
  * @public
