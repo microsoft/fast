@@ -439,261 +439,182 @@ describe(`The Factory class`, function () {
 });
 
 describe(`The Container class`, function () {
-    // function createFixture() {
-    //   const sut = DI.createContainer();
-    //   const register = createSpy();
+    function createFixture() {
+        const sut = DI.createContainer();
+        const register = chai.spy();
+        return { sut, register };
+    }
 
-    //   return { sut, register };
-    // }
+    describe(`register()`, function () {
+        it(`calls register() on {register}`, function () {
+            const { sut, register } = createFixture();
+            sut.register({ register });
 
-    // describe(`register()`, function () {
-    //   it(_`calls register() on {register}`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register({register});
+            expect(register).called.with(sut);
+        });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+        it(`calls register() on {register},{register}`, function () {
+            const { sut, register } = createFixture();
+            sut.register({ register }, { register });
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //   it(_`calls register() on {register},{register}`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register({register}, {register});
+        it(`calls register() on [{register},{register}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ register }, { register }] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{register},{register}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{register}, {register}] as any);
+        it(`calls register() on {foo:{register}}`, function () {
+            const { sut, register } = createFixture();
+            sut.register({ foo: { register } });
+            expect(register).to.have.been.first.called.with(sut);
+        });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+        it(`calls register() on {foo:{register}},{foo:{register}}`, function () {
+            const { sut, register } = createFixture();
+            sut.register({ foo: { register } }, { foo: { register } });
 
-    //   it(_`calls register() on {foo:{register}}`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register({foo: {register}});
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+        it(`calls register() on [{foo:{register}},{foo:{register}}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ foo: { register } }, { foo: { register } }] as any);
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //   it(_`calls register() on {foo:{register}},{foo:{register}}`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register({foo: {register}}, {foo: {register}});
+        it(`calls register() on {register},{foo:{register}}`, function () {
+            const { sut, register } = createFixture();
+            sut.register({ register }, { foo: { register } });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{foo:{register}},{foo:{register}}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{foo: {register}}, {foo: {register}}] as any);
+        it(`calls register() on [{register},{foo:{register}}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ register }, { foo: { register } }] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+            expect(register).to.have.been.second.called.with(sut);
+        });
 
-    //   it(_`calls register() on {register},{foo:{register}}`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register({register}, {foo: {register}});
+        it(`calls register() on [{register},{}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ register }, {}] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{register},{foo:{register}}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{register}, {foo: {register}}] as any);
+        it(`calls register() on [{},{register}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{}, { register }] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{register},{}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{register}, {}] as any);
+        it(`calls register() on [{foo:{register}},{foo:{}}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ foo: { register } }, { foo: {} }] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{},{register}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{}, {register}] as any);
+        it(`calls register() on [{foo:{}},{foo:{register}}]`, function () {
+            const { sut, register } = createFixture();
+            sut.register([{ foo: {} }, { foo: { register } }] as any);
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+            expect(register).to.have.been.first.called.with(sut);
+        });
 
-    //   it(_`calls register() on [{foo:{register}},{foo:{}}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{foo: {register}}, {foo: {}}] as any);
+        describe(`does NOT throw when attempting to register primitive values`, function () {
+            for (const value of [
+                void 0,
+                null,
+                true,
+                false,
+                "",
+                "asdf",
+                NaN,
+                Infinity,
+                0,
+                42,
+                Symbol(),
+                Symbol("a"),
+            ]) {
+                it(`{foo:${String(value)}}`, function () {
+                    const { sut } = createFixture();
+                    sut.register({ foo: value });
+                });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+                it(`{foo:{bar:${String(value)}}}`, function () {
+                    const { sut } = createFixture();
+                    sut.register({ foo: { bar: value } });
+                });
 
-    //   it(_`calls register() on [{foo:{}},{foo:{register}}]`, function () {
-    //     const { sut, register } = createFixture();
-    //     sut.register([{foo: {}}, {foo: {register}}] as any);
+                it(`[${String(value)}]`, function () {
+                    const { sut } = createFixture();
+                    sut.register([value]);
+                });
 
-    //     assert.deepStrictEqual(
-    //       register.calls,
-    //       [
-    //         [sut],
-    //       ],
-    //       `register.calls`,
-    //     );
-    //   });
+                it(`${String(value)}`, function () {
+                    const { sut } = createFixture();
+                    sut.register(value);
+                });
+            }
+        });
+    });
 
-    //   describe(`does NOT throw when attempting to register primitive values`, function () {
-    //     for (const value of [
-    //       void 0,
-    //       null,
-    //       true,
-    //       false,
-    //       '',
-    //       'asdf',
-    //       NaN,
-    //       Infinity,
-    //       0,
-    //       42,
-    //       Symbol(),
-    //       Symbol('a'),
-    //     ]) {
-    //       it(`{foo:${String(value)}}`, function () {
-    //         const { sut } = createFixture();
-    //         sut.register({foo:value});
-    //       });
-
-    //       it(`{foo:{bar:${String(value)}}}`, function () {
-    //         const { sut } = createFixture();
-    //         sut.register({foo:{bar:value}});
-    //       });
-
-    //       it(`[${String(value)}]`, function () {
-    //         const { sut } = createFixture();
-    //         sut.register([value]);
-    //       });
-
-    //       it(`${String(value)}`, function () {
-    //         const { sut } = createFixture();
-    //         sut.register(value);
-    //       });
-    //     }
-    //   });
-    // });
-
-    // describe(`registerResolver()`, function () {
-    //   for (const key of [null, undefined, Object]) {
-    //     it(_`throws on invalid key ${key}`, function () {
-    //       assert.throws(() => sut.registerResolver(key, null as any), /5/, `() => sut.registerResolver(key, null as any)`);
-    //     });
-    //   }
-
-    //   it(`registers the resolver if it does not exist yet`, function () {
-    //     const key = {};
-    //     const resolver = new Resolver(key, ResolverStrategy.instance, {});
-    //     sut.registerResolver(key, resolver);
-    //     const actual = sut.getResolver(key);
-    //     assert.strictEqual(actual, resolver, `actual`);
-    //   });
-
-    //   it(`changes to array resolver if the key already exists`, function () {
-    //     const key = {};
-    //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
-    //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
-    //     sut.registerResolver(key, resolver1);
-    //     const actual1 = sut.getResolver(key);
-    //     assert.strictEqual(actual1, resolver1, `actual1`);
-    //     sut.registerResolver(key, resolver2);
-    //     const actual2 = sut.getResolver(key);
-    //     assert.notStrictEqual(actual2, actual1, `actual2`);
-    //     assert.notStrictEqual(actual2, resolver1, `actual2`);
-    //     assert.notStrictEqual(actual2, resolver2, `actual2`);
-    //     assert.strictEqual(actual2['strategy'], ResolverStrategy.array, `actual2['strategy']`);
-    //     assert.strictEqual(actual2['state'][0], resolver1, `actual2['state'][0]`);
-    //     assert.strictEqual(actual2['state'][1], resolver2, `actual2['state'][1]`);
-    //   });
-
-    //   it(`appends to the array resolver if the key already exists more than once`, function () {
-    //     const key = {};
-    //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
-    //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
-    //     const resolver3 = new Resolver(key, ResolverStrategy.instance, {});
-    //     sut.registerResolver(key, resolver1);
-    //     sut.registerResolver(key, resolver2);
-    //     sut.registerResolver(key, resolver3);
-    //     const actual1 = sut.getResolver(key);
-    //     assert.strictEqual(actual1['strategy'], ResolverStrategy.array, `actual1['strategy']`);
-    //     assert.strictEqual(actual1['state'][0], resolver1, `actual1['state'][0]`);
-    //     assert.strictEqual(actual1['state'][1], resolver2, `actual1['state'][1]`);
-    //     assert.strictEqual(actual1['state'][2], resolver3, `actual1['state'][2]`);
-    //   });
-    // });
+    describe(`registerResolver()`, function () {
+        //   for (const key of [null, undefined, Object]) {
+        //     it(_`throws on invalid key ${key}`, function () {
+        //       assert.throws(() => sut.registerResolver(key, null as any), /5/, `() => sut.registerResolver(key, null as any)`);
+        //     });
+        //   }
+        //   it(`registers the resolver if it does not exist yet`, function () {
+        //     const key = {};
+        //     const resolver = new Resolver(key, ResolverStrategy.instance, {});
+        //     sut.registerResolver(key, resolver);
+        //     const actual = sut.getResolver(key);
+        //     assert.strictEqual(actual, resolver, `actual`);
+        //   });
+        //   it(`changes to array resolver if the key already exists`, function () {
+        //     const key = {};
+        //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
+        //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
+        //     sut.registerResolver(key, resolver1);
+        //     const actual1 = sut.getResolver(key);
+        //     assert.strictEqual(actual1, resolver1, `actual1`);
+        //     sut.registerResolver(key, resolver2);
+        //     const actual2 = sut.getResolver(key);
+        //     assert.notStrictEqual(actual2, actual1, `actual2`);
+        //     assert.notStrictEqual(actual2, resolver1, `actual2`);
+        //     assert.notStrictEqual(actual2, resolver2, `actual2`);
+        //     assert.strictEqual(actual2['strategy'], ResolverStrategy.array, `actual2['strategy']`);
+        //     assert.strictEqual(actual2['state'][0], resolver1, `actual2['state'][0]`);
+        //     assert.strictEqual(actual2['state'][1], resolver2, `actual2['state'][1]`);
+        //   });
+        //   it(`appends to the array resolver if the key already exists more than once`, function () {
+        //     const key = {};
+        //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
+        //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
+        //     const resolver3 = new Resolver(key, ResolverStrategy.instance, {});
+        //     sut.registerResolver(key, resolver1);
+        //     sut.registerResolver(key, resolver2);
+        //     sut.registerResolver(key, resolver3);
+        //     const actual1 = sut.getResolver(key);
+        //     assert.strictEqual(actual1['strategy'], ResolverStrategy.array, `actual1['strategy']`);
+        //     assert.strictEqual(actual1['state'][0], resolver1, `actual1['state'][0]`);
+        //     assert.strictEqual(actual1['state'][1], resolver2, `actual1['state'][1]`);
+        //     assert.strictEqual(actual1['state'][2], resolver3, `actual1['state'][2]`);
+        //   });
+    });
 
     describe(`registerTransformer()`, function () {
         // for (const key of [null, undefined]) {
@@ -721,18 +642,18 @@ describe(`The Container class`, function () {
         // }
     });
 
-    // describe(`has()`, function () {
-    //   for (const key of [null, undefined, Object]) {
-    //     it(_`returns false for non-existing key ${key}`, function () {
-    //       assert.strictEqual(sut.has(key as any, false), false, `sut.has(key as any, false)`);
-    //     });
-    //   }
-    //   it(`returns true for existing key`, function () {
-    //     const key = {};
-    //     sut.registerResolver(key, new Resolver(key, ResolverStrategy.instance, {}));
-    //     assert.strictEqual(sut.has(key as any, false), true, `sut.has(key as any, false)`);
-    //   });
-    // });
+    describe(`has()`, function () {
+        //   for (const key of [null, undefined, Object]) {
+        //     it(_`returns false for non-existing key ${key}`, function () {
+        //       assert.strictEqual(sut.has(key as any, false), false, `sut.has(key as any, false)`);
+        //     });
+        //   }
+        //   it(`returns true for existing key`, function () {
+        //     const key = {};
+        //     sut.registerResolver(key, new Resolver(key, ResolverStrategy.instance, {}));
+        //     assert.strictEqual(sut.has(key as any, false), true, `sut.has(key as any, false)`);
+        //   });
+    });
 
     describe(`get()`, function () {
         // for (const key of [null, undefined]) {
@@ -752,37 +673,35 @@ describe(`The Container class`, function () {
         // }
     });
 
-    // describe(`getFactory()`, function () {
-    //   for (const count of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-    //     sut = new Container(); // ensure the state is reset (beforeEach doesn't know about loops)
-
-    //     it(`returns a new Factory with ${count} deps if it does not exist`, function () {
-    //       class Bar {}
-    //       class Foo {public static inject = Array(count).map(c => Bar); }
-    //       const actual = sut.getFactory(Foo);
-    //       assert.instanceOf(actual, Factory, `actual`);
-    //       assert.strictEqual(actual.Type, Foo, `actual.Type`);
-    //       if (count < 6) {
-    //         assert.strictEqual(actual['invoker'], classInvokers[count], `actual['invoker']`);
-    //       } else {
-    //         assert.strictEqual(actual['invoker'], fallbackInvoker, `actual['invoker']`);
-    //       }
-    //       assert.notStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-    //       assert.deepStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-    //     });
-    //   }
-
-    //   it(`reuses the existing factory if it already exists`, function () {
-    //     const create = spy(Factory, 'create');
-    //     class Foo {}
-    //     const actual = sut.getFactory(Foo);
-    //     assert.instanceOf(actual, Factory, `actual`);
-    //     const actual2 = sut.getFactory(Foo);
-    //     assert.strictEqual(actual, actual2, `actual`);
-    //     expect(create).to.have.been.calledOnce;
-    //     create.restore();
-    //   });
-    // });
+    describe(`getFactory()`, function () {
+        //   for (const count of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+        //     sut = new Container(); // ensure the state is reset (beforeEach doesn't know about loops)
+        //     it(`returns a new Factory with ${count} deps if it does not exist`, function () {
+        //       class Bar {}
+        //       class Foo {public static inject = Array(count).map(c => Bar); }
+        //       const actual = sut.getFactory(Foo);
+        //       assert.instanceOf(actual, Factory, `actual`);
+        //       assert.strictEqual(actual.Type, Foo, `actual.Type`);
+        //       if (count < 6) {
+        //         assert.strictEqual(actual['invoker'], classInvokers[count], `actual['invoker']`);
+        //       } else {
+        //         assert.strictEqual(actual['invoker'], fallbackInvoker, `actual['invoker']`);
+        //       }
+        //       assert.notStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
+        //       assert.deepStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
+        //     });
+        //   }
+        //   it(`reuses the existing factory if it already exists`, function () {
+        //     const create = spy(Factory, 'create');
+        //     class Foo {}
+        //     const actual = sut.getFactory(Foo);
+        //     assert.instanceOf(actual, Factory, `actual`);
+        //     const actual2 = sut.getFactory(Foo);
+        //     assert.strictEqual(actual, actual2, `actual`);
+        //     expect(create).to.have.been.calledOnce;
+        //     create.restore();
+        //   });
+    });
 });
 
 describe(`The Registration object`, function () {
@@ -826,104 +745,4 @@ describe(`The Registration object`, function () {
         expect(actual["strategy"]).eq(ResolverStrategy.alias, `actual['strategy']`);
         expect(actual["state"]).eq("key", `actual['state']`);
     });
-});
-
-describe(`The classInvokers object`, function () {
-    //   const container = { get(t) {
-    //     return new t();
-    //   } } as any as IContainer;
-    //   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
-    //   class Dep1 {}
-    //   class Dep2 {}
-    //   class Dep3 {}
-    //   class Dep4 {}
-    //   class Dep5 {}
-    //   class Dep6 {}
-    //   it(`invoke() handles 0 deps`, function () {
-    //     const actual = classInvokers[0].invoke(container, Foo, []) as Foo;
-    //     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
-    //   });
-    //   it(`invoke() handles 1 dep`, function () {
-    //     const actual = classInvokers[1].invoke(container, Foo, [Dep1]) as Foo;
-    //     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
-    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-    //   });
-    //   it(`invoke() handles 2 deps`, function () {
-    //     const actual = classInvokers[2].invoke(container, Foo, [Dep1, Dep2]) as Foo;
-    //     assert.strictEqual(actual.args.length, 2, `actual.args.length`);
-    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-    //   });
-    //   it(`invoke() handles 3 deps`, function () {
-    //     const actual = classInvokers[3].invoke(container, Foo, [Dep1, Dep2, Dep3]) as Foo;
-    //     assert.strictEqual(actual.args.length, 3, `actual.args.length`);
-    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-    //   });
-    //   it(`invoke() handles 4 deps`, function () {
-    //     const actual = classInvokers[4].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4]) as Foo;
-    //     assert.strictEqual(actual.args.length, 4, `actual.args.length`);
-    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-    //     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
-    //   });
-    //   it(`invoke() handles 5 deps`, function () {
-    //     const actual = classInvokers[5].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5]) as Foo;
-    //     assert.strictEqual(actual.args.length, 5, `actual.args.length`);
-    //     assert.instanceOf(actual.args[0], Dep1, `actual.args[0]`);
-    //     assert.instanceOf(actual.args[1], Dep2, `actual.args[1]`);
-    //     assert.instanceOf(actual.args[2], Dep3, `actual.args[2]`);
-    //     assert.instanceOf(actual.args[3], Dep4, `actual.args[3]`);
-    //     assert.instanceOf(actual.args[4], Dep5, `actual.args[4]`);
-    //   });
-    //   it(`invoke() does not handle 6 deps`, function () {
-    //     assert.throws(() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6]), /undefined/, `() => classInvokers[6].invoke(container, Foo, [Dep1, Dep2, Dep3, Dep4, Dep5, Dep6])`);
-    //   });
-    // });
-    // describe(`The invokeWithDynamicDependencies function`, function () {
-    //   const container = { get(t) {
-    //     return `static${t}`;
-    //   } } as any as IContainer;
-    //   class Foo { public args: any[]; constructor(...args: any[]) { this.args = args; } }
-    //   const deps = [class Dep1 {}, class Dep2 {}, class Dep3 {}];
-    //   it(_`throws when staticDeps is null`, function () {
-    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, null, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, null, [])`);
-    //   });
-    //   it(_`throws when any of the staticDeps is null`, function () {
-    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [null], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [null], [])`);
-    //   });
-    //   it(_`throws when any of the staticDeps is undefined`, function () {
-    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, [undefined], []), /7/, `() => invokeWithDynamicDependencies(container, Foo, [undefined], [])`);
-    //   });
-    //   it(_`throws when staticDeps is undefined`, function () {
-    //     assert.throws(() => invokeWithDynamicDependencies(container, Foo, undefined, []), void 0, `() => invokeWithDynamicDependencies(container, Foo, undefined, [])`);
-    //   });
-    //   it(_`handles staticDeps is ${deps}`, function () {
-    //     const actual = invokeWithDynamicDependencies(container, Foo, deps, []);
-    //     assert.deepStrictEqual(actual.args, deps.map(d => `static${d}`), `actual.args`);
-    //   });
-    //   it(`handles dynamicDeps is null`, function () {
-    //     const actual = invokeWithDynamicDependencies(container, Foo, [], null);
-    //     assert.strictEqual(actual.args.length, 1, `actual.args.length`);
-    //     assert.strictEqual(actual.args[0], null, `actual.args[0]`);
-    //   });
-    //   it(`handles dynamicDeps is undefined`, function () {
-    //     const actual = invokeWithDynamicDependencies(container, Foo, [], undefined);
-    //     assert.strictEqual(actual.args.length, 0, `actual.args.length`);
-    //   });
-    //   it(_`handles dynamicDeps is ${deps}`, function () {
-    //     const actual = invokeWithDynamicDependencies(container, Foo, [], deps);
-    //     assert.deepStrictEqual(actual.args, deps, `actual.args`);
-    //   });
-    //   it(_`handles staticDeps is ${deps} and dynamicDeps is ${deps}`, function () {
-    //     const actual = invokeWithDynamicDependencies(container, Foo, deps, deps);
-    //     assert.strictEqual(actual.args[0], `static${deps[0]}`, `actual.args[0]`);
-    //     assert.strictEqual(actual.args[1], `static${deps[1]}`, `actual.args[1]`);
-    //     assert.strictEqual(actual.args[2], `static${deps[2]}`, `actual.args[2]`);
-    //     assert.strictEqual(actual.args[3], deps[0], `actual.args[3]`);
-    //     assert.strictEqual(actual.args[4], deps[1], `actual.args[4]`);
-    //     assert.strictEqual(actual.args[5], deps[2], `actual.args[5]`);
-    //   });
 });
