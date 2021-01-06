@@ -630,90 +630,76 @@ describe(`The Container class`, function () {
     });
 
     describe(`registerTransformer()`, function () {
-        // for (const key of [null, undefined]) {
-        //   it(_`throws on invalid key ${key}`, function () {
-        //     const { sut } = createFixture();
-        //     assert.throws(() => sut.registerTransformer(key, null as any), /key\/value cannot be null or undefined/, `() => sut.registerTransformer(key, null as any)`);
-        //   });
-        // }
-
-        it(`registers the transformer if it does not exist yet`, function () {
-            return;
-        });
-
-        it(`reuses the existing transformer if it exists`, function () {
-            return;
-        });
+        for (const key of [null, undefined]) {
+            it(`throws on invalid key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(() => sut.registerTransformer(key as any, null as any)).throws();
+            });
+        }
     });
 
     describe(`getResolver()`, function () {
-        // for (const key of [null, undefined]) {
-        //   it(_`throws on invalid key ${key}`, function () {
-        //     const { sut } = createFixture();
-        //     assert.throws(() => sut.getResolver(key, null as any), /key\/value cannot be null or undefined/, `() => sut.getResolver(key, null as any)`);
-        //   });
-        // }
+        for (const key of [null, undefined]) {
+            it(`throws on invalid key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(() => sut.getResolver(key as any, null as any)).throws();
+            });
+        }
     });
 
     describe(`has()`, function () {
-        //   for (const key of [null, undefined, Object]) {
-        //     it(_`returns false for non-existing key ${key}`, function () {
-        //       assert.strictEqual(sut.has(key as any, false), false, `sut.has(key as any, false)`);
-        //     });
-        //   }
-        //   it(`returns true for existing key`, function () {
-        //     const key = {};
-        //     sut.registerResolver(key, new Resolver(key, ResolverStrategy.instance, {}));
-        //     assert.strictEqual(sut.has(key as any, false), true, `sut.has(key as any, false)`);
-        //   });
+        for (const key of [null, undefined, Object]) {
+            it(`returns false for non-existing key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(sut.has(key as any, false)).eql(
+                    false,
+                    `sut.has(key as any, false)`
+                );
+            });
+        }
+        it(`returns true for existing key`, function () {
+            const { sut } = createFixture();
+            const key = {};
+            sut.registerResolver(
+                key,
+                new ResolverImpl(key, ResolverStrategy.instance, {})
+            );
+            expect(sut.has(key as any, false)).eql(true, `sut.has(key as any, false)`);
+        });
     });
 
     describe(`get()`, function () {
-        // for (const key of [null, undefined]) {
-        //   it(_`throws on invalid key ${key}`, function () {
-        //     const { sut } = createFixture();
-        //     assert.throws(() => sut.get(key), /key\/value cannot be null or undefined/, `() => sut.get(key)`);
-        //   });
-        // }
+        for (const key of [null, undefined]) {
+            it(`throws on invalid key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(() => sut.get(key as any)).throws();
+            });
+        }
     });
 
     describe(`getAll()`, function () {
-        // for (const key of [null, undefined]) {
-        //   it(_`throws on invalid key ${key}`, function () {
-        //     const { sut } = createFixture();
-        //     assert.throws(() => sut.getAll(key), /key\/value cannot be null or undefined/, `() => sut.getAll(key)`);
-        //   });
-        // }
+        for (const key of [null, undefined]) {
+            it(`throws on invalid key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(() => sut.getAll(key as any)).throws();
+            });
+        }
     });
 
     describe(`getFactory()`, function () {
-        //   for (const count of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-        //     sut = new Container(); // ensure the state is reset (beforeEach doesn't know about loops)
-        //     it(`returns a new Factory with ${count} deps if it does not exist`, function () {
-        //       class Bar {}
-        //       class Foo {public static inject = Array(count).map(c => Bar); }
-        //       const actual = sut.getFactory(Foo);
-        //       assert.instanceOf(actual, Factory, `actual`);
-        //       assert.strictEqual(actual.Type, Foo, `actual.Type`);
-        //       if (count < 6) {
-        //         assert.strictEqual(actual['invoker'], classInvokers[count], `actual['invoker']`);
-        //       } else {
-        //         assert.strictEqual(actual['invoker'], fallbackInvoker, `actual['invoker']`);
-        //       }
-        //       assert.notStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-        //       assert.deepStrictEqual(actual['dependencies'], Foo.inject, `actual['dependencies']`);
-        //     });
-        //   }
-        //   it(`reuses the existing factory if it already exists`, function () {
-        //     const create = spy(Factory, 'create');
-        //     class Foo {}
-        //     const actual = sut.getFactory(Foo);
-        //     assert.instanceOf(actual, Factory, `actual`);
-        //     const actual2 = sut.getFactory(Foo);
-        //     assert.strictEqual(actual, actual2, `actual`);
-        //     expect(create).to.have.been.calledOnce;
-        //     create.restore();
-        //   });
+        for (const count of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+            const sut = DI.createContainer();
+            it(`returns a new Factory with ${count} deps if it does not exist`, function () {
+                class Bar {}
+                class Foo {
+                    public static inject = Array(count).map(c => Bar);
+                }
+                const actual = sut.getFactory(Foo);
+                expect(actual).instanceOf(FactoryImpl, `actual`);
+                expect(actual.Type).eql(Foo, `actual.Type`);
+                expect(actual["dependencies"]).deep.eq(Foo.inject);
+            });
+        }
     });
 });
 
