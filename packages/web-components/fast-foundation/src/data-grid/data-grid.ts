@@ -18,7 +18,10 @@ import {
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
 import { DataGridCell } from "./data-grid-cell";
-import { DataGridRow, DataGridRowTypes } from "./data-grid-row";
+import { DataGridRow } from "./data-grid-row";
+import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
+
+export { DataGridRowTypes, GenerateHeaderOptions };
 
 /**
  * Defines a column in the grid
@@ -82,18 +85,6 @@ export interface ColumnDefinition {
      */
 
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
-}
-
-/**
- * Enumerates auto generated header options
- * default option generates a non-sticky header row
- *
- * @public
- */
-export enum GenerateHeaderOptions {
-    none = "none",
-    default = "default",
-    sticky = "sticky",
 }
 
 /**

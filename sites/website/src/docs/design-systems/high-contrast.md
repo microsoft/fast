@@ -81,7 +81,7 @@ Here is a 1:1 map between the `forced-colors` keywords and Windows high contrast
 
 Here is a simple example of adding high contrast to style an accent button. It has selectors for rest, active, hover, focus, and disabled.
 
-![Accent button](https://static.fast.design/assets/accent.png)
+![Accent button](https://static.fast.design/assets/high-contrast/accent.png)
 
 ```ts
 export const AccentButtonStyles = css`
