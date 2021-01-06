@@ -572,48 +572,61 @@ describe(`The Container class`, function () {
     });
 
     describe(`registerResolver()`, function () {
-        //   for (const key of [null, undefined, Object]) {
-        //     it(_`throws on invalid key ${key}`, function () {
-        //       assert.throws(() => sut.registerResolver(key, null as any), /5/, `() => sut.registerResolver(key, null as any)`);
-        //     });
-        //   }
-        //   it(`registers the resolver if it does not exist yet`, function () {
-        //     const key = {};
-        //     const resolver = new Resolver(key, ResolverStrategy.instance, {});
-        //     sut.registerResolver(key, resolver);
-        //     const actual = sut.getResolver(key);
-        //     assert.strictEqual(actual, resolver, `actual`);
-        //   });
-        //   it(`changes to array resolver if the key already exists`, function () {
-        //     const key = {};
-        //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
-        //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
-        //     sut.registerResolver(key, resolver1);
-        //     const actual1 = sut.getResolver(key);
-        //     assert.strictEqual(actual1, resolver1, `actual1`);
-        //     sut.registerResolver(key, resolver2);
-        //     const actual2 = sut.getResolver(key);
-        //     assert.notStrictEqual(actual2, actual1, `actual2`);
-        //     assert.notStrictEqual(actual2, resolver1, `actual2`);
-        //     assert.notStrictEqual(actual2, resolver2, `actual2`);
-        //     assert.strictEqual(actual2['strategy'], ResolverStrategy.array, `actual2['strategy']`);
-        //     assert.strictEqual(actual2['state'][0], resolver1, `actual2['state'][0]`);
-        //     assert.strictEqual(actual2['state'][1], resolver2, `actual2['state'][1]`);
-        //   });
-        //   it(`appends to the array resolver if the key already exists more than once`, function () {
-        //     const key = {};
-        //     const resolver1 = new Resolver(key, ResolverStrategy.instance, {});
-        //     const resolver2 = new Resolver(key, ResolverStrategy.instance, {});
-        //     const resolver3 = new Resolver(key, ResolverStrategy.instance, {});
-        //     sut.registerResolver(key, resolver1);
-        //     sut.registerResolver(key, resolver2);
-        //     sut.registerResolver(key, resolver3);
-        //     const actual1 = sut.getResolver(key);
-        //     assert.strictEqual(actual1['strategy'], ResolverStrategy.array, `actual1['strategy']`);
-        //     assert.strictEqual(actual1['state'][0], resolver1, `actual1['state'][0]`);
-        //     assert.strictEqual(actual1['state'][1], resolver2, `actual1['state'][1]`);
-        //     assert.strictEqual(actual1['state'][2], resolver3, `actual1['state'][2]`);
-        //   });
+        for (const key of [null, undefined]) {
+            it(`throws on invalid key ${key}`, function () {
+                const { sut } = createFixture();
+                expect(() => sut.registerResolver(key as any, null as any)).throws();
+            });
+        }
+
+        it(`registers the resolver if it does not exist yet`, function () {
+            const { sut } = createFixture();
+            const key = {};
+            const resolver = new ResolverImpl(key, ResolverStrategy.instance, {});
+            sut.registerResolver(key, resolver);
+            const actual = sut.getResolver(key);
+            expect(actual).eql(resolver, `actual`);
+        });
+
+        it(`changes to array resolver if the key already exists`, function () {
+            const { sut } = createFixture();
+            const key = {};
+            const resolver1 = new ResolverImpl(key, ResolverStrategy.instance, {});
+            const resolver2 = new ResolverImpl(key, ResolverStrategy.instance, {});
+            sut.registerResolver(key, resolver1);
+            const actual1 = sut.getResolver(key);
+            expect(actual1).eql(resolver1, `actual1`);
+            sut.registerResolver(key, resolver2);
+            const actual2 = sut.getResolver(key)!;
+            expect(actual2).not.eql(actual1, `actual2`);
+            expect(actual2).not.eql(resolver1, `actual2`);
+            expect(actual2).not.eql(resolver2, `actual2`);
+            expect(actual2["strategy"]).eql(
+                ResolverStrategy.array,
+                `actual2['strategy']`
+            );
+            expect(actual2["state"][0]).eql(resolver1, `actual2['state'][0]`);
+            expect(actual2["state"][1]).eql(resolver2, `actual2['state'][1]`);
+        });
+
+        it(`appends to the array resolver if the key already exists more than once`, function () {
+            const { sut } = createFixture();
+            const key = {};
+            const resolver1 = new ResolverImpl(key, ResolverStrategy.instance, {});
+            const resolver2 = new ResolverImpl(key, ResolverStrategy.instance, {});
+            const resolver3 = new ResolverImpl(key, ResolverStrategy.instance, {});
+            sut.registerResolver(key, resolver1);
+            sut.registerResolver(key, resolver2);
+            sut.registerResolver(key, resolver3);
+            const actual1 = sut.getResolver(key)!;
+            expect(actual1["strategy"]).eql(
+                ResolverStrategy.array,
+                `actual1['strategy']`
+            );
+            expect(actual1["state"][0]).eql(resolver1, `actual1['state'][0]`);
+            expect(actual1["state"][1]).eql(resolver2, `actual1['state'][1]`);
+            expect(actual1["state"][2]).eql(resolver3, `actual1['state'][2]`);
+        });
     });
 
     describe(`registerTransformer()`, function () {
