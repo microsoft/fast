@@ -1,16 +1,16 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
-import DataGridTemplate from "./fixtures/base.html";
 import { html } from "@microsoft/fast-element";
 import {
-    GenerateHeaderOptions,
     Button,
+    ColumnDefinition,
     DataGrid,
     DataGridCell,
-    ColumnDefinition,
     DataGridRow,
 } from "@microsoft/fast-foundation";
+import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
+import { FASTDesignSystemProvider } from "../design-system-provider";
+import DataGridTemplate from "./fixtures/base.html";
 import { FASTDataGrid } from "./";
 
 // Prevent tree-shaking
@@ -18,11 +18,9 @@ FASTDataGrid;
 FASTDesignSystemProvider;
 
 let defaultGridElement: DataGrid | null = null;
-let defaultRowData: object = newDataRow("default");
+const defaultRowData: object = newDataRow("default");
 
-let columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
-
-let gridTemplateColumnsDefault = "1fr 1fr 1fr 1fr";
+const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
 const defaultRowItemTemplate = html`
     <fast-data-grid-row

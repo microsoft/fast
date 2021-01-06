@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { createDataGridTemplate, DataGrid, DataGridRow } from "./index";
-import { ColumnDefinition, GenerateHeaderOptions } from "./data-grid";
-import { DataGridRowTypes } from "./data-grid-row";
+import { ColumnDefinition } from "./data-grid";
+import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 // Utility functions to generate test data
@@ -61,10 +61,10 @@ const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]
 class FASTDataGrid extends DataGrid {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTDataGrid>(
+    const { document, element, connect, disconnect } = await fixture<FASTDataGrid>(
         "fast-data-grid"
     );
-    return { element, connect, disconnect };
+    return { document, element, connect, disconnect };
 }
 
 describe("Data grid", () => {
@@ -156,7 +156,7 @@ describe("Data grid", () => {
     });
 
     it("should move focus with up/down arrow key strokes", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { document, element, connect, disconnect } = await setup();
 
         element.rowsData = newDataSet(2);
 
@@ -194,7 +194,7 @@ describe("Data grid", () => {
     });
 
     it("should move focus to first/last cells with ctrl + home/end key strokes", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { document, element, connect, disconnect } = await setup();
 
         element.rowsData = newDataSet(2);
 
