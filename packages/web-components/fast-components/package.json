@@ -20,6 +20,7 @@
   "unpkg": "dist/fast-components.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
+    "clean:test": "node ../../../build/clean.js test/dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "build": "yarn generate-default-palettes && yarn build:tsc && yarn generate-open-ui-definition && yarn build:rollup && yarn doc",
@@ -49,7 +50,11 @@
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha ",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test:build-tsc": "tsc -p ./test/tsconfig.json",
+    "test:build-rollup": "rollup -c ./test/rollup.config.js",
+    "test:mocha": "mocha --config ./test/.mocharc.json ./test/**/*.spec.js",
+    "test:playwright": "yarn clean:test && yarn test:build-tsc && yarn test:build-rollup && yarn test:mocha"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
@@ -83,7 +88,8 @@
     "karma-source-map-support": "^1.4.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
-    "mocha": "^7.1.2",
+    "mocha": "^8.2.1",
+    "playwright": "^1.7.0",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
