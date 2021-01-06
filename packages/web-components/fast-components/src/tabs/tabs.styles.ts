@@ -29,9 +29,23 @@ export const TabsStyles = css`
         box-sizing: border-box;
     }
 
+    .tablist-container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto;
+    }
+
     .start,
     .end {
         align-self: center;
+    }
+
+    :host([orientation="horizontal"]) .start {
+        grid-column: 1;
+    }
+
+    :host([orientation="horizontal"]) .end {
+        grid-column: 3;
     }
 
     .activeIndicator {

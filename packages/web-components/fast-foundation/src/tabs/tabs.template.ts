@@ -8,22 +8,24 @@ import { Tabs } from "./tabs";
  */
 export const TabsTemplate = html<Tabs>`
     <template class="${x => x.orientation}">
-        ${startTemplate}
-        <div class="tablist" part="tablist" role="tablist">
-            <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
+        <div class="tablist-container">
+            ${startTemplate}
+            <div class="tablist" part="tablist" role="tablist">
+                <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
+                ${when(
+                    x => x.showActiveIndicator,
+                    html<Tabs>`
+                        <div
+                            ${ref("activeIndicatorRef")}
+                            class="activeIndicator"
+                            part="activeIndicator"
+                        ></div>
+                    `
+                )}
 
-            ${when(
-                x => x.showActiveIndicator,
-                html<Tabs>`
-                    <div
-                        ${ref("activeIndicatorRef")}
-                        class="activeIndicator"
-                        part="activeIndicator"
-                    ></div>
-                `
-            )}
+            </div>
+            ${endTemplate}
         </div>
-        ${endTemplate}
         <div class="tabpanel">
             <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
