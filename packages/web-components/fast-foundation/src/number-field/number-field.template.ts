@@ -41,6 +41,7 @@ export const NumberFieldTemplate = html<NumberField>`
                 size="${x => x.size}"
                 :value="${x => x.value}"
                 type="text"
+                inputmode="numeric"
                 min="${x => x.min}"
                 max="${x => x.max}"
                 step="${x => x.step}"
