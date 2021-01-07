@@ -94,7 +94,7 @@
       "build/helpers/__tests__/*",
       "build/helpers/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "testRegex": "/__tests__/.*\\.(test|spec)\\.(js|ts|tsx)$",
     "moduleFileExtensions": [
       "ts",
       "js"
