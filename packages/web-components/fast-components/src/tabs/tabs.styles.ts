@@ -40,14 +40,6 @@ export const TabsStyles = css`
         align-self: center;
     }
 
-    :host([orientation="horizontal"]) .start {
-        grid-column: 1;
-    }
-
-    :host([orientation="horizontal"]) .end {
-        grid-column: 3;
-    }
-
     .activeIndicator {
         grid-row: 2;
         grid-column: 1;
