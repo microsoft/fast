@@ -13,7 +13,10 @@ on:
 
 jobs:
   build_windows:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [windows-latest, macos-latest]
+    runs-on: ${ {matrix.platform }}
 
     steps:
     - uses: actions/checkout@v2
