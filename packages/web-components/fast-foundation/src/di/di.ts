@@ -2,13 +2,7 @@
  * Big thanks to https://github.com/EisenbergEffect and the https://github.com/aurelia/aurelia project
  * for this code.
  */
-import {
-    Constructable,
-    Controller,
-    emptyArray,
-    FASTElement,
-    Observable,
-} from "@microsoft/fast-element";
+import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
 import { Class } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
@@ -268,6 +262,23 @@ export const ContainerConfiguration = Object.freeze({
     }),
 });
 
+/**
+ * @alpha
+ */
+export interface InterfaceConfiguration {
+    /**
+     * The friendly name for the interface. Useful for debugging.
+     */
+    friendlyName?: string;
+
+    /**
+     * When true, the dependency will be re-resolved when FASTElement connection changes.
+     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable.notify | notification }
+     * will be emitted for the property, with the previous and next values provided to any subscriber.
+     */
+    respectConnection?: boolean;
+}
+
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
 
 /**
@@ -281,6 +292,22 @@ export const DI = Object.freeze({
         );
     },
 
+    findContainer(element: HTMLElement): Container {
+        const event = new CustomEvent<DOMParentLocatorEventDetail>(
+            DILocateParentEventType,
+            {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: { container: void 0 },
+            }
+        );
+
+        element.dispatchEvent(event);
+
+        return event.detail.container || DI.getOrCreateDOMContainer();
+    },
+
     getOrCreateDOMContainer(
         element: HTMLElement = document.body,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
@@ -291,7 +318,7 @@ export const DI = Object.freeze({
                 element,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator:
-                        element === document.body ? () => null : domParentLocator,
+                        element === document.body ? () => null : DI.findContainer,
                 })
             )
         );
@@ -394,7 +421,106 @@ export const DI = Object.freeze({
         return dependencies;
     },
 
-    createInterface,
+    defineProperty(
+        target: {},
+        propertyName: string,
+        key: Key,
+        respectConnection = false
+    ) {
+        const diPropertyKey = `$di_${propertyName}`;
+
+        Reflect.defineProperty(target, propertyName, {
+            get: function (this: any) {
+                let value = this[diPropertyKey];
+
+                if (value === void 0) {
+                    const container: Container =
+                        this instanceof HTMLElement
+                            ? DI.findContainer(this)
+                            : DI.getOrCreateDOMContainer();
+
+                    value = container.get(key);
+                    this[diPropertyKey] = value;
+
+                    if (respectConnection && this instanceof FASTElement) {
+                        const notifier = (this as FASTElement).$fastController;
+                        const handleChange = () => {
+                            const newContainer = DI.findContainer(this);
+                            const newValue = newContainer.get(key) as any;
+                            const oldValue = this[diPropertyKey];
+
+                            if (newValue !== oldValue) {
+                                this[diPropertyKey] = value;
+                                notifier.notify(propertyName);
+                            }
+                        };
+
+                        notifier.subscribe({ handleChange }, "isConnected");
+                    }
+                }
+                return value;
+            },
+        });
+    },
+
+    createInterface<K extends Key>(
+        nameConfigOrCallback?:
+            | string
+            | ((builder: ResolverBuilder<K>) => Resolver<K>)
+            | InterfaceConfiguration,
+        configuror?: (builder: ResolverBuilder<K>) => Resolver<K>
+    ): InterfaceSymbol<K> {
+        const configure =
+            typeof nameConfigOrCallback === "function"
+                ? nameConfigOrCallback
+                : configuror;
+        const friendlyName: string =
+            typeof nameConfigOrCallback === "string"
+                ? nameConfigOrCallback
+                : nameConfigOrCallback && "friendlyName" in nameConfigOrCallback
+                ? nameConfigOrCallback.friendlyName || defaultFriendlyName
+                : defaultFriendlyName;
+        const respectConnection: boolean =
+            typeof nameConfigOrCallback === "string"
+                ? false
+                : nameConfigOrCallback && "respectConnection" in nameConfigOrCallback
+                ? nameConfigOrCallback.respectConnection || false
+                : false;
+
+        const Interface = function (
+            target: Injectable<K>,
+            property: string,
+            index: number
+        ): void {
+            if (target == null || new.target !== undefined) {
+                throw new Error(
+                    `No registration for interface: '${Interface.friendlyName}'`
+                );
+            }
+
+            if (property) {
+                DI.defineProperty(target, property, Interface, respectConnection);
+            } else {
+                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+                annotationParamtypes[index] = Interface;
+            }
+        };
+
+        Interface.$isInterface = true;
+        Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
+
+        if (configure != null) {
+            Interface.register = function (container: Container, key?: Key): Resolver<K> {
+                return configure(new ResolverBuilder(container, key ?? Interface));
+            };
+        }
+
+        Interface.toString = function toString(): string {
+            return `InterfaceSymbol<${Interface.friendlyName}>`;
+        };
+
+        return Interface;
+    },
 
     inject(
         ...dependencies: Key[]
@@ -1457,135 +1583,6 @@ const defaultFriendlyName = "(anonymous)";
  */
 export interface DOMParentLocatorEventDetail {
     container: Container | void;
-}
-
-function domParentLocator(element: HTMLElement): Container {
-    const event = new CustomEvent<DOMParentLocatorEventDetail>(DILocateParentEventType, {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-        detail: { container: void 0 },
-    });
-
-    element.dispatchEvent(event);
-
-    return event.detail.container || DI.getOrCreateDOMContainer();
-}
-
-/**
- * @alpha
- */
-export interface InterfaceConfiguration {
-    /**
-     * The friendly name for the interface. Useful for debugging.
-     */
-    friendlyName?: string;
-
-    /**
-     * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable.notify | notification }
-     * will be emitted for the property, with the previous and next values provided to any subscriber.
-     */
-    respectConnection?: boolean;
-}
-
-function createInterface<K extends Key>(
-    nameConfigOrCallback?:
-        | string
-        | ((builder: ResolverBuilder<K>) => Resolver<K>)
-        | InterfaceConfiguration,
-    configuror?: (builder: ResolverBuilder<K>) => Resolver<K>
-): InterfaceSymbol<K> {
-    const configure =
-        typeof nameConfigOrCallback === "function" ? nameConfigOrCallback : configuror;
-    const friendlyName: string =
-        typeof nameConfigOrCallback === "string"
-            ? nameConfigOrCallback
-            : nameConfigOrCallback && "friendlyName" in nameConfigOrCallback
-            ? nameConfigOrCallback.friendlyName || defaultFriendlyName
-            : defaultFriendlyName;
-    const respectConnection: boolean =
-        typeof nameConfigOrCallback === "string"
-            ? false
-            : nameConfigOrCallback && "respectConnection" in nameConfigOrCallback
-            ? nameConfigOrCallback.respectConnection || false
-            : false;
-
-    const Interface = function (
-        target: Injectable<K>,
-        property: string,
-        index: number
-    ): void {
-        if (target == null || new.target !== undefined) {
-            throw new Error(`No registration for interface: '${Interface.friendlyName}'`);
-        }
-
-        if (property) {
-            const diPropertyKey = `$di_${property}`;
-
-            Reflect.defineProperty(target, property, {
-                get: function (this: any) {
-                    let value = this[diPropertyKey];
-
-                    if (value === void 0) {
-                        const container: Container =
-                            this instanceof HTMLElement
-                                ? domParentLocator(this)
-                                : DI.getOrCreateDOMContainer();
-
-                        value = container.get(Interface);
-                        this[diPropertyKey] = value;
-
-                        if (respectConnection && this instanceof FASTElement) {
-                            const notifier = Observable.getNotifier(
-                                ((this as unknown) as FASTElement).$fastController
-                            );
-                            const handleChange = (
-                                source: Controller,
-                                key: "isConnected"
-                            ): void => {
-                                const newContainer = domParentLocator(
-                                    (this as unknown) as HTMLElement
-                                );
-                                const newValue = newContainer.get(Interface) as any;
-                                const oldValue = this[diPropertyKey];
-
-                                if (newValue !== oldValue) {
-                                    this[diPropertyKey] = value;
-                                    Observable.getNotifier(this).notify({
-                                        property,
-                                        previous: oldValue,
-                                        next: newValue,
-                                    });
-                                }
-                            };
-
-                            notifier.subscribe({ handleChange }, "isConnected");
-                        }
-                    }
-                    return value;
-                },
-            });
-        } else {
-            const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
-            annotationParamtypes[index] = Interface;
-        }
-    };
-
-    Interface.$isInterface = true;
-    Interface.friendlyName = friendlyName == null ? "(anonymous)" : friendlyName;
-
-    if (configure != null) {
-        Interface.register = function (container: Container, key?: Key): Resolver<K> {
-            return configure(new ResolverBuilder(container, key ?? Interface));
-        };
-    }
-
-    Interface.toString = function toString(): string {
-        return `InterfaceSymbol<${Interface.friendlyName}>`;
-    };
-
-    return Interface;
 }
 
 /* eslint-disable-next-line */
