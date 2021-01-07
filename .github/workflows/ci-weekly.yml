@@ -15,8 +15,8 @@ jobs:
   build_windows:
     strategy:
       matrix:
-        platform: [windows-latest]
-    runs-on: ${{matrix.platform }}
+        OS: [windows-latest]
+    runs-on: ${{ matrix.OS }}
 
     steps:
     - uses: actions/checkout@v2
@@ -46,7 +46,8 @@ jobs:
         lerna run format
         
     - name: Testing unit tests
-      run: lerna run test --stream
+      run: npm run test
+      #run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
