@@ -46,8 +46,8 @@ jobs:
         lerna run format
         
     - name: Testing unit tests
-      #run: npm run test
-      #run: lerna run test --stream
+      run: npm run test
+      run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
