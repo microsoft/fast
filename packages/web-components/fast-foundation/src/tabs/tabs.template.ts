@@ -22,7 +22,6 @@ export const TabsTemplate = html<Tabs>`
                         ></div>
                     `
                 )}
-
             </div>
             ${endTemplate}
         </div>
