@@ -24,7 +24,9 @@
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
-      "**/@types/mocha"
+      "**/@types/mocha",
+      "**/@types/node",
+      "**/chai"
     ]
   },
   "repository": {
