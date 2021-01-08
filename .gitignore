@@ -67,3 +67,6 @@ docs/en/packages/*/api/
 # Ignore Build Artefacts
 bin/
 obj/
+
+# Ignore api - ectractor.json
+api-ectractor.json
