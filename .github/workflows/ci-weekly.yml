@@ -1,9 +1,9 @@
 name: CI - FAST
 
 on:
-  push:
+  push: 
     branches:
-    - master
+    - windows-fails-ci-validation
     - releases/*
   pull_request:
     branches:
@@ -12,17 +12,13 @@ on:
     - features/*
 
 jobs:
-  build_windows:
-    strategy:
-      matrix:
-        OS: [windows-latest]
-    runs-on: ${{ matrix.OS }}
-
+  build_linux:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
     - name: Add or Update packages
-      run: yarn global add lerna
+      run: sudo yarn global add lerna
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -36,31 +32,123 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
     - name: Testing Prettier format
-      run: |
-        yarn format:check
-        yarn format
+      run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: |
-        yarn prepare
-        yarn lerna run test --stream
+      run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
-      env:
+      env: 
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
         coverageCommand: lerna run coverage
         coverageLocations: |
           ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-wasm/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add or Update packages
+      run: sudo yarn global add lerna
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream
+
+    - name: Collect and upload code coverage to Code Climate
+      uses: paambaati/codeclimate-action@v2.6.0
+      env: 
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+      with:
+        coverageCommand: lerna run coverage
+        coverageLocations: |
+          ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-wasm/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
+          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
+        debug: false 
+
+  build-windows:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add or Update packages
+      run: sudo yarn global add lerna
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream
+
+    - name: Collect and upload code coverage to Code Climate
+      uses: paambaati/codeclimate-action@v2.6.0
+      env: 
+        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
+      with:
+        coverageCommand: lerna run coverage
+        coverageLocations: |
+          ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-tooling-wasm/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
+          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
+          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
+        debug: false 
