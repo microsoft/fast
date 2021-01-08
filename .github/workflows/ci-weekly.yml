@@ -42,13 +42,13 @@ jobs:
 
     - name: Testing Prettier format
       run: |
-        lerna run format:check
-        lerna run format
+        yarn format:check
+        yarn format
 
     - name: Testing unit tests
       run: |
         yarn prepare
-        lerna run test --stream
+        yarn lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
