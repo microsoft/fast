@@ -3,8 +3,37 @@ import {
     ElementViewTemplate,
     FASTElement,
     observable,
+    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { Configuration, DIConfiguration, unprefix } from "../configuration";
+import {
+    ComponentPresentation,
+    DefaultComponentPresentation,
+    DefineElement,
+    ElementPrefix,
+} from "../design-system";
+import { Container, Registration, Registry } from "../di";
+
+/**
+ * @alpha
+ */
+export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
+    /**
+     * The non-prefixed name of the component.
+     */
+    baseName: string;
+
+    /**
+     * The element constructor
+     */
+    type: typeof FASTElement;
+};
+
+/**
+ * @alpha
+ */
+export type OverrideFoundationElementDefinition = Partial<
+    Omit<FoundationElementDefinition, "type">
+> & { prefix?: string };
 
 /**
  * Defines a foundation element class that:
@@ -15,8 +44,19 @@ import { Configuration, DIConfiguration, unprefix } from "../configuration";
  * @alpha
  */
 export class FoundationElement extends FASTElement {
-    @DIConfiguration
-    private configuration: Configuration;
+    @Container
+    private container: Container;
+    private _presentation: ComponentPresentation | null = null;
+
+    protected get $presentation(): ComponentPresentation {
+        if (this._presentation === null) {
+            this._presentation = this.container.get(
+                ComponentPresentation.keyFrom(this.tagName)
+            );
+        }
+
+        return this._presentation;
+    }
 
     /**
      * Sets the template of the element instance. When undefined,
@@ -44,21 +84,47 @@ export class FoundationElement extends FASTElement {
         }
     }
 
-    /**
-     * Resolves the template for the element instance.
-     */
-    protected resolveTemplate(): ElementViewTemplate | null {
-        return this.configuration.getDefaultTemplateFor(
-            unprefix(this.tagName).toLowerCase()
-        );
+    connectedCallback() {
+        this.$presentation.applyTo(this);
+        super.connectedCallback();
     }
 
-    /**
-     * Resolves styles for the element instance
-     */
-    protected resolveStyles(): ElementStyles | null {
-        return this.configuration.getDefaultStylesFor(
-            unprefix(this.tagName).toLowerCase()
-        );
+    public static configuration(
+        elementDefinition: FoundationElementDefinition
+    ): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry {
+        return (
+            overrideDefinition: OverrideFoundationElementDefinition = {}
+        ): Registry => {
+            const definition = {
+                ...elementDefinition,
+                ...overrideDefinition,
+            };
+
+            return {
+                register(container: Container) {
+                    const prefix = definition.prefix || container.get(ElementPrefix);
+                    const defineElement = container.get(DefineElement);
+                    const name = `${prefix}-${definition.baseName}`;
+                    const presentation = new DefaultComponentPresentation(
+                        definition.template,
+                        definition.styles
+                    );
+
+                    container.register(
+                        Registration.instance(
+                            ComponentPresentation.keyFrom(name),
+                            presentation
+                        )
+                    );
+
+                    defineElement(elementDefinition.type, {
+                        name,
+                        elementOptions: definition.elementOptions,
+                        shadowOptions: definition.shadowOptions,
+                        attributes: definition.attributes,
+                    });
+                },
+            };
+        };
     }
 }

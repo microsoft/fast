@@ -1,7 +1,9 @@
-import { css, customElement, elements, html } from "@microsoft/fast-element";
+import { css, customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { DI, Registration } from "../di";
 import { fixture } from "../fixture";
-import { FoundationElement } from "./index";
+import { ComponentPresentation, DefaultComponentPresentation } from "../design-system";
+import { FoundationElement } from "./foundation-element";
 
 const styles = css`
     :host {
@@ -32,18 +34,32 @@ class TemplatedElement extends FoundationElement {
 }
 
 async function setup(tag: string) {
-    const { element, connect, disconnect } = await fixture<BareElement>(tag);
+    const { element, parent, connect, disconnect } = await fixture<BareElement>(tag);
+    const container = DI.getOrCreateDOMContainer(parent);
+    const builtinTemplate = html`
+        default-template
+    `;
+    const builtinStyles = css``;
 
-    return { element, connect, disconnect };
+    container.register(
+        Registration.instance(
+            ComponentPresentation.keyFrom(tag),
+            new DefaultComponentPresentation(builtinTemplate, builtinStyles)
+        )
+    );
+
+    return { element, connect, disconnect, builtinTemplate, builtinStyles };
 }
 
 describe("FASTFoundation", () => {
     describe("should template with", () => {
         it("the instance template property if it is assigned", async () => {
-            const { element, connect, disconnect } = await setup("bare-element");
+            const { element, connect, disconnect, builtinTemplate } = await setup(
+                "bare-element"
+            );
             await connect();
 
-            expect(element.$fastController.template).to.equal(null);
+            expect(element.$fastController.template).to.equal(builtinTemplate);
             element.template = template;
             expect(element.$fastController.template).to.equal(template);
             await disconnect();
@@ -60,10 +76,12 @@ describe("FASTFoundation", () => {
 
     describe("should style with", () => {
         it("the instance styles property if it is assigned", async () => {
-            const { element, connect, disconnect } = await setup("bare-element");
+            const { element, connect, disconnect, builtinStyles } = await setup(
+                "bare-element"
+            );
             await connect();
 
-            expect(element.$fastController.styles).to.equal(null);
+            expect(element.$fastController.styles).to.equal(builtinStyles);
             element.styles = styles;
             expect(element.$fastController.styles).to.equal(styles);
             await disconnect();
