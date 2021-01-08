@@ -1,7 +1,7 @@
 name: CI - FAST
 
 on:
-  push: 
+  push:
     branches:
     - master
     - releases/*
@@ -44,13 +44,13 @@ jobs:
       run: |
         lerna run format:check
         lerna run format
-        
+
     - name: Testing unit tests
       run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
-      env: 
+      env:
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
         coverageCommand: lerna run coverage
