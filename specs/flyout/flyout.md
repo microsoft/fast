@@ -62,38 +62,8 @@ This includes:
 - `trap-focus` - boolean, whether or not to keep focus contained inside the popover, defaults to true
 - `target` - string, the html id of the HTMLElement that the Popover is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
 - `focus-target-on-close` - boolean, whether or not to focus back on to the _target element_ when the popover is closed, defaults to true
-- `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic
+- `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic=
 - `delay` - number, the time delay before the popover is shown once triggered
-
-    - above-centered, below-centered
-
-    ![X](./images/ab-centered.png)
-
-    - right-centered, left-centered
-    
-    ![X](./images/rl-centered.png)
-
-    - top-left-corner, top-right-corner, bottom-right-corner, bottom-left-corner
-
-    ![X](./images/corner-positions.png)
-
-    - above-left-aligned, below-left-aligned
-
-    ![X](./images/ab-left-aligned.png)
-
-    - above-right-aligned, below-right-aligned
-
-    ![X](./images/ab-right-aligned.png)
-
-    - left-top-aligned, right-top-aligned
-
-    ![X](./images/rl-top-aligned.png)
-
-    - left-bottom-aligned, right-bottom-aligned
-    
-    ![X](./images/rl-bottom-aligned.png)
-
-
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
@@ -113,6 +83,36 @@ This includes:
 
 *Functions*
 - `createPopoverTemplate(string: prefix)` - generates a `ViewTemplate` for the popover based on the given provided prefix string. This is required as popover uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie "fast-anchored-region", "fluent-anchored-region"). Note that the appropriate `anchored-region` component must also be declared.
+
+*Position Options*
+
+- above-centered, below-centered
+
+![X](./images/ab-centered.png)
+
+- right-centered, left-centered
+
+![X](./images/rl-centered.png)
+
+- top-left-corner, top-right-corner, bottom-right-corner, bottom-left-corner
+
+![X](./images/corner-positions.png)
+
+- above-left-aligned, below-left-aligned
+
+![X](./images/ab-left-aligned.png)
+
+- above-right-aligned, below-right-aligned
+
+![X](./images/ab-right-aligned.png)
+
+- left-top-aligned, right-top-aligned
+
+![X](./images/rl-top-aligned.png)
+
+- left-bottom-aligned, right-bottom-aligned
+
+![X](./images/rl-bottom-aligned.png)
 
 ### Anatomy and Appearance
 Parts:
