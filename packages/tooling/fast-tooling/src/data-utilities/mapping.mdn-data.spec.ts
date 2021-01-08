@@ -338,6 +338,29 @@ describe("resolveCSSPropertySyntax", () => {
             prepend: null,
         });
     });
+    test("should resolve a CSS properties syntax with a single syntax", () => {
+        expect(
+            resolveCSSPropertySyntax(
+                {
+                    syntax: "<foo>#",
+                    percentages: "referToWidthOfContainingBlock",
+                } as any,
+                "bar",
+                [],
+                ["foo"]
+            )
+        ).toEqual({
+            mapsToProperty: "bar",
+            multiplier: {
+                type: "oneOrMoreSeparatedByComma",
+            },
+            percentages: "referToWidthOfContainingBlock",
+            prepend: null,
+            ref: "<foo>",
+            refCombinatorType: "none",
+            type: "type",
+        });
+    });
 });
 
 describe("mapCSSProperties", () => {

@@ -719,6 +719,19 @@ export function resolveCSSPropertySyntax(
             ? mapGroupedEntities(mdnCSSPropertyConfig.syntax)
             : mdnCSSPropertyConfig.syntax;
     const combinatorType = mapCombinatorType(normalizedSyntax);
+    const ref = resolveCSSPropertyReference(
+        mdnCSSPropertyConfig.syntax,
+        syntaxKeys,
+        typeKeys
+    );
+
+    if (combinatorType === "none" && typeof ref !== "string") {
+        return {
+            mapsToProperty: cssProperty,
+            percentages: mdnCSSPropertyConfig.percentages,
+            ...ref[0],
+        };
+    }
 
     return {
         mapsToProperty: cssProperty,
