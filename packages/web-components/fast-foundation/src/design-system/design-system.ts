@@ -12,7 +12,12 @@ export const DefineElement = DI.createInterface<typeof FASTElement.define>(x =>
     x.instance(FASTElement.define)
 );
 
-const registeredNames = new Set<string>();
+type ElementDisambiguationCallback = (
+    existing: FASTElementDefinition,
+    attempting: FASTElementDefinition
+) => FASTElementDefinition | null;
+
+const registeredDefinitions = new Map<string, FASTElementDefinition>();
 
 /**
  * @alpha
@@ -20,9 +25,15 @@ const registeredNames = new Set<string>();
 export class DesignSystem {
     private registrations: any[] = [];
     private prefix: string = defaultPrefix;
+    private disambiguate: ElementDisambiguationCallback = () => null;
 
     public withPrefix(prefix: string) {
         this.prefix = prefix;
+        return this;
+    }
+
+    public withElementDisambiguation(callback: ElementDisambiguationCallback) {
+        this.disambiguate = callback;
         return this;
     }
 
@@ -38,11 +49,21 @@ export class DesignSystem {
             type: TType,
             nameOrDef?: string | PartialFASTElementDefinition
         ): TType => {
-            const definition = new FASTElementDefinition(type, nameOrDef);
+            let attempt: FASTElementDefinition | null = new FASTElementDefinition(
+                type,
+                nameOrDef
+            );
 
-            if (!registeredNames.has(definition.name)) {
-                registeredNames.add(definition.name);
-                definitions.push(definition);
+            while (attempt !== null && registeredDefinitions.has(attempt.name)) {
+                attempt = this.disambiguate(
+                    registeredDefinitions.get(attempt.name)!,
+                    attempt
+                );
+            }
+
+            if (attempt !== null) {
+                registeredDefinitions.set(attempt.name, attempt);
+                definitions.push(attempt);
             }
 
             return type;
@@ -58,5 +79,7 @@ export class DesignSystem {
         for (const def of definitions) {
             def.define();
         }
+
+        return container;
     }
 }
