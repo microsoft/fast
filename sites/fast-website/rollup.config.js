@@ -1,7 +1,7 @@
 import alias from "@rollup/plugin-alias";
 import path from "path";
 import commonJS from "rollup-plugin-commonjs";
-import ejs from "rollup-plugin-ejs";
+import jst from "rollup-plugin-jst";
 import resolve from "rollup-plugin-node-resolve";
 import svg from "rollup-plugin-svg";
 import typescript from "rollup-plugin-typescript2";
@@ -23,14 +23,7 @@ export default [
             }),
             resolve(),
             commonJS(),
-            ejs({
-                render: {
-                    data: null,
-                },
-                compilerOptions: {
-                    client: true,
-                },
-            }),
+            jst(),
             svg(),
             typescript({
                 tsconfigOverride: {
