@@ -68,5 +68,3 @@ docs/en/packages/*/api/
 bin/
 obj/
 
-# Ignore api - ectractor.json
-api-ectractor.json
