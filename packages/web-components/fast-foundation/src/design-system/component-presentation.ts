@@ -27,8 +27,8 @@ export const ComponentPresentation = Object.freeze({
 });
 
 export class DefaultComponentPresentation implements ComponentPresentation {
-    private styles: ElementStyles | null;
-    private template: ElementViewTemplate | null;
+    public readonly styles: ElementStyles | null;
+    public readonly template: ElementViewTemplate | null;
 
     constructor(
         template?: ElementViewTemplate,
