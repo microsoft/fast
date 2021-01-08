@@ -1,4 +1,4 @@
-import { CaptureType, SyntheticViewTemplate, ViewTemplate } from "../template";
+import { CaptureType, SyntheticViewTemplate } from "../template";
 import { DOM } from "../dom";
 import {
     ExecutionContext,
@@ -12,6 +12,7 @@ import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
+import { emptyArray } from "../interfaces";
 
 /**
  * Options for configuring repeat behavior.
@@ -30,7 +31,7 @@ const defaultRepeatOptions: RepeatOptions = Object.freeze({
 
 function bindWithoutPositioning(
     view: SyntheticView,
-    items: any[],
+    items: readonly any[],
     index: number,
     context: ExecutionContext
 ): void {
@@ -39,7 +40,7 @@ function bindWithoutPositioning(
 
 function bindWithPositioning(
     view: SyntheticView,
-    items: any[],
+    items: readonly any[],
     index: number,
     context: ExecutionContext
 ): void {
@@ -58,7 +59,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     private views: SyntheticView[] = [];
     private template: SyntheticViewTemplate;
     private templateBindingObserver: BindingObserver<TSource, SyntheticViewTemplate>;
-    private items: any[] | null = null;
+    private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: BindingObserver<TSource, any[]>;
     private originalContext: ExecutionContext | undefined = void 0;
@@ -115,7 +116,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
             source,
             this.originalContext
         );
-        this.observeItems();
+        this.observeItems(true);
         this.refreshAllViews();
     }
 
@@ -156,19 +157,21 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
     }
 
-    private observeItems(): void {
+    private observeItems(force = false): void {
         if (!this.items) {
-            this.items = [];
+            this.items = emptyArray;
+            return;
         }
 
         const oldObserver = this.itemsObserver;
         const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
+        const hasNewObserver = oldObserver !== newObserver;
 
-        if (oldObserver !== newObserver) {
-            if (oldObserver !== null) {
-                oldObserver.unsubscribe(this);
-            }
+        if (hasNewObserver && oldObserver !== null) {
+            oldObserver.unsubscribe(this);
+        }
 
+        if (hasNewObserver || force) {
             newObserver.subscribe(this);
         }
     }
@@ -339,7 +342,7 @@ export class RepeatDirective<TSource = any> extends Directive {
  * @public
  */
 export function repeat<TSource = any, TItem = any>(
-    itemsBinding: Binding<TSource, TItem[]>,
+    itemsBinding: Binding<TSource, readonly TItem[]>,
     templateOrTemplateBinding:
         | SyntheticViewTemplate
         | Binding<TSource, SyntheticViewTemplate>,
