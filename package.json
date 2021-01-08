@@ -45,7 +45,7 @@
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
-    "test": "yarn eslint && yarn unit-tests",
+    "test": "yarn eslint \"/**/*.{js,ts,tsx,jsx}\"",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",

@@ -46,7 +46,6 @@ jobs:
         lerna run format
         
     - name: Testing unit tests
-      run: npm run test
       run: lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
