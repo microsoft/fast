@@ -7,9 +7,19 @@
             border-radius: 4px;
         }
 
+        .card-pattern {
+            border-radius: 4px;
+            width: 500px;
+            height: 250px;
+        }
+
         @media (forced-colors: active) {
             .card-placeholder {
                 background-color: ButtonText;
+            }
+
+            .card-pattern {
+                background-color: #000;
             }
         }
     </style>
@@ -83,18 +93,14 @@
 
     <h4>Using SVG via Pattern attribute</h4>
     <fast-skeleton
-        style="border-radius: 4px; width: 500px; height: 250px;"
+        class="card-pattern"
         shape="rect"
         pattern="https://static.fast.design/assets/skeleton-test-pattern.svg"
         shimmer
     ></fast-skeleton>
 
     <h4>Using inline SVG</h4>
-    <fast-skeleton
-        style="border-radius: 4px; width: 500px; height: 250px;"
-        shape="rect"
-        shimmer
-    >
+    <fast-skeleton class="card-pattern" shape="rect" shimmer>
         <svg
             style="position: absolute; left: 0; top: 0;"
             id="pattern"
