@@ -1,13 +1,12 @@
 /**
- *
+ *  A service to batch intersection event callbacks so multiple elements can share a single observer
  *
  * @public
  */
 export class IntersectionService {
     private intersectionDetector: IntersectionObserver;
 
-    private observedElements: Element[] = [];
-    private callbacksByElement: any[] = [];
+    private observedElements: Map<Element, any[]> = new Map<Element, any[]>();
 
     constructor() {
         this.initializeIntersectionDetector();
@@ -22,16 +21,13 @@ export class IntersectionService {
         target: Element,
         callback: (entries: IntersectionObserverEntry[]) => void
     ): void => {
-        let targetIndex: number = this.observedElements.indexOf(target);
-
-        if (targetIndex === -1) {
-            targetIndex = this.observedElements.length;
-            this.observedElements.push(target);
-            this.callbacksByElement.push([]);
-            this.intersectionDetector.observe(target);
+        if (this.observedElements.has(target)) {
+            this.observedElements.get(target)?.push(callback);
+            return;
         }
 
-        this.callbacksByElement[targetIndex].push(callback);
+        this.observedElements.set(target, [callback]);
+        this.intersectionDetector.observe(target);
     };
 
     /**
@@ -40,15 +36,14 @@ export class IntersectionService {
      * @internal
      */
     public cancelRequestPosition = (target: Element, callback: any): void => {
-        const targetIndex: number = this.observedElements.indexOf(target);
-        if (targetIndex === -1) {
-            return;
-        }
+        const callbacks: any[] | undefined = this.observedElements.get(target);
 
-        // remove the callback associated with the request
-        const callbacks: any[] = this.callbacksByElement[targetIndex];
-        const callBackIndex: number = callbacks.indexOf(callback);
-        callbacks.splice(callBackIndex, 1);
+        if (callbacks !== undefined) {
+            const callBackIndex: number = callbacks.indexOf(callback);
+            if (callBackIndex !== -1) {
+                callbacks.splice(callBackIndex, 1);
+            }
+        }
     };
 
     /**
@@ -74,11 +69,11 @@ export class IntersectionService {
             // stop watching this element until we get new update requests for it
             this.intersectionDetector.unobserve(entry.target);
 
-            const targetElementIndex: number = this.observedElements.indexOf(
+            const thisElementCallbacks: any[] | undefined = this.observedElements.get(
                 entry.target
             );
-            if (targetElementIndex !== -1) {
-                this.callbacksByElement[targetElementIndex].forEach((callback: any) => {
+            if (thisElementCallbacks !== undefined) {
+                thisElementCallbacks.forEach((callback: any) => {
                     let targetCallbackIndex: number = pendingCallbacks.indexOf(callback);
                     if (targetCallbackIndex === -1) {
                         targetCallbackIndex = pendingCallbacks.length;
@@ -87,8 +82,7 @@ export class IntersectionService {
                     }
                     pendingCallbackParams[targetCallbackIndex].push(entry);
                 });
-                this.observedElements.splice(targetElementIndex, 1);
-                this.callbacksByElement.splice(targetElementIndex, 1);
+                this.observedElements.delete(entry.target);
             }
         });
 
