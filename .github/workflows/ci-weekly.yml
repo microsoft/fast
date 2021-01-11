@@ -58,13 +58,21 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
   build-windows:
     runs-on: [windows-latest]
     steps:
+    - name: Set git to use LF
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+
     - uses: actions/checkout@v2
+
     - name: Display the path
       run: echo $PATH
       shell: bash
+
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo '::set-output name=dir::$(yarn cache dir)'
@@ -107,6 +115,7 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
   build-macos:
     runs-on: [macos-latest]
     steps:
