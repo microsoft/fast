@@ -39,8 +39,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * @internal
      */
     public unbind(source: typeof FASTElement & HTMLElement) {
-        this.unbind(source);
-
+        Observable.getNotifier(source).unsubscribe(this, this.propertyName);
         (source as any).$fastController.removeStyles(this.styles);
     }
 
