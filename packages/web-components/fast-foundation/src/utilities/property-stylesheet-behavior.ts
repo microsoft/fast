@@ -58,7 +58,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
 }
 
 /**
- * Behavior that will condiitionally apply a stylesheet based on the elements
+ * Behavior that will conditionally apply a stylesheet based on the elements
  * appearance property
  *
  * @param value - The value of the appearance property
