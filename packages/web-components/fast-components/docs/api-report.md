@@ -22,6 +22,7 @@ import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Divider } from '@microsoft/fast-foundation';
+import { FASTElement } from '@microsoft/fast-element';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
@@ -639,6 +640,16 @@ export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const MenuStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export class MyCounter extends FASTElement {
+    // (undocumented)
+    change(delta: any): void;
+    // Warning: (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    items: Item[];
+}
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal
 //

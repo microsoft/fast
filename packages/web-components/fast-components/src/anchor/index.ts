@@ -1,4 +1,12 @@
-import { attr, customElement } from "@microsoft/fast-element";
+import {
+    attr,
+    customElement,
+    FASTElement,
+    html,
+    observable,
+    repeat,
+    when,
+} from "@microsoft/fast-element";
 import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
 import { ButtonAppearance } from "../button";
 import { AnchorStyles as styles } from "./anchor.styles";
@@ -79,3 +87,50 @@ export class FASTAnchor extends Anchor {
  * @public
  */
 export const AnchorStyles = styles;
+
+debugger;
+const myCounterTemplate = html<MyCounter>`
+    ${when(
+        x => x.item.int !== 0,
+        () => html`
+            <div>${x => x.item.int}</div>
+        `
+    )}
+    <button @click=${x => x.change(1)}>+</button>
+    <button @click=${x => x.change(-1)}>-</button>
+    <p><b>Repro instructions</b></p>
+    <ol>
+        <li>Click the "+" button and observe a list item appears with the content "1"</li>
+        <li>Click the "+" button and observe a list item appears with the content "2"</li>
+        <li>Click the "-" button twice and observe the list item disapears</li>
+        <li>Click the "+" button and observe a list item appears with the content "1"</li>
+        <li>
+            Click the "+" button and
+            <i>observe the list item content doesn't change.</i>
+            <br />
+            <b>Expected: the list item should have the content "2"</b>
+        </li>
+    </ol>
+`;
+
+class Item {
+    @observable
+    int = 0;
+}
+
+@customElement({
+    name: "my-counter",
+    template: myCounterTemplate,
+})
+export class MyCounter extends FASTElement {
+    @observable
+    item = new Item();
+
+    @observable
+    count = this.item.int;
+
+    change(delta) {
+        this.item.int += delta;
+        this.count = this.item.int;
+    }
+}

@@ -14,10 +14,17 @@ export function when<TSource = any, TReturn = any>(
         | SyntheticViewTemplate
         | Binding<TSource, SyntheticViewTemplate>
 ): CaptureType<TSource> {
-    const getTemplate =
-        typeof templateOrTemplateBinding === "function"
-            ? templateOrTemplateBinding
-            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+    let getTemplate;
+
+    if (typeof templateOrTemplateBinding === "function") {
+        getTemplate = templateOrTemplateBinding;
+    } else {
+        getTemplate = () => templateOrTemplateBinding;
+    }
+    // const getTemplate =
+    //     typeof templateOrTemplateBinding === "function"
+    //         ? templateOrTemplateBinding
+    //         : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
     return (source: TSource, context: ExecutionContext): SyntheticViewTemplate | null =>
         binding(source, context) ? getTemplate(source, context) : null;
