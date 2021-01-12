@@ -1,0 +1,34 @@
+name: CI - Playwright Testing
+
+on: 
+  push:
+  pull-request:
+
+jobs:
+  cross-brower-validation:
+    runs-on: ubuntu-latest
+
+    steps: 
+    - uses: actions/checkout@v2
+    - name: Get Yarn Cache directory
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
+
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
