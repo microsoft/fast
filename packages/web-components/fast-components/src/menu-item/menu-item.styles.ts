@@ -57,6 +57,7 @@ export const MenuItemStyles = css`
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
+
     :host([checked="true"]) {
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
@@ -242,10 +243,12 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.ButtonText};
                 forced-color-adjust: none;
             }
+
             :host(:hover) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
             }
+
             :host(:hover) .start,
             :host(:hover) .end,
             :host(:hover)::slotted(svg),
@@ -254,6 +257,7 @@ export const MenuItemStyles = css`
             :host(:active)::slotted(svg) {
                 fill: ${SystemColors.HighlightText};
             }
+
             :host(:${focusVisible}) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
@@ -261,6 +265,7 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
+
             :host([disabled]),
             :host([disabled]:hover),
             :host([disabled]:hover) .start,
@@ -270,6 +275,38 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
                 opacity: 1;
+            }
+
+            :host .checkbox,
+            :host .radio{
+                border-color: ${SystemColors.FieldText};
+                background: ${SystemColors.Field};
+            }
+
+            :host(:hover) .checkbox,
+            :host(:hover) .radio ,
+            :host(:${focusVisible}) .checkbox,
+            :host(:${focusVisible}) .radio{
+                border-color: ${SystemColors.Field};
+            }
+
+            :host([checked="true"]) .checkbox-checked,
+            :host([checked="true"]) .radio-checked {
+                border-color: ${SystemColors.Field};
+                background: ${SystemColors.Field};
+            }
+
+            :host([checked="true"]) {
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+            }
+
+            :host([checked="true"]) .checkbox-indicator{
+                fill: ${SystemColors.FieldText};
+            }
+
+            :host([checked="true"]) .radio-indicator {
+                background: ${SystemColors.FieldText};
             }
         `
     )
