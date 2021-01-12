@@ -57,16 +57,3 @@ export class PropertyStyleSheetBehavior implements Behavior {
         }
     }
 }
-
-/**
- * Behavior that will conditionally apply a stylesheet based on the elements
- * appearance property
- *
- * @param value - The value of the appearance property
- * @param styles - The styles to be applied when condition matches
- *
- * @public
- */
-export function appearanceBehavior(value: string, styles: ElementStyles) {
-    return new PropertyStyleSheetBehavior("appearance", value, styles);
-}
