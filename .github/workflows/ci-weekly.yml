@@ -3,7 +3,6 @@ name: CI - FAST
 on:
   push:
     branches:
-    - windows-fails-ci-validation
     - releases/*
   pull_request:
     branches:
