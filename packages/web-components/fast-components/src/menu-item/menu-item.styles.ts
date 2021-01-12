@@ -115,6 +115,14 @@ export const MenuItemStyles = css`
         fill: ${accentForegroundCutRestBehavior.var};
     }
 
+    :host(.without-role) .start-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
     :host(.with-role) .start-container {
         display: grid;
         grid-template-columns: minmax(30px, auto) minmax(32px, auto) ;
