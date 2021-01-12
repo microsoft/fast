@@ -31,6 +31,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      */
     public bind(elementInstance: FASTElement) {
         Observable.getNotifier(elementInstance).subscribe(this, this.propertyName);
+        this.handleChange;
     }
 
     /**
