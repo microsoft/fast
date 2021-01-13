@@ -5,6 +5,7 @@ import {
     getDisplayedNodes,
     getKeyCode,
     isHTMLElement,
+    resetDocumentCache,
 } from "./dom";
 import { KeyCodes } from "./key-codes";
 
@@ -196,6 +197,9 @@ describe("getKeyCode", () => {
 });
 
 describe("canUseFocusVisible", () => {
+    beforeEach(() => {
+        resetDocumentCache();
+    });
     test("should not throw", () => {
         expect(() => {
             canUseFocusVisible();
@@ -204,9 +208,29 @@ describe("canUseFocusVisible", () => {
     test("should return true if the environment supports focus-visible selectors", () => {
         expect(canUseFocusVisible()).toBe(true);
     });
+    test("should use a nonce if once is present on the page", () => {
+        const nonce: string = "foo-nonce";
+        const metaEl: HTMLMetaElement = document.createElement("meta");
+        metaEl.setAttribute("property", "csp-nonce");
+        metaEl.setAttribute("content", nonce);
+        document.head.appendChild(metaEl);
+
+        // Run the function and intercept its appendChild call
+        const realAppendChild = document.head.appendChild;
+        const mockAppendChild = jest.fn(realAppendChild);
+        Object.defineProperty(document.head, "appendChild", { value: mockAppendChild });
+        canUseFocusVisible();
+
+        expect(mockAppendChild).toBeCalledTimes(1);
+        const createdStyleElement = mockAppendChild.mock.calls[0][0] as HTMLStyleElement;
+        expect(createdStyleElement.nonce).toEqual(nonce);
+    });
 });
 
 describe("canUseCssGrid", () => {
+    beforeEach(() => {
+        resetDocumentCache();
+    });
     test("should not throw", () => {
         expect(() => {
             canUseCssGrid();
