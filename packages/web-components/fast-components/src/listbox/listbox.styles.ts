@@ -44,14 +44,6 @@ export const ListboxStyles = css`
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
-
-            ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
-                forced-color-adjust: none;
-                color: ${SystemColors.ButtonText};
-                background: ${SystemColors.ButtonFace};
-                border-color: ${SystemColors.Highlight};
-                box-shadow: none;
-            }
         `
     ),
     neutralLayerFloatingBehavior,

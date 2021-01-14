@@ -983,6 +983,16 @@ export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplat
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
+// @public
+export class PropertyStyleSheetBehavior implements Behavior {
+    constructor(propertyName: string, value: any, styles: ElementStyles);
+    bind(elementInstance: FASTElement): void;
+    // @internal
+    handleChange(source: FASTElement, key: any): void;
+    // @internal
+    unbind(source: typeof FASTElement & HTMLElement): void;
+    }
+
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
 // @public
