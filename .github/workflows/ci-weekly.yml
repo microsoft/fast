@@ -1,12 +1,14 @@
 name: CI - FAST Validation
 
 on:
+  push:
+    braches:
+    - master
+    - releases/*
+    - features/*
   schedule:
   - cron: 0 7 * * 3
-  pull_request:
-    branches:
-    - master
-
+  
 jobs:
   build_linux:
     runs-on: [ubuntu-latest]
