@@ -1,4 +1,4 @@
-import { customElement } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
@@ -196,6 +196,66 @@ describe("TextField", () => {
         await connect();
 
         expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+    it("should hide the label when start and/or end content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const content: HTMLImageElement = document.createElement("img");
+        content.src = "https://placehold.it/16";
+
+        const content2: HTMLImageElement = content;
+
+        await connect();
+        content.slot = "start";
+        element.appendChild(content);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+
+        await connect();
+        content.slot = "end";
+        element.appendChild(content);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+
+        await connect();
+        content.slot = "start";
+        content2.slot = "end";
+
+        element.appendChild(content);
+        element.appendChild(content2);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should hide the label when no default slotted content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
 
         await disconnect();
     });
