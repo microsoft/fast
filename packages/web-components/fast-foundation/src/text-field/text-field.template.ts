@@ -2,8 +2,11 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { TextField } from "./text-field";
 
+/***
+ * A simple whitespace filter for the template
+ * @public
+ */
 export function whitespaceFilter(value, index, array) {
-    console.log(value, value.nodeValue);
     return value.nodeType === 3 &&
         typeof value.nodeValue === "string" &&
         !value.nodeValue.replace(/\s/g, "").length
