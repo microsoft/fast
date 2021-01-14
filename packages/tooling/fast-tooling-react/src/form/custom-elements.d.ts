@@ -38,6 +38,15 @@ declare namespace JSX {
         > & {
             value?: string;
         };
+        "color-picker": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+        > & {
+            name?: string;
+            events?: {
+                input?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+        };
     }
 }
 

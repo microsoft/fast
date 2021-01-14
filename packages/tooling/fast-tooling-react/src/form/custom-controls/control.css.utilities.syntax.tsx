@@ -3,6 +3,7 @@ import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
 import { syntaxes } from "@microsoft/fast-tooling/dist/css-data";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
 import { CSSRef } from "@microsoft/fast-tooling-react/src/form/custom-controls/control.css-ref";
+import { renderColorPicker } from "@microsoft/fast-tooling-react/src/form/custom-controls/control.css.utilities";
 
 /**
  * The syntax control, for a list of syntaxes available refer to:
@@ -13,6 +14,8 @@ import { CSSRef } from "@microsoft/fast-tooling-react/src/form/custom-controls/c
  */
 export function renderSyntaxControl(config: RenderRefControlConfig): React.ReactNode {
     switch (config.ref.ref as Syntax) {
+        case "<color>":
+            return renderColorPicker(config);
         case "<absolute-size>":
         case "<alpha-value>":
         case "<angular-color-hint>":
@@ -50,7 +53,6 @@ export function renderSyntaxControl(config: RenderRefControlConfig): React.React
         case "<color-stop-length>":
         case "<color-stop-list>":
         case "<color-stop>":
-        case "<color>":
         case "<combinator>":
         case "<common-lig-values>":
         case "<compat-auto>":
