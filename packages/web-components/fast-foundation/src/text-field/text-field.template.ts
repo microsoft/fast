@@ -2,6 +2,14 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { TextField } from "./text-field";
 
+export function whitespaceFilter(value, index, array) {
+    console.log(value, value.nodeValue);
+    return value.nodeType === 3 &&
+        typeof value.nodeValue === "string" &&
+        !value.nodeValue.replace(/\s/g, "").length
+        ? false
+        : true;
+}
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
@@ -20,7 +28,9 @@ export const TextFieldTemplate = html<TextField>`
                     ? "label"
                     : "label label__hidden"}"
         >
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+            <slot
+                ${slotted({ property: "defaultSlottedNodes", filter: whitespaceFilter })}
+            ></slot>
         </label>
         <div class="root" part="root">
             ${startTemplate}
