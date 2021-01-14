@@ -3,6 +3,9 @@ name: CI - FAST Validation
 on:
   schedule:
   - cron: 0 7 * * 3
+  pull_request:
+    branches:
+    - master
 
 jobs:
   build_linux:
@@ -116,7 +119,7 @@ jobs:
 
   build-macos:
     runs-on: [macos-latest]
-    
+
     steps:
     - uses: actions/checkout@v2
 
