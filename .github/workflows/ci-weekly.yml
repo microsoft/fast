@@ -1,4 +1,4 @@
-name: CI - FAST
+name: CI - FAST Validation
 
 on:
   push:
