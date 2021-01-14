@@ -20,6 +20,7 @@ export * from "./listbox/listbox.definition";
 export * from "./listbox-option/listbox-option.definition";
 export * from "./menu/menu.definition";
 export * from "./menu-item/menu-item.definition";
+export * from "./number-field/number-field.definition";
 export * from "./progress-ring/progress-ring.definition";
 export * from "./progress/progress.definition";
 export * from "./radio/radio.definition";

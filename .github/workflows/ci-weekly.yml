@@ -9,7 +9,8 @@ jobs:
   build_windows:
     name: Validate on Windows
     runs-on: windows-latest
-
+    env: 
+      GITHUB_SERVICE_PAT: ${{sercrets.GH_PAT}}
     steps:
     - uses: actions/checkout@v2
 

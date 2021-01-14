@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { customElement, DOM, html, ViewTemplate } from "@microsoft/fast-element";
+import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { createDataGridCellTemplate, DataGridCell } from "./index";
 import { newDataRow } from "./data-grid.spec";
-import { DataGridCellTypes } from "./data-grid-cell";
+import { DataGridCellTypes } from "./data-grid.options";
 
 @customElement({
     name: "fast-data-grid-cell",
@@ -79,7 +79,8 @@ describe("Data grid cell", () => {
         element.setAttribute("grid-column", "2");
         await connect();
 
-        expect(element.style.gridColumn).to.equal("2 / auto");
+        expect(element.style.gridColumnStart).to.equal("2");
+        expect(element.style.gridColumnEnd).to.equal("auto");
 
         await disconnect();
     });
@@ -90,7 +91,8 @@ describe("Data grid cell", () => {
         element.setAttribute("grid-column", "2");
         await connect();
 
-        expect(element.style.gridColumn).to.equal("2 / auto");
+        expect(element.style.gridColumnStart).to.equal("2");
+        expect(element.style.gridColumnEnd).to.equal("auto");
 
         await disconnect();
     });

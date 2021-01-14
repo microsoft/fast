@@ -158,6 +158,7 @@ export class Tabs extends FASTElement {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
+        this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab" && this.isFocusableElement(tab)) {
                 if (this.activeindicator) {
@@ -183,8 +184,6 @@ export class Tabs extends FASTElement {
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
                 }
-            } else {
-                this.showActiveIndicator = false;
             }
             tab.style[gridProperty] = `${index + 1}`;
             !this.isHorizontal()

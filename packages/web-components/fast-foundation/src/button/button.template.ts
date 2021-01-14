@@ -45,7 +45,7 @@ export const ButtonTemplate = html<Button>`
         ${ref("control")}
     >
         ${startTemplate}
-        <span part="content">
+        <span class="content" part="content">
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
         ${endTemplate}
