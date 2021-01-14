@@ -218,12 +218,38 @@ describe("canUseFocusVisible", () => {
         // Run the function and intercept its appendChild call
         const realAppendChild = document.head.appendChild;
         const mockAppendChild = jest.fn(realAppendChild);
-        Object.defineProperty(document.head, "appendChild", { value: mockAppendChild });
+        Object.defineProperty(document.head, "appendChild", {
+            value: mockAppendChild,
+            configurable: true,
+        });
         canUseFocusVisible();
 
         expect(mockAppendChild).toBeCalledTimes(1);
         const createdStyleElement = mockAppendChild.mock.calls[0][0] as HTMLStyleElement;
         expect(createdStyleElement.nonce).toEqual(nonce);
+        Object.defineProperty(document.head, "appendChild", {
+            value: realAppendChild,
+            configurable: true,
+        });
+    });
+    test("should cache the result for subsequent calls", () => {
+        const realAppendChild = document.head.appendChild;
+        const mockAppendChild = jest.fn(realAppendChild);
+        Object.defineProperty(document.head, "appendChild", {
+            value: mockAppendChild,
+            configurable: true,
+        });
+        canUseFocusVisible();
+
+        expect(mockAppendChild).toBeCalledTimes(1);
+        mockAppendChild.mockClear();
+
+        canUseFocusVisible();
+        expect(mockAppendChild).toBeCalledTimes(0);
+        Object.defineProperty(document.head, "appendChild", {
+            value: realAppendChild,
+            configurable: true,
+        });
     });
 });
 
