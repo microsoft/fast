@@ -45,10 +45,12 @@
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
-    "test": "yarn eslint && yarn unit-tests",
+    "test": "yarn eslint \"/**/*.{ts}\"",
     "unit-tests": "jest --maxWorkers=4",
     "unit-tests:watch": "jest --watch",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
+    "format:check": "lerna run prettier:diff",
+    "format": "lerna run prettier"
   },
   "husky": {
     "hooks": {
@@ -92,7 +94,7 @@
       "build/helpers/__tests__/*",
       "build/helpers/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "testRegex": "/__tests__/.*\\.(test|spec)\\.(js|ts|tsx)$",
     "moduleFileExtensions": [
       "ts",
       "js"
