@@ -7,11 +7,11 @@ import { TextField } from "./text-field";
  * @public
  */
 export function whitespaceFilter(value, index, array) {
-    return value.nodeType === 3 &&
+    return (
+        value.nodeType === Node.TEXT_NODE &&
         typeof value.nodeValue === "string" &&
-        !value.nodeValue.replace(/\s/g, "").length
-        ? false
-        : true;
+        !value.trim().length
+    );
 }
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.

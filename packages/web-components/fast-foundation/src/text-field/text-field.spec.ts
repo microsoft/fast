@@ -199,16 +199,15 @@ describe("TextField", () => {
 
         await disconnect();
     });
-    it("should hide the label when start and/or end content is provided", async () => {
+    it("should hide the label when start content is provided", async () => {
         const { element, connect, disconnect } = await setup();
-        const content: HTMLImageElement = document.createElement("img");
-        content.src = "https://placehold.it/16";
-
-        const content2: HTMLImageElement = content;
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
 
         await connect();
-        content.slot = "start";
-        element.appendChild(content);
+        div.slot = "start";
+        element.appendChild(div);
 
         expect(
             element.shadowRoot
@@ -217,10 +216,17 @@ describe("TextField", () => {
         ).to.be.true;
 
         await disconnect();
+    });
+
+    it("should hide the label when end content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
 
         await connect();
-        content.slot = "end";
-        element.appendChild(content);
+        div.slot = "end";
+        element.appendChild(div);
 
         expect(
             element.shadowRoot
@@ -229,13 +235,21 @@ describe("TextField", () => {
         ).to.be.true;
 
         await disconnect();
+    });
+    it("should hide the label when start and end content are provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        const div2: HTMLDivElement = div;
 
         await connect();
-        content.slot = "start";
-        content2.slot = "end";
+        div.slot = "start";
+        div2.slot = "end";
 
-        element.appendChild(content);
-        element.appendChild(content2);
+        element.appendChild(div);
+        element.appendChild(div2);
 
         expect(
             element.shadowRoot
