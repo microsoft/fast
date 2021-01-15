@@ -1,4 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { neutralFillRestBehavior } from "../styles";
 
@@ -76,4 +78,19 @@ export const SkeletonStyles = css`
             transform: translateX(100%);
         }
     }
-`.withBehaviors(neutralFillRestBehavior);
+`.withBehaviors(
+    neutralFillRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                forced-color-adjust: none;
+                background-color: ${SystemColors.ButtonFace};
+                box-shadow: 0 0 0 1px ${SystemColors.ButtonText};
+            }
+
+            ${display("block")} span.shimmer {
+                display: none;
+            }
+        `
+    )
+);
