@@ -13,6 +13,7 @@ export * from "./data-grid/data-grid-cell.definition";
 export * from "./data-grid/data-grid-row.definition";
 export * from "./design-system-provider/design-system-provider.definition";
 export * from "./dialog/dialog.definition";
+export * from "./disclosure/disclosure.definition";
 export * from "./divider/divider.definition";
 export * from "./flipper/flipper.definition";
 export * from "./listbox/listbox.definition";
