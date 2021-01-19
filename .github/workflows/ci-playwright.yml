@@ -54,7 +54,8 @@ jobs:
     - name: Run Playwright (headful linux)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
       run: cd playwrightTest && HEADFUL=true node index.js
-
+      shell: bash
+      
     - name: Run Playwright (headful windows)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
       run: cd playwrightTest && HEADFUL=true node index.js
