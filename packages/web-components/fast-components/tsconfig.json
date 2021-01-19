@@ -10,7 +10,6 @@
         "allowJs": true,
         "importHelpers": true,
         "types": [
-            "node",
             "mocha",
             "webpack-env"
         ],
