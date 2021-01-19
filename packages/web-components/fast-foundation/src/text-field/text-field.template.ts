@@ -4,10 +4,12 @@ import { TextField } from "./text-field";
 
 /***
  * A simple whitespace filter for the template
+ *
+ * @param value - The Node that is being inspected
+ * @param index - The index of the node within the array
+ * @param array - The Node array that is being filtered
+ *
  * @public
- * @param value — The Node that is being inspected.
- * @param index — The index of the node within the array.
- * @param array — The Node array that is being filtered.
  */
 export function whitespaceFilter(value: Node, index: number, array: Node[]) {
     return (
