@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - 'releases/*'
+      - playright
 
 jobs:
   test-linux:
