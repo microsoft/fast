@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         playwright: [latest]
-        headless: [true, false]
+        headless: [true]
 
     runs-on: ${{ matrix.os }}
     steps:
