@@ -35,7 +35,7 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: cd playwrightTest && yarn install --frozen-lockfile --ignore-scripts playwright@${{ matrix.playwright }}
+      run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
       # Headless running is the same across OS
     - name: Run Playwright (headless)
       if: ${{ matrix.headless == true }}
