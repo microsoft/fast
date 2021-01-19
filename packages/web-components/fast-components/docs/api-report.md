@@ -535,9 +535,9 @@ export class FASTDisclosure extends Disclosure {
     // (undocumented)
     get disclosureHeight(): number;
     // @override
-    onToggle(): void;
+    protected onToggle(): void;
     // @override
-    setup(): void;
+    protected setup(): void;
     }
 
 // @public
