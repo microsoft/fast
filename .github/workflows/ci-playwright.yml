@@ -36,21 +36,22 @@ jobs:
 
     - name: Install dependencies
       run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
+
       # Headless running is the same across OS
     - name: Run Playwright (headless)
       if: ${{ matrix.headless == true }}
       run: cd playwrightTest && node index.js
 
-      # Headful is different in every OS
-    - name: Run Playwright (headful linux)
-      if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
-      run: cd sample && HEADFUL=true xvfb-run --auto-servernum -- node index.js
+    # Headful is different in every OS
+    #- name: Run Playwright (headful linux)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
+    #  run: cd sample && HEADFUL=true xvfb-run --auto-servernum -- node index.js
 
-    - name: Run Playwright (headful windows)
-      if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
-      run: cd playwrightTest && HEADFUL=true node index.js
-      shell: bash
+    #- name: Run Playwright (headful windows)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
+    #  run: cd playwrightTest && HEADFUL=true node index.js
+    #  shell: bash
 
-    - name: Run Playwright (headful mac)
-      if: ${{ matrix.headless == false && startsWith(matrix.os, 'mac') }}
-      run: cd playwrightTest && HEADFUL=true node index.js
+    #- name: Run Playwright (headful mac)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'mac') }}
+    #  run: cd playwrightTest && HEADFUL=true node index.js 
