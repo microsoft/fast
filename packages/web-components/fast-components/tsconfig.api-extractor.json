@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declarationMap": true
+  },
+  "exclude": ["src/mocha-typings.d.ts"]
+}
