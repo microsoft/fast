@@ -4,6 +4,7 @@
   "timeout": 5000,
   "require": [
     "esm",
+    "./test/server.js",
     "./test/harness.js"
   ]
 }
