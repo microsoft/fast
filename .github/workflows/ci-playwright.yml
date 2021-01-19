@@ -53,7 +53,7 @@ jobs:
       # Headful is different in every OS
     - name: Run Playwright (headful linux)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
-      run: cd playwrightTest && HEADFUL=true xvfb-run --auto-servernum -- node index.js
+      run: cd playwrightTest && HEADFUL=true node index.js
 
     - name: Run Playwright (headful windows)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
