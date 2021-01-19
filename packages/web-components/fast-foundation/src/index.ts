@@ -6,6 +6,7 @@ export * from "./badge/index";
 export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
 export * from "./button/index";
+export * from "./disclosure/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./custom-properties/index";
