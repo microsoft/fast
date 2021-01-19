@@ -251,6 +251,28 @@ describe("TextField", () => {
         element.appendChild(div);
         element.appendChild(div2);
 
+        await DOM.nextUpdate();
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+    it("should hide the label when whitespace only text nodes are slotted", async () => {
+        const { element, connect, disconnect } = await setup();
+        const whitespace: Node = document.createTextNode(" ") as Node;
+        const whitespace2: Node = document.createTextNode(" \r ") as Node;
+
+        await connect();
+
+        element.appendChild(whitespace);
+        element.appendChild(whitespace2);
+
+        await DOM.nextUpdate();
+
         expect(
             element.shadowRoot
                 ?.querySelector("label")
