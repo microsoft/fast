@@ -1,18 +1,38 @@
-name: CI - Playwright Testing
-
-on: 
+name: CI-Playwright Test
+on:
+  pull_request:
   push:
-  pull-request:
+    branches:
+      - master
+      - 'releases/*'
 
 jobs:
-  cross-brower-validation:
-    runs-on: ubuntu-latest
+  test-linux:
+    name: ${{ matrix.os }} Playwright@${{ matrix.playwright}} headless=${{ matrix.headless }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04, macos-10.15, windows-2019]
+        playwright: [1.0.0, 1.1.0, 1.2.0, next, latest]
+        headless: [true, false]
+        exclude:
+          - os: ubuntu-20.04
+            playwright: 1.0.0
+          - os: ubuntu-20.04
+            playwright: 1.1.0
+          - os: ubuntu-20.04
+            playwright: 1.2.0
+          - os: ubuntu-20.04
+            playwright: latest
 
-    steps: 
+    runs-on: ${{ matrix.os }}
+    steps:
     - uses: actions/checkout@v2
-    - name: Get Yarn Cache directory
+
+    - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo '::set-output name=dir::$(yarn cache dir)'
+
     - name: Set up node_modules cache
       uses: actions/cache@v1.1.2
       id: yarn-cache
@@ -21,14 +41,24 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - name: Install package dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Prepare workspaces
-      run: yarn prepare
+    - name: Install dependencies
+      run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
+      # Headless running is the same across OS
+    - name: Run Playwright (headless)
+      if: ${{ matrix.headless == true }}
+      run: cd playwrightTest && node index.js
 
-    - name: Testing Prettier format
-      run: yarn format:check
+      # Headful is different in every OS
+    - name: Run Playwright (headful linux)
+      if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
+      run: cd playwrightTest && HEADFUL=true xvfb-run --auto-servernum -- node index.js
 
-    - name: Testing unit tests
-      run: yarn lerna run test --stream
+    - name: Run Playwright (headful windows)
+      if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
+      run: cd playwrightTest && HEADFUL=true node index.js
+      shell: bash
+
+    - name: Run Playwright (headful mac)
+      if: ${{ matrix.headless == false && startsWith(matrix.os, 'mac') }}
+      run: cd playwrightTest && HEADFUL=true node index.js
