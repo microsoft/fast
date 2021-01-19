@@ -13,18 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-10.15, windows-2019]
+        os: [ubuntu-18.04, ubuntu-20.04, macos-10.15, windows-2019]
         playwright: [1.0.0, 1.1.0, 1.2.0, next, latest]
         headless: [true, false]
-       # exclude:
-       #  - os: ubuntu-20.04
-       #    playwright: 1.0.0
-        #   - os: ubuntu-20.04
-        #     playwright: 1.1.0
-        #   - os: ubuntu-20.04
-        #     playwright: 1.2.0
-        #   - os: ubuntu-20.04
-          #   playwright: latest #
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -53,7 +44,7 @@ jobs:
       # Headful is different in every OS
     - name: Run Playwright (headful linux)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
-      run: cd playwrightTest && HEADFUL=true node index.js
+      run: cd sample && HEADFUL=true xvfb-run --auto-servernum -- node index.js
 
     - name: Run Playwright (headful windows)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
