@@ -1,14 +1,17 @@
 //@ts-check
-const { chromium, webkit, firefox } = require("playwright");
-const http = require("http");
+import { chromium, webkit, firefox } from "playwright";
+import { createServer } from "http";
 
-const server = http.createServer((req, res) => {
+const server = createServer((req, res) => {
     res.writeHead(200);
     res.end("Hello, world");
 });
 
 const headless = !process.env.HEADFUL;
 
+/**
+ * @param {import("playwright").BrowserType<import("playwright").WebKitBrowser>} browserType
+ */
 async function checkBrowser(browserType) {
     try {
         console.log(`Running ${browserType.name()}`);
@@ -38,6 +41,6 @@ server.listen(8080, async () => {
     success = (await checkBrowser(webkit)) && success;
     success = (await checkBrowser(firefox)) && success;
     server.close();
-    // in case some browsers failed to close - exit process.
+    // On browsers failed to close - exit process.
     process.exit(success ? 0 : 1);
 });
