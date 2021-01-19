@@ -1,14 +1,15 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "declarationDir": "dist/dts",
+        "declaration": false,
+        "declarationDir": null,
         "target": "ES2017",
         "outDir": "dist",
+        "importsNotUsedAsValues": "preserve",
         "types": [
             "mocha",
             "node"
         ],
     },
-    "include": ["../src/**/*.spec.ts"],
-    "exclude": ["../src/color"]
+    "include": ["../src/**/*.pw.spec.ts"]
 }
