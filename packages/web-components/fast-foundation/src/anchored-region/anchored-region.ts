@@ -1,6 +1,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities";
+import { IntersectionService } from "./intersection-service";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -343,7 +344,6 @@ export class AnchoredRegion extends FASTElement {
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
-    private intersectionDetector: IntersectionObserver | null = null;
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private viewportRect: ClientRect | DOMRect | null;
@@ -367,6 +367,8 @@ export class AnchoredRegion extends FASTElement {
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
 
+    private static intersectionService: IntersectionService = new IntersectionService();
+
     /**
      * @internal
      */
@@ -381,8 +383,8 @@ export class AnchoredRegion extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
+        this.stopObservers();
         this.disconnectResizeDetector();
-        this.disconnectIntersectionDetector();
     }
 
     /**
@@ -401,7 +403,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
     };
 
     /**
@@ -458,8 +460,6 @@ export class AnchoredRegion extends FASTElement {
      */
     private initialize(): void {
         this.initializeResizeDetector();
-        this.initializeIntersectionDetector();
-        // this.setInitialState();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
@@ -526,18 +526,6 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * initialize intersection detector
-     */
-    private initializeIntersectionDetector = (): void => {
-        this.disconnectIntersectionDetector();
-        this.intersectionDetector = new IntersectionObserver(this.handleIntersection, {
-            root: null,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-    };
-
-    /**
      * starts observers
      */
     private startObservers = (): void => {
@@ -547,7 +535,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
@@ -556,51 +544,52 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * starts intersection observer
+     * get position updates
      */
-    private startIntersectionObserver = (): void => {
+    private requestPositionUpdates = (): void => {
         if (this.anchorElement === null || this.pendingPositioningUpdate) {
             return;
         }
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.observe(this);
-            this.intersectionDetector.observe(this.anchorElement);
-            if (this.viewportElement !== null) {
-                this.intersectionDetector.observe(this.viewportElement);
-            }
+        AnchoredRegion.intersectionService.requestPosition(this, this.handleIntersection);
+        AnchoredRegion.intersectionService.requestPosition(
+            this.anchorElement,
+            this.handleIntersection
+        );
+        if (this.viewportElement !== null) {
+            AnchoredRegion.intersectionService.requestPosition(
+                this.viewportElement,
+                this.handleIntersection
+            );
         }
-    };
-
-    /**
-     * stops intersection observer
-     */
-    private stopIntersectionObserver = (): void => {
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.disconnect();
-            this.pendingPositioningUpdate = false;
-        }
+        this.pendingPositioningUpdate = true;
     };
 
     /**
      * stops observers
      */
     private stopObservers = (): void => {
-        this.stopIntersectionObserver();
+        if (this.pendingPositioningUpdate) {
+            this.pendingPositioningUpdate = false;
+            AnchoredRegion.intersectionService.cancelRequestPosition(
+                this,
+                this.handleIntersection
+            );
+            if (this.anchorElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.anchorElement,
+                    this.handleIntersection
+                );
+            }
+            if (this.viewportElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.viewportElement,
+                    this.handleIntersection
+                );
+            }
+        }
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
-    };
-
-    /**
-     * disconnect intersection observer
-     */
-    private disconnectIntersectionDetector = (): void => {
-        if (this.intersectionDetector === null) {
-            return;
-        }
-
-        this.intersectionDetector.disconnect();
-        this.intersectionDetector = null;
     };
 
     /**
@@ -625,7 +614,11 @@ export class AnchoredRegion extends FASTElement {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-        this.stopIntersectionObserver();
+        if (!this.pendingPositioningUpdate) {
+            return;
+        }
+
+        this.pendingPositioningUpdate = false;
 
         let regionRect: DOMRect | ClientRect | null = null;
 
