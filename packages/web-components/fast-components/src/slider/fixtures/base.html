@@ -7,7 +7,7 @@
             width: 500px;
         "
     >
-        <h4>Toggle orientation</h4>
+        <h2>Toggle orientation</h2>
         <div style="margin-bottom: 60px; height: 200px;">
             <button
                 style="width: 90px; margin: 10px;"
@@ -37,22 +37,22 @@
             </fast-slider>
         </div>
         <!-- No max or min -->
-        <h4>Defaults</h4>
+        <h2>Defaults</h2>
         <fast-slider></fast-slider>
 
         <!-- Margin offsets -->
-        <h4>horizontal with left offset</h4>
+        <h2>horizontal with left offset</h2>
         <fast-slider style="margin-left: 100px;"></fast-slider>
 
         <!-- Margin offsets vertical -->
-        <h4>Vertical with top offset</h4>
+        <h2>Vertical with top offset</h2>
         <fast-slider
             orientation="vertical"
             style="margin-left: 100px; height: 120px;"
         ></fast-slider>
 
         <!-- Negative positions -->
-        <h4>Negative positions</h4>
+        <h2>Negative positions</h2>
         <fast-slider min="-3" max="3" step="1">
             <fast-slider-label position="-3">
                 -3
@@ -78,7 +78,7 @@
         </fast-slider>
 
         <!-- Min above 0 -->
-        <h4>Min value greater than 0</h4>
+        <h2>Min value greater than 0</h2>
         <div style="width: 160px;">
             <fast-slider min="5" max="15" step="1" value="10" style="min-width: unset;">
                 <fast-slider-label hide-mark="true" position="5">
@@ -91,7 +91,7 @@
         </div>
 
         <!-- Text Labels -->
-        <h4>Text labels</h4>
+        <h2>Text labels</h2>
         <div style="display: flex; flex-direction: column; height: min-content;">
             <label
                 for="slider1"
@@ -110,7 +110,7 @@
         </div>
 
         <!-- Custom labels (rtl) -->
-        <h4>Custom labels (rtl)</h4>
+        <h2>Custom labels (rtl)</h2>
         <div
             style="
                 display: flex;
@@ -147,7 +147,7 @@
         </div>
 
         <!-- Using slot for custom thumb -->
-        <h4>Custom thumb</h4>
+        <h2>Custom thumb</h2>
         <fast-slider min="0" max="100" step="10">
             <fast-slider-label position="0">
                 0
@@ -190,13 +190,13 @@
                 viewBox="0 0 16 13"
             >
                 <path
-                    d="M0 0H16V13H0V0ZM15 12V1H1V12H15ZM12 3V4H4V3H12ZM5 7V10H2V7H5ZM4 9V8H3V9H4ZM6.5 10V7H9.5V10H6.5ZM7.5 8V9H8.5V8H7.5ZM11 10V7H14V10H11ZM12 8V9H13V8H12Z"
+                    d="M0 0H16V13H0V0ZM15 12V1H1V12H15ZM12 3V4h2V3H12ZM5 7V10H2V7H5ZM4 9V8H3V9h2ZM6.5 10V7H9.5V10H6.5ZM7.5 8V9H8.5V8H7.5ZM11 10V7H14V10H11ZM12 8V9H13V8H12Z"
                 />
             </svg>
         </fast-slider>
 
         <!-- vertical orientation -->
-        <h4>Vertical</h4>
+        <h2>Vertical</h2>
         <fast-slider
             id="switcher2"
             orientation="vertical"
@@ -221,7 +221,7 @@
         </fast-slider>
 
         <!-- Custom labels and thumb hide marks on labels -->
-        <h4>Custom labels and thumb, hide marks on labels</h4>
+        <h2>Custom labels and thumb, hide marks on labels</h2>
         <fast-slider min="0" max="100" step="10">
             <fast-slider-label position="0" hide-mark="true">
                 <svg
@@ -265,7 +265,7 @@
         </fast-slider>
 
         <!-- Disabled -->
-        <h4>Disabled</h4>
+        <h2>Disabled</h2>
         <fast-slider min="0" max="100" step="5" disabled>
             <fast-slider-label position="0">
                 0
@@ -302,7 +302,7 @@
             </fast-slider-label>
         </fast-slider>
         <!-- Read Only -->
-        <h4>Read Only</h4>
+        <h2>Read Only</h2>
         <fast-slider min="0" max="100" step="5" readonly>
             <fast-slider-label position="0">
                 0
