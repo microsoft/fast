@@ -1,9 +1,9 @@
-# Popover (aka Flyout)
+# Flyout (aka Popover)
 ## Overview
-Popover is a focusable floating container that shows over a pages content and displays UI related to what the user is doing. It is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action being required, a Popover can be used to reveal a secondary control or show more detail about an item.
+Flyout is a focusable floating container that shows over a pages content and displays UI related to what the user is doing. It is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action being required, a Flyout can be used to reveal a secondary control or show more detail about an item.
 
 ### Background
-A Popover can be less intrusive to the user experience than a Dialog. It should be used instead of a Dialog when information or input is needed to be displayed, but not in the center of the screen, such as in the case of collection of additional info before an action, or displaying information that is only relevant some of the time.
+A Flyout can be less intrusive to the user experience than a Dialog. It should be used instead of a Dialog when information or input is needed to be displayed, but not in the center of the screen, such as in the case of collection of additional info before an action, or displaying information that is only relevant some of the time.
 
 ### Use Cases
 - As a popup showing additional info for an item on the page.
@@ -11,16 +11,16 @@ A Popover can be less intrusive to the user experience than a Dialog. It should 
 - To display an action related to a page item.
 
 ### Features
-**Placement Logic:** - This component will use *Anchored Region* to be positioned relative to the Popover target element. This way it can be dynamic and adapt to the available space.
+**Placement Logic:** - This component will use *Anchored Region* to be positioned relative to the Flyout target element. This way it can be dynamic and adapt to the available space.
 
-**Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Popover by clicking outside it, or pressing the `esc` key. An event would be emitted anytime the Popover is dismissed. The Popover would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Popover.
+**Soft Dismiss (aka Light Dismiss):** - A way to quickly close the Flyout by clicking outside it, or pressing the `esc` key. An event would be emitted anytime the Flyout is dismissed. The Flyout would always be soft-dismissable. Detecting the users next click of a different element can trigger this when clicking outside the Flyout.
 
-**Focus Management:** - Should follow the same process for focus management as a Dialog, primarily as the Popover's role will be 'dialog'.
+**Focus Management:** - Should follow the same process for focus management as a Dialog, primarily as the Flyout's role will be 'dialog'.
 
 This includes:
-- Trap focus - optional, defaults to enabled - Focus is contained within the popover while it is visible.
+- Trap focus - optional, defaults to enabled - Focus is contained within the Flyout while it is visible.
 - First element focus - Focusing on the first focusable element when trap focus is enabled, but not overriding an element that is set to be focused by the author.
-- Returning focus to the target - optional, defaults to enabled, after popover is closed the focus would return to the target element.
+- Returning focus to the target - optional, defaults to enabled, after Flyout is closed the focus would return to the target element.
 
 
 ### Prior Art/Examples
@@ -55,15 +55,15 @@ This includes:
 
 ### API
 *Component Name*
-- `fast-popover`
+- `fast-flyout`
 
 *Attributes*
-- `visible` - boolean, whether or not the Popover is visible, defaults to undefined, as this is controlled by the author
-- `trap-focus` - boolean, whether or not to keep focus contained inside the popover, defaults to true
-- `target` - string, the html id of the HTMLElement that the Popover is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
-- `focus-target-on-close` - boolean, whether or not to focus back on to the _target element_ when the popover is closed, defaults to true
-- `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic=
-- `delay` - number, the time delay before the popover is shown once triggered
+- `visible` - boolean, whether or not the flyout is visible, defaults to undefined, as this is controlled by the author
+- `trap-focus` - boolean, whether or not to keep focus contained inside the Flyout, defaults to true
+- `target` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
+- `focus-target-on-close` - boolean, whether or not to focus back on to the _target element_ when the Flyout is closed, defaults to true
+- `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic, see *Position Options*
+- `delay` - number, milliseconds (ms) the time delay before the Flyout is shown once triggered
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
@@ -71,18 +71,18 @@ This includes:
     ** See the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_roles_states_props) for requirements and details.
 
 *Properties*
-- `targetElement` - the reference to the HTMLElement used as an target
-- `viewportElement` - the reference to the HTMLElement used as the viewport, required ot setup anchored region properly
-- `popoverVisible` - boolean, whether or not the Popover is visible
+- `targetElement` - the reference to the HTMLElement used as target
+- `viewportElement` - the reference to the HTMLElement used as the viewport, required to set up anchored region properly
+- `flyoutVisible` - boolean, whether or not the Flyout is visible
 
 *Slots*
 - default for content
 
 *Events*
-- `dismiss` - event fired when the Popover is dismissed
+- `dismiss` - event fired when the Flyout is dismissed
 
 *Functions*
-- `createPopoverTemplate(string: prefix)` - generates a `ViewTemplate` for the popover based on the given provided prefix string. This is required as popover uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie "fast-anchored-region", "fluent-anchored-region"). Note that the appropriate `anchored-region` component must also be declared.
+- `createFlyoutTemplate(string: prefix)` - generates a `ViewTemplate` for the Flyout based on the given provided prefix string. This is required as Flyout uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie "fast-anchored-region", "fluent-anchored-region"). Note that the appropriate `anchored-region` component must also be declared.
 
 *Position Options*
 
@@ -116,56 +116,58 @@ This includes:
 
 ### Anatomy and Appearance
 Parts:
-- `popover` - the popover itself, has `role=dialog`
-- `anchored-region` - the anchored region that controls the position of the popover
+- `flyout` - the Flyout itself, has `role=dialog`
+- `anchored-region` - the anchored region that controls the position of the Flyout
 
 
 *Template:*
 **ASK (2)**
 ```html
-${when(
-    x => x.visible,
-    html<Popover>`
-        <div>
-            <fast-anchored-region
-                anchor="${x => x.targetElement}"
-                vertical-positioning-mode="dynamic"
-                horizontal-positioning-mode="dynamic"
-                horizontal-default-position="${x => x.getHorizontalPosition()}"
-                vertical-default-position="${x => x.getVerticalPosition()}"
-                horizontal-inset="${x => x.getHorizontalInset()}"
-                vertical-inset="${x => x.getVerticalInset()}"
-                ${ref("anchoredRegion")}
-            >
-                <div
-                    class="content"
-                    part="content"
-                    role="dialog"
+export function createPopoverTemplate(prefix: string): ViewTemplate {
+    return html<Popover>`
+        ${when(
+            x => x.visible,
+            html<Flyout>`
+                <${prefix}-anchored-region
+                    anchor="${x => x.targetElement}"
+                    vertical-positioning-mode="dynamic"
+                    horizontal-positioning-mode="dynamic"
+                    horizontal-default-position="${x => x.getHorizontalPosition()}"
+                    vertical-default-position="${x => x.getVerticalPosition()}"
+                    horizontal-inset="${x => x.getHorizontalInset()}"
+                    vertical-inset="${x => x.getVerticalInset()}"
+                    ${ref("anchoredRegion")}
                 >
-                    <slot></slot>
-                </div>
-            </fast-anchored-region>
-        </div>
-    `
-)}
+                    <div
+                        class="content"
+                        part="content"
+                        role="dialog"
+                    >
+                        <slot></slot>
+                    </div>
+                </fast-anchored-region>
+            `
+        )}
+    `;
+}
 ```
 
 ---
 
 ## Implementation
 ```html
-<fast-popover visible>
-    <p>This is a popover</p>
+<fast-flyout visible>
+    <p>This is a flyout</p>
     <fast-button>Action</fast-button>
-</fast-popover>
+</fast-flyout>
 ```
 
 ### States
-`visible` - Whether or not Popover is hidden. This state is managed solely by the app author via the visible attribute.
+`visible` - Whether or not Flyout is hidden. This state is managed solely by the app author via the visible attribute.
 
 ### Accessibility
 *Keyboard Navigation and Focus*
-Keyboard and navigation will follow the same rules as Dialog per the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_modal), except when there is no focusable content then the Popover itself will receive focus.
+Keyboard and navigation will follow the same rules as Dialog per the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_modal), except when there is no focusable content then the Flyout itself will receive focus.
 
 ### Globalization
 The component visuals should change when in RTL scenarios as the component is positioned relative to its target.
