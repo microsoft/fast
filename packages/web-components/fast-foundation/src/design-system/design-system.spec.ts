@@ -2,21 +2,21 @@ import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { Container } from "../di";
 import { uniqueElementName } from "../fixture";
-import { DefineElement, DesignSystem, ElementPrefix } from "./design-system";
+import { DesignSystem, DesignSystemContext } from "./design-system";
 
 describe("DesignSystem", () => {
     it("Should initialize with a default prefix of 'fast'", () => {
         const host = document.createElement("div");
         const container = new DesignSystem().applyTo(host);
 
-        expect(container.get(ElementPrefix)).to.equal("fast");
+        expect(container.get(DesignSystemContext).elementPrefix).to.equal("fast");
     });
 
     it("Should initialize with a provided prefix", () => {
         const host = document.createElement("div");
         const container = new DesignSystem().withPrefix("custom").applyTo(host);
 
-        expect(container.get(ElementPrefix)).to.equal("custom");
+        expect(container.get(DesignSystemContext).elementPrefix).to.equal("custom");
     });
 
     it("Should apply registries to the container", () => {
@@ -39,7 +39,7 @@ describe("DesignSystem", () => {
         new DesignSystem()
             .register({
                 register(container: Container) {
-                    capturedDefine = container.get(DefineElement);
+                    capturedDefine = container.get(DesignSystemContext).defineElement;
                 },
             })
             .applyTo(host);
@@ -54,7 +54,7 @@ describe("DesignSystem", () => {
             .withPrefix("custom")
             .register({
                 register(container: Container) {
-                    capturePrefix = container.get(ElementPrefix);
+                    capturePrefix = container.get(DesignSystemContext).elementPrefix;
                 },
             })
             .applyTo(host);
@@ -68,8 +68,8 @@ describe("DesignSystem", () => {
         const host = document.createElement("div");
         const system = new DesignSystem().register({
             register(container: Container) {
-                const defineElement = container.get(DefineElement);
-                defineElement(customElement, elementName);
+                const context = container.get(DesignSystemContext);
+                context.defineElement(customElement, elementName);
             },
         });
 
@@ -93,14 +93,14 @@ describe("DesignSystem", () => {
             .register(
                 {
                     register(container: Container) {
-                        const defineElement = container.get(DefineElement);
-                        defineElement(class extends HTMLElement {}, elementName);
+                        const context = container.get(DesignSystemContext);
+                        context.defineElement(class extends HTMLElement {}, elementName);
                     },
                 },
                 {
                     register(container: Container) {
-                        const defineElement = container.get(DefineElement);
-                        defineElement(class extends HTMLElement {}, elementName);
+                        const context = container.get(DesignSystemContext);
+                        context.defineElement(class extends HTMLElement {}, elementName);
                     },
                 }
             )
@@ -118,14 +118,14 @@ describe("DesignSystem", () => {
         const system = new DesignSystem().register(
             {
                 register(container: Container) {
-                    const defineElement = container.get(DefineElement);
-                    defineElement(customElement, elementName);
+                    const context = container.get(DesignSystemContext);
+                    context.defineElement(customElement, elementName);
                 },
             },
             {
                 register(container: Container) {
-                    const defineElement = container.get(DefineElement);
-                    defineElement(class extends HTMLElement {}, elementName);
+                    const context = container.get(DesignSystemContext);
+                    context.defineElement(class extends HTMLElement {}, elementName);
                 },
             }
         );

@@ -7,9 +7,19 @@ import { DI, Registration } from "../di/di";
 
 const defaultPrefix = "fast";
 
-export const ElementPrefix = DI.createInterface<string>(x => x.instance(defaultPrefix));
-export const DefineElement = DI.createInterface<typeof FASTElement.define>(x =>
-    x.instance(FASTElement.define)
+export interface DesignSystemContext {
+    readonly elementPrefix: string;
+    defineElement<TType extends Function>(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition | undefined
+    ): TType;
+}
+
+export const DesignSystemContext = DI.createInterface<DesignSystemContext>(x =>
+    x.instance({
+        elementPrefix: defaultPrefix,
+        defineElement: FASTElement.define,
+    })
 );
 
 type ElementDisambiguationCallback = (
@@ -45,34 +55,35 @@ export class DesignSystem {
     public applyTo(element: HTMLElement) {
         const container = DI.getOrCreateDOMContainer(element);
         const definitions: FASTElementDefinition[] = [];
-        const defineElement = <TType extends Function>(
-            type: TType,
-            nameOrDef?: string | PartialFASTElementDefinition
-        ): TType => {
-            let attempt: FASTElementDefinition | null = new FASTElementDefinition(
-                type,
-                nameOrDef
-            );
-
-            while (attempt !== null && registeredDefinitions.has(attempt.name)) {
-                attempt = this.disambiguate(
-                    registeredDefinitions.get(attempt.name)!,
-                    attempt
+        const disambiguate = this.disambiguate;
+        const context: DesignSystemContext = {
+            elementPrefix: this.prefix,
+            defineElement<TType extends Function>(
+                type: TType,
+                nameOrDef?: string | PartialFASTElementDefinition
+            ): TType {
+                let attempt: FASTElementDefinition | null = new FASTElementDefinition(
+                    type,
+                    nameOrDef
                 );
-            }
 
-            if (attempt !== null) {
-                registeredDefinitions.set(attempt.name, attempt);
-                definitions.push(attempt);
-            }
+                while (attempt !== null && registeredDefinitions.has(attempt.name)) {
+                    attempt = disambiguate(
+                        registeredDefinitions.get(attempt.name)!,
+                        attempt
+                    );
+                }
 
-            return type;
+                if (attempt !== null) {
+                    registeredDefinitions.set(attempt.name, attempt);
+                    definitions.push(attempt);
+                }
+
+                return type;
+            },
         };
 
-        container.register(
-            Registration.instance(ElementPrefix, this.prefix),
-            Registration.instance(DefineElement, defineElement)
-        );
+        container.register(Registration.instance(DesignSystemContext, context));
 
         container.register(...this.registrations);
 

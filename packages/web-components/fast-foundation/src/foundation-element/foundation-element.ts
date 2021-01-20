@@ -8,8 +8,7 @@ import {
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
-    DefineElement,
-    ElementPrefix,
+    DesignSystemContext,
 } from "../design-system";
 import { Container, Registration, Registry } from "../di";
 
@@ -102,8 +101,8 @@ export class FoundationElement extends FASTElement {
 
             return {
                 register(container: Container) {
-                    const prefix = definition.prefix || container.get(ElementPrefix);
-                    const defineElement = container.get(DefineElement);
+                    const context = container.get(DesignSystemContext);
+                    const prefix = definition.prefix || context.elementPrefix;
                     const name = `${prefix}-${definition.baseName}`;
                     const presentation = new DefaultComponentPresentation(
                         definition.template,
@@ -117,7 +116,7 @@ export class FoundationElement extends FASTElement {
                         )
                     );
 
-                    defineElement(elementDefinition.type, {
+                    context.defineElement(elementDefinition.type, {
                         name,
                         elementOptions: definition.elementOptions,
                         shadowOptions: definition.shadowOptions,
