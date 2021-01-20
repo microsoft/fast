@@ -8,7 +8,7 @@ on:
       - playright-integration
 
 jobs:
-  test-linux:
+  Playwright-Test:
     name: ${{ matrix.os }} Playwright@${{ matrix.playwright}} headless=${{ matrix.headless }}
     strategy:
       fail-fast: false
@@ -48,10 +48,10 @@ jobs:
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-      run: |
-        PW_BROWSER=firefox yarn workspace "@microsoft/fast-components" test-pw
-        PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
-        PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
+      
+      PW_BROWSER=firefox yarn workspace "@microsoft/fast-components" test-pw
+      PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
+      PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
 
 
 
