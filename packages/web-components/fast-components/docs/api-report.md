@@ -21,12 +21,14 @@ import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
+import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
+import { NumberField } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
@@ -247,6 +249,12 @@ export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export type DisclosureAppearance = "accent" | "lightweight";
+
+// @public
+export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
@@ -520,6 +528,19 @@ export class FASTDialog extends Dialog {
 }
 
 // @public
+export class FASTDisclosure extends Disclosure {
+    appearance: DisclosureAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    get disclosureHeight(): number;
+    // @override
+    protected onToggle(): void;
+    // @override
+    protected setup(): void;
+    }
+
+// @public
 export class FASTDivider extends Divider {
 }
 
@@ -537,6 +558,13 @@ export class FASTMenu extends Menu {
 
 // @public
 export class FASTMenuItem extends MenuItem {
+}
+
+// @public
+export class FASTNumberField extends NumberField {
+    appearance: NumberFieldAppearance;
+    // @internal (undocumented)
+    connectedCallback(): void;
 }
 
 // @public
@@ -992,6 +1020,12 @@ export const neutralOutlineRest: SwatchRecipe;
 
 // @public
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export type NumberFieldAppearance = "filled" | "outline";
+
+// @public
+export const NumberFieldStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const OptionStyles: import("@microsoft/fast-element").ElementStyles;

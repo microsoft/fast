@@ -617,6 +617,26 @@ export class DirectionalStyleSheetBehavior implements Behavior {
 export const disabledCursor = "not-allowed";
 
 // @public
+export class Disclosure extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    details: HTMLDetailsElement;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    expanded: boolean;
+    hide(): void;
+    protected onToggle(): void;
+    protected setup(): void;
+    show(): void;
+    title: string;
+    toggle(): void;
+}
+
+// @public
+export const DisclosureTemplate: import("@microsoft/fast-element").ViewTemplate<Disclosure, any>;
+
+// @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -934,11 +954,64 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "NumberField" because one of its declarations is marked as @internal
+//
+// @public
+export class NumberField extends FormAssociatedNumberField {
+    autofocus: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
+    // @internal (undocumented)
+    defaultSlottedNodes: Node[];
+    // @internal
+    handleChange(): void;
+    // @internal
+    handleTextInput(): void;
+    list: string;
+    max: number;
+    // (undocumented)
+    maxChanged(previousValue: any, nextValue: any): void;
+    maxlength: number;
+    min: number;
+    // (undocumented)
+    minChanged(previousValue: any, nextValue: any): void;
+    minlength: number;
+    placeholder: string;
+    readOnly: boolean;
+    size: number;
+    step: number;
+    stepDown(): void;
+    stepUp(): void;
+    // (undocumented)
+    valueChanged(previousValue: any, nextValue: any): void;
+}
+
+// @internal
+export interface NumberField extends StartEnd, DelegatesARIATextbox {
+}
+
+// @public
+export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+
+// @public
+export class PropertyStyleSheetBehavior implements Behavior {
+    constructor(propertyName: string, value: any, styles: ElementStyles);
+    bind(elementInstance: FASTElement): void;
+    // @internal
+    handleChange(source: FASTElement, key: any): void;
+    // @internal
+    unbind(source: typeof FASTElement & HTMLElement): void;
+    }
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
