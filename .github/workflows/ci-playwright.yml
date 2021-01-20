@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: |
         yarn install --frozen-lockfile --ignore-scripts
-        yarn install playwright@${{ matrix.playwright }}
+        yarn add playwright@${{ matrix.playwright }}
 
     - name: Prepare workspaces
       run: yarn prepare
