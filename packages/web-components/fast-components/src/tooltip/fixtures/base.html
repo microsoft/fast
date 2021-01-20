@@ -59,6 +59,37 @@
         </fast-button>
     </div>
 
+    <h2>in a flex container</h2>
+    <div
+        style="
+            height: 400px;
+            width: 400px;
+            background: lightgray;
+            overflow: scroll;
+            display: flex;
+        "
+    >
+        <div style="height: 40px; width: 40px; background-color: blue;"></div>
+        <div style="height: 40px; width: 40px; background-color: red;"></div>
+        <fast-button id="anchor-flex" style="margin: 20px;">
+            anchor
+        </fast-button>
+        <div style="height: 40px; width: 40px; background-color: orange;"></div>
+        <div style="height: 40px; width: 40px; background-color: yellow;"></div>
+        <fast-tooltip anchor="anchor-flex" position="top">
+            Helpful text is helpful
+        </fast-tooltip>
+        <fast-tooltip anchor="anchor-flex" position="bottom">
+            Helpful text is helpful
+        </fast-tooltip>
+        <fast-tooltip anchor="anchor-flex" position="left">
+            Helpful text is helpful
+        </fast-tooltip>
+        <fast-tooltip anchor="anchor-flex" position="right">
+            Helpful text is helpful
+        </fast-tooltip>
+    </div>
+
     <h2>Switch anchors</h2>
     <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
         <fast-tooltip id="tooltip-anchor-switch">

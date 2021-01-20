@@ -341,6 +341,9 @@ export class AnchoredRegion extends FASTElement {
     private regionWidth: string;
     private regionHeight: string;
 
+    private containingBlockWidth: number;
+    private containingBlockHeight: number;
+
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
@@ -497,11 +500,11 @@ export class AnchoredRegion extends FASTElement {
     private setInitialState(): void {
         this.initialLayoutComplete = false;
         this.regionTop = "0";
-        this.regionRight = "unset";
-        this.regionBottom = "unset";
+        this.regionRight = "0";
+        this.regionBottom = "0";
         this.regionLeft = "0";
-        this.regionWidth = "fit-content";
-        this.regionHeight = "fit-content";
+        this.regionWidth = "100%";
+        this.regionHeight = "100%";
 
         this.xTransformOrigin = "left";
         this.yTransformOrigin = "top";
@@ -624,7 +627,10 @@ export class AnchoredRegion extends FASTElement {
 
         if (!this.initialLayoutComplete) {
             regionRect = this.applyIntersectionEntries(entries);
+
             if (regionRect !== null) {
+                this.containingBlockHeight = regionRect.height;
+                this.containingBlockWidth = regionRect.width;
                 this.updateRegionOffset(regionRect);
             }
             this.requestLayoutUpdate();
@@ -927,7 +933,7 @@ export class AnchoredRegion extends FASTElement {
         const layoutParentWidth =
             this.offsetParent !== null
                 ? this.offsetParent.clientWidth
-                : document.body.clientWidth;
+                : this.containingBlockWidth;
 
         let right: number | null = null;
         let left: number | null = null;
@@ -985,7 +991,7 @@ export class AnchoredRegion extends FASTElement {
         const layoutParentHeight =
             this.offsetParent !== null
                 ? this.offsetParent.clientHeight
-                : document.body.clientHeight;
+                : this.containingBlockHeight;
 
         let top: number | null = null;
         let bottom: number | null = null;
