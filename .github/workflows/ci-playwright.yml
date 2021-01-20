@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - 'releases/*'
-      - playright
+      - playright-integration
 
 jobs:
   test-linux:
@@ -36,8 +36,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-       yarn install --frozen-lockfile --ignore-scripts
-       yarn install playwright@${{ matrix.playwright }}
+        yarn install --frozen-lockfile --ignore-scripts
+        yarn install playwright@${{ matrix.playwright }}
 
     - name: Prepare workspaces
       run: yarn prepare
@@ -49,9 +49,9 @@ jobs:
       run: yarn lerna run test --stream
 
       run: |
-      PW_BROWSER=firefox yarn workspace "@microsoft/fast-components" test-pw
-      PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
-      PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
+        PW_BROWSER=firefox yarn workspace "@microsoft/fast-components" test-pw
+        PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
+        PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
 
 
 
