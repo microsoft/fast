@@ -59,6 +59,7 @@ export class Menu extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.menuItems = [];
+        this.removeEventListener("change", this.changeHandler);
     }
 
     /**
@@ -80,15 +81,6 @@ export class Menu extends FASTElement {
             this.expandedItem.expanded = false;
             this.expandedItem = null;
         }
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-        this.menuItems = [];
-        this.removeEventListener("change", this.changeHandler);
     }
 
     /**

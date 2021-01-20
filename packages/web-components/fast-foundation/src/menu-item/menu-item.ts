@@ -192,7 +192,7 @@ export class MenuItem extends FASTElement {
                     this.checked = true;
                 }
                 break;
-
+        }
     };
 }
 

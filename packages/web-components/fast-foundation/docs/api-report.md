@@ -1196,17 +1196,17 @@ export class MenuItem extends FASTElement {
     disabled: boolean;
     expanded: boolean;
     // @internal (undocumented)
-    handleAnchoredRegionChange: (e: Event) => void;
-    // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
     role: MenuItemRole;
     // @internal
     submenuElements: HTMLElement[];
+    // @internal (undocumented)
+    submenuLoaded: () => void;
     // @internal
     subMenuRegion: AnchoredRegion;
-    }
+}
 
 // @internal
 export interface MenuItem extends StartEnd {
