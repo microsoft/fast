@@ -58,7 +58,7 @@ This includes:
 - `fast-flyout`
 
 *Attributes*
-- `visible` - boolean, whether or not the flyout is visible, defaults to undefined, as this is controlled by the author
+- `visible` - boolean, toggle controlled by the author of whether or not the flyout is visible, defaults to undefined
 - `trap-focus` - boolean, whether or not to keep focus contained inside the Flyout, defaults to true
 - `target` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
 - `focus-target-on-close` - boolean, whether or not to focus back on to the _target element_ when the Flyout is closed, defaults to true
@@ -73,7 +73,7 @@ This includes:
 *Properties*
 - `targetElement` - the reference to the HTMLElement used as target
 - `viewportElement` - the reference to the HTMLElement used as the viewport, required to set up anchored region properly
-- `flyoutVisible` - boolean, whether or not the Flyout is visible
+- `flyoutVisible` - boolean, whether or not the Flyout is visible, for use inside the controller without changing exposed `visible` attribute
 
 *Slots*
 - default for content
