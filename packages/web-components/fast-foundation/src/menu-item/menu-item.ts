@@ -102,6 +102,8 @@ export class MenuItem extends FASTElement {
     @observable
     public currentDirection: Direction = Direction.ltr;
 
+    private focusSubmenuOnLoad = false;
+
     /**
      * @internal
      */
@@ -118,9 +120,7 @@ export class MenuItem extends FASTElement {
 
             case keyCodeArrowRight:
                 //open/focus on submenu
-                if (this.submenuElements.length > 0) {
-                    this.toggleExpanded();
-                }
+                this.expandAndFocus();
                 return false;
 
             case keyCodeArrowLeft:
@@ -150,34 +150,22 @@ export class MenuItem extends FASTElement {
     /**
      * @internal
      */
-    public handleAnchoredRegionChange = (e: Event): void => {
-        if (e.defaultPrevented || this.disabled || this.submenuElements.length === 0) {
-            return;
+    public submenuLoaded = (): void => {
+        if (this.focusSubmenuOnLoad) {
+            this.focusSubmenuOnLoad = false;
         }
-
-        e.preventDefault();
-
-        this.subMenuRegion.removeEventListener(
-            "positionchange",
-            this.handleAnchoredRegionChange
-        );
-
-        DOM.queueUpdate(() => {
+        if (this.submenuElements.length > 0) {
+            this.submenuElements[0].focus();
             this.setAttribute("tabindex", "-1");
-            if (this.submenuElements.length > 0) {
-                this.submenuElements[0].focus();
-            }
-        });
+        }
     };
 
-    private toggleExpanded = (): void => {
+    private expandAndFocus = (): void => {
         if (this.submenuElements.length === 0) {
             return;
         }
-        this.expanded = !this.expanded;
-        if (this.expanded) {
-            DOM.queueUpdate(this.setRegionProps);
-        }
+        this.focusSubmenuOnLoad = true;
+        this.expanded = true;
     };
 
     private invoke = (): void => {
@@ -193,7 +181,7 @@ export class MenuItem extends FASTElement {
 
             case MenuItemRole.menuitem:
                 if (this.submenuElements.length > 0) {
-                    this.toggleExpanded();
+                    this.expandAndFocus();
                 } else {
                     this.$emit("change");
                 }

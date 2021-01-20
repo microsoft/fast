@@ -40,6 +40,7 @@ export const MenuItemTemplate = html<MenuItem>`
                     horizontal-default-position="end"
                     class="submenu-region"
                     dir="${x => x.currentDirection}"
+                    @loaded="${x => x.submenuLoaded()}"
                     ${ref("subMenuRegion")}
                 >
                     <slot name="submenu"></slot>
