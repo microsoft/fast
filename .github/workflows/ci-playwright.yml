@@ -1,0 +1,57 @@
+name: CI-Playwright Test
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'releases/*'
+      - playright
+
+jobs:
+  test-linux:
+    name: ${{ matrix.os }} Playwright@${{ matrix.playwright}} headless=${{ matrix.headless }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+        playwright: [latest]
+        headless: [false]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install dependencies
+      run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
+
+      # Headless running is the same across OS
+    - name: Run Playwright (headless)
+      if: ${{ matrix.headless == false }}
+      run: cd playwrightTest && node index.js
+
+    # Headful is different in every OS
+    #- name: Run Playwright (headful linux)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
+    #  run: cd sample && HEADFUL=true xvfb-run --auto-servernum -- node index.js
+
+    #- name: Run Playwright (headful windows)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
+    #  run: cd playwrightTest && HEADFUL=true node index.js
+    #  shell: bash
+
+    #- name: Run Playwright (headful mac)
+    #  if: ${{ matrix.headless == false && startsWith(matrix.os, 'mac') }}
+    #  run: cd playwrightTest && HEADFUL=true node index.js 
