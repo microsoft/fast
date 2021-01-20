@@ -21,6 +21,7 @@ import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
+import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
@@ -248,6 +249,12 @@ export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export type DisclosureAppearance = "accent" | "lightweight";
+
+// @public
+export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
@@ -519,6 +526,19 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
 // @public
 export class FASTDialog extends Dialog {
 }
+
+// @public
+export class FASTDisclosure extends Disclosure {
+    appearance: DisclosureAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    get disclosureHeight(): number;
+    // @override
+    protected onToggle(): void;
+    // @override
+    protected setup(): void;
+    }
 
 // @public
 export class FASTDivider extends Divider {
