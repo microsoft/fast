@@ -42,7 +42,7 @@ export class MenuItem extends FASTElement {
     @attr({ attribute: "expanded" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
-        if (this.submenuElements.length > 0 && this.$fastController.isConnected) {
+        if (this.$fastController.isConnected && this.submenuElements.length > 0) {
             if (this.expanded === false) {
                 this.submenuElements.forEach(element => {
                     (element as Menu).collapseExpandedItem();
