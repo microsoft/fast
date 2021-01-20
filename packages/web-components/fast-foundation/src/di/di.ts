@@ -1,6 +1,6 @@
 /**
- * Big thanks to https://github.com/EisenbergEffect and the https://github.com/aurelia/aurelia project
- * for this code.
+ * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
+ * for the bulk of this code and many of the associated tests.
  */
 import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
 import { Class } from "../interfaces";
