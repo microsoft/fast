@@ -1,4 +1,4 @@
-name: CI-Playwright Test
+name: CI - Playwright Test
 on:
   pull_request:
   push:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [linux-latest, macos-latest, windows-latest]
         playwright: [latest]
         headless: [false]
 
@@ -35,12 +35,33 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install dependencies
-      run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
+      run: |
+       yarn install --frozen-lockfile --ignore-scripts
+       yarn install playwright@${{ matrix.playwright }}
 
-      # Headless running is the same across OS
-    - name: Run Playwright (headless)
-      if: ${{ matrix.headless == false }}
-      run: cd playwrightTest && node index.js
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
+
+      run: |
+      PW_BROWSER=firefox yarn workspace "@microsoft/fast-components" test-pw
+      PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
+      PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
+
+
+
+
+   #run: cd playwrightTest && npm install playwright@${{ matrix.playwright }}
+
+   # Headless running is the same across OS
+    #- name: Run Playwright (headless)
+     # if: ${{ matrix.headless == false }}
+      #run: cd playwrightTest && node index.js
 
     # Headful is different in every OS
     #- name: Run Playwright (headful linux)
