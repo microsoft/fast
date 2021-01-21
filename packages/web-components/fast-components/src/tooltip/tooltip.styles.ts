@@ -47,9 +47,6 @@ export const TooltipStyles = css`
         align-items: center;
         overflow: visible;
         flex-direction: row;
-        transition-property: top, right, bottom, left;
-        transition-duration: 0.004s;
-        pointer-events: none;
     }
 
     fast-anchored-region.right,
