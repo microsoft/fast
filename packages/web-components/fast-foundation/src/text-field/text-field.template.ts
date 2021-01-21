@@ -1,23 +1,8 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
+import { whitespaceFilter } from "../utilities";
 import { TextField } from "./text-field";
 
-/***
- * A simple whitespace filter for the template
- *
- * @param value - The Node that is being inspected
- * @param index - The index of the node within the array
- * @param array - The Node array that is being filtered
- *
- * @public
- */
-export function whitespaceFilter(value: Node, index: number, array: Node[]) {
-    return (
-        value.nodeType === Node.TEXT_NODE &&
-        typeof value.nodeValue === "string" &&
-        !!value.nodeValue.trim().length
-    );
-}
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
