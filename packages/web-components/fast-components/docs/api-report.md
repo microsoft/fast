@@ -645,10 +645,12 @@ export const MenuStyles: import("@microsoft/fast-element").ElementStyles;
 export class MyCounter extends FASTElement {
     // (undocumented)
     change(delta: any): void;
+    // (undocumented)
+    count: number;
     // Warning: (ae-forgotten-export) The symbol "Item" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
-    items: Item[];
+    item: Item;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal

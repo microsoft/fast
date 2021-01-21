@@ -88,16 +88,13 @@ export class FASTAnchor extends Anchor {
  */
 export const AnchorStyles = styles;
 
-debugger;
+const t = html`
+    <div>${x => x.item.int}</div>
+`;
 const myCounterTemplate = html<MyCounter>`
-    ${when(
-        x => x.item.int !== 0,
-        () => html`
-            <div>${x => x.item.int}</div>
-        `
-    )}
-    <button @click=${x => x.change(1)}>+</button>
-    <button @click=${x => x.change(-1)}>-</button>
+    ${x => (x.item.int !== 0 ? t : null)}
+    <button>+</button>
+    <button>-</button>
     <p><b>Repro instructions</b></p>
     <ol>
         <li>Click the "+" button and observe a list item appears with the content "1"</li>
@@ -132,5 +129,15 @@ export class MyCounter extends FASTElement {
     change(delta) {
         this.item.int += delta;
         this.count = this.item.int;
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        const buttons = this.shadowRoot!.querySelectorAll("button").forEach((x, i) => {
+            x.addEventListener("click", () => {
+                i === 0 ? this.change(1) : this.change(-1);
+            });
+        });
     }
 }
