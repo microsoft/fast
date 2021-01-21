@@ -3,15 +3,30 @@
 
     <h2>Default</h2>
     <div style="height: 400px; width: 400px; background: lightgray;">
-        <fast-tooltip anchor="anchor-default">
+        <fast-tooltip anchor="anchor-default" visible="true" position="top">
             Helpful text is helpful
         </fast-tooltip>
-        <fast-tooltip anchor="anchor-default" visible="true" position="right">
-            Always visible
-        </fast-tooltip>
-
         <fast-button id="anchor-default" style="margin: 200px;">
             anchor
+        </fast-button>
+    </div>
+
+    <h2>Show/Hide</h2>
+    <div style="height: 400px; width: 400px; background: lightgray;">
+        <fast-tooltip id="tooltip-show-1" anchor="anchor-show" visible position="top">
+            Always visible
+        </fast-tooltip>
+        <fast-tooltip id="tooltip-show-2" anchor="anchor-show" visible position="right">
+            Always visible
+        </fast-tooltip>
+        <fast-tooltip id="tooltip-show-3" anchor="anchor-show" visible position="bottom">
+            Always visible
+        </fast-tooltip>
+        <fast-tooltip id="tooltip-show-4" anchor="anchor-show" visible position="left">
+            Always visible
+        </fast-tooltip>
+        <fast-button id="anchor-show" style="margin: 200px;">
+            Toggle tooltips
         </fast-button>
     </div>
 
@@ -67,6 +82,8 @@
             background: lightgray;
             overflow: scroll;
             display: flex;
+            align-items: center;
+            justify-content: center;
         "
     >
         <div style="height: 40px; width: 40px; background-color: blue;"></div>

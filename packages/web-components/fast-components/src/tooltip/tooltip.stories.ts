@@ -11,8 +11,27 @@ FASTDesignSystemProvider;
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("tooltip")) {
         connectAnchors();
+        const showButton: HTMLElement | null = document.getElementById("anchor-show");
+        if (showButton !== null) {
+            showButton.addEventListener("click", onShowClick);
+        }
     }
 });
+
+function onShowClick(e: MouseEvent): void {
+    toggleTooltipVisibility("tooltip-show-1");
+    toggleTooltipVisibility("tooltip-show-2");
+    toggleTooltipVisibility("tooltip-show-3");
+    toggleTooltipVisibility("tooltip-show-4");
+}
+
+function toggleTooltipVisibility(tooltipId: string): void {
+    const tooltipInstance: HTMLElement | null = document.getElementById(tooltipId);
+    if (tooltipInstance === null) {
+        return;
+    }
+    (tooltipInstance as FASTTooltip).visible = !(tooltipInstance as FASTTooltip).visible;
+}
 
 function onAnchorMouseEnter(e: MouseEvent): void {
     if (e.target === null) {

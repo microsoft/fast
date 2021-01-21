@@ -624,20 +624,20 @@ export class AnchoredRegion extends FASTElement {
         this.pendingPositioningUpdate = false;
 
         let regionRect: DOMRect | ClientRect | null = null;
+        regionRect = this.applyIntersectionEntries(entries);
+
+        if (regionRect === null) {
+            return;
+        }
 
         if (!this.initialLayoutComplete) {
-            regionRect = this.applyIntersectionEntries(entries);
-
-            if (regionRect !== null) {
-                this.containingBlockHeight = regionRect.height;
-                this.containingBlockWidth = regionRect.width;
-                this.updateRegionOffset(regionRect);
-            }
-            this.requestLayoutUpdate();
-        } else {
-            this.applyIntersectionEntries(entries);
+            this.containingBlockHeight = regionRect.height;
+            this.containingBlockWidth = regionRect.width;
             this.requestLayoutUpdate();
         }
+
+        this.updateRegionOffset(regionRect);
+        this.requestLayoutUpdate();
     };
 
     /**
@@ -901,6 +901,7 @@ export class AnchoredRegion extends FASTElement {
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
         this.style.opacity = this.initialLayoutComplete ? "1" : "0";
+        this.style.pointerEvents = this.initialLayoutComplete ? "unset" : "none";
 
         if (this.horizontalPositioningMode === "uncontrolled") {
             this.style.width = "unset";

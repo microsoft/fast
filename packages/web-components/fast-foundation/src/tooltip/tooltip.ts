@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { Direction, isHTMLElement, keyCodeEscape } from "@microsoft/fast-web-utilities";
 import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { getDirection } from "../utilities/";
 import { TooltipPosition } from "./tooltip.options";
@@ -12,8 +12,6 @@ export { TooltipPosition };
  * @public
  */
 export class Tooltip extends FASTElement {
-    private static DirectionAttributeName: string = "dir";
-
     /**
      * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
@@ -26,8 +24,8 @@ export class Tooltip extends FASTElement {
     public visible: boolean;
     private visibleChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
-            this.updateTooltipVisibility();
             this.updateLayout();
+            this.updateTooltipVisibility();
         }
     }
 
@@ -214,6 +212,11 @@ export class Tooltip extends FASTElement {
     private delayTimer: number | null = null;
 
     /**
+     * The timer that controls the time between position updates
+     */
+    private updateTimer: number | null = null;
+
+    /**
      * Indicates whether the anchor is currently being hovered
      */
     private isAnchorHovered: boolean = false;
@@ -268,7 +271,7 @@ export class Tooltip extends FASTElement {
     /**
      * mouse leaves anchor
      */
-    private handleAnchorMouseOut = (ev: Event): void => {
+    private handleAnchorMouseOut = (ev: MouseEvent): void => {
         if (this.isAnchorHovered) {
             this.isAnchorHovered = false;
             this.updateTooltipVisibility();
@@ -310,6 +313,39 @@ export class Tooltip extends FASTElement {
         if (this.delayTimer !== null) {
             clearTimeout(this.delayTimer);
             this.delayTimer = null;
+        }
+    };
+
+    /**
+     * starts the update timer if not currently running
+     */
+    private startUpdateTimer = (): void => {
+        if (!this.tooltipVisible || this.updateTimer !== null) {
+            return;
+        }
+
+        this.updateTimer = window.setTimeout((): void => {
+            this.updateTimerTick();
+        }, 50);
+    };
+
+    private updateTimerTick = (): void => {
+        this.clearUpdateTimer();
+        if (this.region !== undefined) {
+            this.region.update();
+        }
+        this.updateTimer = window.setTimeout((): void => {
+            this.updateTimerTick();
+        }, 50);
+    };
+
+    /**
+     * clears the update timer
+     */
+    private clearUpdateTimer = (): void => {
+        if (this.updateTimer !== null) {
+            clearTimeout(this.updateTimer);
+            this.updateTimer = null;
         }
     };
 
@@ -403,8 +439,8 @@ export class Tooltip extends FASTElement {
         if (this.tooltipVisible) {
             return;
         }
-        this.currentDirection = getDirection(this);
         this.tooltipVisible = true;
+        this.currentDirection = getDirection(this);
         document.addEventListener("keydown", this.handleDocumentKeydown);
         DOM.queueUpdate(this.setRegionProps);
     };
@@ -426,6 +462,8 @@ export class Tooltip extends FASTElement {
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = false;
+        this.clearDelayTimer();
+        this.clearUpdateTimer();
     };
 
     /**
@@ -443,5 +481,6 @@ export class Tooltip extends FASTElement {
             "positionchange",
             this.handlePositionChange
         );
+        this.startUpdateTimer();
     };
 }
