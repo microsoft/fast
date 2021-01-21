@@ -1,4 +1,4 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
@@ -251,8 +251,6 @@ describe("TextField", () => {
         element.appendChild(div);
         element.appendChild(div2);
 
-        await DOM.nextUpdate();
-
         expect(
             element.shadowRoot
                 ?.querySelector("label")
@@ -270,8 +268,6 @@ describe("TextField", () => {
 
         element.appendChild(whitespace);
         element.appendChild(whitespace2);
-
-        await DOM.nextUpdate();
 
         expect(
             element.shadowRoot
