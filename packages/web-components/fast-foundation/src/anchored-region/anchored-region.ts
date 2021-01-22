@@ -623,8 +623,9 @@ export class AnchoredRegion extends FASTElement {
 
         this.pendingPositioningUpdate = false;
 
-        let regionRect: DOMRect | ClientRect | null = null;
-        regionRect = this.applyIntersectionEntries(entries);
+        const regionRect: DOMRect | ClientRect | null = this.applyIntersectionEntries(
+            entries
+        );
 
         if (regionRect === null) {
             return;
@@ -931,11 +932,6 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentWidth =
-            this.offsetParent !== null
-                ? this.offsetParent.clientWidth
-                : this.containingBlockWidth;
-
         let right: number | null = null;
         let left: number | null = null;
         let xTransformOrigin: string = "left";
@@ -943,12 +939,15 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case "left":
                 xTransformOrigin = "right";
-                right = layoutParentWidth - this.baseHorizontalOffset;
+                right = this.containingBlockWidth - this.baseHorizontalOffset;
                 break;
 
             case "insetLeft":
                 xTransformOrigin = "right";
-                right = layoutParentWidth - this.anchorWidth - this.baseHorizontalOffset;
+                right =
+                    this.containingBlockWidth -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
             case "insetRight":
@@ -989,11 +988,6 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentHeight =
-            this.offsetParent !== null
-                ? this.offsetParent.clientHeight
-                : this.containingBlockHeight;
-
         let top: number | null = null;
         let bottom: number | null = null;
         let yTransformOrigin: string = "top";
@@ -1001,12 +995,15 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case "top":
                 yTransformOrigin = "bottom";
-                bottom = layoutParentHeight - this.baseVerticalOffset;
+                bottom = this.containingBlockHeight - this.baseVerticalOffset;
                 break;
 
             case "insetTop":
                 yTransformOrigin = "bottom";
-                bottom = layoutParentHeight - this.baseVerticalOffset - this.anchorHeight;
+                bottom =
+                    this.containingBlockHeight -
+                    this.baseVerticalOffset -
+                    this.anchorHeight;
                 break;
 
             case "insetBottom":
