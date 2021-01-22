@@ -2,14 +2,14 @@ import { css as mdnCSS } from "mdn-data";
 import {
     CombinatorType,
     mapCombinatorType,
+    mapCSSGroups,
     mapCSSProperties,
     mapCSSSyntaxes,
-    mapGroupedEntities,
     mapMixedCombinatorTypes,
     mapMultiplierType,
     mapStringLiterals,
     MultiplierType,
-    resolveCSSPropertyReference,
+    resolveCSSGroups,
     resolveCSSPropertySyntax,
     resolveCSSPropertySyntaxSplit,
     resolveCSSSyntax,
@@ -24,11 +24,199 @@ describe("mapStringLiterals,", () => {
     });
 });
 
-describe("mapGroupedEntities", () => {
-    test("should group entities if they are surrounded by brackets", () => {
-        expect(mapGroupedEntities("[ <length> | <percentage> | auto ]{1,4}")).toEqual(
-            "<length> | <percentage> | auto"
-        );
+describe("mapCSSGroups", () => {
+    test("should map a single group", () => {
+        expect(mapCSSGroups("foo [ bar ]+ baz")).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 11],
+                multiplier: {
+                    type: MultiplierType.oneOrMore,
+                },
+                syntax: "[ bar ]+",
+                normalizedSyntax: "bar",
+            },
+        ]);
+    });
+    test("should map multiple groups", () => {
+        expect(mapCSSGroups("foo [ bar ]! baz [ quux ]")).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 11],
+                multiplier: {
+                    type: MultiplierType.atLeastOne,
+                },
+                syntax: "[ bar ]!",
+                normalizedSyntax: "bar",
+            },
+            {
+                id: "uuid17",
+                range: [17, 24],
+                multiplier: null,
+                syntax: "[ quux ]",
+                normalizedSyntax: "quux",
+            },
+        ]);
+    });
+    test("should map a single nesting group", () => {
+        expect(mapCSSGroups("foo [ bar [ bat ]? ]* baz")).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 20],
+                multiplier: {
+                    type: MultiplierType.zeroOrMore,
+                },
+                syntax: "[ bar [ bat ]? ]*",
+                normalizedSyntax: "bar uuid10",
+                contains: [
+                    {
+                        id: "uuid10",
+                        range: [10, 17],
+                        multiplier: {
+                            type: MultiplierType.zeroOrOne,
+                        },
+                        syntax: "[ bat ]?",
+                        normalizedSyntax: "bat",
+                    },
+                ],
+            },
+        ]);
+    });
+    test("should map multiple nestings groups with multipliers", () => {
+        expect(mapCSSGroups("foo [ bar [ bat [ baz ]{1,2} ]+ ]! quux")).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 33],
+                multiplier: {
+                    type: MultiplierType.atLeastOne,
+                },
+                syntax: "[ bar [ bat [ baz ]{1,2} ]+ ]!",
+                normalizedSyntax: "bar uuid10",
+                contains: [
+                    {
+                        id: "uuid10",
+                        range: [10, 30],
+                        multiplier: {
+                            type: MultiplierType.oneOrMore,
+                        },
+                        syntax: "[ bat [ baz ]{1,2} ]+",
+                        normalizedSyntax: "bat uuid16",
+                        contains: [
+                            {
+                                id: "uuid16",
+                                range: [16, 27],
+                                multiplier: {
+                                    type: MultiplierType.atLeastATimesAtMostBTimes,
+                                    range: [1, 2],
+                                },
+                                syntax: "[ baz ]{1,2}",
+                                normalizedSyntax: "baz",
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+    });
+    test("should map multiple groups with nesting", () => {
+        expect(mapCSSGroups("foo [ bar [ bat ] ] baz [ quux ]")).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 18],
+                multiplier: null,
+                syntax: "[ bar [ bat ] ]",
+                normalizedSyntax: "bar uuid10",
+                contains: [
+                    {
+                        id: "uuid10",
+                        range: [10, 16],
+                        multiplier: null,
+                        syntax: "[ bat ]",
+                        normalizedSyntax: "bat",
+                    },
+                ],
+            },
+            {
+                id: "uuid24",
+                range: [24, 31],
+                multiplier: null,
+                syntax: "[ quux ]",
+                normalizedSyntax: "quux",
+            },
+        ]);
+    });
+    test("should map groups with multipliers", () => {
+        expect(
+            mapCSSGroups(
+                "foo [ bar ]# baz [ quux ]{1,4} bat [ fuzz ]? [ fazz ]* [ buzz ]! [ corge ]+ [ quz ]{1,6}"
+            )
+        ).toEqual([
+            {
+                id: "uuid4",
+                range: [4, 11],
+                syntax: "[ bar ]#",
+                normalizedSyntax: "bar",
+                multiplier: {
+                    type: MultiplierType.oneOrMoreSeparatedByComma,
+                },
+            },
+            {
+                id: "uuid17",
+                range: [17, 29],
+                syntax: "[ quux ]{1,4}",
+                normalizedSyntax: "quux",
+                multiplier: {
+                    type: MultiplierType.atLeastATimesAtMostBTimes,
+                    range: [1, 4],
+                },
+            },
+            {
+                id: "uuid35",
+                range: [35, 43],
+                syntax: "[ fuzz ]?",
+                normalizedSyntax: "fuzz",
+                multiplier: {
+                    type: MultiplierType.zeroOrOne,
+                },
+            },
+            {
+                id: "uuid45",
+                range: [45, 53],
+                syntax: "[ fazz ]*",
+                normalizedSyntax: "fazz",
+                multiplier: {
+                    type: MultiplierType.zeroOrMore,
+                },
+            },
+            {
+                id: "uuid55",
+                range: [55, 63],
+                syntax: "[ buzz ]!",
+                normalizedSyntax: "buzz",
+                multiplier: {
+                    type: MultiplierType.atLeastOne,
+                },
+            },
+            {
+                id: "uuid65",
+                range: [65, 74],
+                syntax: "[ corge ]+",
+                normalizedSyntax: "corge",
+                multiplier: {
+                    type: MultiplierType.oneOrMore,
+                },
+            },
+            {
+                id: "uuid76",
+                range: [76, 87],
+                syntax: "[ quz ]{1,6}",
+                normalizedSyntax: "quz",
+                multiplier: {
+                    type: MultiplierType.atLeastATimesAtMostBTimes,
+                    range: [1, 6],
+                },
+            },
+        ]);
     });
 });
 
@@ -70,7 +258,7 @@ describe("mapCombinatorType", () => {
     test("should find a juxtaposition combination type", () => {
         expect(mapCombinatorType("foo bar bat")).toEqual(CombinatorType.juxtaposition);
         expect(
-            mapCombinatorType("<length-percentage> [ / <length-percentage>{1,4} ]?")
+            mapCombinatorType("/ <length-percentage>! [ / <length-percentage>{1,4} ]?")
         ).toEqual(CombinatorType.juxtaposition);
         expect(
             mapCombinatorType("<'mask-border-width'>? [ / <'mask-border-outset'> ]")
@@ -166,29 +354,40 @@ describe("resolveCSSPropertySyntaxSplit", () => {
     });
 });
 
-describe("resolveCSSPropertyReference", () => {
-    test("should resolve a simple string reference", () => {
-        expect(resolveCSSPropertyReference("<length>", [], ["length"])).toEqual(
-            "<length>"
-        );
-    });
-    test("should resolve a reference with multipliers and prepended string literals", () => {
-        expect(resolveCSSPropertyReference("/ <length>?", [], ["length"])).toEqual([
+describe("resolveCSSGroups", () => {
+    test("should resolve a simple string referece", () => {
+        expect(resolveCSSGroups("<length>", [], [])).toEqual([
             {
+                multiplier: null,
+                prepend: null,
                 ref: "<length>",
                 refCombinatorType: CombinatorType.none,
+                type: "value",
+            },
+        ]);
+    });
+    test("should resolve a reference with multipliers and prepended string literals", () => {
+        expect(resolveCSSGroups("/ <length>?", [], ["length"])).toEqual([
+            {
                 multiplier: {
-                    type: "zeroOrOne",
+                    type: MultiplierType.zeroOrOne,
                 },
                 prepend: "/",
+                ref: "<length>",
+                refCombinatorType: CombinatorType.none,
                 type: "type",
             },
         ]);
     });
     test("should resolve a nested reference", () => {
+        resolveCSSGroups(
+            "<color>{1,4} [ / <length-percentage>{1,4} ]?",
+            [],
+            ["color", "length-percentage"]
+        );
         expect(
-            resolveCSSPropertyReference(
-                "<color>{1,4} , [ / <length-percentage>{1,4} ]?",
+            resolveCSSGroups(
+                "<color>{1,4} [ / <length-percentage>{1,4} ]?",
                 [],
                 ["color", "length-percentage"]
             )
@@ -200,34 +399,34 @@ describe("resolveCSSPropertyReference", () => {
                 },
                 prepend: null,
                 ref: "<color>",
-                refCombinatorType: CombinatorType.none,
+                refCombinatorType: "none",
                 type: "type",
             },
             {
                 multiplier: {
                     type: "zeroOrOne",
                 },
-                prepend: ",",
-                refCombinatorType: CombinatorType.none,
+                prepend: null,
                 ref: [
                     {
                         multiplier: {
-                            type: "atLeastATimesAtMostBTimes",
                             range: [1, 4],
+                            type: "atLeastATimesAtMostBTimes",
                         },
                         prepend: "/",
                         ref: "<length-percentage>",
-                        refCombinatorType: CombinatorType.none,
+                        refCombinatorType: "none",
                         type: "type",
                     },
                 ],
+                refCombinatorType: "none",
                 type: "group",
             },
         ]);
 
         expect(
-            resolveCSSPropertyReference(
-                "[ / <'mask-border-width'>? [ / <'mask-border-outset'> ]? ]?",
+            resolveCSSGroups(
+                "[ / <'mask-border-width'>! [ / <'mask-border-outset'> ]? ]?",
                 [],
                 []
             )
@@ -236,19 +435,21 @@ describe("resolveCSSPropertyReference", () => {
                 multiplier: {
                     type: "zeroOrOne",
                 },
-                prepend: "/",
+                prepend: null,
                 ref: [
                     {
                         multiplier: {
-                            type: "zeroOrOne",
+                            type: "atLeastOne",
                         },
-                        prepend: null,
+                        prepend: "/",
                         ref: "<'mask-border-width'>",
                         refCombinatorType: "none",
                         type: "property",
                     },
                     {
-                        multiplier: null,
+                        multiplier: {
+                            type: "zeroOrOne",
+                        },
                         prepend: null,
                         ref: [
                             {
@@ -260,11 +461,11 @@ describe("resolveCSSPropertyReference", () => {
                             },
                         ],
                         refCombinatorType: "none",
-                        type: "property",
+                        type: "group",
                     },
                 ],
                 refCombinatorType: "juxtaposition",
-                type: "property",
+                type: "group",
             },
         ]);
     });
@@ -334,7 +535,7 @@ describe("resolveCSSPropertySyntax", () => {
                 type: MultiplierType.atLeastATimesAtMostBTimes,
                 range: [1, 4],
             },
-            type: "mixed",
+            type: "group",
             prepend: null,
         });
     });
@@ -493,26 +694,39 @@ describe("resolveCSSSyntax", () => {
         });
     });
     test("should resolve a CSS syntax with grouped items", () => {
-        expect(
-            resolveCSSSyntax("[ common-ligatures | no-common-ligatures ]", [], [])
-        ).toEqual({
+        expect(resolveCSSSyntax("foo [ bar | bat ]", [], [])).toEqual({
             ref: [
                 {
                     multiplier: null,
                     prepend: null,
-                    ref: "common-ligatures",
+                    ref: "foo",
                     refCombinatorType: "none",
                     type: "value",
                 },
                 {
+                    ref: [
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "bar",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                        {
+                            multiplier: null,
+                            prepend: null,
+                            ref: "bat",
+                            refCombinatorType: "none",
+                            type: "value",
+                        },
+                    ],
+                    refCombinatorType: "exactlyOne",
                     multiplier: null,
                     prepend: null,
-                    ref: "no-common-ligatures",
-                    refCombinatorType: "none",
-                    type: "value",
+                    type: "group",
                 },
             ],
-            refCombinatorType: "exactlyOne",
+            refCombinatorType: "juxtaposition",
         });
     });
 });
