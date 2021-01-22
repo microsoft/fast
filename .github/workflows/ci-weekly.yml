@@ -13,6 +13,11 @@ jobs:
   build_linux:
     runs-on: [ubuntu-latest]
     
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'typescript','C#', 'C++','C' ]
+
     steps:
     - uses: actions/checkout@v2
 
@@ -43,7 +48,7 @@ jobs:
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
-
+   
       env:
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
@@ -59,9 +64,25 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+       
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
 
   build-windows:
     runs-on: [windows-latest]
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'typescript','C#', 'C++','C' ]
 
     steps:
     - name: Set git to use LF
@@ -119,8 +140,24 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
 
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
   build-macos:
     runs-on: [macos-latest]
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'typescript','C#', 'C++','C' ]
 
     steps:
     - uses: actions/checkout@v2
@@ -168,3 +205,14 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
