@@ -113,22 +113,30 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
         });
     };
 
-    public createMonacoEditor = (monacoRef: any): void => {
-        if (this.editorContainerRef.current && !this.editor) {
-            this.editor = monacoRef.editor.create(this.editorContainerRef.current, {
-                value: "",
-                language: "html",
-                formatOnPaste: true,
-                lineNumbers: "off",
-                theme: "vs-dark",
-                wordWrap: "on",
-                wordWrapColumn: 80,
-                wordWrapMinified: true,
-                wrappingIndent: "same",
-                minimap: {
-                    showSlider: "mouseover",
-                },
-            });
+    public createMonacoEditor = (
+        monacoRef: any,
+        alternateContainerRef?: HTMLElement
+    ): void => {
+        if ((alternateContainerRef || this.editorContainerRef.current) && !this.editor) {
+            this.editor = monacoRef.editor.create(
+                alternateContainerRef
+                    ? alternateContainerRef
+                    : this.editorContainerRef.current,
+                {
+                    value: "",
+                    language: "html",
+                    formatOnPaste: true,
+                    lineNumbers: "off",
+                    theme: "vs-dark",
+                    wordWrap: "on",
+                    wordWrapColumn: 80,
+                    wordWrapMinified: true,
+                    wrappingIndent: "same",
+                    minimap: {
+                        showSlider: "mouseover",
+                    },
+                }
+            );
 
             this.updateEditorContent(this.state.dataDictionary);
         }
@@ -144,8 +152,10 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
         }
     }
 
-    public setViewerToFullSize(): void {
-        const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
+    public setViewerToFullSize(alternateContainerRef?: HTMLElement): void {
+        const viewerContainer: HTMLElement | null = alternateContainerRef
+            ? alternateContainerRef
+            : this.viewerContainerRef.current;
 
         if (viewerContainer) {
             /* eslint-disable-next-line react/no-find-dom-node */
