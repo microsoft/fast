@@ -1,5 +1,6 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { unset } from "lodash-es";
 import { getDirection } from "../utilities";
 import { IntersectionService } from "./intersection-service";
 
@@ -634,7 +635,6 @@ export class AnchoredRegion extends FASTElement {
         if (!this.initialLayoutComplete) {
             this.containingBlockHeight = regionRect.height;
             this.containingBlockWidth = regionRect.width;
-            this.requestLayoutUpdate();
         }
 
         this.updateRegionOffset(regionRect);
@@ -976,7 +976,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionWidth = "fit-content";
+                this.regionWidth = "unset";
                 break;
         }
     };
@@ -1032,7 +1032,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionHeight = "fit-content";
+                this.regionHeight = "unset";
                 break;
         }
     };
