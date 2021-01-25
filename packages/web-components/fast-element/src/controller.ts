@@ -28,7 +28,7 @@ function getShadowRoot(element: HTMLElement): ShadowRoot | null {
  */
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Behavior[] | null = null;
+    private behaviors: Map<Behavior, number> | null = null;
     private needsInitialization = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
@@ -195,18 +195,26 @@ export class Controller extends PropertyChangeNotifier {
      * @param behaviors - The behaviors to add.
      */
     public addBehaviors(behaviors: ReadonlyArray<Behavior>): void {
-        const targetBehaviors = this.behaviors || (this.behaviors = []);
+        const targetBehaviors = this.behaviors || (this.behaviors = new Map());
         const length = behaviors.length;
+        const behaviorsToBind: Behavior[] = [];
 
         for (let i = 0; i < length; ++i) {
-            targetBehaviors.push(behaviors[i]);
+            const behavior = behaviors[i];
+
+            if (targetBehaviors.has(behavior)) {
+                targetBehaviors.set(behavior, targetBehaviors.get(behavior) + 1);
+            } else {
+                targetBehaviors.set(behavior, 1);
+                behaviorsToBind.push(behavior);
+            }
         }
 
         if (this.isConnected) {
             const element = this.element;
 
-            for (let i = 0; i < length; ++i) {
-                behaviors[i].bind(element, defaultExecutionContext);
+            for (let i = 0; i < behaviorsToBind.length; ++i) {
+                behaviorsToBind[i].bind(element, defaultExecutionContext);
             }
         }
     }
@@ -223,20 +231,25 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const length = behaviors.length;
+        const behaviorsToUnbind: Behavior[] = [];
 
         for (let i = 0; i < length; ++i) {
-            const index = targetBehaviors.indexOf(behaviors[i]);
+            const behavior = behaviors[i];
 
-            if (index !== -1) {
-                targetBehaviors.splice(index, 1);
+            if (targetBehaviors.has(behavior)) {
+                const count = targetBehaviors.get(behavior)! - 1;
+
+                count === 0
+                    ? targetBehaviors.delete(behavior) && behaviorsToUnbind.push(behavior)
+                    : targetBehaviors.set(behavior, count);
             }
         }
 
         if (this.isConnected) {
             const element = this.element;
 
-            for (let i = 0; i < length; ++i) {
-                behaviors[i].unbind(element);
+            for (let i = 0; i < behaviorsToUnbind.length; ++i) {
+                behaviorsToUnbind[i].unbind(element);
             }
         }
     }
@@ -257,15 +270,17 @@ export class Controller extends PropertyChangeNotifier {
             this.view.bind(element, defaultExecutionContext);
         }
 
+        (this as Mutable<Controller>).isConnected = true;
         const behaviors = this.behaviors;
-
         if (behaviors !== null) {
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(element, defaultExecutionContext);
+            const keys = behaviors.keys();
+            let current = keys.next();
+
+            while (!current.done) {
+                current.value.bind(element, defaultExecutionContext);
+                current = keys.next();
             }
         }
-
-        (this as Mutable<Controller>).isConnected = true;
     }
 
     /**
@@ -288,9 +303,12 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
+            const keys = behaviors.keys();
+            let current = keys.next();
 
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].unbind(element);
+            while (!current.done) {
+                current.value.unbind(element);
+                current = keys.next();
             }
         }
     }

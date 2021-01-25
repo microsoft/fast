@@ -7,6 +7,7 @@ import { html } from "./template";
 import { DOM } from "./dom";
 import { css } from "./styles";
 import { Observable } from "./observation/observable";
+import { Behavior } from "./directives/behavior";
 
 describe("The Controller", () => {
     const templateA = html`a`;
@@ -320,23 +321,134 @@ describe("The Controller", () => {
         expect(attached).to.equal(false);
     });
 
-    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
-        const { controller, element } = createController({
-            shadowOptions: {
-                mode: "open",
-            },
-            template: templateA,
+        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+            const { controller, element } = createController({
+                shadowOptions: {
+                    mode: "open",
+                },
+                template: templateA,
+            });
+
+            const style = document.createElement("style") as HTMLStyleElement;
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+            controller.addStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+            controller.removeStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+        });
+        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+            const { controller, element } = createController({
+                shadowOptions: {
+                    mode: "open",
+                },
+                template: templateA,
+            });
+
+            const style = document.createElement("style") as HTMLStyleElement;
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+            controller.addStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+            controller.removeStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
         });
 
-        const style = document.createElement("style") as HTMLStyleElement;
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
+        context("with behaviors", () => {
+            it("should bind all behaviors added prior to connection during connection", () => {
+                class TestBehavior implements Behavior {
+                    public bound = false;
+                    bind() {
+                        this.bound = true;
+                    }
+                    unbind() {
+                        this.bound = false;
+                    }
+                }
 
-        controller.addStyles(style);
+                const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
+                const { controller, element } = createController();
+                controller.addBehaviors(behaviors);
 
-        expect(element.shadowRoot?.contains(style)).to.equal(true);
+                behaviors.forEach(x => expect(x.bound).to.equal(false))
 
-        controller.removeStyles(style);
+                document.body.appendChild(element);
 
-        expect(element.shadowRoot?.contains(style)).to.equal(false);
-    });
+                behaviors.forEach(x => expect(x.bound).to.equal(true));
+            });
+
+            it("should bind a behavior B that is added to the controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
+                const boundBehaviors: Behavior[] = [];
+                const count = 3;
+                class TestBehavior implements Behavior {
+                    constructor(public depth: number) {}
+
+                    bind(el: FASTElement) {
+                        boundBehaviors.push(this);
+                        const newDepth = this.depth - 1; 
+
+                        if (newDepth > 0) {
+                            el.$fastController.addBehaviors([new TestBehavior(newDepth)])
+                        }
+                    }
+
+                    unbind() {}
+                }
+
+                const { element, controller } = createController();
+
+                controller.addBehaviors([new TestBehavior(count)]);
+
+                expect(boundBehaviors.length).to.equal(0);
+
+                document.body.appendChild(element);
+
+                expect(boundBehaviors.length).to.equal(3);
+            });
+            it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
+                class TestBehavior implements Behavior {
+                    public bound = false;
+                    bind() {
+                        this.bound = true;
+                    }
+
+                    unbind() {
+                        this.bound = false;
+                    }
+                }
+
+                const behavior = new TestBehavior();
+                const { element, controller } = createController();
+
+                document.body.appendChild(element);
+
+                controller.addBehaviors([behavior]);
+                controller.addBehaviors([behavior]);
+                controller.addBehaviors([behavior]);
+
+                expect(behavior.bound).to.equal(true);
+                controller.removeBehaviors([behavior]);
+                controller.removeBehaviors([behavior]);
+                controller.removeBehaviors([behavior]);
+
+                expect(behavior.bound).to.equal(false);
+                // for (let i = 0; i < 10; i++) {
+                //     for (let j = 0; j <= i; j++) {
+                //         controller.addBehaviors([behavior]);
+                //     }
+
+                //     for (let j = 0; j <= i; j++) {
+                //         controller.removeBehaviors([behavior]);
+                //         expect(behavior.bound).to.equal(j !== i); // false if this is the last unbind, otherwise true
+                //     }
+                // }
+            });
+            it("should unbind a behavior whenever the behavior is removed with the force argument", () => {});
+        })
 });
