@@ -263,7 +263,6 @@ export class Checkbox extends FormAssociatedCheckbox {
 // @public
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
-<<<<<<< HEAD
 // @public
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
@@ -277,10 +276,7 @@ export interface ColumnDefinition {
     title?: string;
 }
 
-// @public (undocumented)
-=======
 // @alpha
->>>>>>> docs(fast-foundation): applying basic doc tags/comments
 export interface ComponentPresentation {
     // (undocumented)
     applyTo(element: FASTElement): void;
@@ -350,43 +346,25 @@ export const ContainerConfiguration: Readonly<{
     }>;
 }>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "ContainerImpl" is marked as @public, but its signature references "Container" which is marked as @alpha
+// Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @public (undocumented)
+// @internal (undocumented)
 export class ContainerImpl implements Container {
-    // Warning: (ae-incompatible-release-tags) The symbol "__constructor" is marked as @public, but its signature references "ContainerConfiguration" which is marked as @alpha
     constructor(owner: any, config: ContainerConfiguration);
-    // Warning: (ae-incompatible-release-tags) The symbol "config" is marked as @public, but its signature references "ContainerConfiguration" which is marked as @alpha
-    //
     // (undocumented)
     protected config: ContainerConfiguration;
-    // Warning: (ae-incompatible-release-tags) The symbol "createChild" is marked as @public, but its signature references "ContainerConfiguration" which is marked as @alpha
-    //
     // (undocumented)
     createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
     // (undocumented)
     get depth(): number;
-    // Warning: (ae-incompatible-release-tags) The symbol "get" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "get" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-    //
     // (undocumented)
     get<K extends Key>(key: K): Resolved<K>;
-    // Warning: (ae-incompatible-release-tags) The symbol "getAll" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "getAll" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-    //
     // (undocumented)
     getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    // Warning: (ae-incompatible-release-tags) The symbol "getFactory" is marked as @public, but its signature references "Factory" which is marked as @alpha
-    //
     // (undocumented)
     getFactory<K extends Constructable>(Type: K): Factory<K>;
-    // Warning: (ae-incompatible-release-tags) The symbol "getResolver" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "getResolver" is marked as @public, but its signature references "Resolver" which is marked as @alpha
-    //
     // (undocumented)
     getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    // Warning: (ae-incompatible-release-tags) The symbol "has" is marked as @public, but its signature references "Key" which is marked as @alpha
-    //
     // (undocumented)
     has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
     // (undocumented)
@@ -395,18 +373,10 @@ export class ContainerImpl implements Container {
     get parent(): ContainerImpl | null;
     // (undocumented)
     register(...params: any[]): Container;
-    // Warning: (ae-incompatible-release-tags) The symbol "registerFactory" is marked as @public, but its signature references "Factory" which is marked as @alpha
-    //
     // (undocumented)
     registerFactory<K extends Constructable>(key: K, factory: Factory<K>): void;
-    // Warning: (ae-incompatible-release-tags) The symbol "registerResolver" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "registerResolver" is marked as @public, but its signature references "Resolver" which is marked as @alpha
-    //
     // (undocumented)
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
-    // Warning: (ae-incompatible-release-tags) The symbol "registerTransformer" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "registerTransformer" is marked as @public, but its signature references "Transformer" which is marked as @alpha
-    //
     // (undocumented)
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
     }
@@ -992,25 +962,11 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
-<<<<<<< HEAD
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
-// Warning: (ae-incompatible-release-tags) The symbol "ignore" is marked as @public, but its signature references "Injectable" which is marked as @alpha
-=======
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
->>>>>>> docs(fast-foundation): applying basic doc tags/comments
-//
 // @alpha
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
-
-// @public (undocumented)
-export namespace ignore {
-    var // (undocumented)
-    $isResolver: boolean;
-    var // (undocumented)
-    resolve: () => undefined;
-}
 
 // @alpha (undocumented)
 export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
@@ -1234,7 +1190,6 @@ export const newInstanceForScope: (key: any) => any;
 // @alpha (undocumented)
 export const newInstanceOf: (key: any) => any;
 
-<<<<<<< HEAD
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "NumberField" because one of its declarations is marked as @internal
@@ -1278,10 +1233,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 // @public
 export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
 
-// @public
-=======
 // @alpha
->>>>>>> docs(fast-foundation): applying basic doc tags/comments
 export const optional: (key: any) => any;
 
 // @alpha
@@ -1547,7 +1499,7 @@ export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
 // @alpha
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
 
 // @alpha
@@ -2024,7 +1976,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/di/di.d.ts:201:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:205:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

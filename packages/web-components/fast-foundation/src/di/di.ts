@@ -582,7 +582,8 @@ export const DI = Object.freeze({
      * @param target - The class / constructor function to register as transient.
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
      *
-     * @example ```ts
+     * @example
+     * ```ts
      * // On an existing class
      * class Foo { }
      * DI.transient(Foo);
@@ -612,7 +613,8 @@ export const DI = Object.freeze({
      *
      * @param target - The class / constructor function to register as a singleton.
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
-     * @example ```ts
+     * @example
+     * ```ts
      * // On an existing class
      * class Foo { }
      * DI.singleton(Foo);
@@ -622,6 +624,8 @@ export const DI = Object.freeze({
      * // Foo is now strongly typed with register
      * Foo.register(container);
      * ```
+     *
+     * @alpha
      */
     singleton<T extends Constructable>(
         target: T & Partial<RegisterSelf<T>>,
@@ -685,7 +689,8 @@ function transientDecorator<T extends Constructable>(
  * Registers the decorated class as a transient dependency; each time the dependency is resolved
  * a new instance will be created.
  *
- * @example ```ts
+ * @example
+ * ```ts
  * &#64;transient()
  * class Foo { }
  * ```
@@ -699,7 +704,8 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  *
  * @param target - The class / constructor function to register as transient.
  *
- * @example ```ts
+ * @example
+ * ```ts
  * &#64;transient()
  * class Foo { }
  * ```
@@ -728,7 +734,8 @@ function singletonDecorator<T extends Constructable>(
  * Registers the decorated class as a singleton dependency; the class will only be created once. Each
  * consecutive time the dependency is resolved, the same instance will be returned.
  *
- * @example ```ts
+ * @example
+ * ```ts
  * &#64;singleton()
  * class Foo { }
  * ```
@@ -736,6 +743,9 @@ function singletonDecorator<T extends Constructable>(
  * @alpha
  */
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
+/**
+ * @alpha
+ */
 export function singleton<T extends Constructable>(
     options?: SingletonOptions
 ): typeof singletonDecorator;
@@ -745,7 +755,8 @@ export function singleton<T extends Constructable>(
  *
  * @param target - The class / constructor function to register as a singleton.
  *
- * @example ```ts
+ * @example
+ * ```ts
  * &#64;singleton()
  * class Foo { }
  * ```
@@ -755,6 +766,9 @@ export function singleton<T extends Constructable>(
 export function singleton<T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
 ): T & RegisterSelf<T>;
+/**
+ * @alpha
+ */
 export function singleton<T extends Constructable>(
     targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions
 ): (T & RegisterSelf<T>) | typeof singletonDecorator {
@@ -826,8 +840,8 @@ export const all = createAllResolver(
  * `@lazy` does not manage the lifecycle of the underlying key. If you want a singleton, you have to register as a
  * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
  *
- * - @param key [[`Key`]]
- * see { @link DI.createInterface } on interactions with interfaces
+ * @param key - [[`Key`]]
+ * see {@link DI.createInterface} on interactions with interfaces
  *
  * @alpha
  */
@@ -855,9 +869,9 @@ export const lazy = createResolver(
  * if you use it without a default it will inject `undefined`, so rember to mark your input type as
  * possibly `undefined`!
  *
- * - @param key: [[`Key`]]
+ * @param key - [[`Key`]]
  *
- * see { @link DI.createInterface } on interactions with interfaces
+ * see {@link DI.createInterface} on interactions with interfaces
  *
  * @alpha
  */
@@ -872,7 +886,7 @@ export const optional = createResolver(
 );
 
 /**
- * ignore tells the container not to try to inject a dependency
+ * Ignore tells the container not to try to inject a dependency.
  *
  * @alpha
  */
@@ -883,8 +897,11 @@ export function ignore(
 ): void {
     DI.inject(ignore)(target, property, descriptor);
 }
-ignore.$isResolver = true;
-ignore.resolve = () => undefined;
+
+// Hack: casting below used to prevent TS from generate a namespace which can't be commented
+// and results in documentation validation errors.
+(ignore as any).$isResolver = true;
+(ignore as any).resolve = () => undefined;
 
 /**
  * @alpha
@@ -1105,7 +1122,9 @@ const InstrinsicTypeNames = new Set<string>([
 const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const factories = new Map<Key, Factory>();
 
-/* @internal */
+/**
+ * @internal
+ */
 export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
@@ -1462,7 +1481,7 @@ function cacheCallbackResult<T>(fun: ResolveCallback<T>): ResolveCallback<T> {
 }
 
 /**
- * you can use the resulting {@linkcode Registration} of any of the factory methods
+ * You can use the resulting Registration of any of the factory methods
  * to register with the container, e.g.
  * ```
  * class Foo {}
@@ -1481,8 +1500,8 @@ export const Registration = Object.freeze({
      * Registration.instance(Foo, new Foo()));
      * ```
      *
-     * @param key
-     * @param value
+     * @param key -
+     * @param value -
      */
     instance<T>(key: Key, value: T): Registration<T> {
         return new ResolverImpl(key, ResolverStrategy.instance, value);
@@ -1494,8 +1513,8 @@ export const Registration = Object.freeze({
      * Registration.singleton(Foo, Foo);
      * ```
      *
-     * @param key
-     * @param value
+     * @param key -
+     * @param value -
      */
     singleton<T extends Constructable>(
         key: Key,
@@ -1510,8 +1529,8 @@ export const Registration = Object.freeze({
      * Registration.instance(Foo, Foo);
      * ```
      *
-     * @param key
-     * @param value
+     * @param key -
+     * @param value -
      */
     transient<T extends Constructable>(
         key: Key,
@@ -1527,8 +1546,8 @@ export const Registration = Object.freeze({
      * Registration.callback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key
-     * @param callback
+     * @param key -
+     * @param callback -
      */
     callback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(key, ResolverStrategy.callback, callback);
@@ -1537,15 +1556,15 @@ export const Registration = Object.freeze({
      * Creates an instance from the method passed.
      * On the first request for the {@link Key} your callback is called and returns an instance.
      * subsequent requests for the {@link Key}, the initial instance returned will be returned.
-     * If you pass the same {@link Registration} to another container the same cached value will be used.
+     * If you pass the same Registration to another container the same cached value will be used.
      * Should all references to the resolver returned be removed, the cache will expire.
      * ```
      * Registration.cachedCallback(Foo, () => new Foo());
      * Registration.cachedCallback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key
-     * @param callback
+     * @param key -
+     * @param callback -
      */
     cachedCallback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(
@@ -1564,8 +1583,8 @@ export const Registration = Object.freeze({
      * container.getAll(MyFoos) // contains an instance of Foo
      * ```
      *
-     * @param originalKey
-     * @param aliasKey
+     * @param originalKey -
+     * @param aliasKey -
      */
     aliasTo<T>(originalKey: T, aliasKey: Key): Registration<Resolved<T>> {
         return new ResolverImpl(aliasKey, ResolverStrategy.alias, originalKey);

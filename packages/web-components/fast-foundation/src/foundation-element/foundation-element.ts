@@ -103,7 +103,7 @@ export class FoundationElement extends FASTElement {
 
     /**
      * Creates an element registry configuration function with a set of element definition defaults.
-     * @param elementDefinition The definition of the element to create the registry configuration
+     * @param elementDefinition - The definition of the element to create the registry configuration
      * function for.
      */
     public static configuration(
