@@ -20,7 +20,7 @@ A Flyout can be less intrusive to the user experience than a Dialog. It should b
 This includes:
 - Trap focus - optional, defaults to enabled - Focus is contained within the Flyout while it is visible.
 - First element focus - Focusing on the first focusable element when trap focus is enabled, but not overriding an element that is set to be focused by the author.
-- Returning focus to the target - optional, defaults to enabled, after Flyout is closed the focus would return to the target element.
+- Returning focus to the target - after Flyout is closed the focus would return to the target element per the expectations of the Dialog design pattern.
 
 
 ### Prior Art/Examples
@@ -61,7 +61,6 @@ This includes:
 - `visible` - boolean, toggle controlled by the author of whether or not the flyout is visible, defaults to undefined
 - `trap-focus` - boolean, whether or not to keep focus contained inside the Flyout, defaults to true
 - `target` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
-- `focus-target-on-close` - boolean, whether or not to focus back on to the _target element_ when the Flyout is closed, defaults to true
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic, see *Position Options*
 - `delay` - number, milliseconds (ms) the time delay before the Flyout is shown once triggered
 - `aria-labelledby` - optional based on implementation**
