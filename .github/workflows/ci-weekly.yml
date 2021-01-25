@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'typescript','C#' ]
+        language: [ 'javascript', 'typescript' ]
 
     steps:
     - uses: actions/checkout@v2
@@ -82,7 +82,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'typescript','C#' ]
+        language: [ 'javascript', 'typescript']
 
     steps:
     - name: Set git to use LF
@@ -157,7 +157,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'typescript','C#' ]
+        language: [ 'javascript', 'typescript']
 
     steps:
     - uses: actions/checkout@v2
