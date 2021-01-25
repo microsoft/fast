@@ -1,6 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { unset } from "lodash-es";
 import { getDirection } from "../utilities";
 import { IntersectionService } from "./intersection-service";
 
