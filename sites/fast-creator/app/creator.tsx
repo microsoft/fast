@@ -169,10 +169,7 @@ class Creator extends Editor<{}, CreatorState> {
                             className={this.mobileMenuBarClassNames}
                         >
                             {this.renderMobileNavigationTrigger()}
-                            <Logo
-                                backgroundColor={neutralLayerL2}
-                                logo={FASTInlineLogo}
-                            />
+                            <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
                         </Background>
                         <Background

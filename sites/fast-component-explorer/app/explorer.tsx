@@ -141,10 +141,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                             className={this.mobileMenuBarClassNames}
                         >
                             {this.renderMobileNavigationTrigger()}
-                            <Logo
-                                backgroundColor={neutralLayerL2}
-                                logo={FASTInlineLogo}
-                            />
+                            <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
                         </Background>
                         <Background
