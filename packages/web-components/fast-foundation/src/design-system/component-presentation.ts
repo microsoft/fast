@@ -8,11 +8,23 @@ import { DI, InterfaceSymbol } from "../di/di";
 
 const presentationKeys = new Map<string, InterfaceSymbol<ComponentPresentation>>();
 
+/**
+ * @alpha
+ * Applies presentation details, such as template and styles, to a component instance.
+ */
 export interface ComponentPresentation {
     applyTo(element: FASTElement): void;
 }
 
+/**
+ * @alpha
+ * A gateway for utilities associated with component presentation.
+ */
 export const ComponentPresentation = Object.freeze({
+    /**
+     * @alpha
+     * Creates element-specific DI keys for resolving component presentations.
+     */
     keyFrom(tagName: string): InterfaceSymbol<ComponentPresentation> {
         const lookup = tagName.toLowerCase();
         let key = presentationKeys.get(lookup);
@@ -26,6 +38,10 @@ export const ComponentPresentation = Object.freeze({
     },
 });
 
+/**
+ * @alpha
+ * The default implementation of ComponentPresentation, used by FoundationElement.
+ */
 export class DefaultComponentPresentation implements ComponentPresentation {
     public readonly styles: ElementStyles | null;
     public readonly template: ElementViewTemplate | null;

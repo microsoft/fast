@@ -8,11 +8,13 @@ import {
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
-    DesignSystemContext,
+    DesignSystemConfigurationContext,
 } from "../design-system";
 import { Container, Registration, Registry } from "../di";
 
 /**
+ * An element definition used to define a FoundationElement when registered through the design
+ * system registry.
  * @alpha
  */
 export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
@@ -28,6 +30,7 @@ export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "na
 };
 
 /**
+ * A set of properties which the component consumer can override during the element registration process.
  * @alpha
  */
 export type OverrideFoundationElementDefinition = Partial<
@@ -36,9 +39,9 @@ export type OverrideFoundationElementDefinition = Partial<
 
 /**
  * Defines a foundation element class that:
- * 1. Connects the element to Configuration
- * 2. Allows resolving the element template from the instance or Configuration
- * 3. Allows resolving the element styles from the instance or Configuration
+ * 1. Connects the element to its ComponentPresentation
+ * 2. Allows resolving the element template from the instance or ComponentPresentation
+ * 3. Allows resolving the element styles from the instance or ComponentPresentation
  *
  * @alpha
  */
@@ -47,6 +50,10 @@ export class FoundationElement extends FASTElement {
     private container: Container;
     private _presentation: ComponentPresentation | null = null;
 
+    /**
+     * A property which resolves the ComponentPresentation instance
+     * for the current component.
+     */
     protected get $presentation(): ComponentPresentation {
         if (this._presentation === null) {
             this._presentation = this.container.get(
@@ -83,47 +90,59 @@ export class FoundationElement extends FASTElement {
         }
     }
 
+    /**
+     * The connected callback for this FASTElement.
+     * @remarks
+     * This method is invoked by the platform whenever this FoundationElement
+     * becomes connected to the document.
+     */
     connectedCallback() {
         this.$presentation.applyTo(this);
         super.connectedCallback();
     }
 
+    /**
+     * Creates an element registry configuration function with a set of element definition defaults.
+     * @param elementDefinition The definition of the element to create the registry configuration
+     * function for.
+     */
     public static configuration(
         elementDefinition: FoundationElementDefinition
     ): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry {
-        return (
-            overrideDefinition: OverrideFoundationElementDefinition = {}
-        ): Registry => {
-            const definition = {
-                ...elementDefinition,
-                ...overrideDefinition,
-            };
+        return (overrideDefinition: OverrideFoundationElementDefinition = {}): Registry =>
+            new FoundationElementRegistry(elementDefinition, overrideDefinition);
+    }
+}
 
-            return {
-                register(container: Container) {
-                    const context = container.get(DesignSystemContext);
-                    const prefix = definition.prefix || context.elementPrefix;
-                    const name = `${prefix}-${definition.baseName}`;
-                    const presentation = new DefaultComponentPresentation(
-                        definition.template,
-                        definition.styles
-                    );
+class FoundationElementRegistry {
+    constructor(
+        private elementDefinition: FoundationElementDefinition,
+        private overrideDefinition: OverrideFoundationElementDefinition
+    ) {}
 
-                    container.register(
-                        Registration.instance(
-                            ComponentPresentation.keyFrom(name),
-                            presentation
-                        )
-                    );
-
-                    context.defineElement(elementDefinition.type, {
-                        name,
-                        elementOptions: definition.elementOptions,
-                        shadowOptions: definition.shadowOptions,
-                        attributes: definition.attributes,
-                    });
-                },
-            };
+    public register(container: Container) {
+        const definition = {
+            ...this.elementDefinition,
+            ...this.overrideDefinition,
         };
+
+        const context = container.get(DesignSystemConfigurationContext);
+        const prefix = definition.prefix || context.elementPrefix;
+        const name = `${prefix}-${definition.baseName}`;
+        const presentation = new DefaultComponentPresentation(
+            definition.template,
+            definition.styles
+        );
+
+        container.register(
+            Registration.instance(ComponentPresentation.keyFrom(name), presentation)
+        );
+
+        context.defineElement(this.elementDefinition.type, {
+            name,
+            elementOptions: definition.elementOptions,
+            shadowOptions: definition.shadowOptions,
+            attributes: definition.attributes,
+        });
     }
 }

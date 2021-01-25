@@ -689,6 +689,8 @@ function transientDecorator<T extends Constructable>(
  * &#64;transient()
  * class Foo { }
  * ```
+ *
+ * @alpha
  */
 export function transient<T extends Constructable>(): typeof transientDecorator;
 /**
@@ -701,6 +703,8 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  * &#64;transient()
  * class Foo { }
  * ```
+ *
+ * @alpha
  */
 export function transient<T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
@@ -728,6 +732,8 @@ function singletonDecorator<T extends Constructable>(
  * &#64;singleton()
  * class Foo { }
  * ```
+ *
+ * @alpha
  */
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 export function singleton<T extends Constructable>(
@@ -743,6 +749,8 @@ export function singleton<T extends Constructable>(
  * &#64;singleton()
  * class Foo { }
  * ```
+ *
+ * @alpha
  */
 export function singleton<T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
@@ -786,6 +794,9 @@ function createAllResolver(
     };
 }
 
+/**
+ * @alpha
+ */
 export const all = createAllResolver(
     (key: any, handler: Container, requestor: Container, searchAncestors: boolean) =>
         requestor.getAll(key, searchAncestors)
@@ -817,6 +828,8 @@ export const all = createAllResolver(
  *
  * - @param key [[`Key`]]
  * see { @link DI.createInterface } on interactions with interfaces
+ *
+ * @alpha
  */
 export const lazy = createResolver(
     (key: Key, handler: Container, requestor: Container) => {
@@ -845,6 +858,8 @@ export const lazy = createResolver(
  * - @param key: [[`Key`]]
  *
  * see { @link DI.createInterface } on interactions with interfaces
+ *
+ * @alpha
  */
 export const optional = createResolver(
     (key: Key, handler: Container, requestor: Container) => {
@@ -858,6 +873,8 @@ export const optional = createResolver(
 
 /**
  * ignore tells the container not to try to inject a dependency
+ *
+ * @alpha
  */
 export function ignore(
     target: Injectable,
@@ -869,6 +886,9 @@ export function ignore(
 ignore.$isResolver = true;
 ignore.resolve = () => undefined;
 
+/**
+ * @alpha
+ */
 export const newInstanceForScope = createResolver(
     (key: any, handler: Container, requestor: Container) => {
         const instance = createNewInstance(key, handler);
@@ -878,6 +898,9 @@ export const newInstanceForScope = createResolver(
     }
 );
 
+/**
+ * @alpha
+ */
 export const newInstanceOf = createResolver(
     (key: any, handler: Container, _requestor: Container) =>
         createNewInstance(key, handler)
@@ -965,6 +988,9 @@ export class ResolverImpl implements Resolver, Registration {
     }
 }
 
+/**
+ * @alpha
+ */
 export interface Invoker<T extends Constructable = any> {
     invoke(container: Container, fn: T, dependencies: Key[]): Resolved<T>;
     invokeWithDynamicDependencies(
@@ -1444,11 +1470,13 @@ function cacheCallbackResult<T>(fun: ResolveCallback<T>): ResolveCallback<T> {
  * container.register(Registration.instance(Foo, new Foo()));
  * container.get(Foo);
  * ```
+ *
+ * @alpha
  */
 export const Registration = Object.freeze({
     /**
      * allows you to pass an instance.
-     * Every time you request this {@linkcode Key} you will get this instance back.
+     * Every time you request this {@link Key} you will get this instance back.
      * ```
      * Registration.instance(Foo, new Foo()));
      * ```
@@ -1461,7 +1489,7 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from the class.
-     * Every time you request this {@linkcode Key} you will get the same one back.
+     * Every time you request this {@link Key} you will get the same one back.
      * ```
      * Registration.singleton(Foo, Foo);
      * ```
@@ -1477,7 +1505,7 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from a class.
-     * Every time you request this {@linkcode Key} you will get a new instance.
+     * Every time you request this {@link Key} you will get a new instance.
      * ```
      * Registration.instance(Foo, Foo);
      * ```
@@ -1493,7 +1521,7 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from the method passed.
-     * Every time you request this {@linkcode Key} you will get a new instance.
+     * Every time you request this {@link Key} you will get a new instance.
      * ```
      * Registration.callback(Foo, () => new Foo());
      * Registration.callback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
@@ -1507,9 +1535,9 @@ export const Registration = Object.freeze({
     },
     /**
      * Creates an instance from the method passed.
-     * On the first request for the {@linkcode Key} your callback is called and returns an instance.
-     * subsequent requests for the {@linkcode Key}, the initial instance returned will be returned.
-     * If you pass the same {@linkcode Registration} to another container the same cached value will be used.
+     * On the first request for the {@link Key} your callback is called and returns an instance.
+     * subsequent requests for the {@link Key}, the initial instance returned will be returned.
+     * If you pass the same {@link Registration} to another container the same cached value will be used.
      * Should all references to the resolver returned be removed, the cache will expire.
      * ```
      * Registration.cachedCallback(Foo, () => new Foo());
@@ -1527,8 +1555,8 @@ export const Registration = Object.freeze({
         );
     },
     /**
-     * creates an alternate {@linkcode Key} to retrieve an instance by.
-     * Returns the same scope as the original {@linkcode Key}.
+     * creates an alternate {@link Key} to retrieve an instance by.
+     * Returns the same scope as the original {@link Key}.
      * ```
      * Register.singleton(Foo, Foo)
      * Register.aliasTo(Foo, MyFoos);

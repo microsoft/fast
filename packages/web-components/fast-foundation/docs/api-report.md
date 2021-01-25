@@ -56,9 +56,7 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "all" is marked as @public, but its signature references "DI" which is marked as @alpha
-//
-// @public (undocumented)
+// @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -265,6 +263,7 @@ export class Checkbox extends FormAssociatedCheckbox {
 // @public
 export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
 
+<<<<<<< HEAD
 // @public
 export interface ColumnDefinition {
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
@@ -279,12 +278,15 @@ export interface ColumnDefinition {
 }
 
 // @public (undocumented)
+=======
+// @alpha
+>>>>>>> docs(fast-foundation): applying basic doc tags/comments
 export interface ComponentPresentation {
     // (undocumented)
     applyTo(element: FASTElement): void;
 }
 
-// @public (undocumented)
+// @alpha
 export const ComponentPresentation: Readonly<{
     keyFrom(tagName: string): InterfaceSymbol<ComponentPresentation>;
 }>;
@@ -582,7 +584,7 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     default: any;
 }
 
-// @public (undocumented)
+// @alpha
 export class DefaultComponentPresentation implements ComponentPresentation {
     constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
     // (undocumented)
@@ -680,6 +682,17 @@ export class DesignSystem {
     withPrefix(prefix: string): this;
 }
 
+// @alpha
+export interface DesignSystemConfigurationContext {
+    // (undocumented)
+    defineElement<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
+    // (undocumented)
+    readonly elementPrefix: string;
+}
+
+// @alpha (undocumented)
+export const DesignSystemConfigurationContext: import("../di/di").InterfaceSymbol<DesignSystemConfigurationContext>;
+
 // @public
 export interface DesignSystemConsumer {
     // (undocumented)
@@ -688,17 +701,6 @@ export interface DesignSystemConsumer {
 
 // @public
 export const designSystemConsumerBehavior: Behavior;
-
-// @public (undocumented)
-export interface DesignSystemContext {
-    // (undocumented)
-    defineElement<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
-    // (undocumented)
-    readonly elementPrefix: string;
-}
-
-// @public (undocumented)
-export const DesignSystemContext: import("../di/di").InterfaceSymbol<DesignSystemContext>;
 
 // @public
 export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
@@ -957,11 +959,8 @@ export interface FormAssociatedProxy {
 
 // @alpha
 export class FoundationElement extends FASTElement {
-    // (undocumented)
     protected get $presentation(): ComponentPresentation;
-    // (undocumented)
     static configuration(elementDefinition: FoundationElementDefinition): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry;
-    // (undocumented)
     connectedCallback(): void;
     styles: ElementStyles | void | null;
     // (undocumented)
@@ -971,7 +970,7 @@ export class FoundationElement extends FASTElement {
     protected templateChanged(): void;
 }
 
-// @alpha (undocumented)
+// @alpha
 export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
     baseName: string;
     type: typeof FASTElement;
@@ -993,12 +992,16 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
+<<<<<<< HEAD
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
 // Warning: (ae-incompatible-release-tags) The symbol "ignore" is marked as @public, but its signature references "Injectable" which is marked as @alpha
+=======
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+>>>>>>> docs(fast-foundation): applying basic doc tags/comments
 //
-// @public
+// @alpha
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
 // @public (undocumented)
@@ -1026,18 +1029,10 @@ export interface InterfaceConfiguration {
 // @alpha (undocumented)
 export type InterfaceSymbol<K = any> = (target: any, property: string, index?: number) => void;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface Invoker<T extends Constructable = any> {
-    // Warning: (ae-incompatible-release-tags) The symbol "invoke" is marked as @public, but its signature references "Container" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "invoke" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "invoke" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-    //
     // (undocumented)
     invoke(container: Container, fn: T, dependencies: Key[]): Resolved<T>;
-    // Warning: (ae-incompatible-release-tags) The symbol "invokeWithDynamicDependencies" is marked as @public, but its signature references "Container" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "invokeWithDynamicDependencies" is marked as @public, but its signature references "Key" which is marked as @alpha
-    // Warning: (ae-incompatible-release-tags) The symbol "invokeWithDynamicDependencies" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-    //
     // (undocumented)
     invokeWithDynamicDependencies(container: Container, fn: T, staticDependencies: Key[], dynamicDependencies: Key[]): Resolved<T>;
 }
@@ -1054,7 +1049,7 @@ export function isTreeItemElement(el: Element): el is HTMLElement;
 // @alpha (undocumented)
 export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
-// @public
+// @alpha
 export const lazy: (key: any) => any;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1233,12 +1228,13 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const newInstanceOf: (key: any) => any;
 
+<<<<<<< HEAD
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "NumberField" because one of its declarations is marked as @internal
@@ -1283,9 +1279,12 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
 
 // @public
+=======
+// @alpha
+>>>>>>> docs(fast-foundation): applying basic doc tags/comments
 export const optional: (key: any) => any;
 
-// @alpha (undocumented)
+// @alpha
 export type OverrideFoundationElementDefinition = Partial<Omit<FoundationElementDefinition, "type">> & {
     prefix?: string;
 };
@@ -1374,15 +1373,13 @@ export type RegisterSelf<T extends Constructable> = {
     registerInRequestor: boolean;
 };
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-//
 // @alpha (undocumented)
 export interface Registration<K = any> {
     // (undocumented)
     register(container: Container, key?: Key): Resolver<K>;
 }
 
-// @public
+// @alpha
 export const Registration: Readonly<{
     instance<T>(key: Key, value: T): Registration<T>;
     singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
@@ -1547,15 +1544,13 @@ export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
 
 // Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
 //
-// @public
+// @alpha
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 
 // @public (undocumented)
 export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
 
-// Warning: (ae-incompatible-release-tags) The symbol "singleton" is marked as @public, but its signature references "RegisterSelf" which is marked as @alpha
-//
-// @public
+// @alpha
 export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
@@ -1935,12 +1930,10 @@ export { Transformer_2 as Transformer }
 
 // Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
 //
-// @public
+// @alpha
 export function transient<T extends Constructable>(): typeof transientDecorator;
 
-// Warning: (ae-incompatible-release-tags) The symbol "transient" is marked as @public, but its signature references "RegisterSelf" which is marked as @alpha
-//
-// @public
+// @alpha
 export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2031,19 +2024,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-system/component-presentation.d.ts:7:5 - (ae-incompatible-release-tags) The symbol "keyFrom" is marked as @public, but its signature references "InterfaceSymbol" which is marked as @alpha
 // dist/dts/di/di.d.ts:201:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:403:5 - (ae-incompatible-release-tags) The symbol "instance" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:414:5 - (ae-incompatible-release-tags) The symbol "singleton" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:425:5 - (ae-incompatible-release-tags) The symbol "transient" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:437:5 - (ae-incompatible-release-tags) The symbol "callback" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:437:5 - (ae-incompatible-release-tags) The symbol "callback" is marked as @public, but its signature references "ResolveCallback" which is marked as @alpha
-// dist/dts/di/di.d.ts:437:5 - (ae-incompatible-release-tags) The symbol "callback" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-// dist/dts/di/di.d.ts:452:5 - (ae-incompatible-release-tags) The symbol "cachedCallback" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:452:5 - (ae-incompatible-release-tags) The symbol "cachedCallback" is marked as @public, but its signature references "ResolveCallback" which is marked as @alpha
-// dist/dts/di/di.d.ts:452:5 - (ae-incompatible-release-tags) The symbol "cachedCallback" is marked as @public, but its signature references "Resolved" which is marked as @alpha
-// dist/dts/di/di.d.ts:466:5 - (ae-incompatible-release-tags) The symbol "aliasTo" is marked as @public, but its signature references "Key" which is marked as @alpha
-// dist/dts/di/di.d.ts:466:5 - (ae-incompatible-release-tags) The symbol "aliasTo" is marked as @public, but its signature references "Resolved" which is marked as @alpha
 
 // (No @packageDocumentation comment for this package)
 

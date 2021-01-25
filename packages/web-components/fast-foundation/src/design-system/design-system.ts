@@ -7,7 +7,12 @@ import { DI, Registration } from "../di/di";
 
 const defaultPrefix = "fast";
 
-export interface DesignSystemContext {
+/**
+ * Design system contextual APIs and configuration usable within component
+ * registries.
+ * @alpha
+ */
+export interface DesignSystemConfigurationContext {
     readonly elementPrefix: string;
     defineElement<TType extends Function>(
         type: TType,
@@ -15,7 +20,12 @@ export interface DesignSystemContext {
     ): TType;
 }
 
-export const DesignSystemContext = DI.createInterface<DesignSystemContext>(x =>
+/**
+ * @alpha
+ */
+export const DesignSystemConfigurationContext = DI.createInterface<
+    DesignSystemConfigurationContext
+>(x =>
     x.instance({
         elementPrefix: defaultPrefix,
         defineElement: FASTElement.define,
@@ -56,7 +66,7 @@ export class DesignSystem {
         const container = DI.getOrCreateDOMContainer(element);
         const definitions: FASTElementDefinition[] = [];
         const disambiguate = this.disambiguate;
-        const context: DesignSystemContext = {
+        const context: DesignSystemConfigurationContext = {
             elementPrefix: this.prefix,
             defineElement<TType extends Function>(
                 type: TType,
@@ -83,8 +93,9 @@ export class DesignSystem {
             },
         };
 
-        container.register(Registration.instance(DesignSystemContext, context));
-
+        container.register(
+            Registration.instance(DesignSystemConfigurationContext, context)
+        );
         container.register(...this.registrations);
 
         for (const def of definitions) {
