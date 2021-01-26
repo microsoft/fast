@@ -8,7 +8,7 @@ import {
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
-    DesignSystemConfigurationContext,
+    DesignSystemRegistrationContext,
 } from "../design-system";
 import { Container, Registration, Registry } from "../di";
 
@@ -126,23 +126,25 @@ class FoundationElementRegistry {
             ...this.overrideDefinition,
         };
 
-        const context = container.get(DesignSystemConfigurationContext);
+        const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
-        const presentation = new DefaultComponentPresentation(
-            definition.template,
-            definition.styles
-        );
 
-        container.register(
-            Registration.instance(ComponentPresentation.keyFrom(name), presentation)
-        );
+        context.tryDefineElement(name, this.elementDefinition.type, x => {
+            const presentation = new DefaultComponentPresentation(
+                definition.template,
+                definition.styles
+            );
 
-        context.defineElement(this.elementDefinition.type, {
-            name,
-            elementOptions: definition.elementOptions,
-            shadowOptions: definition.shadowOptions,
-            attributes: definition.attributes,
+            x.container.register(
+                Registration.instance(ComponentPresentation.keyFrom(x.name), presentation)
+            );
+
+            x.defineElement({
+                elementOptions: definition.elementOptions,
+                shadowOptions: definition.shadowOptions,
+                attributes: definition.attributes,
+            });
         });
     }
 }

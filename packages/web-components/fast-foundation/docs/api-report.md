@@ -12,7 +12,6 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { FASTElementDefinition } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -381,6 +380,9 @@ export class ContainerImpl implements Container {
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
     }
 
+// @alpha
+export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, 'name'>;
+
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
 
@@ -641,27 +643,14 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 // @alpha (undocumented)
 export class DesignSystem {
     // (undocumented)
-    applyTo(element: HTMLElement): import("../di/di").Container;
+    applyTo(element: HTMLElement): Container;
     // (undocumented)
     register(...params: any[]): this;
-    // Warning: (ae-forgotten-export) The symbol "ElementDisambiguationCallback" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     withElementDisambiguation(callback: ElementDisambiguationCallback): this;
     // (undocumented)
     withPrefix(prefix: string): this;
 }
-
-// @alpha
-export interface DesignSystemConfigurationContext {
-    // (undocumented)
-    defineElement<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
-    // (undocumented)
-    readonly elementPrefix: string;
-}
-
-// @alpha (undocumented)
-export const DesignSystemConfigurationContext: import("../di/di").InterfaceSymbol<DesignSystemConfigurationContext>;
 
 // @public
 export interface DesignSystemConsumer {
@@ -712,6 +701,17 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
+
+// @alpha
+export interface DesignSystemRegistrationContext {
+    // (undocumented)
+    readonly elementPrefix: string;
+    // (undocumented)
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+}
+
+// @alpha (undocumented)
+export const DesignSystemRegistrationContext: import("../di/di").InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{
@@ -806,6 +806,28 @@ export interface DOMParentLocatorEventDetail {
     // (undocumented)
     container: Container | void;
 }
+
+// @alpha
+export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
+
+// @alpha
+export interface ElementDefinitionContext {
+    // (undocumented)
+    readonly container: Container;
+    // (undocumented)
+    defineElement(definition?: ContextualElementDefinition): void;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    tagFor(type: Constructable): string;
+    // (undocumented)
+    readonly type: Constructable;
+    // (undocumented)
+    readonly willDefine: boolean;
+}
+
+// @alpha
+export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
 
 // @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
