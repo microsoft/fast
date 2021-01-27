@@ -80,7 +80,7 @@ provider.neutralPalette = palette;
 ```
 
 ###### Replacing the accent palette
-The same approach can be taken for the `accentPalette`, but when doing so the `accentPaletteBaseColor` should *also* be replaced:
+The same approach can be taken for the `accentPalette`, but when doing so the `accentBaseColor` should *also* be replaced:
 
 ```js
 import { parseColorHexRGB } from "@microsoft/fast-colors";

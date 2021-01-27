@@ -294,6 +294,7 @@ export const HypertextStyles = css`
 
     :host([appearance="hypertext"]) .control:${focusVisible} {
         border-bottom: calc(var(--focus-outline-width) * 1px) solid ${neutralFocusBehavior.var};
+        margin-bottom: calc(calc(var(--outline-width) - var(--focus-outline-width)) * 1px);
     }
 `.withBehaviors(
     accentForegroundRestBehavior,

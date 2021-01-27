@@ -25,6 +25,9 @@ export { fastCheckboxConfig };
 import fastDialogConfig from "./fast-dialog";
 export { fastDialogConfig };
 
+import fastDisclosureConfig from "./fast-disclosure";
+export { fastDisclosureConfig };
+
 import fastDataGridConfig from "./fast-data-grid";
 export { fastDataGridConfig };
 

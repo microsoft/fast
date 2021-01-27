@@ -199,6 +199,98 @@ describe("TextField", () => {
 
         await disconnect();
     });
+    it("should hide the label when start content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        await connect();
+        div.slot = "start";
+        element.appendChild(div);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should hide the label when end content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        await connect();
+        div.slot = "end";
+        element.appendChild(div);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+    it("should hide the label when start and end content are provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        const div2: HTMLDivElement = div;
+
+        await connect();
+        div.slot = "start";
+        div2.slot = "end";
+
+        element.appendChild(div);
+        element.appendChild(div2);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+    it("should hide the label when whitespace only text nodes are slotted", async () => {
+        const { element, connect, disconnect } = await setup();
+        const whitespace: Node = document.createTextNode(" ") as Node;
+        const whitespace2: Node = document.createTextNode(" \r ") as Node;
+
+        await connect();
+
+        element.appendChild(whitespace);
+        element.appendChild(whitespace2);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should hide the label when no default slotted content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
 
     describe("Delegates ARIA textbox", () => {
         it("should set the `aria-atomic` attribute on the internal control when provided", async () => {
