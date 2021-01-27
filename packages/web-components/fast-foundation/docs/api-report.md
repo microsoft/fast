@@ -29,7 +29,6 @@ export enum AccordionExpandMode {
     single = "single"
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
 //
 // @public
@@ -53,7 +52,6 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
 //
 // @public
@@ -174,7 +172,6 @@ export class Breadcrumb extends FASTElement {
     slottedBreadcrumbItemsChanged(): void;
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "BreadcrumbItem" because one of its declarations is marked as @internal
 //
 // @public
@@ -193,7 +190,6 @@ export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTempl
 // @public
 export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Button" because one of its declarations is marked as @internal
 //
@@ -468,7 +464,6 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
 //
 // @public
@@ -481,7 +476,6 @@ export class DelegatesARIAButton {
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIALink" because one of its declarations is marked as @internal
 //
 // @public
@@ -493,7 +487,6 @@ export class DelegatesARIALink {
 export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAListbox" because one of its declarations is marked as @internal
 //
 // @public
@@ -507,7 +500,6 @@ export class DelegatesARIAListbox {
 export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASelect" because one of its declarations is marked as @internal
 //
 // @public
@@ -520,7 +512,6 @@ export class DelegatesARIASelect {
 export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIATextbox" because one of its declarations is marked as @internal
 //
 // @public
@@ -778,7 +769,6 @@ export function isListboxOption(el: Element): el is ListboxOption;
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
 //
 // @public
@@ -828,7 +818,6 @@ export class Listbox extends FASTElement {
 export interface Listbox extends DelegatesARIAListbox {
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
 //
 // @public
@@ -922,7 +911,6 @@ export class Menu extends FASTElement {
     items: HTMLSlotElement;
     }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "MenuItem" because one of its declarations is marked as @internal
 //
 // @public
@@ -954,7 +942,6 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "NumberField" because one of its declarations is marked as @internal
 //
@@ -1072,7 +1059,6 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
 //
@@ -1144,7 +1130,6 @@ export type SkeletonShape = "rect" | "circle";
 // @public
 export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Slider" because one of its declarations is marked as @internal
 //
@@ -1318,7 +1303,6 @@ export class TabPanel extends FASTElement {
 // @public
 export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Tabs" because one of its declarations is marked as @internal
 //
 // @public
@@ -1364,7 +1348,6 @@ export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, 
 // @public
 export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextArea" because one of its declarations is marked as @internal
 //
@@ -1407,7 +1390,6 @@ export enum TextAreaResize {
 // @public
 export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal
 //
@@ -1500,7 +1482,6 @@ export enum TooltipPosition {
     top = "top"
 }
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //
 // @public
