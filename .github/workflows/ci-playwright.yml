@@ -37,7 +37,7 @@ jobs:
     - name: Install dependencies
       run: |
         yarn install --frozen-lockfile --ignore-scripts
-  #yarn add playwright@${{ matrix.playwright }}
+        cd playwrightTest && npm install playwright@${{ matrix.playwright }}
 
     - name: Prepare workspaces
       run: yarn prepare
@@ -49,7 +49,9 @@ jobs:
       run: yarn lerna run test --stream
 
     - name: Playwright Testing
-      run: yarn workspace "@microsoft/fast-components" test-pw
+      run: cd playwrightTest && node index.js
+
+  #    run: yarn workspace "@microsoft/fast-components" test-pw
   #      PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
   #      PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
 
