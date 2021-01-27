@@ -38,10 +38,7 @@ jobs:
       run: |
         yarn install --frozen-lockfile --ignore-scripts
         cd playwrightTest && npm install playwright@${{ matrix.playwright }}
-
-    - name: Prepare workspaces
-      run: yarn prepare
-
+        
     - name: Testing Prettier format
       run: yarn format:check
 
