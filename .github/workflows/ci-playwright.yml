@@ -49,8 +49,7 @@ jobs:
       run: yarn lerna run test --stream
 
     - name: Playwright Testing
-      run: cd playwrightTest && node index.js
-  # run: yarn workspace "@microsoft/fast-components" test-pw
+      run: yarn workspace "@microsoft/fast-components" test-pw
   #      PW_BROWSER=webkit yarn workspace "@microsoft/fast-components" test-pw
   #      PW_BROWSER=chromium yarn workspace "@microsoft/fast-components" test-pw
 
