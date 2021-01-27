@@ -13,12 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [linux-latest, macos-latest, windows-latest]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
         playwright: [latest]
         headless: [false]
 
     runs-on: ${{ matrix.os }}
     steps:
+      shell: bash
     - uses: actions/checkout@v2
 
     - name: Get yarn cache directory path
