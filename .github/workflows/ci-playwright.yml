@@ -19,7 +19,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
-    - shell: bash
     - uses: actions/checkout@v2
 
     - name: Get yarn cache directory path
