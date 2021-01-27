@@ -4,7 +4,7 @@ import { CSSRef } from "./control.css-ref";
 import {
     CSSPropertyRef,
     CSSPropertySyntax,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 
 export interface RenderPropertyControlConfig extends RenderControlConfig {
     property: string;

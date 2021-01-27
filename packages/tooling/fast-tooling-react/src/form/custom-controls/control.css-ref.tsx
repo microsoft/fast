@@ -1,17 +1,17 @@
 import React from "react";
 import { CSSRefProps, CSSRefState } from "./control.css-ref.props";
-import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
-import { Type } from "@microsoft/fast-tooling/dist/css-data.types";
+import { Syntax } from "@microsoft/fast-tooling/dist/esm/css-data.syntax";
+import { Type } from "@microsoft/fast-tooling/dist/esm/css-data.types";
 import {
     CombinatorType,
     CSSPropertiesDictionary,
     CSSPropertyRef,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { renderTypeControl } from "./control.css.utilities.type";
 import { renderSyntaxControl } from "./control.css.utilities.syntax";
 import { renderValueControl } from "./control.css.utilities.value";
 import { renderPropertyControl } from "./control.css.utilities.property";
-import { properties } from "@microsoft/fast-tooling/dist/css-data";
+import { properties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { renderSelection } from "./control.css.utilities";
 
 /**

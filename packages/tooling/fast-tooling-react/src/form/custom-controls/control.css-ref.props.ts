@@ -2,8 +2,8 @@ import {
     CSSPropertyRef,
     CSSPropertySyntax,
     CSSSyntaxRef,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
-import { XOR } from "@microsoft/fast-tooling/dist/data-utilities/type.utilities";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import { XOR } from "@microsoft/fast-tooling/dist/esm/data-utilities/type.utilities";
 
 export interface CSSRefProps {
     /**

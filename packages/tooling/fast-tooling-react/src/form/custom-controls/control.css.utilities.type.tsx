@@ -1,5 +1,10 @@
-import { Type } from "@microsoft/fast-tooling/dist/css-data.types";
-import { renderColorPicker, renderDefault } from "./control.css.utilities";
+import { Type } from "@microsoft/fast-tooling/dist/esm/css-data.types";
+import {
+    renderColorPicker,
+    renderDefault,
+    renderInteger,
+    renderNumber,
+} from "./control.css.utilities";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
 import React from "react";
 
@@ -15,13 +20,16 @@ export function renderTypeControl(config: RenderRefControlConfig): React.ReactNo
     switch (config.ref.ref as Type) {
         case "<angle>":
         case "<color>":
+            return renderColorPicker(config);
         case "<custom-ident>":
         case "<dimension>":
         case "<flex>":
         case "<ident>":
         case "<integer>":
+            return renderInteger(config);
         case "<length>":
         case "<number>":
+            return renderNumber(config);
         case "<percentage>":
         case "<ratio>":
         case "<resolution>":
