@@ -8,7 +8,7 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { neutralLayerL1, neutralLayerL3 } from "@microsoft/fast-components-styles-msft";
-import h from "./pragma";
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
