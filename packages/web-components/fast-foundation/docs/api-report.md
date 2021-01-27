@@ -381,7 +381,7 @@ export class ContainerImpl implements Container {
     }
 
 // @alpha
-export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, 'name'>;
+export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;

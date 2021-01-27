@@ -110,13 +110,15 @@ export class DesignSystem {
                     }
                 }
 
-                if (elementTagsByType.has(type)) {
-                    type = class extends type {};
-                }
+                const willDefine = !!elementName;
 
-                if (elementName) {
-                    elementTypesByTag.set(elementName, type);
-                    elementTagsByType.set(type, elementName);
+                if (willDefine) {
+                    if (elementTagsByType.has(type)) {
+                        type = class extends type {};
+                    }
+
+                    elementTypesByTag.set(elementName!, type);
+                    elementTagsByType.set(type, elementName!);
                 }
 
                 elementDefinitionEntries.push(
@@ -125,7 +127,7 @@ export class DesignSystem {
                         elementName || name,
                         type,
                         callback,
-                        !!elementName
+                        willDefine
                     )
                 );
             },
