@@ -57,7 +57,7 @@ sites/website/i18n/
 
 # Docusaurus package readme's
 docs/en/packages/*/README.md
-
+**/.md
 # TypeDoc generated subsites
 docs/en/packages/*/api/
 
