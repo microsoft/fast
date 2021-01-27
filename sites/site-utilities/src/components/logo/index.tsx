@@ -3,8 +3,8 @@
 import React from "react";
 import { Background, Heading, HeadingSize } from "@microsoft/fast-components-react-msft";
 import { FASTBadge } from "@microsoft/fast-components";
-import { LogoProps } from "./logo.props";
 import h from "../../web-components/pragma";
+import { LogoProps } from "./logo.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
