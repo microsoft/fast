@@ -345,9 +345,7 @@ export const ContainerConfiguration: Readonly<{
     }>;
 }>;
 
-// Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
+// @alpha (undocumented)
 export class ContainerImpl implements Container {
     constructor(owner: any, config: ContainerConfiguration);
     // (undocumented)
@@ -711,7 +709,7 @@ export interface DesignSystemRegistrationContext {
 }
 
 // @alpha (undocumented)
-export const DesignSystemRegistrationContext: import("../di/di").InterfaceSymbol<DesignSystemRegistrationContext>;
+export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{

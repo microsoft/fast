@@ -3,7 +3,7 @@ import {
     FASTElementDefinition,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import { Container, DI, Registration } from "../di/di";
+import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
 
 /**
  * Defines an element within the context of a design system.
@@ -47,7 +47,7 @@ export interface DesignSystemRegistrationContext {
 /**
  * @alpha
  */
-export const DesignSystemRegistrationContext = DI.createInterface<
+export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext> = DI.createInterface<
     DesignSystemRegistrationContext
 >();
 

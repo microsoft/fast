@@ -1124,6 +1124,7 @@ const factories = new Map<Key, Factory>();
 
 /**
  * @internal
+ * @alpha
  */
 export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
