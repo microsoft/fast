@@ -1,6 +1,9 @@
 import { ControlConfig } from "../templates";
+import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
 
-export type CSSControlProps = ControlConfig;
+export interface CSSControlProps extends ControlConfig {
+    css: CSSPropertiesDictionary;
+}
 
 export interface CSSControlState {
     /**

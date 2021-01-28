@@ -7,11 +7,7 @@ import { CSSControlProps, CSSControlState } from "./control.css.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { properties } from "@microsoft/fast-tooling/dist/css-data";
-import {
-    CSSProperty,
-    CSSPropertiesDictionary,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { CSSProperty } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
 import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 
@@ -45,7 +41,7 @@ class CSSControl extends React.Component<
     }
 
     private renderCSSProperties(): React.ReactNode {
-        return Object.entries((properties as unknown) as CSSPropertiesDictionary).map(
+        return Object.entries(this.props.css).map(
             ([cssPropertyName, cssProperty]: [string, CSSProperty]): React.ReactNode => {
                 return this.renderCSSProperty(cssProperty, cssPropertyName);
             }
