@@ -93,7 +93,7 @@ export class MenuItem extends FASTElement {
      *
      * @internal
      */
-    public subMenuRegion: AnchoredRegion;
+    public submenuRegion: AnchoredRegion;
 
     /**
      * Track current direction to pass to the anchored region

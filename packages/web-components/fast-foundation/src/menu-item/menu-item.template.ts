@@ -36,7 +36,8 @@ export const MenuItemTemplate = html<MenuItem>`
                     class="submenu-region"
                     dir="${x => x.currentDirection}"
                     @loaded="${x => x.submenuLoaded()}"
-                    ${ref("subMenuRegion")}
+                    ${ref("submenuRegion")}
+                    part="submenu-region"
                 >
                     <slot name="submenu"></slot>
                 </fast-anchored-region>
