@@ -1,5 +1,5 @@
-import { ControlConfig } from "../templates";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { ControlConfig } from "../templates";
 
 export interface CSSControlProps extends ControlConfig {
     css: CSSPropertiesDictionary;
