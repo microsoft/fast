@@ -20,7 +20,6 @@ import {
 export const MenuItemStyles = css`
     ${display("grid")} :host {
         contain: layout;
-        position: relative;
         overflow: visible;
         font-family: var(--body-font);
         outline: none;
