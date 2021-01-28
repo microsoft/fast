@@ -1,7 +1,7 @@
 import {
     mapCSSProperties,
     mapCSSSyntaxes,
-} from "../.tmp/data-utilities/mapping.mdn-data";
+} from "../dist/cjs/data-utilities/mapping.mdn-data";
 import { css as mdnCSS } from "mdn-data";
 import fs from "fs";
 import path from "path";
