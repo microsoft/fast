@@ -32,7 +32,7 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
             color: var(--accent-foreground-rest);
         }
 
-        .devToolsTabPanel_region {
+        .tab-panel_region {
             height: calc(50vh - 94px);
             overflow: auto;
             width: 100%;
@@ -52,13 +52,13 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
             height: calc(100% - 72px);
         }
 
-        .devToolsTabPanel_region::-webkit-scrollbar {
+        .tab-panel_region::-webkit-scrollbar {
             background: ${neutralLayerL1};
             width: 8px;
             height: 8px;
         }
 
-        .devToolsTabPanel_region::-webkit-scrollbar-thumb {
+        .tab-panel_region::-webkit-scrollbar-thumb {
             background: ${neutralLayerL3},
             border-radius: 8px;
         }
@@ -82,17 +82,17 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
                     ref={config.codeRenderCallback}
                 ></fast-tab-panel>
                 <fast-tab-panel slot="tabpanel">
-                    <div className={"devToolsTabPanel_region"}>
+                    <div className={"tab-panel_region"}>
                         <config.guidanceTabPanelContent />
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel slot="tabpanel">
-                    <div className={"devToolsTabPanel_region"}>
+                    <div className={"tab-panel_region"}>
                         <pre>{config.definitionTabPanelContent}</pre>
                     </div>
                 </fast-tab-panel>
                 <fast-tab-panel>
-                    <div className={"devToolsTabPanel_region"}>
+                    <div className={"tab-panel_region"}>
                         <pre>{config.schemaTabPanelContent}</pre>
                     </div>
                 </fast-tab-panel>
