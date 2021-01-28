@@ -1,18 +1,20 @@
 {
+    "extends": "../../../tsconfig.json",
     "include": [
         "src/**/*"
     ],
     "compilerOptions": {
         "declaration": true,
+        "declarationDir": "dist/dts",
         "esModuleInterop": true,
         "experimentalDecorators": true,
-        "baseUrl": ".",
-        "outDir": "./.tmp",
+        "outDir": "dist/cjs",
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "ES5"
     },
     "exclude": [
+        "app",
         "node_modules",
         "src/message-system",
         "**/*.spec.ts",
