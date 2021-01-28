@@ -9,7 +9,8 @@ import { FormAssociatedColorPicker } from "./color-picker.form-associated";
  *
  * @public
  */
-export class ColorPicker extends FormAssociatedColorPicker {
+export class ColorPicker extends FormAssociatedColorPicker 
+{
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -18,10 +19,11 @@ export class ColorPicker extends FormAssociatedColorPicker {
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+    private readOnlyChanged(): void 
+    {
+        if (this.proxy instanceof HTMLElement) 
+        {
             this.proxy.readOnly = this.readOnly;
-            this.validate();
         }
     }
 
@@ -33,10 +35,11 @@ export class ColorPicker extends FormAssociatedColorPicker {
      */
     @attr({ mode: "boolean" })
     public autofocus: boolean;
-    private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+    private autofocusChanged(): void 
+    {
+        if (this.proxy instanceof HTMLElement) 
+        {
             this.proxy.autofocus = this.autofocus;
-            this.validate();
         }
     }
 
@@ -49,17 +52,31 @@ export class ColorPicker extends FormAssociatedColorPicker {
      */
     @attr
     public placeholder: string;
-    private placeholderChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+    private placeholderChanged(): void 
+    {
+        if (this.proxy instanceof HTMLElement) 
+        {
             this.proxy.placeholder = this.placeholder;
         }
     }
 
     /**
-     * @internal
+     * Flag indicating that the color UI is visible.
      */
     @observable
-    public defaultSlottedNodes: Node[];
+    public isOpen: boolean;
+
+    /**
+     * Flag indicating that the color UI is activily listening for mouse move and up events.
+     */
+    @observable
+    public isMouseActive:boolean = false;
+
+    /**
+     * Object containing all of the properties displayed in the UI.
+     */
+    @observable
+    public uiValues: ColorPickerUI = new ColorPickerUI(new ColorRGBA64(1,0,0), new ColorHSV(0,1,1));
 
     /**
      * A reference to the internal input element
@@ -68,33 +85,30 @@ export class ColorPicker extends FormAssociatedColorPicker {
     public control: HTMLInputElement;
 
     /**
-     * A reference to the internal input element
-     * @internal
+     * A reference to the HTMLElement that is the current target of mouse move events.
      */
-    @observable
-    public isOpen: boolean;
+    private currentMouseTarget:HTMLElement = null;
 
-    public currentRGBColor: ColorRGBA64 = new ColorRGBA64(1,0,0);
-    
-    public currentHSVColor: ColorHSV = new ColorHSV(0,1,1);
+    /**
+     * A string indicating which of the three graphical elements is the current mouse target. ['sv','h','a']
+     */
+    private currentMouseParam:string;
 
-    @observable
-    public uiValues: ColorPickerUI = new ColorPickerUI(this.currentRGBColor, this.currentHSVColor);
+    /**
+     * The ColorRGBA64 representation of the current color value.
+     */
+    private currentRGBColor: ColorRGBA64;
 
-    private updateUIValues(updateValue:boolean)
-    {
-        let newVal = new ColorPickerUI(this.currentRGBColor, this.currentHSVColor);
-        this.uiValues = newVal;
-        if(updateValue)
-        {
-            this.value = this.currentRGBColor.a != 1 ? this.currentRGBColor.toStringWebRGBA() : this.currentRGBColor.toStringHexRGB();
-        }
-    }
+    /**
+     * The ColorHSV representation of the current color value.
+     */
+    private currentHSVColor: ColorHSV;
 
     /**
      * @internal
      */
-    public connectedCallback(): void {
+    public connectedCallback(): void 
+    {
         super.connectedCallback();
         this.isOpen = false;
         if(!isNullOrWhiteSpace(this.value))
@@ -109,9 +123,9 @@ export class ColorPicker extends FormAssociatedColorPicker {
         this.updateUIValues(false);
 
         this.proxy.setAttribute("type", "colorpicker");
-        this.validate();
 
-        if (this.autofocus) {
+        if (this.autofocus) 
+        {
             DOM.queueUpdate(() => {
                 this.focus();
             });
@@ -119,62 +133,78 @@ export class ColorPicker extends FormAssociatedColorPicker {
     }
 
     /**
-     * Handles the focus event
+     * Handles the focus event. When the template has focus the color UI will be visable.
      * @internal
      */
-    public handleFocus(): void {
+    public handleFocus(): void 
+    {
         this.isOpen = true;
     }
 
     /**
-     * Handles the focus event
+     * Handles the blur event. Hides the color UI when the template loses focus.
      * @internal
      */
-    public handleBlur(): void {
+    public handleBlur(): void 
+    {
         this.isOpen = false;
     }
 
     /**
-     * Handles the internal control's `input` event
+     * Handles the internal control's `input` event. This event is fired whenever a user types directly into the primary text field.
      * @internal
      */
-    public handleTextInput(): void {
+    public handleTextInput(): void 
+    {
         this.value = this.control.value;
         if(this.isValideCSSColor(this.value))
         {
             this.currentRGBColor = parseColor(this.value);
             this.currentHSVColor = rgbToHSV(this.currentRGBColor);
             this.updateUIValues(false);
+            this.$emit("change");
         }
     }
 
-    private isValideRGB(val: number): boolean
+    /**
+     * Handles the mouse down event on the Sat/Val square and Hue and Alpha sliders. Sets the current targeted element and begins listening for mouse move events.
+     * @param param ['sv','h','a'] - string specifying which color property is being modified with the mouse.
+     * @param e - A reference to the mouse event.
+     */
+    public handleMouseDown(param:string, e:MouseEvent)
     {
-        return val >= 0 && val <= 255;
+        this.currentMouseTarget = (<HTMLElement>e.composedPath()[0]);
+        this.currentMouseParam = param;
+        this.updateFromMouseEvent(e.pageX, e.pageY);
+        this.isMouseActive = true;
     }
 
-    private isValideAlpha(val: number): boolean
+    /**
+     * Handles the mouse move event within the color UI. Is only called once the isMouseActive is set to true.
+     * @param e - Reference to the Mouse Event
+     */
+    public handleMouseMove(e:MouseEvent)
     {
-        return val >= 0 && val <= 100;
+        this.updateFromMouseEvent(e.pageX, e.pageY);
     }
 
-    private isValideSatVal(val: number): boolean
+    /**
+     * Handles the mouse up event within the color UI. Disables listening for mouse move events.
+     * @param e - Reference to the Mouse Event
+     */
+    public handleMouseUp(e:MouseEvent)
     {
-        return val >= 0 && val <= 100;
+        this.updateFromMouseEvent(e.pageX, e.pageY);
+        this.currentMouseTarget = null;
+        this.currentMouseParam = null;
+        this.isMouseActive = false;
     }
 
-    private isValideHue(val: number): boolean
-    {
-        return val >= 0 && val <= 359;
-    }
-
-    private updateHSV(hue:number, sat:number, val:number)
-    {
-        this.currentHSVColor = new ColorHSV(hue, sat, val);
-        this.currentRGBColor = hsvToRGB(this.currentHSVColor,this.currentRGBColor.a);
-        this.updateUIValues(true);
-    }
-
+    /**
+     * Handles changes to any of the color property text inputs typed by the user.
+     * @param param ['r','g','b','a','h','s','v'] - String specifying which color value is being modified.
+     * @param e - Reference to the event.
+     */
     public handleTextValueInput(param:string,e:Event)
     {
         const inputVal = (<HTMLInputElement>e.composedPath()[0]).value;
@@ -211,31 +241,88 @@ export class ColorPicker extends FormAssociatedColorPicker {
         }
     }
 
-    @observable
-    public isMouseActive:boolean = false;
-    private currentMouseTarget:HTMLElement = null;
-    private currentMouseParam:string;
-
-    public handleMouseMove(e:MouseEvent)
+    /**
+     * Change event handler for inner control.
+     * @remarks
+     * "Change" events are not `composable` so they will not
+     * permeate the shadow DOM boundary. This fn effectively proxies
+     * the change event, emitting a `change` event whenever the internal
+     * control emits a `change` event
+     * @internal
+     */
+    public handleChange(): void 
     {
-        this.updateFromMouseEvent(e.pageX, e.pageY);
+        this.$emit("change");
     }
 
-    public handleMouseUp(e:MouseEvent)
+    /**
+     * Determines if a number value is within the valid range for an R, G, or B color channel.
+     * @param val - Number to be evaluated.
+     */
+    private isValideRGB(val: number): boolean
     {
-        this.currentMouseTarget = null;
-        this.currentMouseParam = null;
-        this.isMouseActive = false;
+        return val >= 0 && val <= 255;
     }
 
-    public handleMouseDown(param:string, e:MouseEvent)
+    /**
+     * Determines if a number value is within the valid range for the alpha channel.
+     * @param val - Number to be evaluated.
+     */
+    private isValideAlpha(val: number): boolean
     {
-        this.currentMouseTarget = (<HTMLElement>e.composedPath()[0]);
-        this.currentMouseParam = param;
-        this.updateFromMouseEvent(e.pageX, e.pageY);
-        this.isMouseActive = true;
+        return val >= 0 && val <= 100;
     }
 
+    /**
+     * Determines if a number value is within the valid range for the saturation or value color channels.
+     * @param val - Number to be evaluated.
+     */
+    private isValideSatVal(val: number): boolean
+    {
+        return val >= 0 && val <= 100;
+    }
+
+    /**
+     * Determines if a number value is within the valid range for the hue color channel.
+     * @param val - Number to be evaluated.
+     */
+    private isValideHue(val: number): boolean
+    {
+        return val >= 0 && val <= 359;
+    }
+
+    /**
+     * Checks if input is a valid CSS color.
+     * After placing an invalid css color value into a color style property the value will be an empty string when read back.
+     * @internal
+     */
+    private isValideCSSColor(testValue:string): boolean 
+    {
+        /* Set the background color of the proxy element since it is not visible in the UI. */
+        this.proxy.style.backgroundColor = "";
+        this.proxy.style.backgroundColor = testValue;
+        /* Read the value back out. If it was not a valid color value then it will be an empty string when read back out. */
+        return this.proxy.style.backgroundColor!="" ? true : false;
+    }
+
+    /**
+     * Update the current color values to a new HSV color.
+     * @param hue The new Hue value.
+     * @param sat The new saturation value.
+     * @param val The new Value value.
+     */
+    private updateHSV(hue:number, sat:number, val:number)
+    {
+        this.currentHSVColor = new ColorHSV(hue, sat, val);
+        this.currentRGBColor = hsvToRGB(this.currentHSVColor,this.currentRGBColor.a);
+        this.updateUIValues(true);
+    }
+
+    /**
+     * Update the current color values based on the mouse position over one of the three UI elements (hue, saturation/value, or alpha).
+     * @param pageX The pageX position of the mouse.
+     * @param pageY The pageY position of the mouse.
+     */
     private updateFromMouseEvent(pageX:number, pageY:number)
     {
         let pos:DOMRect = this.currentMouseTarget.getBoundingClientRect();
@@ -269,30 +356,25 @@ export class ColorPicker extends FormAssociatedColorPicker {
     }
 
     /**
-     * Checks if input is a valid CSS color.
-     * After placing an invalid css color value into a color style property the value will be an empty string when read back.
-     * @internal
+     * Update the UI values with the current color. This updates the position of the indicators over the Sat/Val, Hue and Alpha elements 
+     * and the values in all of the text fields at once. 
+     * @param updateValue - Flag to trigger updating of the main text field value and emitting the change event.
      */
-    private isValideCSSColor(testValue:string): boolean {
-        this.proxy.style.backgroundColor = "";
-        this.proxy.style.backgroundColor = testValue;
-        return this.proxy.style.backgroundColor!="" ? true : false;
-    }
-    
-    /**
-     * Change event handler for inner control.
-     * @remarks
-     * "Change" events are not `composable` so they will not
-     * permeate the shadow DOM boundary. This fn effectively proxies
-     * the change event, emitting a `change` event whenever the internal
-     * control emits a `change` event
-     * @internal
-     */
-    public handleChange(): void {
-        this.$emit("change");
+    private updateUIValues(updateValue:boolean)
+    {
+        let newVal = new ColorPickerUI(this.currentRGBColor, this.currentHSVColor);
+        this.uiValues = newVal;
+        if(updateValue)
+        {
+            this.value = this.currentRGBColor.a != 1 ? this.currentRGBColor.toStringWebRGBA() : this.currentRGBColor.toStringHexRGB();
+            this.$emit("change");
+        }
     }
 }
 
+/**
+ * Simple class for storing all of the UI observable values.
+ */
 class ColorPickerUI
 {
     public RGBColor: ColorRGBA64;

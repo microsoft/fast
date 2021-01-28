@@ -44,7 +44,7 @@ declare namespace JSX {
         > & {
             name?: string;
             events?: {
-                input?: (e: React.ChangeEvent<HTMLElement>) => void;
+                change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
         };
     }

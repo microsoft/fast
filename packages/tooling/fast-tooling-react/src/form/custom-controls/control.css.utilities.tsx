@@ -128,7 +128,7 @@ export function renderColorPicker(config: RenderRefControlConfig): React.ReactNo
         <color-picker
             key={config.key}
             events={{
-                input: getColorPickerChangeHandler(config.handleChange),
+                change: getColorPickerChangeHandler(config.handleChange),
             }}
         ></color-picker>
     );

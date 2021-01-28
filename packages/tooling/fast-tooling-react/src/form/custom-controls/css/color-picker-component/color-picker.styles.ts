@@ -5,10 +5,11 @@ export const ColorPickerStyles = css`
     .root .colorUI
     {
         display:none;
-        padding: 5px;
+        padding: 2px;
         flex-direction:row;
         background-color: var(--neutral-layer-floating);
         border: calc(var(--outline-width) * 1px) solid var(--neutral-outline-rest);
+        border-radius: calc(var(--corner-radius) * 1px);
     }
 
     .root.open .colorUI
@@ -16,17 +17,18 @@ export const ColorPickerStyles = css`
         display:flex;
         position:absolute;
         z-index:1;
-        margin-left:-30px;
+        margin-left:-32px;
     }
 
     .pickerContainer
     {
-        margin-right:5px;
+        margin: 4px 6px 4px 4px;
     }
 
     .inputContainer
     {
         width: 65px;
+        margin: 0 4px 4px 0;
     }
 
     .satLightPicker
@@ -34,7 +36,7 @@ export const ColorPickerStyles = css`
         position:relative;
         width: 200px;
         height: 200px;
-        margin-bottom: 5px;
+        margin-bottom: 17px;
         background: -moz-linear-gradient(bottom, #000 0%, rgba(0, 0, 0, 0) 100%), -moz-linear-gradient(left, #FFF 0%, rgba(255, 255, 255, 0) 100%);
         background: -webkit-linear-gradient(bottom, #000 0%, rgba(0, 0, 0, 0) 100%), -webkit-linear-gradient(left, #FFF 0%, rgba(255, 255, 255, 0) 100%);
         background: -ms-linear-gradient(bottom, #000 0%, rgba(0, 0, 0, 0) 100%), -ms-linear-gradient(left, #FFF 0%, rgba(255, 255, 255, 0) 100%);
@@ -60,7 +62,8 @@ export const ColorPickerStyles = css`
         position:relative;
         width:200px;
         height:30px;
-        margin-bottom: 5px;
+        margin-bottom: 17px;
+        border: 1px solid #fff;
         background: -moz-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%, #00F 66.66%, #F0F 83.33%, #F00 100%);
         background: -webkit-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%, #00F 66.66%, #F0F 83.33%, #F00 100%);
         background: -ms-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%, #00F 66.66%, #F0F 83.33%, #F00 100%);
@@ -77,6 +80,7 @@ export const ColorPickerStyles = css`
         width:1px;
         height:32px;
         pointer-events:none;
+        margin-left:1px;
     }
 
     .alphaPicker
@@ -84,6 +88,7 @@ export const ColorPickerStyles = css`
         position: relative;
         width:200px;
         height:30px;
+        border: 1px solid #fff;
         background-image: linear-gradient(45deg, #999 25%, transparent 25%), linear-gradient(-45deg, #999 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #999 75%), linear-gradient(-45deg, transparent 75%, #999 75%);
         background-size: 20px 20px;
         background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
