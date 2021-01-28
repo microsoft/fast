@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
-import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import {
     AjvMapper,
     CustomMessage,
@@ -16,11 +16,11 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
-import { MonacoAdapter } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
+import { MonacoAdapter } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import {
     MonacoAdapterAction,
     MonacoAdapterActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service-action";
+} from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service-action";
 import { schemaDictionary } from "../../schemas";
 import { EditorState } from "./editor.props";
 

@@ -15,7 +15,7 @@ import {
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
