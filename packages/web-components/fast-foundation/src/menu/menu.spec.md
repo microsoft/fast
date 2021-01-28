@@ -91,6 +91,7 @@ The third item in the menu has a glyph, which would inset the text from the othe
 - before
 - content
 - after
+- submenu
 
 *Events:*
 - click (event) - event for when the item has been clicked or invoked via keyboard

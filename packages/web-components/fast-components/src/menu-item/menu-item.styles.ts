@@ -94,11 +94,7 @@ export const MenuItemStyles = css`
     .end {
         display: flex;
     }
-
-    .submenu-region {
-        padding: 0 calc(var(--design-unit) * 1px);
-    }
-
+    
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary - 
