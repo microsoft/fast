@@ -1193,17 +1193,21 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
     // @internal
     currentDirection: Direction;
     disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     expanded: boolean;
     // @internal (undocumented)
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
     role: MenuItemRole;
-    // @internal
-    submenuElements: HTMLElement[];
+    // @internal (undocumented)
+    submenu: Element | undefined;
     // @internal (undocumented)
     submenuLoaded: () => void;
     // @internal

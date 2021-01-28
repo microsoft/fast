@@ -130,17 +130,17 @@ export class Menu extends FASTElement {
      * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
-        // if (!this.contains(e.relatedTarget as Element)) {
-        //     this.collapseExpandedItem();
-        //     // find our first focusable element
-        //     const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
-        //     // set the current focus index's tabindex to -1
-        //     this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
-        //     // set the first focusable element tabindex to 0
-        //     this.menuItems[focusIndex].setAttribute("tabindex", "0");
-        //     // set the focus index
-        //     this.focusIndex = focusIndex;
-        // }
+        if (!this.contains(e.relatedTarget as Element)) {
+            this.collapseExpandedItem();
+            // find our first focusable element
+            const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
+            // set the current focus index's tabindex to -1
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            // set the first focusable element tabindex to 0
+            this.menuItems[focusIndex].setAttribute("tabindex", "0");
+            // set the focus index
+            this.focusIndex = focusIndex;
+        }
     };
 
     private handleItemFocus = (e: FocusEvent) => {

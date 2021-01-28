@@ -42,11 +42,14 @@ export class MenuItem extends FASTElement {
     @attr({ attribute: "expanded" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
-        if (this.$fastController.isConnected && this.submenuElements.length > 0) {
+        const submenu: Element | undefined = this.getSubmenu();
+        if (this.$fastController.isConnected) {
+            const submenu: Element | undefined = this.getSubmenu();
+            if (submenu === undefined) {
+                return;
+            }
             if (this.expanded === false) {
-                this.submenuElements.forEach(element => {
-                    (element as Menu).collapseExpandedItem();
-                });
+                (submenu as Menu).collapseExpandedItem();
             } else {
                 this.currentDirection = getDirection(this);
             }
@@ -80,19 +83,17 @@ export class MenuItem extends FASTElement {
     }
 
     /**
+     * @internal
+     */
+    @observable
+    public submenu: Element | undefined;
+
+    /**
      * reference to the anchored region
      *
      * @internal
      */
     public subMenuRegion: AnchoredRegion;
-
-    /**
-     * reference to the slotted submenu nodes
-     *
-     * @internal
-     */
-    @observable
-    public submenuElements: HTMLElement[];
 
     /**
      * Track current direction to pass to the anchored region
@@ -102,7 +103,25 @@ export class MenuItem extends FASTElement {
     @observable
     public currentDirection: Direction = Direction.ltr;
 
-    private focusSubmenuOnLoad = false;
+    private focusSubmenuOnLoad: boolean = false;
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+        DOM.queueUpdate(() => {
+            this.submenu = this.getSubmenu();
+        });
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.submenu = undefined;
+    }
 
     /**
      * @internal
@@ -154,20 +173,26 @@ export class MenuItem extends FASTElement {
         if (this.focusSubmenuOnLoad) {
             this.focusSubmenuOnLoad = false;
         }
-        if (this.submenuElements.length > 0) {
-            this.submenuElements[0].focus();
+        if (this.submenu !== undefined) {
+            (this.submenu as HTMLElement).focus();
             this.setAttribute("tabindex", "-1");
         }
     };
 
+    /**
+     * @internal
+     */
     private expandAndFocus = (): void => {
-        if (this.submenuElements.length === 0) {
+        if (this.submenu === undefined) {
             return;
         }
         this.focusSubmenuOnLoad = true;
         this.expanded = true;
     };
 
+    /**
+     * @internal
+     */
     private invoke = (): void => {
         if (this.disabled) {
             return;
@@ -180,7 +205,9 @@ export class MenuItem extends FASTElement {
                 break;
 
             case MenuItemRole.menuitem:
-                if (this.submenuElements.length > 0) {
+                // update submenu
+                this.submenu = this.getSubmenu();
+                if (this.submenu !== undefined) {
                     this.expandAndFocus();
                 } else {
                     this.$emit("change");
@@ -194,6 +221,25 @@ export class MenuItem extends FASTElement {
                 break;
         }
     };
+
+    /**
+     * Gets the submenu element if any
+     *
+     * @internal
+     */
+    private getSubmenu = (): undefined | Element => {
+        const domChildren: Element[] = Array.from(this.children);
+        return domChildren.find((element: Element) => {
+            return element.getAttribute("role") === "menu";
+        });
+    };
+
+    /**
+     * get an array of valid DOM children
+     */
+    private domChildren(): Element[] {
+        return Array.from(this.children);
+    }
 }
 
 /**
