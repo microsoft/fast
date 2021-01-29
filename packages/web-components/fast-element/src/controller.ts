@@ -158,7 +158,7 @@ export class Controller extends PropertyChangeNotifier {
 
         if (styles instanceof HTMLStyleElement) {
             target.prepend(styles);
-        } else {
+        } else if (!styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
             styles.addStylesTo(target);
 
@@ -179,7 +179,7 @@ export class Controller extends PropertyChangeNotifier {
 
         if (styles instanceof HTMLStyleElement) {
             target.removeChild(styles);
-        } else {
+        } else if (styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
 
             styles.removeStylesFrom(target);
