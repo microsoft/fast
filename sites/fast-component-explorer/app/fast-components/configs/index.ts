@@ -43,6 +43,9 @@ export { fastListboxConfig };
 import fastMenuConfig from "./fast-menu";
 export { fastMenuConfig };
 
+import fastNumberFieldConfig from "./fast-number-field";
+export { fastNumberFieldConfig };
+
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
 
