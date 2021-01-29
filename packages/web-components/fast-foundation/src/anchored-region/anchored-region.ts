@@ -688,6 +688,9 @@ export class AnchoredRegion extends FASTElement {
      *  Handle resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
+        if (!this.initialLayoutComplete) {
+            return;
+        }
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
