@@ -18,19 +18,13 @@ const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };
 
 export const Logo: React.FC<LogoProps> = ({
-    backgroundColor,
     className,
     logo,
     title,
     version,
 }: React.PropsWithChildren<LogoProps>): React.ReactElement => {
     return (
-        <Background
-            className={className}
-            value={backgroundColor}
-            drawBackground={true}
-            style={backgroundStyle}
-        >
+        <Background className={className} drawBackground={true} style={backgroundStyle}>
             <Heading size={HeadingSize._6}>
                 <img src={logo} style={imageStyle} />
                 <span style={spanStyle}>{title}</span>

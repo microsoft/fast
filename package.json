@@ -106,7 +106,10 @@
     ]
   },
   "resolutions": {
-    "@types/react": "*"
+    "@types/react": "*",
+    "immer": "^8.0.1",
+    "jimp": "^0.16.1",
+    "jpeg-js": "^0.4.3"
   },
   "devDependencies": {
     "@octokit/rest": "^18.0.6",
