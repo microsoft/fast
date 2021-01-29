@@ -222,8 +222,9 @@ export class Controller extends PropertyChangeNotifier {
     /**
      * Removes behaviors from this element.
      * @param behaviors - The behaviors to remove.
+     * @param force - Forces unbinding of behaviors.
      */
-    public removeBehaviors(behaviors: ReadonlyArray<Behavior>): void {
+    public removeBehaviors(behaviors: ReadonlyArray<Behavior>, force = false): void {
         const targetBehaviors = this.behaviors;
 
         if (targetBehaviors === null) {
@@ -239,7 +240,7 @@ export class Controller extends PropertyChangeNotifier {
             if (targetBehaviors.has(behavior)) {
                 const count = targetBehaviors.get(behavior)! - 1;
 
-                count === 0
+                count === 0 || force
                     ? targetBehaviors.delete(behavior) && behaviorsToUnbind.push(behavior)
                     : targetBehaviors.set(behavior, count);
             }
@@ -270,7 +271,6 @@ export class Controller extends PropertyChangeNotifier {
             this.view.bind(element, defaultExecutionContext);
         }
 
-        (this as Mutable<Controller>).isConnected = true;
         const behaviors = this.behaviors;
         if (behaviors !== null) {
             const keys = behaviors.keys();
@@ -281,6 +281,8 @@ export class Controller extends PropertyChangeNotifier {
                 current = keys.next();
             }
         }
+
+        (this as Mutable<Controller>).isConnected = true;
     }
 
     /**
