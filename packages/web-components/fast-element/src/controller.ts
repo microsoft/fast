@@ -272,13 +272,10 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const behaviors = this.behaviors;
-        if (behaviors !== null) {
-            const keys = behaviors.keys();
-            let current = keys.next();
 
-            while (!current.done) {
-                current.value.bind(element, defaultExecutionContext);
-                current = keys.next();
+        if (behaviors !== null) {
+            for (let [behavior] of behaviors) {
+                behavior.bind(element, defaultExecutionContext);
             }
         }
 
@@ -305,12 +302,8 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
-            const keys = behaviors.keys();
-            let current = keys.next();
-
-            while (!current.done) {
-                current.value.unbind(element);
-                current = keys.next();
+            for (let [behavior] of behaviors) {
+                behavior.unbind(element);
             }
         }
     }
