@@ -1577,6 +1577,9 @@ export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<Tr
 // @beta
 export type VerticalPosition = "top" | "bottom" | "unset";
 
+// @public
+export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
+
 
 // (No @packageDocumentation comment for this package)
 

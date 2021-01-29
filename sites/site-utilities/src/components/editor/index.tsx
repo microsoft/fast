@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { html_beautify } from "vscode-html-languageservice/lib/esm/beautify/beautify-html";
-import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
+import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/esm/data-utilities/monaco";
 import {
     AjvMapper,
     CustomMessage,
@@ -16,11 +16,11 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
-import { MonacoAdapter } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
+import { MonacoAdapter } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import {
     MonacoAdapterAction,
     MonacoAdapterActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service-action";
+} from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service-action";
 import { schemaDictionary } from "../../schemas";
 import { EditorState } from "./editor.props";
 
@@ -113,22 +113,30 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
         });
     };
 
-    public createMonacoEditor = (monacoRef: any): void => {
-        if (this.editorContainerRef.current && !this.editor) {
-            this.editor = monacoRef.editor.create(this.editorContainerRef.current, {
-                value: "",
-                language: "html",
-                formatOnPaste: true,
-                lineNumbers: "off",
-                theme: "vs-dark",
-                wordWrap: "on",
-                wordWrapColumn: 80,
-                wordWrapMinified: true,
-                wrappingIndent: "same",
-                minimap: {
-                    showSlider: "mouseover",
-                },
-            });
+    public createMonacoEditor = (
+        monacoRef: any,
+        alternateContainerRef?: HTMLElement
+    ): void => {
+        if ((alternateContainerRef || this.editorContainerRef.current) && !this.editor) {
+            this.editor = monacoRef.editor.create(
+                alternateContainerRef
+                    ? alternateContainerRef
+                    : this.editorContainerRef.current,
+                {
+                    value: "",
+                    language: "html",
+                    formatOnPaste: true,
+                    lineNumbers: "off",
+                    theme: "vs-dark",
+                    wordWrap: "on",
+                    wordWrapColumn: 80,
+                    wordWrapMinified: true,
+                    wrappingIndent: "same",
+                    minimap: {
+                        showSlider: "mouseover",
+                    },
+                }
+            );
 
             this.updateEditorContent(this.state.dataDictionary);
         }
@@ -144,8 +152,10 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
         }
     }
 
-    public setViewerToFullSize(): void {
-        const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
+    public setViewerToFullSize(alternateContainerRef?: HTMLElement): void {
+        const viewerContainer: HTMLElement | null = alternateContainerRef
+            ? alternateContainerRef
+            : this.viewerContainerRef.current;
 
         if (viewerContainer) {
             /* eslint-disable-next-line react/no-find-dom-node */
