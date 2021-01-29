@@ -8,7 +8,6 @@ import { DOM } from "./dom";
 import { css } from "./styles";
 import { Observable } from "./observation/observable";
 import { Behavior } from "./directives/behavior";
-import { ChildrenBehavior } from "./directives/children";
 
 describe("The Controller", () => {
     const templateA = html`a`;
