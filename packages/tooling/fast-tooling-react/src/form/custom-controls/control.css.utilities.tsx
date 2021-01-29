@@ -12,9 +12,7 @@ import {
     FASTSelect,
     FASTTextField,
 } from "@microsoft/fast-components";
-import {
-    FASTColorPicker
-} from "./css/color-picker-component/"
+import { FASTColorPicker } from "./css/color-picker/";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
@@ -110,7 +108,7 @@ function getColorPickerChangeHandler(
     parentChangeHandler: (value: string) => void
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
     let timer: null | NodeJS.Timer = null;
-    
+
     const handleCheck = (newValue: string) => {
         clearTimeout(timer);
         timer = setTimeout(() => {
