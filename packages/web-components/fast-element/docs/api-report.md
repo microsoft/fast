@@ -246,13 +246,15 @@ export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => E
 // @public
 export abstract class ElementStyles {
     // @internal (undocumented)
-    abstract addStylesTo(target: StyleTarget): void;
+    addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
     static readonly create: ElementStyleFactory;
     static find(key: string): ElementStyles | null;
     // @internal (undocumented)
-    abstract removeStylesFrom(target: StyleTarget): void;
+    isAttachedTo(target: StyleTarget): boolean;
+    // @internal (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior[]): this;
