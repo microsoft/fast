@@ -191,7 +191,7 @@ export class Controller extends PropertyChangeNotifier {
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
-    removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
+    removeBehaviors(behaviors: ReadonlyArray<Behavior>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
