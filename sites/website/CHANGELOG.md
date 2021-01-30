@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/microsoft/fast-dna/compare/fast-site@0.4.0...fast-site@0.5.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* addressed missing images in the high contrast document ([#4216](https://github.com/microsoft/fast-dna/issues/4216)) ([24f83d2](https://github.com/microsoft/fast-dna/commit/24f83d243576c484fcf5a543b2483553857539d8))
+
+
+### Features
+
+* add fast-number-field component for data applications ([#4204](https://github.com/microsoft/fast-dna/issues/4204)) ([7196215](https://github.com/microsoft/fast-dna/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add select spec ([#4194](https://github.com/microsoft/fast-dna/issues/4194)) ([7af127a](https://github.com/microsoft/fast-dna/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* adding high contrast document to the FAST documentation website ([#4178](https://github.com/microsoft/fast-dna/issues/4178)) ([d6b5d8e](https://github.com/microsoft/fast-dna/commit/d6b5d8e062478bd5910e9f8afa232c89b1c5a722))
+
+
+
+
+
 # [0.4.0](https://github.com/microsoft/fast-dna/compare/fast-site@0.3.0...fast-site@0.4.0) (2020-11-19)
 
 

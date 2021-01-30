@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.14.0...@microsoft/fast-tooling@0.15.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* include numerals, parenthesis and capital letters from MDN data conversion combinator RegEx ([#4195](https://github.com/Microsoft/fast/issues/4195)) ([e9308a2](https://github.com/Microsoft/fast/commit/e9308a22cb78de095d8e704065c87ce34e0a037f))
+* resolve nesting issues in converted MDN data ([#4203](https://github.com/Microsoft/fast/issues/4203)) ([2aecf3c](https://github.com/Microsoft/fast/commit/2aecf3c4507dc1b03d6e9f26bdb3b2d195a56b9f))
+* update nesting to be interpreted by manual parsing instead of RegEx ([#4253](https://github.com/Microsoft/fast/issues/4253)) ([f32e34a](https://github.com/Microsoft/fast/commit/f32e34aa699dd550cd79361b99437dbf9c810044))
+
+
+### Features
+
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
 # [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.13.0...@microsoft/fast-tooling@0.14.0) (2020-12-16)
 
 
