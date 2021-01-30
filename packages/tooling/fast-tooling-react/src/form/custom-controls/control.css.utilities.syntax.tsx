@@ -2,8 +2,8 @@ import React from "react";
 import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
 import { syntaxes } from "@microsoft/fast-tooling/dist/css-data";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
-import { CSSRef } from "@microsoft/fast-tooling-react/src/form/custom-controls/control.css-ref";
-import { renderColorPicker } from "@microsoft/fast-tooling-react/src/form/custom-controls/control.css.utilities";
+import { CSSRef } from "./control.css-ref";
+import { renderColorPicker } from "./control.css.utilities";
 
 /**
  * The syntax control, for a list of syntaxes available refer to:

@@ -12,7 +12,7 @@ import {
     FASTSelect,
     FASTTextField,
 } from "@microsoft/fast-components";
-import { FASTColorPicker } from "./css/color-picker/";
+import { FASTColorPicker } from "./css/color-picker";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */

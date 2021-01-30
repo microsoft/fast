@@ -119,7 +119,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
         this.currentHSVColor = rgbToHSV(this.currentRGBColor);
         this.updateUIValues(false);
 
-        this.proxy.setAttribute("type", "colorpicker");
+        this.proxy.setAttribute("type", "color");
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -199,7 +199,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
         if (isNullOrWhiteSpace(inputVal) || Number.isNaN(inputVal)) {
             return;
         }
-        let newVal: number = parseInt(inputVal);
+        let newVal: number = parseInt(inputVal, 10);
 
         if (["r", "g", "b", "a"].includes(param)) {
             if (
@@ -223,7 +223,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
                 this.updateHSV(
                     param === "h" ? newVal : this.currentHSVColor.h,
                     param === "s" ? newVal / 100 : this.currentHSVColor.s,
-                    param == "v" ? newVal / 100 : this.currentHSVColor.v
+                    param === "v" ? newVal / 100 : this.currentHSVColor.v
                 );
             }
         }
@@ -317,19 +317,23 @@ export class ColorPicker extends FormAssociatedColorPicker {
         if (y < 0) y = 0;
 
         if (this.currentMouseParam === "h") {
-            let hue: number = (359 * x) / width;
-            this.updateHSV(hue, this.currentHSVColor.s, this.currentHSVColor.v);
+            this.updateHSV(
+                (359 * x) / width, 
+                this.currentHSVColor.s, 
+                this.currentHSVColor.v
+            );
         } else if (this.currentMouseParam === "sv") {
-            let value: number = Math.round(100 - (y * 100) / height) / 100;
-            let saturation: number = Math.round((x * 100) / width) / 100;
-            this.updateHSV(this.currentHSVColor.h, saturation, value);
+            this.updateHSV(
+                this.currentHSVColor.h, 
+                Math.round((x * 100) / width) / 100, 
+                Math.round(100 - (y * 100) / height) / 100
+            );
         } else if (this.currentMouseParam === "a") {
-            let alpha: number = Math.round((x * 100) / width) / 100;
             this.currentRGBColor = new ColorRGBA64(
                 this.currentRGBColor.r,
                 this.currentRGBColor.g,
                 this.currentRGBColor.b,
-                alpha
+                Math.round((x * 100) / width) / 100
             );
             this.updateUIValues(true);
         }
