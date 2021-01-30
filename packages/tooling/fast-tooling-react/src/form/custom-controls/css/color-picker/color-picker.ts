@@ -318,14 +318,14 @@ export class ColorPicker extends FormAssociatedColorPicker {
 
         if (this.currentMouseParam === "h") {
             this.updateHSV(
-                (359 * x) / width, 
-                this.currentHSVColor.s, 
+                (359 * x) / width,
+                this.currentHSVColor.s,
                 this.currentHSVColor.v
             );
         } else if (this.currentMouseParam === "sv") {
             this.updateHSV(
-                this.currentHSVColor.h, 
-                Math.round((x * 100) / width) / 100, 
+                this.currentHSVColor.h,
+                Math.round((x * 100) / width) / 100,
                 Math.round(100 - (y * 100) / height) / 100
             );
         } else if (this.currentMouseParam === "a") {
