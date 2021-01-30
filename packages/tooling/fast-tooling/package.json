@@ -88,7 +88,7 @@
         "lodash-es": "^4.0.0",
         "mdn-data": "^2.0.11",
         "mini-css-extract-plugin": "^0.9.0",
-        "monaco-editor": "^0.20.0",
+        "monaco-editor": "^0.21.2",
         "monaco-editor-webpack-plugin": "^1.9.0",
         "prettier": "2.0.2",
         "style-loader": "^1.2.1",
