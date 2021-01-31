@@ -96,7 +96,9 @@ export type FallbackRouteDefinition<TSettings = any> =
     | Pick<RedirectRouteDefinition<TSettings>, "redirect">
     | CommandFallbackRouteDefinition<TSettings>;
 
-export type DefinitionCallback = () => Promise<FallbackRouteDefinition>;
+export type DefinitionCallback = () =>
+    | Promise<FallbackRouteDefinition>
+    | FallbackRouteDefinition;
 
 export type RenderableRouteDefinition<TSettings = any> =
     | ElementRouteDefinition<TSettings>

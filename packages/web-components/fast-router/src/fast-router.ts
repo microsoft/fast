@@ -10,14 +10,7 @@ import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 import { RouterConfiguration } from "./configuration";
 import { RouteLocationResult } from "./routes";
-import {
-    isNavigationPhaseContributor,
-    NavigationContributor,
-    NavigationPhase,
-    NavigationPhaseHook,
-    NavigationPhaseName,
-    NavigationPhaseResult,
-} from "./navigation-process";
+import { NavigationContributor, NavigationPhase } from "./navigation-process";
 
 @customElement("fast-router")
 export class FASTRouter extends FASTElement implements Router {
@@ -70,62 +63,74 @@ export class FASTRouter extends FASTElement implements Router {
         return this.config!.findRoute(path);
     }
 
-    findContributors<T extends NavigationPhaseName>(
-        phase: T
-    ): Record<T, NavigationPhaseHook>[] {
-        return this.config!.findContributors(phase).concat(
-            Array.from(this.contributors).filter(x =>
-                isNavigationPhaseContributor(x, phase)
-            ) as any
-        ) as any;
+    private childCommandContributor: NavigationContributor | null = null;
+    private childRoute: RecognizedRoute | null = null;
+
+    async navigate(phase: NavigationPhase) {
+        await this.tunnel(phase);
     }
 
-    private childCommandContributor!: NavigationContributor;
-    private childRoute!: RecognizedRoute;
+    async leave(phase: NavigationPhase) {
+        await this.tunnel(phase);
+
+        if (!phase.canceled) {
+            const contributors = this.contributors;
+            this.contributors = new Set();
+            phase.onCancel(() => (this.contributors = contributors));
+        }
+    }
 
     async construct(phase: NavigationPhase) {
-        const rest = phase.route.params.child || "";
-        const result = await this.findRoute(rest);
+        if (this.enlistment!.isChild) {
+            const rest = phase.route.params.child || "";
+            const result = await this.findRoute(rest);
 
-        if (result === null) {
-            phase.cancel();
-            return;
+            if (result === null) {
+                phase.cancel();
+                return;
+            }
+
+            this.childRoute = result.route;
+            this.childCommandContributor = await result.command.createContributor(
+                this,
+                result.route
+            );
         }
 
-        this.childRoute = result.route;
-        this.childCommandContributor = await result.command.createContributor(
-            this,
-            result.route
-        );
-
-        await this.tryRunChildPhase(phase);
+        await this.tunnel(phase);
     }
 
-    async tryEnter(phase: NavigationPhase) {
-        await this.tryRunChildPhase(phase);
+    async enter(phase: NavigationPhase) {
+        await this.tunnel(phase);
     }
 
     async commit(phase: NavigationPhase) {
-        await this.tryRunChildPhase(phase);
+        await this.tunnel(phase);
     }
 
-    async rollback(phase: NavigationPhase) {
-        await this.tryRunChildPhase(phase);
-    }
-
-    private async tryRunChildPhase(phase: NavigationPhase) {
+    private async tunnel(phase: NavigationPhase) {
         const route = this.childRoute;
         const contributor = this.childCommandContributor;
 
-        if (!route || !contributor) {
+        if (route && contributor) {
+            await phase.evaluateContributor(contributor, route);
+        }
+
+        if (phase.canceled) {
             return;
         }
 
-        if (isNavigationPhaseContributor(contributor, phase.name)) {
-            const currentRoute = phase.route; //HACK
-            (phase as any).route = route;
-            await contributor[phase.name](phase);
-            (phase as any).route = currentRoute;
+        const potentialContributors = [
+            ...this.config!.findContributors(phase.name),
+            ...Array.from(this.contributors),
+        ];
+
+        for (const potential of potentialContributors) {
+            await phase.evaluateContributor(potential);
+
+            if (phase.canceled) {
+                return;
+            }
         }
     }
 }

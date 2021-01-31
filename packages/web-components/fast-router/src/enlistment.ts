@@ -8,6 +8,8 @@ export class MainEnlistment {
     private linkHandler: LinkHandler | null = null;
     private config!: RouterConfiguration;
 
+    public readonly isChild = false;
+
     constructor(private router: Router) {
         console.log("main enlistment", this);
     }
@@ -51,6 +53,8 @@ export class MainEnlistment {
 }
 
 export class ChildEnlistment {
+    public readonly isChild = true;
+
     constructor(
         private readonly parentRouter: Router,
         private readonly childRouter: Router

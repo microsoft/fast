@@ -1,25 +1,12 @@
-import { emptyArray } from "@microsoft/fast-element";
 import { NavigationMessage } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 
-export type NavigationPhaseName =
-    | "tryNavigate"
-    | "tryLeave"
-    | "construct"
-    | "tryEnter"
-    | "commit"
-    | "rollback";
-
-export enum NavigationPhaseState {
-    inProgress,
-    canceled,
-    completed,
-}
+export type NavigationPhaseName = "navigate" | "leave" | "construct" | "enter" | "commit";
 
 export type NavigationPhaseHook<TSettings = any> = (
     phase: NavigationPhase<TSettings>
-) => Promise<void>;
+) => Promise<any> | any;
 
 export type NavigationContributor<TSettings = any> = Partial<
     Record<NavigationPhaseName, NavigationPhaseHook<TSettings>>
@@ -32,47 +19,61 @@ export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     return phase in object;
 }
 
-type NavigationPhaseFollowupAction = () => Promise<void>;
+type NavigationPhaseFollowupAction = () => Promise<any> | any;
 
 export interface NavigationPhase<TSettings = any> {
     readonly name: NavigationPhaseName;
-    readonly state: NavigationPhaseState;
     readonly route: RecognizedRoute<TSettings>;
+    readonly canceled: boolean;
+
     cancel(callback?: NavigationPhaseFollowupAction): void;
+    onCancel(callback: NavigationPhaseFollowupAction): void;
+    onCommit(callback: NavigationPhaseFollowupAction): void;
+
+    evaluateContributor(
+        contributor: any,
+        route?: RecognizedRoute<TSettings>
+    ): Promise<void>;
 }
 
-export interface NavigationPhaseResult {
-    readonly state: NavigationPhaseState;
-    readonly actions: NavigationPhaseFollowupAction[];
-}
+class NavigationPhaseImpl<TSettings = any> implements NavigationPhase<TSettings> {
+    private routes: RecognizedRoute<TSettings>[] = [];
+    canceled = false;
 
-class NavigationPhaseImpl<TSettings>
-    implements NavigationPhaseResult, NavigationPhase<TSettings> {
-    private cancelActions: NavigationPhaseFollowupAction[] = [];
-    state: NavigationPhaseState = NavigationPhaseState.inProgress;
-
-    get actions() {
-        switch (this.state) {
-            case NavigationPhaseState.completed:
-                return this.completeActions;
-            case NavigationPhaseState.canceled:
-                return this.cancelActions;
-            default:
-                return emptyArray as any;
-        }
+    get route(): RecognizedRoute<TSettings> {
+        return this.routes[this.routes.length - 1]!;
     }
 
     constructor(
         public readonly name: NavigationPhaseName,
-        public readonly route: RecognizedRoute<TSettings>,
-        private readonly completeActions: NavigationPhaseFollowupAction[]
-    ) {}
+        route: RecognizedRoute<TSettings>,
+        private readonly commitActions: NavigationPhaseFollowupAction[],
+        private readonly cancelActions: NavigationPhaseFollowupAction[]
+    ) {
+        this.routes.push(route);
+    }
 
     cancel(callback?: NavigationPhaseFollowupAction): void {
-        this.state = NavigationPhaseState.canceled;
+        this.canceled = true;
 
         if (callback) {
             this.cancelActions.push(callback);
+        }
+    }
+
+    onCommit(callback: NavigationPhaseFollowupAction): void {
+        this.commitActions.push(callback);
+    }
+
+    onCancel(callback: NavigationPhaseFollowupAction): void {
+        this.cancelActions.push(callback);
+    }
+
+    async evaluateContributor(contributor: any, route = this.route): Promise<void> {
+        if (isNavigationPhaseContributor(contributor, this.name)) {
+            this.routes.push(route);
+            await contributor[this.name](this);
+            this.routes.pop();
         }
     }
 }
@@ -82,19 +83,19 @@ export interface NavigationProcess {
 }
 
 export class DefaultNavigationProcess<TSettings> {
-    private currentPhase: NavigationPhaseName = "tryNavigate";
     private phases: NavigationPhaseName[] = [
-        "tryNavigate",
-        "tryLeave",
+        "navigate",
+        "leave",
         "construct",
-        "tryEnter",
+        "enter",
         "commit",
     ];
 
     constructor(private router: Router, private message: NavigationMessage) {}
 
     public async run() {
-        const routeResult = await this.router.findRoute(this.message.path);
+        const router = this.router;
+        const routeResult = await router.findRoute(this.message.path);
 
         if (routeResult == null) {
             return;
@@ -102,64 +103,36 @@ export class DefaultNavigationProcess<TSettings> {
 
         const route = routeResult.route;
         const command = routeResult.command;
+        const commitActions: NavigationPhaseFollowupAction[] = [];
+        const cancelActions: NavigationPhaseFollowupAction[] = [];
+        const commandContributor = await command.createContributor(router, route);
+        let finalActions = commitActions;
 
-        if (this.router.command === command) {
-            // TODO: check parameters to see if they are different
-            return;
-        }
+        for (const phaseName of this.phases) {
+            console.log(`Phase: ${phaseName}`);
 
-        let allowActions: NavigationPhaseFollowupAction[] = [];
-        const commandContributor = await command.createContributor(this.router, route);
-
-        for (const phase of this.phases) {
-            this.currentPhase = phase;
-
-            const phaseResult = (await this.runCurrentPhase(
+            const phase = new NavigationPhaseImpl<TSettings>(
+                phaseName,
                 route,
-                commandContributor,
-                allowActions
-            )) as NavigationPhaseResult;
+                commitActions,
+                cancelActions
+            );
 
-            if (phaseResult.state === NavigationPhaseState.canceled) {
-                for (let action of phaseResult.actions) {
-                    await action();
-                }
+            await phase.evaluateContributor(commandContributor);
 
-                return;
-            } else {
-                allowActions = phaseResult.actions;
+            if (phase.canceled) {
+                finalActions = cancelActions;
+                break;
             }
-        }
-    }
 
-    private async runCurrentPhase(
-        route: RecognizedRoute<TSettings>,
-        commandContributor: NavigationContributor,
-        allowActions: NavigationPhaseFollowupAction[]
-    ): Promise<NavigationPhaseResult> {
-        const phase = this.currentPhase;
-        const state = new NavigationPhaseImpl<TSettings>(phase, route, allowActions);
+            await phase.evaluateContributor(router);
 
-        if (isNavigationPhaseContributor(commandContributor, phase)) {
-            await commandContributor[phase](state);
-
-            if (state.state === NavigationPhaseState.canceled) {
-                return state;
+            if (phase.canceled) {
+                finalActions = cancelActions;
+                break;
             }
         }
 
-        const applicable = this.router.findContributors(phase);
-        console.log(`Phase: ${phase}`, applicable);
-
-        for (const contributor of applicable) {
-            await contributor[phase](state);
-
-            if (state.state === NavigationPhaseState.canceled) {
-                return state;
-            }
-        }
-
-        state.state = NavigationPhaseState.completed;
-        return state;
+        await Promise.all(finalActions.map(x => x()));
     }
 }

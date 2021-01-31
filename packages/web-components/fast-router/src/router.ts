@@ -1,11 +1,7 @@
 import { FASTElement, HTMLView } from "@microsoft/fast-element";
 import { NavigationCommand } from "./commands";
 import { RecognizedRoute } from "./recognizer";
-import {
-    NavigationContributor,
-    NavigationPhaseHook,
-    NavigationPhaseName,
-} from "./navigation-process";
+import { NavigationContributor } from "./navigation-process";
 import { RouteLocationResult } from "./routes";
 import { composedParent } from "@microsoft/fast-foundation";
 
@@ -20,9 +16,6 @@ export interface Router extends FASTElement, HTMLElement {
     findRoute<TSettings = any>(
         path: string
     ): Promise<RouteLocationResult<TSettings> | null>;
-    findContributors<T extends NavigationPhaseName>(
-        phase: T
-    ): Record<T, NavigationPhaseHook>[];
 }
 
 export const Router = Object.freeze({

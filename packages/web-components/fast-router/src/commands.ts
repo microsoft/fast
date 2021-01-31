@@ -33,7 +33,7 @@ export interface NavigationCommand {
 export class Ignore implements NavigationCommand {
     public async createContributor() {
         return {
-            async tryNavigate(phase: NavigationPhase) {
+            async navigate(phase: NavigationPhase) {
                 phase.cancel();
             },
         };
@@ -46,7 +46,7 @@ export class Redirect implements NavigationCommand {
     public async createContributor() {
         const path = this.redirect;
         return {
-            async tryNavigate(phase: NavigationPhase) {
+            async navigate(phase: NavigationPhase) {
                 phase.cancel(async () => Navigation.replace(path));
             },
         };
@@ -62,7 +62,11 @@ type ViewFactory = { create(): HTMLView };
 function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
-    const view = new HTMLView(fragment, []);
+
+    const view = new HTMLView(fragment, [
+        navigationParticipant().createBehavior(element),
+    ]);
+
     return {
         create() {
             return view;
@@ -82,14 +86,27 @@ class RenderContributor {
         this.currentView = router.view;
     }
 
-    async construct() {
-        const viewModel = this.route.params;
-        this.newView = await this.command.createView();
+    async construct(phase: NavigationPhase) {
+        const newParams = this.route.params;
 
-        if (this.newView) {
-            this.newView.appendTo(this.router);
-            this.newView.bind(viewModel, defaultExecutionContext);
+        if (this.router.command === this.command) {
+            const previousParams = this.router.route?.params;
+
+            if (JSON.stringify(previousParams) === JSON.stringify(newParams)) {
+                phase.cancel();
+                return;
+            }
         }
+
+        this.newView = await this.command.createView();
+        this.newView.appendTo(this.router);
+        this.newView.bind(newParams, defaultExecutionContext);
+
+        phase.onCancel(async () => {
+            if (this.newView) {
+                this.newView.dispose();
+            }
+        });
     }
 
     async commit() {
@@ -114,12 +131,6 @@ class RenderContributor {
         (router as Mutable<Router>).view = this.newView!;
         (router as Mutable<Router>).route = this.route;
         (router as Mutable<Router>).command = command;
-    }
-
-    async rollback() {
-        if (this.newView) {
-            this.newView.dispose();
-        }
     }
 }
 
