@@ -16,6 +16,8 @@ import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
 
+export const childRouteParameter = "fast-child-route";
+
 export type LayoutDefinition = {
     template?: ViewTemplate;
     styles?: ComposableStyles | ComposableStyles[];
@@ -46,7 +48,9 @@ export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
 };
 
 export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
-    LayoutAndTransitionRouteDefinition;
+    LayoutAndTransitionRouteDefinition & {
+        childRouters?: boolean;
+    };
 
 export type FASTElementConstructor = new () => FASTElement;
 
@@ -107,7 +111,13 @@ export type RenderableRouteDefinition<TSettings = any> =
 export type MappableRouteDefinition<TSettings = any> =
     | RenderableRouteDefinition<TSettings>
     | RedirectRouteDefinition<TSettings>
-    | CommandRouteDefinition<TSettings>;
+    | CommandRouteDefinition<TSettings>
+    | ParentRouteDefinition<TSettings>;
+
+export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
+    LayoutAndTransitionRouteDefinition & {
+        children: MappableRouteDefinition<TSettings>[];
+    };
 
 export type RouteLocationResult<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
@@ -146,6 +156,25 @@ export class RouteCollection<TSettings = any> {
 
     public map(...routes: MappableRouteDefinition<TSettings>[]) {
         for (const route of routes) {
+            if ("children" in route) {
+                const childRoutes = route.children.map(x => {
+                    const childRoute = {
+                        ...route,
+                        ...x,
+                        path: `${route.path}/${x.path}`,
+                    };
+
+                    if (childRoute.children === route.children) {
+                        delete (childRoute as any).children;
+                    }
+
+                    return childRoute;
+                });
+
+                this.map(...childRoutes);
+                continue;
+            }
+
             let command: NavigationCommand;
 
             if ("command" in route) {
@@ -158,6 +187,16 @@ export class RouteCollection<TSettings = any> {
 
             this.configToCommand.set(route.path, command);
             this.recognizer.add(route, route.settings);
+
+            if ("childRouters" in route && route.childRouters) {
+                const childRouterRoute = {
+                    ...route,
+                    path: route.path + `/*${childRouteParameter}`,
+                };
+
+                this.configToCommand.set(childRouterRoute.path, command);
+                this.recognizer.add(childRouterRoute, childRouterRoute.settings);
+            }
         }
     }
 

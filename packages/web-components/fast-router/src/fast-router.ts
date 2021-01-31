@@ -9,7 +9,7 @@ import { NavigationCommand } from "./commands";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 import { RouterConfiguration } from "./configuration";
-import { RouteLocationResult } from "./routes";
+import { childRouteParameter, RouteLocationResult } from "./routes";
 import { NavigationContributor, NavigationPhase } from "./navigation-process";
 
 @customElement("fast-router")
@@ -82,7 +82,7 @@ export class FASTRouter extends FASTElement implements Router {
 
     async construct(phase: NavigationPhase) {
         if (this.enlistment!.isChild) {
-            const rest = phase.route.params.child || "";
+            const rest = phase.route.params[childRouteParameter] || "";
             const result = await this.findRoute(rest);
 
             if (result === null) {

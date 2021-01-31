@@ -25,6 +25,9 @@ export class ChildEnlistment {
     }
 
 // @public (undocumented)
+export const childRouteParameter = "fast-child-route";
+
+// @public (undocumented)
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand & SupportsSettings<TSettings>;
 
 // @public (undocumented)
@@ -194,10 +197,12 @@ export class MainEnlistment {
     }
 
 // @public (undocumented)
-export type MappableRouteDefinition<TSettings = any> = RenderableRouteDefinition<TSettings> | RedirectRouteDefinition<TSettings> | CommandRouteDefinition<TSettings>;
+export type MappableRouteDefinition<TSettings = any> = RenderableRouteDefinition<TSettings> | RedirectRouteDefinition<TSettings> | CommandRouteDefinition<TSettings> | ParentRouteDefinition<TSettings>;
 
 // @public (undocumented)
-export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition;
+export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition & {
+    childRouters?: boolean;
+};
 
 // @public (undocumented)
 export const Navigation: Readonly<{
@@ -284,6 +289,11 @@ export interface NavigationQueue {
     // (undocumented)
     receive(): Promise<NavigationMessage>;
 }
+
+// @public (undocumented)
+export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition & {
+    children: MappableRouteDefinition<TSettings>[];
+};
 
 // @public (undocumented)
 export type ParticipantOptions = {
@@ -408,7 +418,7 @@ export abstract class RouterConfiguration<TSettings = any> {
     // (undocumented)
     protected cached(ElementType: new () => HTMLElement): () => Promise<HTMLElement>;
     // (undocumented)
-    protected abstract configure(): Promise<void>;
+    protected abstract configure(): Promise<void> | void;
     // (undocumented)
     readonly contributors: NavigationContributor<TSettings>[];
     // (undocumented)

@@ -66,7 +66,7 @@ export abstract class RouterConfiguration<TSettings = any> {
         ) as any;
     }
 
-    protected abstract configure(): Promise<void>;
+    protected abstract configure(): Promise<void> | void;
 
     protected cached(ElementType: new () => HTMLElement) {
         let instance: HTMLElement | null = null;
