@@ -1,5 +1,5 @@
 import { Type } from "@microsoft/fast-tooling/dist/css-data.types";
-import { renderDefault } from "./control.css.utilities";
+import { renderColorPicker, renderDefault } from "./control.css.utilities";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
 import React from "react";
 
