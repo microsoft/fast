@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.4.3...@microsoft/fast-creator@0.5.0) (2021-01-30)
+
+
+### Features
+
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
 ## [0.4.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.4.2...@microsoft/fast-creator@0.4.3) (2020-12-17)
 
 **Note:** Version bump only for package @microsoft/fast-creator

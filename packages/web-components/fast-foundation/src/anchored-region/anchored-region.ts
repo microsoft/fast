@@ -341,6 +341,9 @@ export class AnchoredRegion extends FASTElement {
     private regionWidth: string;
     private regionHeight: string;
 
+    private containingBlockWidth: number;
+    private containingBlockHeight: number;
+
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
@@ -497,11 +500,11 @@ export class AnchoredRegion extends FASTElement {
     private setInitialState(): void {
         this.initialLayoutComplete = false;
         this.regionTop = "0";
-        this.regionRight = "unset";
-        this.regionBottom = "unset";
+        this.regionRight = "0";
+        this.regionBottom = "0";
         this.regionLeft = "0";
-        this.regionWidth = "fit-content";
-        this.regionHeight = "fit-content";
+        this.regionWidth = "100%";
+        this.regionHeight = "100%";
 
         this.xTransformOrigin = "left";
         this.yTransformOrigin = "top";
@@ -620,18 +623,21 @@ export class AnchoredRegion extends FASTElement {
 
         this.pendingPositioningUpdate = false;
 
-        let regionRect: DOMRect | ClientRect | null = null;
+        const regionRect: DOMRect | ClientRect | null = this.applyIntersectionEntries(
+            entries
+        );
+
+        if (regionRect === null) {
+            return;
+        }
 
         if (!this.initialLayoutComplete) {
-            regionRect = this.applyIntersectionEntries(entries);
-            if (regionRect !== null) {
-                this.updateRegionOffset(regionRect);
-            }
-            this.requestLayoutUpdate();
-        } else {
-            this.applyIntersectionEntries(entries);
-            this.requestLayoutUpdate();
+            this.containingBlockHeight = regionRect.height;
+            this.containingBlockWidth = regionRect.width;
         }
+
+        this.updateRegionOffset(regionRect);
+        this.requestLayoutUpdate();
     };
 
     /**
@@ -682,6 +688,9 @@ export class AnchoredRegion extends FASTElement {
      *  Handle resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
+        if (!this.initialLayoutComplete) {
+            return;
+        }
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
                 this.handleRegionResize(entry);
@@ -895,6 +904,7 @@ export class AnchoredRegion extends FASTElement {
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
         this.style.opacity = this.initialLayoutComplete ? "1" : "0";
+        this.style.pointerEvents = this.initialLayoutComplete ? "unset" : "none";
 
         if (this.horizontalPositioningMode === "uncontrolled") {
             this.style.width = "unset";
@@ -924,11 +934,6 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentWidth =
-            this.offsetParent !== null
-                ? this.offsetParent.clientWidth
-                : document.body.clientWidth;
-
         let right: number | null = null;
         let left: number | null = null;
         let xTransformOrigin: string = "left";
@@ -936,12 +941,15 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case "left":
                 xTransformOrigin = "right";
-                right = layoutParentWidth - this.baseHorizontalOffset;
+                right = this.containingBlockWidth - this.baseHorizontalOffset;
                 break;
 
             case "insetLeft":
                 xTransformOrigin = "right";
-                right = layoutParentWidth - this.anchorWidth - this.baseHorizontalOffset;
+                right =
+                    this.containingBlockWidth -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
             case "insetRight":
@@ -970,7 +978,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionWidth = "fit-content";
+                this.regionWidth = "unset";
                 break;
         }
     };
@@ -982,11 +990,6 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentHeight =
-            this.offsetParent !== null
-                ? this.offsetParent.clientHeight
-                : document.body.clientHeight;
-
         let top: number | null = null;
         let bottom: number | null = null;
         let yTransformOrigin: string = "top";
@@ -994,12 +997,15 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case "top":
                 yTransformOrigin = "bottom";
-                bottom = layoutParentHeight - this.baseVerticalOffset;
+                bottom = this.containingBlockHeight - this.baseVerticalOffset;
                 break;
 
             case "insetTop":
                 yTransformOrigin = "bottom";
-                bottom = layoutParentHeight - this.baseVerticalOffset - this.anchorHeight;
+                bottom =
+                    this.containingBlockHeight -
+                    this.baseVerticalOffset -
+                    this.anchorHeight;
                 break;
 
             case "insetBottom":
@@ -1028,7 +1034,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionHeight = "fit-content";
+                this.regionHeight = "unset";
                 break;
         }
     };

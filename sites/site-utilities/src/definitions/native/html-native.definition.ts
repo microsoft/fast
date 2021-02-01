@@ -5,8 +5,8 @@ import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
     WebComponentSlot,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import { voidElements } from "@microsoft/fast-tooling/dist/esm/data-utilities/html-element";
 /**
  * These native html tag definitions are dependent on a devDependency on "vscode-web-custom-data"
  * specifically the browsers.html-data.json file which defines native html elements and their attributes

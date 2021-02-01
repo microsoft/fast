@@ -1,5 +1,5 @@
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 
 export interface Scenario {
     /**
