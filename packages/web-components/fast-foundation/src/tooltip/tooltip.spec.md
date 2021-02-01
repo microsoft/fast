@@ -89,4 +89,4 @@ Two important things to note:
 
 ### Dependencies
 
-This component depends on Fast Element and should be positioned using [anchored region](./anchored-region/anchored-region.spec.md).
+This component depends on Fast Element and should be positioned using [anchored region](../anchored-region/anchored-region.spec.md).
