@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/site-utilities",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "Utilities for the Creator and Component Explorer sites",
   "sideEffects": false,
   "private": true,
@@ -55,11 +55,11 @@
     "vscode-web-custom-data": "^0.3.1"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.14.1",
+    "@microsoft/fast-components": "^1.15.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
-    "@microsoft/fast-foundation": "^1.11.1",
-    "@microsoft/fast-tooling": "^0.14.0",
-    "@microsoft/fast-tooling-react": "^2.5.2",
+    "@microsoft/fast-foundation": "^1.12.0",
+    "@microsoft/fast-tooling": "^0.15.0",
+    "@microsoft/fast-tooling-react": "^2.5.3",
     "monaco-editor": "^0.21.2",
     "vscode-html-languageservice": "^3.1.3"
   }
