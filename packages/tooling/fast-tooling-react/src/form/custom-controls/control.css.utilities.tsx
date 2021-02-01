@@ -12,7 +12,7 @@ import {
     FASTSelect,
     FASTTextField,
 } from "@microsoft/fast-components";
-
+import { FASTColorPicker } from "./css/color-picker";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
@@ -20,6 +20,7 @@ FASTCheckbox;
 FASTOption;
 FASTSelect;
 FASTTextField;
+FASTColorPicker;
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
     return renderTextInput(config);
@@ -100,5 +101,33 @@ export function renderSelection(config: RenderSelectControlConfig): React.ReactN
                 );
             })}
         </fast-select>
+    );
+}
+
+function getColorPickerChangeHandler(
+    parentChangeHandler: (value: string) => void
+): (e: React.ChangeEvent<HTMLInputElement>) => void {
+    let timer: null | NodeJS.Timer = null;
+
+    const handleCheck = (newValue: string) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            parentChangeHandler(newValue);
+        }, 500);
+    };
+
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleCheck(e.currentTarget.value);
+    };
+}
+
+export function renderColorPicker(config: RenderRefControlConfig): React.ReactNode {
+    return (
+        <color-picker
+            key={config.key}
+            events={{
+                change: getColorPickerChangeHandler(config.handleChange),
+            }}
+        ></color-picker>
     );
 }
