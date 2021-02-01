@@ -134,7 +134,7 @@ To enable easy execution of both our production and development builds, let's ad
 ```json
 "scripts": {
   "build": "webpack --mode=production",
-  "dev": "webpack-dev-server"
+  "dev": "webpack serve"
 }
 ```
 
