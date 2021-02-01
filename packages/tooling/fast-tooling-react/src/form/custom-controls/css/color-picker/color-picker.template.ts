@@ -10,9 +10,9 @@ export const ColorPickerTemplate = html<ColorPicker>`
         @focus="${x => x.handleFocus()}"
         @blur="${x => x.handleBlur()}"
         @mousemove="${(x, c) =>
-            x.mouseActive ? x.handleMouseMove(<MouseEvent>c.event) : null}"
+            x.mouseActive ? x.handleMouseMove(c.event as MouseEvent) : null}"
         @mouseup="${(x, c) =>
-            x.mouseActive ? x.handleMouseUp(<MouseEvent>c.event) : null}"
+            x.mouseActive ? x.handleMouseUp(c.event as MouseEvent) : null}"
         style="--selected-color-value: ${x => (x.value ? x.value : "transparent")}"
     >
         <div class="root ${x => (x.open ? "open" : "")}" part="root">
@@ -38,7 +38,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         class="satLightPicker"
                         style="background-color:${x => x.uiValues.HueCSSColor}"
                         @mousedown="${(x, c) =>
-                            x.handleMouseDown("sv", <MouseEvent>c.event)}"
+                            x.handleMouseDown("sv", c.event as MouseEvent)}"
                     >
                         <div
                             class="satLightLocation"
@@ -50,7 +50,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                     <div
                         class="huePicker"
                         @mousedown="${(x, c) =>
-                            x.handleMouseDown("h", <MouseEvent>c.event)}"
+                            x.handleMouseDown("h", c.event as MouseEvent)}"
                     >
                         <div
                             class="hueLocation"
@@ -60,7 +60,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                     <div
                         class="alphaPicker"
                         @mousedown="${(x, c) =>
-                            x.handleMouseDown("a", <MouseEvent>c.event)}"
+                            x.handleMouseDown("a", c.event as MouseEvent)}"
                     >
                         <div
                             class="alphaMask"

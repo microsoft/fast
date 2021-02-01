@@ -10,6 +10,29 @@ import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
 import { FormAssociatedColorPicker } from "./color-picker.form-associated";
 
 /**
+ * Simple class for storing all of the color picker UI observable values.
+ */
+class ColorPickerUI {
+    public RGBColor: ColorRGBA64;
+    public HSVColor: ColorHSV;
+    public HueCSSColor: string;
+    public HuePosition: number;
+    public SatValTopPos: number;
+    public SatValLeftPos: number;
+    public AlphaPos: number;
+
+    constructor(rgbColor: ColorRGBA64, hsvColor: ColorHSV) {
+        this.RGBColor = rgbColor;
+        this.HSVColor = hsvColor;
+        this.HueCSSColor = hsvToRGB(new ColorHSV(this.HSVColor.h, 1, 1)).toStringHexRGB();
+        this.HuePosition = (this.HSVColor.h / 360) * 100;
+        this.SatValLeftPos = this.HSVColor.s * 100;
+        this.SatValTopPos = 100 - this.HSVColor.v * 100;
+        this.AlphaPos = this.RGBColor.a * 100;
+    }
+}
+
+/**
  * A Color Picker Custom HTML Element.
  *
  * @public
@@ -164,7 +187,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * @param e - A reference to the mouse event.
      */
     public handleMouseDown(param: string, e: MouseEvent) {
-        this.currentMouseTarget = <HTMLElement>e.composedPath()[0];
+        this.currentMouseTarget = e.composedPath()[0] as HTMLElement;
         this.currentMouseParam = param;
         this.updateFromMouseEvent(e.pageX, e.pageY);
         this.mouseActive = true;
@@ -195,11 +218,11 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * @param e - Reference to the event.
      */
     public handleTextValueInput(param: string, e: Event) {
-        const inputVal = (<HTMLInputElement>e.composedPath()[0]).value;
+        const inputVal = (e.composedPath()[0] as HTMLInputElement).value;
         if (isNullOrWhiteSpace(inputVal) || Number.isNaN(inputVal)) {
             return;
         }
-        let newVal: number = parseInt(inputVal, 10);
+        const newVal: number = parseInt(inputVal, 10);
 
         if (["r", "g", "b", "a"].includes(param)) {
             if (
@@ -305,11 +328,11 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * @param pageY The pageY position of the mouse.
      */
     private updateFromMouseEvent(pageX: number, pageY: number) {
-        let pos: DOMRect = this.currentMouseTarget.getBoundingClientRect();
-        var x = pageX - pos.left;
-        var y = pageY - pos.top;
-        var width = pos.width;
-        var height = pos.height;
+        const pos: DOMRect = this.currentMouseTarget.getBoundingClientRect();
+        let x = pageX - pos.left;
+        let y = pageY - pos.top;
+        const width = pos.width;
+        const height = pos.height;
 
         if (x > width) x = width;
         if (y > height) y = height;
@@ -353,28 +376,5 @@ export class ColorPicker extends FormAssociatedColorPicker {
                     : this.currentRGBColor.toStringHexRGB();
             this.$emit("change");
         }
-    }
-}
-
-/**
- * Simple class for storing all of the UI observable values.
- */
-class ColorPickerUI {
-    public RGBColor: ColorRGBA64;
-    public HSVColor: ColorHSV;
-    public HueCSSColor: string;
-    public HuePosition: number;
-    public SatValTopPos: number;
-    public SatValLeftPos: number;
-    public AlphaPos: number;
-
-    constructor(rgbColor: ColorRGBA64, hsvColor: ColorHSV) {
-        this.RGBColor = rgbColor;
-        this.HSVColor = hsvColor;
-        this.HueCSSColor = hsvToRGB(new ColorHSV(this.HSVColor.h, 1, 1)).toStringHexRGB();
-        this.HuePosition = (this.HSVColor.h / 360) * 100;
-        this.SatValLeftPos = this.HSVColor.s * 100;
-        this.SatValTopPos = 100 - this.HSVColor.v * 100;
-        this.AlphaPos = this.RGBColor.a * 100;
     }
 }
