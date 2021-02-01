@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "4.7.0",
+  "version": "4.7.1",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
