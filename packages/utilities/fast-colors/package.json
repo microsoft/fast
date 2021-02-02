@@ -38,12 +38,7 @@
     "coverageReporters": [
       "json",
       "text",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../../"
-        }
-      ]
+      ["lcov", { "projectRoot": "../../../" }]
     ],
     "coveragePathIgnorePatterns": [
       "pixel-blob.ts"
@@ -60,7 +55,7 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(j|t)sx?$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -69,15 +64,14 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
-    "@types/jest": "^25.2.1",
-    "babel-core": "^7.0.0-bridge.0",
-    "eslint-config-prettier": "^6.10.1",
-    "jest": "^25.4.0",
+    "@types/jest": "^26.0.20",
+    "eslint-config-prettier": "^7.2.0",
+    "jest": "^26.6.3",
     "prettier": "2.0.2",
-    "ts-jest": "^25.4.0",
+    "ts-jest": "^26.5.0",
     "typescript": "^3.9.0"
   }
 }

@@ -4,4 +4,12 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/typedef": "off",
     },
+    overrides: [
+        {
+            files: ["build"],
+            env: {
+                node: true,
+            },
+        },
+    ],
 };

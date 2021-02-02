@@ -76,7 +76,7 @@
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
-        "@types/lodash-es": "^4.17.0",
+        "@types/lodash-es": "^4.17.4",
         "@types/node": "^9.6.7",
         "ajv": "^6.10.0",
         "clean-webpack-plugin": "^3.0.0",
@@ -85,11 +85,11 @@
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^3.2.0",
         "jest": "^25.4.0",
-        "lodash-es": "^4.0.0",
+        "lodash-es": "4.17.15",
         "mdn-data": "^2.0.11",
         "mini-css-extract-plugin": "^0.9.0",
-        "monaco-editor": "^0.20.0",
-        "monaco-editor-webpack-plugin": "^1.9.0",
+        "monaco-editor": "^0.22.3",
+        "monaco-editor-webpack-plugin": "^3.0.0",
         "prettier": "2.0.2",
         "style-loader": "^1.2.1",
         "ts-jest": "^25.4.0",
@@ -100,9 +100,6 @@
         "webpack-dev-server": "^3.11.0",
         "webpack-merge": "^4.2.2",
         "worker-loader": "^2.0.0"
-    },
-    "peerDependencies": {
-        "lodash-es": "^4.0.0"
     },
     "dependencies": {
         "@microsoft/fast-web-utilities": "^4.7.1",

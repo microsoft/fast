@@ -17,6 +17,7 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/index.js",
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "build:app": "webpack --progress --mode=production",
@@ -73,22 +74,21 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.0",
     "@types/node": "^9.6.7",
     "@types/react": "^16.8.0",
     "@types/react-router": "^4.0.0",
-    "babel-core": "^7.0.0-bridge.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "eslint-config-prettier": "^6.10.1",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.4.0",
-    "lodash-es": "^4.0.0",
+    "lodash-es": "4.17.15",
     "prettier": "2.0.2",
     "react": "^16.8.0",
     "react-dnd-html5-backend": "^9.0.0",
@@ -107,7 +107,6 @@
   },
   "peerDependencies": {
     "@microsoft/fast-jss-manager-react": "^3.0.0 || ^4.0.0",
-    "lodash-es": "^4.0.0",
     "react": "^16.8.0"
   },
   "dependencies": {

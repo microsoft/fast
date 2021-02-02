@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
     root: true,
     parser: "@typescript-eslint/parser",
@@ -14,7 +15,6 @@ module.exports = {
         },
     },
     rules: {
-        "@typescript-eslint/interface-name-prefix": ["error", { prefixWithI: "never" }],
         "max-len": ["error", 140],
         "import/order": "error",
         "sort-imports": [
@@ -52,6 +52,14 @@ module.exports = {
                 selector: "variable",
                 format: null, // disable for variable names because of our foo__expanded convention for JSS
                 // TODO: I think we can come up with a regex that ignores variables with __ in them
+            },
+            {
+                selector: "interface",
+                format: ["PascalCase"],
+                custom: {
+                    regex: "^I[A-Z]",
+                    match: false,
+                },
             },
         ],
         "@typescript-eslint/no-inferrable-types": "off",
