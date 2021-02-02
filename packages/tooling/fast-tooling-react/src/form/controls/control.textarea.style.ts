@@ -10,7 +10,7 @@ export interface TextareaControlClassNameContract {
     textareaControl__default?: string;
 }
 
-const styles: ComponentStyles<TextareaControlClassNameContract, {}> = {
+const styles: ComponentStyles<TextareaControlClassNameContract, unknown> = {
     textareaControl: {
         ...inputStyle,
         width: "100%",

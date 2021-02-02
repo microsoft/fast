@@ -1,9 +1,9 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import { Orientation, RotateHandledProps } from "./";
+import { configure, mount } from "enzyme";
 import { Rotate } from "./rotate.base";
 import { RotateClassNameContract } from "./rotate";
+import { Orientation, RotateHandledProps } from "./";
 
 /*
  * Configure Enzyme

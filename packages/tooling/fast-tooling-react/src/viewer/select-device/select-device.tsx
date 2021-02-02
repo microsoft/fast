@@ -1,13 +1,12 @@
-import React from "react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { SelectDevice as BaseSelectDevice } from "./select-device.base";
 import {
     SelectDeviceHandledProps as BaseSelectDeviceHandledProps,
-    SelectDeviceManagedClasses,
     SelectDeviceProps as BaseSelectDeviceProps,
+    SelectDeviceManagedClasses,
     SelectDeviceUnhandledProps,
 } from "./select-device.props";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import SelectDeviceStyles from "./select-device.style";
 
 /*
@@ -22,7 +21,7 @@ interface SelectDeviceHandledProps
 type SelectDeviceProps = ManagedJSSProps<
     BaseSelectDeviceProps,
     SelectDeviceClassNameContract,
-    {}
+    unknown
 >;
 
 export {

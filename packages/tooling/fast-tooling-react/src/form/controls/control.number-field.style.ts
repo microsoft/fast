@@ -10,7 +10,7 @@ export interface NumberFieldControlClassNameContract {
     numberFieldControl__default?: string;
 }
 
-const styles: ComponentStyles<NumberFieldControlClassNameContract, {}> = {
+const styles: ComponentStyles<NumberFieldControlClassNameContract, unknown> = {
     numberFieldControl: {
         ...inputStyle,
         width: "100%",

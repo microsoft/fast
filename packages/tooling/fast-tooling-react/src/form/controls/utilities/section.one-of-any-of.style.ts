@@ -8,7 +8,7 @@ import {
 } from "../../../style";
 import { SectionOneOfAnyOfClassNameContract } from "./section.one-of-any-of.props";
 
-const styles: ComponentStyles<SectionOneOfAnyOfClassNameContract, {}> = {
+const styles: ComponentStyles<SectionOneOfAnyOfClassNameContract, unknown> = {
     sectionOneOfAnyOf: {
         ...controlStyle,
         ...controlWrapperStyle,

@@ -19,7 +19,7 @@ export interface AlignControlClassNameContract {
     alignControl_input__bottom?: string;
 }
 
-const styles: ComponentStyles<AlignControlClassNameContract, {}> = {
+const styles: ComponentStyles<AlignControlClassNameContract, unknown> = {
     alignControl: {
         height: "20px",
     },

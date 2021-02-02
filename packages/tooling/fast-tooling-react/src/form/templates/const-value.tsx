@@ -1,7 +1,7 @@
 import React from "react";
 import { ConstValueProps } from "./const-value.props";
 
-class ConstValue extends React.Component<ConstValueProps, {}> {
+class ConstValue extends React.Component<ConstValueProps, unknown> {
     public render(): React.ReactNode {
         return (
             <button

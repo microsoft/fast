@@ -5,7 +5,7 @@ export interface BareControlTemplateClassNameContract {
     bareControlTemplate__disabled?: string;
 }
 
-const style: ComponentStyles<BareControlTemplateClassNameContract, {}> = {
+const style: ComponentStyles<BareControlTemplateClassNameContract, unknown> = {
     bareControlTemplate: {},
     bareControlTemplate__disabled: {},
 };

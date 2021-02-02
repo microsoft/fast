@@ -1,6 +1,5 @@
-import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount } from "enzyme";
 import { SingleLineControlPlugin } from "./plugin.control.single-line";
 
 /*

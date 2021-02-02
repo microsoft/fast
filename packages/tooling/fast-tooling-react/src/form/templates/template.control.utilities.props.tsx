@@ -1,13 +1,13 @@
-import { ControlType, StandardControlPlugin } from "../index";
-import { AddExampleData, Controls } from "../controls/utilities/types";
-import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
 import {
     DataDictionary,
     MessageSystem,
     TreeNavigation,
     ValidationError,
 } from "@microsoft/fast-tooling";
+import { ControlType, StandardControlPlugin } from "../index";
+import { AddExampleData, Controls } from "../controls/utilities/types";
 import { FormStrings } from "../form.props";
+import { BadgeType, ControlOnChangeConfig, OnChangeConfig } from "./types";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,

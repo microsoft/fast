@@ -6,7 +6,7 @@ export interface FileUploadControlClassNameContract {
     fileUploadControl_input?: string;
 }
 
-const styles: ComponentStyles<FileUploadControlClassNameContract, {}> = {
+const styles: ComponentStyles<FileUploadControlClassNameContract, unknown> = {
     fileUploadControl: {},
     fileUploadControl__disabled: {},
     fileUploadControl_input: {},

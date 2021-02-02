@@ -3,13 +3,13 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { get } from "lodash-es";
 import { canUseDOM } from "exenv-es6";
 import rafThrottle from "raf-throttle";
+import { MessageSystemType, Register } from "@microsoft/fast-tooling";
 import {
     ResizeHandleLocation,
+    ViewerCustomAction,
     ViewerHandledProps,
     ViewerUnhandledProps,
-    ViewerCustomAction,
 } from "./viewer.props";
-import { MessageSystemType, Register } from "@microsoft/fast-tooling";
 
 export interface ViewerState {
     /**

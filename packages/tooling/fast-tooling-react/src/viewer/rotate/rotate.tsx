@@ -1,14 +1,13 @@
-import React from "react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { Rotate as BaseRotate } from "./rotate.base";
 import {
-    Orientation,
     RotateHandledProps as BaseRotateHandledProps,
-    RotateManagedClasses,
     RotateProps as BaseRotateProps,
+    Orientation,
+    RotateManagedClasses,
     RotateUnhandledProps,
 } from "./rotate.props";
 import { RotateClassNameContract } from "./rotate.class-name-contract";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import RotateStyles from "./rotate.style";
 
 /*
@@ -20,7 +19,7 @@ type Rotate = InstanceType<typeof Rotate>;
 
 interface RotateHandledProps
     extends Omit<BaseRotateHandledProps, keyof RotateManagedClasses> {}
-type RotateProps = ManagedJSSProps<BaseRotateProps, RotateClassNameContract, {}>;
+type RotateProps = ManagedJSSProps<BaseRotateProps, RotateClassNameContract, unknown>;
 
 export {
     Orientation,

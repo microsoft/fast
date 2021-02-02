@@ -22,7 +22,7 @@ export interface SingleLineControlTemplateClassNameContract {
     singleLineControlTemplate_softRemoveInput?: string;
 }
 
-const style: ComponentStyles<SingleLineControlTemplateClassNameContract, {}> = {
+const style: ComponentStyles<SingleLineControlTemplateClassNameContract, unknown> = {
     singleLineControlTemplate: {},
     singleLineControlTemplate_control: {
         ...controlSingleLineWrapperStyle,

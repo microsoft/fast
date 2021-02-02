@@ -24,7 +24,7 @@ export interface DictionaryClassNameContract {
     dictionary_itemControlRemoveTrigger?: string;
 }
 
-const styles: ComponentStyles<DictionaryClassNameContract, {}> = {
+const styles: ComponentStyles<DictionaryClassNameContract, unknown> = {
     dictionary: {},
     dictionary_itemControl: {
         ...controlStyle,

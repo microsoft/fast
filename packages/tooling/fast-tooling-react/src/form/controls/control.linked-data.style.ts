@@ -25,7 +25,7 @@ export interface LinkedDataControlClassNameContract {
     linkedDataControl_deleteButton?: string;
 }
 
-const styles: ComponentStyles<LinkedDataControlClassNameContract, {}> = {
+const styles: ComponentStyles<LinkedDataControlClassNameContract, unknown> = {
     linkedDataControl: {},
     linkedDataControl_existingLinkedData: {
         ...cleanListStyle,

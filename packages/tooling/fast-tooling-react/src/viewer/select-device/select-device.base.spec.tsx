@@ -1,10 +1,10 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
-import { SelectDeviceHandledProps } from "./";
+import { configure, mount } from "enzyme";
 import { SelectDevice } from "./select-device.base";
 import { Display } from "./devices";
 import { SelectDeviceClassNameContract } from "./select-device.class-name-contract";
+import { SelectDeviceHandledProps } from "./";
 
 /*
  * Configure Enzyme

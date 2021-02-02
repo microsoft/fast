@@ -8,7 +8,7 @@ import {
 } from "../../../style/css-properties";
 import { SectionValidationClassNameContract } from "./section.validation.props";
 
-const styles: ComponentStyles<SectionValidationClassNameContract, {}> = {
+const styles: ComponentStyles<SectionValidationClassNameContract, unknown> = {
     sectionValidation: {
         overflow: "visible",
         position: "relative",

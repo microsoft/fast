@@ -33,7 +33,7 @@ export interface ArrayControlClassNameContract {
     arrayControl_existingItemRemoveButton?: string;
 }
 
-const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
+const styles: ComponentStyles<ArrayControlClassNameContract, unknown> = {
     arrayControl: {},
     arrayControl__disabled: {},
     arrayControl__invalid: {

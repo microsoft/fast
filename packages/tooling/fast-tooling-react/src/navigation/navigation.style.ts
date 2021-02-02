@@ -25,7 +25,7 @@ export interface NavigationClassNameContract {
     navigation_itemList?: string;
 }
 
-const styles: ComponentStyles<NavigationClassNameContract, {}> = {
+const styles: ComponentStyles<NavigationClassNameContract, unknown> = {
     navigation: {
         background: L4CSSProperty,
         color: textColorCSSProperty,

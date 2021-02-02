@@ -1,13 +1,13 @@
 import { uniqueId } from "lodash-es";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import manageJss from "@microsoft/fast-jss-manager-react";
 import React from "react";
-import { getArrayLinks, isRootLocation } from "./utilities/form";
+import { classNames } from "@microsoft/fast-web-utilities";
+import { ArrayAction } from "../templates/types";
+import { DragItem } from "../templates";
+import { getArrayLinks } from "./utilities/form";
 import styles, { ArrayControlClassNameContract } from "./control.array.style";
 import { ArrayControlProps, ArrayControlState } from "./control.array.props";
-import { DragItem } from "../templates";
-import { ArrayAction } from "../templates/types";
-import { classNames } from "@microsoft/fast-web-utilities";
 
 /**
  * Form control definition
@@ -196,7 +196,7 @@ class ArrayControl extends React.Component<
                         >
                             {text}
                         </DragItem>
-                        {!!this.props.displayValidationInline ? invalidError : null}
+                        {this.props.displayValidationInline ? invalidError : null}
                     </React.Fragment>
                 );
             }

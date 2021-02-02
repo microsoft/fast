@@ -28,7 +28,7 @@ export interface StandardControlTemplateClassNameContract {
     standardControlTemplate_softRemoveInput?: string;
 }
 
-const style: ComponentStyles<StandardControlTemplateClassNameContract, {}> = {
+const style: ComponentStyles<StandardControlTemplateClassNameContract, unknown> = {
     standardControlTemplate: {
         ...controlWrapperStyle,
     },

@@ -1,7 +1,7 @@
 import { ComponentStyles } from "@microsoft/fast-jss-manager-react";
 import { SectionControlClassNameContract } from "./control.section.props";
 
-const styles: ComponentStyles<SectionControlClassNameContract, {}> = {
+const styles: ComponentStyles<SectionControlClassNameContract, unknown> = {
     sectionControl: {
         margin: "0",
         padding: "0",

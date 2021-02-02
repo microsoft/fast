@@ -18,7 +18,7 @@ export interface CheckboxControlClassNameContract {
     checkboxControl__default?: string;
 }
 
-const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
+const styles: ComponentStyles<CheckboxControlClassNameContract, unknown> = {
     checkboxControl: {
         position: "relative",
         height: "14px",

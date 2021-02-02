@@ -17,7 +17,7 @@ export interface NavigationMenuClassNameContract
     navigationMenu?: string;
 }
 
-const styles: ComponentStyles<NavigationMenuClassNameContract, {}> = {
+const styles: ComponentStyles<NavigationMenuClassNameContract, unknown> = {
     navigationMenu: {
         "font-size": defaultTextSizeCSSProperty,
         background: L4CSSProperty,

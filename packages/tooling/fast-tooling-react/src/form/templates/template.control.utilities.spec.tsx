@@ -1,16 +1,15 @@
-import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, shallow } from "enzyme";
+import { configure, mount } from "enzyme";
+import defaultStrings from "../form.strings";
 import ControlTemplateUtilities from "./template.control.utilities";
 import { BadgeType } from "./types";
-import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
  */
 configure({ adapter: new Adapter() });
 
-class TestClass extends ControlTemplateUtilities<{}, {}> {}
+class TestClass extends ControlTemplateUtilities<unknown, unknown> {}
 
 const config: any = {
     index: 0,

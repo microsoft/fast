@@ -16,7 +16,7 @@ export interface SelectControlClassNameContract {
     selectControl_input?: string;
 }
 
-const styles: ComponentStyles<SelectControlClassNameContract, {}> = {
+const styles: ComponentStyles<SelectControlClassNameContract, unknown> = {
     selectControl: {
         ...selectSpanStyle,
         "&$selectControl__default $selectControl_input": {

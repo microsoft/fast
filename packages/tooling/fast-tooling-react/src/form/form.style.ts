@@ -10,7 +10,7 @@ import {
 } from "../style";
 import { FormClassNameContract } from "./form.props";
 
-const styles: ComponentStyles<FormClassNameContract, {}> = {
+const styles: ComponentStyles<FormClassNameContract, unknown> = {
     form: {
         background: L4CSSProperty,
         color: textColorCSSProperty,

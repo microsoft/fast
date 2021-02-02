@@ -25,7 +25,7 @@ export interface ThemeControlClassNameContract {
     themeControl_input__dark?: string;
 }
 
-const styles: ComponentStyles<ThemeControlClassNameContract, {}> = {
+const styles: ComponentStyles<ThemeControlClassNameContract, unknown> = {
     themeControl: {
         display: "flex",
         ...controlWrapperStyle,

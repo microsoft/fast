@@ -5,7 +5,7 @@ import { SelectDeviceClassNameContract } from "./select-device.class-name-contra
 
 const styles: ComponentStyles<
     SelectDeviceClassNameContract,
-    {}
+    unknown
 > = (): ComponentStyleSheet<SelectDeviceClassNameContract, DesignSystem> => {
     return {
         selectDevice: {

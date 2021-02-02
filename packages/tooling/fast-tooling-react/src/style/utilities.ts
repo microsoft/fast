@@ -34,7 +34,7 @@ export function localizePadding(
     right: number,
     bottom: number,
     left: number
-): CSSRules<{}> {
+): CSSRules<unknown> {
     return {
         padding: localizeSpacing(Direction.ltr)(
             `${toPx(top)} ${toPx(right)} ${toPx(bottom)} ${toPx(left)}`
@@ -42,7 +42,7 @@ export function localizePadding(
     };
 }
 
-export function applyTriggerStyle(color: string): CSSRules<{}> {
+export function applyTriggerStyle(color: string): CSSRules<unknown> {
     return {
         lineHeight: "16px",
         "font-size": defaultTextSizeCSSProperty,
@@ -55,7 +55,7 @@ export function applyTriggerStyle(color: string): CSSRules<{}> {
     };
 }
 
-export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
+export function boxShadow(config: BoxShadowConfig): CSSRules<unknown> {
     return {
         boxShadow: `${config.inset ? "inset " : ""}
         ${toPx(config.offsetX)} ${toPx(config.offsetY)} ${toPx(config.blurRadius)} ${toPx(
@@ -67,7 +67,7 @@ export function boxShadow(config: BoxShadowConfig): CSSRules<{}> {
 /**
  * Mimics a border but with boxShadow (strong in the sense of no blur)
  */
-export function insetStrongBoxShadow(color: string): CSSRules<{}> {
+export function insetStrongBoxShadow(color: string): CSSRules<unknown> {
     const shadow: BoxShadowConfig = {
         offsetX: 0,
         offsetY: 0,
@@ -82,7 +82,7 @@ export function insetStrongBoxShadow(color: string): CSSRules<{}> {
     };
 }
 
-export const interactiveFormControlIndicatorStyle: CSSRules<{}> = {
+export const interactiveFormControlIndicatorStyle: CSSRules<unknown> = {
     display: "flex",
     padding: "0",
     alignSelf: "center",
@@ -107,7 +107,7 @@ export const interactiveFormControlIndicatorStyle: CSSRules<{}> = {
     }),
 };
 
-export const formControlIndicatorStyle: CSSRules<{}> = {
+export const formControlIndicatorStyle: CSSRules<unknown> = {
     fill: textColorCSSProperty,
     padding: "0 4px",
     "align-self": "center",
@@ -115,7 +115,7 @@ export const formControlIndicatorStyle: CSSRules<{}> = {
     "min-height": "14px",
 };
 
-export const formControlDisabledStyle: CSSRules<{}> = {
+export const formControlDisabledStyle: CSSRules<unknown> = {
     opacity: disableOpacityCSSProperty,
     cursor: "not-allowed",
     "& label": {
@@ -126,7 +126,7 @@ export const formControlDisabledStyle: CSSRules<{}> = {
 /**
  * Used for styles radio buttons (vertical and horizontal alignment)
  */
-export const inputBackplateStyle: CSSRules<{}> = {
+export const inputBackplateStyle: CSSRules<unknown> = {
     appearance: "none",
     height: "20px",
     width: "20px",
@@ -137,7 +137,7 @@ export const inputBackplateStyle: CSSRules<{}> = {
     },
 };
 
-export const selectSpanStyle: CSSRules<{}> = {
+export const selectSpanStyle: CSSRules<unknown> = {
     position: "relative",
     display: "flex",
     "&::before": {
@@ -152,7 +152,7 @@ export const selectSpanStyle: CSSRules<{}> = {
     },
 };
 
-export const selectInputStyle: CSSRules<{}> = {
+export const selectInputStyle: CSSRules<unknown> = {
     width: "100%",
     lineHeight: "16px",
     "font-size": defaultTextSizeCSSProperty,
@@ -181,21 +181,21 @@ export const selectInputStyle: CSSRules<{}> = {
     },
 };
 
-export const labelStyle: CSSRules<{}> = {
+export const labelStyle: CSSRules<unknown> = {
     flexGrow: "1",
     lineHeight: "16px",
     boxSizing: "border-box",
     ...ellipsis(),
 };
 
-export const labelRegionStyle: CSSRules<{}> = {
+export const labelRegionStyle: CSSRules<unknown> = {
     display: "flex",
     maxWidth: "100%",
     "padding-bottom": "10px",
     height: "16px",
 };
 
-export const inputStyle: CSSRules<{}> = {
+export const inputStyle: CSSRules<unknown> = {
     lineHeight: "16px",
     "font-size": defaultTextSizeCSSProperty,
     backgroundColor: L1CSSProperty,
@@ -222,19 +222,19 @@ export const inputStyle: CSSRules<{}> = {
 /**
  * Common wrapper that surrounds a label and an input
  */
-export const cleanListStyle: CSSRules<{}> = {
+export const cleanListStyle: CSSRules<unknown> = {
     listStyle: "none",
     margin: "0",
     padding: "0",
     listStylePosition: "outside",
 };
 
-export const defaultFontStyle: CSSRules<{}> = {
+export const defaultFontStyle: CSSRules<unknown> = {
     color: inactiveTextColorCSSProperty,
     "font-style": "italic",
 };
 
-export const removeItemStyle: CSSRules<{}> = {
+export const removeItemStyle: CSSRules<unknown> = {
     position: "absolute",
     top: "5px",
     right: "5px",
@@ -262,7 +262,7 @@ export const removeItemStyle: CSSRules<{}> = {
     },
 };
 
-export const addItemStyle: CSSRules<{}> = {
+export const addItemStyle: CSSRules<unknown> = {
     position: "absolute",
     right: "5px",
     top: "1px",
@@ -297,7 +297,7 @@ export const addItemStyle: CSSRules<{}> = {
     },
 };
 
-export const chevronDownStyle: CSSRules<{}> = {
+export const chevronDownStyle: CSSRules<unknown> = {
     position: "absolute",
     right: "5px",
     top: "1px",
@@ -333,33 +333,33 @@ export const chevronDownStyle: CSSRules<{}> = {
     },
 };
 
-export const chevronUpStyle: CSSRules<{}> = {
+export const chevronUpStyle: CSSRules<unknown> = {
     ...chevronDownStyle,
     transform: "rotate(180deg)",
 };
 
-export const controlWrapperStyle: CSSRules<{}> = {
+export const controlWrapperStyle: CSSRules<unknown> = {
     paddingTop: "8px",
     marginBottom: "12px",
 };
 
-export const controlSingleLineWrapperStyle: CSSRules<{}> = {
+export const controlSingleLineWrapperStyle: CSSRules<unknown> = {
     display: "flex",
     minHeight: "30px",
     alignItems: "center",
 };
 
-export const controlStyle: CSSRules<{}> = {
+export const controlStyle: CSSRules<unknown> = {
     width: `calc(100% - ${gutterCSSProperty})`,
 };
 
-export const controlRegionStyle: CSSRules<{}> = {
+export const controlRegionStyle: CSSRules<unknown> = {
     display: "flex",
     width: "100%",
     position: "relative",
 };
 
-export const softRemoveStyle: CSSRules<{}> = {
+export const softRemoveStyle: CSSRules<unknown> = {
     display: "flex",
     height: "18px",
     "min-width": gutterCSSProperty,
@@ -367,7 +367,7 @@ export const softRemoveStyle: CSSRules<{}> = {
     "align-items": "center",
 };
 
-export const softRemoveInputStyle: CSSRules<{}> = {
+export const softRemoveInputStyle: CSSRules<unknown> = {
     appearance: "none",
     background: "none",
     position: "absolute",
@@ -389,7 +389,7 @@ export const softRemoveInputStyle: CSSRules<{}> = {
     },
 };
 
-export const invalidMessageStyle: CSSRules<{}> = {
+export const invalidMessageStyle: CSSRules<unknown> = {
     color: errorColorCSSProperty,
     "font-size": statusMessageTextSizeCSSProperty,
     "margin-right": "10px",

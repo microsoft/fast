@@ -1,14 +1,13 @@
-import React from "react";
+import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { Viewer as BaseViewer } from "./viewer.base";
 import {
-    ViewerCustomAction,
     ViewerHandledProps as BaseViewerHandledProps,
-    ViewerManagedClasses,
     ViewerProps as BaseViewerProps,
+    ViewerCustomAction,
+    ViewerManagedClasses,
     ViewerUnhandledProps,
 } from "./viewer.props";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
-import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import ViewerStyles from "./viewer.style";
 
 /*
@@ -20,7 +19,7 @@ type Viewer = InstanceType<typeof Viewer>;
 
 interface ViewerHandledProps
     extends Omit<BaseViewerHandledProps, keyof ViewerManagedClasses> {}
-type ViewerProps = ManagedJSSProps<BaseViewerProps, ViewerClassNameContract, {}>;
+type ViewerProps = ManagedJSSProps<BaseViewerProps, ViewerClassNameContract, unknown>;
 
 export {
     Viewer,

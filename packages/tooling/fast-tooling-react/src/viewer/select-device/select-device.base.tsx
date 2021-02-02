@@ -3,7 +3,7 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { SelectDeviceProps } from "./select-device.props";
 import { Device } from "./devices";
 
-export class SelectDevice extends Foundation<SelectDeviceProps, {}, {}> {
+export class SelectDevice extends Foundation<SelectDeviceProps, unknown, unknown> {
     public static displayName: string = "SelectDevice";
 
     protected handledProps: HandledProps<SelectDeviceProps> = {

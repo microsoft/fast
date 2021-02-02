@@ -1,9 +1,9 @@
 import { ComponentStyles, ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
-const styles: ComponentStyles<ViewerClassNameContract, {}> = (): ComponentStyleSheet<
+const styles: ComponentStyles<ViewerClassNameContract, unknown> = (): ComponentStyleSheet<
     ViewerClassNameContract,
-    {}
+    unknown
 > => {
     const fixedSize: number = 20;
     const backgroundColor: string = "#999";

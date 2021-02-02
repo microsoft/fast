@@ -10,7 +10,7 @@ export interface ButtonControlClassNameContract {
     buttonControl__default?: string;
 }
 
-const styles: ComponentStyles<ButtonControlClassNameContract, {}> = {
+const styles: ComponentStyles<ButtonControlClassNameContract, unknown> = {
     buttonControl: {
         ...inputStyle,
         width: "100%",

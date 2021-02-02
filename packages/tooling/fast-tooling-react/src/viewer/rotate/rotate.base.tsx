@@ -3,7 +3,11 @@ import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-
 import { get } from "lodash-es";
 import { Orientation, RotateHandledProps, RotateUnhandledProps } from "./rotate.props";
 
-export class Rotate extends Foundation<RotateHandledProps, RotateUnhandledProps, {}> {
+export class Rotate extends Foundation<
+    RotateHandledProps,
+    RotateUnhandledProps,
+    unknown
+> {
     public static displayName: string = "Rotate";
 
     protected handledProps: HandledProps<RotateHandledProps> = {

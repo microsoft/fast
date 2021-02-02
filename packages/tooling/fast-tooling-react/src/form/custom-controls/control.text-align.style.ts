@@ -25,7 +25,7 @@ export interface TextAlignControlClassNameContract {
     textAlignControl_input__justify?: string;
 }
 
-const styles: ComponentStyles<TextAlignControlClassNameContract, {}> = {
+const styles: ComponentStyles<TextAlignControlClassNameContract, unknown> = {
     textAlignControl: {
         height: "20px",
     },

@@ -12,7 +12,7 @@ export interface SectionLinkControlClassNameContract {
     sectionLinkControl__invalid?: string;
 }
 
-const styles: ComponentStyles<SectionLinkControlClassNameContract, {}> = {
+const styles: ComponentStyles<SectionLinkControlClassNameContract, unknown> = {
     sectionLinkControl: {
         ...ellipsis(),
         display: "block",

@@ -10,7 +10,7 @@ export interface DisplayControlClassNameContract {
     displayControl__default?: string;
 }
 
-const styles: ComponentStyles<DisplayControlClassNameContract, {}> = {
+const styles: ComponentStyles<DisplayControlClassNameContract, unknown> = {
     displayControl: {
         ...inputStyle,
         width: "100%",
