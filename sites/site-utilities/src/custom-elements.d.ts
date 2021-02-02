@@ -8,6 +8,12 @@ declare namespace JSX {
             fill?: string;
             color?: string;
         };
+        "fast-button": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            disabled?: boolean;
+        };
     }
 }
 
