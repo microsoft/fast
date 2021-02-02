@@ -361,6 +361,12 @@ export class Tooltip extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.anchor);
+        }
+
         return document.getElementById(this.anchor);
     };
 
