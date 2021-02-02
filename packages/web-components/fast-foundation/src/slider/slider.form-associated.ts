@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Controller, PartialFASTElementDefinition } from "@microsoft/fast-element";
 import { FASTElement } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
 

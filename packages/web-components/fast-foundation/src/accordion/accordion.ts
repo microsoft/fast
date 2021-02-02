@@ -53,7 +53,7 @@ export class Accordion extends FASTElement {
     /**
      * @internal
      */
-    public accordionItemsChanged(oldValue, newValue): void {
+    public accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.removeItemListeners(oldValue);
             this.accordionIds = this.getItemIds();

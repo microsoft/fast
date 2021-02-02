@@ -92,7 +92,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     @attr({ converter: nullableNumberConverter })
     public max: number;
-    public maxChanged(previousValue, nextValue): void {
+    public maxChanged(previousValue: any, nextValue: string): void {
         const numb: number = parseFloat(nextValue);
         if (numb !== undefined) {
             if (this.min !== undefined && numb < this.min) {
@@ -112,7 +112,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     @attr({ converter: nullableNumberConverter })
     public min: number;
-    public minChanged(previousValue, nextValue): void {
+    public minChanged(previousValue: any, nextValue: string): void {
         const numb: number = parseFloat(nextValue);
         if (numb !== undefined) {
             if (this.max !== undefined && numb > this.max) {
@@ -141,10 +141,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @param previousValue - previous stored value
      * @param nextValue - value being updated
      */
-    public valueChanged(previousValue, nextValue): void {
+    public valueChanged(previousValue: string, nextValue: string | number): void {
         super.valueChanged(previousValue, nextValue);
 
-        const numb = parseFloat(nextValue);
+        const numb = parseFloat(`${nextValue}`);
         let out: number | string = numb == nextValue ? nextValue : numb;
 
         if (nextValue === "" || isNaN(numb)) {

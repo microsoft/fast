@@ -1,11 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    HTMLView,
-    observable,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
+import { attr, FASTElement, html, observable } from "@microsoft/fast-element";
 import {
     eventFocusIn,
     eventFocusOut,
@@ -14,12 +8,12 @@ import {
     keyCodeEscape,
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
-import { ColumnDefinition } from "./data-grid";
+import type { ColumnDefinition } from "./data-grid";
 import { DataGridCellTypes } from "./data-grid.options";
 
 export { DataGridCellTypes };
 
-const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const defaultCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         ${x =>
             x.rowData === null ||
@@ -30,7 +24,7 @@ const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     </template>
 `;
 
-const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         ${x =>
             x.columnDefinition === null
@@ -85,7 +79,7 @@ export class DataGridCell extends FASTElement {
      * @public
      */
     @observable
-    public rowData: object | null = null;
+    public rowData: Record<string, unknown> | null = null;
 
     /**
      * The base data for the column

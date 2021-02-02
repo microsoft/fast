@@ -11,13 +11,13 @@ import { DataGridCellTypes } from "./data-grid.options";
 })
 class FASTDataGridCell extends DataGridCell {}
 
-const testCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const testCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         Test template
     </template>
 `;
 
-const testFocusableCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const testFocusableCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         <button>Test button</button>
     </template>

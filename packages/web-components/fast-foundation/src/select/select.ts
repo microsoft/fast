@@ -1,5 +1,5 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
-import { ListboxOption } from "../listbox-option/listbox-option";
+import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -20,7 +20,7 @@ export class Select extends FormAssociatedSelect {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
-    protected openChanged() {
+    protected openChanged(): void {
         this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
             this.setPositioning();
@@ -43,7 +43,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @public
      */
-    public get value() {
+    public get value(): string {
         Observable.track(this, "value");
         return this._value;
     }
@@ -103,7 +103,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public selectedIndexChanged(prev, next): void {
+    public selectedIndexChanged(prev: number, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
     }
@@ -270,7 +270,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: any, next: HTMLElement[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
@@ -346,7 +346,7 @@ export class Select extends FormAssociatedSelect {
         return true;
     }
 
-    public connectedCallback() {
+    public connectedCallback(): void {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
     }

@@ -1,11 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    observable,
-    RepeatBehavior,
-    RepeatDirective,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import type { RepeatBehavior, ViewTemplate } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, RepeatDirective } from "@microsoft/fast-element";
 import {
     eventFocusOut,
     eventKeyDown,
@@ -14,7 +8,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { ColumnDefinition } from "./data-grid";
+import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes } from "./data-grid.options";
 
 /**
@@ -59,7 +53,7 @@ export class DataGridRow extends FASTElement {
      * @public
      */
     @observable
-    public rowData: object | null = null;
+    public rowData: Record<string, unknown> | null = null;
     private rowDataChanged(): void {
         if (this.rowData !== null && this.isActiveRow) {
             this.refocusOnLoad = true;

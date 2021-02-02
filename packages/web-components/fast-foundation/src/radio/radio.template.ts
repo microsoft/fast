@@ -1,11 +1,12 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html, slotted } from "@microsoft/fast-element";
-import { Radio } from "./radio";
+import type { Radio } from "./radio";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Radio:class)} component.
  * @public
  */
-export const RadioTemplate = html<Radio>`
+export const RadioTemplate: ViewTemplate<Radio> = html`
     <template
         role="radio"
         class="${x => (x.checked ? "checked" : "")} ${x =>

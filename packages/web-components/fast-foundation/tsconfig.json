@@ -8,6 +8,7 @@
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
+        "importsNotUsedAsValues": "remove",
         "types": [
             "mocha",
             "webpack-env"

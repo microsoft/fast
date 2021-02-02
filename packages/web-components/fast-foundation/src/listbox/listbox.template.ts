@@ -1,3 +1,4 @@
+import type { ElementsFilter, ViewTemplate } from "@microsoft/fast-element";
 import { html, slotted } from "@microsoft/fast-element";
 import { Listbox } from "./listbox";
 
@@ -5,7 +6,7 @@ import { Listbox } from "./listbox";
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.
  * @public
  */
-export const ListboxTemplate = html<Listbox>`
+export const ListboxTemplate: ViewTemplate<Listbox> = html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
         class="listbox"
@@ -17,7 +18,7 @@ export const ListboxTemplate = html<Listbox>`
     >
         <slot
             ${slotted({
-                filter: Listbox.slottedOptionFilter,
+                filter: Listbox.slottedOptionFilter as ElementsFilter,
                 flatten: true,
                 property: "slottedOptions",
             })}

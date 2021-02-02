@@ -1,10 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    observable,
-    Observable,
-} from "@microsoft/fast-element";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -16,7 +11,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { TreeView } from "../tree-view";
+import type { TreeView } from "../tree-view";
 
 /**
  * check if the item is a tree item
@@ -136,13 +131,13 @@ export class TreeItem extends FASTElement {
      * Places document focus on a tree item and adds the item to the sequential tab order.
      * @param el - the element to focus
      */
-    public static focusItem(el: HTMLElement) {
+    public static focusItem(el: HTMLElement): void {
         el.setAttribute("tabindex", "0");
         (el as TreeItem).focusable = true;
         el.focus();
     }
 
-    public handleChange(source: any, propertyName: string) {
+    public handleChange(source: any, propertyName: string): void {
         switch (propertyName) {
             case "renderCollapsedNodes":
                 this.renderCollapsedChildren = (source as TreeView).renderCollapsedNodes;

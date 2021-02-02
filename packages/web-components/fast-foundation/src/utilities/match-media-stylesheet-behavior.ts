@@ -1,4 +1,4 @@
-import { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import type { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
 
 /**
  * An event listener fired by a {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList | MediaQueryList }.
@@ -8,6 +8,10 @@ export type MediaQueryListListener = (
     this: MediaQueryList,
     ev?: MediaQueryListEvent
 ) => void;
+
+type MatchMediaBehaviorQueryConstructor = (
+    styles: ElementStyles
+) => MatchMediaStyleSheetBehavior;
 
 /**
  * An abstract behavior to react to media queries. Implementations should implement
@@ -41,7 +45,7 @@ export abstract class MatchMediaBehavior implements Behavior {
      * Binds the behavior to the element.
      * @param source - The element for which the behavior is bound.
      */
-    bind(source: typeof FASTElement & HTMLElement) {
+    bind(source: typeof FASTElement & HTMLElement): void {
         const { query } = this;
         const listener = this.constructListener(source);
 
@@ -55,7 +59,7 @@ export abstract class MatchMediaBehavior implements Behavior {
      * Unbinds the behavior from the element.
      * @param source - The element for which the behavior is unbinding.
      */
-    unbind(source: typeof FASTElement & HTMLElement) {
+    unbind(source: typeof FASTElement & HTMLElement): void {
         const listener = this.listenerCache.get(source);
 
         if (listener) {
@@ -130,10 +134,8 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * `))
      * ```
      */
-    public static with(query: MediaQueryList) {
-        return (styles: ElementStyles) => {
-            return new MatchMediaStyleSheetBehavior(query, styles);
-        };
+    public static with(query: MediaQueryList): MatchMediaBehaviorQueryConstructor {
+        return styles => new MatchMediaStyleSheetBehavior(query, styles);
     }
 
     /**
@@ -162,7 +164,7 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * @param source - The element for which the behavior is unbinding.
      * @internal
      */
-    public unbind(source: typeof FASTElement & HTMLElement) {
+    public unbind(source: typeof FASTElement & HTMLElement): void {
         super.unbind(source);
 
         (source as any).$fastController.removeStyles(this.styles);
@@ -178,7 +180,9 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
  * @public
  * @deprecated - use {@link MatchMediaStyleSheetBehavior.with}
  */
-export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
+export function matchMediaStylesheetBehaviorFactory(
+    query: MediaQueryList
+): MatchMediaBehaviorQueryConstructor {
     return MatchMediaStyleSheetBehavior.with(query);
 }
 

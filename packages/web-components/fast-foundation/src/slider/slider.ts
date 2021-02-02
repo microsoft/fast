@@ -125,7 +125,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     /**
      * @internal
      */
-    public valueChanged(previous, next): void {
+    public valueChanged(previous: any, next: any): void {
         super.valueChanged(previous, next);
 
         if (this.$fastController.isConnected) {
@@ -268,7 +268,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         this.value = decrementedValString;
     }
 
-    protected keypressHandler = (e: KeyboardEvent) => {
+    protected keypressHandler = (e: KeyboardEvent): void => {
         if (e.keyCode !== keyCodeTab) {
             e.preventDefault();
         }

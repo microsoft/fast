@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { isHTMLElement, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
+import { keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
 
 /**

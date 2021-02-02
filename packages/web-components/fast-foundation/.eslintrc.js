@@ -12,6 +12,12 @@ module.exports = {
                 allowSingleExtends: true,
             },
         ],
+        "@typescript-eslint/explicit-module-boundary-types": [
+            "error",
+            {
+                allowArgumentsExplicitlyTypedAsAny: true,
+            },
+        ],
         "@typescript-eslint/consistent-type-imports": [
             "error",
             {
@@ -19,4 +25,15 @@ module.exports = {
             },
         ],
     },
+    overrides: [
+        {
+            files: ["**/*.js"],
+            env: {
+                node: true,
+            },
+            rules: {
+                "@typescript-eslint/*": "off",
+            },
+        },
+    ],
 };

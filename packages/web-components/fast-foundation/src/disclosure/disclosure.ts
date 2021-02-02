@@ -78,7 +78,7 @@ export class Disclosure extends FASTElement {
     /**
      * Update the aria attr and fire `toggle` event
      */
-    protected onToggle() {
+    protected onToggle(): void {
         this.expanded = this.details.open;
         this.$emit("toggle");
     }

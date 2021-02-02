@@ -7,11 +7,11 @@ import { IntersectionService } from "./intersection-service";
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
 // https://github.com/microsoft/TypeScript/issues/37861
-import {
+import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "./resize-observer";
-import { ResizeObserverEntry } from "./resize-observer-entry";
+import type { ResizeObserverEntry } from "./resize-observer-entry";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -80,13 +80,6 @@ type AnchoredRegionVerticalPositionLabel =
     | "insetBottom"
     | "bottom"
     | "undefined";
-
-/**
- * describes possible transform origin settings
- *
- * @internal
- */
-type Location = "top" | "left" | "right" | "bottom";
 
 /**
  * An anchored region Custom HTML Element.
@@ -375,7 +368,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * @internal
      */
-    connectedCallback() {
+    connectedCallback(): void {
         super.connectedCallback();
         this.initialize();
     }
@@ -393,7 +386,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * @internal
      */
-    public adoptedCallback() {
+    public adoptedCallback(): void {
         this.initialize();
     }
 

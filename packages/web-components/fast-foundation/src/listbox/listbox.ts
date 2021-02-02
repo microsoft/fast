@@ -1,6 +1,7 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
-import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
+import type { ListboxOption } from "../listbox-option/listbox-option";
+import { isListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
 import { ListboxRole } from "./listbox.options";
@@ -72,7 +73,7 @@ export class Listbox extends FASTElement {
      */
     @observable
     public slottedOptions: HTMLElement[];
-    public slottedOptionsChanged(prev, next) {
+    public slottedOptionsChanged(prev: any, next: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.options = next.reduce((options, item) => {
                 if (isListboxOption(item)) {
@@ -104,7 +105,7 @@ export class Listbox extends FASTElement {
      */
     @observable
     public selectedOptions: ListboxOption[] = [];
-    protected selectedOptionsChanged(prev, next): void {
+    protected selectedOptionsChanged(prev: any, next: ListboxOption[]): void {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => {
                 o.selected = next.includes(o);
@@ -142,7 +143,7 @@ export class Listbox extends FASTElement {
     /**
      * @internal
      */
-    protected setDefaultSelectedOption() {
+    protected setDefaultSelectedOption(): void {
         if (this.options && this.$fastController.isConnected) {
             const selectedIndex = this.options.findIndex(el =>
                 el.getAttribute("selected")
@@ -163,7 +164,7 @@ export class Listbox extends FASTElement {
      * @param index - option index to select
      * @public
      */
-    protected setSelectedOptions() {
+    protected setSelectedOptions(): void {
         if (this.$fastController.isConnected && this.options) {
             const selectedOption = this.options[this.selectedIndex] || null;
 
@@ -183,7 +184,7 @@ export class Listbox extends FASTElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter = (n: HTMLElement) =>
+    public static slottedOptionFilter = (n: HTMLElement): boolean =>
         isListboxOption(n) && !n.disabled;
 
     /**
@@ -268,7 +269,7 @@ export class Listbox extends FASTElement {
             return true;
         }
 
-        const key = e.key || e.key.charCodeAt(0);
+        const key = e.key || `${e.key.charCodeAt(0)}`;
 
         switch (key) {
             // Select the first available option
@@ -331,7 +332,7 @@ export class Listbox extends FASTElement {
      *
      * @param key - the key to be evaluated
      */
-    public handleTypeAhead(key): void {
+    public handleTypeAhead(key: string): void {
         if (this.typeaheadTimeout) {
             window.clearTimeout(this.typeaheadTimeout);
         }

@@ -1,12 +1,13 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html, ref, when } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { SliderLabel } from "./slider-label";
+import type { SliderLabel } from "./slider-label";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(SliderLabel:class)} component.
  * @public
  */
-export const SliderLabelTemplate = html<SliderLabel>`
+export const SliderLabelTemplate: ViewTemplate<SliderLabel> = html`
     <template
         aria-disabled="${x => x.disabled}"
         class="${x => x.sliderOrientation || Orientation.horizontal}

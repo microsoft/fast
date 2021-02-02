@@ -1,9 +1,5 @@
-import {
-    Behavior,
-    ElementStyles,
-    FASTElement,
-    Observable,
-} from "@microsoft/fast-element";
+import type { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 
 /**
  * A behavior to add or remove a stylesheet from an element based on a property. The behavior ensures that
@@ -21,7 +17,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      */
     constructor(
         private propertyName: string,
-        private value: any,
+        private value: unknown,
         private styles: ElementStyles
     ) {}
 
@@ -29,7 +25,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * Binds the behavior to the element.
      * @param elementInstance - The element for which the property is applied.
      */
-    public bind(elementInstance: FASTElement) {
+    public bind(elementInstance: FASTElement): void {
         Observable.getNotifier(elementInstance).subscribe(this, this.propertyName);
         this.handleChange(elementInstance, this.propertyName);
     }
@@ -39,7 +35,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * @param source - The element for which the behavior is unbinding.
      * @internal
      */
-    public unbind(source: typeof FASTElement & HTMLElement) {
+    public unbind(source: typeof FASTElement & HTMLElement): void {
         Observable.getNotifier(source).unsubscribe(this, this.propertyName);
         (source as any).$fastController.removeStyles(this.styles);
     }
@@ -49,7 +45,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
      * @param source - the element for which to attach or detach styles.
      * @internal
      */
-    public handleChange(source: FASTElement, key) {
+    public handleChange(source: FASTElement, key: string): void {
         if (source[key] === this.value) {
             source.$fastController.addStyles(this.styles);
         } else {

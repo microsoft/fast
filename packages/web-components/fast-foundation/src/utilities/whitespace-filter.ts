@@ -1,3 +1,4 @@
+import type { ElementsFilter } from "@microsoft/fast-element";
 /**
  * a method to filter out any whitespace _only_ nodes, to be used inside a template
  * @param value - The Node that is being inspected
@@ -6,10 +7,10 @@
  *
  * @public
  */
-export function whitespaceFilter(value: Node, index: number, array: Node[]) {
+export const whitespaceFilter: ElementsFilter = value => {
     return (
         value.nodeType === Node.TEXT_NODE &&
         typeof value.nodeValue === "string" &&
         !!value.nodeValue.trim().length
     );
-}
+};

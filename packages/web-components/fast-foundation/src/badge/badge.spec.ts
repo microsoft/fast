@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Badge, BadgeTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element";
 
 @customElement({
     name: "fast-badge",

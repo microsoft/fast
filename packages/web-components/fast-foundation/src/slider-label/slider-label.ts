@@ -1,13 +1,8 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    Observable,
-    observable,
-} from "@microsoft/fast-element";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities";
-import { SliderConfiguration } from "../slider/index";
+import type { SliderConfiguration } from "../slider/index";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -128,7 +123,7 @@ export class SliderLabel extends FASTElement {
     /**
      * @internal
      */
-    public handleChange(source: any, propertyName: string) {
+    public handleChange(source: any, propertyName: string): void {
         switch (propertyName) {
             case "direction":
                 this.sliderDirection = source.direction;

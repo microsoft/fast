@@ -1,9 +1,11 @@
-import {
+import type {
     Constructable,
-    FASTElementDefinition,
-    PartialFASTElementDefinition,
+    PartialFASTElementDefinition} from "@microsoft/fast-element";
+import {
+    FASTElementDefinition
 } from "@microsoft/fast-element";
-import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
+import type { Container, InterfaceSymbol} from "../di/di";
+import { DI, Registration } from "../di/di";
 
 /**
  * Defines an element within the context of a design system.
@@ -73,22 +75,22 @@ export class DesignSystem {
     private prefix: string = "fast";
     private disambiguate: ElementDisambiguationCallback = () => null;
 
-    public withPrefix(prefix: string) {
+    public withPrefix(prefix: string): this {
         this.prefix = prefix;
         return this;
     }
 
-    public withElementDisambiguation(callback: ElementDisambiguationCallback) {
+    public withElementDisambiguation(callback: ElementDisambiguationCallback): this {
         this.disambiguate = callback;
         return this;
     }
 
-    public register(...params: any[]) {
+    public register(...params: any[]): this {
         this.registrations.push(...params);
         return this;
     }
 
-    public applyTo(element: HTMLElement) {
+    public applyTo(element: HTMLElement): Container {
         const container = DI.getOrCreateDOMContainer(element);
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
@@ -96,7 +98,7 @@ export class DesignSystem {
             elementPrefix: this.prefix,
             tryDefineElement(
                 name: string,
-                type: Constructable,
+                type: Constructable<any>,
                 callback: ElementDefinitionCallback
             ) {
                 let elementName: string | null = name;

@@ -35,7 +35,7 @@ export class IntersectionService {
      *
      * @internal
      */
-    public cancelRequestPosition = (target: Element, callback: any): void => {
+    public cancelRequestPosition = (target: Element, callback: unknown): void => {
         const callbacks: any[] | undefined = this.observedElements.get(target);
 
         if (callbacks !== undefined) {

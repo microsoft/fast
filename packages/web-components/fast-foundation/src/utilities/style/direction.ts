@@ -1,12 +1,12 @@
-import {
-    ElementStyles,
+import type {
     Behavior,
+    ElementStyles,
     FASTElement,
     Subscriber,
-    Observable,
 } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
+import type { Direction } from "@microsoft/fast-web-utilities";
 import { DesignSystemProvider } from "../../design-system-provider";
-import { Direction } from "@microsoft/fast-web-utilities";
 
 /**
  * Behavior to conditionally apply LTR and RTL stylesheets. To determine which to apply,
@@ -42,7 +42,7 @@ export class DirectionalStyleSheetBehavior implements Behavior {
     /**
      * @internal
      */
-    public bind(source: FASTElement & HTMLElement) {
+    public bind(source: FASTElement & HTMLElement): void {
         const provider = DesignSystemProvider.findProvider(source);
 
         if (provider !== null) {
@@ -61,7 +61,7 @@ export class DirectionalStyleSheetBehavior implements Behavior {
     /**
      * @internal
      */
-    public unbind(source: FASTElement & HTMLElement) {
+    public unbind(source: FASTElement & HTMLElement): void {
         const cache = this.cache.get(source);
 
         if (cache) {

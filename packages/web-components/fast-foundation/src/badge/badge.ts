@@ -37,7 +37,7 @@ export class Badge extends FASTElement {
     @attr({ mode: "boolean" })
     public circular: boolean;
 
-    public generateBadgeStyle = () => {
+    public generateBadgeStyle = (): string | void => {
         if (!this.fill && !this.color) {
             return;
         }

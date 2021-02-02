@@ -3,10 +3,9 @@ import {
     DOM,
     FASTElement,
     observable,
-    RepeatBehavior,
     RepeatDirective,
-    ViewTemplate,
 } from "@microsoft/fast-element";
+import type { RepeatBehavior, ViewTemplate } from "@microsoft/fast-element";
 import {
     eventFocus,
     eventKeyDown,
@@ -17,8 +16,8 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
-import { DataGridCell } from "./data-grid-cell";
-import { DataGridRow } from "./data-grid-row";
+import type { DataGridCell } from "./data-grid-cell";
+import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
 
 export { DataGridRowTypes, GenerateHeaderOptions };
@@ -96,7 +95,9 @@ export class DataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (row: object): ColumnDefinition[] => {
+    public static generateColumns = (
+        row: Record<string, unknown>
+    ): ColumnDefinition[] => {
         return Object.getOwnPropertyNames(row).map((property: string, index: number) => {
             return {
                 columnDataKey: property,
@@ -156,7 +157,7 @@ export class DataGrid extends FASTElement {
      * @public
      */
     @observable
-    public rowsData: object[] = [];
+    public rowsData: Array<Record<string, unknown>> = [];
     private rowsDataChanged(): void {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);

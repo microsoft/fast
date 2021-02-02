@@ -1,24 +1,25 @@
+import type { Behavior, PartialFASTElementDefinition } from "@microsoft/fast-element";
 import {
     attr,
-    Behavior,
     customElement,
     FASTElement,
     observable,
     Observable,
-    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import {
+import type {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index";
-import {
-    ConstructableStylesCustomPropertyManager,
+import type {
     CustomPropertyManager,
     CustomPropertyManagerClient,
+} from "../custom-properties/manager";
+import {
+    ConstructableStylesCustomPropertyManager,
     StyleElementCustomPropertyManager,
 } from "../custom-properties/manager";
 import { composedParent } from "../utilities/composed-parent";
-import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
+import type { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -83,7 +84,7 @@ export class DesignSystemProvider extends FASTElement
      *
      * @public
      */
-    public static get tagNames() {
+    public static get tagNames(): string[] {
         return DesignSystemProvider._tagNames;
     }
 
@@ -142,7 +143,7 @@ export class DesignSystemProvider extends FASTElement
      *
      * @public
      */
-    public static registerTagName(tagName: string) {
+    public static registerTagName(tagName: string): void {
         const tagNameUpper = tagName.toUpperCase();
         if (DesignSystemProvider.tagNames.indexOf(tagNameUpper) === -1) {
             DesignSystemProvider._tagNames.push(tagNameUpper);
@@ -283,7 +284,7 @@ export class DesignSystemProvider extends FASTElement
      * @public
      * @deprecated - use disconnectedRegistry
      */
-    public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+    public disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[];
 
     /**
      * Allows arbitrary registration to the provider before the constructor runs.
@@ -292,7 +293,7 @@ export class DesignSystemProvider extends FASTElement
      *
      * @public
      */
-    public disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
+    public disconnectedRegistry?: Array<(provider: DesignSystemProvider) => void> | void;
 
     /**
      * Handle changes to design-system-provider IDL and content attributes
@@ -453,7 +454,7 @@ export class DesignSystemProvider extends FASTElement
      * @param def - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
      * @public
      */
-    public registerCSSCustomProperty(def: CSSCustomPropertyDefinition) {
+    public registerCSSCustomProperty(def: CSSCustomPropertyDefinition): void {
         this.cssCustomPropertyDefinitions.set(def.name, def);
         this.customPropertyManager.register(def);
     }
@@ -465,7 +466,7 @@ export class DesignSystemProvider extends FASTElement
      * @param def - The {@link @microsoft/fast-foundation#CSSCustomPropertyDefinition} to register.
      * @public
      */
-    public unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition) {
+    public unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition): void {
         this.cssCustomPropertyDefinitions.delete(def.name);
         this.customPropertyManager.unregister(def.name);
     }

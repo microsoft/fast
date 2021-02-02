@@ -7,15 +7,15 @@ import { customElement, DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 // Utility functions to generate test data
-export function newDataSet(rowCount: number): object[] {
-    const newRows: object[] = [];
+export function newDataSet(rowCount: number): Array<Record<string, unknown>> {
+    const newRows: Array<Record<string, unknown>> = [];
     for (let i = 0; i < rowCount; i++) {
         newRows.push(newDataRow(`${i + 1}`));
     }
     return newRows;
 }
 
-export function newDataRow(id: string): object {
+export function newDataRow(id: string): Record<string, unknown> {
     return {
         item1: `value 1-${id}`,
         item2: `value 2-${id}`,

@@ -56,7 +56,7 @@ export class ListboxOption extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(prev, next): void {
+    protected disabledChanged(prev: any, next: any): void {
         if (this.proxy instanceof HTMLOptionElement) {
             this.proxy.disabled = this.disabled;
         }
@@ -121,7 +121,7 @@ export class ListboxOption extends FASTElement {
         }
     }
 
-    public get label() {
+    public get label(): string {
         return this.value ? this.value : this.textContent ? this.textContent : "";
     }
 
@@ -131,7 +131,7 @@ export class ListboxOption extends FASTElement {
 
     @observable
     public value: string;
-    public valueChanged(previous: string, next: string) {
+    public valueChanged(previous: string, next: string): void {
         this.dirtyValue = true;
 
         if (this.proxy instanceof HTMLElement) {

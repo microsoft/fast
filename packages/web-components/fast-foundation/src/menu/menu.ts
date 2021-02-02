@@ -9,7 +9,8 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItem, MenuItemRole } from "../menu-item/index";
+import type { MenuItem } from "../menu-item/index";
+import { MenuItemRole } from "../menu-item/index";
 
 /**
  * A Menu Custom HTML Element.
@@ -109,7 +110,7 @@ export class Menu extends FASTElement {
      * if focus is moving out of the menu, reset to a stable initial state
      * @internal
      */
-    public handleFocusOut = (e: FocusEvent) => {
+    public handleFocusOut = (e: FocusEvent): void => {
         const isNestedEl = this.contains(e.relatedTarget as Element);
 
         if (!isNestedEl) {

@@ -1,3 +1,4 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html, ref } from "@microsoft/fast-element";
 
 /**
@@ -28,7 +29,7 @@ export class StartEnd {
  *
  * @public
  */
-export const endTemplate = html<StartEnd>`
+export const endTemplate: ViewTemplate<StartEnd> = html`
     <span part="end" ${ref("endContainer")}>
         <slot
             name="end"
@@ -44,7 +45,7 @@ export const endTemplate = html<StartEnd>`
  *
  * @public
  */
-export const startTemplate = html<StartEnd>`
+export const startTemplate: ViewTemplate<StartEnd> = html`
     <span part="start" ${ref("startContainer")}>
         <slot
             name="start"

@@ -1,17 +1,11 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
+import { attr, customElement, DOM, FASTElement, html, observable } from "@microsoft/fast-element";
 import { expect } from "chai";
-import {
-    attr,
-    customElement,
-    FASTElement,
-    html,
-    DOM,
-    observable,
-} from "@microsoft/fast-element";
-import { uniqueElementName, fixture } from "./fixture";
+import { fixture, uniqueElementName } from "./fixture";
 
 describe("The fixture helper", () => {
     const name = uniqueElementName();
-    const template = html<MyElement>`
+    const template: ViewTemplate<MyElement> = html`
         ${x => x.value}
         <slot></slot>
     `;

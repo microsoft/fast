@@ -1,11 +1,5 @@
-import {
-    attr,
-    Constructable,
-    DOM,
-    emptyArray,
-    FASTElement,
-    observable,
-} from "@microsoft/fast-element";
+import type { Constructable, FASTElement } from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, observable } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**

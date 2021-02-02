@@ -1,11 +1,6 @@
-import {
-    DOM,
-    ElementStyles,
-    FASTElement,
-    Observable,
-    observable,
-} from "@microsoft/fast-element";
-import { CSSCustomPropertyDefinition } from "./behavior";
+import type { FASTElement } from "@microsoft/fast-element";
+import { DOM, ElementStyles, Observable, observable } from "@microsoft/fast-element";
+import type { CSSCustomPropertyDefinition } from "./behavior";
 
 const hostSelector = ":host{}";
 
@@ -96,7 +91,7 @@ abstract class CustomPropertyManagerBase implements CustomPropertyManager {
     /**
      * A queue of additions and deletions. Operations will be queued when customPropertyTarget is null
      */
-    protected queue: Set<Function> = new Set();
+    protected queue: Set<(...args: any[]) => any> = new Set();
 
     /**
      * The CSSStyleDeclaration to which all CSS custom properties are written

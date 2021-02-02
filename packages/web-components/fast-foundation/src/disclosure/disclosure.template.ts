@@ -1,11 +1,12 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html, ref } from "@microsoft/fast-element";
-import { Disclosure } from "./disclosure";
+import type { Disclosure } from "./disclosure";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Disclosure} component.
  * @public
  */
-export const DisclosureTemplate = html<Disclosure>`
+export const DisclosureTemplate: ViewTemplate<Disclosure> = html`
     <details class="disclosure" ${ref("details")}>
         <summary
             class="invoker"

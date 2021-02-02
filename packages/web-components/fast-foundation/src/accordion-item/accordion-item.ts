@@ -51,7 +51,7 @@ export class AccordionItem extends FASTElement {
     /**
      * @internal
      */
-    public clickHandler = (e: MouseEvent) => {
+    public clickHandler = (e: MouseEvent): void => {
         this.expanded = !this.expanded;
         this.change();
     };

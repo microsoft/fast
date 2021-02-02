@@ -1,12 +1,13 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { NumberField } from "./number-field";
+import type { NumberField } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const NumberFieldTemplate = html<NumberField>`
+export const NumberFieldTemplate: ViewTemplate<NumberField> = html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

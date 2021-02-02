@@ -130,7 +130,7 @@ export class Switch extends FormAssociatedSwitch {
     /**
      * @internal
      */
-    public keypressHandler = (e: KeyboardEvent) => {
+    public keypressHandler = (e: KeyboardEvent): void => {
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;
@@ -141,7 +141,7 @@ export class Switch extends FormAssociatedSwitch {
     /**
      * @internal
      */
-    public clickHandler = (e: MouseEvent) => {
+    public clickHandler = (e: MouseEvent): void => {
         if (!this.disabled && !this.readOnly) {
             this.checked = !this.checked;
         }

@@ -12,7 +12,7 @@ export class Breadcrumb extends FASTElement {
      */
     @observable
     public slottedBreadcrumbItems: HTMLElement[];
-    public slottedBreadcrumbItemsChanged() {
+    public slottedBreadcrumbItemsChanged(): void {
         if (this.$fastController.isConnected) {
             if (
                 this.slottedBreadcrumbItems === undefined ||

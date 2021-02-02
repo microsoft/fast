@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { ColumnDefinition, createDataGridRowTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
