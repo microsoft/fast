@@ -1,4 +1,4 @@
-import { inRange } from "lodash-es";
+import inRange from "lodash/inRange";
 import {
     accentBaseColor,
     accentFillActiveDelta,

@@ -1,24 +1,21 @@
-import { STORY_RENDERED } from "@storybook/core-events";
-import addons from "@storybook/addons";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { html } from "@microsoft/fast-element";
-import {
+import type {
     Button,
     ColumnDefinition,
-    DataGrid,
     DataGridCell,
     DataGridRow,
+    DataGrid as DataGridType,
 } from "@microsoft/fast-foundation";
 import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import addons from "@storybook/addons";
+import { STORY_RENDERED } from "@storybook/core-events";
+import "../design-system-provider";
 import DataGridTemplate from "./fixtures/base.html";
-import { FASTDataGrid } from "./";
+import "./index";
 
-// Prevent tree-shaking
-FASTDataGrid;
-FASTDesignSystemProvider;
-
-let defaultGridElement: DataGrid | null = null;
-const defaultRowData: object = newDataRow("default");
+let defaultGridElement: DataGridType | null = null;
+const defaultRowData: Record<string, unknown> = newDataRow("default");
 
 const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
@@ -59,7 +56,7 @@ const customHeaderCellItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
-        defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
+        defaultGridElement = document.getElementById("defaultGrid") as DataGridType;
         reset();
 
         const defaultGridRow: DataGridRow | null = document.getElementById(
@@ -117,104 +114,106 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             };
         }
 
-        const resetButton: Button | null = document.getElementById("btnreset") as Button;
+        const resetButton: Button | null = (document.getElementById(
+            "btnreset"
+        ) as unknown) as Button;
         if (resetButton !== null) {
             resetButton.onclick = reset;
         }
 
-        const defaultColsButton: Button | null = document.getElementById(
+        const defaultColsButton: Button | null = (document.getElementById(
             "btndefaultcols"
-        ) as Button;
+        ) as unknown) as Button;
         if (defaultColsButton !== null) {
             defaultColsButton.onclick = setDefaultCols;
         }
 
-        const templateColsButton: Button | null = document.getElementById(
+        const templateColsButton: Button | null = (document.getElementById(
             "btntemplatecols"
-        ) as Button;
+        ) as unknown) as Button;
         if (templateColsButton !== null) {
             templateColsButton.onclick = setTemplateCols;
         }
 
-        const addRowButton: Button | null = document.getElementById(
+        const addRowButton: Button | null = (document.getElementById(
             "btnaddrow"
-        ) as Button;
+        ) as unknown) as Button;
         if (addRowButton !== null) {
             addRowButton.onclick = addRow;
         }
 
-        const removeRowButton: Button | null = document.getElementById(
+        const removeRowButton: Button | null = (document.getElementById(
             "btnremoverow"
-        ) as Button;
+        ) as unknown) as Button;
         if (removeRowButton !== null) {
             removeRowButton.onclick = removeRow;
         }
 
-        const noHeaderButton: Button | null = document.getElementById(
+        const noHeaderButton: Button | null = (document.getElementById(
             "btnnoheader"
-        ) as Button;
+        ) as unknown) as Button;
         if (noHeaderButton !== null) {
             noHeaderButton.onclick = setNoHeader;
         }
 
-        const defaultHeaderButton: Button | null = document.getElementById(
+        const defaultHeaderButton: Button | null = (document.getElementById(
             "btndefaultheader"
-        ) as Button;
+        ) as unknown) as Button;
         if (defaultHeaderButton !== null) {
             defaultHeaderButton.onclick = setDefaultHeader;
         }
 
-        const stickyHeaderButton: Button | null = document.getElementById(
+        const stickyHeaderButton: Button | null = (document.getElementById(
             "btnstickyheader"
-        ) as Button;
+        ) as unknown) as Button;
         if (stickyHeaderButton !== null) {
             stickyHeaderButton.onclick = setStickyHeader;
         }
 
-        const defaultRowTemplateButton: Button | null = document.getElementById(
+        const defaultRowTemplateButton: Button | null = (document.getElementById(
             "btndefaultrowtemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (defaultRowTemplateButton !== null) {
             defaultRowTemplateButton.onclick = setDefaultRowItemTemplate;
         }
 
-        const customRowTemplateButton: Button | null = document.getElementById(
+        const customRowTemplateButton: Button | null = (document.getElementById(
             "btncustomrowtemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (customRowTemplateButton !== null) {
             customRowTemplateButton.onclick = setCustomRowItemTemplate;
         }
 
-        const defaultCellTemplateButton: Button | null = document.getElementById(
+        const defaultCellTemplateButton: Button | null = (document.getElementById(
             "btndefaultcelltemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (defaultCellTemplateButton !== null) {
             defaultCellTemplateButton.onclick = setDefaultCellItemTemplate;
         }
 
-        const customCellTemplateButton: Button | null = document.getElementById(
+        const customCellTemplateButton: Button | null = (document.getElementById(
             "btncustomcelltemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (customCellTemplateButton !== null) {
             customCellTemplateButton.onclick = setCustomCellItemTemplate;
         }
-        const defaultHeaderCellTemplateButton: Button | null = document.getElementById(
+        const defaultHeaderCellTemplateButton: Button | null = (document.getElementById(
             "btndefaultheadercelltemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (defaultHeaderCellTemplateButton !== null) {
             defaultHeaderCellTemplateButton.onclick = setDefaultHeaderCellItemTemplate;
         }
 
-        const customHeaderCellTemplateButton: Button | null = document.getElementById(
+        const customHeaderCellTemplateButton: Button | null = (document.getElementById(
             "btncustomheadercelltemplate"
-        ) as Button;
+        ) as unknown) as Button;
         if (customHeaderCellTemplateButton !== null) {
             customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
         }
     }
 });
 
-const buttonCellTemplate = html<DataGridCell>`
+const buttonCellTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
             ${x =>
@@ -227,7 +226,7 @@ const buttonCellTemplate = html<DataGridCell>`
     </template>
 `;
 
-const buttonHeaderCellTemplate = html<DataGridCell>`
+const buttonHeaderCellTemplate: ViewTemplate = html<DataGridCell>`
     <template>
         <fast-button
             @click="${x => headerTemplateButtonClick(x)}"
@@ -371,7 +370,7 @@ function cellTemplateButtonClick(cell: DataGridCell): void {
     ) {
         return;
     }
-    const newRowData: object = { ...cell.rowData };
+    const newRowData: Record<string, unknown> = { ...cell.rowData };
     newRowData[cell.columnDefinition.columnDataKey] = "clicked";
 
     const rowIndex: number = defaultGridElement.rowsData.indexOf(cell.rowData);
@@ -388,15 +387,25 @@ function setStickyHeader(): void {
     defaultGridElement.generateHeader = GenerateHeaderOptions.sticky;
 }
 
-function newDataSet(rowCount: number): object[] {
-    const newRows: object[] = [];
+function newDataSet(rowCount: number): Record<string, unknown>[] {
+    const newRows: Record<string, unknown>[] = [];
     for (let i = 0; i <= rowCount; i++) {
         newRows.push(newDataRow(`${i + 1}`));
     }
     return newRows;
 }
 
-function newDataRow(id: string): object {
+function newDataRow(
+    id: string
+): {
+    rowId: string;
+    item1: string;
+    item2: string;
+    item3: string;
+    item4: string;
+    item5: string;
+    item6: string;
+} {
     return {
         rowId: `rowid-${id}`,
         item1: `value 1-${id}`,
@@ -455,7 +464,7 @@ function getFocusTarget(cell: DataGridCell): HTMLElement {
 }
 
 export default {
-    title: "Data grid",
+    title: "Data Grid",
 };
 
-export const base = () => DataGridTemplate;
+export const DataGrid = (): string => DataGridTemplate;

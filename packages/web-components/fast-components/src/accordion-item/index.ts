@@ -25,4 +25,4 @@ export class FASTAccordionItem extends AccordionItem {}
  * Styles for AccordionItem
  * @public
  */
-export const AccordionItemStyles = styles;
+export { AccordionItemStyles } from "./accordion-item.styles";

@@ -24,4 +24,4 @@ export class FASTAccordion extends Accordion {}
  * Styles for Accordion
  * @public
  */
-export const AccordionStyles = styles;
+export { AccordionStyles } from "./accordion.styles";

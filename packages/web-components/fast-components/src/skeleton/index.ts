@@ -22,4 +22,4 @@ export class FASTSkeleton extends Skeleton {}
  * Styles for Skeleton
  * @public
  */
-export const SkeletonStyles = styles;
+export { SkeletonStyles } from "./skeleton.styles";

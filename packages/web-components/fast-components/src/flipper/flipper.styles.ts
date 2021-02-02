@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -19,7 +20,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const FlipperStyles = css`
+export const FlipperStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);
         height: calc(${heightNumber} * 1px);
@@ -52,7 +53,7 @@ export const FlipperStyles = css`
     .previous {
         position: relative;
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

@@ -22,4 +22,4 @@ export class FASTProgress extends BaseProgress {}
  * Styles for Progress
  * @public
  */
-export const ProgressStyles = styles;
+export { ProgressStyles } from "./progress.styles";

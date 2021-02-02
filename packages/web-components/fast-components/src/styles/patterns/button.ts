@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -29,7 +30,7 @@ import {
 /**
  * @internal
  */
-export const BaseButtonStyles = css`
+export const BaseButtonStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -127,13 +128,13 @@ export const BaseButtonStyles = css`
               color: ${SystemColors.ButtonText};
               fill: currentColor;
             }
-    
+
             :host(:hover) {
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
               color: ${SystemColors.HighlightText};
             }
-    
+
             .control:${focusVisible} {
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
@@ -141,12 +142,12 @@ export const BaseButtonStyles = css`
               box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${SystemColors.ButtonText};
               color: ${SystemColors.HighlightText};
             }
-    
+
             .control:hover,
             :host([appearance="outline"]) .control:hover {
               border-color: ${SystemColors.ButtonText};
             }
-    
+
             :host([disabled]),
             :host([disabled]) .control {
                 forced-color-adjust: none;
@@ -156,11 +157,11 @@ export const BaseButtonStyles = css`
                 cursor: ${disabledCursor};
                 opacity: 1;
             }
-    
+
             :host([href]) {
               color: ${SystemColors.LinkText};
             }
-    
+
             :host([href]) .control:hover,
             :host(:hover[href]),
             :host([href]) .control:${focusVisible}{
@@ -178,7 +179,7 @@ export const BaseButtonStyles = css`
 /**
  * @internal
  */
-export const AccentButtonStyles = css`
+export const AccentButtonStyles: ElementStyles = css`
     :host([appearance="accent"]) {
         background: ${accentFillRestBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
@@ -255,7 +256,7 @@ export const AccentButtonStyles = css`
 /**
  * @internal
  */
-export const HypertextStyles = css`
+export const HypertextStyles: ElementStyles = css`
     :host([appearance="hypertext"]) {
         font-size: inherit;
         line-height: inherit;
@@ -321,7 +322,7 @@ export const HypertextStyles = css`
 /**
  * @internal
  */
-export const LightweightButtonStyles = css`
+export const LightweightButtonStyles: ElementStyles = css`
     :host([appearance="lightweight"]) {
         background: transparent;
         color: ${accentForegroundRestBehavior.var};
@@ -418,7 +419,7 @@ export const LightweightButtonStyles = css`
 /**
  * @internal
  */
-export const OutlineButtonStyles = css`
+export const OutlineButtonStyles: ElementStyles = css`
     :host([appearance="outline"]) {
         background: transparent;
         border-color: ${accentFillRestBehavior.var};
@@ -477,7 +478,7 @@ export const OutlineButtonStyles = css`
 /**
  * @internal
  */
-export const StealthButtonStyles = css`
+export const StealthButtonStyles: ElementStyles = css`
     :host([appearance="stealth"]) {
         background: ${neutralFillStealthRestBehavior.var};
     }

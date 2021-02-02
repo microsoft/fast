@@ -1,13 +1,9 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import "../design-system-provider";
 import Examples from "./fixtures/base.html";
-import { FASTSliderLabel } from ".";
-
-// Prevent tree-shaking
-FASTSliderLabel;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
-    title: "SliderLabel",
+    title: "Slider Label",
 };
 
-export const SliderLabel = () => Examples;
+export const SliderLabel = (): string => Examples;

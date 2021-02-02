@@ -54,4 +54,4 @@ export class FASTNumberField extends NumberField {
  * Styles for NumberField
  * @public
  */
-export const NumberFieldStyles = styles;
+export { NumberFieldStyles } from "./number-field.styles";

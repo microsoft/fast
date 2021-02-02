@@ -22,4 +22,4 @@ export class FASTDialog extends Dialog {}
  * Styles for Dialog
  * @public
  */
-export const DialogStyles = styles;
+export { DialogStyles } from "./dialog.styles";

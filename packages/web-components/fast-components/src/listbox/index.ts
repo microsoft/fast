@@ -23,4 +23,4 @@ export class FASTListbox extends Listbox {}
  * Styles for Listbox
  * @public
  */
-export const ListboxStyles = styles;
+export { ListboxStyles } from "./listbox.styles";

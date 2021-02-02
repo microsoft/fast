@@ -1,7 +1,10 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "temp"
+        "declaration": false,
+        "declarationDir": null,
+        "outDir": "temp",
+        "module": "ESNext"
     },
     "include": ["src/**/*.definition.ts"]
 }

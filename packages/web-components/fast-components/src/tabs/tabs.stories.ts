@@ -1,17 +1,11 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import ".";
+import "../design-system-provider";
+import "../tab";
+import "../tab-panel";
 import Examples from "./fixtures/base.html";
-import { FASTTab } from "../tab";
-import { FASTTabPanel } from "../tab-panel";
-import { FASTTabs } from ".";
-
-// Prevent tree-shaking
-FASTTab;
-FASTTabPanel;
-FASTTabs;
-FASTDesignSystemProvider;
 
 export default {
     title: "Tabs",
 };
 
-export const Base = () => Examples;
+export const Tabs = (): string => Examples;

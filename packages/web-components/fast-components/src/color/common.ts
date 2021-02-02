@@ -7,7 +7,7 @@ import {
     parseColorWebRGB,
     rgbToRelativeLuminance,
 } from "@microsoft/fast-colors";
-import { memoize } from "lodash-es";
+import memoize from "lodash/memoize";
 import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 
 /**

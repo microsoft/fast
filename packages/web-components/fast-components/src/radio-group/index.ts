@@ -22,4 +22,4 @@ export class FASTRadioGroup extends RadioGroup {}
  * Styles for RadioGroup
  * @public
  */
-export const RadioGroupStyles = styles;
+export { RadioGroupStyles } from "./radio-group.styles";

@@ -22,4 +22,4 @@ export class FASTDivider extends Divider {}
  * Styles for Divider
  * @public
  */
-export const DividerStyles = styles;
+export { DividerStyles } from "./divider.styles";

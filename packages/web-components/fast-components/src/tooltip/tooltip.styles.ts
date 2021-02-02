@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
@@ -14,7 +15,12 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TooltipStyles = css`
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTTooltip|`<fast-tooltip>` component}.
+ *
+ * @public
+ */
+export const TooltipStyles: ElementStyles = css`
     :host {
         contain: layout;
         overflow: visible;
@@ -36,8 +42,8 @@ export const TooltipStyles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         white-space: nowrap;
-        // TODO: a mechanism to manage z-index across components
-        // https://github.com/microsoft/fast/issues/3813
+        ${/* TODO: a mechanism to manage z-index across components
+               https://github.com/microsoft/fast/issues/3813 */ ""}
         z-index: 10000;
     }
 

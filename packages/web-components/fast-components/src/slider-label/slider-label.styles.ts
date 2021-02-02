@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -7,7 +8,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const horizontalSliderStyles = css`
+export const horizontalSliderStyles: ElementStyles = css`
     :host {
         align-self: start;
         grid-row: 2;
@@ -24,7 +25,7 @@ export const horizontalSliderStyles = css`
     }
 `;
 
-export const verticalSliderStyles = css`
+export const verticalSliderStyles: ElementStyles = css`
     :host {
         justify-self: start;
         grid-column: 2;
@@ -48,7 +49,7 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const SliderLabelStyles = css`
+export const SliderLabelStyles: ElementStyles = css`
     ${display("block")} :host {
         font-family: var(--body-font);
         color: ${neutralForegroundRestBehavior.var};

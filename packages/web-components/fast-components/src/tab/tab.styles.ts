@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -25,7 +26,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles";
 
-export const TabStyles = css`
+export const TabStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);

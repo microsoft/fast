@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -23,7 +24,7 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const OptionStyles = css`
+export const OptionStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         font-family: var(--body-font);
         border-radius: calc(var(--corner-radius) * 1px);

@@ -22,4 +22,4 @@ export class FASTCheckbox extends Checkbox {}
  * Styles for Checkbox
  * @public
  */
-export const CheckboxStyles = styles;
+export { CheckboxStyles } from "./checkbox.styles";

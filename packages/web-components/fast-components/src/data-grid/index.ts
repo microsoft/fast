@@ -29,7 +29,7 @@ export class FASTDataGrid extends DataGrid {}
  * Styles for DataGrid
  * @public
  */
-export const DataGridStyles = gridStyles;
+export { DataGridStyles } from "./data-grid.styles";
 
 /**
  * The FAST Data Grid Row Element.
@@ -49,7 +49,7 @@ export class FASTDataGridRow extends DataGridRow {}
  * Styles for DataGrid row
  * @public
  */
-export const DataGridRowStyles = rowStyles;
+export { DataGridRowStyles } from "./data-grid-row.styles";
 
 /**
  * The FAST Data Grid Cell Element.
@@ -69,4 +69,4 @@ export class FASTDataGridCell extends DataGridCell {}
  * Styles for DataGrid cell
  * @public
  */
-export const DataGridCellStyles = cellStyles;
+export { DataGridCellStyles } from "./data-grid-cell.styles";

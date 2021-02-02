@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -22,7 +23,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const RadioStyles = css`
+export const RadioStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + var(--design-unit));
         align-items: center;

@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     focusVisible,
@@ -15,7 +16,18 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const AccordionItemStyles = css`
+/**
+ * Styles for the FAST Accoridon Item. Implements:
+ * - {@link @microsoft/fast-components#neutralDividerRestBehavior}
+ * - {@link @microsoft/fast-components#neutralForegroundActiveBehavior}
+ * - {@link @microsoft/fast-components#neutralForegroundFocusBehavior}
+ * - {@link @microsoft/fast-components#neutralForegroundHoverBehavior}
+ * - {@link @microsoft/fast-components#neutralForegroundRestBehavior}
+ * - {@link @microsoft/fast-components#neutralFocusBehavior}
+ *
+ * @public
+ */
+export const AccordionItemStyles: ElementStyles = css`
     ${display("flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
@@ -24,7 +36,7 @@ export const AccordionItemStyles = css`
         line-height: var(--type-ramp-minus-1-line-height);
         border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
-    
+
     .region {
         display: none;
         padding: calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
@@ -102,7 +114,7 @@ export const AccordionItemStyles = css`
     slot[name="expanded-icon"] {
         display: none;
     }
-    
+
     :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }

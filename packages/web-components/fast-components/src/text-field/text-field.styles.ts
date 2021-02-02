@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -20,7 +21,12 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TextFieldStyles = css`
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTTextField|`<fast-text-field>` component}.
+ *
+ * @public
+ */
+export const TextFieldStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -84,7 +90,7 @@ export const TextFieldStyles = css`
 
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

@@ -22,4 +22,4 @@ export class FASTSlider extends Slider {}
  * Styles for Slider
  * @public
  */
-export const SliderStyles = styles;
+export { SliderStyles } from "./slider.styles";

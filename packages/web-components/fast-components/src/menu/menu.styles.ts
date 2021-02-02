@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
     elevation,
@@ -6,7 +7,7 @@ import {
     neutralLayerFloatingBehavior,
 } from "../styles/index";
 
-export const MenuStyles = css`
+export const MenuStyles: ElementStyles = css`
     ${display("block")} :host {
         --elevation: 11;
         background: ${neutralLayerFloatingBehavior.var};

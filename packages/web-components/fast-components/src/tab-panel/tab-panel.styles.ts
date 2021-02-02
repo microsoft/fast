@@ -1,7 +1,8 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
-export const TabPanelStyles = css`
+export const TabPanelStyles: ElementStyles = css`
     ${display("flex")} :host {
         box-sizing: border-box;
         font-size: var(--type-ramp-base-font-size);

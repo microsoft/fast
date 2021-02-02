@@ -22,4 +22,4 @@ export class FASTMenu extends Menu {}
  * Styles for Menu
  * @public
  */
-export const MenuStyles = styles;
+export { MenuStyles } from "./menu.styles";

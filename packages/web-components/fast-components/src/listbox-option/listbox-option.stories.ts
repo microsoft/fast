@@ -3,9 +3,9 @@ import Examples from "./fixtures/base.html";
 import "./index";
 
 export default {
-    title: "Option",
+    title: "Listbox Option",
     decorators: [
-        Story => `
+        (Story): string => `
             <fast-design-system-provider use-defaults>
                 ${Story()}
             </fast-design-system-provider>
@@ -13,4 +13,4 @@ export default {
     ],
 };
 
-export const ListboxOption = () => Examples;
+export const ListboxOption = (): string => Examples;

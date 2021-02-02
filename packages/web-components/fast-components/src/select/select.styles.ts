@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -9,7 +10,6 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { elevation } from "../styles/elevation";
 import {
     accentFillActiveBehavior,
-    accentFillFocusBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
@@ -26,7 +26,7 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const SelectStyles = css`
+export const SelectStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --elevation: 14;
         background: ${neutralFillInputRestBehavior.var};

@@ -37,4 +37,4 @@ export class FASTSliderLabel extends SliderLabel {
  * Styles for SliderLabel
  * @public
  */
-export const SliderLabelStyles = styles;
+export { SliderLabelStyles } from "./slider-label.styles";

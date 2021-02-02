@@ -78,4 +78,4 @@ export class FASTAnchor extends Anchor {
  * Styles for Anchor
  * @public
  */
-export const AnchorStyles = styles;
+export { AnchorStyles } from "./anchor.styles";

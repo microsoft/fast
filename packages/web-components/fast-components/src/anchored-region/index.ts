@@ -25,4 +25,4 @@ export class FASTAnchoredRegion extends AnchoredRegion {}
  * Styles for AnchoredRegion
  * @public
  */
-export const AnchoredRegionStyles = styles;
+export { AnchoredRegionStyles } from "./anchored-region.styles";

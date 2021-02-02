@@ -22,4 +22,4 @@ export class FASTFlipper extends Flipper {}
  * Styles for Flipper
  * @public
  */
-export const FlipperStyles = styles;
+export { FlipperStyles } from "./flipper.styles";

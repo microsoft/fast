@@ -22,4 +22,4 @@ export class FASTTab extends Tab {}
  * Styles for Tab
  * @public
  */
-export const TabStyles = styles;
+export { TabStyles } from "./tab.styles";

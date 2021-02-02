@@ -1,13 +1,9 @@
-import { STORY_RENDERED } from "@storybook/core-events";
-import addons from "@storybook/addons";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import addons from "@storybook/addons";
+import { STORY_RENDERED } from "@storybook/core-events";
 import { FASTAnchoredRegion } from "../anchored-region";
+import "../design-system-provider";
 import AnchoreRegionTemplate from "./fixtures/base.html";
-
-// Prevent tree-shaking
-FASTAnchoredRegion;
-FASTDesignSystemProvider;
 
 let scalingViewportPreviousXValue: number = 250;
 let scalingViewportPreviousYValue: number = 250;
@@ -184,7 +180,7 @@ function setButtonActions(): void {
 }
 
 export default {
-    title: "Anchored region",
+    title: "Anchored Region",
 };
 
-export const base = () => AnchoreRegionTemplate;
+export const AnchoredRegion = (): string => AnchoreRegionTemplate;

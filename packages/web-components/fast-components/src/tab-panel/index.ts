@@ -22,4 +22,4 @@ export class FASTTabPanel extends TabPanel {}
  * Styles for TabPanel
  * @public
  */
-export const TabPanelStyles = styles;
+export { TabPanelStyles } from "./tab-panel.styles";

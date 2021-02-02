@@ -22,4 +22,4 @@ export class FASTRadio extends Radio {}
  * Styles for Radio
  * @public
  */
-export const RadioStyles = styles;
+export { RadioStyles } from "./radio.styles";

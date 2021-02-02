@@ -109,4 +109,4 @@ export class FASTCard extends DesignSystemProvider
  * Styles for Card
  * @public
  */
-export const CardStyles = styles;
+export { CardStyles } from "./card.styles";

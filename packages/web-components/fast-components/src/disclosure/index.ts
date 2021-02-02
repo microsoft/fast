@@ -90,4 +90,4 @@ export class FASTDisclosure extends Disclosure {
  * Styles for Disclosure
  * @public
  */
-export const DisclosureStyles = styles;
+export { DisclosureStyles } from "./disclosure.styles";

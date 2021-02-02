@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -16,7 +17,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SliderStyles = css`
+export const SliderStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;
     }
@@ -53,7 +54,7 @@ export const SliderStyles = css`
     :host(:${focusVisible}) .thumb-cursor {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
     }
-    
+
     .thumb-container {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
@@ -152,7 +153,7 @@ export const SliderStyles = css`
             :host(:${focusVisible}) .thumb-cursor {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
         `
     )

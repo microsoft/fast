@@ -25,4 +25,4 @@ export class FASTProgressRing extends BaseProgress {}
  * Styles for ProgressRing
  * @public
  */
-export const ProgressRingStyles = styles;
+export { ProgressRingStyles } from "./progress-ring.styles";

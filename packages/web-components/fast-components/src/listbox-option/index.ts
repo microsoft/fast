@@ -26,4 +26,4 @@ export class FASTOption extends ListboxOption {}
  * Styles for Option
  * @public
  */
-export const OptionStyles = styles;
+export { OptionStyles } from "./listbox-option.styles";

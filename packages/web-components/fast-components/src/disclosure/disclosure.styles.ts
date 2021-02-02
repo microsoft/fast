@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
@@ -9,7 +10,7 @@ import {
     accentForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const DisclosureStyles = css`
+export const DisclosureStyles: ElementStyles = css`
     .disclosure {
         transition: height 0.35s;
     }

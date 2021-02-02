@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -20,7 +21,12 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TextAreaStyles = css`
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTTextArea|`<fast-text-area>` component}.
+ *
+ * @public
+ */
+export const TextAreaStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;

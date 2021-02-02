@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
@@ -8,7 +9,7 @@ import {
     StealthButtonStyles,
 } from "../styles/index";
 
-export const AnchorStyles = css`
+export const AnchorStyles: ElementStyles = css`
     ${BaseButtonStyles}
     ${AccentButtonStyles}
     ${HypertextStyles}

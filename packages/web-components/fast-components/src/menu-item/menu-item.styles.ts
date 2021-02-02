@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -17,7 +18,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
-export const MenuItemStyles = css`
+export const MenuItemStyles: ElementStyles = css`
     ${display("grid")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -94,7 +95,7 @@ export const MenuItemStyles = css`
 
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

@@ -1,9 +1,11 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
+import type { CSSCustomPropertyBehavior } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { direction, FASTDesignSystem } from "../fast-design-system";
+import { direction } from "../fast-design-system";
+import type { FASTDesignSystem } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider";
 /**
- * Behavior to resolve and make available the inline-start CSS custom property.
+ * Behavior to resolve and make available the `inline-start` CSS custom property.
  *
  * @remarks
  * Replaces the inline-start value for the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/float | float} property
@@ -22,7 +24,7 @@ import { FASTDesignSystemProvider } from "../design-system-provider";
  * `.withBehaviors(inlineStartBehavior)
  * ```
  */
-export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
+export const inlineStartBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "inline-start",
     (designSystem: FASTDesignSystem) =>
         direction(designSystem) === Direction.ltr ? "left" : "right",

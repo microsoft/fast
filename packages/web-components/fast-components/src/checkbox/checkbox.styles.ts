@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -23,7 +24,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const CheckboxStyles = css`
+export const CheckboxStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;

@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     focusVisible,
@@ -13,7 +14,7 @@ import {
 } from "../styles/index";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 
-export const BreadcrumbItemStyles = css`
+export const BreadcrumbItemStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         background: transparent;
         box-sizing: border-box;
@@ -98,7 +99,7 @@ export const BreadcrumbItemStyles = css`
 
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
