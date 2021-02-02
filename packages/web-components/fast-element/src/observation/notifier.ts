@@ -19,7 +19,7 @@ export interface Notifier {
     /**
      * The source object that this notifier provides change notification for.
      */
-    readonly source: any;
+    readonly source: unknown;
 
     /**
      * Notifies all subscribers, based on the args.
@@ -106,7 +106,7 @@ export class SubscriberSet implements Notifier {
      * @param source - The object source that subscribers will receive notifications from.
      * @param initialSubscriber - An initial subscriber to changes.
      */
-    public constructor(source: any, initialSubscriber?: Subscriber) {
+    public constructor(source: unknown, initialSubscriber?: Subscriber) {
         this.source = source;
         this.sub1 = initialSubscriber;
     }
@@ -164,7 +164,7 @@ export class SubscriberSet implements Notifier {
      * Notifies all subscribers.
      * @param args - Data passed along to subscribers during notification.
      */
-    public notify(args: any): void {
+    public notify(args: unknown): void {
         const sub1 = this.sub1;
         const sub2 = this.sub2;
         const source = this.source;
@@ -196,7 +196,7 @@ export class PropertyChangeNotifier implements Notifier {
      * Creates an instance of PropertyChangeNotifier for the specified source.
      * @param source - The object source that subscribers will receive notifications from.
      */
-    public constructor(source: any) {
+    public constructor(source: unknown) {
         this.source = source;
     }
 

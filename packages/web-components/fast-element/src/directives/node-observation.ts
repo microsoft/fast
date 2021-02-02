@@ -1,5 +1,6 @@
 import { Accessor, Observable } from "../observation/observable";
 import { emptyArray } from "../interfaces";
+import type { ElementsFilter } from "../interfaces";
 import { Behavior } from "./behavior";
 
 /**
@@ -19,7 +20,7 @@ export interface NodeBehaviorOptions<T = any> {
      * @param index - The index of the node within the array.
      * @param array - The Node array that is being filtered.
      */
-    filter?(value: Node, index: number, array: Node[]): boolean;
+    filter?: ElementsFilter;
 }
 
 /**
@@ -27,7 +28,7 @@ export interface NodeBehaviorOptions<T = any> {
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(selector?: string) {
+export function elements(selector?: string): ElementsFilter {
     if (selector) {
         return function (value: Node, index: number, array: Node[]): boolean {
             return value.nodeType === 1 && (value as HTMLElement).matches(selector);
@@ -75,7 +76,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
      */
-    public bind(source: any): void {
+    public bind(source: Parameters<typeof Reflect.getPrototypeOf>[0]): void {
         const name = this.options.property;
         this.shouldUpdate = Observable.getAccessors(source).some(
             (x: Accessor) => x.name === name
@@ -106,7 +107,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
         this.updateTarget(this.computeNodes());
     }
 
-    private computeNodes() {
+    private computeNodes(): Node[] {
         let nodes = this.getNodes();
 
         if (this.options.filter !== void 0) {

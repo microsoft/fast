@@ -1,12 +1,12 @@
 import { ElementViewTemplate } from "./template";
-import { ElementStyles, ComposableStyles } from "./styles";
+import { ComposableStyles, ElementStyles } from "./styles";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 import { Observable } from "./observation/observable";
 import { Mutable } from "./interfaces";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-const fastDefinitions = new Map<Function, FASTElementDefinition>();
+const fastDefinitions = new Map<typeof Object.constructor, FASTElementDefinition>();
 
 /**
  * Represents metadata configuration for a custom element.
@@ -48,7 +48,7 @@ export interface PartialFASTElementDefinition {
  * Defines metadata for a FASTElement.
  * @public
  */
-export class FASTElementDefinition<TType extends Function = Function> {
+export class FASTElementDefinition<TType extends typeof Object.constructor = any> {
     private observedAttributes: string[];
 
     /**
@@ -193,6 +193,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Gets the element definition associated with the specified type.
      * @param type - The custom element type to retrieve the definition for.
      */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     static forType<TType extends Function>(
         type: TType
     ): FASTElementDefinition | undefined {

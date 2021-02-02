@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior } from "./repeat";
-import { html } from "../template";
+import { html, ViewTemplate } from "../template";
 import { defaultExecutionContext, observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { toHTML } from "../__test__/helpers";
@@ -30,11 +30,11 @@ describe("The repeat", () => {
     });
 
     context("behavior", () => {
-        const itemTemplate = html<Item>`${x => x.name}`;
-        const altItemTemplate = html<Item>`*${x => x.name}`;
+        const itemTemplate: ViewTemplate = html<Item>`${x => x.name}`;
+        const altItemTemplate: ViewTemplate = html<Item>`*${x => x.name}`;
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const zeroThroughTen = [0].concat(oneThroughTen);
-        const wrappedItemTemplate = html<Item>`<div>${x => x.name}</div>`;
+        const wrappedItemTemplate: ViewTemplate = html<Item>`<div>${x => x.name}</div>`;
 
         interface Item {
             name: string;
@@ -270,7 +270,7 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`renders grandparent values from nested arrays of size ${size}`, async () => {
-                const deepItemTemplate = html<Item>`
+                const deepItemTemplate: ViewTemplate = html<Item>`
                     parent-${x => x.name}${repeat(
                         x => x.items!,
                         html<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`

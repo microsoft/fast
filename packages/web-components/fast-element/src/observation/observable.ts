@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
+import { Notifier, PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier";
 
-const volatileRegex = /(\:|\&\&|\|\||if)/;
+const volatileRegex = /(:|&&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: BindingObserverImplementation | undefined = void 0;
@@ -137,7 +137,10 @@ export const Observable = Object.freeze({
      * @param nameOrAccessor - The name of the property to define as observable;
      * or a custom accessor that specifies the property name and accessor implementation.
      */
-    defineProperty(target: {}, nameOrAccessor: string | Accessor): void {
+    defineProperty(
+        target: Parameters<typeof Reflect.defineProperty>[0],
+        nameOrAccessor: string | Accessor
+    ): void {
         if (typeof nameOrAccessor === "string") {
             nameOrAccessor = new DefaultObservableAccessor(nameOrAccessor);
         }
@@ -160,7 +163,7 @@ export const Observable = Object.freeze({
      * including its prototype chain.
      * @param target - The target object to search for accessor on.
      */
-    getAccessors(target: {}): Accessor[] {
+    getAccessors(target: Parameters<typeof Reflect.getPrototypeOf>[0]): Accessor[] {
         let accessors = accessorLookup.get(target);
 
         if (accessors === void 0) {
@@ -224,7 +227,10 @@ const queueUpdate = DOM.queueUpdate;
  * @param nameOrAccessor - The property name or accessor to define the observable as.
  * @public
  */
-export function observable(target: {}, nameOrAccessor: string | Accessor): void {
+export function observable(
+    target: Parameters<typeof Reflect.defineProperty>[0],
+    nameOrAccessor: string | Accessor
+): void {
     Observable.defineProperty(target, nameOrAccessor);
 }
 
@@ -235,9 +241,10 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
  * @param name - The existing descriptor.
  * @public
  */
-export function volatile(target: {}, name, descriptor) {
+/* eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type */
+export function volatile(target: any, name: any, descriptor: any) {
     return Object.assign({}, descriptor, {
-        get: function (this: any) {
+        get(this: any) {
             trackVolatile();
             return descriptor.get!.apply(this);
         },
@@ -357,6 +364,7 @@ interface SubscriptionRecord {
  * Enables evaluation of and subscription to a binding.
  * @public
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**

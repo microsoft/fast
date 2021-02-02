@@ -19,15 +19,15 @@ export class RefBehavior implements Behavior {
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
      */
-    public bind(source: any): void {
+    public bind(source: Record<string, unknown>): void {
         source[this.propertyName] = this.target;
     }
 
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     /**
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
      */
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     public unbind(): void {}
 }
 

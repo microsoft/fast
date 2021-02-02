@@ -117,7 +117,7 @@ export class AttributeDefinition implements Accessor {
     /**
      * The class constructor that owns this attribute.
      */
-    public readonly Owner: Function;
+    public readonly Owner: typeof Object.constructor;
 
     /**
      * The name of the property associated with the attribute.
@@ -150,7 +150,7 @@ export class AttributeDefinition implements Accessor {
      * to convert values to and from a DOM string.
      */
     public constructor(
-        Owner: Function,
+        Owner: typeof Object.constructor,
         name: string,
         attribute: string = name.toLowerCase(),
         mode: AttributeMode = "reflect",
@@ -175,7 +175,7 @@ export class AttributeDefinition implements Accessor {
      * @param source - The source element to access.
      * @param value - The value to set the attribute/property to.
      */
-    public setValue(source: HTMLElement, newValue: any): void {
+    public setValue(source: HTMLElement, newValue: unknown): void {
         const oldValue = source[this.fieldName];
         const converter = this.converter;
 
@@ -206,7 +206,7 @@ export class AttributeDefinition implements Accessor {
     }
 
     /** @internal */
-    public onAttributeChangedCallback(element: HTMLElement, value: any): void {
+    public onAttributeChangedCallback(element: HTMLElement, value: unknown): void {
         if (this.guards.has(element)) {
             return;
         }
@@ -254,7 +254,7 @@ export class AttributeDefinition implements Accessor {
      * @internal
      */
     public static collect(
-        Owner: Function,
+        Owner: typeof Object.constructor,
         ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]
     ): ReadonlyArray<AttributeDefinition> {
         const attributes: AttributeDefinition[] = [];
@@ -298,7 +298,7 @@ export class AttributeDefinition implements Accessor {
  */
 export function attr(
     config?: DecoratorAttributeConfiguration
-): (target: {}, property: string) => void;
+): (target: unknown, property: string) => void;
 
 /**
  * Decorator:  Specifies an HTML attribute.
@@ -306,14 +306,14 @@ export function attr(
  * @param prop - The property name to be associated with the attribute.
  * @public
  */
-export function attr(target: {}, prop: string): void;
+export function attr(target: unknown, prop: string): void;
 export function attr(
-    configOrTarget?: DecoratorAttributeConfiguration | {},
+    configOrTarget?: DecoratorAttributeConfiguration | Record<string, unknown>,
     prop?: string
-): void | ((target: {}, property: string) => void) {
+): void | ((target: unknown, property: string) => void) {
     let config: AttributeConfiguration;
 
-    function decorator($target: {}, $prop: string): void {
+    function decorator($target: Record<string, unknown>, $prop: string): void {
         if (arguments.length > 1) {
             // Non invocation:
             // - @attr

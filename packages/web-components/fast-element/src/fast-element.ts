@@ -114,7 +114,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
      * @param nameOrDef - The name of the element to define or a definition object
      * that describes the element to define.
      */
-    define<TType extends Function>(
+    define<TType extends typeof Object.constructor = any>(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): TType {
@@ -129,8 +129,8 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
  * @public
  */
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
-    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function (type: Function) {
+    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types */
+    return function (type: typeof Object.constructor) {
         new FASTElementDefinition(type, nameOrDef).define();
     };
 }

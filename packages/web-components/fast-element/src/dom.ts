@@ -1,5 +1,5 @@
 import { Callable } from "./interfaces";
-import { TrustedTypesPolicy, $global } from "./platform";
+import { $global, TrustedTypesPolicy } from "./platform";
 
 const updateQueue = [] as Callable[];
 

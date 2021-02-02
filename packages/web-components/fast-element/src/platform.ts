@@ -41,7 +41,11 @@ declare const global: any;
  * for browsers that don't yet support the spec.
  * @public
  */
-export const $global: Global = (function () {
+export const $global = (function ():
+    | typeof globalThis
+    | NodeJS.Global
+    | (Window & typeof globalThis)
+    | Record<string, unknown> {
     if (typeof globalThis !== "undefined") {
         // We're running in a modern environment.
         return globalThis;
@@ -69,12 +73,13 @@ export const $global: Global = (function () {
         return new Function("return this")();
     } catch {
         // If all fails, give up and create an object.
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return {};
     }
-})();
+})() as Global;
 
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
-    $global.trustedTypes = { createPolicy: (n, r) => r };
+    $global.trustedTypes = {
+        createPolicy: (n: string, r: TrustedTypesPolicy): TrustedTypesPolicy => r,
+    };
 }

@@ -68,7 +68,7 @@ describe("The binding directive", () => {
     context("when binding template content", () => {
         it("initially inserts a view based on the template", () => {
             const { behavior, parentNode } = contentBinding();
-            const template = html<Model>`This is a template. ${x => x.knownValue}`;
+            const template: ViewTemplate = html<Model>`This is a template. ${x => x.knownValue}`;
             const model = new Model(template);
 
             behavior.bind(model, defaultExecutionContext);
@@ -133,7 +133,7 @@ describe("The binding directive", () => {
 
             expect(toHTML(parentNode)).to.equal(`This is a template. value`);
 
-            const newTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
+            const newTemplate: ViewTemplate = html<Model>`This is a new template ${x => x.knownValue}`;
             model.value = newTemplate;
 
             await DOM.nextUpdate();

@@ -51,7 +51,7 @@ export type ElementStyleFactory = (
  * @public
  */
 export abstract class ElementStyles {
-    private targets = new WeakSet<StyleTarget>();
+    private targets: WeakSet<StyleTarget> = new WeakSet();
 
     /** @internal */
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
@@ -102,20 +102,21 @@ export abstract class ElementStyles {
         return styleLookup.get(key) || null;
     }
 
-    /* eslint-disable @typescript-eslint/explicit-function-return-type */
     /**
      * Create ElementStyles from ComposableStyles.
      */
-    public static readonly create: ElementStyleFactory = (() => {
+    public static readonly create: ElementStyleFactory = ((): ((
+        styles: ComposableStyles[]
+    ) => AdoptedStyleSheetsStyles | StyleElementStyles) => {
         if (DOM.supportsAdoptedStyleSheets) {
             const styleSheetCache = new Map();
-            return (styles: ComposableStyles[]) =>
+            return (styles: ComposableStyles[]): AdoptedStyleSheetsStyles =>
                 new AdoptedStyleSheetsStyles(styles, styleSheetCache);
         }
 
-        return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
+        return (styles: ComposableStyles[]): StyleElementStyles =>
+            new StyleElementStyles(styles);
     })();
-    /* eslint-enable @typescript-eslint/explicit-function-return-type */
 }
 
 function reduceStyles(
@@ -244,11 +245,11 @@ export class StyleElementStyles extends ElementStyles {
         super.removeStylesFrom(target);
     }
 
-    public isAttachedTo(target: StyleTarget) {
+    public isAttachedTo(target: StyleTarget): boolean {
         return super.isAttachedTo(this.normalizeTarget(target));
     }
 
-    private normalizeTarget(target: StyleTarget) {
+    private normalizeTarget(target: StyleTarget): HTMLElement | StyleTarget {
         return target === document ? document.body : target;
     }
 }

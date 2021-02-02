@@ -9,7 +9,7 @@ export type Callable = typeof Function.prototype.call | { call(): void };
  *
  * @public
  */
-export type Constructable<T = {}> = {
+export type Constructable<T = unknown> = {
     new (...args: any[]): T;
 };
 
@@ -29,3 +29,9 @@ export type Mutable<T> = {
  * @internal
  */
 export const emptyArray = Object.freeze([]);
+
+/**
+ * Elements filter function signature.
+ * @public
+ */
+export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;

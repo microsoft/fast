@@ -204,7 +204,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property name when used with an expression`, () => {
-        const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
+        const template: ViewTemplate = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
         expect(template.html).to.equal(
@@ -216,7 +216,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property name when used with a binding`, () => {
-        const template = html<Model>`<my-element :someAttribute=${new BindingDirective(x => x.value)}></my-element>`;
+        const template: ViewTemplate = html<Model>`<my-element :someAttribute=${new BindingDirective(x => x.value)}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
         expect(template.html).to.equal(
@@ -235,7 +235,7 @@ describe(`The html tag template helper`, () => {
             }
         }
 
-        const template = html<Model>`<my-element :someAttribute=${new TestDirective()}></my-element>`;
+        const template: ViewTemplate = html<Model>`<my-element :someAttribute=${new TestDirective()}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
         expect(template.html).to.equal(

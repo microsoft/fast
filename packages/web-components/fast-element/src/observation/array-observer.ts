@@ -1,6 +1,6 @@
 import { DOM } from "../dom";
 import { Observable } from "./observable";
-import { SubscriberSet, Notifier } from "./notifier";
+import { Notifier, SubscriberSet } from "./notifier";
 import {
     calcSplices,
     newSplice,
@@ -90,8 +90,6 @@ class ArrayObserver extends SubscriberSet {
     }
 }
 
-/* eslint-disable prefer-rest-params */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /**
  * Enables the array observation mechanism.
  * @remarks
@@ -101,6 +99,7 @@ class ArrayObserver extends SubscriberSet {
  * @public
  */
 export function enableArrayObservation(): void {
+    /* eslint-disable prefer-rest-params */
     if (arrayObservationEnabled) {
         return;
     }
@@ -122,7 +121,7 @@ export function enableArrayObservation(): void {
     const splice = arrayProto.splice;
     const unshift = arrayProto.unshift;
 
-    arrayProto.pop = function () {
+    arrayProto.pop = function (): any {
         const notEmpty = this.length > 0;
         const methodCallResult = pop.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -134,7 +133,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.push = function () {
+    arrayProto.push = function (): any {
         const methodCallResult = push.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -150,7 +149,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.reverse = function () {
+    arrayProto.reverse = function (): any[] {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -168,7 +167,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.shift = function () {
+    arrayProto.shift = function (): any {
         const notEmpty = this.length > 0;
         const methodCallResult = shift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -180,7 +179,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.sort = function () {
+    arrayProto.sort = function (): any[] {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -198,7 +197,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.splice = function () {
+    arrayProto.splice = function (): any[] {
         const methodCallResult = splice.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -218,7 +217,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.unshift = function () {
+    arrayProto.unshift = function (): number {
         const methodCallResult = unshift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -228,6 +227,5 @@ export function enableArrayObservation(): void {
 
         return methodCallResult;
     };
+    /* eslint-enable prefer-rest-params */
 }
-/* eslint-enable prefer-rest-params */
-/* eslint-enable @typescript-eslint/explicit-function-return-type */

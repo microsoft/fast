@@ -1,18 +1,18 @@
 import { CaptureType, SyntheticViewTemplate } from "../template";
 import { DOM } from "../dom";
 import {
-    ExecutionContext,
     Binding,
-    Observable,
     BindingObserver,
+    ExecutionContext,
+    Observable,
 } from "../observation/observable";
 import { HTMLView, SyntheticView } from "../view";
-import { Subscriber, Notifier } from "../observation/notifier";
+import { Notifier, Subscriber } from "../observation/notifier";
 import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
+import { emptyArray } from "../interfaces";
 import { Behavior } from "./behavior";
 import { Directive } from "./directive";
-import { emptyArray } from "../interfaces";
 
 /**
  * Options for configuring repeat behavior.
@@ -138,7 +138,10 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
     /** @internal */
-    public handleChange(source: any, args: Splice[]): void {
+    public handleChange(
+        source: Binding<TSource, any[]> | Binding<TSource, SyntheticViewTemplate>,
+        args: Splice[]
+    ): void {
         if (source === this.itemsBinding) {
             this.items = this.itemsBindingObserver.observe(
                 this.source!,
@@ -157,7 +160,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
         }
     }
 
-    private observeItems(force = false): void {
+    private observeItems(force: boolean = false): void {
         if (!this.items) {
             this.items = emptyArray;
             return;

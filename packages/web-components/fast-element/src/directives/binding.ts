@@ -1,8 +1,8 @@
 import {
-    ExecutionContext,
     Binding,
-    setCurrentEvent,
     BindingObserver,
+    ExecutionContext,
+    setCurrentEvent,
 } from "../observation/observable";
 import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
@@ -337,7 +337,7 @@ export class BindingBehavior implements Behavior {
      * @param targetName - The name of the target attribute or property to update.
      */
     public constructor(
-        target: any,
+        target: unknown,
         binding: Binding,
         isBindingVolatile: boolean,
         bind: typeof normalBind,

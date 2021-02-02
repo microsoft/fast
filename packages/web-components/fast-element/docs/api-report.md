@@ -25,10 +25,10 @@ export class AttachedBehaviorDirective<T = any> extends Directive {
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
 
 // @public
-export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
+export function attr(config?: DecoratorAttributeConfiguration): (target: unknown, property: string) => void;
 
 // @public
-export function attr(target: {}, prop: string): void;
+export function attr(target: unknown, prop: string): void;
 
 // @public
 export type AttributeConfiguration = {
@@ -40,18 +40,18 @@ export type AttributeConfiguration = {
 
 // @public
 export class AttributeDefinition implements Accessor {
-    constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
+    constructor(Owner: typeof Object.constructor, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
     // @internal
-    static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
+    static collect(Owner: typeof Object.constructor, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
     readonly converter?: ValueConverter;
     getValue(source: HTMLElement): any;
     readonly mode: AttributeMode;
     readonly name: string;
     // @internal (undocumented)
-    onAttributeChangedCallback(element: HTMLElement, value: any): void;
-    readonly Owner: Function;
-    setValue(source: HTMLElement, newValue: any): void;
+    onAttributeChangedCallback(element: HTMLElement, value: unknown): void;
+    readonly Owner: typeof Object.constructor;
+    setValue(source: HTMLElement, newValue: unknown): void;
     }
 
 // @public
@@ -74,7 +74,7 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSou
 
 // @public
 export class BindingBehavior implements Behavior {
-    constructor(target: any, binding: Binding, isBindingVolatile: boolean, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
+    constructor(target: unknown, binding: Binding, isBindingVolatile: boolean, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
     // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
     bind: typeof normalBind;
     // @internal (undocumented)
@@ -173,7 +173,7 @@ export function compileTemplate(template: HTMLTemplateElement, directives: Reado
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
 // @public
-export type Constructable<T = {}> = {
+export type Constructable<T = unknown> = {
     new (...args: any[]): T;
 };
 
@@ -185,7 +185,7 @@ export class Controller extends PropertyChangeNotifier {
     addStyles(styles: ElementStyles | HTMLStyleElement): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
-    emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
+    emit(type: string, detail?: Record<string, unknown>, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): Controller;
     readonly isConnected: boolean;
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
@@ -204,7 +204,7 @@ export class Controller extends PropertyChangeNotifier {
 export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: typeof Object.constructor) => void;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -238,7 +238,10 @@ export const DOM: Readonly<{
 }>;
 
 // @public
-export function elements(selector?: string): (value: Node, index: number, array: Node[]) => boolean;
+export function elements(selector?: string): ElementsFilter;
+
+// @public
+export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
 export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
@@ -309,11 +312,11 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
+    define<TType extends Function = any>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
 };
 
 // @public
-export class FASTElementDefinition<TType extends Function = Function> {
+export class FASTElementDefinition<TType extends typeof Object.constructor = any> {
     constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
@@ -368,14 +371,14 @@ export abstract class NamedTargetDirective extends Directive {
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
-    filter?(value: Node, index: number, array: Node[]): boolean;
+    filter?: ElementsFilter;
     property: T;
 }
 
 // @public
 export interface Notifier {
     notify(args: any): void;
-    readonly source: any;
+    readonly source: unknown;
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
@@ -390,14 +393,14 @@ export const Observable: Readonly<{
     track(source: unknown, propertyName: string): void;
     trackVolatile(): void;
     notify(source: unknown, args: any): void;
-    defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
-    getAccessors(target: {}): Accessor[];
+    defineProperty(target: Parameters<typeof Reflect.defineProperty>[0], nameOrAccessor: string | Accessor): void;
+    getAccessors(target: Parameters<typeof Reflect.getPrototypeOf>[0]): Accessor[];
     binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, TParent>;
     isVolatileBinding<TSource_1 = any, TReturn_1 = any, TParent_1 = any>(binding: Binding<TSource_1, TReturn_1, TParent_1>): boolean;
 }>;
 
 // @public
-export function observable(target: {}, nameOrAccessor: string | Accessor): void;
+export function observable(target: Parameters<typeof Reflect.defineProperty>[0], nameOrAccessor: string | Accessor): void;
 
 // @public
 export interface PartialFASTElementDefinition {
@@ -411,7 +414,7 @@ export interface PartialFASTElementDefinition {
 
 // @public
 export class PropertyChangeNotifier implements Notifier {
-    constructor(source: any);
+    constructor(source: unknown);
     notify(propertyName: string): void;
     readonly source: any;
     subscribe(subscriber: Subscriber, propertyToWatch: string): void;
@@ -424,7 +427,7 @@ export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 // @public
 export class RefBehavior implements Behavior {
     constructor(target: HTMLElement, propertyName: string);
-    bind(source: any): void;
+    bind(source: Record<string, unknown>): void;
     unbind(): void;
 }
 
@@ -436,7 +439,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     constructor(location: Node, itemsBinding: Binding<TSource, any[]>, isItemsBindingVolatile: boolean, templateBinding: Binding<TSource, SyntheticViewTemplate>, isTemplateBindingVolatile: boolean, options: RepeatOptions);
     bind(source: TSource, context: ExecutionContext): void;
     // @internal (undocumented)
-    handleChange(source: any, args: Splice[]): void;
+    handleChange(source: Binding<TSource, any[]> | Binding<TSource, SyntheticViewTemplate>, args: Splice[]): void;
     unbind(): void;
     }
 
@@ -494,9 +497,9 @@ export interface Subscriber {
 
 // @public
 export class SubscriberSet implements Notifier {
-    constructor(source: any, initialSubscriber?: Subscriber);
+    constructor(source: unknown, initialSubscriber?: Subscriber);
     has(subscriber: Subscriber): boolean;
-    notify(args: any): void;
+    notify(args: unknown): void;
     readonly source: any;
     subscribe(subscriber: Subscriber): void;
     unsubscribe(subscriber: Subscriber): void;
@@ -560,7 +563,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     }
 
 // @public
-export function volatile(target: {}, name: any, descriptor: any): any;
+export function volatile(target: any, name: any, descriptor: any): any;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
