@@ -281,6 +281,14 @@ export interface InterfaceConfiguration {
 
 const dependencyLookup = new Map<Constructable | Injectable, Key[]>();
 
+function getParamTypes(
+    key: string
+): (Type: Constructable | Injectable) => readonly Key[] | undefined {
+    return (Type: Constructable | Injectable) => {
+        return (Reflect as any).getOwnMetadata(key, Type);
+    };
+}
+
 /**
  * @alpha
  */
@@ -323,19 +331,11 @@ export const DI = Object.freeze({
             )
         );
     },
-
-    getDesignParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined {
-        return (Reflect as any).getOwnMetadata("design:paramtypes", Type);
-    },
-
-    getAnnotationParamtypes(
-        Type: Constructable | Injectable
-    ): readonly Key[] | undefined {
-        return (Reflect as any).getOwnMetadata("di:paramtypes", Type);
-    },
+    getDesignParamtypes: getParamTypes("design:paramtypes"),
+    getAnnotationParamtypes: getParamTypes("di:paramtypes"),
 
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[] {
-        let annotationParamtypes = (Reflect as any).getOwnMetadata("di:paramtypes", Type);
+        let annotationParamtypes = this.getAnnotationParamtypes(Type);
 
         if (annotationParamtypes === void 0) {
             (Reflect as any).defineMetadata(
@@ -550,20 +550,10 @@ export const DI = Object.freeze({
                 if (dep !== void 0) {
                     annotationParamtypes[key as number] = dep;
                 }
-            } else if (descriptor) {
-                // It's a function decorator (not a Class constructor)
-                const fn = descriptor.value;
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(fn);
-                let dep: Key;
-                for (let i = 0; i < dependencies.length; ++i) {
-                    dep = dependencies[i];
-                    if (dep !== void 0) {
-                        annotationParamtypes[i] = dep;
-                    }
-                }
             } else {
-                // It's a class decorator.
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(target);
+                const annotationParamtypes = descriptor
+                    ? DI.getOrCreateAnnotationParamTypes(descriptor.value)
+                    : DI.getOrCreateAnnotationParamTypes(target);
                 let dep: Key;
                 for (let i = 0; i < dependencies.length; ++i) {
                     dep = dependencies[i];
