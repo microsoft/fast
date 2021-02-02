@@ -1123,7 +1123,6 @@ const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const factories = new Map<Key, Factory>();
 
 /**
- * @internal
  * @alpha
  */
 export class ContainerImpl implements Container {
