@@ -716,8 +716,8 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findContainer(element: HTMLElement): Container;
     getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "defaultResolver">> | undefined): Container;
-    getDesignParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
-    getAnnotationParamtypes(Type: Constructable | Injectable): readonly Key[] | undefined;
+    getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
+    getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
