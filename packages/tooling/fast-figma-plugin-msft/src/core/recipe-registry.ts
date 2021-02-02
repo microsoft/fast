@@ -15,7 +15,7 @@ export type MappedRecipeTypes<T> = { [K in keyof typeof RecipeTypes]: T };
 /**
  * Defines a generic recipe
  */
-export interface RecipeDefinition<T extends {} = any> {
+export interface RecipeDefinition<T extends unknown = any> {
     /**
      * The name of the recipe
      */
@@ -40,7 +40,7 @@ export interface RecipeDefinition<T extends {} = any> {
 /**
  * Defines all data associated with a recipe
  */
-export interface RecipeData<T extends {} = any>
+export interface RecipeData<T extends unknown = any>
     extends Omit<RecipeDefinition<T>, "evaluate"> {
     value?: T;
 }
