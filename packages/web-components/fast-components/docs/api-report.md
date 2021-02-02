@@ -361,6 +361,11 @@ export interface FASTDesignSystem {
     direction: Direction;
     disabledOpacity: number;
     focusOutlineWidth: number;
+    // (undocumented)
+    neutralContrastFillActiveDelta: number;
+    // (undocumented)
+    neutralContrastFillFocusDelta: number;
+    neutralContrastFillHoverDelta: number;
     neutralDividerRestDelta: number;
     // (undocumented)
     neutralFillActiveDelta: number;
@@ -473,6 +478,9 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     direction: Direction;
     disabledOpacity: number;
     focusOutlineWidth: number;
+    neutralContrastFillActiveDelta: number;
+    neutralContrastFillFocusDelta: number;
+    neutralContrastFillHoverDelta: number;
     neutralDividerRestDelta: number;
     neutralFillActiveDelta: number;
     neutralFillCardDelta: number;
