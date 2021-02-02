@@ -284,9 +284,9 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     neutralOutlineActiveDelta: 16,
     neutralOutlineFocusDelta: 25,
 
-    neutralContrastFillRestDelta: 7,
-    neutralContrastFillHoverDelta: 10,
-    neutralContrastFillActiveDelta: 5,
+    neutralContrastFillRestDelta: 0,
+    neutralContrastFillHoverDelta: -3,
+    neutralContrastFillActiveDelta: 7,
     neutralContrastFillFocusDelta: 0,
 };
 
