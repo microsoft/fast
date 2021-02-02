@@ -69,8 +69,8 @@ function getNavigationRecursive(
 }
 
 export function getNavigation(
-    schema: any,
-    data?: any,
+    schema: Record<string, unknown>,
+    data?: unknown,
     parent?: Parent
 ): NavigationConfig {
     return getNavigationRecursive(schema, !!schema.disabled, data, parent);

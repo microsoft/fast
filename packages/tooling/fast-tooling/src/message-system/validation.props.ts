@@ -17,7 +17,8 @@ export enum SchemaSetValidationAction {
 /**
  * Custom message requesting validation against a set of schemas
  */
-export interface SchemaSetValidationMessageRequest extends CustomMessage<{}, {}> {
+export interface SchemaSetValidationMessageRequest
+    extends CustomMessage<unknown, unknown> {
     action: SchemaSetValidationAction.request;
     /**
      * The unique ID for the validation request
@@ -39,7 +40,8 @@ export interface SchemaSetValidationMessageRequest extends CustomMessage<{}, {}>
  * Custom message with requested validation against a set of schemas
  * with the index of the first schema to be valid against the data
  */
-export interface SchemaSetValidationMessageResponse extends CustomMessage<{}, {}> {
+export interface SchemaSetValidationMessageResponse
+    extends CustomMessage<unknown, unknown> {
     action: SchemaSetValidationAction.response;
     /**
      * The unique ID for the validation request

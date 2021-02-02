@@ -1,6 +1,7 @@
+/* eslint-env node */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 
-const appDir = path.resolve(__dirname, "./app");
 const outDir = path.resolve(__dirname, "./dist");
 
 module.exports = {

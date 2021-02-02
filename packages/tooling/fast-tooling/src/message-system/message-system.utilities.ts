@@ -235,7 +235,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 dataDictionary[0][dictionaryId].data = data.data;
             } else {
                 set(
-                    dataDictionary[0][dictionaryId].data as object,
+                    dataDictionary[0][dictionaryId].data as Record<string, unknown>,
                     data.dataLocation,
                     data.data
                 );
@@ -295,7 +295,10 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             // update the data dictionary root dictionary id location with
             // the update linked data references
             set(
-                dataDictionary[0][addLinkedDataDictionaryId].data as object,
+                dataDictionary[0][addLinkedDataDictionaryId].data as Record<
+                    string,
+                    unknown
+                >,
                 data.dataLocation,
                 currentLinkedDataRefs
             );
@@ -366,7 +369,10 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             );
 
             set(
-                dataDictionary[0][removeLinkedDataDictionaryId].data as object,
+                dataDictionary[0][removeLinkedDataDictionaryId].data as Record<
+                    string,
+                    unknown
+                >,
                 data.dataLocation,
                 filteredLinkedDataRefs
             );
@@ -389,7 +395,7 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
         }
         case MessageSystemDataTypeAction.reorderLinkedData:
             set(
-                dataDictionary[0][activeDictionaryId].data as object,
+                dataDictionary[0][activeDictionaryId].data as Record<string, unknown>,
                 data.dataLocation,
                 data.linkedData
             );
@@ -453,7 +459,7 @@ function updateHistory<C>(data: MessageSystemOutgoing<C>): MessageSystemOutgoing
     return data;
 }
 
-export function getMessage<C = {}>(
+export function getMessage<C = unknown>(
     data: MessageSystemIncoming<C>
 ): MessageSystemOutgoing<C> {
     switch (data.type) {

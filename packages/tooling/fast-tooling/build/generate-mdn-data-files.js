@@ -1,14 +1,14 @@
+import fs from "fs";
+import path from "path";
+import isEqual from "lodash/isEqual";
+import { css as mdnCSS } from "mdn-data";
+import chalk from "chalk";
+import yargs from "yargs";
 import {
     mapCSSProperties,
     mapCSSSyntaxes,
 } from "../dist/cjs/data-utilities/mapping.mdn-data";
-import { css as mdnCSS } from "mdn-data";
-import fs from "fs";
-import path from "path";
-import chalk from "chalk";
-import yargs from "yargs";
 import { properties } from "../src/css-data";
-import { isEqual } from "lodash-es";
 
 const outFilePath = path.resolve(__dirname, "../src/css-data.js");
 const propertiesOutFilePath = path.resolve(__dirname, "../src/css-data.properties.ts");
@@ -18,7 +18,7 @@ const today = new Date();
 const comment = `/**
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
- * 
+ *
  * Last modified: ${today.toLocaleDateString()}
  */
 `;
