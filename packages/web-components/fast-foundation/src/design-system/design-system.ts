@@ -1,10 +1,9 @@
 import type {
     Constructable,
-    PartialFASTElementDefinition} from "@microsoft/fast-element";
-import {
-    FASTElementDefinition
+    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import type { Container, InterfaceSymbol} from "../di/di";
+import { FASTElementDefinition } from "@microsoft/fast-element";
+import type { Container, InterfaceSymbol } from "../di/di";
 import { DI, Registration } from "../di/di";
 
 /**
