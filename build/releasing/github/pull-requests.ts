@@ -1,4 +1,4 @@
-import { Octokit } from "@octokit/rest";
+import type { Octokit } from "@octokit/rest";
 import { IPullRequest, IRepoDetails } from "./types";
 
 export interface IGetPullRequestFromCommitParams {
@@ -56,9 +56,7 @@ export async function getPullRequestForCommit(
  * The `author.email` property is only present if `authorEmail` is provided.
  */
 export function processPullRequestApiResponse(
-    pr:
-        | Octokit.ReposListPullRequestsAssociatedWithCommitResponseItem
-        | Octokit.SearchIssuesAndPullRequestsResponseItemsItem,
+    pr: any,
     authorEmail?: string
 ): IPullRequest {
     return {

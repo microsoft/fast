@@ -1,6 +1,6 @@
 import { spawnSync } from "child_process";
 import { Octokit } from "@octokit/rest";
-import { PackageChangelogRenderInfo, ChangelogEntry } from "beachball";
+import { ChangelogEntry, PackageChangelogRenderInfo } from "beachball";
 import { getPullRequestForCommit, repoDetails } from "./github";
 
 const githubPAT = process.env.GITHUB_PUBLISH_PAT;

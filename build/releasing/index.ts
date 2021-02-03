@@ -1,5 +1,5 @@
 import { BeachballConfig } from "beachball";
-import { renderHeader, renderEntry } from "./customRenderers";
+import { renderEntry, renderHeader } from "./customRenderers";
 
 export const config: BeachballConfig = {
     disallowedChangeTypes: ["major"],
@@ -15,9 +15,6 @@ export const config: BeachballConfig = {
         },
     ],
     changelog: {
-        customRenderers: {
-            renderHeader,
-            renderEntry,
-        },
+        customRenderers: { renderHeader, renderEntry },
     },
 };

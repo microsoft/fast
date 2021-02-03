@@ -37,10 +37,10 @@
  * Scripting docs: https://www.seleniumhq.org/docs/03_webdriver.jsp#chapter03-reference
  */
 
+const { spawn } = require("child_process");
 const { Builder } = require("selenium-webdriver");
 const chalk = require("chalk");
 const { Configure, Phase } = require("../config-browsers.js");
-const { spawn } = require("child_process");
 
 // Retrive user/key from environment variables
 const username = process.env.SAUCE_LABS_USER;
@@ -72,7 +72,7 @@ const getConfiguration = phase => {
 };
 
 // Assign browser configurations to an array
-let browsers = getConfiguration(process.argv[2]);
+const browsers = getConfiguration(process.argv[2]);
 
 /**
  * Run tests on Sauce Labs
@@ -82,9 +82,9 @@ function test(branchName) {
     console.log("Testing Git branch:", branchName);
 
     // Execute Selenium/Appium Web Drivers on Sauce Labs for each browser configuration
-    var flows = browsers.map(function (browser) {
+    const flows = browsers.map(function (browser) {
         // Setup capabilities
-        let capabilities = {
+        const capabilities = {
             name: "FAST Documentation",
             build: branchName,
             tags: "msft-docs",
@@ -105,7 +105,7 @@ function test(branchName) {
         };
 
         // Setup WebDriver
-        let driver = new Builder()
+        const driver = new Builder()
             .withCapabilities(capabilities)
             .usingServer(remoteHub)
             .build();

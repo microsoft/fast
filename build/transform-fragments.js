@@ -27,7 +27,7 @@ export function transformHTMLFragment(data) {
 }
 
 const newlines = /\n/g;
-const separators = /\s*([\{\};])\s*/g;
+const separators = /\s*([{};])\s*/g;
 const lastProp = /;\s*(\})/g;
 const extraSpaces = /\s\s+/g;
 const endingSpaces = / ?\s+$/g;
