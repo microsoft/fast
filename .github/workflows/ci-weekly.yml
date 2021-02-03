@@ -1,11 +1,6 @@
 name: CI - FAST Validation
 
 on:
-  push:
-    braches:
-    - master
-    - releases/*
-    - features/*
   schedule:
   - cron: 0 7 * * 3
   
