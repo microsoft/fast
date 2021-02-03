@@ -1,8 +1,8 @@
 const path = require("path");
-const fs = require("fs-extra");
-const glob = require("glob");
 const { createInterface } = require("readline");
 const { exec } = require("child_process");
+const fs = require("fs-extra");
+const glob = require("glob");
 
 const fastFoundation = path.dirname(
     require.resolve("@microsoft/fast-foundation/package.json")
@@ -106,14 +106,41 @@ async function copyArticleMarkdown() {
         "README.md"
     ).filter(x => !x.includes("anchored-region"));
 
+    const componentDests = [];
+
     for (const source of componentDocs) {
         const folder = path.dirname(source);
-        const dest = path.join(
-            "./docs/components",
-            `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.mdx`
-        );
+        const componentName = folder.substr(folder.lastIndexOf(path.sep) + 1);
+        const dest = path.join("./docs/components", `fast-${componentName}.mdx`);
 
         await safeCopy(source, dest);
+        componentDests.push(dest);
+    }
+
+    for (const dest of componentDests) {
+        try {
+            const input = fs.createReadStream(dest);
+            const output = [];
+            const lines = createInterface({
+                input,
+                crlfDelay: Infinity,
+            });
+
+            lines.on("line", line => {
+                line = line.replace(/\.\.\/([\w-]+)\/README.md/g, "fast-$1.mdx");
+
+                output.push(line);
+            });
+
+            await new Promise(resolve => lines.once("close", resolve));
+            input.close();
+
+            output.push("");
+
+            await safeWrite(dest, output.join("\n"));
+        } catch (err) {
+            console.error(`Could not process ${dest}: ${err}`);
+        }
     }
 
     const mergeDocs = [
