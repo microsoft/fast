@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "production") {
         console.log("robots.txt deleted!");
     });
 } else {
-    fs.writeFile("robots.txt", "User-agent: *\r\n Disallow: /", function (err) {
+    fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
         if (err) throw err;
         console.log("File is created successfully.");
     });
