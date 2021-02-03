@@ -20,7 +20,7 @@ declare namespace JSX {
         "fast-tab-panel": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {};
+        >;
     }
 }
 

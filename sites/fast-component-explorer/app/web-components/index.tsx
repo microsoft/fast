@@ -21,7 +21,7 @@ FASTTabs;
 interface RenderDevToolsTabsConfig {
     codeRenderCallback: (e: HTMLElement) => void;
     tabUpdateCallback: (e: React.ChangeEvent<HTMLElement>) => void;
-    guidanceTabPanelContent: React.ComponentClass<{}, any>;
+    guidanceTabPanelContent: React.ComponentClass<unknown, any>;
     definitionTabPanelContent: string;
     schemaTabPanelContent: string;
 }

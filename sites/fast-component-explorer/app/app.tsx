@@ -9,7 +9,7 @@ import { history, initialComponentRoute } from "./config";
  *
  * This is where the routes are declared
  */
-export default class App extends React.Component<{}, {}> {
+export default class App extends React.Component {
     public render(): React.ReactNode {
         return (
             <Router history={history}>

@@ -23,7 +23,7 @@ if (accentPaletteSource !== null) {
     });
 }
 
-class ExplorerRegion extends React.Component<{}, {}> {
+class ExplorerRegion extends React.Component {
     public render(): React.ReactNode {
         return (
             <DesignSystemProvider designSystem={creatorDesignSystem}>
