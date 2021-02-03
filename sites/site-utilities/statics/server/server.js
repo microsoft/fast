@@ -26,17 +26,14 @@ app.use("/", express.static(publicDir, { maxAge: "0d" }));
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));
 
-// Manage search engine crawlers.
-if (process.env.NODE_ENV === "production") {
-    fs.unlink("robots.txt", function (err) {
-        if (err) throw err;
-        // if no error, file has been deleted successfully
-        console.log("robots.txt deleted!");
-    });
-} else {
+// Manage search engine crawlers if staging add robots.txt, otherwise delete
+if (process.env.WEBSITE_HOSTNAME.indexOf("-stage") > -1) {
     fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
         if (err) throw err;
-        console.log("File is created successfully.");
+    });
+} else {
+    fs.unlink("robots.txt", function (err) {
+        if (err) throw err;
     });
 }
 
