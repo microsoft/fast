@@ -44,7 +44,7 @@ export default {
         },
         children: {
             title: "Linked data",
-            ...linkedDataSchema
+            ...linkedDataSchema,
         },
     },
 };
