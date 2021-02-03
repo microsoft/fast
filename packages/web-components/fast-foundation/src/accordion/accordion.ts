@@ -127,25 +127,29 @@ export class Accordion extends FASTElement {
     }
 
     private handleItemKeyDown = (event: KeyboardEvent): void => {
-        const keyCode: number = event.keyCode;
-        this.accordionIds = this.getItemIds();
-        switch (keyCode) {
-            case keyCodeArrowUp:
-                event.preventDefault();
-                this.adjust(-1);
-                break;
-            case keyCodeArrowDown:
-                event.preventDefault();
-                this.adjust(1);
-                break;
-            case keyCodeHome:
-                this.activeItemIndex = 0;
-                this.focusItem();
-                break;
-            case keyCodeEnd:
-                this.activeItemIndex = this.accordionItems.length - 1;
-                this.focusItem();
-                break;
+        // only handle the keydown if the event target is the accordion item
+        // prevents arrow keys from moving focus to accordion headers when focus is on accordion item panel content
+        if (event.target === event.currentTarget) {
+            const keyCode: number = event.keyCode;
+            this.accordionIds = this.getItemIds();
+            switch (keyCode) {
+                case keyCodeArrowUp:
+                    event.preventDefault();
+                    this.adjust(-1);
+                    break;
+                case keyCodeArrowDown:
+                    event.preventDefault();
+                    this.adjust(1);
+                    break;
+                case keyCodeHome:
+                    this.activeItemIndex = 0;
+                    this.focusItem();
+                    break;
+                case keyCodeEnd:
+                    this.activeItemIndex = this.accordionItems.length - 1;
+                    this.focusItem();
+                    break;
+            }
         }
     };
 
