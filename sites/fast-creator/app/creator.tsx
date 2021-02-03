@@ -66,7 +66,7 @@ const schemaDictionary: SchemaDictionary = {
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 
-class Creator extends Editor<{}, CreatorState> {
+class Creator extends Editor<unknown, CreatorState> {
     public static displayName: string = "Creator";
 
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -100,7 +100,7 @@ class Creator extends Editor<{}, CreatorState> {
         }
     );
 
-    constructor(props: {}) {
+    constructor(props: Record<string, unknown>) {
         super(props);
 
         const componentLinkedDataId: string = "root";
@@ -442,7 +442,7 @@ class Creator extends Editor<{}, CreatorState> {
             type: MessageSystemType.custom,
             id: previewAccentColor,
             value,
-        } as CustomMessage<{}, {}>);
+        } as CustomMessage<unknown, Record<string, unknown>>);
     };
 
     /**

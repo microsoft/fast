@@ -47,11 +47,11 @@ export interface PreviewState {
     accentColor: string;
 }
 
-class Preview extends Foundation<{}, {}, PreviewState> {
+class Preview extends Foundation<unknown, unknown, PreviewState> {
     private ref: React.RefObject<HTMLDivElement>;
     private activeDictionaryItemWrapperRef: React.RefObject<HTMLDivElement>;
 
-    constructor(props: {}) {
+    constructor(props: Record<string, unknown>) {
         super(props);
 
         this.ref = React.createRef();

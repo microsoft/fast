@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import Creator from "./creator";
@@ -9,7 +8,7 @@ import Preview from "./preview";
 /**
  * Create the root node
  */
-export default class App extends React.Component<{}, {}> {
+export default class App extends React.Component {
     public render(): React.ReactNode {
         return (
             <BrowserRouter>

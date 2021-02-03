@@ -5,7 +5,7 @@ import {
     neutralLayerL2,
 } from "@microsoft/fast-components-styles-msft";
 
-export function applyScrollbarStyle(): CSSRules<{}> {
+export function applyScrollbarStyle(): CSSRules<unknown> {
     return {
         "&::-webkit-scrollbar": {
             background: (config: DesignSystem): string => {
@@ -23,7 +23,7 @@ export function applyScrollbarStyle(): CSSRules<{}> {
     };
 }
 
-const style: ComponentStyles<{}, DesignSystem> = {
+const style: ComponentStyles<unknown, DesignSystem> = {
     "@font-face": [
         {
             fontFamily: "SegoeUIVF",

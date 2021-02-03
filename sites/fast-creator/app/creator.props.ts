@@ -85,7 +85,7 @@ export interface ProjectFile {
     transparentBackground: boolean;
 }
 
-export type CreatorManagedClasses = ManagedClasses<{}>;
+export type CreatorManagedClasses = ManagedClasses<unknown>;
 
 export interface CreatorState extends ProjectFile {
     /**

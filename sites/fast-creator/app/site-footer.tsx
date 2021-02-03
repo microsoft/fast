@@ -7,7 +7,7 @@ import React from "react";
 
 export { FASTAnchor, SiteNavigation } from "@microsoft/fast-website";
 
-export class Footer extends React.Component<{}, {}> {
+export class Footer extends React.Component {
     render(): React.ReactNode {
         return (
             <div className={"footer-region"}>
