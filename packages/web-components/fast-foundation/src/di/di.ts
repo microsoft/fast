@@ -2,8 +2,9 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
-import { Class } from "../interfaces";
+import type { Constructable } from "@microsoft/fast-element";
+import { emptyArray, FASTElement } from "@microsoft/fast-element";
+import type { Class } from "../interfaces";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
 const metadataByTarget = new Map<any, Map<any, any>>();
@@ -188,6 +189,7 @@ export type RegisterSelf<T extends Constructable> = {
 /**
  * @alpha
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
 /**
@@ -206,7 +208,7 @@ export type Resolved<K> = K extends InterfaceSymbol<infer T>
 /**
  * @alpha
  */
-export type Injectable<T = {}> = Constructable<T> & { inject?: Key[] };
+export type Injectable<T = unknown> = Constructable<T> & { inject?: Key[] };
 
 function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
     const clone = source.slice();
@@ -422,7 +424,7 @@ export const DI = Object.freeze({
     },
 
     defineProperty(
-        target: {},
+        target: Parameters<typeof Reflect.defineProperty>[0],
         propertyName: string,
         key: Key,
         respectConnection = false
@@ -1120,7 +1122,7 @@ export class ContainerImpl implements Container {
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
 
-    public get parent() {
+    public get parent(): ContainerImpl | null {
         if (this._parent === void 0) {
             this._parent = this.config.parentLocator(this.owner) as ContainerImpl;
         }

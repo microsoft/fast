@@ -5,17 +5,17 @@
 ```ts
 
 import type { Behavior } from '@microsoft/fast-element';
-import { ComposableStyles } from '@microsoft/fast-element';
-import { Constructable } from '@microsoft/fast-element';
+import type { ComposableStyles } from '@microsoft/fast-element';
+import type { Constructable } from '@microsoft/fast-element';
 import type { Controller } from '@microsoft/fast-element';
 import type { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
-import { ElementViewTemplate } from '@microsoft/fast-element';
+import type { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
-import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import type { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import type { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
@@ -722,7 +722,7 @@ export const DI: Readonly<{
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
     getDependencies(Type: Constructable | Injectable): Key[];
-    defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
+    defineProperty(target: Parameters<typeof Reflect.defineProperty>[0], propertyName: string, key: Key, respectConnection?: boolean): void;
     createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
     inject(...dependencies: Key[]): (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
     transient<T extends Constructable<unknown>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
@@ -996,7 +996,7 @@ export function ignore(target: Injectable, property?: string | number, descripto
 export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
 
 // @alpha (undocumented)
-export type Injectable<T = {}> = Constructable<T> & {
+export type Injectable<T = unknown> = Constructable<T> & {
     inject?: Key[];
 };
 

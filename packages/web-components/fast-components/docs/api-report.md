@@ -693,10 +693,10 @@ export const neutralContrastFill: SwatchFamilyResolver;
 export const neutralContrastFillActive: SwatchRecipe;
 
 // @public
-export const neutralContrastFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+export const neutralContrastFillActiveBehavior: CSSCustomPropertyBehavior;
 
 // @public
-export const neutralContrastFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+export const neutralContrastFillFocusBehavior: CSSCustomPropertyBehavior;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFillHover" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -704,7 +704,7 @@ export const neutralContrastFillFocusBehavior: import("@microsoft/fast-foundatio
 export const neutralContrastFillHover: SwatchRecipe;
 
 // @public
-export const neutralContrastFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+export const neutralContrastFillHoverBehavior: CSSCustomPropertyBehavior;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFillRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -712,10 +712,10 @@ export const neutralContrastFillHoverBehavior: import("@microsoft/fast-foundatio
 export const neutralContrastFillRest: SwatchRecipe;
 
 // @public
-export const neutralContrastFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+export const neutralContrastFillRestBehavior: CSSCustomPropertyBehavior;
 
 // @public
-export const neutralContrastForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+export const neutralContrastForegroundRestBehavior: CSSCustomPropertyBehavior;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal
 //

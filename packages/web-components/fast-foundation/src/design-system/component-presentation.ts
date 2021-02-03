@@ -1,10 +1,11 @@
-import {
+import type {
     ComposableStyles,
-    ElementStyles,
     ElementViewTemplate,
     FASTElement,
 } from "@microsoft/fast-element";
-import { DI, InterfaceSymbol } from "../di/di";
+import { ElementStyles } from "@microsoft/fast-element";
+import type { InterfaceSymbol } from "../di/di";
+import { DI } from "../di/di";
 
 const presentationKeys = new Map<string, InterfaceSymbol<ComponentPresentation>>();
 
@@ -61,7 +62,7 @@ export class DefaultComponentPresentation implements ComponentPresentation {
                 : ElementStyles.create([styles]);
     }
 
-    applyTo(element: FASTElement) {
+    applyTo(element: FASTElement): void {
         const controller = element.$fastController;
 
         if (controller.template === null) {

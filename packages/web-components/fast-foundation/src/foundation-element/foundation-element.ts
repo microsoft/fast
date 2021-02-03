@@ -1,16 +1,16 @@
-import {
+import type {
     ElementStyles,
     ElementViewTemplate,
-    FASTElement,
-    observable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
     DesignSystemRegistrationContext,
 } from "../design-system";
-import { Container, Registration, Registry } from "../di";
+import type { Registry } from "../di";
+import { Container, Registration } from "../di";
 
 /**
  * An element definition used to define a FoundationElement when registered through the design
@@ -96,7 +96,7 @@ export class FoundationElement extends FASTElement {
      * This method is invoked by the platform whenever this FoundationElement
      * becomes connected to the document.
      */
-    connectedCallback() {
+    connectedCallback(): void {
         this.$presentation.applyTo(this);
         super.connectedCallback();
     }
