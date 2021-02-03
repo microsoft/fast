@@ -7,7 +7,7 @@ import {
 } from "../styles/recipes";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTAccordion|<fast-accordion> component}.
+ * Styles for the {@link @microsoft/fast-components#FASTAccordion|<fast-accordion>} component.
  *
  * @public
  */

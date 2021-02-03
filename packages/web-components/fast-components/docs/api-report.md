@@ -216,49 +216,49 @@ export const AccordionStyles: ElementStyles;
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
-// @public (undocumented)
+// @public
 export const AnchoredRegionStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const AnchorStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const BadgeStyles: ElementStyles;
 
 // @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
-// @public (undocumented)
+// @public
 export const ButtonStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const CardStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const CheckboxStyles: ElementStyles;
 
 // @public
 export function createColorPalette(baseColor: any): string[];
 
-// @public (undocumented)
+// @public
 export const DataGridCellStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const DataGridRowStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const DataGridStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const DialogStyles: ElementStyles;
 
 // @public
 export type DisclosureAppearance = "accent" | "lightweight";
 
-// @public (undocumented)
+// @public
 export const DisclosureStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const DividerStyles: ElementStyles;
 
 // @public
@@ -661,7 +661,7 @@ export class FASTTreeItem extends TreeItem {
 export class FASTTreeView extends TreeView {
 }
 
-// @public (undocumented)
+// @public
 export const FlipperStyles: ElementStyles;
 
 // @public
@@ -673,13 +673,13 @@ export const inlineStartBehavior: CSSCustomPropertyBehavior;
 // @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
-// @public (undocumented)
+// @public
 export const ListboxStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const MenuItemStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const MenuStyles: ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFill" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1073,10 +1073,10 @@ export const neutralOutlineRestBehavior: CSSCustomPropertyBehavior;
 // @public
 export type NumberFieldAppearance = "filled" | "outline";
 
-// @public (undocumented)
+// @public
 export const NumberFieldStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const OptionStyles: ElementStyles;
 
 // @public
@@ -1098,28 +1098,28 @@ export enum PaletteType {
 // @public
 export const parseColorString: (color: string) => ColorRGBA64;
 
-// @public (undocumented)
+// @public
 export const ProgressRingStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const ProgressStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const RadioGroupStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const RadioStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const SelectStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const SkeletonStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const SliderLabelStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const SliderStyles: ElementStyles;
 
 // @public
@@ -1130,16 +1130,16 @@ export enum StandardLuminance {
     LightMode = 1
 }
 
-// @public (undocumented)
+// @public
 export const SwitchStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const TabPanelStyles: ElementStyles;
 
 // @public
 export const TabsStyles: ElementStyles;
 
-// @public (undocumented)
+// @public
 export const TabStyles: ElementStyles;
 
 // @public

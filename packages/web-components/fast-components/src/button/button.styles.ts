@@ -8,6 +8,11 @@ import {
     StealthButtonStyles,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTButton|FASTButton} component.
+ *
+ * @public
+ */
 export const ButtonStyles: ElementStyles = css`
     ${BaseButtonStyles}
     ${AccentButtonStyles}

@@ -3,6 +3,11 @@ import type { ElementStyles } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior, neutralFillRestBehavior } from "../styles/recipes";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTDataGridRow|FASTDataGridRow} component.
+ *
+ * @public
+ */
 export const DataGridRowStyles: ElementStyles = css`
     :host {
         display: grid;

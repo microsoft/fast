@@ -18,6 +18,11 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTMenuItem|FASTMenuItem} component.
+ *
+ * @public
+ */
 export const MenuItemStyles: ElementStyles = css`
     ${display("grid")} :host {
         font-family: var(--body-font);

@@ -17,13 +17,7 @@ import {
 import { heightNumber } from "../styles/size";
 
 /**
- * Styles for the FAST Accoridon Item. Implements:
- * - {@link @microsoft/fast-components#neutralDividerRestBehavior}
- * - {@link @microsoft/fast-components#neutralForegroundActiveBehavior}
- * - {@link @microsoft/fast-components#neutralForegroundFocusBehavior}
- * - {@link @microsoft/fast-components#neutralForegroundHoverBehavior}
- * - {@link @microsoft/fast-components#neutralForegroundRestBehavior}
- * - {@link @microsoft/fast-components#neutralFocusBehavior}
+ * Styles for the {@link @microsoft/fast-components#FASTAccordionItem|FASTAccordionItem} component.
  *
  * @public
  */

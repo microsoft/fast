@@ -9,6 +9,11 @@ import {
     StealthButtonStyles,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTAnchor|FASTAnchor} component.
+ *
+ * @public
+ */
 export const AnchorStyles: ElementStyles = css`
     ${BaseButtonStyles}
     ${AccentButtonStyles}

@@ -9,7 +9,7 @@ import {
 } from "../styles/index";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTabs|<fast-tabs> component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTabs|FASTTabs} component.
  *
  * @public
  */

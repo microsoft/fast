@@ -21,6 +21,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTNumberField|FASTNumberField} component.
+ *
+ * @public
+ */
 export const NumberFieldStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);

@@ -24,6 +24,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTCheckbox|FASTCheckbox} component.
+ *
+ * @public
+ */
 export const CheckboxStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;

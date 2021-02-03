@@ -4,6 +4,11 @@ import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundat
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { elevation } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTCard|FASTCard} component.
+ *
+ * @public
+ */
 export const CardStyles: ElementStyles = css`
     ${display("block")} :host {
         --elevation: 4;

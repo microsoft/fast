@@ -8,6 +8,12 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSliderLabel|FASTSliderLabel} component.
+ *
+ * @public
+ * @remarks Horizontal orientation.
+ */
 export const horizontalSliderStyles: ElementStyles = css`
     :host {
         align-self: start;
@@ -25,6 +31,12 @@ export const horizontalSliderStyles: ElementStyles = css`
     }
 `;
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSliderLabel|FASTSliderLabel} component.
+ *
+ * @public
+ * @remarks Vertical orientation.
+ */
 export const verticalSliderStyles: ElementStyles = css`
     :host {
         justify-self: start;
@@ -49,6 +61,11 @@ export const verticalSliderStyles: ElementStyles = css`
     }
 `;
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSliderLabel|FASTSliderLabel} component.
+ *
+ * @public
+ */
 export const SliderLabelStyles: ElementStyles = css`
     ${display("block")} :host {
         font-family: var(--body-font);

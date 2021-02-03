@@ -26,6 +26,11 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSelect|FASTSelect} component.
+ *
+ * @public
+ */
 export const SelectStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --elevation: 14;

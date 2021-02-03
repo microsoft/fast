@@ -10,6 +10,11 @@ import {
     accentForegroundRestBehavior,
 } from "../styles/recipes";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTDisclosure|FASTDisclosure} component.
+ *
+ * @public
+ */
 export const DisclosureStyles: ElementStyles = css`
     .disclosure {
         transition: height 0.35s;

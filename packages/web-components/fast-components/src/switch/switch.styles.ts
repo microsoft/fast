@@ -24,6 +24,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSwitch|FASTSwitch} component.
+ *
+ * @public
+ */
 export const SwitchStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;

@@ -71,7 +71,7 @@ const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
 );
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTreeItem|`<fast-tree-item>` component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTreeItem|FASTTreeItem} component.
  *
  * @public
  */

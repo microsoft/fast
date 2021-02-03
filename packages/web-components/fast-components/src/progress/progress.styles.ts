@@ -8,6 +8,11 @@ import {
     neutralForegroundHintBehavior,
 } from "../styles";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTProgress|FASTProgress} component.
+ *
+ * @public
+ */
 export const ProgressStyles: ElementStyles = css`
     ${display("flex")} :host {
         align-items: center;

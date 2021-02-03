@@ -17,6 +17,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSlider|FASTSlider} component.
+ *
+ * @public
+ */
 export const SliderStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;

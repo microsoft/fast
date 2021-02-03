@@ -5,15 +5,20 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
-    neutralForegroundRestBehavior,
     heightNumber,
+    neutralForegroundRestBehavior,
 } from "../styles/index";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTBreadcrumbItem|FASTBreadcrumbItem} component.
+ *
+ * @public
+ */
 export const BreadcrumbItemStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         background: transparent;

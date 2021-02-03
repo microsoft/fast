@@ -24,6 +24,11 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTOption|FASTOption} component.
+ *
+ * @public
+ */
 export const OptionStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         font-family: var(--body-font);

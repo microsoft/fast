@@ -13,6 +13,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTListbox|FASTListbox} component.
+ *
+ * @public
+ */
 export const ListboxStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         background: ${neutralLayerFloatingBehavior.var};

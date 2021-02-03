@@ -23,6 +23,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTRadio|FASTRadio} component.
+ *
+ * @public
+ */
 export const RadioStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + var(--design-unit));

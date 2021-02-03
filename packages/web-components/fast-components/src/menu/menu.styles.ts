@@ -7,6 +7,11 @@ import {
     neutralLayerFloatingBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTMenu|FASTMenu} component.
+ *
+ * @public
+ */
 export const MenuStyles: ElementStyles = css`
     ${display("block")} :host {
         --elevation: 11;

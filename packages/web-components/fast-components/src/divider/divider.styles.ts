@@ -3,6 +3,11 @@ import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTDivider|FASTDivider} component.
+ *
+ * @public
+ */
 export const DividerStyles: ElementStyles = css`
     ${display("block")} :host {
         box-sizing: content-box;

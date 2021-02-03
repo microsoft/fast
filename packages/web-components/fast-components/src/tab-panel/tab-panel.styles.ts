@@ -2,6 +2,11 @@ import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTTabPanel|FASTTabPanel} component.
+ *
+ * @public
+ */
 export const TabPanelStyles: ElementStyles = css`
     ${display("flex")} :host {
         box-sizing: border-box;

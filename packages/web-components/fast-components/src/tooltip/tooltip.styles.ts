@@ -16,7 +16,7 @@ import {
 } from "../styles/index";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTooltip|`<fast-tooltip>` component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTooltip|FASTTooltip} component.
  *
  * @public
  */

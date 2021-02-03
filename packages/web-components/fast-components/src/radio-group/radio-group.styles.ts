@@ -2,6 +2,11 @@ import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTRadioGroup|FASTRadioGroup} component.
+ *
+ * @public
+ */
 export const RadioGroupStyles: ElementStyles = css`
     ${display("flex")} :host {
         align-items: flex-start;

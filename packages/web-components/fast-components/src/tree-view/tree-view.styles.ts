@@ -3,7 +3,7 @@ import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTreeView|`<fast-tree-view>` component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTreeView|FASTTreeView} component.
  *
  * @public
  */

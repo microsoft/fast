@@ -20,6 +20,11 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTFlipper|FASTFlipper} component.
+ *
+ * @public
+ */
 export const FlipperStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);

@@ -22,7 +22,7 @@ import {
 } from "../styles/index";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTextArea|`<fast-text-area>` component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTextArea|FASTTextArea} component.
  *
  * @public
  */

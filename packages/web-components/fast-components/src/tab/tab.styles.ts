@@ -26,6 +26,11 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTTab|FASTTab} component.
+ *
+ * @public
+ */
 export const TabStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;

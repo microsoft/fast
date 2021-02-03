@@ -5,6 +5,11 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { neutralFillRestBehavior } from "../styles";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTSkeleton|FASTSkeleton} component.
+ *
+ * @public
+ */
 export const SkeletonStyles: ElementStyles = css`
     ${display("block")} :host {
         --skeleton-fill-default: #e1dfdd;

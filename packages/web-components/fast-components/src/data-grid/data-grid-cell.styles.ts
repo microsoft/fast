@@ -8,6 +8,11 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#FASTDataGridCell|FASTDataGridCell} component.
+ *
+ * @public
+ */
 export const DataGridCellStyles: ElementStyles = css`
     :host {
         padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 3px);

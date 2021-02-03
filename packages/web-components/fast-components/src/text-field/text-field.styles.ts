@@ -22,7 +22,7 @@ import {
 } from "../styles/index";
 
 /**
- * Styles for the {@link @microsoft/fast-components#FASTTextField|`<fast-text-field>` component}.
+ * Styles for the {@link @microsoft/fast-components#FASTTextField|FASTTextField} component.
  *
  * @public
  */
