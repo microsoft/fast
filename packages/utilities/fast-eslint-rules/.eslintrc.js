@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 module.exports = {
     root: true,
     parser: "@typescript-eslint/parser",
@@ -70,4 +69,19 @@ module.exports = {
         "react/no-children-prop": "off",
         "@typescript-eslint/no-explicit-any": "off",
     },
+    overrides: [
+        {
+            files: ["*.js"],
+            env: {
+                node: true,
+                es6: true,
+            },
+            rules: {
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/typedef": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+            },
+        },
+    ],
 };

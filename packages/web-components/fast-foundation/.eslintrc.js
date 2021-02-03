@@ -25,15 +25,4 @@ module.exports = {
             },
         ],
     },
-    overrides: [
-        {
-            files: ["**/*.js"],
-            env: {
-                node: true,
-            },
-            rules: {
-                "@typescript-eslint/*": "off",
-            },
-        },
-    ],
 };
