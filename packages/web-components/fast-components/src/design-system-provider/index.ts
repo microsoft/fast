@@ -1107,4 +1107,68 @@ export class FASTDesignSystemProvider extends DesignSystemProvider
         default: fastDesignSystemDefaults.neutralOutlineFocusDelta,
     })
     public neutralOutlineFocusDelta: number;
+
+    /**
+     * The distance from the resolved neutral contrast fill color for the rest state of the neutral-contrast-fill recipe. See {@link @microsoft/fast-components#neutralContrastFillRestBehavior} for usage in CSS.
+     *
+     * @remarks
+     * HTML attribute: neutral-contrast-fill-rest-delta
+     *
+     * CSS custom property: N/A
+     */
+    @designSystemProperty({
+        attribute: "neutral-contrast-fill-rest-delta",
+        converter: nullableNumberConverter,
+        cssCustomProperty: false,
+        default: fastDesignSystemDefaults.neutralContrastFillRestDelta,
+    })
+    public neutralContrastFillRestDelta: number;
+
+    /**
+     * The distance from the resolved neutral contrast fill color for the rest state of the neutral-contrast-fillrecipe. See {@link @microsoft/fast-components#neutralContrastFillHoverBehavior} for usage in CSS.
+     *
+     * @remarks
+     * HTML attribute: neutral-contrast-fill-hover-delta
+     *
+     * CSS custom property: N/A
+     */
+    @designSystemProperty({
+        attribute: "neutral-contrast-fill-hover-delta",
+        converter: nullableNumberConverter,
+        cssCustomProperty: false,
+        default: fastDesignSystemDefaults.neutralContrastFillHoverDelta,
+    })
+    public neutralContrastFillHoverDelta: number;
+
+    /**
+     * The distance from the resolved neutral contrast fill color for the rest state of the neutral-contrast-fill recipe. See {@link @microsoft/fast-components#neutralContrastFillActiveBehavior} for usage in CSS.
+     *
+     * @remarks
+     * HTML attribute: neutral-contrast-fill-active-delta
+     *
+     * CSS custom property: N/A
+     */
+    @designSystemProperty({
+        attribute: "neutral-contrast-fill-active-delta",
+        converter: nullableNumberConverter,
+        cssCustomProperty: false,
+        default: fastDesignSystemDefaults.neutralContrastFillActiveDelta,
+    })
+    public neutralContrastFillActiveDelta: number;
+
+    /**
+     * The distance from the resolved neutral contrast fill color for the rest state of the neutral-contrast-fill recipe. See {@link @microsoft/fast-components#neutralContrastFillFocusBehavior} for usage in CSS.
+     *
+     * @remarks
+     * HTML attribute: neutral-contrast-fill-focus-delta
+     *
+     * CSS custom property: N/A
+     */
+    @designSystemProperty({
+        attribute: "neutral-contrast-fill-focus-delta",
+        converter: nullableNumberConverter,
+        cssCustomProperty: false,
+        default: fastDesignSystemDefaults.neutralContrastFillFocusDelta,
+    })
+    public neutralContrastFillFocusDelta: number;
 }
