@@ -52,6 +52,6 @@ jobs:
       # Headless running is the same across OSes
     - name: Run Playwright (headless)
       if: ${{ matrix.headless == true }}
-      run: cd build/testing && playwright-automation.js
+      run: cd build/testing && node playwright-automation.js
 
    
