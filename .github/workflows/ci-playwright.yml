@@ -1,10 +1,9 @@
-name: CI - Playwright
+name: CI - FAST Testing
 on:
-  pull_request:
   push:
     branches:
       - master
-      - 'releases/*'
+      - releases/*
 
 jobs:
   cross-browser-automation:
@@ -49,9 +48,8 @@ jobs:
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-      # Headless running is the same across OSes
     - name: Run Playwright (headless)
       if: ${{ matrix.headless == true }}
-      run: cd build/testing && node playwright-automation.js
+      run: node playwright-automation.js
 
    
