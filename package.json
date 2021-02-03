@@ -134,8 +134,6 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "^3.9.0",
     "yargs": "^11.0.0"
   },
