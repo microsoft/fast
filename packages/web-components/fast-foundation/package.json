@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "1.11.1",
+  "version": "1.12.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -55,6 +55,7 @@
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
@@ -71,6 +72,7 @@
     "karma-source-map-support": "^1.4.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
+    "lodash-es": "^4.17.15",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
@@ -89,8 +91,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.21.1",
-    "@microsoft/fast-web-utilities": "^4.7.0",
+    "@microsoft/fast-element": "^0.22.0",
+    "@microsoft/fast-web-utilities": "^4.7.1",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^4.0.0",
     "tslib": "^1.13.0"

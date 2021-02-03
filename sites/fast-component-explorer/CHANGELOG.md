@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.1...@microsoft/fast-component-explorer@0.16.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* add missing fast-number-field config ([#4282](https://github.com/Microsoft/fast/issues/4282)) ([c0551f4](https://github.com/Microsoft/fast/commit/c0551f48bcc778270e2f27d47062c1d138674cba))
+* address monaco editor incorrect background in high contrast white on Windows in the component explorer ([#4259](https://github.com/Microsoft/fast/issues/4259)) ([8b6db10](https://github.com/Microsoft/fast/commit/8b6db103ea83e1133e815f99a101652a11ebbe1c)), closes [#3980](https://github.com/Microsoft/fast/issues/3980)
+* update the component explorer site tab panel padding to include the desktop screen sizes ([#4278](https://github.com/Microsoft/fast/issues/4278)) ([1f5fc2e](https://github.com/Microsoft/fast/commit/1f5fc2e938f4140d9f9329e916640185f712f081))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
 ## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.0...@microsoft/fast-component-explorer@0.15.1) (2020-12-17)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

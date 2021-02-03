@@ -32,7 +32,7 @@ export const AccordionItemTemplate = html<AccordionItem>`
             </button>
             ${startTemplate}
             ${endTemplate}
-            <span class="icon" part="icon">
+            <span class="icon" part="icon" aria-hidden="true">
                 <slot name="expanded-icon" part="expanded-icon"></slot>
                 <slot name="collapsed-icon" part="collapsed-icon"></slot>
             <span>

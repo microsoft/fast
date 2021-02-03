@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.21.1...@microsoft/fast-element@0.22.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* increase sophistication of behavior binding and unbinding ([#4288](https://github.com/Microsoft/fast/issues/4288)) ([9c24ee6](https://github.com/Microsoft/fast/commit/9c24ee6f865673cfa8f32ae5141f139484d79f73))
+* **repeat:** observe arrays after unbound then rebound ([#4211](https://github.com/Microsoft/fast/issues/4211)) ([cec8e69](https://github.com/Microsoft/fast/commit/cec8e69d3b72b672605bf3f77a702ca0d6ba1a5b))
+
+
+### Features
+
+* add support for attachment test to ElementStyles ([#4289](https://github.com/Microsoft/fast/issues/4289)) ([df6f765](https://github.com/Microsoft/fast/commit/df6f7652083ea71e3419976281ee393744606018))
+
+
+
+
+
 ## [0.21.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.21.0...@microsoft/fast-element@0.21.1) (2020-12-16)
 
 **Note:** Version bump only for package @microsoft/fast-element

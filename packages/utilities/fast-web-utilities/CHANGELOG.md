@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.7.0...@microsoft/fast-web-utilities@4.7.1) (2021-01-30)
+
+
+### Bug Fixes
+
+* allow nonce usage in canUseFocusVisible ([#4243](https://github.com/Microsoft/fast/issues/4243)) ([6e8b917](https://github.com/Microsoft/fast/commit/6e8b917dcbff8c5c0452e2dccc92020070ae3e3c))
+
+
+
+
+
 # [4.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.6.1...@microsoft/fast-web-utilities@4.7.0) (2020-12-16)
 
 

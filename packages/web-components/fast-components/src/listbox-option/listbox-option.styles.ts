@@ -120,6 +120,8 @@ export const OptionStyles = css`
             :host {
                 border-color: transparent;
                 forced-color-adjust: none;
+                color: ${SystemColors.ButtonText};
+                fill: currentcolor;
             }
 
             :host(:not([aria-selected="true"]):hover),

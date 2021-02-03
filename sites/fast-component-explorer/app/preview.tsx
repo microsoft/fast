@@ -17,7 +17,7 @@ import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fa
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,

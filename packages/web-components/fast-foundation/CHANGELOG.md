@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.1...@microsoft/fast-foundation@1.12.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* `UnhandledPromiseRejectionWarning`s when building fast-components ([#4218](https://github.com/Microsoft/fast/issues/4218)) ([48d52f4](https://github.com/Microsoft/fast/commit/48d52f43d8aa9938139f4dc0a2318fe400050216))
+* add class content to fix missing underline on button component ([#4226](https://github.com/Microsoft/fast/issues/4226)) ([bb9caaf](https://github.com/Microsoft/fast/commit/bb9caafd0edcbb0da46d74035fff246d36661f56)), closes [#4201](https://github.com/Microsoft/fast/issues/4201) [#16271](https://github.com/Microsoft/fast/issues/16271)
+* add whitespace filter to text-field template to correctly hide label div with start and end content ([#4245](https://github.com/Microsoft/fast/issues/4245)) ([70ce353](https://github.com/Microsoft/fast/commit/70ce3537c3d29789b5030abe4ea6c58b098f69b5))
+* display active indicator when tab is disabled ([#4207](https://github.com/Microsoft/fast/issues/4207)) ([ca0efbb](https://github.com/Microsoft/fast/commit/ca0efbb2968b0f9b017f3b28ab5c1bb688fafd47))
+* expand collapse tree view svg ([#4225](https://github.com/Microsoft/fast/issues/4225)) ([c6d6259](https://github.com/Microsoft/fast/commit/c6d62597a89b7329b83f01520eebd811608c37d3))
+* tooltips are incorrectly positioned when parent is a flex container ([#4256](https://github.com/Microsoft/fast/issues/4256)) ([bc47c02](https://github.com/Microsoft/fast/commit/bc47c02a44b7b274f458322b65ce7b4555de49e3))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* add fast-number-field component for data applications ([#4204](https://github.com/Microsoft/fast/issues/4204)) ([7196215](https://github.com/Microsoft/fast/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add getPosition service for anchored region ([#4210](https://github.com/Microsoft/fast/issues/4210)) ([94d5ffa](https://github.com/Microsoft/fast/commit/94d5ffa2235e2d681e03e32442346018a81c693f))
+* add radio group functionality to menu items ([#4208](https://github.com/Microsoft/fast/issues/4208)) ([89a3930](https://github.com/Microsoft/fast/commit/89a3930be83434b9039d25f82ae0c251e2d03956))
+* add select spec ([#4194](https://github.com/Microsoft/fast/issues/4194)) ([7af127a](https://github.com/Microsoft/fast/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* Create a behavior for attaching component styles based on an appearance ([#4238](https://github.com/Microsoft/fast/issues/4238)) ([7b498ce](https://github.com/Microsoft/fast/commit/7b498ce3101d90dee2558433fa0abadca5149d36))
+
+
+
+
+
 ## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.0...@microsoft/fast-foundation@1.11.1) (2020-12-17)
 
 

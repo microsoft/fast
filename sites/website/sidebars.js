@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = {
     docs: [
         {
@@ -26,14 +27,19 @@ module.exports = {
                         "components/button",
                         "components/card",
                         "components/checkbox",
+                        "components/data-grid",
                         "components/dialog",
                         "components/divider",
                         "components/flipper",
+                        "components/listbox",
+                        "components/listbox-option",
                         "components/menu",
                         "components/menu-item",
+                        "components/number-field",
                         "components/progress",
                         "components/radio",
                         "components/radio-group",
+                        "components/select",
                         "components/skeleton",
                         "components/slider",
                         "components/slider-label",

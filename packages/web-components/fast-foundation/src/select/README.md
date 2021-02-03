@@ -11,13 +11,12 @@ An implementation of an [HTML select element](https://developer.mozilla.org/en-U
 
 ```html live
 <fast-design-system-provider use-defaults>
-    <label for="shirt-size">Choose a T-Shirt size:</label>
-    <fast-select id="shirt-size">
-      <fast-option value="s">Small</fast-option>
-      <fast-option value="m">Medium</fast-option>
-      <fast-option value="l">Large</fast-option>
-      <fast-option value="xl">Extra Large</fast-option>
-    </fast-select>
+  <fast-select id="shirt-size">
+    <fast-option value="s">Small</fast-option>
+    <fast-option value="m">Medium</fast-option>
+    <fast-option value="l">Large</fast-option>
+    <fast-option value="xl">Extra Large</fast-option>
+  </fast-select>
 </fast-design-system-provider>
 ```
 

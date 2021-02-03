@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.3...@microsoft/site-utilities@0.7.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* address monaco editor incorrect background in high contrast white on Windows in the component explorer ([#4259](https://github.com/Microsoft/fast/issues/4259)) ([8b6db10](https://github.com/Microsoft/fast/commit/8b6db103ea83e1133e815f99a101652a11ebbe1c)), closes [#3980](https://github.com/Microsoft/fast/issues/3980)
+* addressed missing images in the high contrast document ([#4216](https://github.com/Microsoft/fast/issues/4216)) ([24f83d2](https://github.com/Microsoft/fast/commit/24f83d243576c484fcf5a543b2483553857539d8))
+* update the component explorer site tab panel padding to include the desktop screen sizes ([#4278](https://github.com/Microsoft/fast/issues/4278)) ([1f5fc2e](https://github.com/Microsoft/fast/commit/1f5fc2e938f4140d9f9329e916640185f712f081))
+
+
+### Features
+
+* adding high contrast document to the FAST documentation website ([#4178](https://github.com/Microsoft/fast/issues/4178)) ([d6b5d8e](https://github.com/Microsoft/fast/commit/d6b5d8e062478bd5910e9f8afa232c89b1c5a722))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
 ## [0.6.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.2...@microsoft/site-utilities@0.6.3) (2020-12-17)
 
 **Note:** Version bump only for package @microsoft/site-utilities

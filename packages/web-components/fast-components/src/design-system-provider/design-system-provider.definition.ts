@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 
 export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
     version: 1,

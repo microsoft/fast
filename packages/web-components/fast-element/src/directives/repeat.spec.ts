@@ -319,5 +319,35 @@ describe("The repeat", () => {
                 );
             });
         });
+
+        zeroThroughTen.forEach(size => {
+            it(`updates rendered HTML when a new item is pushed into an array of size ${size} after it has been unbound and rebound`, async () => {
+                const { parent, location } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                const behavior = directive.createBehavior(location);
+                const vm = new ViewModel(size);
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                await DOM.nextUpdate();
+
+                behavior.unbind();
+
+                await DOM.nextUpdate();
+
+                behavior.bind(vm, defaultExecutionContext);
+
+                await DOM.nextUpdate();
+
+                vm.items.push({ name: "newitem" });
+
+                await DOM.nextUpdate();
+
+                expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
+            });
+        });
     });
 });

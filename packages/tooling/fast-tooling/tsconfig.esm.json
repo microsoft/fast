@@ -1,16 +1,20 @@
 {
-    "extends": "./tsconfig.json",
+    "extends": "../../../tsconfig.json",
     "include": [
         "src/**/*"
     ],
     "compilerOptions": {
+        "declaration": false,
+        "outDir": "dist/esm",
+        "resolveJsonModule": true,
         "allowJs": true
     },
     "exclude": [
+        "app",
         "node_modules",
         "src/message-system",
         "**/*.spec.ts",
         "**/*.spec.tsx",
         "**/__tests__/**"
     ]
-  }
+}

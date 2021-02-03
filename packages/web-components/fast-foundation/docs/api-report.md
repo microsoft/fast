@@ -5,10 +5,12 @@
 ```ts
 
 import { Behavior } from '@microsoft/fast-element';
+import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
+import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
@@ -52,6 +54,9 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
+
+// @alpha (undocumented)
+export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
@@ -270,6 +275,17 @@ export interface ColumnDefinition {
     title?: string;
 }
 
+// @alpha
+export interface ComponentPresentation {
+    // (undocumented)
+    applyTo(element: FASTElement): void;
+}
+
+// @alpha
+export const ComponentPresentation: Readonly<{
+    keyFrom(tagName: string): InterfaceSymbol<ComponentPresentation>;
+}>;
+
 // @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
@@ -291,6 +307,79 @@ export class ConstructableStylesCustomPropertyManager extends CustomPropertyMana
     subscribe(client: CustomPropertyManagerClient): void;
     unsubscribe(client: CustomPropertyManagerClient): void;
 }
+
+// @alpha (undocumented)
+export interface Container extends ServiceLocator {
+    // (undocumented)
+    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
+    // (undocumented)
+    getFactory<T extends Constructable>(key: T): Factory<T>;
+    // (undocumented)
+    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
+    // (undocumented)
+    register(...params: any[]): Container;
+    // (undocumented)
+    registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
+    // (undocumented)
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>, isDisposable?: boolean): Resolver<T>;
+    // (undocumented)
+    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+}
+
+// @alpha (undocumented)
+export const Container: InterfaceSymbol<Container>;
+
+// @alpha (undocumented)
+export interface ContainerConfiguration {
+    // (undocumented)
+    defaultResolver(key: Key, handler: Container): Resolver;
+    // (undocumented)
+    parentLocator: ParentLocator;
+}
+
+// @alpha (undocumented)
+export const ContainerConfiguration: Readonly<{
+    default: Readonly<{
+        parentLocator: () => null;
+        defaultResolver: (key: Key) => Resolver;
+    }>;
+}>;
+
+// @alpha (undocumented)
+export class ContainerImpl implements Container {
+    constructor(owner: any, config: ContainerConfiguration);
+    // (undocumented)
+    protected config: ContainerConfiguration;
+    // (undocumented)
+    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
+    // (undocumented)
+    get depth(): number;
+    // (undocumented)
+    get<K extends Key>(key: K): Resolved<K>;
+    // (undocumented)
+    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getFactory<K extends Constructable>(Type: K): Factory<K>;
+    // (undocumented)
+    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
+    // (undocumented)
+    has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
+    // (undocumented)
+    protected owner: any;
+    // (undocumented)
+    get parent(): ContainerImpl | null;
+    // (undocumented)
+    register(...params: any[]): Container;
+    // (undocumented)
+    registerFactory<K extends Constructable>(key: K, factory: Factory<K>): void;
+    // (undocumented)
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
+    // (undocumented)
+    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+    }
+
+// @alpha
+export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
@@ -465,6 +554,24 @@ export interface DecoratorDesignSystemPropertyConfiguration extends Omit<Decorat
     default: any;
 }
 
+// @alpha
+export class DefaultComponentPresentation implements ComponentPresentation {
+    constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
+    // (undocumented)
+    applyTo(element: FASTElement): void;
+    // (undocumented)
+    readonly styles: ElementStyles | null;
+    // (undocumented)
+    readonly template: ElementViewTemplate | null;
+}
+
+// @alpha (undocumented)
+export const DefaultResolver: {
+    none(key: Key): Resolver;
+    singleton(key: Key): Resolver;
+    transient(key: Key): Resolver;
+};
+
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
@@ -531,6 +638,18 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// @alpha (undocumented)
+export class DesignSystem {
+    // (undocumented)
+    applyTo(element: HTMLElement): Container;
+    // (undocumented)
+    register(...params: any[]): this;
+    // (undocumented)
+    withElementDisambiguation(callback: ElementDisambiguationCallback): this;
+    // (undocumented)
+    withPrefix(prefix: string): this;
+}
+
 // @public
 export interface DesignSystemConsumer {
     // (undocumented)
@@ -581,6 +700,33 @@ export const designSystemProvider: typeof defineDesignSystemProvider;
 // @public
 export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
 
+// @alpha
+export interface DesignSystemRegistrationContext {
+    // (undocumented)
+    readonly elementPrefix: string;
+    // (undocumented)
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+}
+
+// @alpha (undocumented)
+export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
+
+// @alpha (undocumented)
+export const DI: Readonly<{
+    createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
+    findContainer(element: HTMLElement): Container;
+    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "defaultResolver">> | undefined): Container;
+    getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
+    getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
+    getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
+    getDependencies(Type: Constructable | Injectable): Key[];
+    defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
+    createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
+    inject(...dependencies: Key[]): (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+    transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
+    singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
+}>;
+
 // @public
 export class Dialog extends FASTElement {
     ariaDescribedby: string;
@@ -617,6 +763,26 @@ export class DirectionalStyleSheetBehavior implements Behavior {
 export const disabledCursor = "not-allowed";
 
 // @public
+export class Disclosure extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    details: HTMLDetailsElement;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    expanded: boolean;
+    hide(): void;
+    protected onToggle(): void;
+    protected setup(): void;
+    show(): void;
+    title: string;
+    toggle(): void;
+}
+
+// @public
+export const DisclosureTemplate: import("@microsoft/fast-element").ViewTemplate<Disclosure, any>;
+
+// @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
@@ -633,8 +799,59 @@ export enum DividerRole {
 // @public
 export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
 
+// @alpha (undocumented)
+export interface DOMParentLocatorEventDetail {
+    // (undocumented)
+    container: Container | void;
+}
+
+// @alpha
+export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
+
+// @alpha
+export interface ElementDefinitionContext {
+    // (undocumented)
+    readonly container: Container;
+    // (undocumented)
+    defineElement(definition?: ContextualElementDefinition): void;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    tagFor(type: Constructable): string;
+    // (undocumented)
+    readonly type: Constructable;
+    // (undocumented)
+    readonly willDefine: boolean;
+}
+
+// @alpha
+export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
+
 // @public
 export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+
+// @alpha (undocumented)
+export interface Factory<T extends Constructable = any> {
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: Transformer_2<T>): void;
+    // (undocumented)
+    readonly Type: T;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "FactoryImpl" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
+    constructor(Type: T, dependencies: Key[]);
+    // (undocumented)
+    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
+    // (undocumented)
+    registerTransformer(transformer: (instance: any) => any): void;
+    // (undocumented)
+    Type: T;
+}
 
 // @public
 export class Flipper extends FASTElement {
@@ -730,6 +947,25 @@ export interface FormAssociatedProxy {
     valueChanged?(previous: any, next: any): void;
 }
 
+// @alpha
+export class FoundationElement extends FASTElement {
+    protected get $presentation(): ComponentPresentation;
+    static configuration(elementDefinition: FoundationElementDefinition): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry;
+    connectedCallback(): void;
+    styles: ElementStyles | void | null;
+    // (undocumented)
+    protected stylesChanged(): void;
+    template: ElementViewTemplate | void | null;
+    // (undocumented)
+    protected templateChanged(): void;
+}
+
+// @alpha
+export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
+    baseName: string;
+    type: typeof FASTElement;
+};
+
 // @public
 export enum GenerateHeaderOptions {
     // (undocumented)
@@ -749,6 +985,34 @@ export const hidden = ":host([hidden]){display:none}";
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
+// @alpha
+export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
+
+// @alpha (undocumented)
+export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+
+// @alpha (undocumented)
+export type Injectable<T = {}> = Constructable<T> & {
+    inject?: Key[];
+};
+
+// @alpha (undocumented)
+export interface InterfaceConfiguration {
+    friendlyName?: string;
+    respectConnection?: boolean;
+}
+
+// @alpha (undocumented)
+export type InterfaceSymbol<K = any> = (target: any, property: string, index?: number) => void;
+
+// @alpha (undocumented)
+export interface Invoker<T extends Constructable = any> {
+    // (undocumented)
+    invoke(container: Container, fn: T, dependencies: Key[]): Resolved<T>;
+    // (undocumented)
+    invokeWithDynamicDependencies(container: Container, fn: T, staticDependencies: Key[], dynamicDependencies: Key[]): Resolved<T>;
+}
+
 // @public
 export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
 
@@ -757,6 +1021,12 @@ export function isListboxOption(el: Element): el is ListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
+
+// @alpha (undocumented)
+export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
+
+// @alpha
+export const lazy: (key: any) => any;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
@@ -934,11 +1204,81 @@ export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<Me
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
 
+// @alpha (undocumented)
+export const newInstanceForScope: (key: any) => any;
+
+// @alpha (undocumented)
+export const newInstanceOf: (key: any) => any;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "NumberField" because one of its declarations is marked as @internal
+//
+// @public
+export class NumberField extends FormAssociatedNumberField {
+    autofocus: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
+    // @internal (undocumented)
+    defaultSlottedNodes: Node[];
+    // @internal
+    handleChange(): void;
+    // @internal
+    handleTextInput(): void;
+    list: string;
+    max: number;
+    // (undocumented)
+    maxChanged(previousValue: any, nextValue: any): void;
+    maxlength: number;
+    min: number;
+    // (undocumented)
+    minChanged(previousValue: any, nextValue: any): void;
+    minlength: number;
+    placeholder: string;
+    readOnly: boolean;
+    size: number;
+    step: number;
+    stepDown(): void;
+    stepUp(): void;
+    // (undocumented)
+    valueChanged(previousValue: any, nextValue: any): void;
+}
+
+// @internal
+export interface NumberField extends StartEnd, DelegatesARIATextbox {
+}
+
+// @public
+export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
+
+// @alpha
+export const optional: (key: any) => any;
+
+// @alpha
+export type OverrideFoundationElementDefinition = Partial<Omit<FoundationElementDefinition, "type">> & {
+    prefix?: string;
+};
+
+// @alpha (undocumented)
+export type ParentLocator = (owner: any) => Container | null;
+
 // @public
 export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
 
 // @public
 export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+
+// @public
+export class PropertyStyleSheetBehavior implements Behavior {
+    constructor(propertyName: string, value: any, styles: ElementStyles);
+    bind(elementInstance: FASTElement): void;
+    // @internal
+    handleChange(source: FASTElement, key: any): void;
+    // @internal
+    unbind(source: typeof FASTElement & HTMLElement): void;
+    }
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
@@ -999,6 +1339,102 @@ export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<
 // @public
 export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
 
+// @alpha (undocumented)
+export type RegisterSelf<T extends Constructable> = {
+    register(container: Container): Resolver<InstanceType<T>>;
+    registerInRequestor: boolean;
+};
+
+// @alpha (undocumented)
+export interface Registration<K = any> {
+    // (undocumented)
+    register(container: Container, key?: Key): Resolver<K>;
+}
+
+// @alpha
+export const Registration: Readonly<{
+    instance<T>(key: Key, value: T): Registration<T>;
+    singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
+    transient<T_2 extends Constructable<{}>>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
+    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
+    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
+    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
+}>;
+
+// @alpha (undocumented)
+export interface Registry {
+    // (undocumented)
+    register(container: Container, ...params: unknown[]): void | Resolver | Container;
+}
+
+// @alpha (undocumented)
+export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
+
+// Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
+
+// @alpha (undocumented)
+export interface Resolver<K = any> extends ResolverLike<Container, K> {
+}
+
+// @alpha (undocumented)
+export class ResolverBuilder<K> {
+    constructor(container: Container, key: Key);
+    // (undocumented)
+    aliasTo(destinationKey: Key): Resolver<K>;
+    // (undocumented)
+    cachedCallback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    callback(value: ResolveCallback<K>): Resolver<K>;
+    // (undocumented)
+    instance(value: K): Resolver<K>;
+    // (undocumented)
+    singleton(value: Constructable): Resolver<K>;
+    // (undocumented)
+    transient(value: Constructable): Resolver<K>;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "ResolverImpl" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class ResolverImpl implements Resolver, Registration {
+    // (undocumented)
+    get $isResolver(): true;
+    constructor(key: Key, strategy: ResolverStrategy, state: any);
+    // (undocumented)
+    getFactory(container: Container): Factory | null;
+    // (undocumented)
+    key: Key;
+    // (undocumented)
+    register(container: Container, key?: Key): Resolver;
+    // (undocumented)
+    resolve(handler: Container, requestor: Container): any;
+    // (undocumented)
+    state: any;
+    // (undocumented)
+    strategy: ResolverStrategy;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "ResolverStrategy" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const enum ResolverStrategy {
+    // (undocumented)
+    alias = 5,
+    // (undocumented)
+    array = 4,
+    // (undocumented)
+    callback = 3,
+    // (undocumented)
+    instance = 0,
+    // (undocumented)
+    singleton = 1,
+    // (undocumented)
+    transient = 2
+}
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Select" because one of its declarations is marked as @internal
@@ -1056,6 +1492,38 @@ export enum SelectRole {
 
 // @public
 export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
+
+// @alpha (undocumented)
+export interface ServiceLocator {
+    // (undocumented)
+    get<K extends Key>(key: K): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: Key): Resolved<K>;
+    // (undocumented)
+    get<K extends Key>(key: K | Key): Resolved<K>;
+    // (undocumented)
+    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    // (undocumented)
+    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
+}
+
+// @alpha (undocumented)
+export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
+
+// Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export function singleton<T extends Constructable>(): typeof singletonDecorator;
+
+// @alpha (undocumented)
+export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
+
+// @alpha
+export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
 export class Skeleton extends FASTElement {
@@ -1427,6 +1895,19 @@ export enum TooltipPosition {
     top = "top"
 }
 
+// @alpha (undocumented)
+type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
+
+export { Transformer_2 as Transformer }
+
+// Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export function transient<T extends Constructable>(): typeof transientDecorator;
+
+// @alpha
+export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //
@@ -1501,9 +1982,21 @@ export class TreeView extends FASTElement {
 // @public
 export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
 
+// Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export function validateKey(key: any): void;
+
 // @beta
 export type VerticalPosition = "top" | "bottom" | "unset";
 
+// @public
+export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
+
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/di/di.d.ts:205:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

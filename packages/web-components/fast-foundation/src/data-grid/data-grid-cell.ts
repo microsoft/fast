@@ -15,6 +15,9 @@ import {
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
 import { ColumnDefinition } from "./data-grid";
+import { DataGridCellTypes } from "./data-grid.options";
+
+export { DataGridCellTypes };
 
 const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
@@ -37,16 +40,6 @@ const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
                 : x.columnDefinition.title}
     </template>
 `;
-
-/**
- * Enumerates possible cell types.
- *
- * @public
- */
-export enum DataGridCellTypes {
-    default = "default",
-    columnHeader = "columnheader",
-}
 
 /**
  * A Data Grid Cell Custom HTML Element.

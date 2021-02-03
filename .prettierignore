@@ -1,2 +1,10 @@
-packages/web-components/fast-components/src/default-palette.ts
-packages/web-components/fast-element/src/**/*.spec.ts
+*.spec.ts
+**/__test-images__
+**/__tests__
+**/.tmp
+**/bootstrap
+**/coverage
+**/dist
+**/temp
+default-palette.ts
+testData.ts

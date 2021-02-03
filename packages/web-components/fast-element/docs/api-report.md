@@ -191,7 +191,7 @@ export class Controller extends PropertyChangeNotifier {
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
-    removeBehaviors(behaviors: ReadonlyArray<Behavior>): void;
+    removeBehaviors(behaviors: ReadonlyArray<Behavior>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
@@ -246,13 +246,15 @@ export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => E
 // @public
 export abstract class ElementStyles {
     // @internal (undocumented)
-    abstract addStylesTo(target: StyleTarget): void;
+    addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
     static readonly create: ElementStyleFactory;
     static find(key: string): ElementStyles | null;
     // @internal (undocumented)
-    abstract removeStylesFrom(target: StyleTarget): void;
+    isAttachedTo(target: StyleTarget): boolean;
+    // @internal (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior[]): this;
@@ -427,7 +429,7 @@ export class RefBehavior implements Behavior {
 }
 
 // @public
-export function repeat<TSource = any, TItem = any>(itemsBinding: Binding<TSource, TItem[]>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
+export function repeat<TSource = any, TItem = any>(itemsBinding: Binding<TSource, readonly TItem[]>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, options?: RepeatOptions): CaptureType<TSource>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {

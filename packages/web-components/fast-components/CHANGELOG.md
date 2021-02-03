@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.1...@microsoft/fast-components@1.15.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* `UnhandledPromiseRejectionWarning`s when building fast-components ([#4218](https://github.com/Microsoft/fast/issues/4218)) ([48d52f4](https://github.com/Microsoft/fast/commit/48d52f43d8aa9938139f4dc0a2318fe400050216))
+* add forced-colors to skeleton component for high contrast ([#4234](https://github.com/Microsoft/fast/issues/4234)) ([492009c](https://github.com/Microsoft/fast/commit/492009c00fdc760af4d70b30ed98c1a67564c113))
+* address broken high contrast colors on listbox and select components ([#4233](https://github.com/Microsoft/fast/issues/4233)) ([9ac38ee](https://github.com/Microsoft/fast/commit/9ac38eef8489e35280947147576c491e98d33662))
+* adjust focus bottom border offset when it's width is increased ([#4241](https://github.com/Microsoft/fast/issues/4241)) ([04926b7](https://github.com/Microsoft/fast/commit/04926b71451a331014439eabf082bfa2d1f07e7f))
+* badge style var typo ([#4240](https://github.com/Microsoft/fast/issues/4240)) ([2b489db](https://github.com/Microsoft/fast/commit/2b489db76f25bb92203b26cd7e6133b3247ea166))
+* change accordion item region to display block ([#4255](https://github.com/Microsoft/fast/issues/4255)) ([e3e28e9](https://github.com/Microsoft/fast/commit/e3e28e96a516dbc0d3cbf2fc9670705b03b91e55))
+* expand collapse tree view svg ([#4225](https://github.com/Microsoft/fast/issues/4225)) ([c6d6259](https://github.com/Microsoft/fast/commit/c6d62597a89b7329b83f01520eebd811608c37d3))
+* slider disabled and readonly cursor styles ([#4224](https://github.com/Microsoft/fast/issues/4224)) ([554760e](https://github.com/Microsoft/fast/commit/554760e77abf1a7ed758981430c27d29fa222c36))
+* tooltips are incorrectly positioned when parent is a flex container ([#4256](https://github.com/Microsoft/fast/issues/4256)) ([bc47c02](https://github.com/Microsoft/fast/commit/bc47c02a44b7b274f458322b65ce7b4555de49e3))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* add fast-number-field component for data applications ([#4204](https://github.com/Microsoft/fast/issues/4204)) ([7196215](https://github.com/Microsoft/fast/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add radio group functionality to menu items ([#4208](https://github.com/Microsoft/fast/issues/4208)) ([89a3930](https://github.com/Microsoft/fast/commit/89a3930be83434b9039d25f82ae0c251e2d03956))
+* add select spec ([#4194](https://github.com/Microsoft/fast/issues/4194)) ([7af127a](https://github.com/Microsoft/fast/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
 ## [1.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.0...@microsoft/fast-components@1.14.1) (2020-12-17)
 
 **Note:** Version bump only for package @microsoft/fast-components

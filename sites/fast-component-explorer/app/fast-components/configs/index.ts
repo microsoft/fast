@@ -25,6 +25,9 @@ export { fastCheckboxConfig };
 import fastDialogConfig from "./fast-dialog";
 export { fastDialogConfig };
 
+import fastDisclosureConfig from "./fast-disclosure";
+export { fastDisclosureConfig };
+
 import fastDataGridConfig from "./fast-data-grid";
 export { fastDataGridConfig };
 
@@ -39,6 +42,9 @@ export { fastListboxConfig };
 
 import fastMenuConfig from "./fast-menu";
 export { fastMenuConfig };
+
+import fastNumberFieldConfig from "./fast-number-field";
+export { fastNumberFieldConfig };
 
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
