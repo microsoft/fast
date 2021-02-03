@@ -38,7 +38,7 @@ interface GradientProps {
     scrollToItem?: (index: number, align: string) => void;
 }
 
-class BaseGradient extends React.Component<GradientProps, {}> {
+class BaseGradient extends React.Component<GradientProps, unknown> {
     public static displayName: string = "BaseGradient";
     public render(): JSX.Element {
         return (

@@ -36,7 +36,7 @@ interface AppProps {
     showOnlyRecommendedBackgrounds: boolean;
 }
 
-class App extends React.Component<AppProps, {}> {
+class App extends React.Component<AppProps, unknown> {
     private colorBlockScrollerRef: React.RefObject<FixedSizeList> = React.createRef<
         FixedSizeList
     >();

@@ -3,8 +3,6 @@ import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     backgroundColor,
     cornerRadius,
-    elevation,
-    ElevationMultiplier,
     height,
     neutralDividerRest,
     neutralFillInputRest,
@@ -14,7 +12,6 @@ import {
 } from "@microsoft/fast-components-styles-msft";
 import manageJss, {
     ComponentStyleSheet,
-    DesignSystem,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
 import { format, toPx } from "@microsoft/fast-jss-utilities";
@@ -393,11 +390,9 @@ function mapStateToProps(state: AppState): AppState {
     return state;
 }
 
-const ControlPane = connect(mapStateToProps, {
+export const ControlPane = connect(mapStateToProps, {
     setComponentType,
     setNeutralBaseColor,
     setAccentBaseColor,
     setShowOnlyRecommendedBackgrounds,
 })(manageJss(styles)(ControlPaneBase));
-type ControlPane = InstanceType<typeof ControlPane>;
-export { ControlPane };

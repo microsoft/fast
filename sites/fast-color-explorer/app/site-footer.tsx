@@ -7,7 +7,7 @@ import React from "react";
 
 export { FASTAnchor, SiteNavigation } from "@microsoft/fast-website";
 
-export class Footer extends React.Component<{}, {}> {
+export class Footer extends React.Component<unknown, unknown> {
     render(): React.ReactNode {
         return (
             <fast-design-system-provider
