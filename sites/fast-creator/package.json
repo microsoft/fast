@@ -73,7 +73,7 @@
     "@microsoft/fast-components": "^1.15.0",
     "@microsoft/fast-tooling": "^0.15.0",
     "@microsoft/fast-tooling-react": "^2.5.3",
-    "monaco-editor": "^0.20.0",
+    "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0"
   }
 }
