@@ -91,7 +91,7 @@
     "@microsoft/fast-tooling-react": "^2.5.3",
     "@microsoft/fast-web-utilities": "^4.7.1",
     "@skatejs/val": "^0.5.0",
-    "monaco-editor": "^0.20.0",
+    "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0",
     "react-dnd-html5-backend": "^9.0.0"
   }

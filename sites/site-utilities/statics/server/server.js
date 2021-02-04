@@ -1,6 +1,7 @@
 var express = require("express");
 var fallback = require("express-history-api-fallback");
 var helmet = require("helmet");
+var fs = require("fs");
 var path = require("path");
 
 // Create application
@@ -20,10 +21,21 @@ app.use(helmet.referrerPolicy());
 var publicDir = path.resolve(__dirname);
 
 // Set static application options
-app.use("/", express.static(publicDir, { maxAge: "3d" }));
+app.use("/", express.static(publicDir, { maxAge: "0d" }));
 
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));
+
+// Manage search engine crawlers if staging add robots.txt, otherwise delete
+if (process.env.WEBSITE_HOSTNAME.indexOf("-stage") > -1) {
+    fs.writeFile("robots.txt", "User-agent: *\r\nDisallow: /", function (err) {
+        if (err) throw err;
+    });
+} else {
+    fs.unlink("robots.txt", function (err) {
+        if (err) throw err;
+    });
+}
 
 // Serve up application on specified port
 var port = process.env.PORT || 7001;

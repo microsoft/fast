@@ -24,8 +24,7 @@
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
-      "**/@types/mocha",
-      "**/monaco-editor"
+      "**/@types/mocha"
     ]
   },
   "repository": {
