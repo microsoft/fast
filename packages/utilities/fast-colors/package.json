@@ -57,9 +57,6 @@
         "lines": 70
       }
     },
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
@@ -69,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.12.13",
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
@@ -76,7 +74,6 @@
     "eslint-config-prettier": "^6.10.1",
     "jest": "^25.4.0",
     "prettier": "2.0.2",
-    "ts-jest": "^25.4.0",
     "typescript": "^3.9.0"
   }
 }
