@@ -52,7 +52,7 @@
     "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.7.13",
+    "@microsoft/api-extractor": "7.8.1",
     "@microsoft/fast-tooling": "^0.15.0",
     "@storybook/addons": "^5.1.3",
     "@storybook/cli": "^6.0.0",
