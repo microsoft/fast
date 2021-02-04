@@ -1,9 +1,15 @@
 name: CI - FAST Testing
+
 on:
-  push:
+  push: 
     branches:
-      - master
-      - releases/*
+    - master
+    - releases/*
+  pull_request:
+    branches:
+    - master
+    - releases/*
+    - features/*
 
 jobs:
   cross-browser-automation:
@@ -36,7 +42,7 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts 
 
-    - name: Install dependencies
+    - name: Install Playwright
       run: npm install playwright
 
     - name: Prepare workspaces
