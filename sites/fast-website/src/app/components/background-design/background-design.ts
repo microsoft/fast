@@ -123,15 +123,15 @@ export class BackgroundDesign extends FASTElement {
 
     convertPath(rawPath, color?: number[]): PathData {
         let M: MoveTo | undefined;
-        let C: BezierCurveTo[] | MoveTo | undefined = rawPath
+        const C: BezierCurveTo[] | MoveTo | undefined = rawPath
             .split(/(?=[MCS])/)
             .map(d => {
-                let points = d
+                const points = d
                     .slice(1, d.length)
                     .split(",")
                     .map(p => ~~p);
 
-                let pairs: number[] = [];
+                const pairs: number[] = [];
                 if (points.length === 2) {
                     M = points.map(p => ~~p) as MoveTo;
                     return;
@@ -170,12 +170,12 @@ export class BackgroundDesign extends FASTElement {
 
     updateWave(thisWave, startPoints, endPoints, modifier) {
         // sin wave drives animation
-        let blend = this.easeInOut(1)(Math.sin(this.time.total / 2 + modifier));
+        const blend = this.easeInOut(1)(Math.sin(this.time.total / 2 + modifier));
         for (let i = 0; i < thisWave.C.length; i++) {
             const points = thisWave.C[i];
             for (let j = 0; j < points.length; j++) {
-                let pointStart = startPoints.C[i][j];
-                let pointEnd = endPoints.C[i][j];
+                const pointStart = startPoints.C[i][j];
+                const pointEnd = endPoints.C[i][j];
                 thisWave.C[i][j] =
                     ((blend + 1) * (pointEnd - pointStart)) / 2 + pointStart;
             }
@@ -256,7 +256,7 @@ export class BackgroundDesign extends FASTElement {
         t < 0.5 ? this.easeIn(p)(t * 2) / 2 : this.easeOut(p)(t * 2 - 1) / 2 + 0.5;
 
     reflowCanvas() {
-        let styles = window.getComputedStyle(this);
+        const styles = window.getComputedStyle(this);
 
         const w = parseInt(styles.getPropertyValue("width"), 10);
         const h = parseInt(styles.getPropertyValue("height"), 10);

@@ -1,4 +1,4 @@
-import { html, when, elements, slotted } from "@microsoft/fast-element";
+import { elements, html, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "@microsoft/fast-foundation";
 import CloseIcon from "svg/icon-close.svg";
 import MenuIcon from "svg/icon-menu.svg";

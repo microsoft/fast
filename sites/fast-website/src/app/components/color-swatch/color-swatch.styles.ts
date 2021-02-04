@@ -9,10 +9,10 @@ import {
 import { heightNumber } from "@microsoft/fast-components/dist/esm/styles/size";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    display,
-    forcedColorsStylesheetBehavior,
-    focusVisible,
     disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
 

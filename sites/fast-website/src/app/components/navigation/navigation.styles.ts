@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import {
-    neutralForegroundRestBehavior,
     neutralForegroundHintBehavior,
+    neutralForegroundRestBehavior,
 } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
 

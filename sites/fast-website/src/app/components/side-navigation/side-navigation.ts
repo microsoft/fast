@@ -1,10 +1,10 @@
-import { attr, observable, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     CommunityContentPlacementData,
     communityContentPlacementData,
 } from "../../data/community.data";
 
-export interface sectionData {
+export interface SectionData {
     section: string;
     intersectionRatio: number;
 }
@@ -20,7 +20,7 @@ export class SideNavigation extends FASTElement {
     public sectionArray: HTMLElement[] = [];
 
     @observable
-    public sectionDataArray: sectionData[];
+    public sectionDataArray: SectionData[];
 
     @observable
     public previousY: number = 0;
@@ -29,12 +29,12 @@ export class SideNavigation extends FASTElement {
         x => x.header !== "GitHub"
     );
 
-    reduceFunc = (prev: sectionData, current: sectionData) =>
+    reduceFunc = (prev: SectionData, current: SectionData) =>
         prev.intersectionRatio > current.intersectionRatio ? prev : current;
 
     scrollDirectionFunc = () => {
         const currentY: number = window.pageYOffset;
-        const scrollArray: sectionData[] = this.sectionDataArray.concat();
+        const scrollArray: SectionData[] = this.sectionDataArray.concat();
 
         if (currentY < this.previousY) {
             scrollArray.reverse();
@@ -46,9 +46,9 @@ export class SideNavigation extends FASTElement {
 
     createObserver = (entries: IntersectionObserverEntry[]) => {
         entries.forEach(entry => {
-            const intersectingSection: sectionData = this.sectionDataArray.find(
+            const intersectingSection: SectionData = this.sectionDataArray.find(
                 ({ section }) => section === entry.target.id
-            ) as sectionData;
+            ) as SectionData;
             intersectingSection.intersectionRatio = entry.intersectionRatio;
         });
 
@@ -62,7 +62,7 @@ export class SideNavigation extends FASTElement {
             return { section: x.id, intersectionRatio: 0 };
         });
 
-        let observer = new IntersectionObserver(this.createObserver, {
+        const observer = new IntersectionObserver(this.createObserver, {
             threshold: [0, 0.2, 0.4, 0.6, 0.8],
         });
         this.sectionArray.forEach(section => {

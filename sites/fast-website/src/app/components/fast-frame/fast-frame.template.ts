@@ -1,4 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
+import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
@@ -6,7 +7,6 @@ import PaletteIcon from "svg/icon-palette.svg";
 import PlayIcon from "svg/icon-play.svg";
 import SwatchesIcon from "svg/icon-swatches.svg";
 import { FastFrame } from "./fast-frame";
-import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>

@@ -1,4 +1,4 @@
-import { html, when, slotted } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { ColorSwatch } from "./color-swatch";
 
 export const ColorSwatchTemplate = html<ColorSwatch>`

@@ -4,12 +4,12 @@ import {
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     accentForegroundRestBehavior,
+    neutralFillCardRestBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundRestBehavior,
-    neutralFillCardRestBehavior,
 } from "@microsoft/fast-components";
-import { drawerBreakpoint } from "./fast-frame";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { drawerBreakpoint } from "./fast-frame";
 
 export const FastFrameStyles = css`
     ${display("block")} :host {
@@ -97,12 +97,13 @@ export const FastFrameStyles = css`
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
         position: relative;
-        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
+        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px)
+            0;
     }
 
     .image-container {
         /** Temp background */
-        background: #D6D6D6;
+        background: #d6d6d6;
         width: 100%;
         height: 215px;
         display: flex;
@@ -192,31 +193,30 @@ export const FastFrameStyles = css`
     .hue-slider-track {
         height: 100%;
         border-radius: calc(var(--corner-radius) * 1px);
-        background-image:
-            linear-gradient(
-                to right,
-                rgb(255, 0, 0),
-                rgb(255, 77, 0),
-                rgb(255, 153, 0),
-                rgb(255, 230, 0),
-                rgb(204, 255, 0),
-                rgb(128, 255, 0),
-                rgb(51, 255, 0),
-                rgb(0, 255, 26),
-                rgb(0, 255, 102),
-                rgb(0, 255, 179),
-                rgb(0, 255, 255),
-                rgb(0, 179, 255),
-                rgb(0, 102, 255),
-                rgb(0, 26, 255),
-                rgb(51, 0, 255),
-                rgb(128, 0, 255),
-                rgb(204, 0, 255),
-                rgb(255, 0, 230),
-                rgb(255, 0, 153),
-                rgb(255, 0, 76),
-                rgb(255, 0, 4)
-            );"
+        background-image: linear-gradient(
+            to right,
+            rgb(255, 0, 0),
+            rgb(255, 77, 0),
+            rgb(255, 153, 0),
+            rgb(255, 230, 0),
+            rgb(204, 255, 0),
+            rgb(128, 255, 0),
+            rgb(51, 255, 0),
+            rgb(0, 255, 26),
+            rgb(0, 255, 102),
+            rgb(0, 255, 179),
+            rgb(0, 255, 255),
+            rgb(0, 179, 255),
+            rgb(0, 102, 255),
+            rgb(0, 26, 255),
+            rgb(51, 0, 255),
+            rgb(128, 0, 255),
+            rgb(204, 0, 255),
+            rgb(255, 0, 230),
+            rgb(255, 0, 153),
+            rgb(255, 0, 76),
+            rgb(255, 0, 4)
+        );
     }
 
     .responsive-expand-flipper {
@@ -232,7 +232,7 @@ export const FastFrameStyles = css`
     }
 
     fast-badge {
-        --badge-fill-primary: #E4BC11;
+        --badge-fill-primary: #e4bc11;
         --badge-color-primary: #000000;
     }
 
@@ -287,7 +287,6 @@ export const FastFrameStyles = css`
             grid-template-columns: minMax(300px, auto);
             border-radius: calc(var(--corner-radius) * 1px);
         }
-
     }
     @media screen and (max-width: ${drawerBreakpoint}) {
         :host {
@@ -303,13 +302,13 @@ export const FastFrameStyles = css`
             right: -90%;
             grid-template-columns: 100%;
             width: 80%;
-            transition: right .5s ease-in-out;
+            transition: right 0.5s ease-in-out;
             align-self: center;
             border-radius: calc(var(--corner-radius) * 1px);
         }
 
         .preview-expanded {
-            transition: right .5s ease-in-out;
+            transition: right 0.5s ease-in-out;
             right: -10%;
         }
 
@@ -326,14 +325,13 @@ export const FastFrameStyles = css`
 
         .tab-panel-expanded {
             opacity: 0;
-            transition: opacity .5s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
 
         fast-tab-panel {
             opacity: 1;
-            transition: opacity .5s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
-
     }
     @media screen and (max-width: 480px) {
         .preview {

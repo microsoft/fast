@@ -1,12 +1,12 @@
-import { FASTElement, attr, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
     createColorPalette,
-    FASTSlider,
     FASTDesignSystem,
     fastDesignSystemDefaults,
-    StandardLuminance,
-    neutralLayerCardContainer,
     FASTRadioGroup,
+    FASTSlider,
+    neutralLayerCardContainer,
+    StandardLuminance,
 } from "@microsoft/fast-components";
 import {
     ColorHSL,

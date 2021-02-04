@@ -1,6 +1,6 @@
-import { FASTElement, observable, attr } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { applyMixins, StartEnd } from "@microsoft/fast-foundation";
-import { NavigationItem } from "../navigation-item/navigation-item";
+import "../navigation-item/navigation-item";
 
 export class Navigation extends FASTElement {
     @attr({
