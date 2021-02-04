@@ -55,6 +55,7 @@
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
