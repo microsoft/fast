@@ -73,6 +73,10 @@ export class DesignSystem {
     private prefix: string = "fast";
     private disambiguate: ElementDisambiguationCallback = () => null;
 
+    /**
+     * Sets the custom element prefix the DesignSystem should use when defining elements.
+     * @param prefix - the custom element prefix
+     */
     public withPrefix(prefix: string) {
         this.prefix = prefix;
         return this;
@@ -88,6 +92,10 @@ export class DesignSystem {
         return this;
     }
 
+    /**
+     * Applies the DesignSystem to an element host, defining all registrations and custom element definitions.
+     * @param element - The element to apply the design system to
+     */
     public applyTo(element: HTMLElement) {
         const container = DI.getOrCreateDOMContainer(element);
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
