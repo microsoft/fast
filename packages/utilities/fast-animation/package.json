@@ -25,7 +25,7 @@
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "node_modules/.bin/webpack-dev-server --progress",
-    "test": "yarn unit-tests && yarn build:app && yarn doc:ci",
+    "test": "yarn eslint && yarn unit-tests",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "unit-tests": "jest --runInBand",

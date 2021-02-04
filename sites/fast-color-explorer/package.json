@@ -5,11 +5,13 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "webpack --progress --mode=production",
+    "prepare": "yarn build",
+    "build": "webpack --mode=production",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server",
-    "test": "yarn eslint && yarn build",
+    "pretest": "yarn build",
+    "test": "yarn eslint",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
   },
@@ -76,6 +78,7 @@
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-layouts-react": "^4.12.0",
-    "@microsoft/fast-web-utilities": "^4.7.1"
+    "@microsoft/fast-web-utilities": "^4.7.1",
+    "@microsoft/fast-website": "^1.3.9"
   }
 }

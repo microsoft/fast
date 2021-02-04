@@ -26,7 +26,7 @@
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "yarn eslint && yarn unit-tests && yarn doc",
+    "test": "yarn eslint && yarn unit-tests",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "unit-tests": "jest --runInBand",

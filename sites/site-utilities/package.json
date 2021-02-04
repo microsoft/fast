@@ -13,7 +13,8 @@
     "prepare": "yarn clean:dist && yarn generate:badges && yarn build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "test": "yarn eslint && yarn build",
+    "pretest": "yarn build",
+    "test": "yarn eslint",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
   },

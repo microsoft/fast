@@ -5,13 +5,15 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "webpack --progress --mode=production",
-    "watch": "webpack --progress --watch --mode=production",
+    "prepare": "yarn build",
+    "build": "webpack --mode=production",
+    "watch": "yarn build --watch",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
-    "test": "yarn eslint && yarn build",
+    "pretest": "yarn build",
+    "test": "yarn eslint",
     "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix"
+    "eslint:fix": "yarn eslint --fix"
   },
   "repository": {
     "type": "git",
