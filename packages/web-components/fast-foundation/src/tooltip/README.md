@@ -9,7 +9,7 @@ The `fast-tooltip` component is used provide extra information about another ele
 
 ## Usage
 
-```html live
+```jsx live
 function ShowTooltip(props) {
   useEffect(() => {
     const testTooltip= document.getElementById("testtip");

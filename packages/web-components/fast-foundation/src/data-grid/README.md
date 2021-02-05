@@ -10,7 +10,7 @@ The `fast-data-grid` component is used to display tabular data.  The `fast-data-
 
 ### Usage
 
-```html live
+```jsx live
 function ShowGrid(props) {
   useEffect(() => {
     const testGrid = document.getElementById("testgrid");
@@ -22,7 +22,9 @@ function ShowGrid(props) {
   });
 
   return (
-      <fast-data-grid id="testgrid"></fast-data-grid>
+      <fast-design-system-provider use-defaults>
+          <fast-data-grid id="testgrid"></fast-data-grid>
+      </fast-design-system-provider>
   );
 }
 
