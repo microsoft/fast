@@ -48,7 +48,7 @@
     "jest": "^25.4.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "4.17.15",
     "prettier": "^1.15.3",
     "raf-throttle": "^2.0.3",
     "react": "^16.8.0",

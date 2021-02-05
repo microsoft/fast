@@ -47,7 +47,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "4.17.15",
     "mini-css-extract-plugin": "^0.10.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "2.0.2",
