@@ -16745,7 +16745,7 @@ pkg-up@3.1.0, pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-playwright@^1.7.0:
+playwright@^1.7.0, playwright@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.8.0.tgz#8eca2250967ee892b9fdfec44e2358455ab0f8e3"
   integrity sha512-urMJDLX92KawbkWKrt3chVVBPQsuuNwlS5St7I5YQENXAEItoyUqX7FjiYaoPgXifKqe1+BKC+7pBAq1QUkgSw==
