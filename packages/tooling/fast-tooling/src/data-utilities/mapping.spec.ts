@@ -1065,10 +1065,10 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
         const title: string = "FooBar";
         const description: string = "foo tag";
         const attrName: string = "attr";
-        const attrTitle: string = "attr title"
+        const attrTitle: string = "attr title";
         const attrDescription: string = "An attribute";
         const slotName: string = "";
-        const slotTitle: string = "Default slot"
+        const slotTitle: string = "Default slot";
         const slotDescription: string = "The default slot";
 
         expect(
@@ -1131,7 +1131,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
         const title: string = "foo title";
         const description: string = "foo tag";
         const slotName: string = "test";
-        const slotTitle: string = "Default slot"
+        const slotTitle: string = "Default slot";
         const slotDescription: string = "Default slot description";
 
         expect(
