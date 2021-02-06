@@ -122,6 +122,7 @@
     "@types/node": "^9.4.7",
     "beachball": "^1.36.2",
     "chalk": "^2.4.2",
+    "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
