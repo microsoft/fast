@@ -4,6 +4,7 @@ import {
     Endpoint,
     ConfigurableRoute,
     Route,
+    RouteParameterConverter,
 } from "./recognizer";
 import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
 import {
@@ -11,6 +12,7 @@ import {
     FASTElement,
     ElementStyles,
     ComposableStyles,
+    Constructable,
 } from "@microsoft/fast-element";
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
@@ -137,13 +139,46 @@ function getFallbackCommand(
     }
 }
 
+type ConverterObject = {
+    convert: RouteParameterConverter;
+};
+
+export type ParameterConverter =
+    | RouteParameterConverter
+    | ConverterObject
+    | Constructable<ConverterObject>;
+
+const booleanConverter = value => {
+    if (value === void 0 || value === null) {
+        return false;
+    }
+
+    switch (value.toLowerCase().trim()) {
+        case "true":
+        case "yes":
+        case "1":
+            return true;
+        default:
+            return false;
+    }
+};
+
 export class RouteCollection<TSettings = any> {
     private recognizer = new RouteRecognizer<TSettings>();
     private configToCommand = new Map<string, NavigationCommand>();
     private fallbackCommand: NavigationCommand | null = null;
     private fallbackSettings: TSettings | null = null;
+    private converters: Record<string, RouteParameterConverter> = {};
 
-    public constructor(private owner: RouterConfiguration) {}
+    public constructor(private owner: RouterConfiguration) {
+        this.converter("number", value => parseFloat(value));
+        this.converter("float", value => parseFloat(value));
+        this.converter("int", value => parseInt(value));
+        this.converter("integer", value => parseInt(value));
+        this.converter("Date", value => new Date(value));
+        this.converter("boolean", booleanConverter);
+        this.converter("bool", booleanConverter);
+    }
 
     public ignore(definitionOrString: IgnorableRouteDefinition<TSettings> | string) {
         if (typeof definitionOrString === "string") {
@@ -218,8 +253,26 @@ export class RouteCollection<TSettings = any> {
         }
     }
 
-    public find(path: string): RouteLocationResult<TSettings> | null {
-        const result = this.recognizer.recognize(path);
+    public converter(name: string, converter: ParameterConverter) {
+        let normalizedConverter: RouteParameterConverter;
+
+        if ("convert" in converter) {
+            normalizedConverter = converter.convert.bind(converter);
+        } else if (converter.prototype && "convert" in converter.prototype) {
+            normalizedConverter = (value: string) => {
+                // TODO: find a way to patch in DI here
+                const obj = Reflect.construct(converter, []) as ConverterObject;
+                return obj.convert(value);
+            };
+        } else {
+            normalizedConverter = converter as RouteParameterConverter;
+        }
+
+        this.converters[name] = normalizedConverter;
+    }
+
+    public async find(path: string): Promise<RouteLocationResult<TSettings> | null> {
+        const result = await this.recognizer.recognize(path, this.converters);
 
         if (result !== null) {
             return {
@@ -234,8 +287,10 @@ export class RouteCollection<TSettings = any> {
                     new Endpoint<TSettings>(
                         new ConfigurableRoute("*", false),
                         [],
+                        [],
                         this.fallbackSettings
                     ),
+                    {},
                     {}
                 ),
                 command: this.fallbackCommand,

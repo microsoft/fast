@@ -87,12 +87,12 @@ class RenderContributor {
     }
 
     async construct(phase: NavigationPhase) {
-        const newParams = this.route.params;
+        const rawParams = this.route.params;
 
         if (this.router.command === this.command) {
             const previousParams = this.router.route?.params;
 
-            if (JSON.stringify(previousParams) === JSON.stringify(newParams)) {
+            if (JSON.stringify(previousParams) === JSON.stringify(rawParams)) {
                 phase.cancel();
                 return;
             }
@@ -100,7 +100,7 @@ class RenderContributor {
 
         this.newView = await this.command.createView();
         this.newView.appendTo(this.router);
-        this.newView.bind(newParams, defaultExecutionContext);
+        this.newView.bind(this.route.typedParams, defaultExecutionContext);
 
         phase.onCancel(async () => {
             if (this.newView) {

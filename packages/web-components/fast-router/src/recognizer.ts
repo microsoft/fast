@@ -3,6 +3,9 @@ export interface Route {
     readonly caseSensitive?: boolean;
 }
 
+export type RouteParameterConverter = (value: string) => any | Promise<any>;
+const defaultParameterConverter: RouteParameterConverter = (value: string) => value;
+
 export class ConfigurableRoute implements Route {
     public constructor(
         public readonly path: string,
@@ -14,6 +17,7 @@ export class Endpoint<TSettings = any> {
     public constructor(
         public readonly route: ConfigurableRoute,
         public readonly paramNames: readonly string[],
+        public readonly paramTypes: readonly string[],
         public readonly settings: TSettings | null
     ) {}
 
@@ -25,7 +29,8 @@ export class Endpoint<TSettings = any> {
 export class RecognizedRoute<TSettings = any> {
     public constructor(
         public readonly endpoint: Endpoint<TSettings>,
-        public readonly params: Readonly<Record<string, string | undefined>>
+        public readonly params: Readonly<Record<string, string | undefined>>,
+        public readonly typedParams: Readonly<Record<string, any>>
     ) {}
 
     public get settings() {
@@ -338,10 +343,6 @@ export class RouteRecognizer<TSettings> {
         null,
         ""
     ) as SeparatorState<TSettings>;
-    private readonly cache: Map<string, RecognizedRoute<TSettings> | null> = new Map<
-        string,
-        RecognizedRoute<TSettings> | null
-    >();
 
     public add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void {
         if (routeOrRoutes instanceof Array) {
@@ -351,9 +352,6 @@ export class RouteRecognizer<TSettings> {
         } else {
             this.$add(routeOrRoutes as Route, settings);
         }
-
-        // Clear the cache whenever there are state changes, because the recognizeResults could be arbitrarily different as a result
-        this.cache.clear();
     }
 
     private $add(route: Route, settings?: TSettings): void {
@@ -363,6 +361,7 @@ export class RouteRecognizer<TSettings> {
         // Normalize leading, trailing and double slashes by ignoring empty segments
         const parts = path === "" ? [""] : path.split("/").filter(isNotEmpty);
         const paramNames: string[] = [];
+        const paramTypes: string[] = [];
 
         let state = this.rootState as AnyState<TSettings>;
 
@@ -371,23 +370,41 @@ export class RouteRecognizer<TSettings> {
             state = state.append(null, "/");
 
             switch (part.charAt(0)) {
-                case ":": {
+                case "{": {
                     // route parameter
-                    const isOptional = part.endsWith("?");
-                    const name = isOptional ? part.slice(1, -1) : part.slice(1);
+                    const nameAndType = part
+                        .slice(1, -1)
+                        .split(":")
+                        .map(x => x.trim());
+
+                    if (nameAndType.length === 2) {
+                        paramTypes.push(nameAndType[1]);
+                    } else {
+                        paramTypes.push("string");
+                    }
+
+                    const isOptional = nameAndType[0].endsWith("?");
+                    const name = isOptional
+                        ? nameAndType[0].slice(0, -1)
+                        : nameAndType[0];
+
                     paramNames.push(name);
+
                     state = new DynamicSegment<TSettings>(name, isOptional).appendTo(
                         state
                     );
                     break;
                 }
+
                 case "*": {
                     // dynamic route
                     const name = part.slice(1);
                     paramNames.push(name);
+                    paramTypes.push("string");
                     state = new StarSegment<TSettings>(name).appendTo(state);
                     break;
                 }
+
                 default: {
                     // standard path route
                     state = new StaticSegment<TSettings>(
@@ -399,20 +416,20 @@ export class RouteRecognizer<TSettings> {
             }
         }
 
-        const endpoint = new Endpoint<TSettings>($route, paramNames, settings || null);
+        const endpoint = new Endpoint<TSettings>(
+            $route,
+            paramNames,
+            paramTypes,
+            settings || null
+        );
 
         state.setEndpoint(endpoint);
     }
 
-    public recognize(path: string): RecognizedRoute<TSettings> | null {
-        let result = this.cache.get(path);
-        if (result === void 0) {
-            this.cache.set(path, (result = this.$recognize(path)));
-        }
-        return result;
-    }
-
-    private $recognize(path: string): RecognizedRoute<TSettings> | null {
+    public async recognize(
+        path: string,
+        converters: Readonly<Record<string, RouteParameterConverter>> = {}
+    ): Promise<RecognizedRoute<TSettings> | null> {
         path = decodeURI(path);
 
         if (!path.startsWith("/")) {
@@ -439,9 +456,23 @@ export class RouteRecognizer<TSettings> {
         }
 
         const { endpoint } = candidate;
+        const paramNames = endpoint.paramNames;
+        const paramTypes = endpoint.paramTypes;
         const params = candidate.getParams();
+        const typedParams = {};
 
-        return new RecognizedRoute<TSettings>(endpoint, params);
+        for (let i = 0, ii = paramNames.length; i < ii; ++i) {
+            const name = paramNames[i];
+            const convert = converters[paramTypes[i]] || defaultParameterConverter;
+            const untypedValue = params[name];
+
+            if (untypedValue !== void 0) {
+                const typedValue = await convert(untypedValue);
+                typedParams[name] = typedValue;
+            }
+        }
+
+        return new RecognizedRoute<TSettings>(endpoint, params, typedParams);
     }
 }
 
