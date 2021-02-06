@@ -176,7 +176,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         playwright: [latest]
-        headless: [true]
+        headless: [false]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -199,7 +199,7 @@ jobs:
       run: yarn install --frozen-lockfile --ignore-scripts
 
     - name: Install playwright
-      run: cd build npm install playwright@${{ matrix.playwright }}
+      run: npm install playwright@${{ matrix.playwright }}
 
     - name: Prepare workspaces
       run: yarn prepare
