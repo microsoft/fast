@@ -8,7 +8,7 @@ on:
       - 'releases/*'
 
 jobs:
-  test-linux:
+  test-playwright:
     name: ${{ matrix.os }} Playwright@${{ matrix.playwright}} headless=${{ matrix.headless }}
     strategy:
       fail-fast: false
@@ -23,19 +23,19 @@ jobs:
     - uses: actions/setup-node@v1
     - uses: ./
     - name: Install dependencies
-      run: cd build/testing && npm install playwright@${{ matrix.playwright }}
+      run: cd fast/build/testing && npm install playwright@${{ matrix.playwright }}
 
     - name: Run Playwright (headless)
       if: ${{ matrix.headless == true }}
-      run: cd build/testing && node playwright-automation.js
+      run: cd fast/build/testing && node playwright-automation.js
 
     - name: Run Playwright (headful linux)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'ubuntu') }}
-      run: cd build/testing && HEADFUL=true xvfb-run --auto-servernum -- node playwright-automation.js
+      run: cd fast/build/testing && HEADFUL=true xvfb-run --auto-servernum -- node playwright-automation.js
     - name: Run Playwright (headful windows)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'windows') }}
-      run: cd build/testing && HEADFUL=true node playwright-automation.js
+      run: cd fast/build/testing && HEADFUL=true node playwright-automation.js
       shell: bash
     - name: Run Playwright (headful mac)
       if: ${{ matrix.headless == false && startsWith(matrix.os, 'mac') }}
-      run: cd build/testing && HEADFUL=true node playwright-automation.js
+      run: cd fast/build/testing && HEADFUL=true node playwright-automation.js
