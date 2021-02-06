@@ -1,9 +1,12 @@
 /* eslint-env node */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import path from "path";
 import commonJS from "rollup-plugin-commonjs";
-import copy from "rollup-plugin-copy";
 import resolve from "rollup-plugin-node-resolve";
 import typescript from "rollup-plugin-typescript2";
+
+const copy = require("../../../../build/copy");
 
 const srcDir = path.resolve(__dirname, "..", "src");
 const distDir = path.resolve(__dirname, "public");
@@ -43,14 +46,9 @@ export default [
                     },
                 },
             }),
-            copy({
-                targets: [
-                    {
-                        src: `${path.resolve(__dirname, "fixtures")}/*`,
-                        dest: distDir,
-                    },
-                ],
-            }),
         ],
     },
 ];
+
+// Copy the fixtures to the public directory
+copy([`${path.resolve(__dirname, "fixtures")}/*`], distDir);
