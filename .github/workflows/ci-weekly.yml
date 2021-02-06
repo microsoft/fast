@@ -198,9 +198,6 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Install playwright
-      run: cd build/testing && npm install playwright@${{ matrix.playwright }}
-
     - name: Prepare workspaces
       run: yarn prepare
 
