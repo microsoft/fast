@@ -54,11 +54,11 @@
     "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha ",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
-    "test-chromium:pw": "PW_BROWSER=chromium yarn test-pw:full",
+    "test-chromium:pw": "cross-env PW_BROWSER=chromium && yarn test-pw:full",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
     "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
-    "test-firefox:pw": "PW_BROWSER=firefox yarn test-pw:full",
-    "test-webkit:pw": "PW_BROWSER=webkit yarn test-pw:full"
+    "test-firefox:pw": "cross-env PW_BROWSER=firefox && yarn test-pw:full",
+    "test-webkit:pw": "cross-env PW_BROWSER=webkit && yarn test-pw:full"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
@@ -76,6 +76,7 @@
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "circular-dependency-plugin": "^5.2.0",
+    "cross-env": "^7.0.3",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
