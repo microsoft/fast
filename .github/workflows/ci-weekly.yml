@@ -195,12 +195,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
-    - name: Install dependencies
-      run:  npm install playwright@${{ matrix.playwright }}
-    
-     - name: Install package dependencies
+    - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
+    - name: Install playwright
+      run:  npm install playwright@${{ matrix.playwright }}
+      
     - name: Prepare workspaces
       run: yarn prepare
 
