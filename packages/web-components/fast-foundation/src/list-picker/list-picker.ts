@@ -7,6 +7,7 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import uniqueId from "lodash-es/uniqueId";
 import { AnchoredRegion } from "../anchored-region";
 
 /**
@@ -112,12 +113,41 @@ export class ListPicker extends FASTElement {
     }
 
     /**
-     * Listbox children that are options
+     * Children that are options
      *
      * @internal
      */
     @observable
-    public optionElements: HTMLElement[];
+    public optionElements: HTMLElement[] = [];
+    private optionElementsChanged(): void {
+        this.optionElements.forEach(o => {
+            o.id = o.id || uniqueId("option-");
+        });
+    }
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public listboxId: string = uniqueId("listbox-");
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public listboxFocusIndex: number = -1;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public listboxFocusOptionId: string | null = null;
 
     /**
      * reference to the edit box
@@ -180,10 +210,62 @@ export class ListPicker extends FASTElement {
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
-    public handleTextInput = (e: InputEvent): void => {
-        if (!this.listboxOpen) {
-            this.listboxOpen = true;
+    public handleTextInput = (e: InputEvent): boolean => {
+        // e.stopPropagation();
+        return false;
+    };
+
+    public handleInputKeyDown = (e: KeyboardEvent): boolean => {
+        this.toggleMenu(true);
+
+        switch (e.key) {
+            case "Home": {
+                if (this.optionElements.length > 0) {
+                    this.setFocusedOption(0);
+                }
+                // e.stopPropagation();
+                return false;
+            }
+
+            case "ArrowDown": {
+                if (this.optionElements.length > 0) {
+                    this.setFocusedOption(
+                        Math.min(
+                            this.listboxFocusIndex + 1,
+                            this.optionElements.length - 1
+                        )
+                    );
+                }
+                // e.stopPropagation();
+                return false;
+            }
+
+            case "ArrowUp": {
+                if (this.optionElements.length > 0) {
+                    this.setFocusedOption(Math.max(this.listboxFocusIndex - 1, 0));
+                }
+                // e.stopPropagation();
+                return false;
+            }
+
+            case "End": {
+                if (this.optionElements.length > 0) {
+                    this.setFocusedOption(this.optionElements.length - 1);
+                }
+                // e.stopPropagation();
+                return false;
+            }
+
+            case "Enter": {
+                if (this.optionElements.length > 0) {
+                }
+                // e.stopPropagation();
+                return false;
+            }
         }
+
+        // e.stopPropagation();
+        return true;
     };
 
     public handleRegionLoaded = (e: Event): void => {
@@ -205,6 +287,7 @@ export class ListPicker extends FASTElement {
         ).createBehavior(this.optionsPlaceholder);
 
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
+        return;
     };
 
     public handleFocusOut = (e: FocusEvent): void => {
@@ -212,18 +295,45 @@ export class ListPicker extends FASTElement {
             this.listbox === undefined ||
             !this.listbox.contains(e.relatedTarget as Element)
         ) {
-            this.listboxOpen = false;
+            this.toggleMenu(false);
         }
+
+        return;
     };
 
     public handleOptionClick = (e: MouseEvent): boolean => {
         if (e.defaultPrevented) {
-            return true;
+            return false;
         }
         // this.selectedOptions = this.selectedOptions.push();
-        this.listboxOpen = false;
-        return true;
+        this.toggleMenu(false);
+        return false;
     };
+
+    private setFocusedOption = (optionIndex: number): void => {
+        if (optionIndex === this.listboxFocusIndex) {
+            return;
+        }
+        if (optionIndex === -1 || optionIndex > this.optionElements.length - 1) {
+            this.listboxFocusIndex = -1;
+            this.listboxFocusOptionId = null;
+            return;
+        }
+
+        this.listboxFocusIndex = optionIndex;
+        this.listboxFocusOptionId = this.optionElements[optionIndex].id;
+    };
+
+    private toggleMenu(open: boolean) {
+        if (this.listboxOpen !== open) {
+            this.listboxOpen = open;
+            if (this.optionElements.length > 0) {
+                this.listboxFocusIndex = 0;
+            } else {
+                this.listboxFocusIndex = -1;
+            }
+        }
+    }
 
     private setRegionProps = (): void => {
         if (!this.listboxOpen) {
