@@ -290,21 +290,21 @@ export const MenuItemStyles = css`
 
             :host .checkbox,
             :host .radio{
-                border-color: ${SystemColors.FieldText};
-                background: ${SystemColors.Field};
+                border-color: ${SystemColors.ButtonText};
+                background: ${SystemColors.HighlightText};
             }
 
             :host(:hover) .checkbox,
             :host(:hover) .radio ,
             :host(:${focusVisible}) .checkbox,
             :host(:${focusVisible}) .radio{
-                border-color: ${SystemColors.Field};
+                border-color: ${SystemColors.HighlightText};
             }
 
             :host([checked="true"]) .checkbox-checked,
             :host([checked="true"]) .radio-checked {
-                border-color: ${SystemColors.Field};
-                background: ${SystemColors.Field};
+                border-color: ${SystemColors.HighlightText};
+                background: ${SystemColors.HighlightText};
             }
 
             :host([checked="true"]) {
@@ -313,11 +313,11 @@ export const MenuItemStyles = css`
             }
 
             :host([checked="true"]) .checkbox-indicator{
-                fill: ${SystemColors.FieldText};
+                fill: ${SystemColors.Highlight};
             }
 
             :host([checked="true"]) .radio-indicator {
-                background: ${SystemColors.FieldText};
+                background: ${SystemColors.Highlight};
             }
         `
     )
