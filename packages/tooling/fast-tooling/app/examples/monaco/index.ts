@@ -11,6 +11,7 @@ import monacoEditorConfig from "./monaco-editor-config";
 import dataDictionaryConfig from "./data-dictionary-config";
 import schemaDictionary from "./schema-dictionary";
 
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTMessageSystemWorker = require("../../../dist/message-system.min.js");
 
 document.body.setAttribute("style", "margin: 0");
