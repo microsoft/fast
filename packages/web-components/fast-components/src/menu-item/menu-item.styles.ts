@@ -116,24 +116,35 @@ export const MenuItemStyles = css`
         fill: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.without-role) .start-container {
-        display: flex;
+    :host .start-container {
+        display: grid;
+        grid-template-columns: auto auto;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
     }
 
-    :host(.with-role) .start-container {
+    :host([role="menuitemcheckbox"]) .start-container,
+    :host([role="menuitemradio"]) .start-container {
+        column-gap: 10px;
+    }
+
+    :host([role="menuitemcheckbox"]),
+    :host([role="menuitemradio"]) {
         display: grid;
-        grid-template-columns: minmax(30px, auto) minmax(32px, auto) ;
+        grid-template-columns: auto 1fr minmax(42px, auto);
         align-items: center;
-        width: 100%;
-        height: 100%;
+        min-height: 32px;
     }
 
-    :host(.with-role) .start {
+    :host([role="menuitemcheckbox"]) .start,
+    :host([role="menuitemradio"]) .start {
         grid-column-start: 2;
+        margin-inline-end: 10px;
+    }
+
+    :host([role="menuitemcheckbox"]) .end,
+    :host([role="menuitemradio"]) .end {
+        grid-column-start: 3;
     }
 
     :host .checkbox {

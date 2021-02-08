@@ -186,9 +186,6 @@ export class Menu extends FASTElement {
 
     private setItems = (): void => {
         const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
-        const hasRole =
-            this.querySelectorAll("[role=menuitemcheckbox], [role=menuitemradio]")
-                .length > 0;
 
         // if our focus index is not -1 we have items
         if (focusIndex !== -1) {
