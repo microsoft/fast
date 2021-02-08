@@ -30,10 +30,10 @@ function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
 export function createDataGridRowTemplate(prefix: string): ViewTemplate {
     return html<DataGridRow>`
         <template
-            :defaultCellItemTemplate=${createCellItemTemplate(prefix)}
-            :defaultHeaderCellItemTemplate=${createHeaderCellItemTemplate(prefix)}
             role="row"
             class="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            :defaultCellItemTemplate="${createCellItemTemplate(prefix)}"
+            :defaultHeaderCellItemTemplate="${createHeaderCellItemTemplate(prefix)}"
             ${children({
                 property: "cellElements",
                 filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
