@@ -1,16 +1,17 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import FASTMessageSystemWorker from "../../../dist/message-system.min.js";
 import {
     MessageSystem,
     MessageSystemDataTypeAction,
     MessageSystemType,
 } from "../../../src";
 import { mapDataDictionaryToMonacoEditorHTML } from "../../../src/data-utilities/monaco";
-import { MonacoAdapter } from "../../../src/data-utilities/monaco-adapter";
-import { MonacoAdapterAction } from "../../../src/data-utilities/monaco-adapter-action";
+import { MonacoAdapter } from "../../../src/message-system-service/monaco-adapter.service";
+import { MonacoAdapterAction } from "../../../src/message-system-service/monaco-adapter.service-action";
 import monacoEditorConfig from "./monaco-editor-config";
 import dataDictionaryConfig from "./data-dictionary-config";
 import schemaDictionary from "./schema-dictionary";
+
+const FASTMessageSystemWorker = require("../../../dist/message-system.min.js");
 
 document.body.setAttribute("style", "margin: 0");
 const root = document.getElementById("root");
