@@ -110,7 +110,7 @@
     "immer": "^8.0.1",
     "jimp": "^0.16.1",
     "jpeg-js": "^0.4.3",
-    "node-notifyer": "9.0.0"
+    "node-notifier": "9.0.0"
   },
   "devDependencies": {
     "@octokit/rest": "^18.0.6",
