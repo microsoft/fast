@@ -140,6 +140,7 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
+    "node-notifier": "^9.0.0",
     "playwright": "^1.8.0",
     "saucelabs": "^1.5.0",
     "selenium-webdriver": "^3.6.0"
