@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.0...@microsoft/site-utilities@0.7.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
 # [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.3...@microsoft/site-utilities@0.7.0) (2021-01-30)
 
 
