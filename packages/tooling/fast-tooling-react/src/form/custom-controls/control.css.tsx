@@ -7,7 +7,7 @@ import { CSSControlProps, CSSControlState } from "./control.css.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { CSSProperty } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { CSSProperty } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
 import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 

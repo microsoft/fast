@@ -15,6 +15,15 @@ declare namespace JSX {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
         };
+        "fast-number-field": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            events?: {
+                input?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+            step?: number;
+        };
         "fast-text-field": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement

@@ -1,6 +1,6 @@
 import React from "react";
-import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
-import { syntaxes } from "@microsoft/fast-tooling/dist/css-data";
+import { Syntax } from "@microsoft/fast-tooling/dist/esm/css-data.syntax";
+import { syntaxes } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { RenderRefControlConfig } from "./control.css.utilities.props";
 import { CSSRef } from "./control.css-ref";
 import { renderColorPicker } from "./control.css.utilities";

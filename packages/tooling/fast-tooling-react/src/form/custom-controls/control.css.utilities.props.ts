@@ -1,10 +1,10 @@
 import {
     CSSPropertyRef,
     CSSSyntaxRef,
-} from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
-import { XOR } from "@microsoft/fast-tooling/dist/data-utilities/type.utilities";
-import { Type } from "@microsoft/fast-tooling/dist/css-data.types";
-import { Syntax } from "@microsoft/fast-tooling/dist/css-data.syntax";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import { XOR } from "@microsoft/fast-tooling/dist/esm/data-utilities/type.utilities";
+import { Type } from "@microsoft/fast-tooling/dist/esm/css-data.types";
+import { Syntax } from "@microsoft/fast-tooling/dist/esm/css-data.syntax";
 
 export interface RenderControlConfig {
     /**

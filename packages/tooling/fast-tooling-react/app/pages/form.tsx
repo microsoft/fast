@@ -2,7 +2,7 @@ import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 import CSSControl from "../../src/form/custom-controls/control.css";
-import { properties } from "@microsoft/fast-tooling/dist/css-data";
+import { properties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -25,7 +25,7 @@ import {
     errorColorName,
     FloatingColorName,
 } from "../../src/style";
-import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/data-utilities/mapping.mdn-data";
+import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
