@@ -163,3 +163,44 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
+  Test-playwright:
+    name: ${{ matrix.os }} Playwright@${{ matrix.playwright}} headless=${{ matrix.headless }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        playwright: [latest]
+        headless: [false]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
+
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
+
+  #  - name: Run Playwright (headless)
+  #    if: ${{ matrix.headless == true }}
+  #    run: cd build/testing && node playwright-automation.js
