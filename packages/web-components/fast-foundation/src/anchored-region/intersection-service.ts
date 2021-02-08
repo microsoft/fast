@@ -1,10 +1,12 @@
+import { $global } from "@microsoft/fast-element";
+
 /**
  *  A service to batch intersection event callbacks so multiple elements can share a single observer
  *
  * @public
  */
 export class IntersectionService {
-    private intersectionDetector: IntersectionObserver;
+    private intersectionDetector: IntersectionObserver | null = null;
 
     private observedElements: Map<Element, any[]> = new Map<Element, any[]>();
 
@@ -21,6 +23,9 @@ export class IntersectionService {
         target: Element,
         callback: (entries: IntersectionObserverEntry[]) => void
     ): void => {
+        if (this.intersectionDetector === null) {
+            return;
+        }
         if (this.observedElements.has(target)) {
             this.observedElements.get(target)?.push(callback);
             return;
@@ -50,6 +55,10 @@ export class IntersectionService {
      * initialize intersection detector
      */
     private initializeIntersectionDetector = (): void => {
+        if (!$global.IntersectionObserver) {
+            //intersection observer not supported
+            return;
+        }
         this.intersectionDetector = new IntersectionObserver(this.handleIntersection, {
             root: null,
             rootMargin: "0px",
@@ -61,13 +70,16 @@ export class IntersectionService {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
+        if (this.intersectionDetector === null) {
+            return;
+        }
         const pendingCallbacks: any[] = [];
         const pendingCallbackParams: any[] = [];
 
         // go through the entries to build a list of callbacks and params for each
         entries.forEach((entry: IntersectionObserverEntry) => {
             // stop watching this element until we get new update requests for it
-            this.intersectionDetector.unobserve(entry.target);
+            this.intersectionDetector?.unobserve(entry.target);
 
             const thisElementCallbacks: any[] | undefined = this.observedElements.get(
                 entry.target
