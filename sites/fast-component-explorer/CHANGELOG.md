@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.0...@microsoft/fast-component-explorer@0.16.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.0...@microsoft/fast-component-explorer@0.16.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
 # [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.1...@microsoft/fast-component-explorer@0.16.0) (2021-01-30)
 
 
