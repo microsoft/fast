@@ -22,7 +22,7 @@ export function createDataGridTemplate(prefix: string): ViewTemplate {
         <template
             role="grid"
             tabindex="0"
-            :defaultRowItemTemplate=${createRowItemTemplate(prefix)}
+            :defaultRowItemTemplate="${createRowItemTemplate(prefix)}"
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),
