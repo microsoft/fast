@@ -26,6 +26,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
         - [allOf & $ref](#allof-&-ref)
+    - [Categories](#categories)
 - [Navigation](#navigation)
 - [Navigation Menu](#navigation-menu)
     - [Menu structure](#menu-structure)
@@ -552,6 +553,32 @@ Any enums will be converted to a select dropdown.
 #### allOf & $ref
 
 The `allOf` and `$ref` keywords cannot be interpreted by the schema form generator.
+
+#### Categories
+
+Any `object` in the `<Form />` may have categories with which to contain its properties. This can be achieved by passing the `categories` prop which is a dictionary of keys that match to a schemas `id`, and which contain a `dataLocation` key to indicate which object a form category belongs to. Each category can then specify the properties as a set of `dataLocation` strings and a `title`.
+
+Example:
+
+```tsx
+<Form
+    messageSystem={fastMessageSystem}
+    categories={{
+        "https://my.schema.id": {
+            "": [ // The root level dataLocation
+                {
+                    title: "Style",
+                    dataLocations: ["border", "font"]
+                },
+                {
+                    title: "Content",
+                    dataLocations: ["text", "title"]
+                }
+            ]
+        }
+    }}
+/>
+```
 
 ## Navigation
 

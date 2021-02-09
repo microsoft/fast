@@ -7,7 +7,7 @@ import {
     TreeNavigation,
     ValidationError,
 } from "@microsoft/fast-tooling";
-import { FormStrings } from "../form.props";
+import { FormCategoryDictionary, FormStrings } from "../form.props";
 
 export type UpdateNavigationCallback = (
     dictionaryId: string,
@@ -347,6 +347,11 @@ export interface SectionLinkControlOptions {
      * The update section callback
      */
     onUpdateSection?: UpdateNavigationCallback;
+
+    /**
+     * The categories
+     */
+    categories: FormCategoryDictionary;
 }
 
 export interface SectionControlOptions {
@@ -395,6 +400,11 @@ export interface SectionControlOptions {
      * The dictionary of available data items
      */
     dataDictionary: DataDictionary<any>;
+
+    /**
+     * The categories
+     */
+    categories: FormCategoryDictionary;
 }
 
 export interface ArrayControlOptions {

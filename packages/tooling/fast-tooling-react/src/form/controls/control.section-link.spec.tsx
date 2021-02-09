@@ -41,6 +41,7 @@ const sectionLinkProps: SectionLinkControlProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("SectionLinkControl", () => {
