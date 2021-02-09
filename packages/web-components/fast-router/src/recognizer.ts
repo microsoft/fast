@@ -3,8 +3,8 @@ export interface Route {
     readonly caseSensitive?: boolean;
 }
 
-export type RouteParameterConverter = (value: string) => any | Promise<any>;
-const defaultParameterConverter: RouteParameterConverter = (value: string) => value;
+export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
+const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) => value;
 
 export class ConfigurableRoute implements Route {
     public constructor(
@@ -465,11 +465,8 @@ export class RouteRecognizer<TSettings> {
             const name = paramNames[i];
             const convert = converters[paramTypes[i]] || defaultParameterConverter;
             const untypedValue = params[name];
-
-            if (untypedValue !== void 0) {
-                const typedValue = await convert(untypedValue);
-                typedParams[name] = typedValue;
-            }
+            const typedValue = await convert(untypedValue);
+            typedParams[name] = typedValue;
         }
 
         return new RecognizedRoute<TSettings>(endpoint, params, typedParams);

@@ -171,11 +171,11 @@ export class RouteCollection<TSettings = any> {
     private converters: Record<string, RouteParameterConverter> = {};
 
     public constructor(private owner: RouterConfiguration) {
-        this.converter("number", value => parseFloat(value));
-        this.converter("float", value => parseFloat(value));
-        this.converter("int", value => parseInt(value));
-        this.converter("integer", value => parseInt(value));
-        this.converter("Date", value => new Date(value));
+        this.converter("number", value => value === void 0 ? NaN : parseFloat(value));
+        this.converter("float", value => value === void 0 ? NaN : parseFloat(value));
+        this.converter("int", value => value === void 0 ? NaN : parseInt(value));
+        this.converter("integer", value => value === void 0 ? NaN : parseInt(value));
+        this.converter("Date", value => value === void 0 ? new Date(Date.now()) : new Date(value));
         this.converter("boolean", booleanConverter);
         this.converter("bool", booleanConverter);
     }
