@@ -1,6 +1,15 @@
 name: CI - FAST Validation
 
 on:
+  push: 
+    branches:
+    - master
+    - releases/*
+  pull_request:
+    branches:
+    - master
+    - releases/*
+    - features/*
   schedule:
   - cron: 0 7 * * 3
   
@@ -173,5 +182,5 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
 
-  Test-playwright:
+  
     
