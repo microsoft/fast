@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.14](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.12...@microsoft/fast-tooling-examples@0.4.14) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.13](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.12...@microsoft/fast-tooling-examples@0.4.13) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
 ## [0.4.12](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.11...@microsoft/fast-tooling-examples@0.4.12) (2021-01-30)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-examples

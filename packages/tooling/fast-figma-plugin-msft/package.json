@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-figma-plugin-msft",
-  "version": "0.8.9",
+  "version": "0.8.11",
   "description": "A Figma plugin for designing MSFT experiences",
   "sideEffects": false,
   "private": true,
@@ -28,11 +28,11 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
-    "@microsoft/fast-colors": "^5.1.0",
-    "@microsoft/fast-components": "^1.15.0",
+    "@microsoft/fast-colors": "^5.1.2",
+    "@microsoft/fast-components": "^1.17.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
-    "@microsoft/fast-element": "^0.22.0",
+    "@microsoft/fast-element": "^0.22.2",
     "@types/figma": "^1.0.2",
     "@types/node": "^10.12.12",
     "@types/react": "^16.9.17",
