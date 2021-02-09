@@ -21,7 +21,7 @@ export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
                     name: "no-paint",
                     description: "Do not paint background",
                     type: DataType.boolean,
-                    default: undefined,
+                    default: false,
                     required: false,
                 },
                 {
