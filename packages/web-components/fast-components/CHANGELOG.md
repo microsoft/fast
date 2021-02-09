@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.15.0...@microsoft/fast-components@1.17.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+
+
+### Features
+
+* add an inverse color recipe called neutral-contrast-fill ([#4319](https://github.com/Microsoft/fast/issues/4319)) ([403ec9a](https://github.com/Microsoft/fast/commit/403ec9aff7e1e935ab08b654eca8880c69dd2f47))
+
+
+
+
+
+# [1.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.15.0...@microsoft/fast-components@1.16.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+
+
+### Features
+
+* add an inverse color recipe called neutral-contrast-fill ([#4319](https://github.com/Microsoft/fast/issues/4319)) ([403ec9a](https://github.com/Microsoft/fast/commit/403ec9aff7e1e935ab08b654eca8880c69dd2f47))
+
+
+
+
+
 # [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.1...@microsoft/fast-components@1.15.0) (2021-01-30)
 
 

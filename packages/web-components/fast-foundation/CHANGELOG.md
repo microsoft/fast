@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.12.0...@microsoft/fast-foundation@1.14.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+* add check for intersection observer support before instanciating ([#4349](https://github.com/Microsoft/fast/issues/4349)) ([d106995](https://github.com/Microsoft/fast/commit/d106995dea3e7384633dbf2653b83aba3c815713))
+
+
+### Features
+
+* adds DI system, Configuration, and FoundationElement ([#4166](https://github.com/Microsoft/fast/issues/4166)) ([cfbe786](https://github.com/Microsoft/fast/commit/cfbe786f23623d69f2d658b51fe9211527ef9f0f))
+
+
+
+
+
+# [1.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.12.0...@microsoft/fast-foundation@1.13.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+* add check for intersection observer support before instanciating ([#4349](https://github.com/Microsoft/fast/issues/4349)) ([d106995](https://github.com/Microsoft/fast/commit/d106995dea3e7384633dbf2653b83aba3c815713))
+
+
+### Features
+
+* adds DI system, Configuration, and FoundationElement ([#4166](https://github.com/Microsoft/fast/issues/4166)) ([cfbe786](https://github.com/Microsoft/fast/commit/cfbe786f23623d69f2d658b51fe9211527ef9f0f))
+
+
+
+
+
 # [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.1...@microsoft/fast-foundation@1.12.0) (2021-01-30)
 
 

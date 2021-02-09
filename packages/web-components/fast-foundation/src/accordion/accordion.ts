@@ -127,6 +127,11 @@ export class Accordion extends FASTElement {
     }
 
     private handleItemKeyDown = (event: KeyboardEvent): void => {
+        // only handle the keydown if the event target is the accordion item
+        // prevents arrow keys from moving focus to accordion headers when focus is on accordion item panel content
+        if (event.target !== event.currentTarget) {
+            return;
+        }
         const keyCode: number = event.keyCode;
         this.accordionIds = this.getItemIds();
         switch (keyCode) {
