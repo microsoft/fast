@@ -25,12 +25,14 @@ import {
     FormClassNameContract,
     FormProps,
     FormState,
+    FormStrings,
 } from "./form.props";
 import { cloneDeep, get } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
 import styles from "./form.style";
+import defaultStrings from "./form.strings";
 import { classNames } from "@microsoft/fast-web-utilities";
 import {
     MessageSystemDataTypeAction,
@@ -39,6 +41,8 @@ import {
     Register,
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
+
+export const formId: string = "fast-tooling-react::form";
 
 /**
  * Schema form component definition
@@ -83,6 +87,7 @@ class Form extends React.Component<
     } = {};
 
     private messageSystemConfig: Register;
+    private strings: FormStrings = defaultStrings;
 
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
         super(props);
@@ -99,6 +104,10 @@ class Form extends React.Component<
             props.messageSystem.add(this.messageSystemConfig);
         }
 
+        if (!!props.strings) {
+            this.strings = props.strings;
+        }
+
         this.state = {
             activeDictionaryId: "",
             activeNavigationConfigId: "",
@@ -109,6 +118,7 @@ class Form extends React.Component<
             navigation: void 0,
             navigationDictionary: void 0,
             validationErrors: {},
+            options: null,
         };
     }
 
@@ -150,6 +160,7 @@ class Form extends React.Component<
                     navigationDictionary: e.data.navigationDictionary,
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.data:
@@ -158,12 +169,14 @@ class Form extends React.Component<
                     dataDictionary: e.data.dataDictionary,
                     navigation: e.data.navigation,
                     navigationDictionary: e.data.navigationDictionary,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.navigation:
                 this.setState({
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                    options: e.data.options,
                 });
                 break;
             case MessageSystemType.validation:
@@ -172,6 +185,7 @@ class Form extends React.Component<
                         ...this.state.validationErrors,
                         [e.data.dictionaryId]: e.data.validationErrors,
                     },
+                    options: e.data.options,
                 });
                 break;
         }
@@ -448,6 +462,8 @@ class Form extends React.Component<
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             messageSystem: this.props.messageSystem,
+            strings: this.strings,
+            messageSystemOptions: this.state.options,
         });
 
         return control.render();
@@ -473,6 +489,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.addLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else if (config.linkedDataAction === LinkedDataActionType.reorder) {
                     this.props.messageSystem.postMessage({
@@ -480,6 +499,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.reorderLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else if (config.linkedDataAction === LinkedDataActionType.remove) {
                     this.props.messageSystem.postMessage({
@@ -487,6 +509,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.removeLinkedData,
                         dataLocation: config.dataLocation,
                         linkedData: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 }
             } else if (config.isArray) {
@@ -509,6 +534,9 @@ class Form extends React.Component<
                     action: MessageSystemDataTypeAction.update,
                     dataLocation: config.dataLocation,
                     data: newArray,
+                    options: {
+                        originatorId: formId,
+                    },
                 });
             } else {
                 if (config.value === undefined) {
@@ -516,6 +544,9 @@ class Form extends React.Component<
                         type: MessageSystemType.data,
                         action: MessageSystemDataTypeAction.remove,
                         dataLocation: config.dataLocation,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 } else {
                     this.props.messageSystem.postMessage({
@@ -523,6 +554,9 @@ class Form extends React.Component<
                         action: MessageSystemDataTypeAction.update,
                         dataLocation: config.dataLocation,
                         data: config.value,
+                        options: {
+                            originatorId: formId,
+                        },
                     });
                 }
             }

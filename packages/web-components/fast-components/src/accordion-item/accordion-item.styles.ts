@@ -78,8 +78,8 @@ export const AccordionItemStyles = css`
             ${neutralFocusBehavior.var};
     }
 
-    :host(.expanded) .region {
-        display: flex;
+    :host([expanded]) .region {
+        display: block;
     }
 
     .icon {
@@ -95,7 +95,7 @@ export const AccordionItemStyles = css`
         display: flex;
     }
 
-    :host(.expanded) slot[name="collapsed-icon"] {
+    :host([expanded]) slot[name="collapsed-icon"] {
         display: none;
     }
 
@@ -103,13 +103,14 @@ export const AccordionItemStyles = css`
         display: none;
     }
     
-    :host(.expanded) slot[name="expanded-icon"] {
+    :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }
 
     .start {
         display: flex;
         align-items: center;
+        padding-inline-start: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 1;
         z-index: 2;

@@ -41,6 +41,23 @@ if (DOM.supportsAdoptedStyleSheets) {
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
                 expect(target.adoptedStyleSheets).not.to.contain(cache.get("test"));
             });
+
+            it("should track when added and removed from a target", () => {
+                const cache = new Map();
+                const styles = ``;
+                const elementStyles = new AdoptedStyleSheetsStyles([styles], cache);
+                const target = {
+                    adoptedStyleSheets: [],
+                } as unknown as StyleTarget;
+
+                expect(elementStyles.isAttachedTo(target as StyleTarget)).to.equal(false)
+
+                elementStyles.addStylesTo(target);
+                expect(elementStyles.isAttachedTo(target)).to.equal(true)
+
+                elementStyles.removeStylesFrom(target);
+                expect(elementStyles.isAttachedTo(target)).to.equal(false)
+            });
         });
     });
 }
@@ -75,6 +92,20 @@ describe("StyleSheetStyles", () => {
         elementStyles.removeStylesFrom(shadowRoot);
 
         expect(shadowRoot.childNodes.length).to.equal(0);
+    });
+    it("should track when added and removed from a target", () => {
+        const styles = ``;
+        const elementStyles = new StyleElementStyles([styles]);
+        document.body.innerHTML = "";
+
+        expect(elementStyles.isAttachedTo(document)).to.equal(false)
+
+        elementStyles.addStylesTo(document);
+        console.log(document)
+        expect(elementStyles.isAttachedTo(document)).to.equal(true)
+
+        elementStyles.removeStylesFrom(document);
+        expect(elementStyles.isAttachedTo(document)).to.equal(false)
     });
 });
 

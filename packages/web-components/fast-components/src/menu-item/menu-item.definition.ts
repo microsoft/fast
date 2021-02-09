@@ -1,6 +1,6 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import { MenuItemRole } from "@microsoft/fast-foundation";
+import { MenuItemRole } from "@microsoft/fast-foundation/dist/esm/menu-item/menu-item.options";
 
 export const fastMenuItemDefinition: WebComponentDefinition = {
     version: 1,
@@ -25,7 +25,7 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "role",
-                    type: DataType.boolean,
+                    type: DataType.string,
                     description: "The role attribute",
                     default: MenuItemRole.menuitem,
                     values: [

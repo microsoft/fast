@@ -96,8 +96,8 @@ function resolveDataDictionaryFromNode(
             },
             linkedDataId,
         ],
-        node.attributes && typeof node.attributes.name === "string"
-            ? `Slot${pascalCase(node.attributes.name)}`
+        node.attributes && typeof node.attributes.slot === "string"
+            ? `Slot${pascalCase(node.attributes.slot)}`
             : "Slot",
     ];
 }

@@ -11,7 +11,10 @@ import { uniqueElementName, fixture } from "./fixture";
 
 describe("The fixture helper", () => {
     const name = uniqueElementName();
-    const template = html<MyElement>`${x => x.value}<slot></slot>`;
+    const template = html<MyElement>`
+        ${x => x.value}
+        <slot></slot>
+    `;
 
     @customElement({
         name,
@@ -49,6 +52,8 @@ describe("The fixture helper", () => {
         await connect();
 
         expect(element.isConnected).to.equal(true);
+
+        document.body.removeChild(element.parentElement!);
     });
 
     it("can disconnect an element", async () => {
@@ -67,7 +72,7 @@ describe("The fixture helper", () => {
 
     it("can bind an element to data", async () => {
         const source = new MyModel();
-        const { element } = await fixture<MyElement>(
+        const { element, disconnect } = await fixture<MyElement>(
             html<MyModel>`
       <${name} value=${x => x.value}></${name}>
     `,
@@ -81,5 +86,7 @@ describe("The fixture helper", () => {
         await DOM.nextUpdate();
 
         expect(element.value).to.equal(source.value);
+
+        await disconnect();
     });
 });

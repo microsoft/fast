@@ -62,7 +62,7 @@ class ArrayControl extends React.Component<
         return (
             <button
                 className={this.props.managedClasses.arrayControl_addItemButton}
-                aria-label={"Select to add item"}
+                aria-label={this.props.strings.arrayAddItemTip}
                 onClick={this.arrayItemClickHandlerFactory(ArrayAction.add)}
             />
         );
@@ -83,7 +83,9 @@ class ArrayControl extends React.Component<
         if (this.props.maxItems > existingItemLength) {
             return (
                 <div className={arrayControl_addItem}>
-                    <div className={arrayControl_addItemLabel}>Add item</div>
+                    <div className={arrayControl_addItemLabel}>
+                        {this.props.strings.arrayAddItemLabel}
+                    </div>
                     {this.renderAddArrayItemTrigger()}
                 </div>
             );
@@ -190,6 +192,7 @@ class ArrayControl extends React.Component<
                             dropDragItem={this.handleDropDragItem}
                             dragStart={this.handleDragStart}
                             dragEnd={this.handleDragEnd}
+                            strings={this.props.strings}
                         >
                             {text}
                         </DragItem>

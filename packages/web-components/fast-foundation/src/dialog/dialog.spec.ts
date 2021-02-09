@@ -11,9 +11,11 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 class FASTDialog extends Dialog {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Dialog>("fast-dialog");
+    const { connect, disconnect, document, element } = await fixture<Dialog>(
+        "fast-dialog"
+    );
 
-    return { element, connect, disconnect };
+    return { connect, disconnect, document, element };
 }
 
 // TODO: Add tests for focus management
@@ -209,51 +211,78 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    describe("events", () => {
-        // TODO: test trap focus
-        it("should fire an event on click", async () => {
+    describe("methods", () => {
+        it("should set the hidden attribute to `false` when the `show()` method is invoked", async () => {
             const { element, connect, disconnect } = await setup();
-            let wasDismissed: boolean = false;
-            const event = new MouseEvent("click");
+            element.hidden = true;
 
             await connect();
 
-            element.addEventListener("dismiss", e => {
-                e.preventDefault();
+            expect(element.hidden).to.equal(true);
 
-                wasDismissed = true;
+            element.show();
+
+            expect(element.hidden).to.equal(false);
+
+            await disconnect();
+        });
+
+        it("should set the hidden attribute to `true` when the `hide()` method is invoked", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.hidden).to.equal(false);
+
+            element.hide();
+
+            expect(element.hidden).to.equal(true);
+
+            await disconnect();
+        });
+    });
+
+    describe("events", () => {
+        // TODO: test trap focus
+        it("should fire a 'dismiss' event when its overlay is clicked", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const overlay = element.shadowRoot!.querySelector(".overlay")! as HTMLElement;
+
+            const wasDismissed = await new Promise(resolve => {
+                element.addEventListener("dismiss", () => resolve(true));
+
+                overlay.click();
+
+                // Resolve false on the next update in case click hasn't happened
+                DOM.queueUpdate(() => resolve(false));
             });
-
-            await DOM.nextUpdate();
-
-            element.shadowRoot?.querySelector(".overlay")?.dispatchEvent(event);
-
-            await DOM.nextUpdate();
 
             expect(wasDismissed).to.equal(true);
 
             await disconnect();
         });
 
-        it("should fire an event when spacebar is invoked", async () => {
-            const { element, connect, disconnect } = await setup();
-            let wasDismissed: boolean = false;
+        it("should fire a 'dismiss' event when keydown is invoked on the document", async () => {
+            const { element, connect, disconnect, document } = await setup();
+
             const event = new KeyboardEvent("keydown", {
-                key: "escape",
+                key: "Escape",
                 keyCode: KeyCodes.escape,
             } as KeyboardEventInit);
 
             await connect();
 
-            element.addEventListener("keydown", e => {
-                e.preventDefault();
+            const wasDismissed = await new Promise(resolve => {
+                element.addEventListener("dismiss", () => resolve(true));
 
-                wasDismissed = true;
+                document.dispatchEvent(event);
+
+                // Resolve false on the next update in case the event hasn't happened
+                DOM.queueUpdate(() => resolve(false));
             });
-
-            await DOM.nextUpdate();
-
-            element.dispatchEvent(event);
 
             expect(wasDismissed).to.equal(true);
 

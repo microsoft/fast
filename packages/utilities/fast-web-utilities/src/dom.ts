@@ -35,6 +35,20 @@ export function getKeyCode(event: KeyboardEvent): number {
 }
 
 /**
+ * Returns the nonce used in the page, if any.
+ *
+ * Based on https://github.com/cssinjs/jss/blob/master/packages/jss/src/DomRenderer.js
+ */
+function getNonce(): string | null {
+    const node = document.querySelector('meta[property="csp-nonce"]');
+    if (node) {
+        return node.getAttribute("content");
+    } else {
+        return null;
+    }
+}
+
+/**
  * Test if the document supports :focus-visible
  */
 let _canUseFocusVisible: boolean;
@@ -51,6 +65,13 @@ export function canUseFocusVisible(): boolean {
 
     // Check to see if the document supports the focus-visible element
     const styleElement: HTMLStyleElement = document.createElement("style");
+
+    // If nonces are present on the page, use it when creating the style element
+    // to test focus-visible support.
+    const styleNonce = getNonce();
+    if (styleNonce !== null) {
+        styleElement.setAttribute("nonce", styleNonce);
+    }
     document.head.appendChild(styleElement);
 
     try {
@@ -86,6 +107,11 @@ export function canUseForcedColors(): boolean {
         (window.matchMedia("(forced-colors: none)").matches ||
             window.matchMedia("(forced-colors: active)").matches)
     );
+}
+
+export function resetDocumentCache(): void {
+    _canUseCssGrid = undefined;
+    _canUseFocusVisible = undefined;
 }
 
 /**

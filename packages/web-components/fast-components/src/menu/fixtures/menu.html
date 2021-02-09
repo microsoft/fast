@@ -1,13 +1,14 @@
 <fast-design-system-provider use-defaults>
     <h1>Menu</h1>
-    <h4>Default</h4>
+    <h2>Default</h2>
     <fast-menu>
         <fast-menu-item>Menu item 1</fast-menu-item>
         <fast-menu-item>Menu item 2</fast-menu-item>
-        <fast-menu-item>Menu item 3</fast-menu-item>
+        <fast-menu-item disabled="true">Menu item 3</fast-menu-item>
+        <fast-menu-item>Menu item 4</fast-menu-item>
     </fast-menu>
 
-    <h4>With seperator</h4>
+    <h2>With seperator</h2>
     <fast-menu>
         <fast-menu-item role="menuitem">Menu item 1</fast-menu-item>
         <fast-menu-item role="menuitem">Menu item 2</fast-menu-item>
@@ -40,23 +41,26 @@
         </fast-menu-item>
     </fast-menu>
 
-    <h4>With standard elements</h4>
+    <h2>With standard elements</h2>
     <fast-menu>
         <div role="menuitem">Menu item 1</div>
         <div role="menuitem">Menu item 2</div>
         <div role="menuitem">Menu item 3</div>
     </fast-menu>
 
-    <h4>With radio buttons and checkboxes</h4>
+    <h2>With radio buttons and checkboxes</h2>
     <fast-menu>
         <fast-menu-item>Menu item 1</fast-menu-item>
         <fast-menu-item>Menu item 2</fast-menu-item>
         <fast-menu-item>Menu item 3</fast-menu-item>
         <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemradio">Menu item 4</fast-menu-item>
-        <fast-menu-item role="menuitemradio">Menu item 5</fast-menu-item>
+        <fast-menu-item role="menuitemcheckbox">Checkbox 1</fast-menu-item>
+        <fast-menu-item role="menuitemcheckbox">Checkbox 2</fast-menu-item>
         <fast-divider></fast-divider>
-        <fast-menu-item role="menuitemcheckbox">Menu item 4</fast-menu-item>
-        <fast-menu-item role="menuitemcheckbox">Menu item 5</fast-menu-item>
+        <fast-menu-item role="menuitemradio">Radio 1.1</fast-menu-item>
+        <fast-menu-item role="menuitemradio">Radio 1.2</fast-menu-item>
+        <fast-divider></fast-divider>
+        <fast-menu-item role="menuitemradio">Radio 2.1</fast-menu-item>
+        <fast-menu-item role="menuitemradio">Radio 2.2</fast-menu-item>
     </fast-menu>
 </fast-design-system-provider>

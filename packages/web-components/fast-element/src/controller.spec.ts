@@ -6,6 +6,8 @@ import { uniqueElementName, toHTML } from "./__test__/helpers";
 import { html } from "./template";
 import { DOM } from "./dom";
 import { css } from "./styles";
+import { Observable } from "./observation/observable";
+import { Behavior } from "./directives/behavior";
 
 describe("The Controller", () => {
     const templateA = html`a`;
@@ -305,4 +307,160 @@ describe("The Controller", () => {
             });
         }
     });
+
+    it("should have an observable isConnected property", () => {
+        const { element, controller } = createController();
+        let attached = controller.isConnected;
+        const handler = { handleChange: () => (attached = !attached) };
+        Observable.getNotifier(controller).subscribe(handler, "isConnected");
+
+        expect(attached).to.equal(false);
+        document.body.appendChild(element);
+        expect(attached).to.equal(true);
+        document.body.removeChild(element);
+        expect(attached).to.equal(false);
+    });
+
+        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+            const { controller, element } = createController({
+                shadowOptions: {
+                    mode: "open",
+                },
+                template: templateA,
+            });
+
+            const style = document.createElement("style") as HTMLStyleElement;
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+            controller.addStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+            controller.removeStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+        });
+        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+            const { controller, element } = createController({
+                shadowOptions: {
+                    mode: "open",
+                },
+                template: templateA,
+            });
+
+            const style = document.createElement("style") as HTMLStyleElement;
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+            controller.addStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+            controller.removeStyles(style);
+
+            expect(element.shadowRoot?.contains(style)).to.equal(false);
+        });
+
+        context("with behaviors", () => {
+            it("should bind all behaviors added prior to connection, during connection", () => {
+                class TestBehavior implements Behavior {
+                    public bound = false;
+                    bind() {
+                        this.bound = true;
+                    }
+                    unbind() {
+                        this.bound = false;
+                    }
+                }
+
+                const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
+                const { controller, element } = createController();
+                controller.addBehaviors(behaviors);
+
+                behaviors.forEach(x => expect(x.bound).to.equal(false))
+
+                document.body.appendChild(element);
+
+                behaviors.forEach(x => expect(x.bound).to.equal(true));
+            });
+
+            it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
+                let childBehaviorBound = false;
+                class ParentBehavior implements Behavior {
+                    bind(el: FASTElement) {
+                        el.$fastController.addBehaviors([new ChildBehavior()])
+                    }
+
+                    unbind() {}
+                }
+
+                class ChildBehavior implements Behavior {
+                    bind(el: FASTElement) {
+                        childBehaviorBound = true;
+                    }
+
+                    unbind() {}
+                }
+
+
+
+                const { element, controller } = createController();
+                controller.addBehaviors([new ParentBehavior()]);
+                document.body.appendChild(element);
+
+                expect(childBehaviorBound).to.equal(true);
+            });
+            it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
+                class TestBehavior implements Behavior {
+                    public bound = false;
+                    bind() {
+                        this.bound = true;
+                    }
+
+                    unbind() {
+                        this.bound = false;
+                    }
+                }
+
+                const behavior = new TestBehavior();
+                const { element, controller } = createController();
+
+                document.body.appendChild(element);
+
+                controller.addBehaviors([behavior]);
+                controller.addBehaviors([behavior]);
+                controller.addBehaviors([behavior]);
+
+                expect(behavior.bound).to.equal(true);
+                controller.removeBehaviors([behavior]);
+                expect(behavior.bound).to.equal(true);
+                controller.removeBehaviors([behavior]);
+                expect(behavior.bound).to.equal(true);
+                controller.removeBehaviors([behavior]);
+                expect(behavior.bound).to.equal(false);
+            });
+            it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
+                class TestBehavior implements Behavior {
+                    public bound = false;
+                    bind() {
+                        this.bound = true;
+                    }
+
+                    unbind() {
+                        this.bound = false;
+                    }
+                }
+
+                const behavior = new TestBehavior();
+                const { element, controller } = createController();
+
+                document.body.appendChild(element);
+
+                controller.addBehaviors([behavior]);
+                controller.addBehaviors([behavior]);
+
+                expect(behavior.bound).to.equal(true);
+                controller.removeBehaviors([behavior], true);
+                expect(behavior.bound).to.equal(false);
+            });
+        })
 });

@@ -6,6 +6,8 @@ import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { isDefault } from "./utilities/form";
+import { formId } from "../form";
+import { ajvValidationId } from "@microsoft/fast-tooling";
 
 /**
  * Form control definition
@@ -55,6 +57,15 @@ class TextareaControl extends React.Component<
     }
 
     private getValue(): string {
+        // Return undefined to allow typing anywhere other than the end of the string
+        if (
+            this.props.messageSystemOptions &&
+            (this.props.messageSystemOptions.originatorId === formId ||
+                this.props.messageSystemOptions.originatorId === ajvValidationId)
+        ) {
+            return;
+        }
+
         return typeof this.props.value === "string"
             ? this.props.value
             : typeof this.props.default === "string"

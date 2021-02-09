@@ -37,10 +37,10 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         ...cleanListStyle,
         "& li": {
             display: "inline-block",
-            "padding-right": "8px",
+            "padding-right": "4px",
             "&::after": {
                 content: "'/'",
-                "padding-left": "8px",
+                "padding-left": "4px",
             },
             "&:last-child::after": {
                 content: "''",

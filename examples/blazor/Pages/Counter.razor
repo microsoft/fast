@@ -1,0 +1,23 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>
+    Current count: 
+    <fluent-badge appearance="@badgeAppearance">@currentCount</fluent-badge>
+</p>
+
+<fluent-button appearance="accent" @onclick="IncrementCount">Click me</fluent-button>
+
+@code {
+    private int currentCount = 0;
+    private string badgeAppearance = "neutral";
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        badgeAppearance = currentCount % 2 == 0
+            ? "neutral"
+            : "accent";
+    }
+}

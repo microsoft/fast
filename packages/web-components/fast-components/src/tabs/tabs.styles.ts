@@ -57,12 +57,12 @@ export const TabsStyles = css`
         position: relative;
     }
 
-    :host(.vertical) {
+    :host([orientation="vertical"]) {
         grid-template-rows: auto 1fr auto;
         grid-template-columns: auto 1fr;
     }
 
-    :host(.vertical) .tablist {
+    :host([orientation="vertical"]) .tablist {
         grid-row-start: 2;
         grid-row-end: 2;
         display: grid;
@@ -77,17 +77,17 @@ export const TabsStyles = css`
             calc((${heightNumber} - var(--design-unit)) * 1px) 0;
     }
 
-    :host(.vertical) .tabpanel {
+    :host([orientation="vertical"]) .tabpanel {
         grid-column: 2;
         grid-row-start: 1;
         grid-row-end: 4;
     }
 
-    :host(.vertical) .end {
+    :host([orientation="vertical"]) .end {
         grid-row: 3;
     }
 
-    :host(.vertical) .activeIndicator {
+    :host([orientation="vertical"]) .activeIndicator {
         grid-column: 1;
         grid-row: 1;
         width: 5px;
@@ -100,7 +100,7 @@ export const TabsStyles = css`
             0;
     }
 
-    :host(.vertical) .activeIndicatorTransition {
+    :host([orientation="vertical"]) .activeIndicatorTransition {
         transition: transform 0.2s linear;
     }
 `.withBehaviors(
@@ -109,7 +109,7 @@ export const TabsStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             .activeIndicator,
-            :host(.vertical) .activeIndicator {
+            :host([orientation="vertical"]) .activeIndicator {
                 forced-color-adjust: none;
                 background: ${SystemColors.Highlight};
             }

@@ -11,10 +11,10 @@ export const RadioGroupStyles = css`
         display: flex;
         flex-wrap: wrap;
     }
-    .vertical {
+    :host([orientation="vertical"]) .positioning-region {
         flex-direction: column;
     }
-    .horizontal {
+    :host([orientation="horizontal"]) .positioning-region {
         flex-direction: row;
     }
 `;

@@ -3,6 +3,102 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.15.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.0...@microsoft/fast-tooling@0.15.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling
+
+
+
+
+
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.0...@microsoft/fast-tooling@0.15.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling
+
+
+
+
+
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.14.0...@microsoft/fast-tooling@0.15.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* include numerals, parenthesis and capital letters from MDN data conversion combinator RegEx ([#4195](https://github.com/Microsoft/fast/issues/4195)) ([e9308a2](https://github.com/Microsoft/fast/commit/e9308a22cb78de095d8e704065c87ce34e0a037f))
+* resolve nesting issues in converted MDN data ([#4203](https://github.com/Microsoft/fast/issues/4203)) ([2aecf3c](https://github.com/Microsoft/fast/commit/2aecf3c4507dc1b03d6e9f26bdb3b2d195a56b9f))
+* update nesting to be interpreted by manual parsing instead of RegEx ([#4253](https://github.com/Microsoft/fast/issues/4253)) ([f32e34a](https://github.com/Microsoft/fast/commit/f32e34aa699dd550cd79361b99437dbf9c810044))
+
+
+### Features
+
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.13.0...@microsoft/fast-tooling@0.14.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* added more precision when dealing with brackets ([#4184](https://github.com/Microsoft/fast/issues/4184)) ([bbb4c06](https://github.com/Microsoft/fast/commit/bbb4c068e2f70f2b4116cabcf472f072a5312e8f))
+
+
+### Features
+
+* allow filtering MDN data by status ([#4164](https://github.com/Microsoft/fast/issues/4164)) ([dc58c34](https://github.com/Microsoft/fast/commit/dc58c344bbe449501fde918044352c78f11a64f6))
+
+
+
+
+
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.12.0...@microsoft/fast-tooling@0.13.0) (2020-12-02)
+
+
+### Features
+
+* add a mapping of MDN syntaxes to be used as reference ([#4139](https://github.com/Microsoft/fast/issues/4139)) ([e5b3545](https://github.com/Microsoft/fast/commit/e5b3545864ee9ed5117960cb65feef9fbb4f88a4))
+
+
+
+
+
+# [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.1...@microsoft/fast-tooling@0.12.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+* assigns children to named slots properly ([#4026](https://github.com/Microsoft/fast/issues/4026)) ([cddf930](https://github.com/Microsoft/fast/commit/cddf930108696eab7481389776aaf5895b9ea8c0))
+
+
+### Features
+
+* add a utility to map MDN data to a format that will be usable by generated UI ([#4066](https://github.com/Microsoft/fast/issues/4066)) ([faad57e](https://github.com/Microsoft/fast/commit/faad57ee3982832c67d01f1c00047665727e2c6f))
+* update generated css data to include more nesting solutions as well as new exports for property, syntax and types lists ([#4125](https://github.com/Microsoft/fast/issues/4125)) ([b814aed](https://github.com/Microsoft/fast/commit/b814aed588eadc0d24185243ac864105d22cd190))
+
+
+
+
+
+## [0.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.0...@microsoft/fast-tooling@0.11.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* clean up and rename registered utilities to registered services ([#3984](https://github.com/Microsoft/fast/issues/3984)) ([22f6426](https://github.com/Microsoft/fast/commit/22f6426c89cedefeaf26adee56b428e9a9b69515))
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+
+
+### Reverts
+
+* Revert "Change files" ([eb81953](https://github.com/Microsoft/fast/commit/eb81953c00525c2fc3b708f673a3f7382e1bcc00))
+
+
+
+
+
 # [0.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.10.0...@microsoft/fast-tooling@0.11.0) (2020-09-28)
 
 

@@ -5,11 +5,6 @@ export interface LogoProps {
     className?: string;
 
     /**
-     * The background color
-     */
-    backgroundColor: string;
-
-    /**
      * The version
      */
     version?: string;
@@ -22,5 +17,5 @@ export interface LogoProps {
     /**
      * The title
      */
-    title: string;
+    title?: string;
 }

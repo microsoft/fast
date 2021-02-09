@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = {
     docs: [
         {
@@ -21,17 +22,24 @@ module.exports = {
                         "components/accordion",
                         "components/anchor",
                         "components/badge",
+                        "components/breadcrumb",
+                        "components/breadcrumb-item",
                         "components/button",
                         "components/card",
                         "components/checkbox",
+                        "components/data-grid",
                         "components/dialog",
                         "components/divider",
                         "components/flipper",
+                        "components/listbox",
+                        "components/listbox-option",
                         "components/menu",
                         "components/menu-item",
+                        "components/number-field",
                         "components/progress",
                         "components/radio",
                         "components/radio-group",
+                        "components/select",
                         "components/skeleton",
                         "components/slider",
                         "components/slider-label",
@@ -76,6 +84,7 @@ module.exports = {
                 "design-systems/fast-frame",
                 "design-systems/using-the-design-system",
                 "design-systems/creating-a-design-system",
+                "design-systems/high-contrast",
             ],
         },
         {

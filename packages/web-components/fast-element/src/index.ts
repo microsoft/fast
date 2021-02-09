@@ -16,6 +16,8 @@ export {
 export * from "./view";
 export * from "./observation/observable";
 export * from "./observation/notifier";
+export { Splice } from "./observation/array-change-records";
+export { enableArrayObservation } from "./observation/array-observer";
 export { DOM } from "./dom";
 export * from "./directives/behavior";
 export * from "./directives/binding";

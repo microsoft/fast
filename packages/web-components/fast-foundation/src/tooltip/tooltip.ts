@@ -1,21 +1,10 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { AnchoredRegion, AxisPositioningMode, AxisScalingMode } from "../anchored-region";
 import { getDirection } from "../utilities/";
+import { TooltipPosition } from "./tooltip.options";
 
-/**
- * Enumerates possible tooltip positions
- *
- * @public
- */
-export enum TooltipPosition {
-    top = "top",
-    right = "right",
-    bottom = "bottom",
-    left = "left",
-    start = "start",
-    end = "end",
-}
+export { TooltipPosition };
 
 /**
  * An Tooltip Custom HTML Element.
@@ -372,6 +361,12 @@ export class Tooltip extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.anchor);
+        }
+
         return document.getElementById(this.anchor);
     };
 
@@ -428,7 +423,10 @@ export class Tooltip extends FASTElement {
             return;
         }
         if (this.region !== null && this.region !== undefined) {
-            (this.region as any).removeEventListener("change", this.handlePositionChange);
+            (this.region as any).removeEventListener(
+                "positionchange",
+                this.handlePositionChange
+            );
             this.region.viewportElement = null;
             this.region.anchorElement = null;
         }
@@ -447,6 +445,9 @@ export class Tooltip extends FASTElement {
         this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
-        (this.region as any).addEventListener("change", this.handlePositionChange);
+        (this.region as any).addEventListener(
+            "positionchange",
+            this.handlePositionChange
+        );
     };
 }

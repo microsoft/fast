@@ -39,6 +39,7 @@ import {
     SelectControl,
     TextareaControl,
 } from "../index";
+import defaultStrings from "../../form.strings";
 
 const selectControl: StandardControlPlugin = new StandardControlPlugin({
     control: (config: ListControlConfig): React.ReactNode => {
@@ -161,6 +162,8 @@ const formControlSwitchProps: ControlSwitchProps = {
         [ControlType.textarea]: TextareaControl,
     },
     messageSystem: void 0,
+    strings: defaultStrings,
+    messageSystemOptions: null,
 };
 
 describe("ControlSwitch", () => {

@@ -25,7 +25,7 @@ import { FASTDesignSystemProvider } from "../design-system-provider/index";
 
 const ltr = css`
     .expand-collapse-glyph {
-        transform: rotate(-45deg);
+        transform: rotate(0deg);
     }
     :host(.nested) .expand-collapse-button {
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
@@ -33,14 +33,14 @@ const ltr = css`
     :host([selected])::after {
         left: calc(var(--focus-outline-width) * 1px);
     }
-    :host(.expanded) > .positioning-region .expand-collapse-glyph {
-        transform: rotate(0deg);
+    :host([expanded]) > .positioning-region .expand-collapse-glyph {
+        transform: rotate(45deg);
     }
 `;
 
 const rtl = css`
     .expand-collapse-glyph {
-        transform: rotate(135deg);
+        transform: rotate(180deg);
     }
     :host(.nested) .expand-collapse-button {
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
@@ -48,8 +48,8 @@ const rtl = css`
     :host([selected])::after {
         right: calc(var(--focus-outline-width) * 1px);
     }
-    :host(.expanded) > .positioning-region .expand-collapse-glyph {
-        transform: rotate(90deg);
+    :host([expanded]) > .positioning-region .expand-collapse-glyph {
+        transform: rotate(135deg);
     }
 `;
 
@@ -167,14 +167,19 @@ export const TreeItemStyles = css`
         pointer-events: none;
         fill: currentcolor;
     }
+
     .start,
     .end {
+        display: flex;
+        fill: currentcolor;
+    }
+
+     ::slotted(svg) {
         ${
             /* Glyph size is temporary - 
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
-        fill: currentcolor;
     }
 
     .start {
@@ -189,7 +194,7 @@ export const TreeItemStyles = css`
         } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
     }
 
-    :host(.expanded) > .items {
+    :host([expanded]) > .items {
         display: block;
     }
 

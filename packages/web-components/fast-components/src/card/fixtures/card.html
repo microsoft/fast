@@ -19,5 +19,32 @@
         </fast-card>
         <br />
         <fast-card class="state-override">Custom depth on hover using CSS</fast-card>
+        <br />
+        <fast-card
+            style="
+                --card-height: 400px;
+                --card-width: 500px;
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+            "
+        >
+            With controls
+            <fast-button appearance="stealth">Test Button</fast-button>
+        </fast-card>
+        <br />
+        <fast-card
+            card-background-color="#FFC700"
+            style="
+                --card-height: 400px;
+                --card-width: 500px;
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+            "
+        >
+            Custom background
+            <fast-button appearance="stealth">Test Button</fast-button>
+        </fast-card>
     </div>
 </fast-design-system-provider>

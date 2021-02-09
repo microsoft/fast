@@ -132,6 +132,16 @@ export class TreeItem extends FASTElement {
         }
     }
 
+    /**
+     * Places document focus on a tree item and adds the item to the sequential tab order.
+     * @param el - the element to focus
+     */
+    public static focusItem(el: HTMLElement) {
+        el.setAttribute("tabindex", "0");
+        (el as TreeItem).focusable = true;
+        el.focus();
+    }
+
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
             case "renderCollapsedNodes":
@@ -140,19 +150,19 @@ export class TreeItem extends FASTElement {
         }
     }
 
-    public handleFocus = (e: Event): void => {
-        if (e.target === e.currentTarget) {
-            this.focusable = true;
-        }
-    };
+    /**
+     * @deprecated - no longer needed.
+     * @param e - Event object
+     */
+    /* eslint-disable-next-line */
+    public handleFocus = (e: Event): void => {};
 
-    public handleBlur = (e: FocusEvent): void => {
-        if (e.target !== e.currentTarget) {
-            return;
-        }
-
-        this.focusable = false;
-    };
+    /**
+     * @deprecated - no longer needed.
+     * @param e - Event object
+     */
+    /* eslint-disable-next-line */
+    public handleBlur = (e: FocusEvent): void => {};
 
     /**
      * The keyboarding on treeview should conform to the following spec
@@ -227,7 +237,7 @@ export class TreeItem extends FASTElement {
                 | undefined = this.parentElement!.closest("[role='treeitem']");
 
             if (isHTMLElement(parentTreeItemNode)) {
-                (parentTreeItemNode as HTMLElement).focus();
+                TreeItem.focusItem(parentTreeItemNode as HTMLElement);
             }
         }
     }
@@ -241,7 +251,7 @@ export class TreeItem extends FASTElement {
             this.setExpanded(true);
         } else {
             if (this.enabledChildTreeItems.length > 0) {
-                this.enabledChildTreeItems[0].focus();
+                TreeItem.focusItem(this.enabledChildTreeItems[0]);
             }
         }
     }
@@ -266,7 +276,7 @@ export class TreeItem extends FASTElement {
             }
 
             if (isHTMLElement(nextElement)) {
-                nextElement.focus();
+                TreeItem.focusItem(nextElement);
             }
         }
     }

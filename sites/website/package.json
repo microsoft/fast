@@ -1,6 +1,6 @@
 {
   "name": "fast-site",
-  "version": "0.3.0",
+  "version": "0.5.2",
   "private": true,
   "scripts": {
     "clean": "node ../../build/clean.js docs",
@@ -22,10 +22,12 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "@docusaurus/core": "2.0.0-alpha.70",
+    "@docusaurus/preset-classic": "2.0.0-alpha.70",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.70"
+  },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-alpha.61",
-    "@docusaurus/preset-classic": "2.0.0-alpha.61",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.61",
     "@microsoft/api-documenter": "7.8.13",
     "classnames": "^2.2.6",
     "copyfiles": "^2.3.0",

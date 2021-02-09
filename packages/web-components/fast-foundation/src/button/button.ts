@@ -1,15 +1,15 @@
-import { attr } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
+import { attr, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+import { FormAssociatedButton } from "./button.form-associated";
 
 /**
- * An Button Custom HTML Element.
+ * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
  * @public
  */
-export class Button extends FormAssociated<HTMLInputElement> {
+export class Button extends FormAssociatedButton {
     /**
      * Determines if the element should receive document focus on page load.
      *
@@ -128,7 +128,15 @@ export class Button extends FormAssociated<HTMLInputElement> {
         previous === "reset" && this.removeEventListener("click", this.handleFormReset);
     }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
+    /**
+     *
+     * Default slotted content
+     *
+     * @public
+     * @remarks
+     */
+    @observable
+    public defaultSlottedContent: HTMLElement[];
 
     /**
      * @internal
@@ -150,7 +158,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
         const attached = this.proxy.isConnected;
 
         if (!attached) {
-            super.attachProxy();
+            this.attachProxy();
         }
 
         // Browser support for requestSubmit is not comprehensive
@@ -160,7 +168,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
             : this.proxy.click();
 
         if (!attached) {
-            super.detachProxy();
+            this.detachProxy();
         }
     };
 
@@ -170,6 +178,15 @@ export class Button extends FormAssociated<HTMLInputElement> {
     private handleFormReset = () => {
         this.form?.reset();
     };
+
+    /**
+     * @deprecated This API has been deprecated
+     */
+    public get root() {
+        return this.control;
+    }
+
+    public control: HTMLButtonElement;
 }
 
 /**
@@ -177,7 +194,7 @@ export class Button extends FormAssociated<HTMLInputElement> {
  *
  * @public
  */
-export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIAButton {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
      * @public
@@ -204,5 +221,14 @@ export class DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
  * @internal
  */
 /* eslint-disable-next-line */
+export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
 export interface Button extends StartEnd, DelegatesARIAButton {}
 applyMixins(Button, StartEnd, DelegatesARIAButton);

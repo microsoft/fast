@@ -4,8 +4,14 @@ export { fastAccordionConfig };
 import fastAnchorConfig from "./fast-anchor";
 export { fastAnchorConfig };
 
+import fastAnchoredRegionConfig from "./fast-anchored-region";
+export { fastAnchoredRegionConfig };
+
 import fastBadgeConfig from "./fast-badge";
 export { fastBadgeConfig };
+
+import fastBreadcrumbConfig from "./fast-breadcrumb";
+export { fastBreadcrumbConfig };
 
 import fastButtonConfig from "./fast-button";
 export { fastButtonConfig };
@@ -19,14 +25,26 @@ export { fastCheckboxConfig };
 import fastDialogConfig from "./fast-dialog";
 export { fastDialogConfig };
 
+import fastDisclosureConfig from "./fast-disclosure";
+export { fastDisclosureConfig };
+
+import fastDataGridConfig from "./fast-data-grid";
+export { fastDataGridConfig };
+
 import fastDividerConfig from "./fast-divider";
 export { fastDividerConfig };
 
 import fastFlipperConfig from "./fast-flipper";
 export { fastFlipperConfig };
 
+import fastListboxConfig from "./fast-listbox";
+export { fastListboxConfig };
+
 import fastMenuConfig from "./fast-menu";
 export { fastMenuConfig };
+
+import fastNumberFieldConfig from "./fast-number-field";
+export { fastNumberFieldConfig };
 
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
@@ -39,6 +57,9 @@ export { fastRadioConfig };
 
 import fastRadioGroupConfig from "./fast-radio-group";
 export { fastRadioGroupConfig };
+
+import fastSelectConfig from "./fast-select";
+export { fastSelectConfig };
 
 import fastSkeletonConfig from "./fast-skeleton";
 export { fastSkeletonConfig };

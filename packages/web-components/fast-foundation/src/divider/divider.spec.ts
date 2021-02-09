@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { Divider, DividerTemplate as template } from "./index";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { DividerRole } from "./divider";
+import { DividerRole } from "./divider.options";
+import { Divider, DividerTemplate as template } from "./index";
 
 @customElement({
     name: "fast-divider",

@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
 import { TextFieldType } from "./text-field";
@@ -11,11 +11,11 @@ import { TextFieldType } from "./text-field";
 class FASTTextField extends TextField {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTextField>(
+    const { element, connect, disconnect, parent } = await fixture<FASTTextField>(
         "fast-text-field"
     );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("TextField", () => {
@@ -155,6 +155,139 @@ describe("TextField", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("spellcheck")
         ).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", "foobar");
+        await connect();
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", "foobar");
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "foobar";
+        await connect();
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+    it("should hide the label when start content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        await connect();
+        div.slot = "start";
+        element.appendChild(div);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should hide the label when end content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        await connect();
+        div.slot = "end";
+        element.appendChild(div);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+    it("should hide the label when start and end content are provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const div: HTMLDivElement = document.createElement("svg") as HTMLDivElement;
+        div.setAttribute("height", "100px");
+        div.setAttribute("width", "100px");
+
+        const div2: HTMLDivElement = div;
+
+        await connect();
+        div.slot = "start";
+        div2.slot = "end";
+
+        element.appendChild(div);
+        element.appendChild(div2);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+    it("should hide the label when whitespace only text nodes are slotted", async () => {
+        const { element, connect, disconnect } = await setup();
+        const whitespace: Node = document.createTextNode(" ") as Node;
+        const whitespace2: Node = document.createTextNode(" \r ") as Node;
+
+        await connect();
+
+        element.appendChild(whitespace);
+        element.appendChild(whitespace2);
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
+
+        await disconnect();
+    });
+
+    it("should hide the label when no default slotted content is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(
+            element.shadowRoot
+                ?.querySelector("label")
+                ?.classList.contains("label__hidden")
+        ).to.be.true;
 
         await disconnect();
     });
@@ -532,27 +665,23 @@ describe("TextField", () => {
                             const { element, connect, disconnect } = await setup();
                             await connect();
                             const value = "";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.minlength = value.length + 1;
+                            element.type = type;
+                            element.value = value;
+                            element.minlength = value.length + 1;
 
-                            expect(el.validity.tooShort).to.equal(false);
+                            expect(element.validity.tooShort).to.equal(false);
+                            await disconnect();
                         });
                         it("should be valid if the value has a length less than the minlength", async () => {
                             const { element, connect, disconnect } = await setup();
                             await connect();
                             const value = "value";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.minlength = value.length + 1;
+                            element.type = type;
+                            element.value = value;
+                            element.minlength = value.length + 1;
 
-                            expect(el.validity.tooShort).to.equal(false);
+                            expect(element.validity.tooShort).to.equal(false);
+                            await disconnect();
                         });
                     });
 
@@ -562,14 +691,13 @@ describe("TextField", () => {
                             await connect();
 
                             const value = "";
-                            const el = document.createElement(
-                                "fast-text-field"
-                            ) as TextField;
-                            el.type = type;
-                            el.value = value;
-                            el.maxlength = value.length;
+                            element.type = type;
+                            element.value = value;
+                            element.maxlength = value.length;
 
-                            expect(el.validity.tooLong).to.equal(false);
+                            expect(element.validity.tooLong).to.equal(false);
+
+                            await disconnect();
                         });
                         it("should be valid if the value has a exceeding the maxlength", async () => {
                             const { element, connect, disconnect } = await setup();
@@ -580,6 +708,7 @@ describe("TextField", () => {
                             element.maxlength = value.length - 1;
 
                             expect(element.validity.tooLong).to.equal(false);
+                            await disconnect();
                         });
                         it("should be valid if the value has a length shorter than maxlength and the element is [required]", async () => {
                             const { element, connect, disconnect } = await setup();
@@ -591,6 +720,7 @@ describe("TextField", () => {
                             element.maxlength = value.length + 1;
 
                             expect(element.validity.tooLong).to.equal(false);
+                            await disconnect();
                         });
                     });
 
@@ -605,6 +735,7 @@ describe("TextField", () => {
                             element.value = value;
 
                             expect(element.validity.patternMismatch).to.equal(false);
+                            await disconnect();
                         });
 
                         it("should be invalid if the value does not match a pattern", async () => {
@@ -617,6 +748,7 @@ describe("TextField", () => {
                             element.value = "foo";
 
                             expect(element.validity.patternMismatch).to.equal(true);
+                            await disconnect();
                         });
                     });
                 });
@@ -630,6 +762,8 @@ describe("TextField", () => {
                 element.value = "";
 
                 expect(element.validity.typeMismatch).to.equal(false);
+
+                await disconnect();
             });
             it("should be a typeMismatch when value is not a valid email", async () => {
                 const { element, connect, disconnect } = await setup();
@@ -639,6 +773,8 @@ describe("TextField", () => {
                 element.value = "foobar";
 
                 expect(element.validity.typeMismatch).to.equal(true);
+
+                await disconnect();
             });
         });
         describe('of [type="url"]', () => {
@@ -650,6 +786,8 @@ describe("TextField", () => {
                 element.value = "";
 
                 expect(element.validity.typeMismatch).to.equal(false);
+
+                await disconnect();
             });
             it("should be a typeMismatch when value is not a valid URL", async () => {
                 const { element, connect, disconnect } = await setup();
@@ -659,7 +797,78 @@ describe("TextField", () => {
                 element.value = "foobar";
 
                 expect(element.validity.typeMismatch).to.equal(true);
+
+                await disconnect();
             });
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset it's value property to an empty string if no value attribute is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === null);
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "");
+
+            await disconnect();
+        });
+
+        it("should reset it's value property to the value of the value attribute if it is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+            await connect();
+
+            element.setAttribute("value", "attr-value");
+
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            await disconnect();
+        });
+
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.value = "test-value";
+            element.setAttribute("value", "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            element.setAttribute("value", "new-attr-value");
+
+            assert(element.value === "new-attr-value");
+            await disconnect();
         });
     });
 });

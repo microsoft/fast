@@ -25,6 +25,25 @@ export abstract class Directive implements BehaviorFactory {
 }
 
 /**
+ * A {@link Directive} that targets a named attribute or property on a node or object.
+ * @public
+ */
+export abstract class NamedTargetDirective extends Directive {
+    /**
+     * Gets/sets the name of the attribute or property that this
+     * directive is targeting on the associated node or object.
+     */
+    public abstract targetName: string | undefined;
+
+    /**
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
+     */
+    public createPlaceholder: (index: number) => string =
+        DOM.createInterpolationPlaceholder;
+}
+
+/**
  * Describes the shape of a behavior constructor that can be created by
  * an {@link AttachedBehaviorDirective}.
  * @public

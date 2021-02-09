@@ -2,16 +2,9 @@ import { attr, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { MenuItemRole } from "./menu-item.options";
 
-/**
- * Menu items roles.
- * @public
- */
-export enum MenuItemRole {
-    menuitem = "menuitem",
-    menuitemcheckbox = "menuitemcheckbox",
-    menuitemradio = "menuitemradio",
-}
+export { MenuItemRole };
 
 /**
  * A Switch Custom HTML Element.
@@ -59,6 +52,11 @@ export class MenuItem extends FASTElement {
      */
     @attr
     public checked: boolean;
+    private checkedChanged(oldValue, newValue): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("change");
+        }
+    }
 
     /**
      * @internal
@@ -88,12 +86,19 @@ export class MenuItem extends FASTElement {
 
         switch (this.role) {
             case MenuItemRole.menuitemcheckbox:
-            case MenuItemRole.menuitemradio:
                 this.checked = !this.checked;
                 break;
-        }
 
-        this.$emit("change");
+            case MenuItemRole.menuitemradio:
+                if (!this.checked) {
+                    this.checked = true;
+                }
+                break;
+
+            case MenuItemRole.menuitem:
+                this.$emit("change");
+                break;
+        }
     };
 }
 

@@ -378,6 +378,10 @@ export const FastFrameStyles = css`
             .text-container {
                 color: ${SystemColors.ButtonText};
             }
+            fast-tab:hover[aria-selected="true"] {
+                background: ${SystemColors.Highlight};
+                fill: ${SystemColors.HighlightText};
+            }
         `
     )
 );

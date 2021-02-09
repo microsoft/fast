@@ -11,8 +11,6 @@ module.exports = {
                 },
             ],
         });
-        config.resolve.extensions.push(".ts");
-        config.resolve.extensions.push(".js");
         config.plugins.push(
             new CircularDependencyPlugin({
                 exclude: /node_modules/,

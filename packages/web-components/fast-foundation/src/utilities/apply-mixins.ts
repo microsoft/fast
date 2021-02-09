@@ -12,5 +12,10 @@ export function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
                 Object.getOwnPropertyDescriptor(baseCtor.prototype, name)!
             );
         });
+
+        if (baseCtor.attributes) {
+            const existing = derivedCtor.attributes || [];
+            derivedCtor.attributes = existing.concat(baseCtor.attributes);
+        }
     });
 }
