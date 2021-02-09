@@ -1105,7 +1105,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $id: name,
                 id: name,
                 title,
-                description: `${description}`,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
