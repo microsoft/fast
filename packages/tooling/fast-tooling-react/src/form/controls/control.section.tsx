@@ -28,7 +28,7 @@ import {
     SchemaSetValidationMessageRequest,
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
-import { FormStrings } from "../form.props";
+import { FormCategory } from "../form.props";
 
 /**
  * Schema form component definition
@@ -259,6 +259,62 @@ class SectionControl extends React.Component<
     private getFormControls(): React.ReactNode {
         const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
 
+        if (
+            this.props.categories &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ] &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ][this.props.dataLocation]
+        ) {
+            const formControls: React.ReactNode[] = [];
+            const categorizedControls: string[] = [];
+
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ][this.props.dataLocation].forEach(
+                (categoryItem: FormCategory, index: number) => {
+                    formControls.push(
+                        <fieldset key={index}>
+                            <legend>{categoryItem.title}</legend>
+                            {categoryItem.dataLocations.map((dataLocation: string) => {
+                                if (
+                                    navigationItem.items.findIndex(
+                                        item => item === dataLocation
+                                    ) !== -1
+                                ) {
+                                    categorizedControls.push(dataLocation);
+                                    return this.getFormControl(dataLocation);
+                                }
+
+                                return null;
+                            })}
+                        </fieldset>
+                    );
+                }
+            );
+
+            return [
+                ...navigationItem.items
+                    .reduce((accumulation: string[], item: string) => {
+                        if (
+                            categorizedControls.findIndex(
+                                categorizedControl => categorizedControl === item
+                            ) === -1
+                        ) {
+                            accumulation.push(item);
+                        }
+
+                        return accumulation;
+                    }, [])
+                    .map(uncategorizedControl => {
+                        return this.getFormControl(uncategorizedControl);
+                    }),
+                ...formControls,
+            ];
+        }
+
         return navigationItem.items.map(
             (item: string): React.ReactNode => {
                 return this.getFormControl(item);
@@ -353,6 +409,7 @@ class SectionControl extends React.Component<
                     messageSystem={this.props.messageSystem}
                     strings={this.props.strings}
                     messageSystemOptions={this.props.messageSystemOptions}
+                    categories={this.props.categories}
                 />
             );
         }

@@ -97,6 +97,7 @@ const props: StandardControlTemplateProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("StandardControlTemplate", () => {
