@@ -122,7 +122,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             }),
         ];
 
-        const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
+        const exampleData: any = getDataFromSchema(testConfigs.category.schema);
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -130,7 +130,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 dataDictionary: [
                     {
                         foo: {
-                            schemaId: testConfigs.textField.schema.id,
+                            schemaId: testConfigs.category.schema.id,
                             data: exampleData,
                         },
                     },
@@ -145,7 +145,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         this.state = {
-            schema: testConfigs.textField.schema,
+            schema: testConfigs.category.schema,
             data: exampleData,
             navigation: void 0,
             showExtendedControls: false,
@@ -301,6 +301,28 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         const formProps: FormProps = {
             messageSystem: fastMessageSystem,
             controls: this.controlPlugins,
+            categories: {
+                category: {
+                    "": [
+                        {
+                            title: "String & Boolean",
+                            dataLocations: ["string", "boolean"],
+                        },
+                        {
+                            title: "Empty",
+                            dataLocations: [],
+                        },
+                        {
+                            title: "No match",
+                            dataLocations: ["foo", "bar"],
+                        },
+                        {
+                            title: "Advanced",
+                            dataLocations: ["array", "object"],
+                        },
+                    ],
+                },
+            },
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {
