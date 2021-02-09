@@ -41,9 +41,6 @@ jobs:
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-    - name: Install playwright
-      run: cd build/testing && npm install playwright
-
     - name: Run Playwright 
       run: cd build/testing && node playwright-automation.js
 
@@ -104,13 +101,10 @@ jobs:
       run: yarn format:check
 
     - name: Testing unit tests
-      run: yarn lerna run test --stream
-    
-    - name: Install playwright
-      run: cd build/testing && npm install playwright
+      run: yarn lerna run test --stream  
 
     - name: Run Playwright 
-      run:  node playwright-automation.js
+      run:  cd build/testing && node playwright-automation.js
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
@@ -160,10 +154,7 @@ jobs:
       run: yarn format:check
 
     - name: Testing unit tests
-      run: yarn lerna run test --stream
-    
-    - name: Install playwright
-      run: cd build/testing && npm install playwright
+      run: yarn lerna run test --stream   
 
     - name: Run Playwright 
       run: cd build/testing && node playwright-automation.js
