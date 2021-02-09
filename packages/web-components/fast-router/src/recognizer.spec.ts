@@ -2217,9 +2217,14 @@ describe(RouteRecognizer.name, function () {
                                 const endpoint = new Endpoint(
                                     configurableRoute,
                                     paramNames,
+                                    paramNames.map(x => "string"),
                                     null
                                 );
-                                const expected = new RecognizedRoute(endpoint, params);
+                                const expected = new RecognizedRoute(
+                                    endpoint,
+                                    params,
+                                    params
+                                );
 
                                 // Act
                                 const actual1 = sut.recognize(path);
