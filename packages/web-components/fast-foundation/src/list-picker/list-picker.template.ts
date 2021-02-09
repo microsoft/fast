@@ -59,47 +59,23 @@ export function createListPickerTemplate(
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                <div
-                    id="${x => x.listboxId}"
-                    class="listbox"
-                    role="list"
-                    part="listbox"
-                    ${ref("listbox")}
-                    ${children({
-                        property: "generatedOptionElements",
-                        filter: elements("[role=listitem]"),
-                    })}
-                >
-                    <div
-                        class="pre-option-region"
-                        part="pre-option-region"
+                    <${prefix}-list-picker-menu
+                        id="${x => x.listboxId}"
                         role="list"
-                        ${ref("preOptionRegion")}
+                        part="listbox"
+                        ${ref("listbox")}
+                        ${children({
+                            property: "optionElements",
+                            filter: elements("[role=listitem]"),
+                        })}
                     >
                         <slot
-                            name="pre-options"
-                            ${slotted({
-                                filter: elements("[role=listitem]"),
-                                property: "slottedPreOptions",
-                            })}
+                            name="header-region"
                         ></slot>
-                    </div>
-
-                    <div
-                       class="post-option-region"
-                       part="post-option-region"
-                       role="list"
-                       ${ref("postOptionRegion")}
-                    >
                         <slot 
-                            name="post-options"
-                            ${slotted({
-                                filter: elements("[role=listitem]"),
-                                property: "slottedPostOptions",
-                            })}
+                            name="footer-region"
                         ></slot>
-                    </div>
-                </div>
+                    </${prefix}-list-picker-menu>
                 </${prefix}-anchored-region>
             `
             )}

@@ -118,46 +118,11 @@ export class ListPicker extends FASTElement {
      * @internal
      */
     @observable
-    public generatedOptionElements: HTMLElement[] = [];
-    private generatedOptionElementsChanged(): void {
-        this.generatedOptionElements.forEach(o => {
+    public optionElements: HTMLElement[] = [];
+    private listItemElementsChanged(): void {
+        this.optionElements.forEach(o => {
             o.id = o.id || uniqueId("option-");
         });
-        if (this.$fastController.isConnected) {
-            this.allOptions = this.getAllOptions();
-        }
-    }
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public slottedPreOptions: HTMLElement[] = [];
-    private slottedPreOptionsChanged(): void {
-        this.slottedPreOptions.forEach(o => {
-            o.id = o.id || uniqueId("option-");
-        });
-        if (this.$fastController.isConnected) {
-            this.allOptions = this.getAllOptions();
-        }
-    }
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public slottedPostOptions: HTMLElement[] = [];
-    private slottedPostOptionsChanged(): void {
-        this.slottedPostOptions.forEach(o => {
-            o.id = o.id || uniqueId("option-");
-        });
-        if (this.$fastController.isConnected) {
-            this.allOptions = this.getAllOptions();
-        }
     }
 
     /**
@@ -199,20 +164,6 @@ export class ListPicker extends FASTElement {
     public listbox: HTMLElement;
 
     /**
-     * reference to the edit box
-     *
-     * @internal
-     */
-    public preOptionRegion: HTMLElement;
-
-    /**
-     * reference to the edit box
-     *
-     * @internal
-     */
-    public postOptionRegion: HTMLElement;
-
-    /**
      *
      *
      * @internal
@@ -224,8 +175,6 @@ export class ListPicker extends FASTElement {
 
     private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node | null = null;
-
-    private allOptions: HTMLElement[] = [];
 
     /**
      * @internal
@@ -271,7 +220,7 @@ export class ListPicker extends FASTElement {
 
         switch (e.key) {
             case "Home": {
-                if (this.allOptions.length > 0) {
+                if (this.optionElements.length > 0) {
                     this.setFocusedOption(0);
                 }
                 // e.stopPropagation();
@@ -279,9 +228,12 @@ export class ListPicker extends FASTElement {
             }
 
             case "ArrowDown": {
-                if (this.allOptions.length > 0) {
+                if (this.optionElements.length > 0) {
                     this.setFocusedOption(
-                        Math.min(this.listboxFocusIndex + 1, this.allOptions.length - 1)
+                        Math.min(
+                            this.listboxFocusIndex + 1,
+                            this.optionElements.length - 1
+                        )
                     );
                 }
                 // e.stopPropagation();
@@ -289,7 +241,7 @@ export class ListPicker extends FASTElement {
             }
 
             case "ArrowUp": {
-                if (this.allOptions.length > 0) {
+                if (this.optionElements.length > 0) {
                     this.setFocusedOption(Math.max(this.listboxFocusIndex - 1, 0));
                 }
                 // e.stopPropagation();
@@ -297,15 +249,15 @@ export class ListPicker extends FASTElement {
             }
 
             case "End": {
-                if (this.allOptions.length > 0) {
-                    this.setFocusedOption(this.allOptions.length - 1);
+                if (this.optionElements.length > 0) {
+                    this.setFocusedOption(this.optionElements.length - 1);
                 }
                 // e.stopPropagation();
                 return false;
             }
 
             case "Enter": {
-                if (this.allOptions.length > 0) {
+                if (this.optionElements.length > 0) {
                 }
                 // e.stopPropagation();
                 return false;
@@ -326,7 +278,7 @@ export class ListPicker extends FASTElement {
         }
 
         this.optionsPlaceholder = document.createComment("");
-        this.listbox.insertBefore(this.optionsPlaceholder, this.postOptionRegion);
+        this.listbox.append(this.optionsPlaceholder);
 
         this.optionsRepeatBehavior = new RepeatDirective(
             x => x.availableOptions,
@@ -362,33 +314,25 @@ export class ListPicker extends FASTElement {
         if (optionIndex === this.listboxFocusIndex) {
             return;
         }
-        if (optionIndex === -1 || optionIndex > this.allOptions.length - 1) {
+        if (optionIndex === -1 || optionIndex > this.optionElements.length - 1) {
             this.listboxFocusIndex = -1;
             this.listboxFocusOptionId = null;
             return;
         }
 
         this.listboxFocusIndex = optionIndex;
-        this.listboxFocusOptionId = this.allOptions[optionIndex].id;
+        this.listboxFocusOptionId = this.optionElements[optionIndex].id;
     };
 
     private toggleMenu = (open: boolean): void => {
         if (this.listboxOpen !== open) {
             this.listboxOpen = open;
-            if (this.allOptions.length > 0) {
+            if (this.optionElements.length > 0) {
                 this.listboxFocusIndex = 0;
             } else {
                 this.listboxFocusIndex = -1;
             }
         }
-    };
-
-    private getAllOptions = (): HTMLElement[] => {
-        const allOptions: HTMLElement[] = [];
-        allOptions.splice(0, 0, ...this.slottedPostOptions);
-        allOptions.splice(0, 0, ...this.generatedOptionElements);
-        allOptions.splice(0, 0, ...this.slottedPreOptions);
-        return allOptions;
     };
 
     private setRegionProps = (): void => {

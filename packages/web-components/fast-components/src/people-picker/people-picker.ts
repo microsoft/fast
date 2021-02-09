@@ -2,8 +2,6 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { ListPicker } from "@microsoft/fast-foundation";
 import { GroupType, PersonType, IDynamicPerson } from "@microsoft/mgt";
 
-export type SelectionMode = "single" | "multiple";
-
 /**
  * A List Picker Custom HTML Element.
  *
