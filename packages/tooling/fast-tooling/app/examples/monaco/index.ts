@@ -5,7 +5,10 @@ import {
     MessageSystemType,
 } from "../../../src";
 import { mapDataDictionaryToMonacoEditorHTML } from "../../../src/data-utilities/monaco";
-import { MonacoAdapter } from "../../../src/message-system-service/monaco-adapter.service";
+import {
+    MonacoAdapter,
+    monacoAdapterId,
+} from "../../../src/message-system-service/monaco-adapter.service";
 import { MonacoAdapterAction } from "../../../src/message-system-service/monaco-adapter.service-action";
 import monacoEditorConfig from "./monaco-editor-config";
 import dataDictionaryConfig from "./data-dictionary-config";
@@ -43,7 +46,7 @@ function handleMessageSystem(e: MessageEvent) {
         if (e.data.type === MessageSystemType.initialize) {
             dataDictionary = e.data.dataDictionary;
 
-            if (e.data.options && e.data.options.from === "monaco-adapter") {
+            if (e.data.options && e.data.options.originatorId === monacoAdapterId) {
                 updateFormInputs();
             } else {
                 updateFormInputs();
