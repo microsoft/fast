@@ -62,22 +62,43 @@ export function createListPickerTemplate(
                 <div
                     id="${x => x.listboxId}"
                     class="listbox"
-                    role="listbox"
+                    role="list"
                     part="listbox"
                     ${ref("listbox")}
                     ${children({
-                        property: "optionElements",
-                        subtree: true,
-                        filter: elements("[role=option]"),
+                        property: "generatedOptionElements",
+                        filter: elements("[role=listitem]"),
                     })}
                 >
-                    <slot 
-                        name="pre-custom-options"
-                    ></slot>
+                    <div
+                        class="pre-option-region"
+                        part="pre-option-region"
+                        role="list"
+                        ${ref("preOptionRegion")}
+                    >
+                        <slot
+                            name="pre-options"
+                            ${slotted({
+                                filter: elements("[role=listitem]"),
+                                property: "slottedPreOptions",
+                            })}
+                        ></slot>
+                    </div>
 
-                    <slot 
-                        name="post-custom-options"
-                    ></slot>
+                    <div
+                       class="post-option-region"
+                       part="post-option-region"
+                       role="list"
+                       ${ref("postOptionRegion")}
+                    >
+                        <slot 
+                            name="post-options"
+                            ${slotted({
+                                filter: elements("[role=listitem]"),
+                                property: "slottedPostOptions",
+                            })}
+                        ></slot>
+                    </div>
                 </div>
                 </${prefix}-anchored-region>
             `

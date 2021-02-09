@@ -14,7 +14,7 @@ function createItemTemplate(): ViewTemplate {
 function createOptionTemplate(): ViewTemplate {
     return html`
         <button
-            role="option"
+            role="listitem"
             tabindex="-1"
             @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent)}"
         >
@@ -42,6 +42,9 @@ function createOptionTemplate(): ViewTemplate {
         createOptionTemplate()
     ),
     styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 export class FASTPeoplePicker extends PeoplePicker {}
 

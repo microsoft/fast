@@ -1252,14 +1252,18 @@ export class ListPicker extends FASTElement {
     defaultOptionTemplate: ViewTemplate;
     // (undocumented)
     defaultSelection: string;
+    // @internal
+    generatedOptionElements: HTMLElement[];
     // (undocumented)
     handleFocusOut: (e: FocusEvent) => void;
+    // (undocumented)
+    handleInputKeyDown: (e: KeyboardEvent) => boolean;
     // (undocumented)
     handleOptionClick: (e: MouseEvent) => boolean;
     // (undocumented)
     handleRegionLoaded: (e: Event) => void;
     // (undocumented)
-    handleTextInput: (e: InputEvent) => void;
+    handleTextInput: (e: InputEvent) => boolean;
     // @internal
     inputBox: HTMLElement;
     // @internal (undocumented)
@@ -1267,19 +1271,31 @@ export class ListPicker extends FASTElement {
     // @internal
     listbox: HTMLElement;
     // @internal (undocumented)
+    listboxFocusIndex: number;
+    // @internal (undocumented)
+    listboxFocusOptionId: string | null;
+    // @internal (undocumented)
+    listboxId: string;
+    // @internal (undocumented)
     listboxOpen: boolean;
-    // @internal
-    optionElements: HTMLElement[];
     // (undocumented)
     options: string;
     // @internal (undocumented)
     optionTemplate: ViewTemplate;
+    // @internal
+    postOptionRegion: HTMLElement;
+    // @internal
+    preOptionRegion: HTMLElement;
     // @internal (undocumented)
     region: AnchoredRegion;
     // (undocumented)
     selectedOptions: string[];
     // (undocumented)
     selection: string;
+    // @internal (undocumented)
+    slottedPostOptions: HTMLElement[];
+    // @internal (undocumented)
+    slottedPreOptions: HTMLElement[];
     }
 
 // @public
