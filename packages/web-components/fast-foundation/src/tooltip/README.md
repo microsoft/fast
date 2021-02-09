@@ -9,26 +9,19 @@ The `fast-tooltip` component is used provide extra information about another ele
 
 ## Usage
 
-```jsx live
-function ShowTooltip(props) {
-  useEffect(() => {
-    const testTooltip= document.getElementById("testtip");
-    testTooltip.anchorElement = document.getElementById("testbutton");
-  });
-  return (
-    <fast-design-system-provider use-defaults>
+```html
       <div>
           <fast-button id="testbutton">
               Hover me for more info
           </fast-button>
-          <fast-tooltip id="testtip" position="right">
+          <fast-tooltip id="testtip">
               helpful text
           </fast-tooltip>
       </div>
-    </fast-design-system-provider>
-  );
-}
 ```
+
+See [Component Explorer](https://explore.fast.design/components/fast-tooltip) for usage examples.
+
 ---
 
 ## Applying custom styles
