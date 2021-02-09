@@ -3,6 +3,7 @@ import allControlTypesSchema from "./all-control-types.schema";
 import anyOfSchema from "./any-of.schema";
 import arraysSchema from "./arrays.schema";
 import badgeSchema from "./badge.schema";
+import categorySchema from "./category.schema";
 import checkboxSchema from "./checkbox.schema";
 import childrenPluginSchema from "./children.schema";
 import childrenSchema from "./children.schema";
@@ -33,6 +34,7 @@ export {
     anyOfSchema,
     arraysSchema,
     badgeSchema,
+    categorySchema,
     checkboxSchema,
     childrenPluginSchema,
     childrenSchema,

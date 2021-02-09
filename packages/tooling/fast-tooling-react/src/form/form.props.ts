@@ -24,6 +24,36 @@ export type BreadcrumbItemEventHandler = (e: React.MouseEvent<HTMLAnchorElement>
 
 export type FormTag = "form" | "div";
 
+export interface FormCategory {
+    /**
+     * The data locations using lodash dot and
+     * bracket notation to indicate which properties
+     * belong to this category
+     */
+    dataLocations: string[];
+
+    /**
+     * The title of this category
+     */
+    title: string;
+}
+
+export interface FormSectionCategory {
+    /**
+     * A set of form categories corresponding
+     * to the current data location used as a string
+     */
+    [key: string]: Array<FormCategory>;
+}
+
+export interface FormCategoryDictionary {
+    /**
+     * A dictionary of form categories
+     * where the key is the schema $id
+     */
+    [key: string]: FormSectionCategory;
+}
+
 /**
  * The schema form props
  */
@@ -54,6 +84,11 @@ export interface FormProps {
      * Localized strings for the default controls. Default is English.
      */
     strings?: FormStrings;
+
+    /**
+     * Category configurations
+     */
+    categories?: FormCategoryDictionary;
 }
 
 /**

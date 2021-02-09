@@ -91,6 +91,7 @@ const props: SingleLineControlTemplateProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("SingleLineControlTemplate", () => {
