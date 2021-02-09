@@ -164,6 +164,7 @@ const formControlSwitchProps: ControlSwitchProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("ControlSwitch", () => {
