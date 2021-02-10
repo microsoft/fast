@@ -43,6 +43,7 @@ function createOptionTemplate(): ViewTemplate {
     name: "fast-people-picker",
     template: createListPickerTemplate(
         "fast",
+        "fast-people-picker-menu",
         createItemTemplate(),
         createOptionTemplate()
     ),
@@ -67,15 +68,11 @@ export const PeoplePickerStyles = pickerStyles;
  * @remarks
  * HTML Element: \<fast-people-picker-menu\>
  *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 @customElement({
-    name: "fast-people-picker",
+    name: "fast-people-picker-menu",
     template: createListPickerMenuTemplate("fast"),
     styles: pickerMenuStyles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 })
 export class FASTPeoplePickerMenu extends ListPickerMenu {}
 

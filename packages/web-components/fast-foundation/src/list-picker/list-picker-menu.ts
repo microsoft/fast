@@ -1,18 +1,26 @@
-import {
-    attr,
-    DOM,
-    FASTElement,
-    observable,
-    RepeatBehavior,
-    RepeatDirective,
-    ViewTemplate,
-} from "@microsoft/fast-element";
-import uniqueId from "lodash-es/uniqueId";
-import { AnchoredRegion } from "../anchored-region";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
  * A List Picker Menu Custom HTML Element.
  *
  * @public
  */
-export class ListPickerMenu extends FASTElement {}
+export class ListPickerMenu extends FASTElement {
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: testing
+     */
+    @attr({ attribute: "testing" })
+    public testing: string = "test";
+    private testingChanged(): void {}
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+    }
+}

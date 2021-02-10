@@ -17,7 +17,7 @@ function createOptionTemplate(): ViewTemplate {
 
 @customElement({
     name: "fast-list-picker",
-    template: createListPickerTemplate("fast", createItemTemplate(), createOptionTemplate()),
+    template: createListPickerTemplate("fast", "fast-list-picker-menu", createItemTemplate(), createOptionTemplate()),
 })
 class FASTListPicker extends ListPicker {}
 
@@ -29,5 +29,5 @@ async function setup() {
     return { element, connect, disconnect, parent };
 }
 
-describe("ListPicker", () => {
-});
+// describe("ListPicker", () => {
+// });

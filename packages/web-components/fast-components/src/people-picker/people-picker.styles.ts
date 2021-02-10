@@ -28,11 +28,6 @@ export const PeoplePickerStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
     }
-
-    .listbox {
-        display: flex;
-        flex-direction: column;
-    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

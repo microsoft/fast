@@ -119,7 +119,7 @@ export class ListPicker extends FASTElement {
      */
     @observable
     public optionElements: HTMLElement[] = [];
-    private listItemElementsChanged(): void {
+    private optionElementsChanged(): void {
         this.optionElements.forEach(o => {
             o.id = o.id || uniqueId("option-");
         });

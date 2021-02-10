@@ -25,6 +25,11 @@ export const PeoplePickerMenuStyles = css`
         display: flex;
         flex-direction: column;
     }
+
+    header-region {
+        background: red;
+        height: 20px;
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,
