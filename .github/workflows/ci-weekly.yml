@@ -113,10 +113,11 @@ jobs:
       run: yarn lerna run test --stream
      
     - name: Test Playwright
-      run: cd packages/web-components/fast-components 
-      run: yarn test-chromium:pw 
-      run: yarn test-firefox:pw 
-      run: yarn test-webkit:pw
+      run: |
+        cd packages/web-components/fast-components 
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
@@ -188,9 +189,4 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
     
-    - name: Test Playwright
-      run: cd packages/web-components/fast-components 
-      run: yarn test-chromium:pw 
-      run: yarn test-firefox:pw 
-      run: yarn test-webkit:pw
     
