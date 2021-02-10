@@ -1,8 +1,8 @@
 import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import {
-    createListPickerMenuTemplate,
-    createListPickerTemplate,
-    ListPickerMenu,
+    createPickerMenuTemplate,
+    createPickerTemplate,
+    PickerMenu,
 } from "@microsoft/fast-foundation";
 import { PeoplePickerStyles as pickerStyles } from "./people-picker.styles";
 import { PeoplePickerMenuStyles as pickerMenuStyles } from "./people-picker-menu.styles";
@@ -41,9 +41,9 @@ function createOptionTemplate(): ViewTemplate {
  */
 @customElement({
     name: "fast-people-picker",
-    template: createListPickerTemplate(
+    template: createPickerTemplate(
         "fast",
-        "fast-people-picker-menu",
+        "people",
         createItemTemplate(),
         createOptionTemplate()
     ),
@@ -71,10 +71,10 @@ export const PeoplePickerStyles = pickerStyles;
  */
 @customElement({
     name: "fast-people-picker-menu",
-    template: createListPickerMenuTemplate("fast"),
+    template: createPickerMenuTemplate("fast"),
     styles: pickerMenuStyles,
 })
-export class FASTPeoplePickerMenu extends ListPickerMenu {}
+export class FASTPeoplePickerMenu extends PickerMenu {}
 
 /**
  * Styles for PeoplePickerMenu

@@ -1,7 +1,7 @@
 import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
-import { ListPicker, createListPickerTemplate } from "./index";
+import { Picker, createPickerTemplate } from "./index";
 
 function createItemTemplate(): ViewTemplate {
     return html`
@@ -16,18 +16,18 @@ function createOptionTemplate(): ViewTemplate {
 }
 
 @customElement({
-    name: "fast-list-picker",
-    template: createListPickerTemplate("fast", "fast-list-picker-menu", createItemTemplate(), createOptionTemplate()),
+    name: "fast-picker",
+    template: createPickerTemplate("fast", "fast-picker-menu", createItemTemplate(), createOptionTemplate()),
 })
-class FASTListPicker extends ListPicker {}
+class FASTPicker extends Picker {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTListPicker>(
-        "fast-list-picker"
+    const { element, connect, disconnect, parent } = await fixture<FASTPicker>(
+        "fast-picker"
     );
 
     return { element, connect, disconnect, parent };
 }
 
-// describe("ListPicker", () => {
+// describe("Picker", () => {
 // });

@@ -5,7 +5,7 @@ import { attr, FASTElement } from "@microsoft/fast-element";
  *
  * @public
  */
-export class ListPickerMenu extends FASTElement {
+export class PickerMenu extends FASTElement {
     /**
      *
      *

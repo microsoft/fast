@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { ListPicker } from "@microsoft/fast-foundation";
+import { Picker } from "@microsoft/fast-foundation";
 import { GroupType, PersonType, IDynamicPerson } from "@microsoft/mgt";
 
 /**
@@ -7,7 +7,7 @@ import { GroupType, PersonType, IDynamicPerson } from "@microsoft/mgt";
  *
  * @public
  */
-export class PeoplePicker extends ListPicker {
+export class PeoplePicker extends Picker {
     /**
      *  value determining if search is filtered to a group.
      *

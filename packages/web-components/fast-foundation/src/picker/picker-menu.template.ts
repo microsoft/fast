@@ -7,14 +7,14 @@ import {
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
-import { ListPickerMenu } from "./list-picker-menu";
+import { PickerMenu } from "./picker-menu";
 
 /**
  * The template for the List Picker component.
  * @public
  */
-export function createListPickerMenuTemplate(prefix: string): ViewTemplate {
-    return html<ListPickerMenu>`
+export function createPickerMenuTemplate(prefix: string): ViewTemplate {
+    return html<PickerMenu>`
         <template role="list">
             <div class="header-region" part="header-region" role="list">
                 <slot name="header-region"></slot>

@@ -15,7 +15,7 @@ import { AnchoredRegion } from "../anchored-region";
  *
  * @public
  */
-export class ListPicker extends FASTElement {
+export class Picker extends FASTElement {
     /**
      *
      *

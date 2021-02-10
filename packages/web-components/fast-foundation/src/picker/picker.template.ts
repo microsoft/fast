@@ -3,23 +3,22 @@ import {
     elements,
     html,
     ref,
-    slotted,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
-import { ListPicker } from "./list-picker";
+import { Picker } from "./picker";
 
 /**
  * The template for the List Picker component.
  * @public
  */
-export function createListPickerTemplate(
+export function createPickerTemplate(
     prefix: string,
-    menuTag: string,
+    subtype: string,
     itemTemplate: ViewTemplate,
     optionTemplate: ViewTemplate
 ): ViewTemplate {
-    return html<ListPicker>`
+    return html<Picker>`
         <template
             :defaultItemTemplate=${itemTemplate}
             :defaultOptionTemplate=${optionTemplate}
@@ -50,7 +49,7 @@ export function createListPickerTemplate(
             </div>
             ${when(
                 x => x.listboxOpen,
-                html<ListPicker>`
+                html<Picker>`
                 <${prefix}-anchored-region
                     fixed-placement="true"
                     vertical-positioning-mode="dynamic"
@@ -62,7 +61,7 @@ export function createListPickerTemplate(
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                    <${menuTag}
+                    <${prefix}-${subtype}-picker-menu
                         id="${x => x.listboxId}"
                         part="listbox"
                         ${ref("listbox")}
@@ -73,7 +72,7 @@ export function createListPickerTemplate(
                     >
                         <slot name="header-region"></slot>
                         <slot name="footer-region"></slot>
-                    </${menuTag}>
+                    </${prefix}-${subtype}-picker-menu>
                 </${prefix}-anchored-region>
             `
             )}
