@@ -1,10 +1,5 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import AnchorTemplate from "./fixtures/anchor.html";
-import { FASTAnchor } from "./";
-
-// Prevent tree-shaking
-FASTAnchor;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Anchor",
