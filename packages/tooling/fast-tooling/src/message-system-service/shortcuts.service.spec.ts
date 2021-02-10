@@ -1,5 +1,5 @@
 import { MessageSystem, MessageSystemType, Register } from "../message-system";
-import { Shortcuts } from "./shortcuts.service";
+import { Shortcuts, ShortcutsConfig, shortcutsId } from "./shortcuts.service";
 import { ShortcutsAction } from "./shortcuts.service-action";
 
 describe("Shortcuts", () => {
@@ -161,15 +161,8 @@ describe("Shortcuts", () => {
         expect(postMessageCallback.mock.calls[0][0].type).toEqual(
             MessageSystemType.custom
         );
-        expect(postMessageCallback.mock.calls[0][0].id).toEqual("shortcuts");
+        expect(postMessageCallback.mock.calls[0][0].id).toEqual(shortcutsId);
         expect(postMessageCallback.mock.calls[0][0].action).toEqual("initialize");
-        expect(postMessageCallback.mock.calls[0][0].eventListenerType).toEqual(
-            "keypress"
-        );
-        expect(typeof postMessageCallback.mock.calls[0][0].eventListener).toEqual(
-            "function"
-        );
-        expect(postMessageCallback.mock.calls[0][0].shortcuts.length).toEqual(1);
     });
     test("should pass meta key if meta key is used", () => {
         const postMessageCallback: any = jest.fn();
@@ -203,7 +196,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ metaKey: true });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ metaKey: true } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass alt key if alt key is used", () => {
@@ -238,7 +231,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ altKey: true });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ altKey: true } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass ctrl key if ctrl key is used", () => {
@@ -273,7 +266,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ ctrlKey: true });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ ctrlKey: true } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass shift key if shift key is used", () => {
@@ -308,7 +301,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ shiftKey: true });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ shiftKey: true } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass a specific key if a specific key is used", () => {
@@ -343,7 +336,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ key: "d" });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ key: "d" } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should not invoke an action if the keys do not match", () => {
@@ -378,7 +371,7 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        postMessageCallback.mock.calls[0][0].eventListener({ key: "d" });
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ key: "d" } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(0);
     });
     test("should run an action if the id matches", () => {
