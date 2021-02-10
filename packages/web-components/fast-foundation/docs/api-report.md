@@ -640,15 +640,11 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 
 // @alpha (undocumented)
 export class DesignSystem {
-    // (undocumented)
-    apply: any;
-    // (undocumented)
     applyTo(element: HTMLElement): Container;
     // (undocumented)
     register(...params: any[]): this;
     // (undocumented)
     withElementDisambiguation(callback: ElementDisambiguationCallback): this;
-    // (undocumented)
     withPrefix(prefix: string): this;
 }
 

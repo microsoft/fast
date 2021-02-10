@@ -1,7 +1,16 @@
 import { FASTDesignSystemProvider } from "../design-system-provider";
 import DITestTemplate from "./fixtures/di-test.html";
 import { DITestElementDefinition } from "./";
-import { DesignSystem } from "@microsoft/fast-foundation";
+import { DesignSystem, Registration } from "@microsoft/fast-foundation";
+import { DI } from "@microsoft/fast-foundation";
+import { Observable } from "@microsoft/fast-element";
+import {
+    DesignTokensImpl,
+    SimpleDesignTokenImpl,
+    DesignToken,
+    SimpleDesignToken,
+} from "./design-tokens";
+import { DesignUnit } from "./my-design-system";
 
 // Prevent tree-shaking
 FASTDesignSystemProvider;
@@ -9,9 +18,10 @@ FASTDesignSystemProvider;
 // ===========
 // New DI work
 // ===========
-
-// Define design system
 const designSystem = new DesignSystem();
+const designTokens = new DesignTokensImpl(document.body);
+
+designTokens.set(DesignUnit, new SimpleDesignTokenImpl(12));
 
 // Register the custom element definition
 designSystem.register(DITestElementDefinition(/* apply any necessary overrides */));
