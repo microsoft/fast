@@ -1,190 +1,130 @@
-import { STORY_RENDERED } from "@storybook/core-events";
-import addons from "@storybook/addons";
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
-import { FASTDesignSystemProvider } from "../design-system-provider";
-import { FASTAnchoredRegion } from "../anchored-region";
+import addons from "@storybook/addons";
+import { STORY_RENDERED } from "@storybook/core-events";
 import AnchoreRegionTemplate from "./fixtures/base.html";
-
-// Prevent tree-shaking
-FASTAnchoredRegion;
-FASTDesignSystemProvider;
+import type { FASTAnchoredRegion } from "./index";
+import "./index";
 
 let scalingViewportPreviousXValue: number = 250;
 let scalingViewportPreviousYValue: number = 250;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
-        scrollViewports();
-        setButtonActions();
+        document.querySelectorAll("div[id^='viewport']").forEach(el => {
+            if (el instanceof HTMLDivElement) {
+                el.scrollTop = 280;
+                RtlScrollConverter.setScrollLeft(
+                    el,
+                    el.dir === Direction.rtl ? -250 : 250,
+                    el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
+                );
+            }
+        });
 
-        const scalingViewportUpdate: HTMLElement | null = document.getElementById(
-            "viewport-scaling-update"
-        );
-        if (scalingViewportUpdate !== null) {
-            scalingViewportUpdate.addEventListener("scroll", handleScrollViaUpdate);
-        }
+        const anchorRegion = document.getElementById("toggle-anchor-region")!;
+        const anchor1 = document.getElementById("toggle-anchor-anchor1")!;
+        const anchor2 = document.getElementById("toggle-anchor-anchor2")!;
+        const positionsRegion = document.getElementById("toggle-positions-region")!;
+        const togglePositionsHorizontal = document.getElementById(
+            "toggle-positions-horizontal"
+        )!;
+        const togglePositionsVertical = document.getElementById(
+            "toggle-positions-vertical"
+        )!;
+        const togglePositionsSmall = document.getElementById(
+            "btn-toggle-positions-small"
+        )!;
+        const togglePositionsLarge = document.getElementById(
+            "btn-toggle-positions-large"
+        )!;
+        const smallContent = document.getElementById("toggle-positions-small")!;
+        const largeContent = document.getElementById("toggle-positions-large")!;
 
-        const scalingViewportOffset: HTMLElement | null = document.getElementById(
-            "viewport-scaling-offset"
-        );
-        if (scalingViewportOffset !== null) {
-            scalingViewportOffset.addEventListener("scroll", handleScrollViaOffset);
-        }
+        anchor1.onclick = () => {
+            anchorRegion.setAttribute("anchor", "toggle-anchor-anchor1");
+        };
+
+        anchor2.onclick = () => {
+            anchorRegion.setAttribute("anchor", "toggle-anchor-anchor2");
+        };
+
+        togglePositionsHorizontal.onclick = () => {
+            const currentPosition = positionsRegion.getAttribute(
+                "horizontal-default-position"
+            );
+            positionsRegion.setAttribute(
+                "horizontal-default-position",
+                currentPosition === "left" ? "right" : "left"
+            );
+        };
+
+        togglePositionsVertical.onclick = () => {
+            const currentPosition = positionsRegion.getAttribute(
+                "vertical-default-position"
+            );
+            positionsRegion.setAttribute(
+                "vertical-default-position",
+                currentPosition === "top" ? "bottom" : "top"
+            );
+        };
+
+        togglePositionsSmall.onclick = () => {
+            smallContent.hidden = false;
+            largeContent.hidden = true;
+        };
+
+        togglePositionsLarge.onclick = () => {
+            smallContent.hidden = true;
+            largeContent.hidden = false;
+        };
+
+        const scalingViewportUpdate = document.getElementById("viewport-scaling-update")!;
+        scalingViewportUpdate.addEventListener("scroll", handleScrollViaUpdate);
+
+        const scalingViewportOffset = document.getElementById("viewport-scaling-offset")!;
+        scalingViewportOffset.addEventListener("scroll", handleScrollViaOffset);
     }
 });
 
-function scrollViewports(): void {
-    document.querySelectorAll("div[id^='viewport']").forEach(el => {
-        if (el instanceof HTMLDivElement) {
-            el.scrollTop = 280;
-            RtlScrollConverter.setScrollLeft(
-                el,
-                el.dir === Direction.rtl ? -250 : 250,
-                el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
-            );
-        }
-    });
-}
-
 function handleScrollViaUpdate(ev: Event): void {
-    if (ev.target instanceof HTMLElement) {
-        const scalingRegionUpdate: HTMLElement | null = document.getElementById(
-            "region-scaling-update"
-        );
-        if (scalingRegionUpdate instanceof FASTAnchoredRegion) {
-            (scalingRegionUpdate as any).update();
-        }
-    }
+    const scalingRegionUpdate = document.getElementById(
+        "region-scaling-update"
+    ) as FASTAnchoredRegion;
+    scalingRegionUpdate.update();
 }
 
 function handleScrollViaOffset(ev: Event): void {
-    if (ev.target instanceof HTMLElement) {
-        const scroller: HTMLElement = ev.target as HTMLElement;
+    const scroller = ev.target as HTMLElement;
 
-        const scalingRegionOffset: HTMLElement | null = document.getElementById(
-            "region-scaling-offset"
-        );
-        if (scalingRegionOffset instanceof FASTAnchoredRegion) {
-            (scalingRegionOffset as any).updateAnchorOffset(
-                scalingViewportPreviousXValue - scroller.scrollLeft,
-                scalingViewportPreviousYValue - scroller.scrollTop
-            );
-        }
+    const scalingRegionOffset = document.getElementById(
+        "region-scaling-offset"
+    ) as FASTAnchoredRegion;
+    scalingRegionOffset.updateAnchorOffset(
+        scalingViewportPreviousXValue - scroller.scrollLeft,
+        scalingViewportPreviousYValue - scroller.scrollTop
+    );
 
-        scalingViewportPreviousXValue = scroller.scrollLeft;
-        scalingViewportPreviousYValue = scroller.scrollTop;
-    }
+    scalingViewportPreviousXValue = scroller.scrollLeft;
+    scalingViewportPreviousYValue = scroller.scrollTop;
 }
 
-function setButtonActions(): void {
-    document.querySelectorAll("button").forEach(el => {
-        if (el instanceof HTMLButtonElement) {
-            switch (el.id) {
-                case "toggle-anchor-anchor1":
-                    el.onclick = event => {
-                        const region: HTMLElement | null = document.getElementById(
-                            "toggle-anchor-region"
-                        );
-                        if (region === null) {
-                            return;
-                        }
-                        region.setAttribute("anchor", "toggle-anchor-anchor1");
-                    };
-                    break;
-
-                case "toggle-anchor-anchor2":
-                    el.onclick = event => {
-                        const region: HTMLElement | null = document.getElementById(
-                            "toggle-anchor-region"
-                        );
-                        if (region === null) {
-                            return;
-                        }
-                        region.setAttribute("anchor", "toggle-anchor-anchor2");
-                    };
-                    break;
-
-                case "toggle-positions-horizontal":
-                    el.onclick = event => {
-                        const region: HTMLElement | null = document.getElementById(
-                            "toggle-positions-region"
-                        );
-                        if (region === null) {
-                            return;
-                        }
-                        const currentPosition: string | null = region.getAttribute(
-                            "horizontal-default-position"
-                        );
-                        if (currentPosition === "left") {
-                            region.setAttribute("horizontal-default-position", "right");
-                        } else {
-                            region.setAttribute("horizontal-default-position", "left");
-                        }
-                    };
-                    break;
-
-                case "toggle-positions-vertical":
-                    el.onclick = event => {
-                        const region: HTMLElement | null = document.getElementById(
-                            "toggle-positions-region"
-                        );
-                        if (region === null) {
-                            return;
-                        }
-                        const currentPosition: string | null = region.getAttribute(
-                            "vertical-default-position"
-                        );
-                        if (currentPosition === "top") {
-                            region.setAttribute("vertical-default-position", "bottom");
-                        } else {
-                            region.setAttribute("vertical-default-position", "top");
-                        }
-                    };
-                    break;
-
-                case "toggle-positions-small":
-                    el.onclick = event => {
-                        const smallContent: HTMLElement | null = document.getElementById(
-                            "toggle-positions-small"
-                        );
-                        const largeContent: HTMLElement | null = document.getElementById(
-                            "toggle-positions-large"
-                        );
-                        if (smallContent === null || largeContent === null) {
-                            return;
-                        }
-
-                        smallContent.hidden = false;
-                        largeContent.hidden = true;
-                    };
-                    break;
-
-                case "toggle-positions-large":
-                    el.onclick = event => {
-                        const smallContent: HTMLElement | null = document.getElementById(
-                            "toggle-positions-small"
-                        );
-                        const largeContent: HTMLElement | null = document.getElementById(
-                            "toggle-positions-large"
-                        );
-                        if (smallContent === null || largeContent === null) {
-                            return;
-                        }
-
-                        smallContent.hidden = true;
-                        largeContent.hidden = false;
-                    };
-                    break;
-
-                default:
-                    el.onclick;
-            }
-        }
-    });
+const providerStyles = `
+fast-design-system-provider {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
+`;
 
 export default {
-    title: "Anchored region",
+    title: "Anchored Region",
+    decorators: [
+        Story => `
+        <style>${providerStyles}</style>
+        ${Story()}
+        `,
+    ],
 };
 
-export const base = () => AnchoreRegionTemplate;
+export const AnchoredRegion = () => AnchoreRegionTemplate;
