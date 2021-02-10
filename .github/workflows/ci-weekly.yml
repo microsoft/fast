@@ -40,17 +40,18 @@ jobs:
       run: yarn prepare
 
     - name: Testing Prettier format
-      run: yarn format:check
+      run: yarn format:check 
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
 
     - name: Test Playwright
       run: |
         cd packages/web-components/fast-components 
+        npm install playwright
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
-
-    - name: Testing unit tests
-      run: yarn lerna run test --stream
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
@@ -116,6 +117,7 @@ jobs:
     - name: Test Playwright
       run: |
         cd packages/web-components/fast-components 
+        npm install playwright
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
@@ -167,9 +169,16 @@ jobs:
     - name: Testing Prettier format
       run: yarn format:check
 
-
     - name: Testing unit tests
       run: yarn lerna run test --stream
+
+    - name: Test Playwright
+      run: |
+        cd packages/web-components/fast-components 
+        npm install playwright
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
