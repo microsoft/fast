@@ -43,10 +43,11 @@ jobs:
       run: yarn format:check
 
     - name: Test Playwright
-      run: cd packages/web-components/fast-components 
-      run: yarn test-chromium:pw 
-      run: yarn test-firefox:pw 
-      run: yarn test-webkit:pw
+      run: |
+        cd packages/web-components/fast-components 
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
