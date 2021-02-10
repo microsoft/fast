@@ -14,7 +14,7 @@ on:
   - cron: 0 7 * * 3
   
 jobs:
-  build_linux:
+  linux_cross-platform_cross-browser:
     runs-on: [ubuntu-latest]
     
     steps:
@@ -72,9 +72,7 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
 
-      
-
-  build-windows:
+  windows_cross-platform_cross-browser:
     runs-on: [windows-latest]
 
     steps:
@@ -141,7 +139,7 @@ jobs:
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
 
-  build-macos:
+  macos_cross-platform_cross-browser:
     runs-on: [macos-latest]
 
     steps:
