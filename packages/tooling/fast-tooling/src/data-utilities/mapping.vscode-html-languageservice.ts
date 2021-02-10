@@ -49,19 +49,25 @@ function mapAttributesAndSlotsToData(
                 }
             }
 
-            try {
-                const parsedValue = JSON.parse(attributeValue);
+            if (attributeKey !== "slot") {
+                try {
+                    const parsedValue = JSON.parse(attributeValue);
 
-                return [attributeKey, parsedValue === null ? true : parsedValue];
-            } catch (e) {
-                return [attributeKey, ""];
+                    return [attributeKey, parsedValue === null ? true : parsedValue];
+                } catch (e) {
+                    return [attributeKey, ""];
+                }
             }
         })
         .reduce((previousValue, currentValue) => {
-            return {
-                ...previousValue,
-                [currentValue[0]]: currentValue[1],
-            };
+            if (currentValue) {
+                return {
+                    ...previousValue,
+                    [currentValue[0]]: currentValue[1],
+                };
+            }
+
+            return previousValue;
         }, slotAttributes);
 }
 
