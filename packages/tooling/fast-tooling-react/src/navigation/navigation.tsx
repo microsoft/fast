@@ -74,6 +74,7 @@ class Navigation extends Foundation<
             navigationDictionary: null,
             dataDictionary: null,
             activeItem: null,
+            activeItemEditable: false,
             expandedNavigationConfigItems: {},
             linkedData: void 0,
             linkedDataLocation: null,
@@ -257,6 +258,10 @@ class Navigation extends Foundation<
                 type={type}
                 index={index}
                 isCollapsible={isCollapsible}
+                isEditable={
+                    this.state.activeItemEditable &&
+                    this.isEditable(dictionaryId, navigationConfigId)
+                }
                 className={this.getDraggableItemClassName(
                     isCollapsible,
                     isDraggable,
@@ -276,6 +281,10 @@ class Navigation extends Foundation<
                     dictionaryId,
                     navigationConfigId
                 )}
+                handleChange={this.handleNavigationItemChangeText(
+                    dictionaryId,
+                    navigationConfigId
+                )}
                 handleKeyDown={this.handleNavigationItemKeyDown(
                     dictionaryId,
                     navigationConfigId
@@ -285,9 +294,8 @@ class Navigation extends Foundation<
                 dragStart={this.handleDragStart(index)}
                 dragEnd={this.handleDragEnd}
                 dragHover={this.handleDragHover}
-            >
-                {text}
-            </DraggableNavigationTreeItem>
+                text={text}
+            />
         );
     }
 
@@ -323,6 +331,13 @@ class Navigation extends Foundation<
         }
 
         return null;
+    }
+
+    private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
+        return (
+            this.state.activeItem[0] === dictionaryId &&
+            this.state.activeItem[1] === navigationConfigId
+        );
     }
 
     private getExpandedState(
@@ -526,7 +541,23 @@ class Navigation extends Foundation<
         navigationConfigId: string
     ): (() => void) => {
         return (): void => {
-            this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
+            if (this.isEditable(dictionaryId, navigationConfigId)) {
+                this.triggerNavigationEdit();
+            } else {
+                this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
+            }
+        };
+    };
+
+    /**
+     * Update the active items display text
+     */
+    private handleNavigationItemChangeText = (
+        dictionaryId: string,
+        navigationConfigId: string
+    ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            console.log("change", e);
         };
     };
 
@@ -554,19 +585,32 @@ class Navigation extends Foundation<
         });
     }
 
+    private triggerNavigationEdit(): void {
+        this.setState({
+            activeItemEditable: true,
+        });
+    }
+
     private triggerNavigationUpdate(
         dictionaryId: string,
         navigationConfigId: string
     ): void {
-        this.props.messageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: dictionaryId,
-            activeNavigationConfigId: navigationConfigId,
-            options: {
-                originatorId: navigationId,
+        this.setState(
+            {
+                activeItemEditable: false,
             },
-        });
+            () => {
+                this.props.messageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: dictionaryId,
+                    activeNavigationConfigId: navigationConfigId,
+                    options: {
+                        originatorId: navigationId,
+                    },
+                });
+            }
+        );
     }
 
     private findCurrentTreeItemIndex(

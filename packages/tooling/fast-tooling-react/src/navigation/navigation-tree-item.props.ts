@@ -56,6 +56,16 @@ export interface NavigationTreeItemProps
     isCollapsible: boolean;
 
     /**
+     * Whether this navigation item is editable
+     */
+    isEditable: boolean;
+
+    /**
+     * The text content
+     */
+    text: string;
+
+    /**
      * The click handler for expanding an item
      */
     handleExpandClick: React.MouseEventHandler<HTMLElement>;
@@ -64,6 +74,11 @@ export interface NavigationTreeItemProps
      * The click handler for activating an item
      */
     handleClick: React.MouseEventHandler<HTMLElement>;
+
+    /**
+     * The change handler for updating an items display text
+     */
+    handleChange: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
      * The keyDown handler
