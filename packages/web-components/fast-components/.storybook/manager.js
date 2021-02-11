@@ -3,6 +3,5 @@ import theme from "./theme";
 
 addons.setConfig({
     enableShortcuts: false,
-    isFullscreen: true,
     theme,
 });
