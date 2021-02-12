@@ -196,7 +196,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ metaKey: true } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            metaKey: true,
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass alt key if alt key is used", () => {
@@ -231,7 +233,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ altKey: true } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            altKey: true,
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass ctrl key if ctrl key is used", () => {
@@ -266,7 +270,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ ctrlKey: true } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            ctrlKey: true,
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass shift key if shift key is used", () => {
@@ -301,7 +307,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ shiftKey: true } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            shiftKey: true,
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should pass a specific key if a specific key is used", () => {
@@ -336,7 +344,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ key: "d" } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            key: "d",
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(1);
     });
     test("should not invoke an action if the keys do not match", () => {
@@ -371,7 +381,9 @@ describe("Shortcuts", () => {
                 },
             } as any);
         });
-        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({ key: "d" } as any);
+        (messageSystem.getConfigById(shortcutsId) as ShortcutsConfig).eventListener({
+            key: "d",
+        } as any);
         expect(shortcutAction).toHaveBeenCalledTimes(0);
     });
     test("should run an action if the id matches", () => {
