@@ -38,15 +38,15 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "heading",
-                    description: "The heading slot",
+                    description: "Heading slot",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    description: "Start slot",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    description: "End slot",
                 },
                 {
                     name: "expanded-icon",
