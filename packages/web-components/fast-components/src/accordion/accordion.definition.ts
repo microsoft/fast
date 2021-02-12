@@ -32,7 +32,7 @@ export const fastAccordionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "item",
-                    description: "The item slot",
+                    description: "Item slot",
                 },
             ],
         },

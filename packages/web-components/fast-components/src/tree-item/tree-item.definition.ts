@@ -34,23 +34,23 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot used for content",
+                    description: "Default slot",
                 },
                 {
                     name: "item",
-                    description: "The item slot used for nested tree-item components",
+                    description: "Item slot",
                 },
                 {
                     name: "expand-collapse-glyph",
-                    description: "glyph indicating whether tree item is expanded or not",
+                    description: "Expand collapse glyph slot",
                 },
                 {
-                    name: "before-content",
-                    description: "DOM to be inserted before tree item content",
+                    name: "start",
+                    description: "Start slot",
                 },
                 {
-                    name: "after-content",
-                    description: "DOM to be inserted after tree item content",
+                    name: "end",
+                    description: "End slot",
                 },
             ],
         },

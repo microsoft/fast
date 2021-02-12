@@ -40,15 +40,15 @@ export const fastSelectDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "button-container",
-                    description: "The button container slot",
+                    description: "Button container slot",
                 },
                 {
                     name: "selected-value",
-                    description: "The selected value slot",
+                    description: "Selected value slot",
                 },
                 {
                     name: "indicator",
-                    description: "The indicator slot",
+                    description: "Indicator slot",
                 },
             ],
         },

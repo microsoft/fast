@@ -24,7 +24,7 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "separator",
-                    description: "The separator slot",
+                    description: "Separator slot",
                 },
                 {
                     name: "start",

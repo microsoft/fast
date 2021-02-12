@@ -129,6 +129,14 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                     name: "",
                     description: "Default slot",
                 },
+                {
+                    name: "start",
+                    description: "Start slot",
+                },
+                {
+                    name: "end",
+                    description: "End slot",
+                },
             ],
         },
     ],

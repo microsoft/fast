@@ -46,7 +46,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "title",
-                    description: "The title slot",
+                    description: "Title slot",
                 },
                 {
                     name: "end",
@@ -54,7 +54,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "",
-                    description: "The content slot",
+                    description: "Default slot",
                 },
             ],
         },

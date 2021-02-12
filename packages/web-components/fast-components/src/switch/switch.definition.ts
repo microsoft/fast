@@ -52,11 +52,11 @@ export const fastSwitchDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "checked-message",
-                    description: "The checked message slot",
+                    description: "Checked message slot",
                 },
                 {
                     name: "unchecked-message",
-                    description: "The unchecked message slot",
+                    description: "Unchecked message slot",
                 },
             ],
         },

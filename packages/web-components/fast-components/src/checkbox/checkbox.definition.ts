@@ -52,11 +52,11 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "indeterminate-indicator",
-                    description: "The indeterminate indicator slot",
+                    description: "Indeterminate indicator slot",
                 },
                 {
                     name: "checked-indicator",
-                    description: "The checked indicator slot",
+                    description: "Checked indicator slot",
                 },
             ],
         },

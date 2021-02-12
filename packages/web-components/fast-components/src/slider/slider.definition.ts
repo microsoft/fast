@@ -85,11 +85,11 @@ export const fastSliderDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "track",
-                    description: "The horizontal or vertical track slot",
+                    description: "Track slot",
                 },
                 {
                     name: "thumb",
-                    description: "The thumb slot",
+                    description: "Thumb slot",
                 },
             ],
         },

@@ -50,11 +50,11 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "expanded-icon",
-                    description: "The expanded icon slot",
+                    description: "Expanded icon slot",
                 },
                 {
                     name: "collapsed-icon",
-                    description: "The collapsed icon slot",
+                    description: "Collapsed icon slot",
                 },
             ],
         },

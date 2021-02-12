@@ -32,11 +32,11 @@ export const fastTabsDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "tab",
-                    description: "The tab slot",
+                    description: "Tab slot",
                 },
                 {
                     name: "tabpanel",
-                    description: "The tabpanel slot",
+                    description: "Tabpanel slot",
                 },
                 {
                     name: "start",
