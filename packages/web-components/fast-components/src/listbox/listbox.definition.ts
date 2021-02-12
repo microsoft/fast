@@ -7,6 +7,7 @@ export const fastListboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-listbox",
+            title: "Listbox",
             description: "The FAST listbox element",
             attributes: [
                 {

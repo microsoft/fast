@@ -12,6 +12,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchored-region",
+            title: "Anchored region",
             description: "The FAST anchored region element",
             attributes: [
                 {

@@ -6,6 +6,7 @@ export const fastProgressDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-progress",
+            title: "Progress",
             description: "The FAST progress element",
             attributes: [
                 {

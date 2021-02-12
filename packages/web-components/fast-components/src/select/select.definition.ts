@@ -7,6 +7,7 @@ export const fastSelectDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-select",
+            title: "Select",
             description: "The FAST select element",
             attributes: [
                 {

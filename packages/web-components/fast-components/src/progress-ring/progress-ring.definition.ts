@@ -6,6 +6,7 @@ export const fastProgressRingDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-progress-ring",
+            title: "Progress ring",
             description: "The FAST progress-ring element",
             attributes: [
                 {

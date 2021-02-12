@@ -6,6 +6,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-button",
+            title: "Button",
             description: "The FAST button element",
             attributes: [
                 {

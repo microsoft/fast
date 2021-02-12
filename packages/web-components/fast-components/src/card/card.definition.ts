@@ -6,6 +6,7 @@ export const fastCardDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-card",
+            title: "Card",
             description: "The FAST card element",
             attributes: [
                 {

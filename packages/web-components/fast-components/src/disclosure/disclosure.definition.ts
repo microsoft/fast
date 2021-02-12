@@ -6,6 +6,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-disclosure",
+            title: "Disclosure",
             description: "The FAST disclosure element",
             attributes: [
                 {

@@ -6,6 +6,7 @@ export const fastAccordionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-accordion",
+            title: "Accordion",
             description: "The FAST accordion element",
             attributes: [
                 {

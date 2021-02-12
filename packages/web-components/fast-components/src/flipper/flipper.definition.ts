@@ -7,6 +7,7 @@ export const fastFlipperDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-flipper",
+            title: "Flipper",
             description: "The FAST flipper element",
             attributes: [
                 {

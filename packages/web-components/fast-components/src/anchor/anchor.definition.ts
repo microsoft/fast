@@ -6,6 +6,7 @@ export const fastAnchorDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchor",
+            title: "Anchor",
             description: "The FAST anchor element",
             attributes: [
                 {

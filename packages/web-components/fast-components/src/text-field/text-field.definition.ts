@@ -7,6 +7,7 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-text-field",
+            title: "Text field",
             description: "The FAST text-field element",
             attributes: [
                 {

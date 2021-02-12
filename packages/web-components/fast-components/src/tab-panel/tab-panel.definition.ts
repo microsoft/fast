@@ -5,6 +5,7 @@ export const fastTabPanelDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tab-panel",
+            title: "Tab panel",
             description: "The FAST tab-panel element",
             attributes: [],
             slots: [

@@ -5,6 +5,7 @@ export const fastMenuDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-menu",
+            title: "Menu",
             description: "The FAST menu element",
             attributes: [],
             slots: [

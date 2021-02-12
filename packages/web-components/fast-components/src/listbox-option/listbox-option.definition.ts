@@ -6,6 +6,7 @@ export const fastOptionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-option",
+            title: "Option",
             description: "The FAST option element",
             attributes: [
                 {

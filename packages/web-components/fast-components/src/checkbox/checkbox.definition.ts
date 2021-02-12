@@ -6,6 +6,7 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-checkbox",
+            title: "Checkbox",
             description: "The FAST checkbox element",
             attributes: [
                 {

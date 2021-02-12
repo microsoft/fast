@@ -7,6 +7,7 @@ export const fastTabsDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tabs",
+            title: "Tabs",
             description: "The FAST tabs element",
             attributes: [
                 {

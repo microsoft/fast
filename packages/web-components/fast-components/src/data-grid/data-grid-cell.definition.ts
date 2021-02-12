@@ -7,6 +7,7 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid-cell",
+            title: "Data grid cell",
             description: "The FAST data grid cell element",
             attributes: [
                 {

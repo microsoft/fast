@@ -6,6 +6,7 @@ export const fastSwitchDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-switch",
+            title: "Switch",
             description: "The FAST switch element",
             attributes: [
                 {

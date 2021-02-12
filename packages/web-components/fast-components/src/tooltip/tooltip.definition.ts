@@ -7,6 +7,7 @@ export const fastTooltipDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tooltip",
+            title: "Tooltip",
             description: "The FAST tooltip element",
             attributes: [
                 {

@@ -6,6 +6,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
     tags: [
         {
             name: "fast-skeleton",
+            title: "Skeleton",
             description: "The FAST skeleton element",
             attributes: [
                 {

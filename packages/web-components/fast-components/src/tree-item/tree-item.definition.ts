@@ -6,6 +6,7 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tree-item",
+            title: "Tree item",
             description: "The FAST tree item element",
             attributes: [
                 {

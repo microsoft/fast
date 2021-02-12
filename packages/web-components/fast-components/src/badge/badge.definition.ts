@@ -6,6 +6,7 @@ export const fastBadgeDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-badge",
+            title: "Badge",
             description: "The FAST badge element",
             attributes: [
                 {

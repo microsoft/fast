@@ -7,6 +7,7 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-radio-group",
+            title: "Radio group",
             description: "The FAST radio-group element",
             attributes: [
                 {

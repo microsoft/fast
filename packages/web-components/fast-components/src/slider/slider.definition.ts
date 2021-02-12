@@ -7,6 +7,7 @@ export const fastSliderDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-slider",
+            title: "Slider",
             description: "The FAST slider element",
             attributes: [
                 {

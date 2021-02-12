@@ -7,6 +7,7 @@ export const fastDataGridDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid",
+            title: "Data grid",
             description: "The FAST data grid element",
             attributes: [
                 {

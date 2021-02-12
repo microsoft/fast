@@ -6,6 +6,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-dialog",
+            title: "Dialog",
             description: "The FAST dialog element",
             attributes: [
                 {

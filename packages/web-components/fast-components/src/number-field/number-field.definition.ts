@@ -6,6 +6,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-number-field",
+            title: "Number field",
             description: "The FAST number-field element",
             attributes: [
                 {

@@ -6,6 +6,7 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-breadcrumb",
+            title: "Breadcrumb",
             description: "The FAST breadcrumb element",
             attributes: [
                 {

@@ -7,6 +7,7 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-text-area",
+            title: "Text area",
             description: "The FAST text-area element",
             attributes: [
                 {

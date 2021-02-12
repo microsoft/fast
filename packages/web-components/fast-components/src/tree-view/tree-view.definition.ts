@@ -6,6 +6,7 @@ export const fastTreeViewDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tree-view",
+            title: "Tree view",
             description: "The FAST tree view element",
             attributes: [
                 {
