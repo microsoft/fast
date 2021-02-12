@@ -50,7 +50,7 @@ export const fastTooltipDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
             ],
         },

@@ -48,7 +48,7 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
                 {
                     name: "indeterminate-indicator",

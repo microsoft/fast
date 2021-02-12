@@ -11,7 +11,7 @@ export const fastMenuDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
             ],
         },

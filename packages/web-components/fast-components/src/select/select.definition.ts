@@ -36,7 +36,7 @@ export const fastSelectDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
                 {
                     name: "button-container",

@@ -29,7 +29,7 @@ export const fastListboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
             ],
         },

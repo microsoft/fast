@@ -41,7 +41,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
             ],
         },

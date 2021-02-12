@@ -41,7 +41,7 @@ export const fastSliderLabelDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    description: "Default slot",
                 },
             ],
         },
