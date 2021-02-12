@@ -32,19 +32,27 @@ export const fastTabsDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "tab",
-                    description: "Tab slot",
+                    title: "Tab slot",
+                    description:
+                        "Slotted tabs are rendered and associated to their respective tab panel by their order in the DOM",
                 },
                 {
                     name: "tabpanel",
-                    description: "Tabpanel slot",
+                    title: "Tabpanel slot",
+                    description:
+                        "Slotted tab panels are rendered and associated to their respective tabs by their order in the DOM",
                 },
                 {
                     name: "start",
-                    description: "Start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the tablist",
                 },
                 {
                     name: "end",
-                    description: "End slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the tablist",
                 },
             ],
         },

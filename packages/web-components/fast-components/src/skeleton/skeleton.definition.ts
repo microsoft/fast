@@ -41,7 +41,9 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "The default slot can be used to optionally include inline SVG's rather than a pattern",
                 },
             ],
         },

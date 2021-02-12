@@ -48,11 +48,14 @@ export const fastRadioDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the radio represents its visual label",
                 },
                 {
                     name: "checked-indicator",
-                    description: "Checked indicator slot",
+                    title: "Checked indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the checked state",
                 },
             ],
         },

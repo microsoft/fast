@@ -27,12 +27,9 @@ export const fastAccordionDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "",
-                    description: "Default slot",
-                },
-                {
                     name: "item",
-                    description: "Item slot",
+                    title: "Item slot",
+                    description: "The default slot for accordion items",
                 },
             ],
         },

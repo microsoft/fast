@@ -20,7 +20,9 @@ export const fastTreeViewDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-tree-item elements or elements with a role of 'treeitem'",
                 },
             ],
         },

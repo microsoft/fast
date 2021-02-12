@@ -11,7 +11,7 @@ export const fastTabDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
                 },
             ],
         },

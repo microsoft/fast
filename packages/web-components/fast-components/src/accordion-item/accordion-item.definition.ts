@@ -34,27 +34,37 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the item",
                 },
                 {
                     name: "heading",
-                    description: "Heading slot",
+                    title: "Heading slot",
+                    description: "The heading of the accordion item",
                 },
                 {
                     name: "start",
-                    description: "Start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the heading",
                 },
                 {
                     name: "end",
-                    description: "End slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the heading and before the expand/collapse icons",
                 },
                 {
                     name: "expanded-icon",
-                    description: "Expanded icon slot",
+                    title: "Expanded icon slot",
+                    description:
+                        "Slot to provide a custom icon representing the expanded state",
                 },
                 {
                     name: "collapsed-icon",
-                    description: "Collapsed icon slot",
+                    title: "Collapsed icon slot",
+                    description:
+                        "Slot to provide a custom icon representing the collapsed state",
                 },
             ],
         },

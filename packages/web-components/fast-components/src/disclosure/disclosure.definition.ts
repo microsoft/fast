@@ -41,20 +41,27 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "start",
-                    description: "Start slot",
+                    name: "title",
+                    title: "Title slot",
+                    description:
+                        "The content of the button which toggles the visbility of the additional disclosure content",
                 },
                 {
-                    name: "title",
-                    description: "Title slot",
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button content",
                 },
                 {
                     name: "end",
-                    description: "End slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button content",
                 },
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The disclosure content",
                 },
             ],
         },

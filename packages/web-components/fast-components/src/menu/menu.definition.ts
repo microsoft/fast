@@ -11,7 +11,9 @@ export const fastMenuDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-menu-item elements or elements with a role of 'menuitem', 'menuitemcheckbox', and 'menuitemradio'",
                 },
             ],
         },

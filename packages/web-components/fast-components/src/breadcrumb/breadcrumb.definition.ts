@@ -20,7 +20,9 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the breadcrumb, typically composed of fast-breadcrumb-items or anchors",
                 },
             ],
         },

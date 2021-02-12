@@ -60,11 +60,14 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-radio elements or elements with a role of 'radio'",
                 },
                 {
                     name: "label",
-                    description: "Label slot",
+                    title: "Label slot",
+                    description: "The visual label for the group",
                 },
             ],
         },

@@ -41,11 +41,15 @@ export const fastProgressRingDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "determinate",
-                    description: "Determinate slot",
+                    title: "Determinate slot",
+                    description:
+                        "Slot to provide custom visual representations of the determinate progress ring",
                 },
                 {
                     name: "indeterminate",
-                    description: "Indeterminate slot",
+                    title: "Indeterminate slot",
+                    description:
+                        "Slot to provide custom visual representations of the indeterminate progress ring",
                 },
             ],
         },

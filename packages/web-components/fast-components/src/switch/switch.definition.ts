@@ -48,15 +48,18 @@ export const fastSwitchDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the switch represents its visual label",
                 },
                 {
                     name: "checked-message",
-                    description: "Checked message slot",
+                    title: "Checked message slot",
+                    description: "Visible content representing the checked state",
                 },
                 {
                     name: "unchecked-message",
-                    description: "Unchecked message slot",
+                    title: "Unchecked message slot",
+                    description: "Visible content representing the unchecked state",
                 },
             ],
         },

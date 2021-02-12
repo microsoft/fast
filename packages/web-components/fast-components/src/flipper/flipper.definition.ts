@@ -43,11 +43,15 @@ export const fastFlipperDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "previous",
-                    description: "Previous slot",
+                    title: "Previous slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'previous' flipper state",
                 },
                 {
                     name: "next",
-                    description: "Next slot",
+                    title: "Next slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'next' flipper state",
                 },
             ],
         },

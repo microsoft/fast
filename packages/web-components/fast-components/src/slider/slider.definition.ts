@@ -81,15 +81,19 @@ export const fastSliderDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description:
+                        "Default slotted content of the slider represents its visual labels",
                 },
                 {
                     name: "track",
-                    description: "Track slot",
+                    title: "Track slot",
+                    description: "Slot to replace the slider track",
                 },
                 {
                     name: "thumb",
-                    description: "Thumb slot",
+                    title: "Thumb slot",
+                    description: "Slot to replace the slider thumb",
                 },
             ],
         },

@@ -11,7 +11,7 @@ export const fastTabPanelDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
                 },
             ],
         },

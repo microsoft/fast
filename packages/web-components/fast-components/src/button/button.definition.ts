@@ -128,15 +128,20 @@ export const fastButtonDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the anchor",
                 },
                 {
                     name: "start",
-                    description: "Start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button content",
                 },
                 {
                     name: "end",
-                    description: "End slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button content",
                 },
             ],
         },

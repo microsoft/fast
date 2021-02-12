@@ -127,15 +127,20 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the radio represents its visual label",
                 },
                 {
                     name: "start",
-                    description: "Start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the option content",
                 },
                 {
                     name: "end",
-                    description: "End slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the option content",
                 },
             ],
         },

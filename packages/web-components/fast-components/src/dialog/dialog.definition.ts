@@ -55,7 +55,8 @@ export const fastDialogDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The dialog content",
                 },
             ],
         },

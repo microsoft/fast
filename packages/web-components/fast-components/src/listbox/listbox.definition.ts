@@ -29,7 +29,8 @@ export const fastListboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "Supports fast-option or option elements",
                 },
             ],
         },

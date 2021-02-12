@@ -36,19 +36,37 @@ export const fastSelectDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "Supports fast-option or option elements",
                 },
                 {
                     name: "button-container",
-                    description: "Button container slot",
+                    title: "Button container slot",
+                    description:
+                        "Slot to replace the entire invoking element and its contents",
                 },
                 {
                     name: "selected-value",
-                    description: "Selected value slot",
+                    title: "Selected value slot",
+                    description: "Slot to replace the displayed value contents",
                 },
                 {
                     name: "indicator",
-                    description: "Indicator slot",
+                    title: "Indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the visual indicator",
+                },
+                {
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button container",
+                },
+                {
+                    name: "end",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button container and after the indicator",
                 },
             ],
         },

@@ -34,7 +34,8 @@ export const fastBadgeDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The content of the badge",
                 },
             ],
         },

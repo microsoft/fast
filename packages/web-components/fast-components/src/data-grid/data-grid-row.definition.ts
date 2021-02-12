@@ -34,7 +34,8 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "Default slot",
+                    title: "Default slot",
+                    description: "The row content as data grid cells",
                 },
             ],
         },
