@@ -1,6 +1,6 @@
 import React from "react";
-import { ActionTrigger, NumberField } from "@microsoft/fast-components-react-msft";
-import { rotateGlyph } from "../../icons/rotate";
+import { NumberField } from "@microsoft/fast-components-react-msft";
+import { RotateGlyph } from "../../icons/rotate";
 import { DimensionProps } from "./dimension.props";
 
 export const Dimension: React.FC<DimensionProps> = ({
@@ -53,12 +53,13 @@ export const Dimension: React.FC<DimensionProps> = ({
                 }}
                 disabled={disabled}
             />
-            <ActionTrigger
-                glyph={rotateGlyph}
-                aria-label={"Rotate axis"}
+            <fast-button
+                aria-label="Rotate axis"
                 onClick={onUpdateOrientation}
-                disabled={disabled}
-            />
+                {...(disabled ? { disabled } : {})}
+            >
+                <RotateGlyph />
+            </fast-button>
         </div>
     );
 };
