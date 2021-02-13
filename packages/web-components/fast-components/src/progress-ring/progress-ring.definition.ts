@@ -11,28 +11,33 @@ export const fastProgressRingDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description:
+                        "Value between 1 and 100 to represent the progress visually and to assistive technologies",
                     default: "",
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "min",
-                    description: "The min attribute",
+                    title: "Min",
+                    description: "The minimum value",
                     default: 0,
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "max",
-                    description: "The max attribute",
+                    title: "Max",
+                    description: "The maximum value",
                     default: 100,
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "paused",
-                    description: "The paused attribute",
+                    title: "Paused",
+                    description: "Sets the paused state of the progress component",
                     default: false,
                     required: false,
                     type: DataType.boolean,
