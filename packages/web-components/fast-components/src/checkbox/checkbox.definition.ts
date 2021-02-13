@@ -39,7 +39,7 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
                 {
                     name: "disabled",
                     title: "Disabled",
-                    description: "Sets the disabled state of the button",
+                    description: "Sets the disabled state of the checkbox",
                     type: DataType.boolean,
                     default: false,
                     required: false,
