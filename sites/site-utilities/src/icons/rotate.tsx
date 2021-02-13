@@ -1,6 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 
-export function rotateGlyph(className?: string): JSX.Element {
+interface RotateGlyphProps {
+    className?: string;
+}
+
+export const RotateGlyph: FC<RotateGlyphProps> = ({
+    className,
+}: RotateGlyphProps): JSX.Element => {
     return (
         <svg
             width="16"
@@ -29,4 +35,4 @@ export function rotateGlyph(className?: string): JSX.Element {
             </g>
         </svg>
     );
-}
+};
