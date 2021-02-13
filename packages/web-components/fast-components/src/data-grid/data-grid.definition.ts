@@ -7,6 +7,7 @@ export const fastDataGridDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid",
+            title: "Data grid",
             description: "The FAST data grid element",
             attributes: [
                 {
@@ -33,7 +34,8 @@ export const fastDataGridDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content as data grid rows",
                 },
             ],
         },

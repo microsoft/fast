@@ -6,6 +6,7 @@ export const fastCardDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-card",
+            title: "Card",
             description: "The FAST card element",
             attributes: [
                 {
@@ -26,7 +27,8 @@ export const fastCardDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the card",
                 },
             ],
         },

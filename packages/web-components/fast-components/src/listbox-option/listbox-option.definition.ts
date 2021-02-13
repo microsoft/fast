@@ -6,6 +6,7 @@ export const fastOptionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-option",
+            title: "Option",
             description: "The FAST option element",
             attributes: [
                 {
@@ -26,7 +27,20 @@ export const fastOptionDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the option",
+                },
+                {
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the option content",
+                },
+                {
+                    name: "end",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the option content",
                 },
             ],
         },

@@ -7,6 +7,7 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid-row",
+            title: "Data grid row",
             description: "The FAST data grid row element",
             attributes: [
                 {
@@ -33,7 +34,8 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The row content as data grid cells",
                 },
             ],
         },

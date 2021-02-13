@@ -6,6 +6,7 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-breadcrumb",
+            title: "Breadcrumb",
             description: "The FAST breadcrumb element",
             attributes: [
                 {
@@ -19,7 +20,9 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the breadcrumb, typically composed of fast-breadcrumb-items or anchors",
                 },
             ],
         },

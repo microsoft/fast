@@ -7,6 +7,7 @@ export const fastDividerDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-divider",
+            title: "Divider",
             description: "The FAST divider element",
             attributes: [
                 {

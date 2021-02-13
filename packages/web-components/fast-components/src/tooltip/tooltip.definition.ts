@@ -7,6 +7,7 @@ export const fastTooltipDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tooltip",
+            title: "Tooltip",
             description: "The FAST tooltip element",
             attributes: [
                 {
@@ -49,7 +50,8 @@ export const fastTooltipDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The tooltip content",
                 },
             ],
         },
