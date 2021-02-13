@@ -20,12 +20,10 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const PeoplePickerStyles = css`
+export const PeoplePickerListStyles = css`
     :host {
-        border: calc(var(--outline-width) * 1px) solid transparent;
-        margin: 0;
-        border-radius: calc(var(--corner-radius) * 1px);
-        padding: calc(var(--design-unit) * 1px) 0;
+        display: flex;
+        flex-direction: row;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

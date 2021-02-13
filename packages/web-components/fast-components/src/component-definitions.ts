@@ -24,6 +24,8 @@ export * from "./menu-item/menu-item.definition";
 export * from "./number-field/number-field.definition";
 export * from "./people-picker/people-picker.definition";
 export * from "./people-picker/people-picker-menu.definition";
+export * from "./people-picker/people-picker-list.definition";
+export * from "./people-picker/people-picker-input.definition";
 export * from "./progress-ring/progress-ring.definition";
 export * from "./progress/progress.definition";
 export * from "./radio/radio.definition";

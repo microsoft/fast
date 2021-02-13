@@ -9,6 +9,7 @@ import {
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
 import { AnchoredRegion } from "../anchored-region";
+import { PickerMenu } from "./picker-menu";
 
 /**
  * A List Picker Custom HTML Element.
@@ -113,17 +114,12 @@ export class Picker extends FASTElement {
     }
 
     /**
-     * Children that are options
+     *
      *
      * @internal
      */
     @observable
-    public optionElements: HTMLElement[] = [];
-    private optionElementsChanged(): void {
-        this.optionElements.forEach(o => {
-            o.id = o.id || uniqueId("option-");
-        });
-    }
+    public listboxId: string = uniqueId("listbox-");
 
     /**
      *
@@ -131,7 +127,23 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public listboxId: string = uniqueId("listbox-");
+    public selectedlisttag: string;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public pickermenutag: string;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public pickerinputtag: string;
 
     /**
      *
@@ -154,14 +166,21 @@ export class Picker extends FASTElement {
      *
      * @internal
      */
-    public inputBox: HTMLElement;
+    public inputElement: HTMLElement;
+
+    /**
+     * reference to the selected item list
+     *
+     * @internal
+     */
+    public selectedList: HTMLElement;
 
     /**
      * reference to the edit box
      *
      * @internal
      */
-    public listbox: HTMLElement;
+    public menuElement: PickerMenu;
 
     /**
      *
@@ -198,8 +217,24 @@ export class Picker extends FASTElement {
             this.optionTemplate = this.defaultOptionTemplate;
         }
 
+        this.selectedList = document.createElement(this.selectedlisttag);
+        this.selectedList.slot = "list-region";
+
+        this.appendChild(this.selectedList);
+
+        this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
+        this.menuElement.slot = "menu-region";
+        this.menuElement.id = this.listboxId;
+        this.appendChild(this.menuElement);
+
         this.itemsPlaceholder = document.createComment("");
-        this.insertBefore(this.itemsPlaceholder, this.firstChild);
+        this.selectedList.append(this.itemsPlaceholder);
+
+        this.inputElement = document.createElement(this.pickerinputtag);
+        this.inputElement.addEventListener("focusout", this.handleFocusOut);
+        this.inputElement.addEventListener("keydown", this.handleInputKeyDown);
+        this.inputElement.addEventListener("input", this.handleTextInput);
+        this.selectedList.appendChild(this.inputElement);
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
@@ -210,75 +245,72 @@ export class Picker extends FASTElement {
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
-    public handleTextInput = (e: InputEvent): boolean => {
+    public handleTextInput = (e: InputEvent): void => {
         // e.stopPropagation();
-        return false;
+        e.preventDefault();
     };
 
-    public handleInputKeyDown = (e: KeyboardEvent): boolean => {
+    public handleInputKeyDown = (e: KeyboardEvent): void => {
         this.toggleMenu(true);
 
         switch (e.key) {
             case "Home": {
-                if (this.optionElements.length > 0) {
+                if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(0);
                 }
                 // e.stopPropagation();
-                return false;
+                e.preventDefault();
             }
 
             case "ArrowDown": {
-                if (this.optionElements.length > 0) {
+                if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(
                         Math.min(
                             this.listboxFocusIndex + 1,
-                            this.optionElements.length - 1
+                            this.menuElement.optionElements.length - 1
                         )
                     );
                 }
                 // e.stopPropagation();
-                return false;
+                e.preventDefault();
             }
 
             case "ArrowUp": {
-                if (this.optionElements.length > 0) {
+                if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(Math.max(this.listboxFocusIndex - 1, 0));
                 }
                 // e.stopPropagation();
-                return false;
+                e.preventDefault();
             }
 
             case "End": {
-                if (this.optionElements.length > 0) {
-                    this.setFocusedOption(this.optionElements.length - 1);
+                if (this.menuElement.optionElements.length > 0) {
+                    this.setFocusedOption(this.menuElement.optionElements.length - 1);
                 }
                 // e.stopPropagation();
-                return false;
+                e.preventDefault();
             }
 
             case "Enter": {
-                if (this.optionElements.length > 0) {
+                if (this.menuElement.optionElements.length > 0) {
                 }
                 // e.stopPropagation();
-                return false;
+                e.preventDefault();
             }
         }
-
-        // e.stopPropagation();
-        return true;
     };
 
     public handleRegionLoaded = (e: Event): void => {
         if (
-            this.listbox === null ||
-            this.listbox === undefined ||
+            this.menuElement === null ||
+            this.menuElement === undefined ||
             this.optionsPlaceholder !== null
         ) {
             return;
         }
 
         this.optionsPlaceholder = document.createComment("");
-        this.listbox.append(this.optionsPlaceholder);
+        this.menuElement.append(this.optionsPlaceholder);
 
         this.optionsRepeatBehavior = new RepeatDirective(
             x => x.availableOptions,
@@ -292,8 +324,8 @@ export class Picker extends FASTElement {
 
     public handleFocusOut = (e: FocusEvent): void => {
         if (
-            this.listbox === undefined ||
-            !this.listbox.contains(e.relatedTarget as Element)
+            this.menuElement === undefined ||
+            !this.menuElement.contains(e.relatedTarget as Element)
         ) {
             this.toggleMenu(false);
         }
@@ -314,25 +346,51 @@ export class Picker extends FASTElement {
         if (optionIndex === this.listboxFocusIndex) {
             return;
         }
-        if (optionIndex === -1 || optionIndex > this.optionElements.length - 1) {
+        if (
+            optionIndex === -1 ||
+            optionIndex > this.menuElement.optionElements.length - 1
+        ) {
             this.listboxFocusIndex = -1;
             this.listboxFocusOptionId = null;
+            this.inputElement.setAttribute("aria-activedescendant", "unset");
             return;
         }
 
         this.listboxFocusIndex = optionIndex;
-        this.listboxFocusOptionId = this.optionElements[optionIndex].id;
+        this.listboxFocusOptionId = this.menuElement.optionElements[optionIndex].id;
+        this.inputElement.setAttribute(
+            "aria-activedescendant",
+            this.listboxFocusOptionId
+        );
     };
 
     private toggleMenu = (open: boolean): void => {
-        if (this.listboxOpen !== open) {
+        if (this.listboxOpen === open) {
+            return;
+        }
+
+        if (open) {
             this.listboxOpen = open;
-            if (this.optionElements.length > 0) {
+            this.inputElement.setAttribute("aria-owns", this.listboxId);
+            this.inputElement.setAttribute("aria-expanded", "true");
+            if (this.menuElement.optionElements.length > 0) {
                 this.listboxFocusIndex = 0;
+                this.inputElement.setAttribute(
+                    "aria-activedescendant",
+                    this.menuElement.optionElements[0].id
+                );
             } else {
                 this.listboxFocusIndex = -1;
+                this.inputElement.setAttribute("aria-activedescendant", "unset");
             }
+            return;
         }
+
+        this.listboxOpen = false;
+        this.inputElement.setAttribute("aria-owns", "unset");
+        this.inputElement.setAttribute("aria-activedescendant", "unset");
+        this.inputElement.setAttribute("aria-expanded", "false");
+        return;
     };
 
     private setRegionProps = (): void => {
@@ -344,6 +402,6 @@ export class Picker extends FASTElement {
             return;
         }
         this.region.viewportElement = document.body;
-        this.region.anchorElement = this.inputBox;
+        this.region.anchorElement = this.inputElement;
     };
 }

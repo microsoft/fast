@@ -1,11 +1,17 @@
 import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import {
+    createPickerListTemplate,
     createPickerMenuTemplate,
     createPickerTemplate,
+    createPickerInputTemplate,
+    PickerInput,
+    PickerList,
     PickerMenu,
 } from "@microsoft/fast-foundation";
 import { PeoplePickerStyles as pickerStyles } from "./people-picker.styles";
+import { PeoplePickerInputStyles as pickerInputStyles } from "./people-picker-input.styles";
 import { PeoplePickerMenuStyles as pickerMenuStyles } from "./people-picker-menu.styles";
+import { PeoplePickerListStyles as pickerListStyles } from "./people-picker-list.styles";
 import { PeoplePicker } from "./people-picker";
 
 function createItemTemplate(): ViewTemplate {
@@ -48,14 +54,11 @@ function createOptionTemplate(): ViewTemplate {
         createOptionTemplate()
     ),
     styles: pickerStyles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 })
 export class FASTPeoplePicker extends PeoplePicker {}
 
 /**
- * Styles for PeoplePickerMenu
+ * Styles for PeoplePicker
  * @public
  */
 export const PeoplePickerStyles = pickerStyles;
@@ -81,3 +84,47 @@ export class FASTPeoplePickerMenu extends PickerMenu {}
  * @public
  */
 export const PeoplePickerMenuStyles = pickerMenuStyles;
+
+/**
+ *
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-people-picker-list\>
+ *
+ */
+@customElement({
+    name: "fast-people-picker-list",
+    template: createPickerListTemplate("fast"),
+    styles: pickerListStyles,
+})
+export class FASTPeoplePickerList extends PickerList {}
+
+/**
+ * Styles for PeoplePickerList
+ * @public
+ */
+export const PeoplePickerListStyles = pickerListStyles;
+
+/**
+ *
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-people-picker-input\>
+ *
+ */
+@customElement({
+    name: "fast-people-picker-input",
+    template: createPickerInputTemplate("fast"),
+    styles: pickerInputStyles,
+})
+export class FASTPeoplePickerInput extends PickerInput {}
+
+/**
+ * Styles for PeoplePickerInput
+ * @public
+ */
+export const PeoplePickerInputStyles = pickerInputStyles;
