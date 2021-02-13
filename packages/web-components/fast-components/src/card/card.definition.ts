@@ -11,14 +11,18 @@ export const fastCardDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "background-color",
-                    description: "The background color attribute",
+                    title: "Background color",
+                    description:
+                        "An instance of the Design System Provider background color",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "card-background-color",
-                    description: "The card background color attribute",
+                    title: "Card background color",
+                    description:
+                        "Background color for the card which sets the context for the design system",
                     type: DataType.string,
                     default: "",
                     required: false,
