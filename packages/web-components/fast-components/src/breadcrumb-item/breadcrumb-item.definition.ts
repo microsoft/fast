@@ -11,9 +11,19 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "href",
-                    description: "The href attribute",
+                    title: "Href",
+                    description: "The HTML href attribute of the item",
                     type: DataType.string,
                     default: "",
+                    required: false,
+                },
+                {
+                    name: "separator",
+                    title: "Separator",
+                    description:
+                        "Determines whether the visual separator should be rendered",
+                    type: DataType.boolean,
+                    default: true,
                     required: false,
                 },
             ],

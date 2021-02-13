@@ -11,21 +11,26 @@ export const fastBadgeDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "circular",
-                    description: "The circular attribute",
+                    title: "Circular",
+                    description: "Sets the visual appearance of the badge to circular",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "fill",
-                    description: "The fill attribute",
+                    title: "Fill",
+                    description:
+                        "Sets the background color to a CSS custom property of the attribute value - var(--badge-fill-[value])",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "color",
-                    description: "The color attribute",
+                    title: "Color",
+                    description:
+                        "Sets the color to a CSS custom property of the attribute value - var(--badge-fill-[value])",
                     type: DataType.string,
                     default: undefined,
                     required: false,
