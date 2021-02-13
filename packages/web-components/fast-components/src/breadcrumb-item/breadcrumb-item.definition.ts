@@ -6,6 +6,7 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-breadcrumb-item",
+            title: "Breadcrumb item",
             description: "The FAST breadcrumb item element",
             attributes: [
                 {
@@ -19,19 +20,26 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the item",
                 },
                 {
                     name: "separator",
-                    description: "The separator slot",
+                    title: "Separator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the visual separator",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the default content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the default content",
                 },
             ],
         },

@@ -84,68 +84,25 @@ The `ShortcutsAction` class should also contain a `matches` method that takes a 
 
 ## Attaching the event listener
 
-A keypress event listener will be created and passed through the `MessageSystem` so that a user can choose where to attach them.
+A keypress event listener will be created and passed as part of the Shortcuts service config through the `MessageSystem` so that a user can retrieve it.
 
-An example of the custom event that might be sent:
+An example of retrieving the Shortcuts service config:
 
 ```typescript
-{
-    type: MessageSystemType.custom,
-    id: "shortcuts",
-    action: "initialize",
-    eventListener: listener,
-    eventListenerType: "keypress",
-    shortcuts: [
-        {
-            name: "Random action",
-            keys: [
-                {
-                    altKey: true,
-                },
-                {
-                    value: "Tab"
-                }
-            ],
-            // executing this passed function should
-            // perform the same action
-            action: func
-        },
-        {
-            name: "Duplicate",
-            keys: [
-                {
-                    ctrlKey: true,
-                },
-                {
-                    value: "d"
-                }
-            ],
-            action: func
-        }
-    ]
-}
+messageSystem.getConfigById(shortcutsId).eventListener;
 ```
 
-An example of a React component using the custom event to allow all shortcuts to be performed on an anchor:
+An example of using the custom event to allow all shortcuts to be performed on an anchor:
 
-```tsx
-class Example extends React.Component<{}, {}> {
-    public render(): React.ReactNode {
-        return <a ref={this.anchorRef}>MyAnchor</a>;
-    }
+```html
+<a id="foo">MyAnchor</a>
+```
 
-    private handleMessageSystem = (e: MessageEvent): void => {
-        if (
-            e.type === MessageSystemType.custom
-            && e.id === "shortcuts"
-        ) {
-            this.anchorRef.current.addEventListener(
-                e.eventListenerType,
-                eventListener
-            );
-        }
-    }
-}
+```ts
+const myAnchor = document.getElementById("foo");
+const config = messageSystem.getConfigById(shortcutsId);
+
+myAnchor.addEventListener(config.eventListenerType, config.eventListener);
 ```
 
 ## Additional notes
