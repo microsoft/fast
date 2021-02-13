@@ -12,6 +12,7 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "cell-type",
+                    title: "Cell type",
                     description: "The type of cell - default or columnheader.",
                     type: DataType.string,
                     values: [
@@ -23,6 +24,7 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "grid-column",
+                    title: "Grid column",
                     description: "Positions the cell in the column layout.",
                     type: DataType.string,
                     default: undefined,

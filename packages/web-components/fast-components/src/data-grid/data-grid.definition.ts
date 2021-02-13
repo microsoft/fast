@@ -12,6 +12,7 @@ export const fastDataGridDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "generate-header",
+                    title: "Generate header",
                     description: "Whether the grid should auto generate a header row",
                     type: DataType.boolean,
                     default: true,
@@ -19,6 +20,7 @@ export const fastDataGridDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "grid-template-columns",
+                    title: "Grid template columns",
                     description:
                         "String that gets applied to the the css gridTemplateColumns attribute of child rows",
                     type: DataType.string,

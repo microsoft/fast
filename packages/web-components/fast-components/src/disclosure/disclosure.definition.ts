@@ -11,21 +11,24 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "expanded",
-                    description: "The opened attribute",
+                    title: "Expanded",
+                    description: "Determines the visibility of the additional content",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "title",
-                    description: "Invoker title attribute",
+                    title: "Title",
+                    description:
+                        "Default slotted content of the button which toggles the visbility of the additional disclosure content",
                     type: DataType.string,
                     default: false,
                     required: false,
                 },
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    description: "The disclosure's visual treatment",
                     type: DataType.string,
                     values: [
                         {
