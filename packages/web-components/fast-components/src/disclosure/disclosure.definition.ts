@@ -6,6 +6,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-disclosure",
+            title: "Disclosure",
             description: "The FAST disclosure element",
             attributes: [
                 {
@@ -40,20 +41,27 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "start",
-                    description: "The start slot",
+                    name: "title",
+                    title: "Title slot",
+                    description:
+                        "The content of the button which toggles the visbility of the additional disclosure content",
                 },
                 {
-                    name: "title",
-                    description: "The title slot",
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button content",
                 },
                 {
                     name: "",
-                    description: "The content slot",
+                    title: "Default slot",
+                    description: "The disclosure content",
                 },
             ],
         },

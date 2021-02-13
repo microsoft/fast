@@ -6,6 +6,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-dialog",
+            title: "Dialog",
             description: "The FAST dialog element",
             attributes: [
                 {
@@ -54,7 +55,8 @@ export const fastDialogDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The dialog content",
                 },
             ],
         },

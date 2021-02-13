@@ -6,6 +6,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
     tags: [
         {
             name: "fast-skeleton",
+            title: "Skeleton",
             description: "The FAST skeleton element",
             attributes: [
                 {
@@ -40,7 +41,9 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The default slot can be used to optionally include inline SVG's rather than a pattern",
                 },
             ],
         },

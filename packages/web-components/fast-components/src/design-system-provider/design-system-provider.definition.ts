@@ -519,7 +519,7 @@ export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
                 },
             ],
         },

@@ -6,6 +6,7 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-accordion-item",
+            title: "Accordion item",
             description: "The FAST accordion item element",
             attributes: [
                 {
@@ -33,27 +34,37 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The contents of the item",
                 },
                 {
                     name: "heading",
-                    description: "The heading slot",
+                    title: "Heading slot",
+                    description: "The heading of the accordion item",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the heading",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the heading and before the expand/collapse icons",
                 },
                 {
                     name: "expanded-icon",
-                    description: "The expanded icon slot",
+                    title: "Expanded icon slot",
+                    description:
+                        "Slot to provide a custom icon representing the expanded state",
                 },
                 {
                     name: "collapsed-icon",
-                    description: "The collapsed icon slot",
+                    title: "Collapsed icon slot",
+                    description:
+                        "Slot to provide a custom icon representing the collapsed state",
                 },
             ],
         },
