@@ -11,21 +11,23 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "heading-level",
-                    description: "The heading level attribute",
+                    title: "Heading level",
+                    description: "The aria-level value (1-6) for the item heading",
                     type: DataType.number,
                     default: 2,
                     required: false,
                 },
                 {
                     name: "expanded",
-                    description: "The expanded attribute",
+                    title: "Expanded",
+                    description: "The expanded state of the item",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "id",
-                    description: "The id attribute",
+                    description: "The HTML id attribute for the invoking element",
                     type: DataType.string,
                     default: undefined,
                     required: false,

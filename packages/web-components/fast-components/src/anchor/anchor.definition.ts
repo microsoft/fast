@@ -11,7 +11,8 @@ export const fastAnchorDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    title: "Appearance",
+                    description: "The anchor's visual treatment",
                     type: DataType.string,
                     values: [
                         {
@@ -38,49 +39,56 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "download",
-                    description: "The download attribute",
+                    title: "Download",
+                    description: "The HTML download attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "href",
-                    description: "The href attribute",
+                    title: "Href",
+                    description: "The HTML href attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "hreflang",
-                    description: "The hreflang attribute",
+                    title: "Hreflang",
+                    description: "The HTML hreflang attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "ping",
-                    description: "The ping attribute",
+                    title: "Ping",
+                    description: "The HTML ping attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "referrerpolicy",
-                    description: "The referrerpolicy attribute",
+                    title: "Referrerpolicy",
+                    description: "The HTML referrerpolicy attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "rel",
-                    description: "The rel attribute",
+                    title: "Rel",
+                    description: "The HTML rel attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "target",
-                    description: "The target attribute",
+                    title: "Target",
+                    description: "The HTML target attribute of the anchor",
                     type: DataType.string,
                     default: "_self",
                     values: [
@@ -101,7 +109,8 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "type",
-                    description: "The type attribute",
+                    title: "Type",
+                    description: "The HTML type attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,

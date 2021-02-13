@@ -11,6 +11,7 @@ export const fastAccordionDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "expand-mode",
+                    title: "Expand mode",
                     description: "The expand mode attribute",
                     type: DataType.string,
                     values: [
