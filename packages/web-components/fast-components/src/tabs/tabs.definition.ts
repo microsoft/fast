@@ -12,7 +12,8 @@ export const fastTabsDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "orientation",
-                    description: "The orientation attribute",
+                    title: "Orientation",
+                    description: "The orientation of the tabs",
                     default: Orientation.horizontal,
                     required: false,
                     type: DataType.string,
@@ -23,7 +24,8 @@ export const fastTabsDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "activeid",
-                    description: "The activeid attribute",
+                    title: "Active id",
+                    description: "The HTML id of the active tab",
                     default: undefined,
                     required: false,
                     type: DataType.string,

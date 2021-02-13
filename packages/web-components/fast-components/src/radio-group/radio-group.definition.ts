@@ -20,7 +20,7 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "orientation",
-                    title: "Value",
+                    title: "Orientation",
                     description: "The visual orientation of the group",
                     default: Orientation.horizontal,
                     values: [

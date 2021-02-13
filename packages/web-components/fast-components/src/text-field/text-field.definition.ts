@@ -104,6 +104,7 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "spellcheck",
+                    title: "Spellcheck",
                     description:
                         "Controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used",
                     required: false,

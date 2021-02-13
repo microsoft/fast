@@ -12,28 +12,35 @@ export const fastTooltipDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "visible",
-                    description: "The visible attribute",
+                    title: "Visible",
+                    description: "Sets whether the tooltip is visible or not",
                     type: DataType.boolean,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "anchor",
-                    description: "The anchor attribute",
+                    title: "Anchor",
+                    description:
+                        "The HTML id of the element the region is positioned relative to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "delay",
-                    description: "The delay attribute",
+                    title: "Delay",
+                    description:
+                        "The delay in milliseconds before a tooltip is shown after a hover event",
                     type: DataType.number,
                     default: 300,
                     required: false,
                 },
                 {
                     name: "position",
-                    description: "The position attribute",
+                    title: "Position",
+                    description:
+                        "Controls the placement of the tooltip relative to the anchor",
                     values: [
                         { name: TooltipPosition.top },
                         { name: TooltipPosition.right },
