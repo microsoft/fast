@@ -6,6 +6,7 @@ export const fastBadgeDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-badge",
+            title: "Badge",
             description: "The FAST badge element",
             attributes: [
                 {
@@ -33,7 +34,8 @@ export const fastBadgeDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the badge",
                 },
             ],
         },

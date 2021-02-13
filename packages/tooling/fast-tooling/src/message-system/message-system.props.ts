@@ -2,8 +2,21 @@ import { DataDictionary } from "./data.props";
 import { SchemaDictionary } from "./schema.props";
 import { InitializeMessageIncoming } from "./message-system.utilities.props";
 
-export interface Register {
+export interface Register<C = {}> {
+    /**
+     * The id of the registered item
+     */
+    id?: string;
+
+    /**
+     * The onMessage function called against a registered item
+     */
     onMessage: OnMessageCallback;
+
+    /**
+     * Any other configuration options associated with this registered item
+     */
+    config?: C;
 }
 
 export type OnMessageCallback = (e: MessageEvent) => void;

@@ -6,6 +6,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-number-field",
+            title: "Number field",
             description: "The FAST number-field element",
             attributes: [
                 {
@@ -118,15 +119,21 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the number field represents its visual label",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the option content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the option content",
                 },
             ],
         },

@@ -7,6 +7,7 @@ export const fastListboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-listbox",
+            title: "Listbox",
             description: "The FAST listbox element",
             attributes: [
                 {
@@ -28,7 +29,8 @@ export const fastListboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "Supports fast-option or option elements",
                 },
             ],
         },

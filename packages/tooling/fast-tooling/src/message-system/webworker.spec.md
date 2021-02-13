@@ -4,7 +4,7 @@ This spec outlines the functionality of the message system web worker which will
 
 ## Overview
 
-The [web worker](./webworker.ts) is used as an entrypoint for the generated message system web worker. The main logic for data, navigation and history manipulation is contained in the [message system utilities](./message-system.utilities.ts). A single minified file is created and bundled with the package as a web worker a consumer can reference. Using the `MessageSystem` defined in `message-system.ts`, this web worker will be passed during instantiation so that the `MessageSystem` can control and perform the data, navigation and history updates.
+The [web worker](./webworker.ts) is used as an entrypoint for the generated message system web worker. The main logic for data, navigation and history manipulation is contained in the [message system utilities](./message-system.utilities.ts). A single minified file is created and bundled with the package as a web worker a consumer can reference. Using the `MessageSystem` defined in `message-system.ts`, this web worker will be passed during instantiation so that the `MessageSystem` can control and perform the data, navigation, history updates and store configurations from other services.
 
 ## Data
 
@@ -73,3 +73,26 @@ new MessageSystem({
 ```
 
 When the `historyLimit` is hit, the first item in the array will be removed as the new item is added.
+
+## Register configs
+
+In the register, along with the `onMessage` an additional `id` and `config` can be passed and stored for retrieval. This means that if another service depends on items from the config it can retrieve them once the service has been registered.
+
+Example:
+```ts
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
+const fastMessageSystem = new MessageSystem({
+    messageSystem: fastMessageSystemWorker,
+});
+
+fastMessageSystem.add({
+    onMessage: handleMessageSystem,
+});
+
+fastShortcuts = new Shortcuts({
+    messageSystem: fastMessageSystem,
+    id: "message-system-service::shortcuts",
+    config: {
+        callback: () => {}
+    }
+});
