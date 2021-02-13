@@ -12,25 +12,19 @@ export const fastSelectDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the select",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
-                },
-                {
-                    name: "position",
-                    description: "The position attribute",
-                    default: undefined,
-                    required: false,
-                    type: DataType.string,
-                    values: Object.keys(SelectPosition).map(x => ({ name: x })),
                 },
             ],
             slots: [

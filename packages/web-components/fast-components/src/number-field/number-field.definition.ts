@@ -114,6 +114,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "max",
+                    title: "Max",
                     description: "The maximum value",
                     type: DataType.string,
                     default: false,
@@ -121,6 +122,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "min",
+                    title: "Min",
                     description: "The minimum value",
                     type: DataType.string,
                     default: false,
@@ -128,6 +130,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "step",
+                    title: "Step",
                     description: "Amount to increment or decrement the value by",
                     type: DataType.string,
                     default: false,
