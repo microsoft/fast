@@ -13,7 +13,7 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
                     name: "checked",
                     title: "Checked",
                     description:
-                        "Provides the default checked value of the input element",
+                        "Provides the default checked value of the form associated input element",
                     type: DataType.boolean,
                     default: false,
                     required: false,

@@ -11,35 +11,44 @@ export const fastRadioDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "checked",
-                    description: "The checked attribute",
+                    title: "Checked",
+                    description:
+                        "Provides the default checked value of the form associated input element",
                     default: undefined,
                     required: false,
                     type: DataType.boolean,
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "required",
-                    description: "The required attribute",
+                    title: "Required",
+                    description:
+                        "Require the field to be completed prior to form submission",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the radio",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "readonly",
-                    description: "The readonly attribute",
+                    title: "Readonly",
+                    description:
+                        "When true, the control will be immutable by user interaction",
                     type: DataType.boolean,
                     default: false,
                     required: false,
