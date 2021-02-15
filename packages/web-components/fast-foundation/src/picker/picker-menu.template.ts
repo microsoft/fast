@@ -17,13 +17,13 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
     return html<PickerMenu>`
         <template role="list">
             <div class="header-region" part="header-region" role="list">
-                <slot name="header-region"></slot>
+                <slot name="header-region" ${slotted("headerElements")}></slot>
             </div>
 
-            <slot></slot>
+            <slot ${slotted("menuElements")}></slot>
 
             <div class="footer-region" part="footer-region" role="list">
-                <slot name="footer-region"></slot>
+                <slot name="footer-region" ${slotted("footerElements")}></slot>
             </div>
         </template>
     `;

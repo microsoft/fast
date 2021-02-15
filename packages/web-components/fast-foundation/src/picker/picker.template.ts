@@ -22,9 +22,10 @@ export function createPickerTemplate(
         <template
             :selectedlisttag=${`${prefix}-${subtype}-picker-list`}
             :pickermenutag=${`${prefix}-${subtype}-picker-menu`}
-            :pickerinputtag=${`${prefix}-${subtype}-picker-input`}
             :defaultItemTemplate=${itemTemplate}
             :defaultOptionTemplate=${optionTemplate}
+            @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
+            @keydown="${(x, c) => x.handleInputKeyDown(c.event as KeyboardEvent)}"
         >
             <slot name="list-region"></slot>
 

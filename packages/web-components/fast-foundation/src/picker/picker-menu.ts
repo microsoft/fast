@@ -14,35 +14,66 @@ export class PickerMenu extends FASTElement {
      */
     public optionElements: HTMLElement[] = [];
 
-    private observer: MutationObserver;
+    /**
+     *
+     *
+     *
+     * @internal
+     */
+    @observable
+    public menuElements: HTMLElement[];
+    public menuElementsChanged(): void {
+        this.updateOptions();
+    }
+
+    /**
+     *
+     *
+     *
+     * @internal
+     */
+    @observable
+    public headerElements: HTMLElement[];
+    public headerElementsChanged(): void {
+        this.updateOptions();
+    }
+
+    /**
+     *
+     *
+     *
+     * @internal
+     */
+    @observable
+    public footerElements: HTMLElement[];
+    public footerElementsChanged(): void {
+        this.updateOptions();
+    }
 
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.observer = new MutationObserver(this.onChildListChange);
-        // only observe if nodes are added or removed
-        this.observer.observe(this, { childList: true });
     }
 
-    private onChildListChange = (
-        mutations: MutationRecord[],
-        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        observer: MutationObserver
-    ): void => {
-        if (mutations!.length) {
-            mutations.forEach((mutation: MutationRecord): void => {
-                mutation.addedNodes.forEach((newNode: Node): void => {
-                    if (
-                        newNode.nodeType === 1 &&
-                        (newNode as Element).getAttribute("role") === "listitem"
-                    ) {
-                        (newNode as Element).id =
-                            (newNode as Element).id || uniqueId("option-");
-                    }
-                });
-            });
+    private updateOptions(): void {
+        this.optionElements.splice(0, this.optionElements.length);
+        this.addSlottedListItems(this.headerElements);
+        this.addSlottedListItems(this.menuElements);
+        this.addSlottedListItems(this.footerElements);
+        // TODO: emit a change?
+    }
+
+    private addSlottedListItems(slotChildren: HTMLElement[]) {
+        if (slotChildren === undefined) {
+            return;
         }
-    };
+        slotChildren.forEach((child: HTMLElement): void => {
+            if (child.nodeType === 1 && child.getAttribute("role") === "listitem") {
+                child.id = child.id || uniqueId("option-");
+                this.optionElements.push(child);
+            }
+        });
+    }
 }

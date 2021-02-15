@@ -143,14 +143,6 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public pickerinputtag: string;
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
     public listboxFocusIndex: number = -1;
 
     /**
@@ -230,11 +222,18 @@ export class Picker extends FASTElement {
         this.itemsPlaceholder = document.createComment("");
         this.selectedList.append(this.itemsPlaceholder);
 
-        this.inputElement = document.createElement(this.pickerinputtag);
-        this.inputElement.addEventListener("focusout", this.handleFocusOut);
-        this.inputElement.addEventListener("keydown", this.handleInputKeyDown);
-        this.inputElement.addEventListener("input", this.handleTextInput);
+        this.inputElement = document.createElement("input");
+        this.inputElement.setAttribute("role", "combobox");
+        this.inputElement.setAttribute("type", "text");
+        this.inputElement.setAttribute("autocapitalize", "off");
+        this.inputElement.setAttribute("autocomplete", "off");
+        this.inputElement.setAttribute("haspopup", "list");
+        this.inputElement.setAttribute("aria-label", "the label");
+        this.inputElement.setAttribute("part", "input-element");
+        this.inputElement.classList.add("input-element");
+
         this.selectedList.appendChild(this.inputElement);
+        this.inputElement.addEventListener("input", this.handleTextInput);
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
@@ -247,10 +246,10 @@ export class Picker extends FASTElement {
 
     public handleTextInput = (e: InputEvent): void => {
         // e.stopPropagation();
-        e.preventDefault();
+        // e.preventDefault();
     };
 
-    public handleInputKeyDown = (e: KeyboardEvent): void => {
+    public handleInputKeyDown = (e: KeyboardEvent): boolean => {
         this.toggleMenu(true);
 
         switch (e.key) {
@@ -258,8 +257,7 @@ export class Picker extends FASTElement {
                 if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(0);
                 }
-                // e.stopPropagation();
-                e.preventDefault();
+                return false;
             }
 
             case "ArrowDown": {
@@ -271,33 +269,30 @@ export class Picker extends FASTElement {
                         )
                     );
                 }
-                // e.stopPropagation();
-                e.preventDefault();
+                return false;
             }
 
             case "ArrowUp": {
                 if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(Math.max(this.listboxFocusIndex - 1, 0));
                 }
-                // e.stopPropagation();
-                e.preventDefault();
+                return false;
             }
 
             case "End": {
                 if (this.menuElement.optionElements.length > 0) {
                     this.setFocusedOption(this.menuElement.optionElements.length - 1);
                 }
-                // e.stopPropagation();
-                e.preventDefault();
+                return false;
             }
 
             case "Enter": {
                 if (this.menuElement.optionElements.length > 0) {
                 }
-                // e.stopPropagation();
-                e.preventDefault();
+                return false;
             }
         }
+        return true;
     };
 
     public handleRegionLoaded = (e: Event): void => {
