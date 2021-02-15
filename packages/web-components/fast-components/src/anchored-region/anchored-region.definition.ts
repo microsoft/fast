@@ -12,6 +12,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchored-region",
+            title: "Anchored region",
             description: "The FAST anchored region element",
             attributes: [
                 {
@@ -130,7 +131,8 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the anchored region",
                 },
             ],
         },

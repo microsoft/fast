@@ -105,18 +105,20 @@
     ]
   },
   "resolutions": {
+    "typescript": "^3.9.0",
     "@types/react": "*",
     "immer": "^8.0.1",
     "jimp": "^0.16.1",
-    "jpeg-js": "^0.4.3"
+    "jpeg-js": "^0.4.3",
+    "node-notifier": "^9.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
     "@octokit/rest": "^18.0.6",
     "@types/jest": "^25.2.1",
-    "@types/lodash-es": "^4.17.0",
+    "@types/lodash-es": "^4.17.4",
     "@types/node": "^9.4.7",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-preset-env": "^1.6.1",
     "beachball": "^1.36.2",
     "chalk": "^2.4.2",
     "docusaurus-init": "^1.11.0",

@@ -237,8 +237,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     }
 
     public componentDidMount(): void {
-        this.setViewerToFullSize(this.webComponentEditorContainerRef);
-        this.updateMonacoEditor();
+        this.handleWindowResize();
     }
 
     private handleWindowPopState = (): void => {
@@ -449,17 +448,6 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         if (activeTab === "code") {
             window.setTimeout(() => {
                 this.updateMonacoEditor();
-            });
-        }
-    };
-
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private handleDevToolsTabTriggerClick = (e: React.MouseEvent<unknown>): void => {
-        if (!this.state.devToolsVisible) {
-            this.maxViewerHeight = this.maxViewerHeight * 2;
-
-            this.setState({
-                devToolsVisible: true,
             });
         }
     };

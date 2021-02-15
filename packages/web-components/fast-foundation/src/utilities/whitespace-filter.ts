@@ -7,9 +7,7 @@
  * @public
  */
 export function whitespaceFilter(value: Node, index: number, array: Node[]) {
-    return (
-        value.nodeType === Node.TEXT_NODE &&
-        typeof value.nodeValue === "string" &&
-        !!value.nodeValue.trim().length
-    );
+    return value.nodeType !== Node.TEXT_NODE
+        ? true
+        : typeof value.nodeValue === "string" && !!value.nodeValue.trim().length;
 }

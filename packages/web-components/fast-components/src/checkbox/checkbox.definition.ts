@@ -6,6 +6,7 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-checkbox",
+            title: "Checkbox",
             description: "The FAST checkbox element",
             attributes: [
                 {
@@ -47,15 +48,21 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the checkbox represents its visual label",
                 },
                 {
                     name: "indeterminate-indicator",
-                    description: "The indeterminate indicator slot",
+                    title: "Indeterminate indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the inditerminate state",
                 },
                 {
                     name: "checked-indicator",
-                    description: "The checked indicator slot",
+                    title: "Checked indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the checked state",
                 },
             ],
         },

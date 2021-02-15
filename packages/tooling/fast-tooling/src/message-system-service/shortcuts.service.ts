@@ -5,14 +5,15 @@ import {
 } from "./shortcuts.service-action";
 import { MessageSystemService } from "./message-system.service";
 
-export type shortcutMessageSystemAction = "initialize";
-export type shortcutMessageSystemId = "shortcuts";
-export type shortcutMessageSystemListenerType = "keypress";
+export type shortcutsMessageSystemAction = "initialize";
+export type shortcutsMessageSystemListenerType = "keypress";
 
-export type shortcutMessageId = "fast-tooling::shortcuts-service";
+export type shortcutsMessageId = "fast-tooling::shortcuts-service";
+
+export const shortcutsId: shortcutsMessageId = "fast-tooling::shortcuts-service";
 
 export interface ShortcutOptions {
-    originatorId: shortcutMessageId;
+    originatorId: shortcutsMessageId;
 }
 
 export interface ShortCutOptionsConfig {
@@ -20,18 +21,55 @@ export interface ShortCutOptionsConfig {
 }
 
 export interface ShortcutMessageOutgoing extends CustomMessage<{}, {}> {
-    id: shortcutMessageSystemId;
-    action: shortcutMessageSystemAction;
-    eventListener: (e: KeyboardEvent) => void;
-    eventListenerType: shortcutMessageSystemListenerType;
+    /**
+     * The custom message id
+     */
+    id: shortcutsMessageId;
+
+    /**
+     * The action string
+     */
+    action: shortcutsMessageSystemAction;
+
+    /**
+     * The callback config returned when a shortcut is called
+     */
     shortcuts: ShortcutsActionCallbackConfig[];
 }
 
-export class Shortcuts extends MessageSystemService<ShortcutsActionCallbackConfig> {
+export interface ShortcutsConfig {
+    /**
+     * The shortcut event listener used to attach to a DOM node
+     */
+    eventListener: (e: KeyboardEvent) => void;
+
+    /**
+     * The event listener type used to define the listener type when
+     * attaching the event listener to a DOM node
+     */
+    eventListenerType: shortcutsMessageSystemListenerType;
+}
+
+export interface ShortcutsRegisterConfig {
+    id: shortcutsMessageId;
+    config: ShortcutsConfig;
+}
+
+export class Shortcuts extends MessageSystemService<
+    ShortcutsActionCallbackConfig,
+    ShortcutsRegisterConfig
+> {
     constructor(config) {
         super();
 
-        this.registerMessageSystem(config);
+        this.registerMessageSystem({
+            ...config,
+            id: shortcutsId,
+            config: {
+                eventListener: this.listener,
+                eventListenerType: "keypress",
+            },
+        });
     }
 
     /**
@@ -54,9 +92,7 @@ export class Shortcuts extends MessageSystemService<ShortcutsActionCallbackConfi
                 this.messageSystem.postMessage({
                     type: MessageSystemType.custom,
                     action: "initialize",
-                    id: "shortcuts",
-                    eventListener: this.listener,
-                    eventListenerType: "keypress",
+                    id: shortcutsId,
                     shortcuts: this.registeredActions.map(
                         (shortcutAction: ShortcutsAction) => {
                             return {
