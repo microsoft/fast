@@ -7,6 +7,7 @@ export const fastFlipperDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-flipper",
+            title: "Flipper",
             description: "The FAST flipper element",
             attributes: [
                 {
@@ -42,11 +43,15 @@ export const fastFlipperDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "previous",
-                    description: "The previous slot",
+                    title: "Previous slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'previous' flipper state",
                 },
                 {
                     name: "next",
-                    description: "The next slot",
+                    title: "Next slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'next' flipper state",
                 },
             ],
         },

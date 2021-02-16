@@ -7,6 +7,7 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-menu-item",
+            title: "Menu item",
             description: "The FAST menu item element",
             attributes: [
                 {
@@ -46,15 +47,20 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the menu item",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the item content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the item content",
                 },
             ],
         },

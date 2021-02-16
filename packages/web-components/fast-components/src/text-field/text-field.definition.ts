@@ -7,6 +7,7 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-text-field",
+            title: "Text field",
             description: "The FAST text-field element",
             attributes: [
                 {
@@ -126,7 +127,20 @@ export const fastTextFieldDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the radio represents its visual label",
+                },
+                {
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the option content",
+                },
+                {
+                    name: "end",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the option content",
                 },
             ],
         },

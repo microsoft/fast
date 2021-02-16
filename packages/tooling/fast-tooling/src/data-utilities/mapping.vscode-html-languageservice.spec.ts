@@ -41,6 +41,10 @@ const inputSchema = {
         name: {
             type: DataType.string,
         },
+        SlotBar: {
+            [ReservedElementMappingKeyword.mapsToSlot]: "bar",
+            ...linkedDataSchema,
+        },
     },
 };
 
@@ -118,6 +122,19 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
             data: {
                 id: "bar",
             },
+        });
+    });
+    test("should return a DataDictionary containing an HTML element without a slot attribute as part of the data if an HTML element with a slot attribute has been passed", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ['<input slot="bar" />'],
+            schemaDictionary: {
+                [inputSchema.id]: inputSchema,
+            },
+        });
+        const root: string = value[1];
+        expect(value[0][root]).toEqual({
+            schemaId: inputSchema.id,
+            data: {},
         });
     });
     test("should return a DataDictionary containing an HTML element with a number attribute if an HTML element with a number attribute has been passed", () => {

@@ -5,12 +5,13 @@ export const fastTabDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tab",
+            title: "Tab",
             description: "The FAST tab element",
             attributes: [],
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
                 },
             ],
         },

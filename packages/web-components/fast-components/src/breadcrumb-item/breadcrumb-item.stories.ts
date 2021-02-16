@@ -1,10 +1,5 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import BreadcrumbItemTemplate from "./fixtures/base.html";
-import { FASTBreadcrumbItem } from ".";
-
-// Prevent tree-shaking
-FASTBreadcrumbItem;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Breadcrumb Item",

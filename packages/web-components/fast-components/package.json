@@ -63,9 +63,9 @@
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
     "@microsoft/fast-tooling": "^0.15.2",
-    "@storybook/addons": "^6.1.16",
-    "@storybook/html": "^6.1.16",
-    "@storybook/theming": "^6.1.16",
+    "@storybook/addons": "^6.1.17",
+    "@storybook/html": "^6.1.17",
+    "@storybook/theming": "^6.1.17",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.1",
     "@types/karma": "^5.0.0",
