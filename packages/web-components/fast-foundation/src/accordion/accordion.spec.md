@@ -73,6 +73,10 @@ As defined by the W3C:
 - start
 - end
 
+*Functions*
+- `expandedIcon()` - Used to generate a default icon in the `expanded-icon` slot.
+- `collapsedIcon()` - Used to generate a default icon in the `collapsed-icon` slot.
+
 ### Anatomy and Appearance
 
 ```HTML

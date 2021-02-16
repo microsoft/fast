@@ -33,8 +33,12 @@ export const AccordionItemTemplate = html<AccordionItem>`
             ${startTemplate}
             ${endTemplate}
             <span class="icon" part="icon" aria-hidden="true">
-                <slot name="expanded-icon" part="expanded-icon"></slot>
-                <slot name="collapsed-icon" part="collapsed-icon"></slot>
+                <slot name="expanded-icon" part="expanded-icon">
+                    ${x => x.expandedIcon()}
+                </slot>
+                <slot name="collapsed-icon" part="collapsed-icon">
+                    ${x => x.collapsedIcon()}
+                </slot>
             <span>
         </div>
         <div
