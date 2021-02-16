@@ -1,5 +1,5 @@
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { Direction } from "@microsoft/fast-web-utilities";
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */

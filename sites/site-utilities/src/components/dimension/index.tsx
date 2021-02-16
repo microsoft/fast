@@ -1,7 +1,13 @@
-import React from "react";
-import { NumberField } from "@microsoft/fast-components-react-msft";
-import { RotateGlyph } from "../../icons/rotate";
+/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
+
+import React, { ChangeEvent, FormEvent } from "react";
+import { rotateGlyph } from "../../icons/rotate";
 import { DimensionProps } from "./dimension.props";
+import { FASTButton, FASTNumberField } from "@microsoft/fast-components";
+import h from "../../web-components/pragma";
+
+FASTButton;
+FASTNumberField;
 
 export const Dimension: React.FC<DimensionProps> = ({
     width,
@@ -14,13 +20,15 @@ export const Dimension: React.FC<DimensionProps> = ({
 }: React.PropsWithChildren<DimensionProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center", marginLeft: 4 }}>
-            <NumberField
+            <fast-number-field
                 value={width}
-                onChange={onDimensionChange(onUpdateWidth)}
-                style={{
-                    width: "64px",
+                events={{
+                    input: onDimensionChange(onUpdateWidth),
                 }}
-                disabled={disabled}
+                style={{
+                    width: "85px",
+                }}
+                disabled={disabled ? "true" : undefined}
             />
             <svg
                 width="14"
@@ -44,21 +52,33 @@ export const Dimension: React.FC<DimensionProps> = ({
                     strokeMiterlimit="10"
                 />
             </svg>
-            <NumberField
+            <fast-number-field
                 value={height}
-                onChange={onDimensionChange(onUpdateHeight)}
+                events={{
+                    input: onDimensionChange(onUpdateHeight),
+                }}
                 style={{
-                    width: "64px",
+                    width: "85px",
                     marginRight: 4,
                 }}
-                disabled={disabled}
+                disabled={disabled ? "true" : undefined}
             />
             <fast-button
-                aria-label="Rotate axis"
-                onClick={onUpdateOrientation}
-                {...(disabled ? { disabled } : {})}
+                aria-label={"Rotate axis"}
+                events={{
+                    click: onUpdateOrientation,
+                }}
+                disabled={disabled ? "true" : undefined}
+                style={{
+                    padding: "0 6px",
+                    height: "24px",
+                    border: "2px solid transparent",
+                    borderRadius: "2px",
+                    background: "#454545",
+                    minWidth: "initial",
+                }}
             >
-                <RotateGlyph />
+                {rotateGlyph()}
             </fast-button>
         </div>
     );
