@@ -24,7 +24,7 @@ function createOptionTemplate(): ViewTemplate {
         <button
             role="listitem"
             tabindex="-1"
-            @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent)}"
+            @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
         >
             ${x => x}
         </button>

@@ -8,6 +8,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
+import { eventTouchEnd } from "../../../../utilities/fast-web-utilities/dist";
 import { AnchoredRegion } from "../anchored-region";
 import { PickerMenu } from "./picker-menu";
 
@@ -158,7 +159,7 @@ export class Picker extends FASTElement {
      *
      * @internal
      */
-    public inputElement: HTMLElement;
+    public inputElement: HTMLInputElement;
 
     /**
      * reference to the selected item list
@@ -320,8 +321,17 @@ export class Picker extends FASTElement {
                 return false;
             }
 
+            case "Escape": {
+                this.toggleMenu(false);
+                return false;
+            }
+
             case "Enter": {
-                if (this.menuElement.optionElements.length > 0) {
+                if (
+                    this.listboxFocusIndex !== -1 &&
+                    this.menuElement.optionElements.length > this.listboxFocusIndex
+                ) {
+                    this.menuElement.optionElements[this.listboxFocusIndex].click();
                 }
                 return false;
             }
@@ -344,12 +354,14 @@ export class Picker extends FASTElement {
         return;
     };
 
-    public handleOptionClick = (e: MouseEvent): boolean => {
+    public handleOptionClick = (e: MouseEvent, value: string): boolean => {
         if (e.defaultPrevented) {
             return false;
         }
-        // this.selectedOptions = this.selectedOptions.push();
+        this.selectedOptions.push(value);
+        // TODO: emit selection changed
         this.toggleMenu(false);
+        this.inputElement.value = "";
         return false;
     };
 
