@@ -56,7 +56,7 @@ export class Picker extends FASTElement {
     @attr({ attribute: "options" })
     public options: string;
     private optionsChanged(): void {
-        this.availableOptions = this.options.split(",");
+        this.optionsList = this.options.split(",");
     }
 
     /**
@@ -65,13 +65,13 @@ export class Picker extends FASTElement {
      * @public
      */
     @observable
-    public availableOptions: string[] = [];
-    private availableOptionsChanged(): void {}
+    public optionsList: string[] = [];
+    private optionsListChanged(): void {}
 
     /**
      *
      *
-     * @internal
+     * @public
      */
     @observable
     public itemTemplate: ViewTemplate;
@@ -79,7 +79,7 @@ export class Picker extends FASTElement {
     /**
      *
      *
-     * @internal
+     * @public
      */
     @observable
     public defaultItemTemplate: ViewTemplate;
@@ -119,7 +119,7 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public listboxId: string = uniqueId("listbox-");
+    public listboxId: string;
 
     /**
      *
@@ -168,11 +168,18 @@ export class Picker extends FASTElement {
     public selectedList: HTMLElement;
 
     /**
-     * reference to the edit box
+     * reference to the menu
      *
      * @internal
      */
     public menuElement: PickerMenu;
+
+    /**
+     * reference to the menu
+     *
+     * @internal
+     */
+    public slottedMenuElements: HTMLElement[];
 
     /**
      *
@@ -198,7 +205,7 @@ export class Picker extends FASTElement {
         }
 
         if (this.options !== undefined) {
-            this.availableOptions = this.options.split(",");
+            this.optionsList = this.options.split(",");
         }
 
         if (this.itemTemplate === undefined) {
@@ -211,7 +218,6 @@ export class Picker extends FASTElement {
 
         this.selectedList = document.createElement(this.selectedlisttag);
         this.selectedList.slot = "list-region";
-
         this.appendChild(this.selectedList);
 
         this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
@@ -242,6 +248,34 @@ export class Picker extends FASTElement {
         ).createBehavior(this.itemsPlaceholder);
 
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+
+        const match: string = this.pickermenutag.toUpperCase();
+        this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
+            return element.tagName === match;
+        }) as PickerMenu;
+
+        if (this.menuElement === undefined) {
+            this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
+            this.appendChild(this.menuElement);
+        }
+
+        if (this.menuElement.id === "") {
+            this.menuElement.id = uniqueId("listbox-");
+        }
+
+        this.menuElement.slot = "menu-region";
+        this.listboxId = this.menuElement.id;
+
+        this.optionsPlaceholder = document.createComment("");
+        this.menuElement.append(this.optionsPlaceholder);
+
+        this.optionsRepeatBehavior = new RepeatDirective(
+            x => x.optionsList,
+            x => x.optionTemplate,
+            { positioning: true }
+        ).createBehavior(this.optionsPlaceholder);
+
+        this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
     }
 
     public handleTextInput = (e: InputEvent): void => {
@@ -296,24 +330,6 @@ export class Picker extends FASTElement {
     };
 
     public handleRegionLoaded = (e: Event): void => {
-        if (
-            this.menuElement === null ||
-            this.menuElement === undefined ||
-            this.optionsPlaceholder !== null
-        ) {
-            return;
-        }
-
-        this.optionsPlaceholder = document.createComment("");
-        this.menuElement.append(this.optionsPlaceholder);
-
-        this.optionsRepeatBehavior = new RepeatDirective(
-            x => x.availableOptions,
-            x => x.optionTemplate,
-            { positioning: true }
-        ).createBehavior(this.optionsPlaceholder);
-
-        this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
         return;
     };
 
@@ -368,7 +384,10 @@ export class Picker extends FASTElement {
             this.listboxOpen = open;
             this.inputElement.setAttribute("aria-owns", this.listboxId);
             this.inputElement.setAttribute("aria-expanded", "true");
-            if (this.menuElement.optionElements.length > 0) {
+            if (
+                this.menuElement !== undefined &&
+                this.menuElement.optionElements.length > 0
+            ) {
                 this.listboxFocusIndex = 0;
                 this.inputElement.setAttribute(
                     "aria-activedescendant",

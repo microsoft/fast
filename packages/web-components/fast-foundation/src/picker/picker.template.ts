@@ -1,11 +1,4 @@
-import {
-    children,
-    elements,
-    html,
-    ref,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
+import { html, ref, slotted, ViewTemplate, when } from "@microsoft/fast-element";
 import { Picker } from "./picker";
 
 /**
@@ -43,7 +36,9 @@ export function createPickerTemplate(
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                    <slot name="menu-region">
+                    <slot
+                        name="menu-region"
+                    >
                     </slot>
                 </${prefix}-anchored-region>
             `
