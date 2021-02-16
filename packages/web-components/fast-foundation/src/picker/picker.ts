@@ -36,7 +36,15 @@ export class Picker extends FASTElement {
      * HTML Attribute: selection
      */
     @attr({ attribute: "selection" })
-    public selection: string;
+    public selection: string = "";
+    private selectionChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.selectedOptions.toString() !== this.selection) {
+                this.selectedOptions = this.selection.split(",");
+                this.$emit("selectionchange");
+            }
+        }
+    }
 
     /**
      *
@@ -45,7 +53,14 @@ export class Picker extends FASTElement {
      */
     @observable
     public selectedOptions: string[] = [];
-    private selectedOptionsChanged(): void {}
+    private selectedOptionsChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.selectedOptions !== this.selection.split(",")) {
+                this.selection = this.selectedOptions.toString();
+                this.$emit("selectionchange");
+            }
+        }
+    }
 
     /**
      *
@@ -359,9 +374,17 @@ export class Picker extends FASTElement {
             return false;
         }
         this.selectedOptions.push(value);
-        // TODO: emit selection changed
         this.toggleMenu(false);
         this.inputElement.value = "";
+        return false;
+    };
+
+    public handleItemClick = (e: MouseEvent, itemIndex: number): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+
+        this.selectedOptions.splice(itemIndex, 1);
         return false;
     };
 

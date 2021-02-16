@@ -13,7 +13,11 @@ import { PeoplePicker } from "./people-picker";
 
 function createItemTemplate(): ViewTemplate {
     return html`
-        <button role="listitem" tabindex="0">
+        <button
+            role="listitem"
+            tabindex="0"
+            @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
+        >
             ${x => x}
         </button>
     `;
