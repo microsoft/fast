@@ -53,7 +53,7 @@ function getNavigationRecursive(
                 schema,
                 disabled,
                 data,
-                text: displayText || schema.title,
+                text: displayText && parent === null ? displayText : schema.title,
                 type: schema.type || DataType.unknown,
                 items: items.map((item: NavigationConfig) => {
                     return item[1];
