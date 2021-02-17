@@ -1,10 +1,10 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
-import React, { ChangeEvent, FormEvent } from "react";
-import { RotateGlyph } from "../../icons/rotate";
-import { DimensionProps } from "./dimension.props";
+import React from "react";
 import { FASTButton, FASTNumberField } from "@microsoft/fast-components";
+import { RotateGlyph } from "../../icons/rotate";
 import h from "../../web-components/pragma";
+import { DimensionProps } from "./dimension.props";
 
 FASTButton;
 FASTNumberField;
