@@ -1,4 +1,4 @@
-import { getLinkedData, getLinkedDataDictionary, getLinkedDataList } from "./data";
+import { getLinkedData, getLinkedDataDictionary, getLinkedDataList, updateDataDictionaryDisplayText } from "./data";
 import { LinkedDataDictionaryUpdate, LinkedDataPromise } from "./data.props";
 
 describe("getLinkedDataDictionary", () => {
@@ -455,5 +455,69 @@ describe("getLinkedDataList", () => {
                 "bar"
             )
         ).toEqual(["bat", "baz"]);
+    });
+});
+
+describe("updateDataDictionaryDisplayText", () => {
+    test("should add display text if no display text exists", () => {
+        expect(
+            updateDataDictionaryDisplayText(
+                [
+                    {
+                        root: {
+                            schemaId: "foo",
+                            data: {
+                            },
+                        },
+                    },
+                    "root",
+                ],
+                "root",
+                "bar",
+            )
+        ).toEqual(
+            [
+                {
+                    root: {
+                        schemaId: "foo",
+                        displayText: "bar",
+                        data: {
+                        },
+                    },
+                },
+                "root",
+            ],
+        );
+    });
+    test("should update display text if display text exists", () => {
+        expect(
+            updateDataDictionaryDisplayText(
+                [
+                    {
+                        root: {
+                            schemaId: "foo",
+                            displayText: "foo",
+                            data: {
+                            },
+                        },
+                    },
+                    "root",
+                ],
+                "root",
+                "bar",
+            )
+        ).toEqual(
+            [
+                {
+                    root: {
+                        schemaId: "foo",
+                        displayText: "bar",
+                        data: {
+                        },
+                    },
+                },
+                "root",
+            ],
+        );
     });
 });
