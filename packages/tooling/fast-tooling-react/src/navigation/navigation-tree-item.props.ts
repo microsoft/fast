@@ -36,6 +36,11 @@ export interface NavigationTreeItemProps
     contentClassName: string;
 
     /**
+     * The class name assigned to the display text input
+     */
+    displayTextInputClassName: string;
+
+    /**
      * The dictionary ID
      */
     dictionaryId: string;
@@ -79,6 +84,11 @@ export interface NavigationTreeItemProps
      * The change handler for updating an items display text
      */
     handleChange: React.ChangeEventHandler<HTMLInputElement>;
+
+    /**
+     * The blur handler for defocusing the display text input
+     */
+    handleBlur: React.FocusEventHandler<HTMLInputElement>;
 
     /**
      * The keyDown handler

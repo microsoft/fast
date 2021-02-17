@@ -5,6 +5,7 @@ import {
     defaultTextSizeCSSProperty,
     gutterCSSProperty,
     inactiveTextColorCSSProperty,
+    inputStyle,
     insetStrongBoxShadow,
     L3OutlineColorProperty,
     L4CSSProperty,
@@ -25,6 +26,7 @@ export interface NavigationClassNameContract {
     navigation_itemExpandTrigger?: string;
     navigation_itemContent?: string;
     navigation_itemList?: string;
+    navigation_itemDisplayTextInput?: string;
 }
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
@@ -59,6 +61,10 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         },
     },
     navigation_itemContent: {},
+    navigation_itemDisplayTextInput: {
+        ...inputStyle,
+        width: "160px",
+    },
     navigation_itemExpandTrigger: {
         content: "''",
         display: "inline-block",

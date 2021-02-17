@@ -151,14 +151,24 @@ class Navigation extends Foundation<
 
                 break;
             case MessageSystemType.data:
-                this.setState({
-                    navigationDictionary: e.data.navigationDictionary,
-                    dataDictionary: e.data.dataDictionary,
-                    activeItem: [
-                        e.data.activeDictionaryId,
-                        e.data.activeNavigationConfigId,
-                    ],
-                });
+                switch (e.data.action) {
+                    case MessageSystemDataTypeAction.updateDisplayText:
+                        this.setState({
+                            navigationDictionary: e.data.navigationDictionary,
+                            dataDictionary: e.data.dataDictionary,
+                        });
+                        break;
+                    default:
+                        this.setState({
+                            navigationDictionary: e.data.navigationDictionary,
+                            dataDictionary: e.data.dataDictionary,
+                            activeItem: [
+                                e.data.activeDictionaryId,
+                                e.data.activeNavigationConfigId,
+                            ],
+                        });
+                }
+
                 break;
             case MessageSystemType.navigation:
                 this.setState({
@@ -273,6 +283,9 @@ class Navigation extends Foundation<
                     this.props.managedClasses.navigation_itemExpandTrigger
                 }
                 contentClassName={this.props.managedClasses.navigation_itemContent}
+                displayTextInputClassName={
+                    this.props.managedClasses.navigation_itemDisplayTextInput
+                }
                 handleExpandClick={this.handleNavigationItemExpandClick(
                     dictionaryId,
                     navigationConfigId
@@ -281,10 +294,8 @@ class Navigation extends Foundation<
                     dictionaryId,
                     navigationConfigId
                 )}
-                handleChange={this.handleNavigationItemChangeText(
-                    dictionaryId,
-                    navigationConfigId
-                )}
+                handleChange={this.handleNavigationItemChangeDisplayText(dictionaryId)}
+                handleBlur={this.handleNavigationItemBlurDisplayTextInput()}
                 handleKeyDown={this.handleNavigationItemKeyDown(
                     dictionaryId,
                     navigationConfigId
@@ -336,7 +347,8 @@ class Navigation extends Foundation<
     private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
         return (
             this.state.activeItem[0] === dictionaryId &&
-            this.state.activeItem[1] === navigationConfigId
+            this.state.activeItem[1] === navigationConfigId &&
+            this.state.activeItem[1] === ""
         );
     }
 
@@ -552,12 +564,29 @@ class Navigation extends Foundation<
     /**
      * Update the active items display text
      */
-    private handleNavigationItemChangeText = (
-        dictionaryId: string,
-        navigationConfigId: string
+    private handleNavigationItemChangeDisplayText = (
+        dictionaryId: string
     ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
-            console.log("change", e);
+            this.props.messageSystem.postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.updateDisplayText,
+                dictionaryId,
+                displayText: e.target.value,
+            });
+        };
+    };
+
+    /**
+     * Update the active items display text focus state
+     */
+    private handleNavigationItemBlurDisplayTextInput = (): ((
+        e: React.FocusEvent<HTMLInputElement>
+    ) => void) => {
+        return () => {
+            this.setState({
+                activeItemEditable: false,
+            });
         };
     };
 
