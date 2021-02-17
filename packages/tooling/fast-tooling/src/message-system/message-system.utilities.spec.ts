@@ -984,10 +984,14 @@ describe("getMessage", () => {
                 dictionaryId: "data",
             }) as UpdateDisplayTextDataMessageOutgoing;
 
-            expect((message as any).dataDictionary[0].data.displayText).toEqual("foobarbat");
-            expect((message as any).navigationDictionary[0].data[0][
-                (message as any).navigationDictionary[0].data[1]
-            ].text).toEqual("foobarbat");
+            expect((message as any).dataDictionary[0].data.displayText).toEqual(
+                "foobarbat"
+            );
+            expect(
+                (message as any).navigationDictionary[0].data[0][
+                    (message as any).navigationDictionary[0].data[1]
+                ].text
+            ).toEqual("foobarbat");
         });
     });
     describe("navigation", () => {

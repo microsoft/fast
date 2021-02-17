@@ -1,4 +1,9 @@
-import { getLinkedData, getLinkedDataDictionary, getLinkedDataList, updateDataDictionaryDisplayText } from "./data";
+import {
+    getLinkedData,
+    getLinkedDataDictionary,
+    getLinkedDataList,
+    updateDataDictionaryDisplayText,
+} from "./data";
 import { LinkedDataDictionaryUpdate, LinkedDataPromise } from "./data.props";
 
 describe("getLinkedDataDictionary", () => {
@@ -466,28 +471,24 @@ describe("updateDataDictionaryDisplayText", () => {
                     {
                         root: {
                             schemaId: "foo",
-                            data: {
-                            },
+                            data: {},
                         },
                     },
                     "root",
                 ],
                 "root",
-                "bar",
+                "bar"
             )
-        ).toEqual(
-            [
-                {
-                    root: {
-                        schemaId: "foo",
-                        displayText: "bar",
-                        data: {
-                        },
-                    },
+        ).toEqual([
+            {
+                root: {
+                    schemaId: "foo",
+                    displayText: "bar",
+                    data: {},
                 },
-                "root",
-            ],
-        );
+            },
+            "root",
+        ]);
     });
     test("should update display text if display text exists", () => {
         expect(
@@ -497,27 +498,23 @@ describe("updateDataDictionaryDisplayText", () => {
                         root: {
                             schemaId: "foo",
                             displayText: "foo",
-                            data: {
-                            },
+                            data: {},
                         },
                     },
                     "root",
                 ],
                 "root",
-                "bar",
+                "bar"
             )
-        ).toEqual(
-            [
-                {
-                    root: {
-                        schemaId: "foo",
-                        displayText: "bar",
-                        data: {
-                        },
-                    },
+        ).toEqual([
+            {
+                root: {
+                    schemaId: "foo",
+                    displayText: "bar",
+                    data: {},
                 },
-                "root",
-            ],
-        );
+            },
+            "root",
+        ]);
     });
 });
