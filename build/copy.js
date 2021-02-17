@@ -2,9 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-var-requires, @typescript-eslint/typedef */
 const copyfiles = require("copyfiles");
 
-const copyFilesConfig = { flat: true, verbose: true, up: true };
-
-function copy(files, destination, config = copyFilesConfig) {
+function copy(files, destination, config = { flat: true, verbose: true, up: true }) {
     return new Promise((resolve, reject) => {
         return copyfiles([...files, destination], config, err =>
             err ? reject(err.details) : resolve()
