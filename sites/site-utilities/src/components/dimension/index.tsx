@@ -1,7 +1,7 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
 import React, { ChangeEvent, FormEvent } from "react";
-import { rotateGlyph } from "../../icons/rotate";
+import { RotateGlyph } from "../../icons/rotate";
 import { DimensionProps } from "./dimension.props";
 import { FASTButton, FASTNumberField } from "@microsoft/fast-components";
 import h from "../../web-components/pragma";
@@ -78,7 +78,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                     minWidth: "initial",
                 }}
             >
-                {rotateGlyph()}
+                <RotateGlyph />
             </fast-button>
         </div>
     );
