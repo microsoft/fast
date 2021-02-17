@@ -256,6 +256,7 @@ export class Picker extends FASTElement {
 
         this.selectedList.appendChild(this.inputElement);
         this.inputElement.addEventListener("input", this.handleTextInput);
+        this.inputElement.addEventListener("click", this.handleInputClick);
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
@@ -294,17 +295,27 @@ export class Picker extends FASTElement {
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
     }
 
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.inputElement.removeEventListener("input", this.handleTextInput);
+        this.inputElement.removeEventListener("click", this.handleInputClick);
+    }
+
     public handleTextInput = (e: InputEvent): void => {
         // e.stopPropagation();
         // e.preventDefault();
     };
 
-    public handleInputKeyDown = (e: KeyboardEvent): boolean => {
+    public handleInputClick = (e: MouseEvent): void => {
         this.toggleMenu(true);
+        e.preventDefault();
+    };
 
+    public handleKeyDown = (e: KeyboardEvent): boolean => {
         switch (e.key) {
             case "Home": {
                 if (this.menuElement.optionElements.length > 0) {
+                    this.toggleMenu(true);
                     this.setFocusedOption(0);
                 }
                 return false;
@@ -312,6 +323,7 @@ export class Picker extends FASTElement {
 
             case "ArrowDown": {
                 if (this.menuElement.optionElements.length > 0) {
+                    this.toggleMenu(true);
                     this.setFocusedOption(
                         Math.min(
                             this.listboxFocusIndex + 1,
@@ -324,6 +336,7 @@ export class Picker extends FASTElement {
 
             case "ArrowUp": {
                 if (this.menuElement.optionElements.length > 0) {
+                    this.toggleMenu(true);
                     this.setFocusedOption(Math.max(this.listboxFocusIndex - 1, 0));
                 }
                 return false;
@@ -331,6 +344,7 @@ export class Picker extends FASTElement {
 
             case "End": {
                 if (this.menuElement.optionElements.length > 0) {
+                    this.toggleMenu(true);
                     this.setFocusedOption(this.menuElement.optionElements.length - 1);
                 }
                 return false;
@@ -350,7 +364,18 @@ export class Picker extends FASTElement {
                 }
                 return false;
             }
+
+            case "ArrowRight": {
+                this.incrementFocusedItem(1);
+                return false;
+            }
+
+            case "ArrowLeft": {
+                this.incrementFocusedItem(-1);
+                return false;
+            }
         }
+        this.toggleMenu(true);
         return true;
     };
 
@@ -387,6 +412,29 @@ export class Picker extends FASTElement {
         this.selectedOptions.splice(itemIndex, 1);
         return false;
     };
+
+    private incrementFocusedItem(increment: number) {
+        const selectedItems: Element[] = Array.from(this.selectedList.children);
+        if (selectedItems.length === 0) {
+            this.inputElement.focus();
+            return;
+        }
+
+        if (document.activeElement !== null) {
+            const currentFocusedItemIndex: number = selectedItems.indexOf(
+                document.activeElement
+            );
+            let newFocusedItemIndex = Math.min(
+                selectedItems.length,
+                Math.max(0, currentFocusedItemIndex + increment)
+            );
+            if (newFocusedItemIndex === selectedItems.length) {
+                this.inputElement.focus();
+            } else {
+                (selectedItems[newFocusedItemIndex] as HTMLElement).focus();
+            }
+        }
+    }
 
     private setFocusedOption = (optionIndex: number): void => {
         if (optionIndex === this.listboxFocusIndex) {
@@ -436,6 +484,7 @@ export class Picker extends FASTElement {
         }
 
         this.listboxOpen = false;
+        this.listboxFocusIndex = -1;
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");

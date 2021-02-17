@@ -18,7 +18,7 @@ export function createPickerTemplate(
             :defaultItemTemplate=${itemTemplate}
             :defaultOptionTemplate=${optionTemplate}
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
-            @keydown="${(x, c) => x.handleInputKeyDown(c.event as KeyboardEvent)}"
+            @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         >
             <slot name="list-region"></slot>
 
