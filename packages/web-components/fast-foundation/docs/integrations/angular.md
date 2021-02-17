@@ -87,7 +87,7 @@ export class AppComponent {
   exampleTextField = '';
 
   onClick() {
-    console.log(exampleTextField);
+    console.log(this.exampleTextField);
   }
 }
 ```
