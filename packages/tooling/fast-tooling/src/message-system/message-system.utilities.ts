@@ -4,7 +4,11 @@ import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
-import { getLinkedDataDictionary, getLinkedDataList } from "./data";
+import {
+    getLinkedDataDictionary,
+    getLinkedDataList,
+    updateDataDictionaryDisplayText,
+} from "./data";
 import { MessageSystemType } from "./types";
 import {
     DataDictionaryMessageIncoming,
@@ -407,6 +411,23 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
                 options: data.options,
+            };
+        case MessageSystemDataTypeAction.updateDisplayText:
+            dataDictionary = updateDataDictionaryDisplayText(
+                dataDictionary,
+                data.dictionaryId,
+                data.displayText
+            );
+            navigationDictionary = getNavigationDictionary(
+                schemaDictionary,
+                dataDictionary
+            );
+
+            return {
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.updateDisplayText,
+                navigationDictionary,
+                dataDictionary,
             };
     }
 }

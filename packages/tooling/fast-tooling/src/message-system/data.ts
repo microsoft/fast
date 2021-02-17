@@ -152,3 +152,16 @@ export function getLinkedDataList(
 
     return linkedDataIds;
 }
+
+/**
+ * Updates display text within the data dictionary
+ */
+export function updateDataDictionaryDisplayText(
+    dataDictionary: DataDictionary<unknown>,
+    dictionaryId: string,
+    displayText: string
+): DataDictionary<unknown> {
+    dataDictionary[0][dictionaryId].displayText = displayText;
+
+    return dataDictionary;
+}
