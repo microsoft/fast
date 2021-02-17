@@ -1,10 +1,5 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import TextAreaTemplate from "./fixtures/text-area.html";
-import { FASTTextArea } from ".";
-
-// Prevent tree-shaking
-FASTTextArea;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Text Area",
