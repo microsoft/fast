@@ -39,12 +39,12 @@ export class AccordionItem extends FASTElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // (undocumented)
-    collapsedIcon(): import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+    collapsedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
     // @internal (undocumented)
     expandbutton: HTMLElement;
     expanded: boolean;
     // (undocumented)
-    expandedIcon(): import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+    expandedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
     headinglevel: 1 | 2 | 3 | 4 | 5 | 6;
     id: string;
 }

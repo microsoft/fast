@@ -73,9 +73,31 @@ As defined by the W3C:
 - start
 - end
 
-*Functions*
-- `expandedIcon()` - Used to generate a default icon in the `expanded-icon` slot.
-- `collapsedIcon()` - Used to generate a default icon in the `collapsed-icon` slot.
+*Observable*
+- `expandedIcon` - A property used to override the default icon in the `expanded-icon` slot.
+- `collapsedIcon` - A property used to override the default icon in the `collapsed-icon` slot.
+
+```ts
+const expandedIcon = html`
+        <svg>
+            <path/>
+        </svg>
+`
+
+ const collapsedIcon = html`
+    <svg>
+        <path/>
+    </svg>
+ `
+
+export class MyAccordionItem extends AccordionItem {
+    constructor() {
+        super();
+        this.expandedIcon = expandedArrorIcon;
+        this.collapsedIcon = collapsedArrorIcon;
+    }
+}
+```
 
 ### Anatomy and Appearance
 
