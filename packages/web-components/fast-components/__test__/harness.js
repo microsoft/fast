@@ -2,7 +2,7 @@
 import { chromium, firefox, webkit } from "playwright";
 
 const selectedBrowser = process.env.PW_BROWSER || "chromium";
-const FixtureURL = process.env.FIXTUREURL;
+const FixtureURL = process.env.FIXTURE_URL;
 const fixture = process.env.FIXTURE || "index.html";
 const expressPort = process.env.PW_PORT || 7001;
 

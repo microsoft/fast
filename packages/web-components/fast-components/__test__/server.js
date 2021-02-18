@@ -2,7 +2,7 @@
 import path from "path";
 import express from "express";
 
-const useLocalServer = process.env.USELOCAL !== "false";
+const useLocalServer = process.env.USE_LOCAL !== "false";
 const expressPort = process.env.PORT || 7001;
 
 let server;
