@@ -17,6 +17,8 @@ function createItemTemplate(): ViewTemplate {
             role="listitem"
             tabindex="0"
             @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
+            @keydown="${(x, c) =>
+                c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
         >
             ${x => x}
         </button>
