@@ -276,6 +276,66 @@ export interface ColumnDefinition {
     title?: string;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedCombobox" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Combobox" because one of its declarations is marked as @internal
+//
+// @public
+export class Combobox extends FormAssociatedCombobox {
+    autocomplete: "inline" | "list" | "both" | "none" | undefined;
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
+    // @internal
+    disabledChanged(prev: boolean, next: boolean): void;
+    displayValue: string;
+    filteredOptions: ListboxOption[];
+    // @internal
+    focusoutHandler(e: FocusEvent): boolean | void;
+    // @internal
+    formResetCallback: () => void;
+    // (undocumented)
+    getNextInlineOption(increment: number): void;
+    // @internal
+    handleTypeAhead: () => undefined;
+    // (undocumented)
+    inputHandler(e: InputEvent): boolean | void;
+    // @internal
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    listboxId: string;
+    // @internal
+    maxHeight: number;
+    open: boolean;
+    // (undocumented)
+    protected openChanged(): void;
+    set options(value: ListboxOption[]);
+    // (undocumented)
+    get options(): ListboxOption[];
+    position: SelectPosition;
+    positionAttribute: SelectPosition;
+    role: SelectRole;
+    // @internal (undocumented)
+    setDefaultSelectedOption(): void;
+    setPositioning(): void;
+    // @internal
+    slottedOptionsChanged(prev: any, next: any): void;
+    // @internal (undocumented)
+    typeaheadBufferChanged(prev: string | undefined, next: string): void;
+    get value(): string;
+    set value(next: string);
+    }
+
+// @internal (undocumented)
+export interface Combobox extends StartEnd, DelegatesARIACombobox {
+}
+
+// @public
+export const ComboboxTemplate: import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
+
 // @alpha
 export interface ComponentPresentation {
     // (undocumented)
@@ -590,6 +650,13 @@ export class DelegatesARIAButton {
 
 // @internal
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+}
+
+// @public
+export class DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
+    ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
+    ariaExpanded: "true" | "false" | undefined;
+    ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1054,7 +1121,7 @@ export class Listbox extends FASTElement {
     protected focusAndScrollOptionIntoView(): void;
     // @internal (undocumented)
     focusinHandler(e: FocusEvent): void;
-    handleTypeAhead(key: any): void;
+    handleTypeAhead: (key: string) => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
@@ -1083,8 +1150,16 @@ export class Listbox extends FASTElement {
     // (undocumented)
     slottedOptionsChanged(prev: any, next: any): void;
     // @internal
+    protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+    // @internal (undocumented)
+    protected typeaheadBuffer: string;
+    // (undocumented)
+    typeaheadBufferChanged(prev: string, next: string): void;
+    // @internal
     protected typeAheadExpired: boolean;
-    }
+    // @internal (undocumented)
+    protected typeaheadTimeout: number;
+}
 
 // @internal (undocumented)
 export interface Listbox extends DelegatesARIAListbox {
@@ -1110,7 +1185,7 @@ export class ListboxOption extends FASTElement {
     initialValueChanged(previous: string, next: string): void;
     // (undocumented)
     get label(): string;
-    // (undocumented)
+    // @internal (undocumented)
     proxy: HTMLOptionElement;
     selected: boolean;
     selectedAttribute: boolean;
@@ -1120,11 +1195,10 @@ export class ListboxOption extends FASTElement {
     protected selectedChanged(): void;
     // (undocumented)
     get text(): string;
+    set value(next: string);
     // (undocumented)
-    value: string;
-    // (undocumented)
-    valueChanged(previous: string, next: string): void;
-}
+    get value(): string;
+    }
 
 // @internal (undocumented)
 export interface ListboxOption extends StartEnd {
