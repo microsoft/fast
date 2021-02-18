@@ -8,7 +8,7 @@ FASTAnchoredRegion;
 
 /**
  * The FAST Tooltip Custom Element. Implements {@link @microsoft/fast-foundation#Tooltip},
- * {@link @microsoft/fast-foundation#TooltipTemplate}
+ * {@link @microsoft/fast-foundation#createTooltipTemplate}
  *
  *
  * @public

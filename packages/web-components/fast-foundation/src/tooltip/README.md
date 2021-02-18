@@ -9,16 +9,19 @@ The `fast-tooltip` component is used provide extra information about another ele
 
 ## Usage
 
-```html live
-<fast-design-system-provider use-defaults>
-    <fast-button id="mybutton">
-       Hover me for more info
-    </fast-button>
-    <fast-tooltip anchor="mybutton" position="right">
-      helpful text
-    </fast-tooltip>
-</fast-design-system-provider>
+```html
+      <div>
+          <fast-button id="testbutton">
+              Hover me for more info
+          </fast-button>
+          <fast-tooltip id="testtip">
+              helpful text
+          </fast-tooltip>
+      </div>
 ```
+
+See [Component Explorer](https://explore.fast.design/components/fast-tooltip) for usage examples.
+
 ---
 
 ## Applying custom styles
