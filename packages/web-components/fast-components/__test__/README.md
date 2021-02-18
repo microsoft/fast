@@ -5,7 +5,7 @@
 The general workflow for running functional tests with Playwright:
 
 1. Build `*.pw.spec.ts` files with `tsc`, output to `dist/`. These are the files that Mocha will run directly.
-2. Build fixtures and distribution files with `rollup`, ouptut to `public/`. so Playwright can navigate to them in the browser.
+2. Build fixtures and distribution files with `rollup`, ouptut to `public/`, so Playwright can navigate to them in the browser.
 3. Run Mocha:
     * Before running any tests, start a local server to host the fixtures. This can be skipped for CI environments (see the "Environment Variables" section below).
     * Before starting the test suite, open the browser with Playwright.
