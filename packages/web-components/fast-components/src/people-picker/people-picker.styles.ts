@@ -27,6 +27,10 @@ export const PeoplePickerStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
     }
+
+    .region {
+        z-index: 10000;
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

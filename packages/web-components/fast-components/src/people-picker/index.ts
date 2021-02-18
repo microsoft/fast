@@ -20,7 +20,7 @@ function createItemTemplate(): ViewTemplate {
             @keydown="${(x, c) =>
                 c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
         >
-            ${x => x}
+            <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
         </button>
     `;
 }
@@ -32,7 +32,7 @@ function createOptionTemplate(): ViewTemplate {
             tabindex="-1"
             @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
         >
-            ${x => x}
+            <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
         </button>
     `;
 }

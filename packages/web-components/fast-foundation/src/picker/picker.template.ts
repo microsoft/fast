@@ -26,12 +26,13 @@ export function createPickerTemplate(
                 x => x.listboxOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
+                    class="region"
                     fixed-placement="true"
                     vertical-positioning-mode="dynamic"
                     vertical-scaling="content"
                     vertical-inset="false"
                     horizontal-positioning-mode="dynamic"
-                    horizontal-scaling="anchor"
+                    horizontal-scaling="content"
                     horizontal-inset="true"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}

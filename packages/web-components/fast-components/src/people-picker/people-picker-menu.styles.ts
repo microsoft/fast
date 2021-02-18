@@ -22,7 +22,9 @@ import {
 
 export const PeoplePickerMenuStyles = css`
     :host {
+        z-index: 10000;
         display: flex;
+        width: 300px;
         flex-direction: column;
     }
 `.withBehaviors(
