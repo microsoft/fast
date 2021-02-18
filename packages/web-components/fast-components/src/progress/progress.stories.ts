@@ -1,13 +1,8 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/linear.html";
-import { FASTProgress } from "./index";
-
-// Prevent tree-shaking
-FASTProgress;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Progress",
 };
 
-export const Base = () => Examples;
+export const Progress = () => Examples;
