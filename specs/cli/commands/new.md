@@ -54,10 +54,9 @@ $ Would you like to define a Design System Provider [multiple-choice]?
 ```
 ├── my-project/
 |   ├── .storybook/
-|   ├── dist/
 |   ├── docs/
 |   └── src/
-|       ├── __Test__
+|       ├── __test__
 |       ├── component-1/
 |       ├── component-2/
 |       ├── ...

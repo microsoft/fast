@@ -1,7 +1,7 @@
 # FAST Generate (WIP)
 
 ## Overview
-FAST `generate` is a command that is used to scaffold out the file structure of a new component in a FAST project.
+FAST `generate` is a command that is used to scaffold out file structures for resources such as a new component in a FAST project. 
 
 ## Use Cases
 - A Front-End Engineer can generate a new component file structure in FAST using a single command in FAST CLI
