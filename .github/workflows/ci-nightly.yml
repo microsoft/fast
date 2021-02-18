@@ -11,11 +11,6 @@ jobs:
   build_linux:
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
-      GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-      GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
-
     steps:
     - uses: actions/checkout@v2
 
