@@ -56,7 +56,7 @@ jobs:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Run Semantic-Release
-       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       ru: npx semantic-release
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
