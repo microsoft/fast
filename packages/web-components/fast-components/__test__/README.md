@@ -39,7 +39,7 @@ Both `server.js` and `harness.js` are included as `require` entries in `.mocharc
 
 | variable | description |
 |-|-|
-| `PW_BROWSER` | Target a specific Playwright browser. Values are `chromium`, `firefox`, and `webkit`. |
+| `PLAYWRIGHT_BROWSER` | Target a specific Playwright browser. Values are `chromium`, `firefox`, and `webkit`. |
 | `FIXTURE` | Override the fixture file that Playwright will use for all tests. Values depend on available fixtures in `fixtures/`, currently `index.html` or `iife.html`. Defaults to `index.html`. |
 | `FIXTURE_URL` | Override the entire fixture URL that Playwright will use for all tests. Defaults to `http://localhost:7001/index.html`. |
 | `USE_LOCAL` | When set to `false`, the local Express server initialization will be skipped. |
@@ -58,5 +58,5 @@ Both `server.js` and `harness.js` are included as `require` entries in `.mocharc
 * Re-run the tests in a different browser, without rebuilding everything:
 
   ```bash
-  PW_BROWSER=firefox yarn test-pw
+  PLAYWRIGHT_BROWSER=firefox yarn test-pw
   ```
