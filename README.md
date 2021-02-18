@@ -122,3 +122,14 @@ Because FAST has abstracted base components from their style, you get a head sta
 * Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
 * Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose).
 * Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+
+- [x] Only allow squash merging of pull requests
+- [x] Install https://github.com/apps/semantic-pull-requests
+- [x] Create npm token using `npm token create` or https://www.npmjs.com/settings
+- [x] Add token to repo secrets as `SEMANTIC_RELEASE_TOKEN`
+- [x] Add release workflow file to `ci-nightly.yml`
+- [x] Set `version` to `0.0.0-development` in package.json
+- [x] `npm i -D semantic-release`
+- [x] Use semantic commit messages
+- [x] Create a pull request

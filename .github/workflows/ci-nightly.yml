@@ -1,7 +1,7 @@
 name: CI - FAST Publish
 
 on:
-  pull_request:
+  push:
     branches:
     - master
   # schedule:
@@ -26,8 +26,20 @@ jobs:
       run: |
         git config user.name ${{ env.GITHUB_PUBLISH_USER }}
         git config user.email ${{ env.GITHUB_PUBLISH_EMAIL }}
-        git remote set-url origin https://${{GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
-    
+    #git remote set-url origin https://${{GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+          
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
@@ -37,8 +49,21 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream
 
+    - name: Upload Coverage Reports
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: npx codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Run Semantic-Release
+       if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      ru: npx semantic-release
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SEMANTIC_RELEASE_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+
     - name: Publish NPM changed packages
       run: |
         npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
         git reset --hard origin/master
-    
+
