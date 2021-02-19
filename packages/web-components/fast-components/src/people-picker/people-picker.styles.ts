@@ -31,12 +31,21 @@ export const PeoplePickerStyles = css`
     .region {
         z-index: 10000;
         overflow: hidden;
+        display: flex;
     }
 
     .loaded {
         transition-property: top, right, bottom, left;
         transition-duration: 60ms;
         transition-timing-function: ease;
+    }
+
+    .bottom {
+        flex-direction: column;
+    }
+
+    .top {
+        flex-direction: column-reverse;
     }
 `.withBehaviors(
     accentFillActiveBehavior,
