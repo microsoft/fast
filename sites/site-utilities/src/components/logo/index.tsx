@@ -19,9 +19,9 @@ const backgroundStyle = {
     backgroundColor: "var(--neutral-fill-rest)",
 };
 const headerStyle = {
-    fontSize: "14px",
+    fontSize: "var(--type-ramp-base-font-size)",
     fontWeight: 600,
-    lineHeight: "20px",
+    lineHeight: "var(--type-ramp-base-line-height)",
 };
 const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };

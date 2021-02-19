@@ -7,7 +7,7 @@ import {
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
 import React from "react";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
 import {
     ActionToggle,
