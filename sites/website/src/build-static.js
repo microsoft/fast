@@ -1,28 +1,18 @@
 // FIXME: #3298 Merge fast-website and website projects to replace temporary build/copy script
 
 /* eslint-env node */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const copyfiles = require("copyfiles");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const fastWebsiteConfig = require("@microsoft/fast-website/webpack.prod.js");
+const copy = require("../../../build/copy");
 
 function getPackageDir(pkg) {
     return path.dirname(require.resolve(`${pkg}/package.json`));
-}
-
-function copy(files) {
-    return new Promise((resolve, reject) => {
-        return copyfiles(files, copyFilesConfig, err =>
-            err ? reject(err.details) : resolve()
-        );
-    }).catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
 }
 
 const outputPath = path.resolve(__dirname, "../static");
@@ -30,8 +20,6 @@ const outputPath = path.resolve(__dirname, "../static");
 const utilitiesDir = getPackageDir("@microsoft/site-utilities");
 const fastComponentsDir = getPackageDir("@microsoft/fast-components");
 const utilitiesAssets = path.resolve(utilitiesDir, "statics/assets");
-
-const copyFilesConfig = { flat: true, verbose: true, up: true };
 
 const config = merge(fastWebsiteConfig, {
     output: { path: outputPath },
@@ -65,15 +53,15 @@ compiler.run(async (err, stats) => {
         info.warnings.forEach(w => console.warn(w));
     }
 
-    await copy([
-        ...[
+    await copy(
+        [
             `${utilitiesAssets}/favicon.ico`,
             `${utilitiesAssets}/fast-inline-logo.svg`,
             `${utilitiesAssets}/fast-inline-logo-light.svg`,
             `${fastComponentsDir}/dist/fast-components.iife.min.js`,
         ].map(x => require.resolve(x)),
-        outputPath,
-    ]);
+        outputPath
+    );
 
-    await copy([`${utilitiesAssets}/badges/*.svg`, `${outputPath}/badges`]);
+    await copy([`${utilitiesAssets}/badges/*.svg`], `${outputPath}/badges`);
 });
