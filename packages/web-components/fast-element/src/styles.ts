@@ -51,7 +51,7 @@ export type ElementStyleFactory = (
  * @public
  */
 export abstract class ElementStyles {
-    private targets = new WeakSet<StyleTarget>();
+    private targets: WeakSet<StyleTarget> = new WeakSet();
 
     /** @internal */
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
@@ -244,12 +244,25 @@ export class StyleElementStyles extends ElementStyles {
         super.removeStylesFrom(target);
     }
 
-    public isAttachedTo(target: StyleTarget) {
+    public isAttachedTo(target: StyleTarget): boolean {
         return super.isAttachedTo(this.normalizeTarget(target));
     }
 
-    private normalizeTarget(target: StyleTarget) {
+    private normalizeTarget(target: StyleTarget): StyleTarget {
         return target === document ? document.body : target;
+    }
+}
+
+/**
+ * Directive for use in ElementStyle
+ */
+export class CSSDirective {
+    public createCSS(): string {
+        return "";
+    }
+
+    public createBehavior(): Behavior | undefined {
+        return undefined;
     }
 }
 
@@ -263,10 +276,11 @@ export class StyleElementStyles extends ElementStyles {
  */
 export function css(
     strings: TemplateStringsArray,
-    ...values: ComposableStyles[]
+    ...values: (ComposableStyles | CSSDirective)[]
 ): ElementStyles {
     const styles: ComposableStyles[] = [];
     let cssString = "";
+    const behaviors: Behavior[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
@@ -279,6 +293,13 @@ export function css(
             }
 
             styles.push(value);
+        } else if (value instanceof CSSDirective) {
+            cssString += value.createCSS();
+            const behavior = value.createBehavior();
+
+            if (behavior) {
+                behaviors.push(behavior);
+            }
         } else {
             cssString += value;
         }
@@ -290,5 +311,11 @@ export function css(
         styles.push(cssString);
     }
 
-    return ElementStyles.create(styles);
+    const elementStyles = ElementStyles.create(styles);
+
+    if (behaviors.length) {
+        elementStyles.withBehaviors(...behaviors);
+    }
+
+    return elementStyles;
 }
