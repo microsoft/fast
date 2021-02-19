@@ -24,6 +24,7 @@ export const PeoplePickerListStyles = css`
     :host {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         z-index: 1000;
     }
 `.withBehaviors(

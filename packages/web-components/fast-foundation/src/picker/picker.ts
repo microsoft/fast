@@ -8,7 +8,6 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
-import { eventTouchEnd } from "../../../../utilities/fast-web-utilities/dist";
 import { AnchoredRegion } from "../anchored-region";
 import { PickerMenu } from "./picker-menu";
 
@@ -376,6 +375,20 @@ export class Picker extends FASTElement {
             case "ArrowLeft": {
                 this.incrementFocusedItem(-1);
                 return false;
+            }
+
+            case "Delete":
+            case "Backspace": {
+                if (
+                    this.inputElement.value.length === 0 &&
+                    this.selectedOptions.length > 0
+                ) {
+                    this.selectedOptions.splice(this.selectedOptions.length - 1, 1);
+                    this.toggleMenu(false);
+                    return false;
+                } else {
+                    return true;
+                }
             }
         }
         this.toggleMenu(true);
