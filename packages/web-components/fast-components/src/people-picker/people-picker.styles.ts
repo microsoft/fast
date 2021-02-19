@@ -35,8 +35,8 @@ export const PeoplePickerStyles = css`
 
     .loaded {
         transition-property: top, right, bottom, left;
-        transition-duration: 50ms;
-        transition-timing-function: linear;
+        transition-duration: 60ms;
+        transition-timing-function: ease;
     }
 `.withBehaviors(
     accentFillActiveBehavior,
