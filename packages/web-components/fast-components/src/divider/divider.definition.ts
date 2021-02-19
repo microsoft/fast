@@ -12,8 +12,9 @@ export const fastDividerDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "role",
+                    title: "Role",
                     type: DataType.string,
-                    description: "The role attribute",
+                    description: "The ARIA role for the divider",
                     values: [
                         {
                             name: DividerRole.separator,
