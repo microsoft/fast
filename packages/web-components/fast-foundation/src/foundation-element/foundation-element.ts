@@ -1,23 +1,35 @@
 import {
+    AttributeConfiguration,
+    ComposableStyles,
     ElementStyles,
     ElementViewTemplate,
     FASTElement,
+    html,
     observable,
-    PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
     DesignSystemRegistrationContext,
+    ElementDefinitionContext,
 } from "../design-system";
 import { Container, Registration, Registry } from "../di";
+
+type LazyFoundationOption<T, K extends FoundationElementDefinition> = (
+    context: ElementDefinitionContext,
+    definition: OverrideFoundationElementDefinition<K>
+) => T;
+
+type EagerOrLazyFoundationOption<T, K extends FoundationElementDefinition> =
+    | T
+    | LazyFoundationOption<T, K>;
 
 /**
  * An element definition used to define a FoundationElement when registered through the design
  * system registry.
  * @alpha
  */
-export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
+export interface FoundationElementDefinition {
     /**
      * The non-prefixed name of the component.
      */
@@ -27,15 +39,49 @@ export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "na
      * The element constructor
      */
     type: typeof FASTElement;
-};
+
+    /**
+     * The template to render for the custom element.
+     */
+    readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
+
+    /**
+     * The styles to associate with the custom element.
+     */
+    readonly styles?: EagerOrLazyFoundationOption<
+        ComposableStyles | ComposableStyles[],
+        this
+    >;
+
+    /**
+     * The custom attributes of the custom element.
+     */
+    readonly attributes?: EagerOrLazyFoundationOption<
+        (AttributeConfiguration | string)[],
+        this
+    >;
+
+    /**
+     * Options controlling the creation of the custom element's shadow DOM.
+     */
+    readonly shadowOptions?: EagerOrLazyFoundationOption<
+        Partial<ShadowRootInit> | null,
+        this
+    >;
+
+    /**
+     * Options controlling how the custom element is defined with the platform.
+     */
+    readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
+}
 
 /**
  * A set of properties which the component consumer can override during the element registration process.
  * @alpha
  */
-export type OverrideFoundationElementDefinition = Partial<
-    Omit<FoundationElementDefinition, "type">
-> & { prefix?: string };
+export type OverrideFoundationElementDefinition<
+    T extends FoundationElementDefinition
+> = Partial<Omit<T, "type">> & { prefix?: string };
 
 /**
  * Defines a foundation element class that:
@@ -106,25 +152,41 @@ export class FoundationElement extends FASTElement {
      * @param elementDefinition - The definition of the element to create the registry configuration
      * function for.
      */
-    public static configuration(
-        elementDefinition: FoundationElementDefinition
-    ): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry {
-        return (overrideDefinition: OverrideFoundationElementDefinition = {}): Registry =>
+    public static configuration<
+        T extends FoundationElementDefinition = FoundationElementDefinition
+    >(
+        elementDefinition: T
+    ): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => Registry {
+        return (
+            overrideDefinition: OverrideFoundationElementDefinition<T> = {}
+        ): Registry =>
             new FoundationElementRegistry(elementDefinition, overrideDefinition);
     }
 }
 
-class FoundationElementRegistry {
+function resolveOption<T, K extends FoundationElementDefinition>(
+    option: EagerOrLazyFoundationOption<T, K>,
+    context: ElementDefinitionContext,
+    definition: OverrideFoundationElementDefinition<K>
+): T {
+    if (typeof option === "function") {
+        return (option as LazyFoundationOption<T, K>)(context, definition);
+    }
+
+    return option;
+}
+
+class FoundationElementRegistry<T extends FoundationElementDefinition> {
     constructor(
-        private elementDefinition: FoundationElementDefinition,
-        private overrideDefinition: OverrideFoundationElementDefinition
+        private elementDefinition: T,
+        private overrideDefinition: OverrideFoundationElementDefinition<T>
     ) {}
 
     public register(container: Container) {
         const definition = {
             ...this.elementDefinition,
             ...this.overrideDefinition,
-        };
+        } as OverrideFoundationElementDefinition<T>;
 
         const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
@@ -132,8 +194,8 @@ class FoundationElementRegistry {
 
         context.tryDefineElement(name, this.elementDefinition.type, x => {
             const presentation = new DefaultComponentPresentation(
-                definition.template,
-                definition.styles
+                resolveOption(definition.template, x, definition),
+                resolveOption(definition.styles, x, definition)
             );
 
             x.container.register(
@@ -141,9 +203,9 @@ class FoundationElementRegistry {
             );
 
             x.defineElement({
-                elementOptions: definition.elementOptions,
-                shadowOptions: definition.shadowOptions,
-                attributes: definition.attributes,
+                elementOptions: resolveOption(definition.elementOptions, x, definition),
+                shadowOptions: resolveOption(definition.shadowOptions, x, definition),
+                attributes: resolveOption(definition.attributes, x, definition),
             });
         });
     }
