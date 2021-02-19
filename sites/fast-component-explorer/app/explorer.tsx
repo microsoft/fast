@@ -7,17 +7,12 @@ import {
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
 import React from "react";
-import {
-    neutralLayerL1,
-    neutralLayerL2,
-    StandardLuminance,
-} from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { ListboxItemProps } from "@microsoft/fast-components-react-base";
 import {
     ActionToggle,
     ActionToggleAppearance,
     ActionToggleProps,
-    Background,
     Select,
     SelectOption,
 } from "@microsoft/fast-components-react-msft";
@@ -132,20 +127,12 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                 <div className={this.canvasClassNames}>
                     {this.renderCanvasOverlay()}
                     <div className={this.menuBarClassNames}>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.mobileMenuBarClassNames}
-                        >
+                        <div className={this.mobileMenuBarClassNames}>
                             {this.renderMobileNavigationTrigger()}
                             <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
-                        </Background>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.canvasMenuBarClassNames}
-                        >
+                        </div>
+                        <div className={this.canvasMenuBarClassNames}>
                             <div className={this.menuItemRegionClassNames}>
                                 {this.renderScenarioSelect()}
                             </div>
@@ -169,7 +156,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                     disabled={!this.state.previewReady}
                                 />
                             </div>
-                        </Background>
+                        </div>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [
@@ -194,7 +181,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 messageSystem={this.fastMessageSystem as MessageSystem}
                             />
                         </div>
-                        <Background value={neutralLayerL1} className={"dev-tools"}>
+                        <div className={"dev-tools"}>
                             {renderDevToolsTabs({
                                 codeRenderCallback: (e: HTMLElement) => {
                                     this.webComponentEditorContainerRef = e;
@@ -227,7 +214,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 onToggle={this.handleDevToolsToggle}
                                 className={"dev-tools-trigger"}
                             />
-                        </Background>
+                        </div>
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>

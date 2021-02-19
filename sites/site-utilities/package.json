@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "@microsoft/fast-components": "^1.18.1",
-    "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-foundation": "^1.15.1",
     "@microsoft/fast-tooling": "^0.16.0",
     "@microsoft/fast-tooling-react": "^2.6.0",
