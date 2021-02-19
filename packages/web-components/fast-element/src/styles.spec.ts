@@ -4,6 +4,8 @@ import {
     StyleElementStyles,
     StyleTarget,
     ElementStyles,
+    CSSDirective,
+    css,
 } from "./styles";
 import { DOM } from "./dom";
 
@@ -183,3 +185,35 @@ describe("ElementStyles", () => {
         });
     }
 });
+
+describe("css", () => {
+    describe("with a CSSDirective", () => {
+        it("should interpolate the product of CSSDirective.createCSS() into the resulting ElementStyles CSS", () => {
+            class Directive extends CSSDirective {
+                createCSS() {
+                    return "red";
+                }
+            }
+
+            const styles = css`host: {color: ${new Directive()};}`;
+            expect(styles.styles.some(x => x === "host: {color: red;}")).to.equal(true)
+        });
+
+        it("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", () => {
+            const behavior = {
+                bind(){},
+                unbind(){}
+            }
+
+            class Directive extends CSSDirective {
+                createBehavior() {
+                    return behavior;
+                }
+            }
+
+            const styles = css`${new Directive()}`;
+
+            expect(styles.behaviors?.includes(behavior)).to.equal(true)
+        });
+    })
+})
