@@ -254,13 +254,21 @@ export class StyleElementStyles extends ElementStyles {
 }
 
 /**
- * Directive for use in ElementStyle
+ * Directive for use in {@link css}.
  */
 export class CSSDirective {
+    /**
+     * Creates a CSS fragment to interpolate into the CSS document.
+     * @returns - the string to interpolate into CSS
+     */
     public createCSS(): string {
         return "";
     }
 
+    /**
+     * Creates a behavior to bind to the host element.
+     * @returns - the behavior to bind to the host element, or undefined.
+     */
     public createBehavior(): Behavior | undefined {
         return undefined;
     }
