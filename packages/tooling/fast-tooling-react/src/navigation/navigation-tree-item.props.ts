@@ -83,12 +83,17 @@ export interface NavigationTreeItemProps
     /**
      * The change handler for updating an items display text
      */
-    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    handleInputChange: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
      * The blur handler for defocusing the display text input
      */
-    handleBlur: React.FocusEventHandler<HTMLInputElement>;
+    handleInputBlur: React.FocusEventHandler<HTMLInputElement>;
+
+    /**
+     * The keydown handler for the display text input
+     */
+    handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
 
     /**
      * The keyDown handler

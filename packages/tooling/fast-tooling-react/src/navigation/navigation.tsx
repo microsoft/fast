@@ -8,6 +8,7 @@ import {
     keyCodeEnter,
     keyCodeHome,
     keyCodeSpace,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import Foundation, {
     FoundationProps,
@@ -294,8 +295,11 @@ class Navigation extends Foundation<
                     dictionaryId,
                     navigationConfigId
                 )}
-                handleChange={this.handleNavigationItemChangeDisplayText(dictionaryId)}
-                handleBlur={this.handleNavigationItemBlurDisplayTextInput()}
+                handleInputChange={this.handleNavigationItemChangeDisplayText(
+                    dictionaryId
+                )}
+                handleInputBlur={this.handleNavigationItemBlurDisplayTextInput()}
+                handleInputKeyDown={this.handleNavigationItemKeyDownDisplayTextInput()}
                 handleKeyDown={this.handleNavigationItemKeyDown(
                     dictionaryId,
                     navigationConfigId
@@ -546,17 +550,53 @@ class Navigation extends Foundation<
     };
 
     /**
-     * Update the active item
+     * Handle clicks on a navigation item
      */
     private handleNavigationItemClick = (
+        dictionaryId: string,
+        navigationConfigId: string
+    ): ((event: React.MouseEvent<HTMLElement>) => void) => {
+        let timer;
+
+        return (event: React.MouseEvent<HTMLElement>): void => {
+            clearTimeout(timer);
+
+            if (event.detail === 1) {
+                timer = setTimeout(
+                    this.handleNavigationItemSingleClick(
+                        dictionaryId,
+                        navigationConfigId
+                    ),
+                    200
+                );
+            } else if (event.detail === 2) {
+                this.handleNavigationItemDoubleClick(dictionaryId, navigationConfigId)();
+            }
+        };
+    };
+
+    /**
+     * Update the active item
+     */
+    private handleNavigationItemSingleClick = (
+        dictionaryId: string,
+        navigationConfigId: string
+    ): (() => void) => {
+        return (): void => {
+            this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
+        };
+    };
+
+    /**
+     * Allows editing of the active item
+     */
+    private handleNavigationItemDoubleClick = (
         dictionaryId: string,
         navigationConfigId: string
     ): (() => void) => {
         return (): void => {
             if (this.isEditable(dictionaryId, navigationConfigId)) {
                 this.triggerNavigationEdit();
-            } else {
-                this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
             }
         };
     };
@@ -587,6 +627,24 @@ class Navigation extends Foundation<
             this.setState({
                 activeItemEditable: false,
             });
+        };
+    };
+
+    /**
+     * Handles key up on the active items display text
+     */
+    private handleNavigationItemKeyDownDisplayTextInput = (): ((
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) => void) => {
+        return (e: React.KeyboardEvent<HTMLInputElement>): void => {
+            if (e.target === e.currentTarget) {
+                switch (e.keyCode) {
+                    case keyCodeEnter:
+                        this.setState({
+                            activeItemEditable: false,
+                        });
+                }
+            }
         };
     };
 
