@@ -36,6 +36,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "aria-describedby",
+                    title: "Accessibility description ID",
                     description: "The HTML aria-describedby attribute",
                     type: DataType.string,
                     default: false,
@@ -43,6 +44,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "aria-labelledby",
+                    title: "Accessibility label ID",
                     description: "The HTML aria-labelledby attribute",
                     type: DataType.string,
                     default: false,
@@ -50,6 +52,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "aria-label",
+                    title: "Accessibility label",
                     description: "The HTML aria-label attribute",
                     type: DataType.string,
                     default: false,
