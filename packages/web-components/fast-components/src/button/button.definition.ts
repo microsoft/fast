@@ -12,7 +12,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 {
                     name: "appearance",
                     title: "Appearance",
-                    description: "The anchor's visual treatment",
+                    description: "The button's visual treatment",
                     type: DataType.string,
                     values: [
                         {
@@ -54,7 +54,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 {
                     name: "form",
                     title: "Form ID",
-                    description: "The id of a form to associate the element to",
+                    description: "The ID of a form to associate the element to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
@@ -129,6 +129,17 @@ export const fastButtonDefinition: WebComponentDefinition = {
                     type: DataType.string,
                     default: undefined,
                     required: false,
+                    values: [
+                        {
+                            name: "submit",
+                        },
+                        {
+                            name: "reset",
+                        },
+                        {
+                            name: "button",
+                        },
+                    ],
                 },
                 {
                     name: "value",

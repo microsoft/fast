@@ -12,7 +12,7 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
                 {
                     name: "expanded",
                     title: "Expanded",
-                    description: "Indicates whether tree item is expanded or not",
+                    description: "Whether tree item is expanded or not",
                     default: false,
                     required: false,
                     type: DataType.boolean,
@@ -20,7 +20,7 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
                 {
                     name: "selected",
                     title: "Selected",
-                    description: "Indicates if tree item is currently selected",
+                    description: "Whether tree item is selected or not",
                     default: false,
                     required: false,
                     type: DataType.boolean,

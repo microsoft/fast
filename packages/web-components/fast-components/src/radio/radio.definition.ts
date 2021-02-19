@@ -12,8 +12,7 @@ export const fastRadioDefinition: WebComponentDefinition = {
                 {
                     name: "checked",
                     title: "Checked",
-                    description:
-                        "Provides the default checked value of the form associated input element",
+                    description: "Whether or not this radio is checked by default",
                     default: undefined,
                     required: false,
                     type: DataType.boolean,

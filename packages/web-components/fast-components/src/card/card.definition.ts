@@ -13,7 +13,7 @@ export const fastCardDefinition: WebComponentDefinition = {
                     name: "background-color",
                     title: "Background color",
                     description:
-                        "An instance of the Design System Provider background color",
+                        "A color value from the neutral palette - sets the background color, but does not reset the design system palette",
                     type: DataType.string,
                     default: "",
                     required: false,
@@ -22,7 +22,7 @@ export const fastCardDefinition: WebComponentDefinition = {
                     name: "card-background-color",
                     title: "Card background color",
                     description:
-                        "Background color for the card which sets the context for the design system",
+                        "Background color for the card, which resets the neutral palette and context for the design system",
                     type: DataType.string,
                     default: "",
                     required: false,

@@ -30,7 +30,7 @@ export const fastBadgeDefinition: WebComponentDefinition = {
                     name: "color",
                     title: "Color",
                     description:
-                        "Sets the color to a CSS custom property of the attribute value - var(--badge-fill-[value])",
+                        "Sets the color to a CSS custom property of the attribute value - var(--badge-color-[value])",
                     type: DataType.string,
                     default: undefined,
                     required: false,

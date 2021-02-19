@@ -13,7 +13,7 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
                 {
                     name: "cell-type",
                     title: "Cell type",
-                    description: "The type of cell - default or columnheader.",
+                    description: "The type of cell",
                     type: DataType.string,
                     values: [
                         { name: DataGridCellTypes.default },

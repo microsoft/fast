@@ -14,7 +14,7 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
                     name: "grid-template-columns",
                     title: "Grid template columns",
                     description:
-                        "String that gets applied to the the css gridTemplateColumns attribute of child rows",
+                        "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
                     type: DataType.string,
                     default: undefined,
                     required: false,
@@ -22,7 +22,7 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
                 {
                     name: "row-type",
                     title: "Row type",
-                    description: "The type of row - default or header.",
+                    description: "The type of row",
                     type: DataType.string,
                     values: [
                         { name: DataGridRowTypes.default },

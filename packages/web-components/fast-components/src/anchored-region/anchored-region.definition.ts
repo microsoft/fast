@@ -17,7 +17,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "anchor",
-                    title: "Anchor",
+                    title: "Anchor ID",
                     type: DataType.string,
                     description:
                         "The HTML ID of the element the region is positioned relative to",
@@ -26,7 +26,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "viewport",
-                    title: "Viewport",
+                    title: "Viewport ID",
                     description:
                         "The HTML ID of the viewport the region is positioned relative to",
                     type: DataType.string,
@@ -50,7 +50,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     name: "horizontal-default-position",
                     title: "Horizontal default position",
                     description:
-                        "The default horizontal position of the region relative to the configured 'Anchor'",
+                        "The default horizontal position of the region relative to the configured 'Anchor ID'",
                     type: DataType.string,
                     values: [
                         { name: "start" },
@@ -107,7 +107,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     name: "vertical-default-position",
                     title: "Vertical default position",
                     description:
-                        "The default vertical position of the region relative to the configured 'Anchor'",
+                        "The default vertical position of the region relative to the configured 'Anchor ID'",
                     type: DataType.string,
                     values: [{ name: "top" }, { name: "bottom" }, { name: "unset" }],
                     default: "unset",

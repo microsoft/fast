@@ -98,7 +98,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 {
                     name: "disabled",
                     title: "Disabled",
-                    description: "Sets the disabled state of the number field",
+                    description: "Sets the disabled state of the text field",
                     type: DataType.boolean,
                     default: false,
                     required: false,

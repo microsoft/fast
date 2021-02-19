@@ -13,7 +13,8 @@ export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
                 {
                     name: "use-defaults",
                     title: "Use defaults",
-                    description: "Use default design system values",
+                    description:
+                        "When true, sets all design system values default - does not inherit",
                     type: DataType.boolean,
                     default: true,
                     required: false,
