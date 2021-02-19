@@ -12,7 +12,8 @@ export const fastListboxDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "role",
-                    description: "The role attribute",
+                    title: "Role",
+                    description: "The ARIA role for the listbox",
                     type: DataType.string,
                     default: ListboxRole.listbox,
                     required: true,
@@ -20,7 +21,8 @@ export const fastListboxDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the listbox",
                     type: DataType.boolean,
                     default: false,
                     required: false,

@@ -8,15 +8,7 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
             name: "fast-breadcrumb",
             title: "Breadcrumb",
             description: "The FAST breadcrumb element",
-            attributes: [
-                {
-                    name: "separator",
-                    description: "The separator attribute",
-                    type: DataType.string,
-                    default: "/",
-                    required: false,
-                },
-            ],
+            attributes: [],
             slots: [
                 {
                     name: "",

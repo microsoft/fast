@@ -11,14 +11,18 @@ export const fastCardDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "background-color",
-                    description: "The background color attribute",
+                    title: "Background color",
+                    description:
+                        "A color value from the neutral palette - sets the background color, but does not reset the design system palette",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "card-background-color",
-                    description: "The card background color attribute",
+                    title: "Card background color",
+                    description:
+                        "Background color for the card, which resets the neutral palette and context for the design system",
                     type: DataType.string,
                     default: "",
                     required: false,

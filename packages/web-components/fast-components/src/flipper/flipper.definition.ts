@@ -12,22 +12,26 @@ export const fastFlipperDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     type: DataType.boolean,
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the flipper",
                     default: true,
                     required: false,
                 },
                 {
                     name: "aria-hidden",
+                    title: "ARIA hidden",
                     type: DataType.boolean,
-                    description: "The aria-hidden attribute",
+                    description:
+                        "Flippers are often a duplicate method of navigation, so by default they are hidden from assistive technology (AT). When set to true, the element is exposed to AT",
                     default: true,
                     required: false,
                 },
                 {
                     name: "direction",
                     type: DataType.string,
-                    description: "The direction attribute",
+                    title: "Direction",
+                    description: "The navigation direction of the flipper",
                     values: [
                         {
                             name: FlipperDirection.previous,
