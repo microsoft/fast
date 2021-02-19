@@ -53,7 +53,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "form",
-                    title: "Form",
+                    title: "Form ID",
                     description: "The id of a form to associate the element to",
                     type: DataType.string,
                     default: undefined,
@@ -61,7 +61,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "formaction",
-                    title: "Formaction",
+                    title: "Form processing url",
                     description: "The HTML formaction attribute of the button",
                     type: DataType.string,
                     default: undefined,
@@ -69,7 +69,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "formenctype",
-                    title: "Formenctype",
+                    title: "Form encoding",
                     description: "The HTML formenctype attribute of the button",
                     type: DataType.string,
                     default: undefined,
@@ -77,15 +77,16 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "formmethod",
-                    title: "Formmethod",
+                    title: "Form submit method",
                     description: "The HTML formmethod attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
+                    values: [{ name: "post" }, { name: "get" }],
                 },
                 {
                     name: "formnovalidate",
-                    title: "Formnovalidate",
+                    title: "No form validation",
                     description: "The HTML formnovalidate attribute of the button",
                     type: DataType.boolean,
                     default: undefined,
@@ -93,7 +94,7 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "formtarget",
-                    title: "Formtarget",
+                    title: "Form Target",
                     description: "The HTML formtarget attribute of the button",
                     type: DataType.string,
                     default: undefined,

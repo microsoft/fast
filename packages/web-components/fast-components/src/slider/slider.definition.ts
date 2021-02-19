@@ -20,7 +20,7 @@ export const fastSliderDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "max",
-                    title: "Max",
+                    title: "Maximum",
                     description: "The maximum value",
                     type: DataType.string,
                     default: false,
@@ -28,7 +28,7 @@ export const fastSliderDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "min",
-                    title: "Min",
+                    title: "Minimum",
                     description: "The minimum value",
                     type: DataType.string,
                     default: false,
@@ -36,7 +36,7 @@ export const fastSliderDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "step",
-                    title: "Step",
+                    title: "Increment",
                     description: "Amount to increment or decrement the value by",
                     type: DataType.string,
                     default: false,

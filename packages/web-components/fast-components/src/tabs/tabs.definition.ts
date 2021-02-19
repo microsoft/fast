@@ -24,8 +24,8 @@ export const fastTabsDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "activeid",
-                    title: "Active id",
-                    description: "The HTML id of the active tab",
+                    title: "Active ID",
+                    description: "The HTML ID of the active tab",
                     default: undefined,
                     required: false,
                     type: DataType.string,

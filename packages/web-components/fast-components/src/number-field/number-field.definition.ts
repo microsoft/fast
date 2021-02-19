@@ -46,7 +46,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "list",
-                    title: "List",
+                    title: "List ID",
                     description: "Allows associating a datalist to the component",
                     required: false,
                     type: DataType.string,
@@ -54,7 +54,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "maxlength",
-                    title: "Maxlength",
+                    title: "Maximum length",
                     description: "The maximum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
@@ -62,7 +62,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "minlength",
-                    title: "Minlength",
+                    title: "Minimum length",
                     description: "The minimum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
@@ -114,7 +114,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "max",
-                    title: "Max",
+                    title: "Maximum",
                     description: "The maximum value",
                     type: DataType.string,
                     default: false,
@@ -122,7 +122,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "min",
-                    title: "Min",
+                    title: "Minimum",
                     description: "The minimum value",
                     type: DataType.string,
                     default: false,
@@ -130,7 +130,7 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "step",
-                    title: "Step",
+                    title: "Increment",
                     description: "Amount to increment or decrement the value by",
                     type: DataType.string,
                     default: false,

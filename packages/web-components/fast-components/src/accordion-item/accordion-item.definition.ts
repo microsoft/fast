@@ -11,8 +11,9 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "heading-level",
-                    title: "Heading level",
-                    description: "The aria-level value (1-6) for the item heading",
+                    title: "Level",
+                    description:
+                        "The aria-level value (1-6) for the item heading, representing its semantic hierarchy",
                     type: DataType.number,
                     default: 2,
                     required: false,
@@ -27,7 +28,8 @@ export const fastAccordionItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "id",
-                    description: "The HTML id attribute for the invoking element",
+                    title: "ID",
+                    description: "The HTML ID attribute for the invoking element",
                     type: DataType.string,
                     default: undefined,
                     required: false,

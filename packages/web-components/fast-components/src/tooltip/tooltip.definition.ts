@@ -20,9 +20,9 @@ export const fastTooltipDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "anchor",
-                    title: "Anchor",
+                    title: "Anchor ID",
                     description:
-                        "The HTML id of the element the region is positioned relative to",
+                        "The HTML ID of the element the region is positioned relative to",
                     type: DataType.string,
                     default: undefined,
                     required: false,

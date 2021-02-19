@@ -28,6 +28,7 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "appearance",
+                    title: "Appearance",
                     description: "The disclosure's visual treatment",
                     type: DataType.string,
                     values: [

@@ -13,7 +13,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
                     name: "fill",
                     title: "Fill",
                     description: "Indicates the Skeleton should have a filled style",
-                    type: DataType.string,
+                    type: DataType.boolean,
                     default: undefined,
                     required: false,
                 },
@@ -28,7 +28,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
                 },
                 {
                     name: "pattern",
-                    title: "Pattern",
+                    title: "Pattern URL",
                     description:
                         "Allows a reference to a hosted asset to be used rather than an inline SVG",
                     type: DataType.string,
@@ -37,6 +37,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
                 },
                 {
                     name: "shimmer",
+                    title: "Shimmer",
                     description:
                         "Indicates that the component has an activated shimmer effect",
                     type: DataType.boolean,

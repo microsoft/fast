@@ -11,8 +11,8 @@ export const fastBreadcrumbItemDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "href",
-                    title: "Href",
-                    description: "The HTML href attribute of the item",
+                    title: "URL",
+                    description: "The URL the item points to",
                     type: DataType.string,
                     default: "",
                     required: false,

@@ -12,6 +12,7 @@ export const fastSelectDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     description: "Sets the disabled state of the select",
                     type: DataType.boolean,
                     default: false,

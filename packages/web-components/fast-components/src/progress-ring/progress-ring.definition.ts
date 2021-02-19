@@ -20,7 +20,7 @@ export const fastProgressRingDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "min",
-                    title: "Min",
+                    title: "Minimum",
                     description: "The minimum value",
                     default: 0,
                     required: false,
@@ -28,7 +28,7 @@ export const fastProgressRingDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "max",
-                    title: "Max",
+                    title: "Maximum",
                     description: "The maximum value",
                     default: 100,
                     required: false,

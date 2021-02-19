@@ -60,7 +60,7 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "list",
-                    title: "List",
+                    title: "List ID",
                     description: "Allows associating a datalist to the component",
                     required: false,
                     type: DataType.string,
@@ -68,7 +68,7 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "maxlength",
-                    title: "Maxlength",
+                    title: "Maximum length",
                     description: "The maximum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
@@ -76,7 +76,7 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "minlength",
-                    title: "Minlength",
+                    title: "Minimum length",
                     description: "The minimum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
