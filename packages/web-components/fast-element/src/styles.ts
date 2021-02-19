@@ -255,6 +255,8 @@ export class StyleElementStyles extends ElementStyles {
 
 /**
  * Directive for use in {@link css}.
+ *
+ * @public
  */
 export class CSSDirective {
     /**
