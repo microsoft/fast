@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { ListboxRole } from "@microsoft/fast-foundation/dist/esm/listbox/listbox.options";
 import { DataType } from "@microsoft/fast-tooling";
 
@@ -7,6 +7,7 @@ export const fastListboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-listbox",
+            title: "Listbox",
             description: "The FAST listbox element",
             attributes: [
                 {
@@ -28,7 +29,8 @@ export const fastListboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "Supports fast-option or option elements",
                 },
             ],
         },

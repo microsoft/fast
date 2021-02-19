@@ -1,5 +1,5 @@
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { mapVSCodeParsedHTMLToDataDictionary } from "@microsoft/fast-tooling/dist/data-utilities/mapping.vscode-html-languageservice";
+import { mapVSCodeParsedHTMLToDataDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.vscode-html-languageservice";
 import { Scenario } from "../configs/data.props";
 import { schemaDictionary } from "./schema-dictionary";
 

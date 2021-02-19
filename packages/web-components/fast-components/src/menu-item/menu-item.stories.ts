@@ -1,13 +1,8 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import MenuItemTemplate from "./fixtures/menu-item.html";
-import { FASTMenuItem } from "./";
-
-// Prevent tree-shaking
-FASTMenuItem;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
-    title: "Menu item",
+    title: "Menu Item",
 };
 
 export const MenuItem = () => MenuItemTemplate;

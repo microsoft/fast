@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastSkeletonDefinitions: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
     tags: [
         {
             name: "fast-skeleton",
+            title: "Skeleton",
             description: "The FAST skeleton element",
             attributes: [
                 {
@@ -40,7 +41,9 @@ export const fastSkeletonDefinitions: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The default slot can be used to optionally include inline SVG's rather than a pattern",
                 },
             ],
         },

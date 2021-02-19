@@ -90,11 +90,33 @@ describe("Select", () => {
     });
 
     it("should set its value to the first enabled option", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
 
         await connect();
 
         expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        expect(element.selectedOptions).to.contain(option1);
+        expect(element.selectedOptions).to.not.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
+    it("should select the first option with a `selected` attribute", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        option2.setAttribute("selected", "");
+
+        await connect();
+
+        expect(element.value).to.equal("two");
+        expect(element.selectedIndex).to.equal(1);
+
+        expect(element.selectedOptions).to.not.contain(option1);
+        expect(element.selectedOptions).to.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
 
         await disconnect();
     });

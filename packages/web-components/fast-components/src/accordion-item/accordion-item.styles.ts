@@ -79,7 +79,7 @@ export const AccordionItemStyles = css`
     }
 
     :host([expanded]) .region {
-        display: flex;
+        display: block;
     }
 
     .icon {

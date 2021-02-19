@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastDialogDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastDialogDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-dialog",
+            title: "Dialog",
             description: "The FAST dialog element",
             attributes: [
                 {
@@ -54,7 +55,8 @@ export const fastDialogDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The dialog content",
                 },
             ],
         },

@@ -27,6 +27,7 @@ module.exports = {
                         "components/button",
                         "components/card",
                         "components/checkbox",
+                        "components/data-grid",
                         "components/dialog",
                         "components/divider",
                         "components/flipper",

@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastCardDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastCardDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-card",
+            title: "Card",
             description: "The FAST card element",
             attributes: [
                 {
@@ -26,7 +27,8 @@ export const fastCardDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the card",
                 },
             ],
         },

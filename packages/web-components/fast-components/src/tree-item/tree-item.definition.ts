@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastTreeItemDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tree-item",
+            title: "Tree item",
             description: "The FAST tree item element",
             attributes: [
                 {
@@ -33,23 +34,32 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot used for content",
+                    title: "Default slot",
+                    description: "The visual label of the tree item",
                 },
                 {
                     name: "item",
-                    description: "The item slot used for nested tree-item components",
+                    title: "Item slot",
+                    description:
+                        "Nested fast-tree-item elements automatically apply a slot of item for an intuitive API",
                 },
                 {
                     name: "expand-collapse-glyph",
-                    description: "glyph indicating whether tree item is expanded or not",
+                    title: "Expand collapse glyph slot",
+                    description:
+                        "Slot to provide a custom visual to represent the expanded and collapsed states",
                 },
                 {
-                    name: "before-content",
-                    description: "DOM to be inserted before tree item content",
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned after the expand/collapse glyph and before the item content",
                 },
                 {
-                    name: "after-content",
-                    description: "DOM to be inserted after tree item content",
+                    name: "end",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the item content",
                 },
             ],
         },

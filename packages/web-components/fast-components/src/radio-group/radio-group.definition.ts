@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
@@ -7,6 +7,7 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-radio-group",
+            title: "Radio group",
             description: "The FAST radio-group element",
             attributes: [
                 {
@@ -59,11 +60,14 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-radio elements or elements with a role of 'radio'",
                 },
                 {
                     name: "label",
-                    description: "Label slot",
+                    title: "Label slot",
+                    description: "The visual label for the group",
                 },
             ],
         },

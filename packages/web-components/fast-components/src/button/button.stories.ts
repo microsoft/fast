@@ -1,10 +1,5 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import ButtonTemplate from "./fixtures/button.html";
-import { FASTButton } from "./";
-
-// Prevent tree-shaking
-FASTButton;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
     title: "Button",

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-color-explorer",
-  "version": "1.6.11",
+  "version": "1.6.14",
   "description": "Color explorations",
   "sideEffects": false,
   "private": true,
@@ -26,11 +26,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
-    "@microsoft/site-utilities": "^0.6.3",
+    "@microsoft/site-utilities": "^0.7.2",
     "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -47,7 +47,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jss": "^9.8.7",
     "jss-preset-default": "^4.5.0",
-    "lodash-es": "^4.17.11",
+    "lodash-es": "4.17.15",
     "mini-css-extract-plugin": "^0.10.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "2.0.2",
@@ -69,13 +69,13 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.0",
+    "@microsoft/fast-colors": "^5.1.2",
     "@microsoft/fast-components-react-base": "^4.27.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-layouts-react": "^4.12.0",
-    "@microsoft/fast-web-utilities": "^4.7.0"
+    "@microsoft/fast-web-utilities": "^4.7.3"
   }
 }

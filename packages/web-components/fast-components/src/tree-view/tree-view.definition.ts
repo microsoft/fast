@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastTreeViewDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastTreeViewDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tree-view",
+            title: "Tree view",
             description: "The FAST tree view element",
             attributes: [
                 {
@@ -19,7 +20,9 @@ export const fastTreeViewDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-tree-item elements or elements with a role of 'treeitem'",
                 },
             ],
         },

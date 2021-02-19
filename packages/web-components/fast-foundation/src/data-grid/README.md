@@ -10,109 +10,59 @@ The `fast-data-grid` component is used to display tabular data.  The `fast-data-
 
 ### Usage
 
-```html live
-    <div>
-        <script>
-            (function () {
-                document.getElementById("samplegrid").rowsData = [
-                    { item1: "value 1-1", item2: "value 2-1" },
-                    { item1: "value 1-2", item2: "value 2-2" },
-                    { item1: "value 1-3", item2: "value 2-3" },
-                ];
-            })();
-        </script>
-        <fast-data-grid id="samplegrid"></fast-data-grid>
-    </div>
+```html 
+    <fast-data-grid id="samplegrid"></fast-data-grid>
 ```
+
+Note that data must be provided to the grid by setting a property.
+
+```ts
+        document.getElementById("samplegrid").rowsData = [
+                { item1: "value 1-1", item2: "value 2-1" },
+                { item1: "value 1-2", item2: "value 2-2" },
+                { item1: "value 1-3", item2: "value 2-3" },
+            ];
+        }     
+```
+
+See [Component Explorer](https://explore.fast.design/components/fast-data-grid) for usage examples.
+
+---
 
 ### Applying custom styles
 
 ```ts
 import { customElement } from "@microsoft/fast-element";
-import { DataGrid, DataGridTemplate as template } from "@microsoft/fast-foundation";
+import {
+    DataGrid,
+    createDataGridTemplate,
+    DataGridRow,
+    createDataGridRowTemplate,
+    DataGridCell,
+    createDataGridCellTemplate,
+} from "@microsoft/fast-foundation";
+import { DataGridCellStyles as styles } from "./data-grid-cell.styles";
+import { DataGridRowStyles as styles } from "./data-grid-row.styles";
 import { DataGridStyles as styles } from "./data-grid.styles";
 
 @customElement({
     name: "fast-data-grid",
-    template,
+    template: createDataGridTemplate("fast");,
     styles,
 })
 export class FASTDataGrid extends DataGrid {}
-```
----
-
-## fast-data-grid-row
-
-### Usage
-
-```html live
-    <div>
-        <script>
-            (function () {
-                const rowElement = document.getElementById("samplegridrow")
-                rowElement.rowsData = [
-                    { item1: "value 1-1", item2: "value 2-1" },
-                    { item1: "value 1-2", item2: "value 2-2" },
-                    { item1: "value 1-3", item2: "value 2-3" },
-                ];
-                rowElement.columnDefinitions = [
-                    { columnDataKey: "item1" },
-                    { columnDataKey: "item2" },
-                ];
-            })();
-        </script>
-        <fast-data-grid-row id="samplegridrow"></fast-data-grid-row>
-    </div>
-```
-
-### Applying custom styles
-
-```ts
-import { customElement } from "@microsoft/fast-element";
-import { DataGridRow, DataGridRowTemplate as template } from "@microsoft/fast-foundation";
-import { DataGridRowStyles as styles } from "./data-grid-row.styles";
 
 @customElement({
     name: "fast-data-grid-row",
-    template,
+    template: createDataGridRowTemplate("fast");,
     styles,
 })
-export class FASTDataGrid extends DataGridRow {}
-```
----
-
-## fast-data-grid-cell
-
-### Usage
-
-```html live
-    <div>
-        <script>
-            (function () {
-                const cellElement = document.getElementById("samplegridcell")
-                cellElement.rowsData = [
-                    { item1: "value 1-1", item2: "value 2-1" },
-                    { item1: "value 1-2", item2: "value 2-2" },
-                    { item1: "value 1-3", item2: "value 2-3" },
-                ];
-                cellElement.columnDefinition = { columnDataKey: "item1" };
-            })();
-        </script>
-        <fast-data-grid-cell id="samplecell"></fast-data-grid-cell>
-    </div>
-```
-
-### Applying custom styles
-
-```ts
-import { customElement } from "@microsoft/fast-element";
-import { DataGridCell, DataGridCellTemplate as template } from "@microsoft/fast-foundation";
-import { DataGridCellStyles as styles } from "./data-grid-cell.styles";
+export class FASTDataGridRow extends DataGridRow {}
 
 @customElement({
-    name: "fast-data-grid-row",
-    template,
+    name: "fast-data-grid-cell",
+    template: createDataGridCellTemplate("fast"),
     styles,
 })
-export class FASTDataGrid extends DataGridRow {}
+export class FASTDataGridCell extends DataGridCell {}
 ```

@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastProgressDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastProgressDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-progress",
+            title: "Progress",
             description: "The FAST progress element",
             attributes: [
                 {
@@ -40,11 +41,15 @@ export const fastProgressDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "determinate",
-                    description: "The determinate slot",
+                    title: "Determinate slot",
+                    description:
+                        "Slot to provide custom visual representations of the determinate progress bar",
                 },
                 {
                     name: "indeterminate",
-                    description: "The indeterminate slot",
+                    title: "Indeterminate slot",
+                    description:
+                        "Slot to provide custom visual representations of the indeterminate progress bar",
                 },
             ],
         },

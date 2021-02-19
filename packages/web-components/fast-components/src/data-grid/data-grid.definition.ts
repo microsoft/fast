@@ -1,12 +1,13 @@
 import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
 import { DataType } from "@microsoft/fast-tooling";
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 
 export const fastDataGridDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
             name: "fast-data-grid",
+            title: "Data grid",
             description: "The FAST data grid element",
             attributes: [
                 {
@@ -33,7 +34,8 @@ export const fastDataGridDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content as data grid rows",
                 },
             ],
         },

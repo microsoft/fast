@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastAnchorDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastAnchorDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchor",
+            title: "Anchor",
             description: "The FAST anchor element",
             attributes: [
                 {
@@ -109,15 +110,20 @@ export const fastAnchorDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the anchor",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the anchor content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the anchor content",
                 },
             ],
         },

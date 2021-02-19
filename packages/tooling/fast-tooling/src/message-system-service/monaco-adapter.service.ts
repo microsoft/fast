@@ -90,7 +90,8 @@ export function findUpdatedDictionaryId(
 }
 
 export class MonacoAdapter extends MessageSystemService<
-    MonacoAdapterActionCallbackConfig
+    MonacoAdapterActionCallbackConfig,
+    {}
 > {
     private monacoModelValue: string[];
     private schemaDictionary: SchemaDictionary;

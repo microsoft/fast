@@ -13,12 +13,12 @@ export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
             <BrowserRouter>
-                <div>
+                <fast-design-system-provider use-defaults>
                     <DesignSystemProvider designSystem={creatorDesignSystem}>
                         <Route component={Creator} exact={true} path="/" />
                     </DesignSystemProvider>
                     <Route component={Preview} exact={true} path="/preview" />
-                </div>
+                </fast-design-system-provider>
             </BrowserRouter>
         );
     }

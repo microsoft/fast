@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastRadioDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastRadioDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-radio",
+            title: "Radio",
             description: "The FAST radio element",
             attributes: [
                 {
@@ -47,11 +48,14 @@ export const fastRadioDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the radio represents its visual label",
                 },
                 {
                     name: "checked-indicator",
-                    description: "Glyph identifying checked status slot",
+                    title: "Checked indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the checked state",
                 },
             ],
         },

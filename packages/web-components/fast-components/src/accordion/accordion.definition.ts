@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastAccordionDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastAccordionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-accordion",
+            title: "Accordion",
             description: "The FAST accordion element",
             attributes: [
                 {
@@ -26,12 +27,9 @@ export const fastAccordionDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "",
-                    description: "The default slot",
-                },
-                {
                     name: "item",
-                    description: "The item slot",
+                    title: "Item slot",
+                    description: "The default slot for accordion items",
                 },
             ],
         },

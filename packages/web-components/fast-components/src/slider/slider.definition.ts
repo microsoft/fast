@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
@@ -7,6 +7,7 @@ export const fastSliderDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-slider",
+            title: "Slider",
             description: "The FAST slider element",
             attributes: [
                 {
@@ -80,15 +81,19 @@ export const fastSliderDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "Default slotted content of the slider represents its visual labels",
                 },
                 {
                     name: "track",
-                    description: "The horizontal or vertical track slot",
+                    title: "Track slot",
+                    description: "Slot to replace the slider track",
                 },
                 {
                     name: "thumb",
-                    description: "The thumb slot",
+                    title: "Thumb slot",
+                    description: "Slot to replace the slider thumb",
                 },
             ],
         },

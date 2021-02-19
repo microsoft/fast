@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "4.7.0",
+  "version": "4.7.3",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
@@ -70,16 +70,16 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/jest": "^25.2.1",
-    "@types/lodash-es": "^4.17.0",
+    "@types/lodash-es": "^4.17.4",
     "babel-core": "^7.0.0-bridge.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^4.0.0",
     "jest": "^25.4.0",
-    "lodash-es": "^4.17.10",
+    "lodash-es": "4.17.15",
     "prettier": "2.0.2",
     "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",

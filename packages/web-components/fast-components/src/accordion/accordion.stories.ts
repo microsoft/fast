@@ -1,28 +1,24 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
+import addons from "@storybook/addons";
+import { STORY_RENDERED } from "@storybook/core-events";
+import "../accordion-item";
+import type { FASTDesignSystemProvider } from "../design-system-provider";
 import { accentFillRestBehavior } from "../styles/recipes";
 import Examples from "./fixtures/base.html";
-import { FASTAccordionItem } from "../accordion-item";
-import { FASTAccordion } from ".";
+import "./index";
 
-// Prevent tree-shaking
-FASTAccordion;
-FASTAccordionItem;
-FASTDesignSystemProvider;
+addons.getChannel().addListener(STORY_RENDERED, name => {
+    if (name === "accordion--accordion") {
+        const provider = document.getElementById(
+            "root-provider"
+        ) as FASTDesignSystemProvider;
+
+        // Example depends on accentFillRest but component itself does not.
+        provider.registerCSSCustomProperty(accentFillRestBehavior);
+    }
+});
 
 export default {
     title: "Accordion",
 };
 
-export const Base = () => Examples;
-
-document.addEventListener("readystatechange", e => {
-    if (document.readyState === "complete") {
-        const provider = document.querySelector("fast-design-system-provider");
-
-        // Example depends on accentFillRest but component itself
-        // does not.
-        if (provider instanceof FASTDesignSystemProvider) {
-            provider.registerCSSCustomProperty(accentFillRestBehavior);
-        }
-    }
-});
+export const Accordion = () => Examples;

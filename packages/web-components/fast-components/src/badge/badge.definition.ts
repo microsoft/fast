@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastBadgeDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastBadgeDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-badge",
+            title: "Badge",
             description: "The FAST badge element",
             attributes: [
                 {
@@ -33,7 +34,8 @@ export const fastBadgeDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the badge",
                 },
             ],
         },

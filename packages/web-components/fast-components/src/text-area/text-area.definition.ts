@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { TextAreaResize } from "@microsoft/fast-foundation/dist/esm/text-area/text-area.options";
 
@@ -7,6 +7,7 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-text-area",
+            title: "Text area",
             description: "The FAST text-area element",
             attributes: [
                 {
@@ -132,7 +133,9 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the text area represents its visual label",
                 },
             ],
         },

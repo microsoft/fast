@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { DividerRole } from "@microsoft/fast-foundation/dist/esm/divider/divider.options";
 
@@ -7,6 +7,7 @@ export const fastDividerDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-divider",
+            title: "Divider",
             description: "The FAST divider element",
             attributes: [
                 {

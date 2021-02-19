@@ -1,12 +1,13 @@
 import { DataGridCellTypes } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
 import { DataType } from "@microsoft/fast-tooling";
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 
 export const fastDataGridCellDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
             name: "fast-data-grid-cell",
+            title: "Data grid cell",
             description: "The FAST data grid cell element",
             attributes: [
                 {
@@ -31,7 +32,8 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The cell content",
                 },
             ],
         },

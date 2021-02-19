@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastSwitchDefinition: WebComponentDefinition = {
@@ -6,6 +6,7 @@ export const fastSwitchDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-switch",
+            title: "Switch",
             description: "The FAST switch element",
             attributes: [
                 {
@@ -47,15 +48,18 @@ export const fastSwitchDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the switch represents its visual label",
                 },
                 {
                     name: "checked-message",
-                    description: "The checked message slot",
+                    title: "Checked message slot",
+                    description: "Visible content representing the checked state",
                 },
                 {
                     name: "unchecked-message",
-                    description: "The unchecked message slot",
+                    title: "Unchecked message slot",
+                    description: "Visible content representing the unchecked state",
                 },
             ],
         },
