@@ -12,7 +12,21 @@ declare namespace JSX {
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
         > & {
-            disabled?: boolean;
+            disabled?: string;
+            appearance?: string;
+            events?: {
+                click?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+        };
+        "fast-number-field": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            value?: number;
+            disabled?: string;
+            events?: {
+                input?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+            };
         };
     }
 }

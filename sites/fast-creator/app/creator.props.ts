@@ -1,7 +1,7 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 
 /**
  * Data for a single view

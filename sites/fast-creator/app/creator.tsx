@@ -4,9 +4,7 @@ import {
     ActionToggle,
     ActionToggleAppearance,
     ActionToggleProps,
-    Background,
 } from "@microsoft/fast-components-react-msft";
-import { neutralLayerL1, neutralLayerL2 } from "@microsoft/fast-components-styles-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
@@ -163,20 +161,12 @@ class Creator extends Editor<{}, CreatorState> {
                 <div className={this.canvasClassNames}>
                     {this.renderCanvasOverlay()}
                     <div className={this.menuBarClassNames}>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.mobileMenuBarClassNames}
-                        >
+                        <div className={this.mobileMenuBarClassNames}>
                             {this.renderMobileNavigationTrigger()}
                             <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
-                        </Background>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.canvasMenuBarClassNames}
-                        >
+                        </div>
+                        <div className={this.canvasMenuBarClassNames}>
                             <SelectDevice
                                 devices={this.devices}
                                 activeDeviceId={this.state.deviceId}
@@ -220,7 +210,7 @@ class Creator extends Editor<{}, CreatorState> {
                                     disabled={!this.state.previewReady}
                                 />
                             </div>
-                        </Background>
+                        </div>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [
@@ -245,7 +235,7 @@ class Creator extends Editor<{}, CreatorState> {
                                 responsive={true}
                             />
                         </div>
-                        <Background value={neutralLayerL1} className={"dev-tools"}>
+                        <div className={"dev-tools"}>
                             <div
                                 ref={this.editorContainerRef}
                                 style={{ height: "100%", paddingTop: "24px" }}
@@ -262,9 +252,10 @@ class Creator extends Editor<{}, CreatorState> {
                                     position: "absolute",
                                     top: "12px",
                                     right: 0,
+                                    backgroundColor: "var(--container-background)",
                                 }}
                             />
-                        </Background>
+                        </div>
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
