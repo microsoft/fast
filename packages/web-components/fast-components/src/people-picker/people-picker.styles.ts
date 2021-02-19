@@ -30,6 +30,7 @@ export const PeoplePickerStyles = css`
 
     .region {
         z-index: 10000;
+        overflow: hidden;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

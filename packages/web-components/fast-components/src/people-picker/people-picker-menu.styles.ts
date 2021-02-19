@@ -25,7 +25,11 @@ export const PeoplePickerMenuStyles = css`
         z-index: 10000;
         display: flex;
         width: 300px;
+        max-height: 100%;
+        background: purple;
         flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

@@ -121,9 +121,9 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public listboxOpen: boolean = false;
-    private listboxOpenChanged(): void {
-        if (this.listboxOpen) {
+    public menuOpen: boolean = false;
+    private menuOpenChanged(): void {
+        if (this.menuOpen) {
             DOM.queueUpdate(this.setRegionProps);
         }
     }
@@ -208,6 +208,11 @@ export class Picker extends FASTElement {
 
     private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node | null = null;
+
+    /**
+     * The timer that controls the time between position updates
+     */
+    private updateTimer: number | null = null;
 
     /**
      * @internal
@@ -296,6 +301,7 @@ export class Picker extends FASTElement {
 
     public disconnectedCallback() {
         super.disconnectedCallback();
+        this.clearUpdateTimer();
         this.inputElement.removeEventListener("input", this.handleTextInput);
         this.inputElement.removeEventListener("click", this.handleInputClick);
     }
@@ -396,7 +402,7 @@ export class Picker extends FASTElement {
     };
 
     public handleRegionLoaded = (e: Event): void => {
-        return;
+        this.startUpdateTimer();
     };
 
     public handleFocusOut = (e: FocusEvent): void => {
@@ -499,12 +505,12 @@ export class Picker extends FASTElement {
     };
 
     private toggleMenu = (open: boolean): void => {
-        if (this.listboxOpen === open) {
+        if (this.menuOpen === open) {
             return;
         }
 
         if (open) {
-            this.listboxOpen = open;
+            this.menuOpen = open;
             this.inputElement.setAttribute("aria-owns", this.menuId);
             this.inputElement.setAttribute("aria-expanded", "true");
             if (
@@ -523,7 +529,7 @@ export class Picker extends FASTElement {
             return;
         }
 
-        this.listboxOpen = false;
+        this.menuOpen = false;
         this.menuFocusIndex = -1;
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
@@ -532,7 +538,7 @@ export class Picker extends FASTElement {
     };
 
     private setRegionProps = (): void => {
-        if (!this.listboxOpen) {
+        if (!this.menuOpen) {
             return;
         }
         if (this.region === null || this.region === undefined) {
@@ -541,5 +547,41 @@ export class Picker extends FASTElement {
         }
         this.region.viewportElement = document.body;
         this.region.anchorElement = this.inputElement;
+    };
+
+    /**
+     * starts the update timer if not currently running
+     */
+    private startUpdateTimer = (): void => {
+        // TODO: make updating configurable
+        if (!this.menuOpen || this.updateTimer !== null) {
+            return;
+        }
+
+        this.updateTimer = window.setTimeout((): void => {
+            this.updateTimerTick();
+        }, 30);
+    };
+
+    private updateTimerTick = (): void => {
+        this.clearUpdateTimer();
+        if (this.menuOpen) {
+            if (this.region !== undefined) {
+                this.region.update();
+            }
+            this.updateTimer = window.setTimeout((): void => {
+                this.updateTimerTick();
+            }, 30);
+        }
+    };
+
+    /**
+     * clears the update timer
+     */
+    private clearUpdateTimer = (): void => {
+        if (this.updateTimer !== null) {
+            clearTimeout(this.updateTimer);
+            this.updateTimer = null;
+        }
     };
 }

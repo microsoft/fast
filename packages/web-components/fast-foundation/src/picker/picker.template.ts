@@ -23,13 +23,13 @@ export function createPickerTemplate(
             <slot name="list-region"></slot>
 
             ${when(
-                x => x.listboxOpen,
+                x => x.menuOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
                     class="region"
                     fixed-placement="true"
                     vertical-positioning-mode="dynamic"
-                    vertical-scaling="content"
+                    vertical-scaling="fill"
                     vertical-inset="false"
                     horizontal-positioning-mode="dynamic"
                     horizontal-scaling="content"
