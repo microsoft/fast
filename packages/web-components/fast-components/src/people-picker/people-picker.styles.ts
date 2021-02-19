@@ -32,6 +32,12 @@ export const PeoplePickerStyles = css`
         z-index: 10000;
         overflow: hidden;
     }
+
+    .loaded {
+        transition-property: top, right, bottom, left;
+        transition-duration: 50ms;
+        transition-timing-function: linear;
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

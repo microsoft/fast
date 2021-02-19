@@ -402,8 +402,16 @@ export class Picker extends FASTElement {
     };
 
     public handleRegionLoaded = (e: Event): void => {
-        this.startUpdateTimer();
+        // TODO: make updating configurable
+        if (!this.menuOpen || this.updateTimer !== null) {
+            return;
+        }
+        this.updateTimer = window.setTimeout((): void => {
+            this.startUpdateTimer();
+        }, 100);
     };
+
+    public handleRegionPositionChange = (e: Event): void => {};
 
     public handleFocusOut = (e: FocusEvent): void => {
         if (
@@ -531,6 +539,7 @@ export class Picker extends FASTElement {
 
         this.menuOpen = false;
         this.menuFocusIndex = -1;
+        this.region.classList.toggle("loaded", false);
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");
@@ -542,6 +551,7 @@ export class Picker extends FASTElement {
             return;
         }
         if (this.region === null || this.region === undefined) {
+            // TODO: limit this
             DOM.queueUpdate(this.setRegionProps);
             return;
         }
@@ -553,14 +563,13 @@ export class Picker extends FASTElement {
      * starts the update timer if not currently running
      */
     private startUpdateTimer = (): void => {
-        // TODO: make updating configurable
-        if (!this.menuOpen || this.updateTimer !== null) {
-            return;
-        }
+        DOM.queueUpdate(() => {
+            this.region.classList.toggle("loaded", true);
+        });
 
         this.updateTimer = window.setTimeout((): void => {
             this.updateTimerTick();
-        }, 30);
+        }, 50);
     };
 
     private updateTimerTick = (): void => {
@@ -571,7 +580,7 @@ export class Picker extends FASTElement {
             }
             this.updateTimer = window.setTimeout((): void => {
                 this.updateTimerTick();
-            }, 30);
+            }, 50);
         }
     };
 
