@@ -46,7 +46,7 @@ export interface NavigationPhase<TSettings = any> {
 }
 
 export interface NavigationCommitPhase<TSettings = any>
-    extends NavigationPhase<TSettings> {
+    extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {
     setTitle(title: string);
 }
 
