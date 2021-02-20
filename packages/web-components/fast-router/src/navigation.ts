@@ -13,6 +13,16 @@ export interface NavigationHandler {
 
 const handlers = new Set<NavigationHandler>();
 
+export const NavigationHandler = Object.freeze({
+    register(handler: NavigationHandler) {
+        handlers.add(handler);
+    },
+
+    unregister(handler: NavigationHandler) {
+        handlers.delete(handler);
+    },
+});
+
 export const Navigation = Object.freeze({
     push(path: string, trigger = true) {
         if (path && absoluteUrl.test(path)) {
@@ -47,14 +57,6 @@ export const Navigation = Object.freeze({
             handler.enqueue(message);
         }
     },
-
-    register(handler: NavigationHandler) {
-        handlers.add(handler);
-    },
-
-    unregister(handler: NavigationHandler) {
-        handlers.delete(handler);
-    },
 });
 
 export interface NavigationQueue {
@@ -63,7 +65,7 @@ export interface NavigationQueue {
     receive(): Promise<NavigationMessage>;
 }
 
-export class PopStateNavigationQueue implements NavigationQueue, NavigationHandler {
+export class DefaultNavigationQueue implements NavigationQueue, NavigationHandler {
     private queue: NavigationMessage[] = [];
     private promise: Promise<NavigationMessage> | null = null;
     private resolve: ((value: NavigationMessage) => void) | null = null;
@@ -71,7 +73,7 @@ export class PopStateNavigationQueue implements NavigationQueue, NavigationHandl
     public connect() {
         this.enqueue(new NavigationMessage(location.pathname));
         window.addEventListener("popstate", this);
-        Navigation.register(this);
+        NavigationHandler.register(this);
     }
 
     public disconnect() {
@@ -79,7 +81,7 @@ export class PopStateNavigationQueue implements NavigationQueue, NavigationHandl
         this.promise = null;
         this.resolve = null;
         window.removeEventListener("popstate", this);
-        Navigation.unregister(this);
+        NavigationHandler.unregister(this);
     }
 
     public receive(): Promise<NavigationMessage> {

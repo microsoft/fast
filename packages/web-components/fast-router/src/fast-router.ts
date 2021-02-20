@@ -22,6 +22,10 @@ export class FASTRouter extends FASTElement implements Router {
     @observable public readonly command: NavigationCommand | null = null;
     @observable public readonly route: RecognizedRoute | null = null;
 
+    get level() {
+        return this.enlistment?.level || 0;
+    }
+
     configChanged() {
         this.tryConnectEnlistment();
     }
@@ -49,12 +53,10 @@ export class FASTRouter extends FASTElement implements Router {
 
     addContributor(contributor: NavigationContributor): void {
         this.contributors.add(contributor);
-        console.log("add contributor to router", contributor);
     }
 
     removeContributor(contributor: NavigationContributor): void {
         this.contributors.delete(contributor);
-        console.log("remove contributor from router", contributor);
     }
 
     findRoute<TSettings = any>(
@@ -113,7 +115,7 @@ export class FASTRouter extends FASTElement implements Router {
         const contributor = this.childCommandContributor;
 
         if (route && contributor) {
-            await phase.evaluateContributor(contributor, route);
+            await phase.evaluateContributor(contributor, route, this);
         }
 
         if (phase.canceled) {
@@ -126,7 +128,7 @@ export class FASTRouter extends FASTElement implements Router {
         ];
 
         for (const potential of potentialContributors) {
-            await phase.evaluateContributor(potential);
+            await phase.evaluateContributor(potential, void 0, this);
 
             if (phase.canceled) {
                 return;

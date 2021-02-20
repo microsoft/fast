@@ -21,8 +21,8 @@ import { Router } from "./router";
 export const childRouteParameter = "fast-child-route";
 
 export type LayoutDefinition = {
-    template?: ViewTemplate;
-    styles?: ComposableStyles | ComposableStyles[];
+    template?: ViewTemplate | null;
+    styles?: ComposableStyles | ComposableStyles[] | null;
 };
 
 export type Layout = {
@@ -49,8 +49,13 @@ export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
     redirect: string;
 };
 
+export type HasTitle = {
+    title?: string;
+};
+
 export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
-    LayoutAndTransitionRouteDefinition & {
+    LayoutAndTransitionRouteDefinition &
+    HasTitle & {
         childRouters?: boolean;
     };
 
@@ -66,7 +71,10 @@ export type HasElement = {
 
 export type ElementFallbackRouteDefinition<
     TSettings = any
-> = LayoutAndTransitionRouteDefinition & HasElement & SupportsSettings<TSettings>;
+> = LayoutAndTransitionRouteDefinition &
+    HasElement &
+    SupportsSettings<TSettings> &
+    HasTitle;
 
 export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
@@ -79,7 +87,10 @@ export type HasTemplate = {
 
 export type TemplateFallbackRouteDefinition<
     TSettings = any
-> = LayoutAndTransitionRouteDefinition & HasTemplate & SupportsSettings<TSettings>;
+> = LayoutAndTransitionRouteDefinition &
+    HasTemplate &
+    SupportsSettings<TSettings> &
+    HasTitle;
 
 export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
@@ -91,10 +102,12 @@ export type HasCommand = {
 };
 
 export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
-    HasCommand;
+    HasCommand &
+    HasTitle;
 
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
-    SupportsSettings<TSettings>;
+    SupportsSettings<TSettings> &
+    HasTitle;
 
 export type FallbackRouteDefinition<TSettings = any> =
     | ElementFallbackRouteDefinition<TSettings>
@@ -139,7 +152,7 @@ function getFallbackCommand(
     }
 }
 
-type ConverterObject = {
+export type ConverterObject = {
     convert: RouteParameterConverter;
 };
 
@@ -171,11 +184,13 @@ export class RouteCollection<TSettings = any> {
     private converters: Record<string, RouteParameterConverter> = {};
 
     public constructor(private owner: RouterConfiguration) {
-        this.converter("number", value => value === void 0 ? NaN : parseFloat(value));
-        this.converter("float", value => value === void 0 ? NaN : parseFloat(value));
-        this.converter("int", value => value === void 0 ? NaN : parseInt(value));
-        this.converter("integer", value => value === void 0 ? NaN : parseInt(value));
-        this.converter("Date", value => value === void 0 ? new Date(Date.now()) : new Date(value));
+        this.converter("number", value => (value === void 0 ? NaN : parseFloat(value)));
+        this.converter("float", value => (value === void 0 ? NaN : parseFloat(value)));
+        this.converter("int", value => (value === void 0 ? NaN : parseInt(value)));
+        this.converter("integer", value => (value === void 0 ? NaN : parseInt(value)));
+        this.converter("Date", value =>
+            value === void 0 ? new Date(Date.now()) : new Date(value)
+        );
         this.converter("boolean", booleanConverter);
         this.converter("bool", booleanConverter);
     }
@@ -192,12 +207,22 @@ export class RouteCollection<TSettings = any> {
     public map(...routes: MappableRouteDefinition<TSettings>[]) {
         for (const route of routes) {
             if ("children" in route) {
+                const titleBuilder = this.owner.createTitleBuilder();
                 const childRoutes = route.children.map(x => {
                     const childRoute = {
                         ...route,
                         ...x,
                         path: `${route.path}/${x.path}`,
                     };
+
+                    if ("title" in route || "title" in x) {
+                        const parentTitle = (route as HasTitle).title || "";
+                        const childTitle = (x as HasTitle).title || "";
+                        (childRoute as HasTitle).title = titleBuilder.joinTitles(
+                            parentTitle,
+                            childTitle
+                        );
+                    }
 
                     if (childRoute.children === route.children) {
                         delete (childRoute as any).children;
@@ -259,9 +284,10 @@ export class RouteCollection<TSettings = any> {
         if ("convert" in converter) {
             normalizedConverter = converter.convert.bind(converter);
         } else if (converter.prototype && "convert" in converter.prototype) {
-            normalizedConverter = (value: string) => {
-                // TODO: find a way to patch in DI here
-                const obj = Reflect.construct(converter, []) as ConverterObject;
+            normalizedConverter = (value: string | undefined) => {
+                const obj = this.owner.construct(
+                    converter as Constructable<ConverterObject>
+                );
                 return obj.convert(value);
             };
         } else {

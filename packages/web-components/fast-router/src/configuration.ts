@@ -1,9 +1,5 @@
-import { html } from "@microsoft/fast-element";
-import {
-    NavigationMessage,
-    NavigationQueue,
-    PopStateNavigationQueue,
-} from "./navigation";
+import { Constructable, html } from "@microsoft/fast-element";
+import { NavigationMessage, NavigationQueue, DefaultNavigationQueue } from "./navigation";
 import { defaultTransition } from "./transition";
 import { RouteCollection, RouteLocationResult, Layout } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
@@ -16,6 +12,7 @@ import {
     NavigationProcess,
 } from "./navigation-process";
 import { Router } from "./router";
+import { DefaultTitleBuilder, TitleBuilder } from "./titles";
 
 export const defaultLayout = {
     template: html`
@@ -33,20 +30,29 @@ export abstract class RouterConfiguration<TSettings = any> {
     public readonly contributors: NavigationContributor<TSettings>[] = [];
     public defaultLayout: Layout = defaultLayout;
     public defaultTransition = defaultTransition;
+    public title = "";
 
     public createNavigationQueue(): NavigationQueue {
-        return new PopStateNavigationQueue();
+        return this.construct(DefaultNavigationQueue);
     }
 
     public createLinkHandler(): LinkHandler {
-        return new DefaultLinkHandler();
+        return this.construct(DefaultLinkHandler);
     }
 
     public createNavigationProcess(
         router: Router,
         message: NavigationMessage
     ): NavigationProcess {
-        return new DefaultNavigationProcess(router, message);
+        return new DefaultNavigationProcess(router, this, message);
+    }
+
+    public createTitleBuilder(): TitleBuilder {
+        return this.construct(DefaultTitleBuilder);
+    }
+
+    public construct<T>(Type: Constructable<T>): T {
+        return Reflect.construct(Type, []);
     }
 
     public async findRoute(path: string): Promise<RouteLocationResult<TSettings> | null> {

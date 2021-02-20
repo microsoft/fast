@@ -1,3 +1,4 @@
+import { RouterConfiguration } from "./configuration";
 import { NavigationMessage } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
@@ -8,9 +9,15 @@ export type NavigationPhaseHook<TSettings = any> = (
     phase: NavigationPhase<TSettings>
 ) => Promise<any> | any;
 
+export type NavigationCommitPhaseHook<TSettings = any> = (
+    phase: NavigationCommitPhase<TSettings>
+) => Promise<any> | any;
+
 export type NavigationContributor<TSettings = any> = Partial<
-    Record<NavigationPhaseName, NavigationPhaseHook<TSettings>>
->;
+    Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
+> & {
+    commit?: NavigationCommitPhaseHook<TSettings>;
+};
 
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     object: any,
@@ -24,6 +31,7 @@ type NavigationPhaseFollowupAction = () => Promise<any> | any;
 export interface NavigationPhase<TSettings = any> {
     readonly name: NavigationPhaseName;
     readonly route: RecognizedRoute<TSettings>;
+    readonly router: Router;
     readonly canceled: boolean;
 
     cancel(callback?: NavigationPhaseFollowupAction): void;
@@ -32,25 +40,39 @@ export interface NavigationPhase<TSettings = any> {
 
     evaluateContributor(
         contributor: any,
-        route?: RecognizedRoute<TSettings>
+        route?: RecognizedRoute<TSettings>,
+        router?: Router
     ): Promise<void>;
 }
 
-class NavigationPhaseImpl<TSettings = any> implements NavigationPhase<TSettings> {
+export interface NavigationCommitPhase<TSettings = any>
+    extends NavigationPhase<TSettings> {
+    setTitle(title: string);
+}
+
+class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSettings> {
     private routes: RecognizedRoute<TSettings>[] = [];
+    private routers: Router[] = [];
     canceled = false;
+    public titles: Array<Array<string>> = [];
 
     get route(): RecognizedRoute<TSettings> {
         return this.routes[this.routes.length - 1]!;
     }
 
+    get router(): Router {
+        return this.routers[this.routers.length - 1];
+    }
+
     constructor(
         public readonly name: NavigationPhaseName,
         route: RecognizedRoute<TSettings>,
+        router: Router,
         private readonly commitActions: NavigationPhaseFollowupAction[],
         private readonly cancelActions: NavigationPhaseFollowupAction[]
     ) {
         this.routes.push(route);
+        this.routers.push(router);
     }
 
     cancel(callback?: NavigationPhaseFollowupAction): void {
@@ -69,11 +91,27 @@ class NavigationPhaseImpl<TSettings = any> implements NavigationPhase<TSettings>
         this.cancelActions.push(callback);
     }
 
-    async evaluateContributor(contributor: any, route = this.route): Promise<void> {
+    setTitle(title: string) {
+        let level = this.router.level;
+
+        while (this.titles.length < level + 1) {
+            this.titles.push([]);
+        }
+
+        this.titles[level].push(title);
+    }
+
+    async evaluateContributor(
+        contributor: any,
+        route: RecognizedRoute<TSettings> = this.route,
+        router: Router = this.router
+    ): Promise<void> {
         if (isNavigationPhaseContributor(contributor, this.name)) {
             this.routes.push(route);
+            this.routers.push(router);
             await contributor[this.name](this);
             this.routes.pop();
+            this.routers.pop();
         }
     }
 }
@@ -91,7 +129,11 @@ export class DefaultNavigationProcess<TSettings> {
         "commit",
     ];
 
-    constructor(private router: Router, private message: NavigationMessage) {}
+    constructor(
+        private router: Router,
+        private config: RouterConfiguration,
+        private message: NavigationMessage
+    ) {}
 
     public async run() {
         const router = this.router;
@@ -105,34 +147,41 @@ export class DefaultNavigationProcess<TSettings> {
         const command = routeResult.command;
         const commitActions: NavigationPhaseFollowupAction[] = [];
         const cancelActions: NavigationPhaseFollowupAction[] = [];
-        const commandContributor = await command.createContributor(router, route);
         let finalActions = commitActions;
+        const contributors = [
+            await command.createContributor(router, route),
+            router,
+            this,
+        ];
 
         for (const phaseName of this.phases) {
-            console.log(`Phase: ${phaseName}`);
-
             const phase = new NavigationPhaseImpl<TSettings>(
                 phaseName,
                 route,
+                router,
                 commitActions,
                 cancelActions
             );
 
-            await phase.evaluateContributor(commandContributor);
+            for (const contributor of contributors) {
+                await phase.evaluateContributor(contributor);
 
-            if (phase.canceled) {
-                finalActions = cancelActions;
-                break;
+                if (phase.canceled) {
+                    finalActions = cancelActions;
+                    break;
+                }
             }
 
-            await phase.evaluateContributor(router);
-
             if (phase.canceled) {
-                finalActions = cancelActions;
                 break;
             }
         }
 
         await Promise.all(finalActions.map(x => x()));
+    }
+
+    commit(phase: NavigationPhaseImpl) {
+        const builder = this.config.createTitleBuilder();
+        document.title = builder.buildTitle(this.config.title, phase.titles);
     }
 }

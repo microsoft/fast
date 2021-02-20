@@ -9,10 +9,9 @@ export class MainEnlistment {
     private config!: RouterConfiguration;
 
     public readonly isChild = false;
+    public readonly level = 0;
 
-    constructor(private router: Router) {
-        console.log("main enlistment", this);
-    }
+    constructor(private router: Router) {}
 
     public connect(config: RouterConfiguration) {
         this.config = config;
@@ -54,12 +53,13 @@ export class MainEnlistment {
 
 export class ChildEnlistment {
     public readonly isChild = true;
+    public readonly level: number;
 
     constructor(
         private readonly parentRouter: Router,
         private readonly childRouter: Router
     ) {
-        console.log("child enlistment", this);
+        this.level = parentRouter.level + 1;
     }
 
     connect() {

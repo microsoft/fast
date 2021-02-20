@@ -6,8 +6,6 @@ import {
     ViewTemplate,
     FASTElementDefinition,
     defaultExecutionContext,
-    FASTElement,
-    DOM,
 } from "@microsoft/fast-element";
 import { navigationParticipant } from "./participants";
 import { Router } from "./router";
@@ -15,12 +13,17 @@ import { RouterConfiguration } from "./configuration";
 import { Transition } from "./transition";
 import {
     Layout,
-    LayoutAndTransitionRouteDefinition,
-    HasElement,
-    HasTemplate,
+    ElementRouteDefinition,
+    TemplateRouteDefinition,
+    ElementFallbackRouteDefinition,
+    TemplateFallbackRouteDefinition,
 } from "./routes";
 import { Navigation } from "./navigation";
-import { NavigationContributor, NavigationPhase } from "./navigation-process";
+import {
+    NavigationCommitPhase,
+    NavigationContributor,
+    NavigationPhase,
+} from "./navigation-process";
 import { RecognizedRoute } from "./recognizer";
 
 export interface NavigationCommand {
@@ -109,7 +112,7 @@ class RenderContributor {
         });
     }
 
-    async commit() {
+    async commit(phase: NavigationCommitPhase) {
         const router = this.router;
         const command = this.command;
 
@@ -131,12 +134,18 @@ class RenderContributor {
         (router as Mutable<Router>).view = this.newView!;
         (router as Mutable<Router>).route = this.route;
         (router as Mutable<Router>).command = command;
+
+        if (command.title) {
+            phase.setTitle(command.title);
+        }
     }
 }
 
 export class Render implements NavigationCommand {
     private _layout: Layout | null = null;
     private _transition: Transition | null = null;
+
+    public title = "";
 
     constructor(
         private owner: RouterConfiguration,
@@ -165,7 +174,11 @@ export class Render implements NavigationCommand {
 
     public static fromDefinition(
         owner: RouterConfiguration,
-        definition: LayoutAndTransitionRouteDefinition & (HasElement | HasTemplate)
+        definition:
+            | ElementRouteDefinition
+            | TemplateRouteDefinition
+            | ElementFallbackRouteDefinition
+            | TemplateFallbackRouteDefinition
     ): Render {
         let createView;
 
@@ -239,7 +252,7 @@ export class Render implements NavigationCommand {
 
                 layout.template = definition.layout.template || null;
                 layout.styles =
-                    styles === void 0
+                    styles === void 0 || styles === null
                         ? null
                         : Array.isArray(styles)
                         ? ElementStyles.create(styles)
@@ -253,6 +266,10 @@ export class Render implements NavigationCommand {
 
         if (definition.transition) {
             command.transition = definition.transition;
+        }
+
+        if (definition.title) {
+            command.title = definition.title;
         }
 
         return command;

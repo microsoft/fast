@@ -9,6 +9,7 @@ export interface Router extends FASTElement, HTMLElement {
     readonly route: RecognizedRoute | null;
     readonly command: NavigationCommand | null;
     readonly view: HTMLView | null;
+    readonly level: number;
 
     addContributor(contributor: NavigationContributor): void;
     removeContributor(contributor: NavigationContributor): void;
