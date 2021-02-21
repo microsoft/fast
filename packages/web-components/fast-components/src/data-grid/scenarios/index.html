@@ -36,6 +36,77 @@
     </div>
 </template>
 
+<template title="Generate header options">
+    <div>
+        <script>
+            (function () {
+                const sampleGrid = document.getElementById("samplegrid");
+                sampleGrid.rowsData = [
+                    {
+                        item1: "value 1-1",
+                        item2: "value 2-1",
+                        item3: "value 3-1",
+                        item4: "value 4-1",
+                    },
+                    {
+                        item1: "value 1-2",
+                        item2: "value 2-2",
+                        item3: "value 3-2",
+                        item4: "value 4-2",
+                    },
+                    {
+                        item1: "value 1-3",
+                        item2: "value 2-3",
+                        item3: "value 3-3",
+                        item4: "value 4-3",
+                    },
+                    {
+                        item1: "value 1-4",
+                        item2: "value 2-4",
+                        item3: "value 3-4",
+                        item4: "value 4-4",
+                    },
+                    {
+                        item1: "value 1-5",
+                        item2: "value 2-5",
+                        item3: "value 3-5",
+                        item4: "value 4-5",
+                    },
+                ];
+            })();
+        </script>
+        <script>
+            function setGeneratedHeader(headerOption) {
+                const sampleGrid = document.getElementById("samplegrid");
+                sampleGrid.generateHeader = headerOption;
+            }
+        </script>
+        <fast-data-grid id="samplegrid" style="height: 200px;"></fast-data-grid>
+        <p>
+            <fast-button onclick="setGeneratedHeader('default')">
+                Default header
+            </fast-button>
+            <fast-button onclick="setGeneratedHeader('sticky')">
+                Sticky header
+            </fast-button>
+            <fast-button onclick="setGeneratedHeader('none')">
+                No header
+            </fast-button>
+        </p>
+
+        <p>
+            <fast-data-grid id="samplegrid"></fast-data-grid>
+        </p>
+
+        <p></p>
+        <h1>Generate header options</h1>
+        <h2>
+            Authors can choose for the grid to generate a normal header row, a sticky
+            header row, or no header row at all
+        </h2>
+    </div>
+</template>
+
 <template title="Custom columns">
     <div>
         <script>
@@ -208,6 +279,82 @@
         <h2>
             Note: keyboard navigation across a row is currently based on order of cell
             children in the dom which matches the order in the grid's columnDefinitions.
+        </h2>
+    </div>
+</template>
+
+<template title="Custom cell templates">
+    <div>
+        <script>
+            import { html } from "@microsoft/fast-element";
+            (function () {
+                const sampleGrid = document.getElementById("samplegrid");
+                const buttonCellTemplate =
+                    html <
+                    DataGridCell >
+                    `
+    <template>
+        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
+            ${x =>
+                x.rowData === null ||
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
+                    ? null
+                    : x.rowData[x.columnDefinition.columnDataKey]}
+        </fast-button>
+    </template>
+`;
+
+                sampleGrid.rowsData = [
+                    {
+                        item1: "value 1-1",
+                        item2: "value 2-1",
+                        item3: "value 3-1",
+                        item4: "value 4-1",
+                    },
+                    {
+                        item1: "value 1-2",
+                        item2: "value 2-2",
+                        item3: "value 3-2",
+                        item4: "value 4-2",
+                    },
+                    {
+                        item1: "value 1-3",
+                        item2: "value 2-3",
+                        item3: "value 3-3",
+                        item4: "value 4-3",
+                    },
+                ];
+                sampleGrid.columnDefinitions = [
+                    {
+                        columnDataKey: "item1",
+                        cellTemplate: buttonCellTemplate,
+                    },
+                    {
+                        columnDataKey: "item2",
+                        cellTemplate: buttonCellTemplate,
+                    },
+                    {
+                        columnDataKey: "item3",
+                        cellTemplate: buttonCellTemplate,
+                    },
+                    {
+                        columnDataKey: "item4",
+                        cellTemplate: buttonCellTemplate,
+                    },
+                ];
+            })();
+        </script>
+
+        <p>
+            <fast-data-grid id="samplegrid"></fast-data-grid>
+        </p>
+
+        <p></p>
+        <h1>Custom cell templates</h1>
+        <h2>
+            By default the content of each cell is simply renders the value associated
+            with its columns data key.
         </h2>
     </div>
 </template>
