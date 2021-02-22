@@ -263,7 +263,7 @@ export class CSSDirective {
      * Creates a CSS fragment to interpolate into the CSS document.
      * @returns - the string to interpolate into CSS
      */
-    public createCSS(): string {
+    public createCSS(): ComposableStyles {
         return "";
     }
 
@@ -294,7 +294,16 @@ export function css(
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
-        const value = values[i];
+        let value = values[i];
+
+        if (value instanceof CSSDirective) {
+            const behavior = value.createBehavior();
+            value = value.createCSS();
+
+            if (behavior) {
+                behaviors.push(behavior);
+            }
+        }
 
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
@@ -303,13 +312,6 @@ export function css(
             }
 
             styles.push(value);
-        } else if (value instanceof CSSDirective) {
-            cssString += value.createCSS();
-            const behavior = value.createBehavior();
-
-            if (behavior) {
-                behaviors.push(behavior);
-            }
         } else {
             cssString += value;
         }

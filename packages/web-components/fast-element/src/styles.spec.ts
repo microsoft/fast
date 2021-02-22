@@ -188,16 +188,45 @@ describe("ElementStyles", () => {
 
 describe("css", () => {
     describe("with a CSSDirective", () => {
-        it("should interpolate the product of CSSDirective.createCSS() into the resulting ElementStyles CSS", () => {
-            class Directive extends CSSDirective {
-                createCSS() {
-                    return "red";
+        describe("should interpolate the product of CSSDirective.createCSS() into the resulting ElementStyles CSS", () => {
+            it("when the result is a string", () => {
+                class Directive extends CSSDirective {
+                    createCSS() {
+                        return "red";
+                    }
                 }
-            }
 
-            const styles = css`host: {color: ${new Directive()};}`;
-            expect(styles.styles.some(x => x === "host: {color: red;}")).to.equal(true)
+                const styles = css`host: {color: ${new Directive()};}`;
+                expect(styles.styles.some(x => x === "host: {color: red;}")).to.equal(true)
+            });
+
+            it("when the result is an ElementStyles", () => {
+                const _styles = css`:host{color: red}`
+                class Directive extends CSSDirective {
+                    createCSS() {
+                        return _styles;
+                    }
+                }
+
+                const styles = css`${new Directive()}`;
+                expect(styles.styles.includes(_styles)).to.equal(true)
+            });
+
+            if (DOM.supportsAdoptedStyleSheets) {
+                it("when the result is a CSSStyleSheet", () => {
+                    const _styles = new CSSStyleSheet();
+                    class Directive extends CSSDirective {
+                        createCSS() {
+                            return _styles;
+                        }
+                    }
+
+                    const styles = css`${new Directive()}`;
+                    expect(styles.styles.includes(_styles)).to.equal(true)
+                });
+            }
         });
+
 
         it("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", () => {
             const behavior = {
