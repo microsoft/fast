@@ -569,7 +569,7 @@ export class Picker extends FASTElement {
 
         this.updateTimer = window.setTimeout((): void => {
             this.updateTimerTick();
-        }, 50);
+        }, 100);
     };
 
     private updateTimerTick = (): void => {
@@ -580,7 +580,7 @@ export class Picker extends FASTElement {
             }
             this.updateTimer = window.setTimeout((): void => {
                 this.updateTimerTick();
-            }, 50);
+            }, 100);
         }
     };
 
