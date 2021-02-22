@@ -11,21 +11,24 @@ export const fastTreeItemDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "expanded",
-                    description: "Indicates whether tree item is expanded or not",
+                    title: "Expanded",
+                    description: "Whether tree item is expanded or not",
                     default: false,
                     required: false,
                     type: DataType.boolean,
                 },
                 {
                     name: "selected",
-                    description: "Indicates if tree item is currently selected",
+                    title: "Selected",
+                    description: "Whether tree item is selected or not",
                     default: false,
                     required: false,
                     type: DataType.boolean,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the tree item",
                     type: DataType.boolean,
                     default: false,
                     required: false,

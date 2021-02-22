@@ -19,6 +19,7 @@ export enum MessageSystemDataTypeAction {
     removeLinkedData = "remove-linked-data",
     addLinkedData = "add-linked-data",
     reorderLinkedData = "reorder-linked-data",
+    updateDisplayText = "update-display-text",
 }
 
 export enum MessageSystemNavigationDictionaryTypeAction {
@@ -113,6 +114,28 @@ export interface GetDataDictionaryMessageOutgoing<TConfig = {}>
     action: MessageSystemDataDictionaryTypeAction.get;
     dataDictionary: DataDictionary<unknown>;
     activeDictionaryId: string;
+}
+
+/**
+ * The message to update display text in the data dictionary
+ */
+export interface UpdateDisplayTextDataMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.updateDisplayText;
+    dictionaryId: string;
+    displayText: string;
+}
+
+/**
+ * The message that display text in the data dictionary and navigation has been updated
+ */
+export interface UpdateDisplayTextDataMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
+    type: MessageSystemType.data;
+    action: MessageSystemDataTypeAction.updateDisplayText;
+    navigationDictionary: NavigationConfigDictionary;
+    dataDictionary: DataDictionary<unknown>;
 }
 
 /**
@@ -426,7 +449,8 @@ export type DataMessageIncoming =
     | AddDataMessageIncoming
     | AddLinkedDataDataMessageIncoming
     | RemoveLinkedDataDataMessageIncoming
-    | ReorderLinkedDataDataMessageIncoming;
+    | ReorderLinkedDataDataMessageIncoming
+    | UpdateDisplayTextDataMessageIncoming;
 
 /**
  * Outgoing data messages to the message system
@@ -438,7 +462,8 @@ export type DataMessageOutgoing =
     | UpdateDataMessageOutgoing
     | AddLinkedDataDataMessageOutgoing
     | RemoveLinkedDataDataMessageOutgoing
-    | ReorderLinkedDataDataMessageOutgoing;
+    | ReorderLinkedDataDataMessageOutgoing
+    | UpdateDisplayTextDataMessageOutgoing;
 
 /**
  * The message to update navigation

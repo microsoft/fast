@@ -257,7 +257,7 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (!this.options.includes(focusTarget as ListboxOption)) {
+        if (!this.options || !this.options.includes(focusTarget as ListboxOption)) {
             this.open = false;
         }
     }

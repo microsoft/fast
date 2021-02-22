@@ -10,64 +10,24 @@ The `fast-data-grid` component is used to display tabular data.  The `fast-data-
 
 ### Usage
 
-```html live
-function ShowGrid(props) {
-  useEffect(() => {
-    const testGrid = document.getElementById("testgrid");
-    testGrid.rowsData = [
-        { item1: "value 1-1", item2: "value 2-1" },
-        { item1: "value 1-2", item2: "value 2-2" },
-        { item1: "value 1-3", item2: "value 2-3" },
-    ]
-  });
-
-  return (
-      <fast-data-grid id="testgrid"></fast-data-grid>
-  );
-}
-
+```html 
+    <fast-data-grid id="samplegrid"></fast-data-grid>
 ```
+
+Note that data must be provided to the grid by setting a property.
+
+```ts
+        document.getElementById("samplegrid").rowsData = [
+                { item1: "value 1-1", item2: "value 2-1" },
+                { item1: "value 1-2", item2: "value 2-2" },
+                { item1: "value 1-3", item2: "value 2-3" },
+            ];
+        }     
+```
+
+See [Component Explorer](https://explore.fast.design/components/fast-data-grid) for usage examples.
+
 ---
-
-## fast-data-grid-row
-
-### Usage
-
-```html live
-function ShowRow(props) {
-  useEffect(() => {
-    const testRow = document.getElementById("testrow");
-    testRow.columnDefinitions = [
-        { columnDataKey: "item1" },
-        { columnDataKey: "item2" },
-    ];
-    testRow.rowData = { item1: "value 1-1", item2: "value 2-1"};
-  });
-
-  return (
-      <fast-data-grid-row id="testrow"></fast-data-grid-row>
-  );
-}
-```
----
-
-## fast-data-grid-cell
-
-### Usage
-
-```html live
-function ShowCell(props) {
-  useEffect(() => {
-      const testCell = document.getElementById("testcell");
-      testCell.rowData = { item1: "value 1-1", item2: "value 2-1" };
-      testCell.columnDefinition = { columnDataKey: "item1" };
-  });
-
-  return (
-      <fast-data-grid-cell id="testcell"></fast-data-grid-cell>
-  );
-}
-```
 
 ### Applying custom styles
 

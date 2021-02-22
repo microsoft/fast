@@ -9,7 +9,6 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { elevation } from "../styles/elevation";
 import {
     accentFillActiveBehavior,
-    accentFillFocusBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
@@ -71,7 +70,6 @@ export const SelectStyles = css`
         font-size: var(--type-ramp-base-font-size);
         font: inherit;
         line-height: var(--type-ramp-base-line-height);
-        min-height: calc(${heightNumber} * 1px);
         padding: 0 calc(var(--design-unit) * 2.25px);
         width: 100%;
     }
