@@ -117,18 +117,17 @@ describe("FoundationElement", () => {
         });
     });
 
-    describe(".configuration", () => {
+    describe(".configure", () => {
         it("should register an element, default template, and default styles", () => {
             const styles = css``;
             const template = html``;
             const baseName = uniqueElementName();
             class MyElement extends FoundationElement {}
 
-            const myElement = FoundationElement.configuration({
+            const myElement = MyElement.configure({
                 styles,
                 template,
-                baseName,
-                type: MyElement,
+                baseName
             });
 
             const host = document.createElement("div");
@@ -147,11 +146,10 @@ describe("FoundationElement", () => {
         it("should provider opportunity to override template, styles, prefix, and baseName of a registry", () => {
             class MyElement extends FoundationElement {}
             const originalName = uniqueElementName();
-            const myElement = FoundationElement.configuration({
+            const myElement = MyElement.configure({
                 styles: css``,
                 template: html``,
-                baseName: originalName,
-                type: MyElement,
+                baseName: originalName
             });
 
             const overrideName = uniqueElementName();

@@ -1,10 +1,10 @@
 import {
     AttributeConfiguration,
     ComposableStyles,
+    Constructable,
     ElementStyles,
     ElementViewTemplate,
     FASTElement,
-    html,
     observable,
 } from "@microsoft/fast-element";
 import {
@@ -34,11 +34,6 @@ export interface FoundationElementDefinition {
      * The non-prefixed name of the component.
      */
     baseName: string;
-
-    /**
-     * The element constructor
-     */
-    type: typeof FASTElement;
 
     /**
      * The template to render for the custom element.
@@ -91,7 +86,7 @@ export type OverrideFoundationElementDefinition<
  *
  * @alpha
  */
-export class FoundationElement extends FASTElement {
+export abstract class FoundationElement extends FASTElement {
     @Container
     private container: Container;
     private _presentation: ComponentPresentation | null = null;
@@ -152,7 +147,7 @@ export class FoundationElement extends FASTElement {
      * @param elementDefinition - The definition of the element to create the registry configuration
      * function for.
      */
-    public static configuration<
+    public static configure<
         T extends FoundationElementDefinition = FoundationElementDefinition
     >(
         elementDefinition: T
@@ -160,7 +155,11 @@ export class FoundationElement extends FASTElement {
         return (
             overrideDefinition: OverrideFoundationElementDefinition<T> = {}
         ): Registry =>
-            new FoundationElementRegistry(elementDefinition, overrideDefinition);
+            new FoundationElementRegistry(
+                this as any,
+                elementDefinition,
+                overrideDefinition
+            );
     }
 }
 
@@ -178,6 +177,7 @@ function resolveOption<T, K extends FoundationElementDefinition>(
 
 class FoundationElementRegistry<T extends FoundationElementDefinition> {
     constructor(
+        private type: Constructable<FoundationElement>,
         private elementDefinition: T,
         private overrideDefinition: OverrideFoundationElementDefinition<T>
     ) {}
@@ -192,7 +192,7 @@ class FoundationElementRegistry<T extends FoundationElementDefinition> {
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
 
-        context.tryDefineElement(name, this.elementDefinition.type, x => {
+        context.tryDefineElement(name, this.type, x => {
             const presentation = new DefaultComponentPresentation(
                 resolveOption(definition.template, x, definition),
                 resolveOption(definition.styles, x, definition)
