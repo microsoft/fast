@@ -69,7 +69,7 @@ const mdnProperties = cssProperties.reduce((accumulatedProperty, currentProperty
             )}`,
             {},
             error => {
-                chalk.red(error);
+                throw Error(error);
             }
         );
     }
