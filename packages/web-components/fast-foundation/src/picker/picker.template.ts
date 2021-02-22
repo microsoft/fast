@@ -35,8 +35,6 @@ export function createPickerTemplate(
                     horizontal-scaling="content"
                     horizontal-inset="true"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
-                    @positionchange="${(x, c) =>
-                        x.handleRegionPositionChange(c.event as Event)}"
                     ${ref("region")}
                 >
                     <slot

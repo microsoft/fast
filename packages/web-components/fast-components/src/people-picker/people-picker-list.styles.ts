@@ -45,7 +45,6 @@ export const PeoplePickerListStyles = css`
         color: ${SystemColors.HighlightText};
         fill: currentcolor;
     }
-
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

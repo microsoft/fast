@@ -17,6 +17,9 @@ export class PeoplePicker extends Picker {
      */
     @attr({ attribute: "group-id" })
     public groupId: string;
+    public groupIdChanged() {
+        // TODO: update
+    }
 
     /**
      *  value determining if search is filtered to a group.
@@ -26,7 +29,10 @@ export class PeoplePicker extends Picker {
      * HTML Attribute: type
      */
     @attr({ attribute: "type" })
-    public type: PersonType;
+    public type: PersonType = PersonType.any;
+    public typeChanged(): void {
+        // TODO: update
+    }
 
     /**
      *  type of group to search for - requires personType to be set to "Group" or "All"
@@ -37,6 +43,9 @@ export class PeoplePicker extends Picker {
      */
     @attr({ attribute: "group-type" })
     public groupType: GroupType;
+    public groupTypeChanged(): void {
+        // TODO: update
+    }
 
     /**
      *  whether the return should contain a flat list of all nested members
@@ -47,6 +56,9 @@ export class PeoplePicker extends Picker {
      */
     @attr({ attribute: "transitive-search", mode: "boolean" })
     public transitiveSearch: boolean;
+    public transitiveSearchChanged(): void {
+        // TODO: update
+    }
 
     /**
      *  Placeholder text.
@@ -58,15 +70,16 @@ export class PeoplePicker extends Picker {
     @attr({ attribute: "placeholder" })
     public placeholder: string;
 
-    /**
-     *  Placeholder text.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: selection-mode
-     */
-    @attr({ attribute: "selection-mode" })
-    public selectionMode: SelectionMode;
+    // Proposal - remove "selection-mode" from people picker api in favor of Picker's "max-selected" attribute which is more flexible than simply "single" or "multiple"
+    // /**
+    //  *
+    //  *
+    //  * @public
+    //  * @remarks
+    //  * HTML Attribute: selection-mode
+    //  */
+    // @attr({ attribute: "selection-mode" })
+    // public selectionMode: SelectionMode;
 
     /**
      *
@@ -83,7 +96,14 @@ export class PeoplePicker extends Picker {
      *
      * @public
      */
-    public people: IDynamicPerson[];
+    public people: IDynamicPerson[] = [];
+
+    /**
+     *
+     *
+     * @public
+     */
+    public selectedPeople: IDynamicPerson[] = [];
 
     /**
      * @internal

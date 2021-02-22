@@ -57,6 +57,7 @@ export class Picker extends FASTElement {
             if (this.selectedOptions !== this.selection.split(",")) {
                 this.selection = this.selectedOptions.toString();
                 this.$emit("selectionchange");
+                this.checkMaxItems();
             }
         }
     }
@@ -72,6 +73,20 @@ export class Picker extends FASTElement {
     public options: string;
     private optionsChanged(): void {
         this.optionsList = this.options.split(",");
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: max-selected
+     */
+    @attr({ attribute: "max-selected" })
+    public maxSelected: number | undefined;
+    private maxSelectedChanged(): void {
+        if (this.$fastController.isConnected) {
+        }
     }
 
     /**
@@ -262,6 +277,8 @@ export class Picker extends FASTElement {
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
 
+        this.checkMaxItems();
+
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
             x => x.itemTemplate,
@@ -416,8 +433,6 @@ export class Picker extends FASTElement {
         }, 100);
     };
 
-    public handleRegionPositionChange = (e: Event): void => {};
-
     public handleFocusOut = (e: FocusEvent): void => {
         if (
             this.menuElement === undefined ||
@@ -436,6 +451,7 @@ export class Picker extends FASTElement {
         this.selectedOptions.push(value);
         this.toggleMenu(false);
         this.inputElement.value = "";
+        this.checkMaxItems();
         return false;
     };
 
@@ -462,6 +478,7 @@ export class Picker extends FASTElement {
 
     private handleItemInvoke = (itemIndex: number): void => {
         this.selectedOptions.splice(itemIndex, 1);
+        this.checkMaxItems();
         DOM.queueUpdate(() => this.incrementFocusedItem(0));
     };
 
@@ -596,6 +613,20 @@ export class Picker extends FASTElement {
         if (this.updateTimer !== null) {
             clearTimeout(this.updateTimer);
             this.updateTimer = null;
+        }
+    };
+
+    private checkMaxItems = (): void => {
+        if (this.inputElement === undefined) {
+            return;
+        }
+        if (
+            this.maxSelected !== undefined &&
+            this.selectedOptions.length >= this.maxSelected
+        ) {
+            this.inputElement.hidden = true;
+        } else {
+            this.inputElement.hidden = false;
         }
     };
 }

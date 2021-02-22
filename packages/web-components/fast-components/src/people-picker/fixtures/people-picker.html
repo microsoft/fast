@@ -20,6 +20,32 @@
         </fast-people-picker-menu>
     </fast-people-picker>
 
+    <h2>Single item</h2>
+    <fast-people-picker
+        max-selected="1"
+        options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
+    >
+        <fast-people-picker-menu id="custom-menu">
+            <button slot="header-region" role="listitem" tabindex="-1">pre-option</button>
+            <button slot="footer-region" role="listitem" tabindex="-1">
+                post-option
+            </button>
+        </fast-people-picker-menu>
+    </fast-people-picker>
+
+    <h2>Multiple items, limit to 3</h2>
+    <fast-people-picker
+        max-selected="3"
+        options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
+    >
+        <fast-people-picker-menu id="custom-menu">
+            <button slot="header-region" role="listitem" tabindex="-1">pre-option</button>
+            <button slot="footer-region" role="listitem" tabindex="-1">
+                post-option
+            </button>
+        </fast-people-picker-menu>
+    </fast-people-picker>
+
     <h2>Menu</h2>
     <fast-people-picker-menu>
         <button slot="header-region" role="listitem" tabindex="-1">pre-option</button>
