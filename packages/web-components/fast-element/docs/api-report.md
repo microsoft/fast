@@ -206,7 +206,7 @@ export function css(strings: TemplateStringsArray, ...values: (ComposableStyles 
 // @public
 export class CSSDirective {
     createBehavior(): Behavior | undefined;
-    createCSS(): string;
+    createCSS(): ComposableStyles;
 }
 
 // @public
