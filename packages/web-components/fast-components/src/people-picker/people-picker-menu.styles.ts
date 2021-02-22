@@ -22,7 +22,7 @@ import {
 
 export const PeoplePickerMenuStyles = css`
     :host {
-        z-index: 10000;
+        z-index: 1000;
         display: flex;
         width: 300px;
         max-height: 100%;
@@ -30,6 +30,27 @@ export const PeoplePickerMenuStyles = css`
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+
+    ::slotted([role="listitem"]) {
+        width: 100%;
+    }
+
+    ::slotted([aria-selected="true"][role="listitem"]) {
+        background: ${SystemColors.Highlight};
+        border-color: ${SystemColors.ButtonText};
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
+            ${SystemColors.HighlightText};
+        color: ${SystemColors.HighlightText};
+        fill: currentcolor;
+    }
+
+    .header-region {
+        width: 100%;
+    }
+
+    .footer-region {
+        width: 100%;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

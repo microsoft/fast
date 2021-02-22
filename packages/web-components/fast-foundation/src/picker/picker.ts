@@ -249,6 +249,7 @@ export class Picker extends FASTElement {
         this.selectedList.append(this.itemsPlaceholder);
 
         this.inputElement = document.createElement("input");
+        this.inputElement.classList.add("input-element");
         this.inputElement.setAttribute("role", "combobox");
         this.inputElement.setAttribute("type", "text");
         this.inputElement.setAttribute("autocapitalize", "off");

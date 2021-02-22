@@ -27,6 +27,20 @@ export const PeoplePickerListStyles = css`
         flex-wrap: wrap;
         z-index: 1000;
     }
+    
+    ::slotted([role="listitem"]) {
+        min-width: 260px;
+        min-height: 58px;
+    }
+
+    ::slotted(:${focusVisible}[role="listitem"]) {
+        background: ${SystemColors.Highlight};
+        border-color: ${SystemColors.ButtonText};
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+        color: ${SystemColors.HighlightText};
+        fill: currentcolor;
+    }
+
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,

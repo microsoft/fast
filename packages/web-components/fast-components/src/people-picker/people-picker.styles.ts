@@ -28,6 +28,11 @@ export const PeoplePickerStyles = css`
         padding: calc(var(--design-unit) * 1px) 0;
     }
 
+    .input-element {
+        min-width: 260px;
+        min-height: 58px;
+    }
+
     .region {
         z-index: 10000;
         overflow: hidden;
@@ -51,16 +56,15 @@ export const PeoplePickerStyles = css`
         transition-property: top, left;
     }
 
-    .top.inset-right{
+    .top.inset-right {
         transition-property: bottom, left;
     }
 
-    
     .bottom.inset-left {
         transition-property: top, right;
     }
 
-    .top.inset-right{
+    .top.inset-right {
         transition-property: bottom, right;
     }
 `.withBehaviors(
