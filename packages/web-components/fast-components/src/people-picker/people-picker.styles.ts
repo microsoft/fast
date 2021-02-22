@@ -28,11 +28,6 @@ export const PeoplePickerStyles = css`
         padding: calc(var(--design-unit) * 1px) 0;
     }
 
-    .input-element {
-        min-width: 260px;
-        min-height: 58px;
-    }
-
     .region {
         z-index: 10000;
         overflow: hidden;

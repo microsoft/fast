@@ -249,7 +249,6 @@ export class Picker extends FASTElement {
         this.selectedList.append(this.itemsPlaceholder);
 
         this.inputElement = document.createElement("input");
-        this.inputElement.classList.add("input-element");
         this.inputElement.setAttribute("role", "combobox");
         this.inputElement.setAttribute("type", "text");
         this.inputElement.setAttribute("autocapitalize", "off");
@@ -332,21 +331,26 @@ export class Picker extends FASTElement {
 
             case "ArrowDown": {
                 if (this.menuElement.optionElements.length > 0) {
+                    const nextFocusOptionIndex = this.menuOpen
+                        ? Math.min(
+                              this.menuFocusIndex + 1,
+                              this.menuElement.optionElements.length - 1
+                          )
+                        : 0;
+
                     this.toggleMenu(true);
-                    this.setFocusedOption(
-                        Math.min(
-                            this.menuFocusIndex + 1,
-                            this.menuElement.optionElements.length - 1
-                        )
-                    );
+                    this.setFocusedOption(nextFocusOptionIndex);
                 }
                 return false;
             }
 
             case "ArrowUp": {
                 if (this.menuElement.optionElements.length > 0) {
+                    const previousFocusOptionIndex = this.menuOpen
+                        ? Math.max(this.menuFocusIndex - 1, 0)
+                        : 0;
                     this.toggleMenu(true);
-                    this.setFocusedOption(Math.max(this.menuFocusIndex - 1, 0));
+                    this.setFocusedOption(previousFocusOptionIndex);
                 }
                 return false;
             }
@@ -485,7 +489,7 @@ export class Picker extends FASTElement {
     }
 
     private setFocusedOption = (optionIndex: number): void => {
-        if (optionIndex === this.menuFocusIndex) {
+        if (optionIndex === this.menuFocusIndex || !this.menuOpen) {
             return;
         }
 
@@ -518,7 +522,7 @@ export class Picker extends FASTElement {
             return;
         }
 
-        if (open) {
+        if (open && document.activeElement === this.inputElement) {
             this.menuOpen = open;
             this.inputElement.setAttribute("aria-owns", this.menuId);
             this.inputElement.setAttribute("aria-expanded", "true");

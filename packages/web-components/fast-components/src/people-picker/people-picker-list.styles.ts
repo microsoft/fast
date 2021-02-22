@@ -27,6 +27,11 @@ export const PeoplePickerListStyles = css`
         flex-wrap: wrap;
         z-index: 1000;
     }
+
+    ::slotted(.input-element) {
+        min-width: 260px;
+        min-height: 58px;
+    }
     
     ::slotted([role="listitem"]) {
         min-width: 260px;
