@@ -51,7 +51,7 @@ export type ElementStyleFactory = (
  * @public
  */
 export abstract class ElementStyles {
-    private targets = new WeakSet<StyleTarget>();
+    private targets: WeakSet<StyleTarget> = new WeakSet();
 
     /** @internal */
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
@@ -244,12 +244,35 @@ export class StyleElementStyles extends ElementStyles {
         super.removeStylesFrom(target);
     }
 
-    public isAttachedTo(target: StyleTarget) {
+    public isAttachedTo(target: StyleTarget): boolean {
         return super.isAttachedTo(this.normalizeTarget(target));
     }
 
-    private normalizeTarget(target: StyleTarget) {
+    private normalizeTarget(target: StyleTarget): StyleTarget {
         return target === document ? document.body : target;
+    }
+}
+
+/**
+ * Directive for use in {@link css}.
+ *
+ * @public
+ */
+export class CSSDirective {
+    /**
+     * Creates a CSS fragment to interpolate into the CSS document.
+     * @returns - the string to interpolate into CSS
+     */
+    public createCSS(): ComposableStyles {
+        return "";
+    }
+
+    /**
+     * Creates a behavior to bind to the host element.
+     * @returns - the behavior to bind to the host element, or undefined.
+     */
+    public createBehavior(): Behavior | undefined {
+        return undefined;
     }
 }
 
@@ -263,14 +286,24 @@ export class StyleElementStyles extends ElementStyles {
  */
 export function css(
     strings: TemplateStringsArray,
-    ...values: ComposableStyles[]
+    ...values: (ComposableStyles | CSSDirective)[]
 ): ElementStyles {
     const styles: ComposableStyles[] = [];
     let cssString = "";
+    const behaviors: Behavior[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
-        const value = values[i];
+        let value = values[i];
+
+        if (value instanceof CSSDirective) {
+            const behavior = value.createBehavior();
+            value = value.createCSS();
+
+            if (behavior) {
+                behaviors.push(behavior);
+            }
+        }
 
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
@@ -290,5 +323,11 @@ export function css(
         styles.push(cssString);
     }
 
-    return ElementStyles.create(styles);
+    const elementStyles = ElementStyles.create(styles);
+
+    if (behaviors.length) {
+        elementStyles.withBehaviors(...behaviors);
+    }
+
+    return elementStyles;
 }

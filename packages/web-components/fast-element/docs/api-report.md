@@ -201,7 +201,13 @@ export class Controller extends PropertyChangeNotifier {
 }
 
 // @public
-export function css(strings: TemplateStringsArray, ...values: ComposableStyles[]): ElementStyles;
+export function css(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): ElementStyles;
+
+// @public
+export class CSSDirective {
+    createBehavior(): Behavior | undefined;
+    createCSS(): ComposableStyles;
+}
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
