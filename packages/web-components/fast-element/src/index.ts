@@ -8,6 +8,7 @@ export * from "./interfaces";
 export * from "./template-compiler";
 export {
     css,
+    CSSDirective,
     ElementStyles,
     ElementStyleFactory,
     ComposableStyles,
