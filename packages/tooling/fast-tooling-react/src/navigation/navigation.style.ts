@@ -43,7 +43,6 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             height: "100%",
             position: "absolute",
             left: "calc(1em - 12px)",
-            "border-right": `1px solid ${L3OutlineColorProperty}`,
             "z-index": "1",
         },
     },

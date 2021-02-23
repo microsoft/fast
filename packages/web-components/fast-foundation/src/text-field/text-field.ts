@@ -148,7 +148,7 @@ export class TextField extends FormAssociatedTextField {
     }
 
     /**
-     * Sets the width of the element to a specified number of characters.
+     * Controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used.
      * @public
      * @remarks
      * HTMLAttribute: size

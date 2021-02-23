@@ -10,10 +10,12 @@ export const fastTreeViewDefinition: WebComponentDefinition = {
             description: "The FAST tree view element",
             attributes: [
                 {
-                    name: "name",
-                    description: "The name attribute",
-                    type: DataType.string,
-                    default: "",
+                    name: "render-collapsed-nodes",
+                    title: "Render collapsed nodes",
+                    description:
+                        "Determines whether the tree should render nodes under collapsed items",
+                    type: DataType.boolean,
+                    default: undefined,
                     required: false,
                 },
             ],
