@@ -27,6 +27,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Enums](#enums)
         - [allOf & $ref](#allof-&-ref)
 - [Navigation](#navigation)
+    - [Include data types](#include-data-types)
 - [Navigation Menu](#navigation-menu)
     - [Menu structure](#menu-structure)
     - [Expanding and Collapsing](#expanding-and-collapsing)
@@ -562,6 +563,19 @@ Example:
 ```jsx
 <Navigation
     messageSystem={fastMessageSystem}
+/>
+```
+
+### Include data types
+
+By default all JSON schema data types are visible. If the optional `types` prop is included, the data types that are in the array will become the data types that are rendered. If a data type that is specified is contained inside a data type that is not, that will directly nest the visible data type with the parent of the unspecified data type.
+
+Example:
+
+```jsx
+<Navigation
+    messageSystem={fastMessageSystem}
+    types={["object", "string"]} // only "object" and "string" data types are rendered
 />
 ```
 
