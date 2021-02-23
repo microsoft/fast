@@ -26,6 +26,7 @@ export const PeoplePickerStyles = css`
         margin: 0;
         border-radius: calc(var(--corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
+        position: relative;
     }
 
     .region {

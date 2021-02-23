@@ -26,6 +26,7 @@ export const PeoplePickerMenuStyles = css`
         display: flex;
         width: 308px;
         max-height: 100%;
+        min-height: 70px;
         background: purple;
         flex-direction: column;
         overflow-y: auto;

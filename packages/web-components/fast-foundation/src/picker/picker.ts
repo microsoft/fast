@@ -12,11 +12,53 @@ import { AnchoredRegion } from "../anchored-region";
 import { PickerMenu } from "./picker-menu";
 
 /**
+ *
+ */
+export enum PickerMenuPosition {
+    top = "top",
+    bottom = "bottom",
+    dynamic = "dynamic",
+}
+
+/**
  * A List Picker Custom HTML Element.
  *
  * @public
  */
 export class Picker extends FASTElement {
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: menu-position
+     */
+    @attr({ attribute: "menu-position" })
+    public menuPosition: PickerMenuPosition = PickerMenuPosition.dynamic;
+
+    /**
+     * Whether the menu is positioned using css "position: fixed".
+     * Otherwise the menu uses "position: absolute".
+     * Fixed placement allows the region to break out of parent containers
+     * may exhibit more latency on scrolling/resizing
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: fixed-placement
+     */
+    @attr({ attribute: "fixed-placement", mode: "boolean" })
+    public fixedPlacement: boolean = true;
+
+    /**
+     * Auto position update interval in ms. Values of 0 or lower turn off auto position update.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: auto-update-interval
+     */
+    @attr({ attribute: "auto-update-interval" })
+    public autoUpdateInterval: number = 100;
+
     /**
      *
      *
@@ -466,6 +508,12 @@ export class Picker extends FASTElement {
         return false;
     };
 
+    public updatePosition = (): void => {
+        if (this.region !== undefined) {
+            this.region.update();
+        }
+    };
+
     private handleItemInvoke = (itemIndex: number): void => {
         this.selectedOptions.splice(itemIndex, 1);
         this.checkMaxItems();
@@ -580,9 +628,15 @@ export class Picker extends FASTElement {
             this.region.classList.toggle("loaded", true);
         });
 
-        this.updateTimer = window.setTimeout((): void => {
-            this.updateTimerTick();
-        }, 100);
+        if (this.autoUpdateInterval <= 0) {
+            return;
+        }
+
+        if (this.autoUpdateInterval > 0) {
+            this.updateTimer = window.setTimeout((): void => {
+                this.updateTimerTick();
+            }, this.autoUpdateInterval);
+        }
     };
 
     private updateTimerTick = (): void => {
@@ -591,9 +645,12 @@ export class Picker extends FASTElement {
             if (this.region !== undefined) {
                 this.region.update();
             }
-            this.updateTimer = window.setTimeout((): void => {
-                this.updateTimerTick();
-            }, 100);
+
+            if (this.autoUpdateInterval > 0) {
+                this.updateTimer = window.setTimeout((): void => {
+                    this.updateTimerTick();
+                }, this.autoUpdateInterval);
+            }
         }
     };
 

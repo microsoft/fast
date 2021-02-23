@@ -31,5 +31,29 @@
         max-selected="3"
         options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
     ></fast-people-picker>
-    <div style="height: 800px; opacity: 0;"></div>
+
+    <h2>Menu top</h2>
+    <fast-people-picker
+        menu-position="top"
+        default-selection="me, Lynne Robbins"
+        options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
+    ></fast-people-picker>
+
+    <h2>Menu bottom</h2>
+    <fast-people-picker
+        menu-position="bottom"
+        default-selection="me, Lynne Robbins"
+        options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
+    ></fast-people-picker>
+
+    <h2>Absolute positioning, no updates</h2>
+    <fast-people-picker
+        fixed-placement="false"
+        menu-position="bottom"
+        auto-update-interval="0"
+        default-selection="me, Lynne Robbins"
+        options="me, Isaiah Langer, bobk@tailspintoys.com, Diego Siciliani, Lynne Robbins, EmilyB, BrianJ, JoniS@M365x214355.onmicrosoft.com"
+    ></fast-people-picker>
+
+    <div style="height: 200px; opacity: 0;"></div>
 </fast-design-system-provider>

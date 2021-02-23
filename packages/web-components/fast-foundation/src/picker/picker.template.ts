@@ -1,5 +1,5 @@
 import { html, ref, slotted, ViewTemplate, when } from "@microsoft/fast-element";
-import { Picker } from "./picker";
+import { Picker, PickerMenuPosition } from "./picker";
 
 /**
  * The template for the List Picker component.
@@ -27,8 +27,15 @@ export function createPickerTemplate(
                 html<Picker>`
                 <${prefix}-anchored-region
                     class="region"
-                    fixed-placement="true"
-                    vertical-positioning-mode="dynamic"
+                    fixed-placement="${x => x.fixedPlacement}"
+                    vertical-positioning-mode="${x =>
+                        x.menuPosition === PickerMenuPosition.dynamic
+                            ? x.menuPosition
+                            : "locktodefault"}"
+                    vertical-default-position="${x =>
+                        x.menuPosition === PickerMenuPosition.dynamic
+                            ? null
+                            : x.menuPosition}"
                     vertical-scaling="fill"
                     vertical-inset="false"
                     horizontal-positioning-mode="locktodefault"
