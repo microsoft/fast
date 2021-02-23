@@ -17,6 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo '::set-output name=dir::$(yarn cache dir)'
@@ -32,9 +35,6 @@ jobs:
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
-      
-     - name: Clean and remove untracked files
-      run: git clean -xfd
 
     - name: Prepare workspaces
       run: yarn prepare
@@ -83,6 +83,9 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+
     - name: Display the path
       run: echo $PATH
       shell: bash
@@ -102,9 +105,6 @@ jobs:
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
-
-    - name: Clean and remove untracked files
-      run: git clean -xfd
 
     - name: Prepare workspaces
       run: yarn prepare
@@ -148,6 +148,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd    
+        
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo '::set-output name=dir::$(yarn cache dir)'
@@ -164,9 +167,6 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
     
-    - name: Clean and remove untracked files
-      run: git clean -xfd
-
     - name: Prepare workspaces
       run: yarn prepare
 
