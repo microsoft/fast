@@ -32,12 +32,12 @@ jobs:
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
+      
+     - name: Clean and remove untracked files
+      run: git clean -xfd
 
     - name: Prepare workspaces
       run: yarn prepare
-    
-    - name: Clean and remove untracked files
-      run: git clean -xfd
 
     - name: Testing Prettier format
       run: yarn format:check
@@ -103,11 +103,11 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Prepare workspaces
-      run: yarn prepare
-
     - name: Clean and remove untracked files
       run: git clean -xfd
+
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing Prettier format
       run: yarn format:check
@@ -163,12 +163,12 @@ jobs:
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
-
-    - name: Prepare workspaces
-      run: yarn prepare
     
     - name: Clean and remove untracked files
       run: git clean -xfd
+
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing Prettier format
       run: yarn format:check
