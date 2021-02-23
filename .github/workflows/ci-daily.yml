@@ -18,6 +18,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+
     - name: Add or Update packages
       run: sudo yarn global add lerna
 
@@ -33,9 +36,6 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-
-    - name: Clean and remove untracked files
-      run: git clean -xfd
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
