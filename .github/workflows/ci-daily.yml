@@ -37,6 +37,9 @@ jobs:
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+      
     - name: Testing Prettier format
       run: lerna run prettier:diff
 
