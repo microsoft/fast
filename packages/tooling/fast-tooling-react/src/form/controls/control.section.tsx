@@ -276,8 +276,17 @@ class SectionControl extends React.Component<
             ][this.props.dataLocation].forEach(
                 (categoryItem: FormCategory, index: number) => {
                     formControls.push(
-                        <fieldset key={index}>
-                            <legend>{categoryItem.title}</legend>
+                        <fieldset
+                            key={index}
+                            className={this.props.managedClasses.sectionControl_category}
+                        >
+                            <legend
+                                className={
+                                    this.props.managedClasses.sectionControl_categoryTitle
+                                }
+                            >
+                                {categoryItem.title}
+                            </legend>
                             {categoryItem.dataLocations.map((dataLocation: string) => {
                                 if (
                                     navigationItem.items.findIndex(
