@@ -8,6 +8,16 @@ import uniqueId from "lodash-es/uniqueId";
  */
 export class PickerMenu extends FASTElement {
     /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: show-options
+     */
+    @attr({ attribute: "show-options" })
+    public showOptions: boolean = true;
+
+    /**
      * Children that are list items
      *
      * @internal

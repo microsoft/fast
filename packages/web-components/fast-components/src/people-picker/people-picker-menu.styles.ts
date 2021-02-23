@@ -24,12 +24,19 @@ export const PeoplePickerMenuStyles = css`
     :host {
         z-index: 1000;
         display: flex;
-        width: 300px;
+        width: 308px;
         max-height: 100%;
         background: purple;
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
+    }
+
+    .suggestions-available-alert,
+    .no-suggestions-available-alert {
+        height: 0;
+        opacity: 0;
+        overflow: hidden;
     }
 
     ::slotted([role="listitem"]) {
@@ -44,13 +51,11 @@ export const PeoplePickerMenuStyles = css`
         color: ${SystemColors.HighlightText};
         fill: currentcolor;
     }
-
-    .header-region {
-        width: 100%;
+    :host([show-options="true"]) .no-options-display {
+        display: none;
     }
-
-    .footer-region {
-        width: 100%;
+    :host([show-options="false"]) .options-display {
+        display: none;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

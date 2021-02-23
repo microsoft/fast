@@ -205,13 +205,6 @@ export class Picker extends FASTElement {
     public menuElement: PickerMenu;
 
     /**
-     * reference to the menu
-     *
-     * @internal
-     */
-    public slottedMenuElements: HTMLElement[];
-
-    /**
      *
      *
      * @internal
@@ -255,11 +248,6 @@ export class Picker extends FASTElement {
         this.selectedList.slot = "list-region";
         this.appendChild(this.selectedList);
 
-        this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
-        this.menuElement.slot = "menu-region";
-        this.menuElement.id = this.menuId;
-        this.appendChild(this.menuElement);
-
         this.itemsPlaceholder = document.createComment("");
         this.selectedList.append(this.itemsPlaceholder);
 
@@ -294,6 +282,7 @@ export class Picker extends FASTElement {
 
         if (this.menuElement === undefined) {
             this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
+            this.menuElement.slot = "menu-region";
             this.appendChild(this.menuElement);
         }
 

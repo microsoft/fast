@@ -82,14 +82,14 @@ export class PeoplePicker extends Picker {
     // public selectionMode: SelectionMode;
 
     /**
-     *
+     * The maximum number of options to display
      *
      * @public
      * @remarks
      * HTML Attribute: show-max
      */
     @attr({ attribute: "show-max" })
-    public showMax: number;
+    public showMax: number | undefined;
 
     /**
      *
