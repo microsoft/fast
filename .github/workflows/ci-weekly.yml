@@ -114,11 +114,12 @@ jobs:
 
     - name: Test Coverage
       run: coverage
-
+    
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        
       
         
 
