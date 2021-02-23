@@ -418,6 +418,7 @@ export class Picker extends FASTElement {
             return;
         }
         this.updateTimer = window.setTimeout((): void => {
+            this.setFocusedOption(this.menuFocusIndex);
             this.startUpdateTimer();
         }, 100);
     };
@@ -495,7 +496,7 @@ export class Picker extends FASTElement {
     }
 
     private setFocusedOption = (optionIndex: number): void => {
-        if (optionIndex === this.menuFocusIndex || !this.menuOpen) {
+        if (!this.menuOpen) {
             return;
         }
 
