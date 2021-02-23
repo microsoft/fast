@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
@@ -950,7 +951,7 @@ export interface FormAssociatedProxy {
 // @alpha
 export class FoundationElement extends FASTElement {
     protected get $presentation(): ComponentPresentation;
-    static configuration(elementDefinition: FoundationElementDefinition): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry;
+    static compose<T extends FoundationElementDefinition = FoundationElementDefinition>(elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => Registry;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
     // (undocumented)
@@ -961,10 +962,15 @@ export class FoundationElement extends FASTElement {
 }
 
 // @alpha
-export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
+export interface FoundationElementDefinition {
+    readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
     baseName: string;
-    type: typeof FASTElement;
-};
+    readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
+    readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
+    readonly styles?: EagerOrLazyFoundationOption<ComposableStyles | ComposableStyles[], this>;
+    // Warning: (ae-forgotten-export) The symbol "EagerOrLazyFoundationOption" needs to be exported by the entry point index.d.ts
+    readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
+}
 
 // @public
 export enum GenerateHeaderOptions {
@@ -1257,7 +1263,7 @@ export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate
 export const optional: (key: any) => any;
 
 // @alpha
-export type OverrideFoundationElementDefinition = Partial<Omit<FoundationElementDefinition, "type">> & {
+export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type">> & {
     prefix?: string;
 };
 

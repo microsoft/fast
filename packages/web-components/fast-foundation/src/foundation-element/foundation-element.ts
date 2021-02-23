@@ -86,7 +86,7 @@ export type OverrideFoundationElementDefinition<
  *
  * @alpha
  */
-export abstract class FoundationElement extends FASTElement {
+export class FoundationElement extends FASTElement {
     @Container
     private container: Container;
     private _presentation: ComponentPresentation | null = null;
@@ -143,11 +143,11 @@ export abstract class FoundationElement extends FASTElement {
     }
 
     /**
-     * Creates an element registry configuration function with a set of element definition defaults.
-     * @param elementDefinition - The definition of the element to create the registry configuration
+     * Defines an element registry function with a set of element definition defaults.
+     * @param elementDefinition - The definition of the element to create the registry
      * function for.
      */
-    public static configure<
+    public static compose<
         T extends FoundationElementDefinition = FoundationElementDefinition
     >(
         elementDefinition: T
@@ -156,7 +156,7 @@ export abstract class FoundationElement extends FASTElement {
             overrideDefinition: OverrideFoundationElementDefinition<T> = {}
         ): Registry =>
             new FoundationElementRegistry(
-                this as any,
+                this === FoundationElement ? class extends FoundationElement {} : this,
                 elementDefinition,
                 overrideDefinition
             );
