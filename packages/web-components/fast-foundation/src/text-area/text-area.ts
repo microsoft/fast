@@ -135,7 +135,7 @@ export class TextArea extends FormAssociatedTextArea {
     public cols: number = 20;
 
     /**
-     * Sizes the element vertically by a number of character columns.
+     * Sizes the element vertically by a number of character rows.
      *
      * @public
      * @remarks

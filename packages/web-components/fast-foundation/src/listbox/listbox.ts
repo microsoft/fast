@@ -144,8 +144,8 @@ export class Listbox extends FASTElement {
      */
     protected setDefaultSelectedOption() {
         if (this.options && this.$fastController.isConnected) {
-            const selectedIndex = this.options.findIndex(el =>
-                el.getAttribute("selected")
+            const selectedIndex = this.options.findIndex(
+                el => el.getAttribute("selected") !== null
             );
 
             if (selectedIndex !== -1) {

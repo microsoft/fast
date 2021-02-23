@@ -1,13 +1,8 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import TreeItemTemplate from "./fixtures/tree-item.html";
-import { FASTTreeItem } from "./";
-
-// Prevent tree-shaking
-FASTTreeItem;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
-    title: "Tree item",
+    title: "Tree Item",
 };
 
 export const TreeItem = () => TreeItemTemplate;

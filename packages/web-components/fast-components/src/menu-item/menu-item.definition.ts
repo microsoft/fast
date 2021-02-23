@@ -7,26 +7,30 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-menu-item",
+            title: "Menu item",
             description: "The FAST menu item element",
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     type: DataType.boolean,
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the item",
                     default: true,
                     required: false,
                 },
                 {
                     name: "expanded",
+                    title: "Expanded",
                     type: DataType.boolean,
-                    description: "The expanded attribute",
+                    description: "The expanded state of the item",
                     default: true,
                     required: false,
                 },
                 {
                     name: "role",
+                    title: "Role",
                     type: DataType.string,
-                    description: "The role attribute",
+                    description: "The ARIA role of the menu item",
                     default: MenuItemRole.menuitem,
                     values: [
                         { name: MenuItemRole.menuitem },
@@ -37,8 +41,10 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "checked",
+                    title: "Checked",
                     type: DataType.boolean,
-                    description: "The checked attribute",
+                    description:
+                        "The checked state for elements with a role of menuitemradio or menuitemcheckbox",
                     default: true,
                     required: false,
                 },
@@ -46,15 +52,20 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the menu item",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the item content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the item content",
                 },
             ],
         },

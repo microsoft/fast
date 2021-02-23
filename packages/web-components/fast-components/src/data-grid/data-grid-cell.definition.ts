@@ -7,11 +7,13 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid-cell",
+            title: "Data grid cell",
             description: "The FAST data grid cell element",
             attributes: [
                 {
                     name: "cell-type",
-                    description: "The type of cell - default or columnheader.",
+                    title: "Cell type",
+                    description: "The type of cell",
                     type: DataType.string,
                     values: [
                         { name: DataGridCellTypes.default },
@@ -22,6 +24,7 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "grid-column",
+                    title: "Grid column",
                     description: "Positions the cell in the column layout.",
                     type: DataType.string,
                     default: undefined,
@@ -31,7 +34,8 @@ export const fastDataGridCellDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The cell content",
                 },
             ],
         },

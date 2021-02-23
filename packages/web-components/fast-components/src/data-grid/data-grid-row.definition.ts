@@ -7,19 +7,22 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-data-grid-row",
+            title: "Data grid row",
             description: "The FAST data grid row element",
             attributes: [
                 {
                     name: "grid-template-columns",
+                    title: "Grid template columns",
                     description:
-                        "String that gets applied to the the css gridTemplateColumns attribute of child rows",
+                        "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "row-type",
-                    description: "The type of row - default or header.",
+                    title: "Row type",
+                    description: "The type of row",
                     type: DataType.string,
                     values: [
                         { name: DataGridRowTypes.default },
@@ -33,7 +36,8 @@ export const fastDataGridRowDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The row content as data grid cells",
                 },
             ],
         },

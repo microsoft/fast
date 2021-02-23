@@ -24,7 +24,9 @@
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
-      "**/@types/mocha"
+      "**/@types/mocha",
+      "**/@types/node",
+      "**/chai"
     ]
   },
   "repository": {
@@ -109,7 +111,8 @@
     "@types/react": "*",
     "immer": "^8.0.1",
     "jimp": "^0.16.1",
-    "jpeg-js": "^0.4.3"
+    "jpeg-js": "^0.4.3",
+    "node-notifier": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
@@ -120,6 +123,7 @@
     "@types/node": "^9.4.7",
     "beachball": "^1.36.2",
     "chalk": "^2.4.2",
+    "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
@@ -134,9 +138,10 @@
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
     "typescript": "^3.9.0",
-    "yargs": "^11.0.0"
+    "yargs": "^16.2.0"
   },
   "dependencies": {
+    "playwright": "^1.8.0",
     "saucelabs": "^1.5.0",
     "selenium-webdriver": "^3.6.0"
   }

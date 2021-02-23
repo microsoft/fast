@@ -12,25 +12,31 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchored-region",
+            title: "Anchored region",
             description: "The FAST anchored region element",
             attributes: [
                 {
                     name: "anchor",
+                    title: "Anchor ID",
                     type: DataType.string,
-                    description: "The anchor attribute",
+                    description:
+                        "The HTML ID of the element the region is positioned relative to",
                     default: undefined,
                     required: true,
                 },
                 {
                     name: "viewport",
-                    description: "The viewport attribute",
+                    title: "Viewport ID",
+                    description:
+                        "The HTML ID of the viewport the region is positioned relative to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "horizontal-positioning-mode",
-                    description: "The horizontal-positioning-mode attribute",
+                    title: "Horizontal positioning mode",
+                    description: "How the horizontal placement is determined",
                     type: DataType.string,
                     values: [
                         { name: "uncontrolled" },
@@ -42,7 +48,9 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "horizontal-default-position",
-                    description: "The horizontal-default-position attribute",
+                    title: "Horizontal default position",
+                    description:
+                        "The default horizontal position of the region relative to the configured 'Anchor ID'",
                     type: DataType.string,
                     values: [
                         { name: "start" },
@@ -56,21 +64,26 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "horizontal-inset",
-                    description: "The horizontal-inset attribute",
+                    title: "Horizontal inset",
+                    description:
+                        "Determines whether the region should overlap the anchor on the horizontal axis",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "horizontal-threshold",
-                    description: "The horizontal-threshold attribute",
+                    title: "Horizontal threshold",
+                    description:
+                        "The space allocated to the default position before the widest area is selected for layout",
                     type: DataType.number,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "horizontal-scaling",
-                    description: "The horizontal-scaling attribute",
+                    title: "Horizontal scaling",
+                    description: "Defines how the width of the region is calculated",
                     type: DataType.string,
                     values: [{ name: "anchor" }, { name: "fill" }, { name: "content" }],
                     default: "content",
@@ -79,7 +92,8 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
 
                 {
                     name: "vertical-positioning-mode",
-                    description: "The vertical-positioning-mode attribute",
+                    title: "Vertical positioning mode",
+                    description: "How the vertical placement is determined",
                     type: DataType.string,
                     values: [
                         { name: "uncontrolled" },
@@ -91,7 +105,9 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "vertical-default-position",
-                    description: "The vertical-default-position attribute",
+                    title: "Vertical default position",
+                    description:
+                        "The default vertical position of the region relative to the configured 'Anchor ID'",
                     type: DataType.string,
                     values: [{ name: "top" }, { name: "bottom" }, { name: "unset" }],
                     default: "unset",
@@ -99,21 +115,26 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "vertical-inset",
-                    description: "The vertical-inset attribute",
+                    title: "Vertical inset",
+                    description:
+                        "Determines whether the region should overlap the anchor on the vertical axis",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "vertical-threshold",
-                    description: "The vertical-threshold attribute",
+                    title: "Vertical threshold",
+                    description:
+                        "The space allocated to the default position before the widest area is selected for layout",
                     type: DataType.number,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "vertical-scaling",
-                    description: "The vertical-scaling attribute",
+                    title: "Vertical scaling",
+                    description: "Defines how the width of the region is calculated",
                     type: DataType.string,
                     values: [{ name: "anchor" }, { name: "fill" }, { name: "content" }],
                     default: "content",
@@ -121,7 +142,9 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "fixed-placement",
-                    description: "The fixed-placement attribute",
+                    title: "Fixed placement",
+                    description:
+                        "Fixed placement allows the region to break out of parent containers",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -130,7 +153,8 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the anchored region",
                 },
             ],
         },

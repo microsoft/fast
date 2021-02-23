@@ -26,6 +26,16 @@ export interface NavigationTreeItemProps
     className: string;
 
     /**
+     * The class name assigned to the expand trigger
+     */
+    expandTriggerClassName: string;
+
+    /**
+     * The class name assigned to the items content
+     */
+    contentClassName: string;
+
+    /**
      * The dictionary ID
      */
     dictionaryId: string;
@@ -47,6 +57,11 @@ export interface NavigationTreeItemProps
 
     /**
      * The click handler for expanding an item
+     */
+    handleExpandClick: React.MouseEventHandler<HTMLElement>;
+
+    /**
+     * The click handler for activating an item
      */
     handleClick: React.MouseEventHandler<HTMLElement>;
 

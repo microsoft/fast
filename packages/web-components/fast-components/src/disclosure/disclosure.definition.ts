@@ -6,25 +6,30 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-disclosure",
+            title: "Disclosure",
             description: "The FAST disclosure element",
             attributes: [
                 {
                     name: "expanded",
-                    description: "The opened attribute",
+                    title: "Expanded",
+                    description: "Determines the visibility of the additional content",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "title",
-                    description: "Invoker title attribute",
+                    title: "Title",
+                    description:
+                        "Default slotted content of the button which toggles the visbility of the additional disclosure content",
                     type: DataType.string,
                     default: false,
                     required: false,
                 },
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    title: "Appearance",
+                    description: "The disclosure's visual treatment",
                     type: DataType.string,
                     values: [
                         {
@@ -40,20 +45,27 @@ export const fastDisclosureDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "start",
-                    description: "The start slot",
+                    name: "title",
+                    title: "Title slot",
+                    description:
+                        "The content of the button which toggles the visbility of the additional disclosure content",
                 },
                 {
-                    name: "title",
-                    description: "The title slot",
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button content",
                 },
                 {
                     name: "",
-                    description: "The content slot",
+                    title: "Default slot",
+                    description: "The disclosure content",
                 },
             ],
         },

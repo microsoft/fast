@@ -6,19 +6,22 @@ export const fastOptionDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-option",
+            title: "Option",
             description: "The FAST option element",
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     type: DataType.boolean,
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the option",
                     default: false,
                     required: false,
                 },
                 {
                     name: "selected",
+                    title: "Selected",
                     type: DataType.boolean,
-                    description: "The selected attribute",
+                    description: "The selected state of the option",
                     default: false,
                     required: false,
                 },
@@ -26,7 +29,20 @@ export const fastOptionDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the option",
+                },
+                {
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the option content",
+                },
+                {
+                    name: "end",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the option content",
                 },
             ],
         },

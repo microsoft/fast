@@ -7,12 +7,14 @@ export const fastDividerDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-divider",
+            title: "Divider",
             description: "The FAST divider element",
             attributes: [
                 {
                     name: "role",
+                    title: "Role",
                     type: DataType.string,
-                    description: "The role attribute",
+                    description: "The ARIA role for the divider",
                     values: [
                         {
                             name: DividerRole.separator,

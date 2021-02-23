@@ -1,4 +1,5 @@
 import { MessageSystem } from "../message-system";
+import { Register } from "../message-system/message-system.props";
 import { MessageSystemServiceAction } from "./message-system.service-action";
 
 export interface IdentifiedAction {
@@ -22,7 +23,12 @@ export interface ActionNotFound {
     error: string;
 }
 
-export interface MessageSystemServiceConfig<C> {
+export interface MessageSystemServiceConfig<A, C = {}> {
+    /**
+     * The id for the service
+     */
+    id?: string;
+
     /**
      * The message system
      * used for sending and receiving shortcuts to the message system
@@ -32,17 +38,22 @@ export interface MessageSystemServiceConfig<C> {
     /**
      * Shortcut actions
      */
-    actions?: MessageSystemServiceAction<C, unknown>[];
+    actions?: MessageSystemServiceAction<A, unknown>[];
+
+    /**
+     * Any additional configurations for this service
+     */
+    config?: C;
 }
 
 /**
  * This abstract class are for services that
  * use the MessageSystem to register and de-register themselves
  */
-export abstract class MessageSystemService<C> {
+export abstract class MessageSystemService<A, C = {}> {
     public messageSystem: MessageSystem;
-    private messageSystemConfig: { onMessage: (e: MessageEvent) => void };
-    protected registeredActions: MessageSystemServiceAction<C, unknown>[] = [];
+    private messageSystemConfig: Register;
+    protected registeredActions: MessageSystemServiceAction<A, unknown>[] = [];
 
     /**
      * Destroy this before dereferencing the validator
@@ -56,10 +67,12 @@ export abstract class MessageSystemService<C> {
      * Register this service with the message system
      * This should be called during construction
      */
-    public registerMessageSystem(config: MessageSystemServiceConfig<C>): void {
+    public registerMessageSystem(config: MessageSystemServiceConfig<A, C>): void {
         if (config.messageSystem !== undefined) {
             this.messageSystemConfig = {
+                id: config.id,
                 onMessage: this.handleMessageSystem,
+                config: config.config,
             };
             config.messageSystem.add(this.messageSystemConfig);
         }
@@ -81,14 +94,14 @@ export abstract class MessageSystemService<C> {
      * The service should get any config to be passed to
      * the registered actions
      */
-    abstract getActionConfig(id: string): C;
+    abstract getActionConfig(id: string): A;
 
     /**
      * Returns an action with a specific ID that can be run
      */
     public action = (id: string): IdentifiedAction => {
         const action = this.registeredActions.find(
-            (action: MessageSystemServiceAction<C, unknown>) => {
+            (action: MessageSystemServiceAction<A, unknown>) => {
                 return action.id === id;
             }
         );
