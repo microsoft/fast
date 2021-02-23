@@ -5,6 +5,7 @@ export const commonHTMLAttributes: WebComponentAttribute[] = [
     {
         name: "style",
         type: DataType.string,
+        title: "CSS",
         description: "The inline CSS style",
         default: "",
         required: false,

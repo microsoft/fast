@@ -95,7 +95,7 @@ type Location = "top" | "left" | "right" | "bottom";
  */
 export class AnchoredRegion extends FASTElement {
     /**
-     * The HTML id of the anchor element this region is positioned relative to
+     * The HTML ID of the anchor element this region is positioned relative to
      *
      * @beta
      * @remarks
@@ -110,7 +110,7 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * The HTML id of the viewport element this region is positioned relative to
+     * The HTML ID of the viewport element this region is positioned relative to
      *
      * @beta
      * @remarks

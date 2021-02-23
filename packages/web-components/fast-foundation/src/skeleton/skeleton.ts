@@ -13,7 +13,7 @@ export type SkeletonShape = "rect" | "circle";
  */
 export class Skeleton extends FASTElement {
     /**
-     * Indicates the badge should have a filled style.
+     * Indicates the Skeleton should have a filled style.
      *
      * @public
      * @remarks
