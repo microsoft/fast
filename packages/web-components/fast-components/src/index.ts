@@ -24,6 +24,7 @@ export * from "./progress/index";
 export * from "./progress-ring/index";
 export * from "./radio/index";
 export * from "./radio-group/index";
+export * from "./scroller/index";
 export * from "./select/index";
 export * from "./skeleton/index";
 export * from "./slider/index";

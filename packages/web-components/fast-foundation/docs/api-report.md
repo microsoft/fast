@@ -381,6 +381,9 @@ export class ContainerImpl implements Container {
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
+// @public (undocumented)
+export const ControlsTemplate: import("@microsoft/fast-element").ViewTemplate<Scroller, any>;
+
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
 
@@ -1440,6 +1443,38 @@ export const enum ResolverStrategy {
     // (undocumented)
     transient = 2
 }
+
+// @public (undocumented)
+export class Scroller extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    content: HTMLDivElement;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    initialLayoutComplete: boolean;
+    moveToStart(): void;
+    // (undocumented)
+    nextFlipper: HTMLDivElement;
+    // (undocumented)
+    previousFlipper: HTMLDivElement;
+    scrollToNext(): void;
+    scrollToPrevious(): void;
+    view: ScrollerView;
+    }
+
+// @public (undocumented)
+export const ScrollerControlStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const ScrollerStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const ScrollerTemplate: import("@microsoft/fast-element").ViewTemplate<Scroller, any>;
+
+// @public (undocumented)
+export type ScrollerView = "default" | "mobile";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

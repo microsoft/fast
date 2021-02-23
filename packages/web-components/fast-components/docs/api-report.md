@@ -31,6 +31,7 @@ import { MenuItem } from '@microsoft/fast-foundation';
 import { NumberField } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
+import { Scroller } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -597,6 +598,10 @@ export class FASTRadio extends Radio {
 
 // @public
 export class FASTRadioGroup extends RadioGroup {
+}
+
+// @public
+export class FASTScroller extends Scroller {
 }
 
 // @public
