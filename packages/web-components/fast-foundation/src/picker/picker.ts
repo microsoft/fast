@@ -521,6 +521,7 @@ export class Picker extends FASTElement {
             "aria-selected",
             "true"
         );
+        this.menuElement.optionElements[this.menuFocusIndex].scrollIntoView();
     };
 
     private toggleMenu = (open: boolean): void => {
