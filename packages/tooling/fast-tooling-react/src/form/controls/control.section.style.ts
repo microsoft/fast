@@ -16,7 +16,6 @@ const styles: ComponentStyles<SectionControlClassNameContract, {}> = {
         padding: "0",
         border: "none",
         "min-inline-size": "unset", // override for fieldsets inherited style
-        opacity: "1", // override the fieldset disabled inherited style
         "font-size": "14px",
         "line-height": "20px",
     },
