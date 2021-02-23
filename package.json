@@ -82,8 +82,8 @@
     },
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest"
+      "^.+\\.ts?$": "ts-jest"
+      
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
