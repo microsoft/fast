@@ -32,6 +32,9 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+    
+    - name: Clean and remove untracked files
+      run: git clean -xfd
 
     - name: Testing Prettier format
       run: yarn format:check
@@ -99,6 +102,9 @@ jobs:
     - name: Prepare workspaces
       run: yarn prepare
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+
     - name: Testing Prettier format
       run: yarn format:check
 
@@ -155,6 +161,9 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+    
+    - name: Clean and remove untracked files
+      run: git clean -xfd
 
     - name: Testing Prettier format
       run: yarn format:check
