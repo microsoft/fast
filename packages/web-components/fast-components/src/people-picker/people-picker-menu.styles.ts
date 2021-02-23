@@ -31,6 +31,7 @@ export const PeoplePickerMenuStyles = css`
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
+        pointer-events: auto;
     }
 
     .suggestions-available-alert,

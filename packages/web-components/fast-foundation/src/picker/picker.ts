@@ -455,8 +455,7 @@ export class Picker extends FASTElement {
     };
 
     public handleRegionLoaded = (e: Event): void => {
-        // TODO: make updating configurable
-        if (!this.menuOpen || this.updateTimer !== null) {
+        if (!this.menuOpen) {
             return;
         }
         this.updateTimer = window.setTimeout((): void => {
@@ -580,6 +579,9 @@ export class Picker extends FASTElement {
 
         if (open && document.activeElement === this.inputElement) {
             this.menuOpen = open;
+            if (this.region !== undefined) {
+                this.region.classList.toggle("loaded", false);
+            }
             this.inputElement.setAttribute("aria-owns", this.menuId);
             this.inputElement.setAttribute("aria-expanded", "true");
             if (
@@ -600,7 +602,9 @@ export class Picker extends FASTElement {
 
         this.menuOpen = false;
         this.menuFocusIndex = -1;
-        this.region.classList.toggle("loaded", false);
+        if (this.region !== undefined) {
+            this.region.classList.toggle("loaded", false);
+        }
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");
@@ -626,6 +630,7 @@ export class Picker extends FASTElement {
     private startUpdateTimer = (): void => {
         DOM.queueUpdate(() => {
             this.region.classList.toggle("loaded", true);
+            this.region.style.pointerEvents = "none";
         });
 
         if (this.autoUpdateInterval <= 0) {
