@@ -4,12 +4,6 @@ on:
   push: 
     branches:
     - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
   schedule:
   - cron: 0 7 * * 3
   
@@ -38,6 +32,9 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+    
+    - name: Clean and remove untracked files
+      run: git clean -xfd
 
     - name: Testing Prettier format
       run: yarn format:check
@@ -106,6 +103,9 @@ jobs:
     - name: Prepare workspaces
       run: yarn prepare
 
+    - name: Clean and remove untracked files
+      run: git clean -xfd
+
     - name: Testing Prettier format
       run: yarn format:check
 
@@ -163,6 +163,9 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+    
+    - name: Clean and remove untracked files
+      run: git clean -xfd
 
     - name: Testing Prettier format
       run: yarn format:check
