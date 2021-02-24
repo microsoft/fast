@@ -349,7 +349,7 @@ export class Picker extends FASTElement {
 
     public disconnectedCallback() {
         super.disconnectedCallback();
-        this.clearUpdateTimer();
+        this.toggleMenu(false);
         this.inputElement.removeEventListener("input", this.handleTextInput);
         this.inputElement.removeEventListener("click", this.handleInputClick);
     }
@@ -601,6 +601,7 @@ export class Picker extends FASTElement {
         }
 
         this.menuOpen = false;
+        this.clearUpdateTimer();
         this.menuFocusIndex = -1;
         if (this.region !== undefined) {
             this.region.classList.toggle("loaded", false);
