@@ -5,7 +5,7 @@ on:
     branches:
     - master
   schedule:
-  - cron: 0 7 * * 3
+    - cron: 0 7 * * 3
   
 jobs:
   linux_cross-platform_cross-browser:
