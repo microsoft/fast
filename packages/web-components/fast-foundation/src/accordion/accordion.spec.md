@@ -73,31 +73,6 @@ As defined by the W3C:
 - start
 - end
 
-*Function*
-- `createAccordionItemTemplate(expandedIcon?: ViewTemplate, collapsedIcon?: ViewTemplate)` - Generates a `ViewTemplate` for the accordion-item where the parameter to the function provides the default expanded and collapsed icon. When a component library calls the function to get the accordion-item template, the author can pass in their preferred icons to overwrite and create their own default icons.
-
-```ts
-import { createAccordionItemTemplate as template } from "@microsoft/fast-foundation";
-
-const myExpandedIcon = html<AccordionItem>`
-    <svg>
-        <path/>
-    </svg>
-`
-
-const myCollapsedIcon = html<AccordionItem>`
-    <svg>
-        <path/>
-    </svg>
-    `
-
-@customElement({
-    name: "my-accordion-item",
-    template: template(myExpandedIcon, myCollapsedIcon),
-    styles,
-})
-```
-
 ### Anatomy and Appearance
 
 ```HTML

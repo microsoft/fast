@@ -50,6 +50,9 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
+export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+
+// @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
 // @alpha (undocumented)
@@ -377,9 +380,6 @@ export class ContainerImpl implements Container {
 
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
-
-// @public
-export function createAccordionItemTemplate(expandedIcon?: ViewTemplate, collapsedIcon?: ViewTemplate): ViewTemplate;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
