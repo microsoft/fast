@@ -15,9 +15,4 @@ export const anchoredRegionStyles: (
         contain: layout;
         display: block;
     }
-
-    :host(.loading) {
-        pointer-events: "none";
-        opacity: 0;
-    }
 `;
