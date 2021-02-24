@@ -1,5 +1,8 @@
 import { css } from "@microsoft/fast-element";
 
+/**
+ * @public
+ */
 export const ScrollerControlStyles = css`
     .scroll-area {
         position: relative;
@@ -15,6 +18,10 @@ export const ScrollerControlStyles = css`
         top: 0;
         bottom: 0;
         right: 0;
+    }
+
+    .scroll.disabled {
+        display: none;
     }
 
     .scroll-prev {
@@ -61,6 +68,9 @@ export const ScrollerControlStyles = css`
     }
 `;
 
+/**
+ * @public
+ */
 export const ScrollerStyles = css`
     :host {
         --scroller-align: middle;

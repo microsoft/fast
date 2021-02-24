@@ -1444,7 +1444,7 @@ export const enum ResolverStrategy {
     transient = 2
 }
 
-// @public (undocumented)
+// @public
 export class Scroller extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1473,7 +1473,7 @@ export const ScrollerStyles: import("@microsoft/fast-element").ElementStyles;
 // @public (undocumented)
 export const ScrollerTemplate: import("@microsoft/fast-element").ViewTemplate<Scroller, any>;
 
-// @public (undocumented)
+// @public
 export type ScrollerView = "default" | "mobile";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

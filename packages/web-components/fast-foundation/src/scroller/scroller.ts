@@ -16,8 +16,16 @@ declare global {
     }
 }
 
+/**
+ * The views types for a scroller {@link @microsoft/fast-foundation#(Scroller:class)}
+ * @public
+ */
 export type ScrollerView = "default" | "mobile";
 
+/**
+ * A Scroller Custom HTML Element
+ * @public
+ */
 export class Scroller extends FASTElement {
     public content: HTMLDivElement;
     public previousFlipper: HTMLDivElement;
@@ -142,44 +150,34 @@ export class Scroller extends FASTElement {
      * Finds all of the scroll stops between elements
      */
     private setStops(): void {
+        let lastStop;
         this.scrollStops = [].slice
             .call(this.children)
-            .map(el => ({ left: el.offsetLeft, right: el.offsetLeft + el.offsetWidth }))
-            .map(
-                (el, index, items) =>
-                    el.right -
-                    (index < items.length - 1
-                        ? Math.floor((el.right - items[index + 1].left) / 2)
-                        : 0)
-            );
+            .filter(
+                el => !el.getAttribute("slot") || el.getAttribute("slot") === "default"
+            )
+            .map((el, idx) => {
+                lastStop = el.offsetLeft + el.offsetWidth;
+                return idx === 0 ? 0 : el.offsetLeft;
+            });
 
-        /* The first stop should be zero */
-        this.scrollStops.splice(0, 0, 0);
+        if (lastStop) {
+            this.scrollStops.push(lastStop);
+        }
     }
 
     /**
      * Sets the controls view if enabled
      */
     private setFlippers(): void {
-        const enabledCn: string = "show";
-        const disabledCn: string = "hide";
-        const setClassName: (HTMLElement, boolean) => void = (
-            elm: HTMLElement,
-            isEnabled: boolean
-        ) => {
-            if (elm && elm.className) {
-                if (isEnabled) {
-                    elm.className = elm.className.replace(disabledCn, enabledCn);
-                } else {
-                    elm.className = elm.className.replace(enabledCn, disabledCn);
-                }
-            }
-        };
-        const hasLeft: boolean = this.position > 0;
-        const lastStop: number = this.scrollStops[this.scrollStops.length - 1];
-        const hasRight: boolean = this.position + this.width < lastStop;
-        setClassName(this.previousFlipper, hasLeft);
-        setClassName(this.nextFlipper, hasRight);
+        if (this.previousFlipper && this.nextFlipper) {
+            this.previousFlipper.classList.toggle("disabled", this.position <= 0);
+            const lastStop: number = this.scrollStops[this.scrollStops.length - 1];
+            this.nextFlipper.classList.toggle(
+                "disabled",
+                this.position + this.width >= lastStop
+            );
+        }
     }
 
     /**
@@ -200,11 +198,10 @@ export class Scroller extends FASTElement {
      * Scrolls items to the right
      */
     public scrollToNext(): void {
-        const nextStop = this.scrollStops[
-            (this.scrollStops.findIndex(
-                (stop: number) => stop >= this.position + this.width
-            ) || 2) - 2
-        ];
+        const outOfView = this.scrollStops.findIndex(
+            stop => stop >= this.position + this.width
+        );
+        const nextStop = this.scrollStops[outOfView > 1 ? outOfView - 2 : 0];
         this.content.style.transform = `translate3d(-${nextStop}px, 0, 0)`;
         this.position = nextStop;
         this.setFlippers();
