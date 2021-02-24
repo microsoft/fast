@@ -38,11 +38,9 @@ export enum AccordionExpandMode {
 export class AccordionItem extends FASTElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    collapsedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
     // @internal (undocumented)
     expandbutton: HTMLElement;
     expanded: boolean;
-    expandedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
     headinglevel: 1 | 2 | 3 | 4 | 5 | 6;
     id: string;
 }
@@ -50,9 +48,6 @@ export class AccordionItem extends FASTElement {
 // @internal
 export interface AccordionItem extends StartEnd {
 }
-
-// @public
-export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
 
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
@@ -382,6 +377,9 @@ export class ContainerImpl implements Container {
 
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
+
+// @public
+export function createAccordionItemTemplate(expandedIcon?: ViewTemplate, collapsedIcon?: ViewTemplate): ViewTemplate;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;

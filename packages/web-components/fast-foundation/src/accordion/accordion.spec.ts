@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Accordion, AccordionTemplate as template } from "./index";
-import { AccordionItem, AccordionItemTemplate as itemTemplate } from "../accordion-item";
+import { AccordionItem, createAccordionItemTemplate as itemTemplate } from "../accordion-item";
 import { fixture } from "../fixture";
 import { customElement, DOM, elements } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
@@ -13,7 +13,7 @@ class FASTAccordion extends Accordion {}
 
 @customElement({
     name: "fast-accordion-item",
-    template: itemTemplate,
+    template: itemTemplate(),
 })
 class FASTAccordionItem extends AccordionItem {}
 
