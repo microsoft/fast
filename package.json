@@ -48,7 +48,7 @@
     "prepare": "lerna run prepare",
     "test": "yarn eslint \"/**/*.{ts}\"",
     "unit-tests": "jest --maxWorkers=4",
-    "coverage": "npx jest --coverage",
+    "coverage": "yarn jest --coverage",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "lerna run prettier:diff",
@@ -60,7 +60,7 @@
     }
   },
   "jest": {
-    "collectCoverage": false,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
     ],
