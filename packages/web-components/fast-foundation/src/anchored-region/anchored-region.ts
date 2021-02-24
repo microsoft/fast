@@ -901,10 +901,8 @@ export class AnchoredRegion extends FASTElement {
         this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
         this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
-        // this.classList.toggle("loading", !this.initialLayoutComplete);
-
         this.style.opacity = this.initialLayoutComplete ? "1" : "0";
-        this.style.pointerEvents = this.initialLayoutComplete ? "" : "none";
+        this.style.pointerEvents = this.initialLayoutComplete ? "${void}" : "none";
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
 
