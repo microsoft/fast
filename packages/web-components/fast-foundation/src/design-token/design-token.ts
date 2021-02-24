@@ -1,4 +1,16 @@
-import { CSSDirective } from "@microsoft/fast-element";
+import { Controller, CSSDirective, FASTElement } from "@microsoft/fast-element";
+import { intersection } from "lodash";
+import { DI, Registration } from "../di/di";
+
+/**
+ * Notes:
+ *
+ * # We can establish token dependencies in much the same way that observable does:
+ * Just before evaluating derived properties, flip a tracking bit. This causes the
+ * `getValue` method to cache the token being retrieved. After the process,
+ * all retrieved tokens will be in the cache and we can use that info to catalog dependencies
+ * for a value, resetting the cache and flipping the tracking bit back to false.
+ */
 
 export class DesignToken<T = any> extends CSSDirective {
     private cssVar: string;
@@ -29,6 +41,12 @@ export class DesignToken<T = any> extends CSSDirective {
      * configured to write a CSS custom property, otherwise empty string;
      */
     public readonly cssCustomProperty: string;
+
+    getValueFor(element: HTMLElement): T {
+        return ("" as unknown) as T;
+    }
+
+    setValueFor(element: HTMLElement, value: T): void {}
 
     /**
      * Creates a new DesignToken
