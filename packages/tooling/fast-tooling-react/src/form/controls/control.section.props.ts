@@ -8,6 +8,8 @@ import { SectionControlConfig } from "../templates";
 export interface SectionControlClassNameContract {
     sectionControl: string;
     sectionControl__disabled: string;
+    sectionControl_category: string;
+    sectionControl_categoryTitle: string;
 }
 
 export interface InitialOneOfAnyOfState {

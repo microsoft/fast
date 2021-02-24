@@ -101,6 +101,8 @@ const sectionControlProps: SectionControlProps = {
 const managedClasses: SectionControlClassNameContract = {
     sectionControl: "sectionControl",
     sectionControl__disabled: "sectionControl__disabeld",
+    sectionControl_category: "sectionControl_category",
+    sectionControl_categoryTitle: "sectionControl_categoryTitle",
 };
 
 describe("SectionControl", () => {
