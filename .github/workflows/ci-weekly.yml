@@ -4,12 +4,6 @@ on:
   push: 
     branches:
     - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
   schedule:
   - cron: 0 7 * * 3
   
