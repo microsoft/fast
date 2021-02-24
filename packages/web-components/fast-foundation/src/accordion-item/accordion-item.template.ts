@@ -10,7 +10,7 @@ export const AccordionItemTemplate = html<AccordionItem>`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"
         slot="item"
-        >
+    >
         <div
             class="heading"
             part="heading"
