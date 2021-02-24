@@ -14,15 +14,15 @@ class FASTScroller extends Scroller {}
 /**
  * Static widths for calculating expected returns
  */
-const scrollerWidth = 400;
-const cardWidth = 100;
-const cardMargin = 10;
-const cardSpace = cardWidth + (cardMargin * 2);
+const scrollerWidth: number = 400;
+const cardWidth: number = 100;
+const cardMargin: number = 10;
+const cardSpace: number = cardWidth + (cardMargin * 2);
 
 /**
  * Function for getting the x-position of an element
  */
-const getXPosition = (elm: any) => {
+const getXPosition = (elm: any): number => {
     const { transform } = elm.style;
     const pattern = /^ *translate3d *\( *(\-?\d+)/i;
     const match = transform.match(pattern);
@@ -32,17 +32,13 @@ const getXPosition = (elm: any) => {
 /**
  * Templates used for content
  */
-const cardTemplate = `<div class="card" style="width: ${cardWidth}px; height: 100px; margin: ${cardMargin}px;"></div>`;
+const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; height: 100px; margin: ${cardMargin}px;"></div>`;
 
-const getCards = (cnt) => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
-
-async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTScroller>(
-        "fast-scroller"
-    );
-
-    return { element, connect, disconnect, parent };
-}
+/**
+ * Multi card templates
+ * @param cnt number of cards
+ */
+const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
 describe("Scroller", () => {
     it("should include a role of scroller", async () => {
@@ -56,7 +52,6 @@ describe("Scroller", () => {
     });
 
     describe("Flippers", () => {
-
         it("should enable the next flipper when content exceeds scroller width", async () => {
             const { element, connect, disconnect} = await fixture(html<FASTScroller>`
                 <fast-scroller style="width: ${scrollerWidth}px">
@@ -164,7 +159,6 @@ describe("Scroller", () => {
     });
 
     describe("Scrolling", () => {
-
         it("should start in the 0 position", async () => {
             const { element, connect, disconnect} = await fixture(html<FASTScroller>`
                 <fast-scroller style="width: ${scrollerWidth}px">
@@ -174,7 +168,7 @@ describe("Scroller", () => {
             await connect();
             await DOM.nextUpdate();
 
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
 
             expect(getXPosition(scrollContent)).to.equal(0);
 
@@ -191,10 +185,12 @@ describe("Scroller", () => {
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToNext();
 
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
-            const pos = getXPosition(scrollContent);
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const position: number = getXPosition(scrollContent);
+            const currentInView: boolean = (position + cardSpace) * -1 < scrollerWidth;
+            const nextInView: boolean = (position - cardSpace * 2) * -1 < scrollerWidth;
 
-            expect(pos * -1 < scrollerWidth && (pos - (cardSpace * 2)) * -1 > scrollerWidth).to.equal(true);
+            expect(currentInView && !nextInView).to.equal(true);
 
             await disconnect();
         });
@@ -209,7 +205,7 @@ describe("Scroller", () => {
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToPrevious();
 
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
 
             expect(getXPosition(scrollContent)).to.equal(0);
 
@@ -217,7 +213,6 @@ describe("Scroller", () => {
         });
 
         it("should not scroll past the last in view element", async () => {
-            let cardViewWidth = cardSpace * 5 * -1;
             const { element, connect, disconnect} = await fixture(html<FASTScroller>`
                 <fast-scroller style="width: ${scrollerWidth}px">
                     ${cardTemplate} ${cardTemplate} ${cardTemplate} ${cardTemplate} ${cardTemplate}
@@ -225,13 +220,15 @@ describe("Scroller", () => {
             `);
             await connect();
             await DOM.nextUpdate();
+
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
 
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            let cardViewWidth: number = cardSpace * 5 * -1;
 
             expect(getXPosition(scrollContent) > cardViewWidth).to.equal(true);
 
@@ -246,12 +243,13 @@ describe("Scroller", () => {
             `);
             await connect();
             await DOM.nextUpdate();
+
             await (element as FASTScroller).scrollToNext();
 
             element.style.width = `${scrollerWidth * 2}px`;
             await DOM.nextUpdate();
 
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
 
             expect(getXPosition(scrollContent)).to.equal(0);
 
@@ -267,15 +265,15 @@ describe("Scroller", () => {
             `);
             await connect();
             await DOM.nextUpdate();
-            const scrollContent = element.shadowRoot?.querySelector(".scroll-content") as any;
+            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
 
             await (element as FASTScroller).scrollToNext();
-            const firstXPos = getXPosition(scrollContent);
+            const firstXPos: number = getXPosition(scrollContent);
 
             element.style.width = `${scrollerWidth}px`;
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToNext();
-            const secondXPos = getXPosition(scrollContent);
+            const secondXPos: number = getXPosition(scrollContent);
 
 
             expect(firstXPos === secondXPos).to.equal(false);

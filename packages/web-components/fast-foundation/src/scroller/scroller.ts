@@ -27,18 +27,28 @@ export type ScrollerView = "default" | "mobile";
  * @public
  */
 export class Scroller extends FASTElement {
+    /**
+     * Reference to DOM element containing the content to scroll
+     * @public
+     */
     public content: HTMLDivElement;
+
+    /**
+     * Reference to flipper to scroll to previous content
+     * @public
+     */
     public previousFlipper: HTMLDivElement;
+
+    /**
+     * Reference to flipper to scroll to the next content
+     * @public
+     */
     public nextFlipper: HTMLDivElement;
 
     /**
-     * indicates that an initial positioning pass on layout has completed
-     *
+     * Detects if the component has been resized
      * @internal
      */
-    @observable
-    public initialLayoutComplete: boolean = false;
-
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     /**
@@ -64,6 +74,7 @@ export class Scroller extends FASTElement {
 
     /**
      * View: default | mobile
+     * @public
      */
     @attr({
         attribute: "view",
@@ -71,7 +82,7 @@ export class Scroller extends FASTElement {
     public view: ScrollerView;
 
     /**
-     * @internal
+     * @public
      */
     public connectedCallback(): void {
         super.connectedCallback();
@@ -85,7 +96,7 @@ export class Scroller extends FASTElement {
     }
 
     /**
-     * @internal
+     * @public
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
@@ -95,6 +106,7 @@ export class Scroller extends FASTElement {
 
     /**
      * Starts observers
+     * @internal
      */
     private startObservers = (): void => {
         this.stopObservers();
@@ -106,6 +118,7 @@ export class Scroller extends FASTElement {
 
     /**
      * Stops observers
+     * @internal
      */
     private stopObservers = (): void => {
         if (this.resizeDetector !== null) {
@@ -115,6 +128,7 @@ export class Scroller extends FASTElement {
 
     /**
      * destroys the instance's resize observer
+     * @internal
      */
     private disconnectResizeDetector(): void {
         this.stopObservers();
@@ -127,6 +141,7 @@ export class Scroller extends FASTElement {
 
     /**
      * initializes the instance's resize observer
+     * @internal
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
@@ -136,7 +151,8 @@ export class Scroller extends FASTElement {
     }
 
     /**
-     *  Handle resize events
+     * Handle resize events
+     * @internal
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
         entries.forEach((entry: ResizeObserverEntry) => {
@@ -148,26 +164,27 @@ export class Scroller extends FASTElement {
 
     /**
      * Finds all of the scroll stops between elements
+     * @internal
      */
     private setStops(): void {
-        let lastStop;
+        let lastStop: number = 0;
         this.scrollStops = [].slice
             .call(this.children)
             .filter(
-                el => !el.getAttribute("slot") || el.getAttribute("slot") === "default"
+                (el: Element): boolean =>
+                    !el.getAttribute("slot") || el.getAttribute("slot") === "default"
             )
-            .map((el, idx) => {
+            .map((el: any, idx: number): number => {
                 lastStop = el.offsetLeft + el.offsetWidth;
                 return idx === 0 ? 0 : el.offsetLeft;
             });
 
-        if (lastStop) {
-            this.scrollStops.push(lastStop);
-        }
+        this.scrollStops.push(lastStop);
     }
 
     /**
      * Sets the controls view if enabled
+     * @internal
      */
     private setFlippers(): void {
         if (this.previousFlipper && this.nextFlipper) {
@@ -182,13 +199,15 @@ export class Scroller extends FASTElement {
 
     /**
      * Scrolls items to the left
+     * @public
      */
     public scrollToPrevious(): void {
-        const right = this.scrollStops[
+        const right: number = this.scrollStops[
             this.scrollStops.findIndex((stop: number) => stop === this.position) + 1
         ];
         const left: number =
-            this.scrollStops.find((stop: number) => stop + this.width > right) || 0;
+            this.scrollStops.find((stop: number): boolean => stop + this.width > right) ||
+            0;
         this.content.style.transform = `translate3d(-${left}px, 0, 0)`;
         this.position = left;
         this.setFlippers();
@@ -196,19 +215,21 @@ export class Scroller extends FASTElement {
 
     /**
      * Scrolls items to the right
+     * @public
      */
     public scrollToNext(): void {
-        const outOfView = this.scrollStops.findIndex(
-            stop => stop >= this.position + this.width
+        const outOfView: number = this.scrollStops.findIndex(
+            (stop: number): boolean => stop >= this.position + this.width
         );
-        const nextStop = this.scrollStops[outOfView > 1 ? outOfView - 2 : 0];
+        const nextStop: number = this.scrollStops[outOfView > 1 ? outOfView - 2 : 0];
         this.content.style.transform = `translate3d(-${nextStop}px, 0, 0)`;
         this.position = nextStop;
         this.setFlippers();
     }
 
     /**
-     * Move the index back to 0
+     * Move the index back to the zero position
+     * @public
      */
     public moveToStart(): void {
         this.position = 0;

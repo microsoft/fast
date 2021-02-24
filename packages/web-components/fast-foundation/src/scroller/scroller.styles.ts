@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 
 /**
+ * Styles used for the flipper container and gradient fade
  * @public
  */
 export const ScrollerControlStyles = css`
@@ -57,18 +58,10 @@ export const ScrollerControlStyles = css`
         right: 0;
         transform: translate(50%, -50%);
     }
-
-    .scroll.hide div {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .scroll.hide:before {
-        width: 0;
-    }
 `;
 
 /**
+ * Styles handling the scroll container and content
  * @public
  */
 export const ScrollerStyles = css`
@@ -90,17 +83,13 @@ export const ScrollerStyles = css`
 
     .scroll-content {
         white-space: nowrap;
-        display: inline-block;
+        transform: translate3d(0, 0, 0);
+        transition: transform var(--scroller-duration) var(--scroller-easing);
     }
 
     .scroll-content ::slotted(*) {
         display: inline-block;
         white-space: normal;
         vertical-align: var(--scroller-align);
-    }
-
-    .scroll-content {
-        transform: translate3d(0, 0, 0);
-        transition: transform var(--scroller-duration) var(--scroller-easing);
     }
 `;

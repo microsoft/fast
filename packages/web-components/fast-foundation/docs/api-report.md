@@ -1446,28 +1446,23 @@ export const enum ResolverStrategy {
 
 // @public
 export class Scroller extends FASTElement {
-    // @internal (undocumented)
+    // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     content: HTMLDivElement;
-    // @internal (undocumented)
+    // (undocumented)
     disconnectedCallback(): void;
-    // @internal
-    initialLayoutComplete: boolean;
     moveToStart(): void;
-    // (undocumented)
     nextFlipper: HTMLDivElement;
-    // (undocumented)
     previousFlipper: HTMLDivElement;
     scrollToNext(): void;
     scrollToPrevious(): void;
     view: ScrollerView;
     }
 
-// @public (undocumented)
+// @public
 export const ScrollerControlStyles: import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// @public
 export const ScrollerStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)

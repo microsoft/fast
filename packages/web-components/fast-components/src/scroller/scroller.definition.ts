@@ -6,12 +6,12 @@ export const fastScrollerDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-scroller",
-            title: "Number scroller",
+            title: "Scroller",
             description: "The FAST scroller element",
             attributes: [
                 {
                     name: "view",
-                    description: "The step interval",
+                    description: "Default or mobile view",
                     type: DataType.string,
                     default: false,
                     required: false,
