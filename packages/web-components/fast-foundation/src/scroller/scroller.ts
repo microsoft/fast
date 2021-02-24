@@ -90,7 +90,7 @@ export class Scroller extends FASTElement {
             this.$fastController.addStyles(ScrollerControlStyles);
         }
 
-        DOM.queueUpdate(this.moveToStart.bind(this));
+        DOM.queueUpdate(this.setStops.bind(this));
         this.initializeResizeDetector();
         this.startObservers();
     }
@@ -157,7 +157,7 @@ export class Scroller extends FASTElement {
     private handleResize = (entries: ResizeObserverEntry[]): void => {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this) {
-                this.moveToStart();
+                this.setStops();
             }
         });
     };
@@ -167,19 +167,39 @@ export class Scroller extends FASTElement {
      * @internal
      */
     private setStops(): void {
+        this.width = this.offsetWidth;
         let lastStop: number = 0;
+        let isRtl: boolean = false;
         this.scrollStops = [].slice
             .call(this.children)
+            /* filter out non-default slots */
             .filter(
                 (el: Element): boolean =>
                     !el.getAttribute("slot") || el.getAttribute("slot") === "default"
             )
-            .map((el: any, idx: number): number => {
-                lastStop = el.offsetLeft + el.offsetWidth;
-                return idx === 0 ? 0 : el.offsetLeft;
-            });
-
+            .map(
+                (
+                    { offsetLeft: left, offsetWidth: width }: any,
+                    idx: number,
+                    ary: Array<any>
+                ): number => {
+                    if (idx === 0 && ary.length > 1) {
+                        isRtl = left > ary[idx + 1].offsetLeft;
+                    }
+                    if (isRtl || idx === 0) {
+                        lastStop = left + width * (isRtl ? 1 : -1);
+                    }
+                    if (isRtl && idx === ary.length - 1) {
+                        left = 0;
+                    }
+                    return isRtl ? left : idx === 0 ? 0 : 0 - left;
+                }
+            );
         this.scrollStops.push(lastStop);
+
+        /* Sort to zero */
+        this.scrollStops.sort((a, b) => Math.abs(a) - Math.abs(b));
+        this.moveToStart();
     }
 
     /**
@@ -188,11 +208,11 @@ export class Scroller extends FASTElement {
      */
     private setFlippers(): void {
         if (this.previousFlipper && this.nextFlipper) {
-            this.previousFlipper.classList.toggle("disabled", this.position <= 0);
+            this.previousFlipper.classList.toggle("disabled", this.position === 0);
             const lastStop: number = this.scrollStops[this.scrollStops.length - 1];
             this.nextFlipper.classList.toggle(
                 "disabled",
-                this.position + this.width >= lastStop
+                Math.abs(this.position) + this.width >= Math.abs(lastStop)
             );
         }
     }
@@ -206,9 +226,10 @@ export class Scroller extends FASTElement {
             this.scrollStops.findIndex((stop: number) => stop === this.position) + 1
         ];
         const left: number =
-            this.scrollStops.find((stop: number): boolean => stop + this.width > right) ||
-            0;
-        this.content.style.transform = `translate3d(-${left}px, 0, 0)`;
+            this.scrollStops.find(
+                (stop: number): boolean => Math.abs(stop) + this.width > Math.abs(right)
+            ) || 0;
+        this.content.style.transform = `translate3d(${left}px, 0, 0)`;
         this.position = left;
         this.setFlippers();
     }
@@ -219,10 +240,11 @@ export class Scroller extends FASTElement {
      */
     public scrollToNext(): void {
         const outOfView: number = this.scrollStops.findIndex(
-            (stop: number): boolean => stop >= this.position + this.width
+            (stop: number): boolean =>
+                Math.abs(stop) >= Math.abs(this.position) + this.width
         );
         const nextStop: number = this.scrollStops[outOfView > 1 ? outOfView - 2 : 0];
-        this.content.style.transform = `translate3d(-${nextStop}px, 0, 0)`;
+        this.content.style.transform = `translate3d(${nextStop}px, 0, 0)`;
         this.position = nextStop;
         this.setFlippers();
     }
@@ -234,8 +256,6 @@ export class Scroller extends FASTElement {
     public moveToStart(): void {
         this.position = 0;
         this.content.style.transform = "translate3d(0, 0, 0)";
-        this.width = this.offsetWidth;
-        this.setStops();
         this.setFlippers();
     }
 }

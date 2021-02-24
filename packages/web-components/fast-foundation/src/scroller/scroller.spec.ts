@@ -207,7 +207,7 @@ describe("Scroller", () => {
 
             const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
 
-            expect(getXPosition(scrollContent)).to.equal(0);
+            expect(getXPosition(scrollContent) >= 0).to.equal(true);
 
             await disconnect();
         });

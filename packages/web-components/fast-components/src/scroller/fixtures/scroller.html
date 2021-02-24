@@ -4,6 +4,7 @@
     fast-card {
         width: 120px;
         height: 200px;
+        margin: 5px;
     }
 
     fast-scroller {
@@ -206,3 +207,33 @@
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
 </fast-scroller>
+
+<h2>RTL scroller</h2>
+<fast-design-system-provider
+    id="design-system"
+    use-defaults
+    no-paint
+    direction="rtl"
+    dir="rtl"
+>
+    <fast-scroller class="right-gradient">
+        <fast-flipper slot="previous-flipper"></fast-flipper>
+        <fast-flipper slot="next-flipper" direction="previous"></fast-flipper>
+        <fast-card>Card number 1</fast-card>
+        <fast-card>Card number 2</fast-card>
+        <fast-card>Card number 3</fast-card>
+        <fast-card>Card number 4</fast-card>
+        <fast-card>Card number 5</fast-card>
+        <fast-card>Card number 6</fast-card>
+        <fast-card>Card number 7</fast-card>
+        <fast-card>Card number 8</fast-card>
+        <fast-card>Card number 9</fast-card>
+        <fast-card>Card number 10</fast-card>
+        <fast-card>Card number 11</fast-card>
+        <fast-card>Card number 12</fast-card>
+        <fast-card>Card number 13</fast-card>
+        <fast-card>Card number 14</fast-card>
+        <fast-card>Card number 15</fast-card>
+        <fast-card>Card number 16</fast-card>
+    </fast-scroller>
+</fast-design-system-provider>

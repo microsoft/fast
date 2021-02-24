@@ -1,4 +1,47 @@
 import { css } from "@microsoft/fast-element";
+import { DirectionalStyleSheetBehavior } from "../utilities/style/direction";
+
+const ltrControlStyles = css`
+    .scroll-prev {
+        right: auto;
+        left: 0;
+    }
+
+    .scroll-next:before {
+        left: auto;
+        right: 0;
+        background: linear-gradient(to right, transparent, var(--scroller-fade-next));
+    }
+
+    .scroll-next .scroll-cntrl {
+        left: auto;
+        right: 0;
+        transform: translate(50%, -50%);
+    }
+`;
+
+const rtlControlStyles = css`
+    .scroll-next {
+        right: auto;
+        left: 0;
+    }
+
+    .scroll-next:before {
+        left: auto;
+        right: 0;
+        background: linear-gradient(to right, var(--scroller-fade-next), transparent);
+    }
+
+    .scroll-prev:before {
+        background: linear-gradient(to right, transparent, var(--scroller-fade-previous));
+    }
+
+    .scroll-prev .scroll-cntrl {
+        left: auto;
+        right: 0;
+        transform: translate(50%, -50%);
+    }
+`;
 
 /**
  * Styles used for the flipper container and gradient fade
@@ -25,11 +68,6 @@ export const ScrollerControlStyles = css`
         display: none;
     }
 
-    .scroll-prev {
-        right: auto;
-        left: 0;
-    }
-
     .scroll:before {
         content: "";
         display: block;
@@ -40,25 +78,14 @@ export const ScrollerControlStyles = css`
         background: linear-gradient(to right, var(--scroller-fade-previous), transparent);
     }
 
-    .scroll-next:before {
-        left: auto;
-        right: 0;
-        background: linear-gradient(to right, transparent, var(--scroller-fade-next));
-    }
-
     .scroll-cntrl {
         position: absolute;
         top: 50%;
         left: 0;
+        right: auto;
         transform: translate(-50%, -50%);
     }
-
-    .scroll-next .scroll-cntrl {
-        left: auto;
-        right: 0;
-        transform: translate(50%, -50%);
-    }
-`;
+`.withBehaviors(new DirectionalStyleSheetBehavior(ltrControlStyles, rtlControlStyles));
 
 /**
  * Styles handling the scroll container and content
@@ -85,6 +112,7 @@ export const ScrollerStyles = css`
         white-space: nowrap;
         transform: translate3d(0, 0, 0);
         transition: transform var(--scroller-duration) var(--scroller-easing);
+        display: inline-block;
     }
 
     .scroll-content ::slotted(*) {
