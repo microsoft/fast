@@ -11,15 +11,17 @@ export const fastOptionDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     type: DataType.boolean,
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the option",
                     default: false,
                     required: false,
                 },
                 {
                     name: "selected",
+                    title: "Selected",
                     type: DataType.boolean,
-                    description: "The selected attribute",
+                    description: "The selected state of the option",
                     default: false,
                     required: false,
                 },

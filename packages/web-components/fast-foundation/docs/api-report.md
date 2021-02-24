@@ -449,6 +449,9 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
 }
 
 // @public
+export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
+
+// @public
 export class DataGrid extends FASTElement {
     constructor();
     cellItemTemplate?: ViewTemplate;
@@ -1033,6 +1036,9 @@ export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resol
 
 // @alpha
 export const lazy: (key: any) => any;
+
+// @public
+export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
