@@ -169,32 +169,43 @@ export class Scroller extends FASTElement {
     private setStops(): void {
         this.width = this.offsetWidth;
         let lastStop: number = 0;
-        let isRtl: boolean = false;
-        this.scrollStops = [].slice
+        const scrollItems: Array<any> = [].slice
             .call(this.children)
             /* filter out non-default slots */
             .filter(
                 (el: Element): boolean =>
                     !el.getAttribute("slot") || el.getAttribute("slot") === "default"
-            )
-            .map(
-                (
-                    { offsetLeft: left, offsetWidth: width }: any,
-                    idx: number,
-                    ary: Array<any>
-                ): number => {
-                    if (idx === 0 && ary.length > 1) {
-                        isRtl = left > ary[idx + 1].offsetLeft;
-                    }
-                    if (isRtl || idx === 0) {
-                        lastStop = left + width * (isRtl ? 1 : -1);
-                    }
-                    if (isRtl && idx === ary.length - 1) {
-                        left = 0;
-                    }
-                    return isRtl ? left : idx === 0 ? 0 : 0 - left;
-                }
             );
+
+        /* RTL items will come in reverse offsetLeft */
+        const isRtl: boolean =
+            scrollItems.length > 1 && scrollItems[0].offsetLeft > scrollItems[1].offset;
+
+        this.scrollStops = scrollItems.map(
+            (
+                { offsetLeft: left, offsetWidth: width }: any,
+                idx: number,
+                ary: Array<any>
+            ): number => {
+                const firstLtr: boolean = !isRtl && idx === 0;
+                const lastRtl: boolean = isRtl && idx === ary.length - 1;
+
+                /* Getting the final stop after the last item or before the first RTL item */
+                if (isRtl || idx === 0) {
+                    lastStop = left + width * (isRtl ? 1 : -1);
+                }
+
+                /* Remove extra margin on first item and last RTL item */
+                if (lastRtl || firstLtr) {
+                    left = 0;
+                } else if (!isRtl) {
+                    /* account for negative position for LTR */
+                    left = 0 - left;
+                }
+
+                return left;
+            }
+        );
         this.scrollStops.push(lastStop);
 
         /* Sort to zero */
