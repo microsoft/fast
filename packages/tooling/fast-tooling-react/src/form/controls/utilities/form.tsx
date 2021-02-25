@@ -468,6 +468,20 @@ export function updateControlSectionState(
                   activeIndex: -1,
               }
             : null,
+        categories:
+            props.categories &&
+            props.categories[props.dataDictionary[0][props.dataDictionary[1]].schemaId] &&
+            props.categories[props.dataDictionary[0][props.dataDictionary[1]].schemaId][
+                props.dataLocation
+            ]
+                ? props.categories[
+                      props.dataDictionary[0][props.dataDictionary[1]].schemaId
+                  ][props.dataLocation].map(category => {
+                      return {
+                          expanded: !!(category.expandByDefault !== false),
+                      };
+                  })
+                : [],
     };
 }
 

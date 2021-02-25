@@ -278,9 +278,21 @@ class SectionControl extends React.Component<
                     formControls.push(
                         <fieldset
                             key={index}
-                            className={this.props.managedClasses.sectionControl_category}
+                            className={classNames(
+                                this.props.managedClasses.sectionControl_category,
+                                [
+                                    this.props.managedClasses
+                                        .sectionControl_category__expanded,
+                                    this.state.categories[index].expanded,
+                                ]
+                            )}
                         >
-                            <div>
+                            <div
+                                className={
+                                    this.props.managedClasses
+                                        .sectionControl_categoryTitleRegion
+                                }
+                            >
                                 <legend
                                     className={
                                         this.props.managedClasses
@@ -289,19 +301,35 @@ class SectionControl extends React.Component<
                                 >
                                     {categoryItem.title}
                                 </legend>
+                                <button
+                                    className={
+                                        this.props.managedClasses
+                                            .sectionControl_categoryExpandTrigger
+                                    }
+                                    onClick={this.handleCategoryExpandTriggerClick(index)}
+                                />
                             </div>
-                            {categoryItem.dataLocations.map((dataLocation: string) => {
-                                if (
-                                    navigationItem.items.findIndex(
-                                        item => item === dataLocation
-                                    ) !== -1
-                                ) {
-                                    categorizedControls.push(dataLocation);
-                                    return this.getFormControl(dataLocation);
+                            <div
+                                className={
+                                    this.props.managedClasses
+                                        .sectionControl_categoryContentRegion
                                 }
+                            >
+                                {categoryItem.dataLocations.map(
+                                    (dataLocation: string) => {
+                                        if (
+                                            navigationItem.items.findIndex(
+                                                item => item === dataLocation
+                                            ) !== -1
+                                        ) {
+                                            categorizedControls.push(dataLocation);
+                                            return this.getFormControl(dataLocation);
+                                        }
 
-                                return null;
-                            })}
+                                        return null;
+                                    }
+                                )}
+                            </div>
                         </fieldset>
                     );
                 }
@@ -464,6 +492,17 @@ class SectionControl extends React.Component<
             </div>
         );
     }
+
+    private handleCategoryExpandTriggerClick = (index: number): (() => void) => {
+        return () => {
+            const updatedCategories = [].concat(this.state.categories);
+            updatedCategories[index].expanded = !updatedCategories[index].expanded;
+
+            this.setState({
+                categories: updatedCategories,
+            });
+        };
+    };
 
     private getActiveTreeNavigationItem(): TreeNavigationItem {
         return this.state.oneOfAnyOf === null

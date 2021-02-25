@@ -36,6 +36,11 @@ export interface FormCategory {
      * The title of this category
      */
     title: string;
+
+    /**
+     * The default starting expanded state
+     */
+    expandByDefault?: boolean;
 }
 
 export interface FormSectionCategory {
