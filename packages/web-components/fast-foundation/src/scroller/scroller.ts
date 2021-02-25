@@ -179,9 +179,10 @@ export class Scroller extends FASTElement {
 
         /* RTL items will come in reverse offsetLeft */
         const isRtl: boolean =
-            scrollItems.length > 1 && scrollItems[0].offsetLeft > scrollItems[1].offset;
+            scrollItems.length > 1 &&
+            scrollItems[0].offsetLeft > scrollItems[1].offsetLeft;
 
-        this.scrollStops = scrollItems.map(
+        const stops = scrollItems.map(
             (
                 { offsetLeft: left, offsetWidth: width }: any,
                 idx: number,
@@ -206,10 +207,13 @@ export class Scroller extends FASTElement {
                 return left;
             }
         );
-        this.scrollStops.push(lastStop);
+
+        stops.push(lastStop);
 
         /* Sort to zero */
-        this.scrollStops.sort((a, b) => Math.abs(a) - Math.abs(b));
+        stops.sort((a, b) => Math.abs(a) - Math.abs(b));
+
+        this.scrollStops = stops;
         this.moveToStart();
     }
 
