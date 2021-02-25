@@ -28,6 +28,7 @@ import {
     SchemaSetValidationMessageRequest,
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
+import { FormStrings } from "../form.props";
 
 /**
  * Schema form component definition
@@ -222,6 +223,8 @@ class SectionControl extends React.Component<
                 }
                 displayValidationInline={this.props.displayValidationInline}
                 messageSystem={this.props.messageSystem}
+                strings={this.props.strings}
+                messageSystemOptions={this.props.messageSystemOptions}
             />
         );
     };
@@ -272,7 +275,7 @@ class SectionControl extends React.Component<
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
             const unselectedOption: React.ReactNode = (
-                <option value={-1}>{"Select an option"}</option>
+                <option value={-1}>{this.props.strings.sectionSelectDefault}</option>
             );
             const options: React.ReactNode = getOneOfAnyOfSelectOptions(
                 this.props.schema,
@@ -281,7 +284,11 @@ class SectionControl extends React.Component<
 
             return (
                 <FormOneOfAnyOf
-                    label={get(this.props, "schema.title", "Configuration")}
+                    label={get(
+                        this.props,
+                        "schema.title",
+                        this.props.strings.sectionSelectLabel
+                    )}
                     activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
@@ -318,11 +325,14 @@ class SectionControl extends React.Component<
                     dataDictionary={this.props.dataDictionary}
                     navigation={this.props.navigation}
                     schemaLocation={navigationItem.schemaLocation}
-                    examples={get(navigationItem.schema, "examples")}
+                    examples={get(
+                        navigationItem.schema,
+                        this.props.strings.sectionAdditionalPropExample
+                    )}
                     propertyLabel={get(
                         navigationItem.schema,
                         `propertyTitle`,
-                        "Property key"
+                        this.props.strings.sectionAdditionalPropLabel
                     )}
                     additionalProperties={navigationItem.schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(
@@ -341,6 +351,8 @@ class SectionControl extends React.Component<
                     }
                     displayValidationInline={this.props.displayValidationInline}
                     messageSystem={this.props.messageSystem}
+                    strings={this.props.strings}
+                    messageSystemOptions={this.props.messageSystemOptions}
                 />
             );
         }

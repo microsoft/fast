@@ -1,0 +1,10 @@
+{
+  "colors": true,
+  "recursive": true,
+  "timeout": 5000,
+  "require": [
+    "esm",
+    "./__test__/server.js",
+    "./__test__/harness.js"
+  ]
+}

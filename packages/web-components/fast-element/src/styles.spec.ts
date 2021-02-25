@@ -4,6 +4,8 @@ import {
     StyleElementStyles,
     StyleTarget,
     ElementStyles,
+    CSSDirective,
+    css,
 } from "./styles";
 import { DOM } from "./dom";
 
@@ -41,6 +43,23 @@ if (DOM.supportsAdoptedStyleSheets) {
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
                 expect(target.adoptedStyleSheets).not.to.contain(cache.get("test"));
             });
+
+            it("should track when added and removed from a target", () => {
+                const cache = new Map();
+                const styles = ``;
+                const elementStyles = new AdoptedStyleSheetsStyles([styles], cache);
+                const target = {
+                    adoptedStyleSheets: [],
+                } as unknown as StyleTarget;
+
+                expect(elementStyles.isAttachedTo(target as StyleTarget)).to.equal(false)
+
+                elementStyles.addStylesTo(target);
+                expect(elementStyles.isAttachedTo(target)).to.equal(true)
+
+                elementStyles.removeStylesFrom(target);
+                expect(elementStyles.isAttachedTo(target)).to.equal(false)
+            });
         });
     });
 }
@@ -75,6 +94,20 @@ describe("StyleSheetStyles", () => {
         elementStyles.removeStylesFrom(shadowRoot);
 
         expect(shadowRoot.childNodes.length).to.equal(0);
+    });
+    it("should track when added and removed from a target", () => {
+        const styles = ``;
+        const elementStyles = new StyleElementStyles([styles]);
+        document.body.innerHTML = "";
+
+        expect(elementStyles.isAttachedTo(document)).to.equal(false)
+
+        elementStyles.addStylesTo(document);
+        console.log(document)
+        expect(elementStyles.isAttachedTo(document)).to.equal(true)
+
+        elementStyles.removeStylesFrom(document);
+        expect(elementStyles.isAttachedTo(document)).to.equal(false)
     });
 });
 
@@ -152,3 +185,64 @@ describe("ElementStyles", () => {
         });
     }
 });
+
+describe("css", () => {
+    describe("with a CSSDirective", () => {
+        describe("should interpolate the product of CSSDirective.createCSS() into the resulting ElementStyles CSS", () => {
+            it("when the result is a string", () => {
+                class Directive extends CSSDirective {
+                    createCSS() {
+                        return "red";
+                    }
+                }
+
+                const styles = css`host: {color: ${new Directive()};}`;
+                expect(styles.styles.some(x => x === "host: {color: red;}")).to.equal(true)
+            });
+
+            it("when the result is an ElementStyles", () => {
+                const _styles = css`:host{color: red}`
+                class Directive extends CSSDirective {
+                    createCSS() {
+                        return _styles;
+                    }
+                }
+
+                const styles = css`${new Directive()}`;
+                expect(styles.styles.includes(_styles)).to.equal(true)
+            });
+
+            if (DOM.supportsAdoptedStyleSheets) {
+                it("when the result is a CSSStyleSheet", () => {
+                    const _styles = new CSSStyleSheet();
+                    class Directive extends CSSDirective {
+                        createCSS() {
+                            return _styles;
+                        }
+                    }
+
+                    const styles = css`${new Directive()}`;
+                    expect(styles.styles.includes(_styles)).to.equal(true)
+                });
+            }
+        });
+
+
+        it("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", () => {
+            const behavior = {
+                bind(){},
+                unbind(){}
+            }
+
+            class Directive extends CSSDirective {
+                createBehavior() {
+                    return behavior;
+                }
+            }
+
+            const styles = css`${new Directive()}`;
+
+            expect(styles.behaviors?.includes(behavior)).to.equal(true)
+        });
+    })
+})

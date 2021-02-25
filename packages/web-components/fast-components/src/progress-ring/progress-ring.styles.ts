@@ -49,12 +49,12 @@ export const ProgressRingStyles = css`
         animation: spin-infinite 2s linear infinite;
     }
 
-    :host(.paused) .indeterminate-indicator-1 {
+    :host([paused]) .indeterminate-indicator-1 {
         animation-play-state: paused;
         stroke: ${neutralFillRestBehavior.var};
     }
 
-    :host(.paused) .determinate {
+    :host([paused]) .determinate {
         stroke: ${neutralForegroundHintBehavior.var};
     }
 
@@ -85,10 +85,10 @@ export const ProgressRingStyles = css`
             .background {
                 stroke: ${SystemColors.Field};
             }
-            :host(.paused) .indeterminate-indicator-1 {
+            :host([paused]) .indeterminate-indicator-1 {
                 stroke: ${SystemColors.Field};
             }
-            :host(.paused) .determinate {
+            :host([paused]) .determinate {
                 stroke: ${SystemColors.GrayText};
             }
         `

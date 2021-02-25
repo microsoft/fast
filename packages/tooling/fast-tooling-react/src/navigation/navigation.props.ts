@@ -36,6 +36,11 @@ export interface NavigationState {
     } | null;
 
     /**
+     * Whether the current active item is editable
+     */
+    activeItemEditable: boolean;
+
+    /**
      * Expanded navigation config items
      */
     expandedNavigationConfigItems: { [key: string]: string[] };

@@ -5,6 +5,7 @@ import { ButtonControl } from "./control.button";
 import { ButtonControlProps } from "./control.button.props";
 import { ButtonControlClassNameContract } from "./control.button.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -33,6 +34,8 @@ const buttonProps: ButtonControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
+    messageSystemOptions: null,
 };
 
 describe("ButtonControl", () => {

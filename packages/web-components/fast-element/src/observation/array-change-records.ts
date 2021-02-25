@@ -330,7 +330,7 @@ function mergeSplice(
     let inserted = false;
     let insertionOffset = 0;
 
-    for (let i = 0, ii = splices.length; i < ii; i++) {
+    for (let i = 0; i < splices.length; i++) {
         const current = splices[i];
         current.index += insertionOffset;
 

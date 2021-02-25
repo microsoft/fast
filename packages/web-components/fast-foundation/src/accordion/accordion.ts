@@ -87,6 +87,7 @@ export class Accordion extends FASTElement {
             );
             this.activeid = this.accordionIds[this.activeItemIndex] as string;
             item.addEventListener("keydown", this.handleItemKeyDown);
+            item.addEventListener("focus", this.handleItemFocus);
         });
     };
 
@@ -100,6 +101,7 @@ export class Accordion extends FASTElement {
         oldValue.forEach((item: HTMLElement, index: number) => {
             item.removeEventListener("change", this.activeItemChange);
             item.removeEventListener("keydown", this.handleItemKeyDown);
+            item.removeEventListener("focus", this.handleItemFocus);
         });
     };
 
@@ -125,6 +127,11 @@ export class Accordion extends FASTElement {
     }
 
     private handleItemKeyDown = (event: KeyboardEvent): void => {
+        // only handle the keydown if the event target is the accordion item
+        // prevents arrow keys from moving focus to accordion headers when focus is on accordion item panel content
+        if (event.target !== event.currentTarget) {
+            return;
+        }
         const keyCode: number = event.keyCode;
         this.accordionIds = this.getItemIds();
         switch (keyCode) {
@@ -144,6 +151,21 @@ export class Accordion extends FASTElement {
                 this.activeItemIndex = this.accordionItems.length - 1;
                 this.focusItem();
                 break;
+        }
+    };
+
+    private handleItemFocus = (event: FocusEvent): void => {
+        // update the active item index if the focus moves to an accordion item via a different method other than the up and down arrow key actions
+        // only do so if the focus is actually on the accordion item and not on any of its children
+        if (event.target === event.currentTarget) {
+            const focusedItem = event.target as HTMLElement;
+            const focusedIndex: number = (this.activeItemIndex = Array.from(
+                this.accordionItems
+            ).indexOf(focusedItem));
+            if (this.activeItemIndex !== focusedIndex && focusedIndex !== -1) {
+                this.activeItemIndex = focusedIndex;
+                this.activeid = this.accordionIds[this.activeItemIndex] as string;
+            }
         }
     };
 

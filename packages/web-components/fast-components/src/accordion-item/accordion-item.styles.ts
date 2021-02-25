@@ -6,6 +6,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
@@ -78,8 +79,8 @@ export const AccordionItemStyles = css`
             ${neutralFocusBehavior.var};
     }
 
-    :host(.expanded) .region {
-        display: flex;
+    :host([expanded]) .region {
+        display: block;
     }
 
     .icon {
@@ -91,11 +92,16 @@ export const AccordionItemStyles = css`
         pointer-events: none;
     }
 
+    slot[name="expanded-icon"],
+    slot[name="collapsed-icon"] {
+        fill: ${accentFillRestBehavior.var};
+    }
+
     slot[name="collapsed-icon"] {
         display: flex;
     }
 
-    :host(.expanded) slot[name="collapsed-icon"] {
+    :host([expanded]) slot[name="collapsed-icon"] {
         display: none;
     }
 
@@ -103,7 +109,7 @@ export const AccordionItemStyles = css`
         display: none;
     }
     
-    :host(.expanded) slot[name="expanded-icon"] {
+    :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }
 
@@ -124,6 +130,7 @@ export const AccordionItemStyles = css`
         z-index: 2;
     }
 `.withBehaviors(
+    accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,

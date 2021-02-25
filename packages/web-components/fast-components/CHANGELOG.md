@@ -3,6 +3,140 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.15.0...@microsoft/fast-components@1.17.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+
+
+### Features
+
+* add an inverse color recipe called neutral-contrast-fill ([#4319](https://github.com/Microsoft/fast/issues/4319)) ([403ec9a](https://github.com/Microsoft/fast/commit/403ec9aff7e1e935ab08b654eca8880c69dd2f47))
+
+
+
+
+
+# [1.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.15.0...@microsoft/fast-components@1.16.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+
+
+### Features
+
+* add an inverse color recipe called neutral-contrast-fill ([#4319](https://github.com/Microsoft/fast/issues/4319)) ([403ec9a](https://github.com/Microsoft/fast/commit/403ec9aff7e1e935ab08b654eca8880c69dd2f47))
+
+
+
+
+
+# [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.1...@microsoft/fast-components@1.15.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* `UnhandledPromiseRejectionWarning`s when building fast-components ([#4218](https://github.com/Microsoft/fast/issues/4218)) ([48d52f4](https://github.com/Microsoft/fast/commit/48d52f43d8aa9938139f4dc0a2318fe400050216))
+* add forced-colors to skeleton component for high contrast ([#4234](https://github.com/Microsoft/fast/issues/4234)) ([492009c](https://github.com/Microsoft/fast/commit/492009c00fdc760af4d70b30ed98c1a67564c113))
+* address broken high contrast colors on listbox and select components ([#4233](https://github.com/Microsoft/fast/issues/4233)) ([9ac38ee](https://github.com/Microsoft/fast/commit/9ac38eef8489e35280947147576c491e98d33662))
+* adjust focus bottom border offset when it's width is increased ([#4241](https://github.com/Microsoft/fast/issues/4241)) ([04926b7](https://github.com/Microsoft/fast/commit/04926b71451a331014439eabf082bfa2d1f07e7f))
+* badge style var typo ([#4240](https://github.com/Microsoft/fast/issues/4240)) ([2b489db](https://github.com/Microsoft/fast/commit/2b489db76f25bb92203b26cd7e6133b3247ea166))
+* change accordion item region to display block ([#4255](https://github.com/Microsoft/fast/issues/4255)) ([e3e28e9](https://github.com/Microsoft/fast/commit/e3e28e96a516dbc0d3cbf2fc9670705b03b91e55))
+* expand collapse tree view svg ([#4225](https://github.com/Microsoft/fast/issues/4225)) ([c6d6259](https://github.com/Microsoft/fast/commit/c6d62597a89b7329b83f01520eebd811608c37d3))
+* slider disabled and readonly cursor styles ([#4224](https://github.com/Microsoft/fast/issues/4224)) ([554760e](https://github.com/Microsoft/fast/commit/554760e77abf1a7ed758981430c27d29fa222c36))
+* tooltips are incorrectly positioned when parent is a flex container ([#4256](https://github.com/Microsoft/fast/issues/4256)) ([bc47c02](https://github.com/Microsoft/fast/commit/bc47c02a44b7b274f458322b65ce7b4555de49e3))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* add fast-number-field component for data applications ([#4204](https://github.com/Microsoft/fast/issues/4204)) ([7196215](https://github.com/Microsoft/fast/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add radio group functionality to menu items ([#4208](https://github.com/Microsoft/fast/issues/4208)) ([89a3930](https://github.com/Microsoft/fast/commit/89a3930be83434b9039d25f82ae0c251e2d03956))
+* add select spec ([#4194](https://github.com/Microsoft/fast/issues/4194)) ([7af127a](https://github.com/Microsoft/fast/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
+## [1.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.14.0...@microsoft/fast-components@1.14.1) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-components
+
+
+
+
+
+# [1.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.13.0...@microsoft/fast-components@1.14.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* anchored region default viewport ([#4146](https://github.com/Microsoft/fast/issues/4146)) ([a6806e9](https://github.com/Microsoft/fast/commit/a6806e9ed289e7ce570a542de5da9b6e0ba9e60b))
+* disabled menu items should be focusable ([#4154](https://github.com/Microsoft/fast/issues/4154)) ([b971a18](https://github.com/Microsoft/fast/commit/b971a18281ba33f094a8dbc59a799a3e9c82ccb8))
+* inconsistent focus styling ([#4179](https://github.com/Microsoft/fast/issues/4179)) ([4c2a15a](https://github.com/Microsoft/fast/commit/4c2a15aea8f0c21f99b752ce2fa1a5a66a5f73ac))
+* select should match native behavior for value changes and change event emitting ([#4176](https://github.com/Microsoft/fast/issues/4176)) ([07f5eaa](https://github.com/Microsoft/fast/commit/07f5eaa93b907cc4f712c954e8f6669c391a8d7f))
+* select-indicator glyph sizing ([#4171](https://github.com/Microsoft/fast/issues/4171)) ([93b6d87](https://github.com/Microsoft/fast/commit/93b6d876624fbf9d401064e489b4c7c482c1fc52))
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+* add default slot changed to anchor ([#4159](https://github.com/Microsoft/fast/issues/4159)) ([8a264ec](https://github.com/Microsoft/fast/commit/8a264ec2a22d4f02e901a260b85f77c381a52231))
+
+
+
+
+
+# [1.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.12.0...@microsoft/fast-components@1.13.0) (2020-12-02)
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
+# [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.1...@microsoft/fast-components@1.12.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* ensure all components opt into body font ([#4134](https://github.com/Microsoft/fast/issues/4134)) ([50dd893](https://github.com/Microsoft/fast/commit/50dd8938d1d75766148e767e9cbb28bc14a7f7bf))
+* ensure tree items with children have a value for aria-expanded ([#4114](https://github.com/Microsoft/fast/issues/4114)) ([e7a7553](https://github.com/Microsoft/fast/commit/e7a7553c8e2fb205927d4d913de0d2790720ced7))
+* fast card should be design system provider ([#4107](https://github.com/Microsoft/fast/issues/4107)) ([fb0a49b](https://github.com/Microsoft/fast/commit/fb0a49b4f4ba52b9c96e1674015cd3e79fb5cd62))
+* flipper icon and menu item text in high contrast mode ([#4110](https://github.com/Microsoft/fast/issues/4110)) ([69ec2cc](https://github.com/Microsoft/fast/commit/69ec2ccabc40acbc5305fe390c8d39a397da6681))
+* move component options to independent modules ([#4048](https://github.com/Microsoft/fast/issues/4048)) ([f8a88a8](https://github.com/Microsoft/fast/commit/f8a88a8b14b2eee4dd26619f7927be73bea94277))
+* radio group orientation "vertical" broken ([#4123](https://github.com/Microsoft/fast/issues/4123)) ([7b38f52](https://github.com/Microsoft/fast/commit/7b38f523250b75d5deaedd347bff3c24247f3de1))
+* remove Card circular dependencies ([#4121](https://github.com/Microsoft/fast/issues/4121)) ([c7059b3](https://github.com/Microsoft/fast/commit/c7059b373f38aee700a767dc3328b609defb3b15))
+* remove duplicate exports causing circular dependencies ([#4053](https://github.com/Microsoft/fast/issues/4053)) ([29de4d8](https://github.com/Microsoft/fast/commit/29de4d83842ab383504adc0fc4873258909ff967))
+* remove hover background-color for disabled hovered options ([#4130](https://github.com/Microsoft/fast/issues/4130)) ([7569d9a](https://github.com/Microsoft/fast/commit/7569d9aca13b70688bb696bbfe3bc2b06ad447a2))
+* removed high contrast work in buttons and add the work in common buttons style ([#4135](https://github.com/Microsoft/fast/issues/4135)) ([a3555e2](https://github.com/Microsoft/fast/commit/a3555e2c673ebe0b7942e5438ed93bea82be331b))
+* revert radio to using class selector instead of attr, update slider-label to use internal styles for orientation ([#4108](https://github.com/Microsoft/fast/issues/4108)) ([c6ecedf](https://github.com/Microsoft/fast/commit/c6ecedf8427caf686bfebe89e78d2a6c2b7153f2))
+* update start and end slot to remove fixed width and height ([#4081](https://github.com/Microsoft/fast/issues/4081)) ([5f267fc](https://github.com/Microsoft/fast/commit/5f267fcb16a6636de67a4056204bf95828cb1d3f)), closes [#3904](https://github.com/Microsoft/fast/issues/3904)
+* Updated Design System reference in fast-card ([#4117](https://github.com/Microsoft/fast/issues/4117)) ([bd9ef7b](https://github.com/Microsoft/fast/commit/bd9ef7b6297d9ffeceb2ccb597b68edf850cba6f))
+* updates the definition for the flipper component for the direction attribute ([#4046](https://github.com/Microsoft/fast/issues/4046)) ([e9e56c2](https://github.com/Microsoft/fast/commit/e9e56c268dea2223674577177bc21c39d17cf184))
+
+
+### Features
+
+* Add disabled attr to fast-tab ([#4013](https://github.com/Microsoft/fast/issues/4013)) ([caef4b1](https://github.com/Microsoft/fast/commit/caef4b15ce729ab1c1762bf0578edcf4d809351c)), closes [#4017](https://github.com/Microsoft/fast/issues/4017)
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+* attribute selectors instead of class selectors ([#4078](https://github.com/Microsoft/fast/issues/4078)) ([bd09fbc](https://github.com/Microsoft/fast/commit/bd09fbc7d1d352f4d27552a4102d6f960708311f))
+* convert FormAssociated to a constructable function ([#4115](https://github.com/Microsoft/fast/issues/4115)) ([da8d54b](https://github.com/Microsoft/fast/commit/da8d54b5a057812622471e1261200b8f9b290d12))
+
+
+
+
+
 ## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.11.0...@microsoft/fast-components@1.11.1) (2020-10-14)
 
 

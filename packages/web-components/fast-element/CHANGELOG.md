@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.22.0...@microsoft/fast-element@0.22.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-element
+
+
+
+
+
+## [0.22.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.22.0...@microsoft/fast-element@0.22.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-element
+
+
+
+
+
+# [0.22.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.21.1...@microsoft/fast-element@0.22.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* increase sophistication of behavior binding and unbinding ([#4288](https://github.com/Microsoft/fast/issues/4288)) ([9c24ee6](https://github.com/Microsoft/fast/commit/9c24ee6f865673cfa8f32ae5141f139484d79f73))
+* **repeat:** observe arrays after unbound then rebound ([#4211](https://github.com/Microsoft/fast/issues/4211)) ([cec8e69](https://github.com/Microsoft/fast/commit/cec8e69d3b72b672605bf3f77a702ca0d6ba1a5b))
+
+
+### Features
+
+* add support for attachment test to ElementStyles ([#4289](https://github.com/Microsoft/fast/issues/4289)) ([df6f765](https://github.com/Microsoft/fast/commit/df6f7652083ea71e3419976281ee393744606018))
+
+
+
+
+
+## [0.21.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.21.0...@microsoft/fast-element@0.21.1) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-element
+
+
+
+
+
+# [0.21.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.20.0...@microsoft/fast-element@0.21.0) (2020-12-02)
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
+# [0.20.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.19.1...@microsoft/fast-element@0.20.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* **fast-element:** ensure all nodes removed in repeat when array emptied ([#4073](https://github.com/Microsoft/fast/issues/4073)) ([cacfefe](https://github.com/Microsoft/fast/commit/cacfefe78de27f19b7774af338bed27513437623))
+* **fast-element:** remove mergeSplice array length cache ([#4067](https://github.com/Microsoft/fast/issues/4067)) ([751eef8](https://github.com/Microsoft/fast/commit/751eef8ae070a20741a412b22371a46efb1e2b86))
+
+
+### Features
+
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+* convert FormAssociated to a constructable function ([#4115](https://github.com/Microsoft/fast/issues/4115)) ([da8d54b](https://github.com/Microsoft/fast/commit/da8d54b5a057812622471e1261200b8f9b290d12))
+* makes Controller.isConnected an observable property ([#4093](https://github.com/Microsoft/fast/issues/4093)) ([3d49aa2](https://github.com/Microsoft/fast/commit/3d49aa290bc7ea04a90038529d34b884ed053cbc))
+* **fast-element:** introduce NamedTargetDirective for extensibility ([#4079](https://github.com/Microsoft/fast/issues/4079)) ([c93bc26](https://github.com/Microsoft/fast/commit/c93bc26c1fa438d86d049e6e0d8a09c65fda5781))
+* support HTMLStyleElement from Controller.addStyles and Controller.removeStyles ([#4043](https://github.com/Microsoft/fast/issues/4043)) ([cf20187](https://github.com/Microsoft/fast/commit/cf201871838479593b3377d667643a409418dad2))
+
+
+
+
+
 ## [0.19.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.19.0...@microsoft/fast-element@0.19.1) (2020-10-14)
 
 **Note:** Version bump only for package @microsoft/fast-element

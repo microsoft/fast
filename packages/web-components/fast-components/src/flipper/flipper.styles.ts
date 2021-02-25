@@ -58,16 +58,16 @@ export const FlipperStyles = css`
         height: 16px;
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
         cursor: ${disabledCursor};
         fill: currentcolor;
         color: ${neutralForegroundRestBehavior.var};
     }
 
-    :host(.disabled)::before,
-    :host(.disabled:hover)::before,
-    :host(.disabled:active)::before {
+    :host([disabled])::before,
+    :host([disabled]:hover)::before,
+    :host([disabled]:active)::before {
         background: ${neutralFillStealthRestBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
     }
@@ -127,20 +127,18 @@ export const FlipperStyles = css`
                 opacity: 1;
             }
             :host(:hover) .next,
-            :host(:hover) .previous {
+            :host(:hover) .previous  {
                 forced-color-adjust: none;
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
-            :host(.disabled) {
+            :host([disabled]) {
                 opacity: 1;
             }
-            :host(.disabled)::before,
-            :host(.disabled:hover)::before,
-            :host(.disabled) .next,
-            :host(.disabled) .previous,
-            :host(.disabled:hover) .next,
-            :host(.disabled:hover) .previous {
+            :host([disabled])::before,
+            :host([disabled]:hover)::before,
+            :host([disabled]) .next,
+            :host([disabled]) .previous {
                 forced-color-adjust: none;
                 background: ${SystemColors.Canvas};
                 border-color: ${SystemColors.GrayText};

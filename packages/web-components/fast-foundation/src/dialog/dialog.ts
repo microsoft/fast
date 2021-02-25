@@ -86,13 +86,28 @@ export class Dialog extends FASTElement {
     }
 
     /**
+     * The method to show the dialog.
+     *
+     * @public
+     */
+    public show(): void {
+        this.hidden = false;
+    }
+
+    /**
+     * The method to hide the dialog.
+     *
+     * @public
+     */
+    public hide(): void {
+        this.hidden = true;
+    }
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        // store references to tabbable elements
-        this.tabbableElements = tabbable(this as Element);
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
@@ -101,7 +116,7 @@ export class Dialog extends FASTElement {
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
         // Ensure the DOM is updated
-        // This helps avoid a delay with `autofocus` elements recieving focus
+        // This helps avoid a delay with `autofocus` elements receiving focus
         DOM.queueUpdate(this.trapFocusChanged);
     }
 
@@ -123,18 +138,17 @@ export class Dialog extends FASTElement {
         }
     }
 
-    private onChildListChange(
-        mutations: MutationRecord[],
-        /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-        observer: MutationObserver
-    ): void {
-        if (mutations!.length) {
-            this.tabbableElements = tabbable(this as Element);
+    private onChildListChange = (mutations: MutationRecord[]): void => {
+        if (mutations.length) {
+            this.tabbableElements = tabbable(this);
         }
-    }
+    };
 
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
+            // store references to tabbable elements
+            this.tabbableElements = tabbable(this as Element);
+
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
 

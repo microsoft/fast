@@ -1,4 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { neutralFillRestBehavior } from "../styles";
 
@@ -18,11 +20,11 @@ export const SkeletonStyles = css`
         --skeleton-animation-timing-default: ease-in-out;
     }
 
-    :host(.rect) {
+    :host([shape="rect"]) {
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
-    :host(.circle) {
+    :host([shape="circle"]) {
         border-radius: 100%;
         overflow: hidden;
     }
@@ -76,4 +78,19 @@ export const SkeletonStyles = css`
             transform: translateX(100%);
         }
     }
-`.withBehaviors(neutralFillRestBehavior);
+`.withBehaviors(
+    neutralFillRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                forced-color-adjust: none;
+                background-color: ${SystemColors.ButtonFace};
+                box-shadow: 0 0 0 1px ${SystemColors.ButtonText};
+            }
+
+            ${display("block")} span.shimmer {
+                display: none;
+            }
+        `
+    )
+);

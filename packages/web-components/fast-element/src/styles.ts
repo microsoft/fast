@@ -51,6 +51,8 @@ export type ElementStyleFactory = (
  * @public
  */
 export abstract class ElementStyles {
+    private targets: WeakSet<StyleTarget> = new WeakSet();
+
     /** @internal */
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
 
@@ -58,10 +60,19 @@ export abstract class ElementStyles {
     public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
 
     /** @internal */
-    public abstract addStylesTo(target: StyleTarget): void;
+    public addStylesTo(target: StyleTarget): void {
+        this.targets.add(target);
+    }
 
     /** @internal */
-    public abstract removeStylesFrom(target: StyleTarget): void;
+    public removeStylesFrom(target: StyleTarget): void {
+        this.targets.delete(target);
+    }
+
+    /** @internal */
+    public isAttachedTo(target: StyleTarget): boolean {
+        return this.targets.has(target);
+    }
 
     /**
      * Associates behaviors with this set of styles.
@@ -170,6 +181,7 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
 
     public addStylesTo(target: StyleTarget): void {
         target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.styleSheets];
+        super.addStylesTo(target);
     }
 
     public removeStylesFrom(target: StyleTarget): void {
@@ -177,6 +189,7 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
             (x: CSSStyleSheet) => sourceSheets.indexOf(x) === -1
         );
+        super.removeStylesFrom(target);
     }
 }
 
@@ -205,9 +218,7 @@ export class StyleElementStyles extends ElementStyles {
         const styleSheets = this.styleSheets;
         const styleClass = this.styleClass;
 
-        if (target === document) {
-            target = document.body;
-        }
+        target = this.normalizeTarget(target);
 
         for (let i = styleSheets.length - 1; i > -1; --i) {
             const element = document.createElement("style");
@@ -215,12 +226,12 @@ export class StyleElementStyles extends ElementStyles {
             element.className = styleClass;
             target.prepend(element);
         }
+
+        super.addStylesTo(target);
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        if (target === document) {
-            target = document.body;
-        }
+        target = this.normalizeTarget(target);
 
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
             `.${this.styleClass}`
@@ -229,6 +240,39 @@ export class StyleElementStyles extends ElementStyles {
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
         }
+
+        super.removeStylesFrom(target);
+    }
+
+    public isAttachedTo(target: StyleTarget): boolean {
+        return super.isAttachedTo(this.normalizeTarget(target));
+    }
+
+    private normalizeTarget(target: StyleTarget): StyleTarget {
+        return target === document ? document.body : target;
+    }
+}
+
+/**
+ * Directive for use in {@link css}.
+ *
+ * @public
+ */
+export class CSSDirective {
+    /**
+     * Creates a CSS fragment to interpolate into the CSS document.
+     * @returns - the string to interpolate into CSS
+     */
+    public createCSS(): ComposableStyles {
+        return "";
+    }
+
+    /**
+     * Creates a behavior to bind to the host element.
+     * @returns - the behavior to bind to the host element, or undefined.
+     */
+    public createBehavior(): Behavior | undefined {
+        return undefined;
     }
 }
 
@@ -242,14 +286,24 @@ export class StyleElementStyles extends ElementStyles {
  */
 export function css(
     strings: TemplateStringsArray,
-    ...values: ComposableStyles[]
+    ...values: (ComposableStyles | CSSDirective)[]
 ): ElementStyles {
     const styles: ComposableStyles[] = [];
     let cssString = "";
+    const behaviors: Behavior[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
-        const value = values[i];
+        let value = values[i];
+
+        if (value instanceof CSSDirective) {
+            const behavior = value.createBehavior();
+            value = value.createCSS();
+
+            if (behavior) {
+                behaviors.push(behavior);
+            }
+        }
 
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
@@ -269,5 +323,11 @@ export function css(
         styles.push(cssString);
     }
 
-    return ElementStyles.create(styles);
+    const elementStyles = ElementStyles.create(styles);
+
+    if (behaviors.length) {
+        elementStyles.withBehaviors(...behaviors);
+    }
+
+    return elementStyles;
 }

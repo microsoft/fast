@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { TextArea, TextAreaTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
@@ -10,11 +10,11 @@ import { customElement } from "@microsoft/fast-element";
 class FASTTextArea extends TextArea {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTextArea>(
+    const { element, connect, disconnect, parent } = await fixture<FASTTextArea>(
         "fast-text-area"
     );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("TextArea", () => {
@@ -182,6 +182,47 @@ describe("TextArea", () => {
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("spellcheck")
         ).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", "foobar");
+        await connect();
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", "foobar");
+
+        expect(element.value).to.equal("foobar");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "foobar";
+        await connect();
+
+        expect(element.value).to.equal("foobar");
 
         await disconnect();
     });
@@ -517,6 +558,79 @@ describe("TextArea", () => {
             textarea?.dispatchEvent(event);
 
             expect(wasChanged).to.equal(true);
+
+            await disconnect();
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset it's value property to an empty string if no value attribute is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            await connect();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === null);
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "");
+
+            await disconnect();
+        });
+
+        it("should reset it's value property to the value of the value attribute if it is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.setAttribute("value", "attr-value");
+
+            element.value = "test-value";
+
+            assert(element.getAttribute("value") === "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            await disconnect();
+        });
+
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.value = "test-value";
+
+            element.setAttribute("value", "attr-value");
+
+            assert(element.value === "test-value");
+
+            form.reset();
+
+            assert(element.value === "attr-value");
+
+            element.setAttribute("value", "new-attr-value");
+
+            assert(element.value === "new-attr-value");
 
             await disconnect();
         });

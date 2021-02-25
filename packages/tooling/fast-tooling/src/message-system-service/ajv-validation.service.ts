@@ -13,6 +13,8 @@ import {
 } from "../message-system";
 import { normalizeDataLocationToDotNotation } from "../data-utilities/location";
 
+export const ajvValidationId = "fast-tooling::ajv-validation-service";
+
 export interface AjvMapperConfig {
     /**
      * The message system
@@ -72,6 +74,9 @@ export class AjvMapper {
                     action: MessageSystemValidationTypeAction.update,
                     validationErrors: this.validation[e.data.activeDictionaryId],
                     dictionaryId: e.data.activeDictionaryId,
+                    options: {
+                        originatorId: ajvValidationId,
+                    },
                 });
 
                 break;
@@ -96,6 +101,9 @@ export class AjvMapper {
                             action: MessageSystemValidationTypeAction.update,
                             validationErrors: this.validation[linkedDataRootId],
                             dictionaryId: linkedDataRootId,
+                            options: {
+                                originatorId: ajvValidationId,
+                            },
                         });
                     } else {
                         this.validation[this.activeDictionaryId] = this.validateData(
@@ -112,6 +120,9 @@ export class AjvMapper {
                             action: MessageSystemValidationTypeAction.update,
                             validationErrors: this.validation[this.activeDictionaryId],
                             dictionaryId: this.activeDictionaryId,
+                            options: {
+                                originatorId: ajvValidationId,
+                            },
                         });
                     }
                 }
@@ -124,6 +135,9 @@ export class AjvMapper {
                         action: SchemaSetValidationAction.response,
                         id: e.data.id,
                         index: this.findValidSchema(e.data.schemas, e.data.data),
+                        options: {
+                            originatorId: ajvValidationId,
+                        },
                     } as SchemaSetValidationMessageResponse);
                 }
         }

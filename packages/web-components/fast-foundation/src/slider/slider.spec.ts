@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, assert } from "chai";
 import { Slider, SliderTemplate as template } from "./index";
 import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
 import { fixture } from "../fixture";
@@ -18,9 +18,11 @@ class FASTSlider extends Slider {}
 class FASTSliderLabel extends SliderLabel {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSlider>("fast-slider");
+    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(
+        "fast-slider"
+    );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 // TODO: Need to add tests for keyboard handling, position, and focus management
@@ -263,6 +265,47 @@ describe("Slider", () => {
         await disconnect();
     });
 
+    it("should initialize to the initial value if no value property is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        expect(element.value).to.equal(element["initialValue"]);
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("value", ".5");
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value attribute if set post-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+        element.setAttribute("value", ".5");
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
+    it("should initialize to the provided value property if set pre-connection", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = ".5";
+        await connect();
+
+        expect(element.value).to.equal(".5");
+
+        await disconnect();
+    });
+
     describe("methods", () => {
         it("should increment the value when the `increment()` method is invoked", async () => {
             const { element, connect, disconnect } = await setup();
@@ -304,6 +347,77 @@ describe("Slider", () => {
 
             expect(element.value).to.equal("45");
             expect(element.getAttribute("aria-valuenow")).to.equal("45");
+
+            await disconnect();
+        });
+    });
+
+    describe("when the owning form's reset() method is invoked", () => {
+        it("should reset its value property to an empty string if no value attribute is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.value = "3";
+
+            assert.strictEqual(element.getAttribute("value"), null);
+            assert.strictEqual(element.value, "3");
+
+            form.reset();
+
+            assert.strictEqual(element.value, "5");
+
+            await disconnect();
+        });
+
+        it("should reset its value property to the value of the value attribute if it is set", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.setAttribute("value", "7");
+            element.value = "8";
+
+            assert.strictEqual(element.getAttribute("value"), "7");
+            assert.strictEqual(element.value, "8");
+
+            form.reset();
+
+            assert.strictEqual(element.value, "7");
+
+            await disconnect();
+        });
+
+        it("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            const form = document.createElement("form");
+            form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
+            element.value = "7";
+
+            element.setAttribute("value", "8");
+
+            assert.strictEqual(element.value, "7");
+
+            form.reset();
+
+            assert.strictEqual(element.value, "8");
+
+            element.setAttribute("value", "3");
+
+            assert.strictEqual(element.value, "3");
 
             await disconnect();
         });

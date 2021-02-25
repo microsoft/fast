@@ -1,39 +1,45 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import TooltipTemplate from "./fixtures/base.html";
-import { FASTTooltip } from "./";
+import type { FASTTooltip } from "./index";
+import "../button";
+import "./index";
 
-// Prevent tree-shaking
-FASTTooltip;
-FASTDesignSystemProvider;
+function onShowClick(): void {
+    for (let i = 1; i <= 4; i++) {
+        const tooltipInstance = document.getElementById(
+            `tooltip-show-${i}`
+        ) as FASTTooltip;
+        tooltipInstance.visible = !tooltipInstance.visible;
+    }
+}
+
+function onAnchorMouseEnter(e: MouseEvent): void {
+    if (!e.target) {
+        return;
+    }
+
+    const tooltipInstance = document.getElementById(
+        "tooltip-anchor-switch"
+    ) as FASTTooltip;
+    tooltipInstance.anchorElement = e.target as HTMLElement;
+}
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("tooltip")) {
-        connectAnchors();
+        document
+            .querySelectorAll("fast-button[id^=anchor-anchor-switch]")
+            .forEach((el: HTMLElement) => {
+                el.addEventListener("mouseenter", onAnchorMouseEnter);
+            });
+
+        const showButton = document.getElementById("anchor-show") as HTMLElement;
+        showButton.addEventListener("click", onShowClick);
     }
 });
-
-function onAnchorMouseEnter(e: MouseEvent): void {
-    if (e.target === null) {
-        return;
-    }
-    const tooltipInstance: HTMLElement | null = document.getElementById(
-        "tooltip-anchor-switch"
-    );
-    (tooltipInstance as FASTTooltip).anchorElement = e.target as HTMLElement;
-}
-
-function connectAnchors(): void {
-    document.querySelectorAll("fast-button").forEach(el => {
-        if (el !== null && el.id.startsWith("anchor-anchor-switch")) {
-            (el as HTMLElement).onmouseenter = onAnchorMouseEnter;
-        }
-    });
-}
 
 export default {
     title: "Tooltip",
 };
 
-export const base = () => TooltipTemplate;
+export const Tooltip = () => TooltipTemplate;

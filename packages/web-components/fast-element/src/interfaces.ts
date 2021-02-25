@@ -5,6 +5,15 @@
 export type Callable = typeof Function.prototype.call | { call(): void };
 
 /**
+ * Allows for the creation of Constructable mixin classes.
+ *
+ * @public
+ */
+export type Constructable<T = {}> = {
+    new (...args: any[]): T;
+};
+
+/**
  * Reverses all readonly members, making them mutable.
  * @internal
  */

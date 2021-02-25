@@ -49,6 +49,11 @@ export interface FormProps {
      * instead of the default control plugins
      */
     controls?: StandardControlPlugin[];
+
+    /**
+     * Localized strings for the default controls. Default is English.
+     */
+    strings?: FormStrings;
 }
 
 /**
@@ -99,10 +104,39 @@ export interface FormState {
      * The validation errors if there are any
      */
     validationErrors: Validation;
+
+    /**
+     * The options sent from the last message system message
+     */
+    options: any | null;
 }
 
 export interface ControlPluginConfig {
     plugin: typeof StandardControlPlugin | typeof SingleLineControlPlugin;
     component: React.ComponentClass;
     context: ControlContext;
+}
+
+export interface FormStrings {
+    arrayAddItemTip: string;
+    arrayAddItemLabel: string;
+    linkedDataPlaceholder: string;
+    sectionLinkEditLabel: string;
+    sectionSelectDefault: string;
+    sectionSelectLabel: string;
+    sectionAdditionalPropExample: string;
+    sectionAdditionalPropLabel: string;
+    fileUploadPreviewAlt: string;
+    fileUploadUploading: string;
+    fileUploadDragInstr: string;
+    fileUploadBrowseFiles: string;
+    textAlignLeftLabel: string;
+    textAlignCenterLabel: string;
+    textAlignRightLabel: string;
+    textAlignJustifyLabel: string;
+    themeLightLabel: string;
+    themeDarkLabel: string;
+    constValueLabel: string;
+    defaultValueLabel: string;
+    dragItemRemoveItem: string;
 }

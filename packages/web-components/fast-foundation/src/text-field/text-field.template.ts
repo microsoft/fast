@@ -1,5 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
+import { whitespaceFilter } from "../utilities";
 import { TextField } from "./text-field";
 
 /**
@@ -20,7 +21,9 @@ export const TextFieldTemplate = html<TextField>`
                     ? "label"
                     : "label label__hidden"}"
         >
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+            <slot
+                ${slotted({ property: "defaultSlottedNodes", filter: whitespaceFilter })}
+            ></slot>
         </label>
         <div class="root" part="root">
             ${startTemplate}
@@ -28,7 +31,6 @@ export const TextFieldTemplate = html<TextField>`
                 class="control"
                 part="control"
                 id="control"
-                @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
                 ?autofocus="${x => x.autofocus}"

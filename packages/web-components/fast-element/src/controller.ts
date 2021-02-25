@@ -1,7 +1,11 @@
 import { FASTElementDefinition } from "./fast-definitions";
 import { ElementView } from "./view";
 import { PropertyChangeNotifier } from "./observation/notifier";
-import { defaultExecutionContext, Observable } from "./observation/observable";
+import {
+    defaultExecutionContext,
+    Observable,
+    observable,
+} from "./observation/observable";
 import { Behavior } from "./directives/behavior";
 import { ElementStyles, StyleTarget } from "./styles";
 import { Mutable } from "./interfaces";
@@ -24,7 +28,7 @@ function getShadowRoot(element: HTMLElement): ShadowRoot | null {
  */
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Behavior[] | null = null;
+    private behaviors: Map<Behavior, number> | null = null;
     private needsInitialization = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
@@ -51,6 +55,7 @@ export class Controller extends PropertyChangeNotifier {
      * Indicates whether or not the custom element has been
      * connected to the document.
      */
+    @observable
     public readonly isConnected: boolean = false;
 
     /**
@@ -143,36 +148,45 @@ export class Controller extends PropertyChangeNotifier {
     }
 
     /**
-     * Adds styles to this element.
+     * Adds styles to this element. Providing an HTMLStyleElement will attach the element instance to the shadowRoot.
      * @param styles - The styles to add.
      */
-    public addStyles(styles: ElementStyles): void {
-        const sourceBehaviors = styles.behaviors;
+    public addStyles(styles: ElementStyles | HTMLStyleElement): void {
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        styles.addStylesTo(target);
+        if (styles instanceof HTMLStyleElement) {
+            target.prepend(styles);
+        } else if (!styles.isAttachedTo(target)) {
+            const sourceBehaviors = styles.behaviors;
+            styles.addStylesTo(target);
 
-        if (sourceBehaviors !== null) {
-            this.addBehaviors(sourceBehaviors);
+            if (sourceBehaviors !== null) {
+                this.addBehaviors(sourceBehaviors);
+            }
         }
     }
 
     /**
-     * Removes styles from this element.
+     * Removes styles from this element. Providing an HTMLStyleElement will detach the element instance from the shadowRoot.
      * @param styles - the styles to remove.
      */
-    public removeStyles(styles: ElementStyles): void {
-        const sourceBehaviors = styles.behaviors;
+    public removeStyles(styles: ElementStyles | HTMLStyleElement): void {
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        styles.removeStylesFrom(target);
+        if (styles instanceof HTMLStyleElement) {
+            target.removeChild(styles);
+        } else if (styles.isAttachedTo(target)) {
+            const sourceBehaviors = styles.behaviors;
 
-        if (sourceBehaviors !== null) {
-            this.removeBehaviors(sourceBehaviors);
+            styles.removeStylesFrom(target);
+
+            if (sourceBehaviors !== null) {
+                this.removeBehaviors(sourceBehaviors);
+            }
         }
     }
 
@@ -181,18 +195,26 @@ export class Controller extends PropertyChangeNotifier {
      * @param behaviors - The behaviors to add.
      */
     public addBehaviors(behaviors: ReadonlyArray<Behavior>): void {
-        const targetBehaviors = this.behaviors || (this.behaviors = []);
+        const targetBehaviors = this.behaviors || (this.behaviors = new Map());
         const length = behaviors.length;
+        const behaviorsToBind: Behavior[] = [];
 
         for (let i = 0; i < length; ++i) {
-            targetBehaviors.push(behaviors[i]);
+            const behavior = behaviors[i];
+
+            if (targetBehaviors.has(behavior)) {
+                targetBehaviors.set(behavior, targetBehaviors.get(behavior) + 1);
+            } else {
+                targetBehaviors.set(behavior, 1);
+                behaviorsToBind.push(behavior);
+            }
         }
 
         if (this.isConnected) {
             const element = this.element;
 
-            for (let i = 0; i < length; ++i) {
-                behaviors[i].bind(element, defaultExecutionContext);
+            for (let i = 0; i < behaviorsToBind.length; ++i) {
+                behaviorsToBind[i].bind(element, defaultExecutionContext);
             }
         }
     }
@@ -200,8 +222,9 @@ export class Controller extends PropertyChangeNotifier {
     /**
      * Removes behaviors from this element.
      * @param behaviors - The behaviors to remove.
+     * @param force - Forces unbinding of behaviors.
      */
-    public removeBehaviors(behaviors: ReadonlyArray<Behavior>): void {
+    public removeBehaviors(behaviors: ReadonlyArray<Behavior>, force = false): void {
         const targetBehaviors = this.behaviors;
 
         if (targetBehaviors === null) {
@@ -209,20 +232,25 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const length = behaviors.length;
+        const behaviorsToUnbind: Behavior[] = [];
 
         for (let i = 0; i < length; ++i) {
-            const index = targetBehaviors.indexOf(behaviors[i]);
+            const behavior = behaviors[i];
 
-            if (index !== -1) {
-                targetBehaviors.splice(index, 1);
+            if (targetBehaviors.has(behavior)) {
+                const count = targetBehaviors.get(behavior)! - 1;
+
+                count === 0 || force
+                    ? targetBehaviors.delete(behavior) && behaviorsToUnbind.push(behavior)
+                    : targetBehaviors.set(behavior, count);
             }
         }
 
         if (this.isConnected) {
             const element = this.element;
 
-            for (let i = 0; i < length; ++i) {
-                behaviors[i].unbind(element);
+            for (let i = 0; i < behaviorsToUnbind.length; ++i) {
+                behaviorsToUnbind[i].unbind(element);
             }
         }
     }
@@ -246,8 +274,8 @@ export class Controller extends PropertyChangeNotifier {
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(element, defaultExecutionContext);
+            for (let [behavior] of behaviors) {
+                behavior.bind(element, defaultExecutionContext);
             }
         }
 
@@ -274,9 +302,8 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
-
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].unbind(element);
+            for (let [behavior] of behaviors) {
+                behavior.unbind(element);
             }
         }
     }

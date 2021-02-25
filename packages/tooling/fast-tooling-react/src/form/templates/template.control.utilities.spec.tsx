@@ -3,6 +3,7 @@ import Adapter from "enzyme-adapter-react-16";
 import { configure, mount, shallow } from "enzyme";
 import ControlTemplateUtilities from "./template.control.utilities";
 import { BadgeType } from "./types";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -22,6 +23,7 @@ const config: any = {
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
     invalidMessage: "",
+    strings: defaultStrings,
 };
 
 describe("ControlPlugin", () => {

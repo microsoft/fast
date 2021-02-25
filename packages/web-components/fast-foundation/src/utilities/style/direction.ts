@@ -42,7 +42,7 @@ export class DirectionalStyleSheetBehavior implements Behavior {
     /**
      * @internal
      */
-    public bind(source: typeof FASTElement & HTMLElement) {
+    public bind(source: FASTElement & HTMLElement) {
         const provider = DesignSystemProvider.findProvider(source);
 
         if (provider !== null) {
@@ -61,7 +61,7 @@ export class DirectionalStyleSheetBehavior implements Behavior {
     /**
      * @internal
      */
-    public unbind(source: typeof FASTElement & HTMLElement) {
+    public unbind(source: FASTElement & HTMLElement) {
         const cache = this.cache.get(source);
 
         if (cache) {
@@ -69,10 +69,7 @@ export class DirectionalStyleSheetBehavior implements Behavior {
         }
     }
 
-    private attach(
-        source: typeof FASTElement & HTMLElement,
-        provider: DesignSystemProvider
-    ) {
+    private attach(source: FASTElement & HTMLElement, provider: DesignSystemProvider) {
         const subscriber = new DirectionalStyleSheetBehaviorSubscription(
             this.ltr,
             this.rtl,
@@ -94,7 +91,7 @@ class DirectionalStyleSheetBehaviorSubscription implements Subscriber {
     constructor(
         private ltr: ElementStyles | null,
         private rtl: ElementStyles | null,
-        private source: HTMLElement
+        private source: HTMLElement & FASTElement
     ) {}
 
     public handleChange(source: any) {
@@ -102,10 +99,14 @@ class DirectionalStyleSheetBehaviorSubscription implements Subscriber {
     }
 
     public attach(direction: Direction) {
-        if (this.attached !== this[direction] && this.source?.shadowRoot) {
-            this.attached?.removeStylesFrom(this.source.shadowRoot);
-            this[direction]?.addStylesTo(this.source.shadowRoot);
+        if (this.attached !== this[direction]) {
+            if (this.attached !== null) {
+                this.source.$fastController.removeStyles(this.attached);
+            }
             this.attached = this[direction];
+            if (this.attached !== null) {
+                this.source.$fastController.addStyles(this.attached);
+            }
         }
     }
 }

@@ -1,29 +1,24 @@
 import { expect } from "chai";
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { Tooltip, TooltipTemplate as template } from "./index";
-import { TooltipPosition } from './tooltip';
-import { delay } from 'lodash-es';
+import { createTooltipTemplate, Tooltip } from "./index";
+import { TooltipPosition } from "./tooltip";
 
 @customElement({
     name: "fast-tooltip",
-    template,
+    template: createTooltipTemplate("fast"),
 })
 class FASTTooltip extends Tooltip {}
 
 async function setup() {
-
     const { element, connect, disconnect } = await fixture(html<HTMLDivElement>`
-                <div>
-                    <button id="anchor">anchor</button>
-                    <fast-tooltip
-                        anchor="anchor"
-                        id="tooltip"
-                    >
-                        helpful text
-                    </fast-tooltip>
-                </div>
-            `);
+        <div>
+            <button id="anchor">anchor</button>
+            <fast-tooltip anchor="anchor" id="tooltip">
+                helpful text
+            </fast-tooltip>
+        </div>
+    `);
     return { element, connect, disconnect };
 }
 
@@ -53,7 +48,9 @@ describe("Tooltip", () => {
         await DOM.nextUpdate();
 
         expect(tooltip.tooltipVisible).to.equal(true);
-        expect(tooltip.shadowRoot?.querySelector("fast-anchored-region")).not.to.equal(null);
+        expect(tooltip.shadowRoot?.querySelector("fast-anchored-region")).not.to.equal(
+            null
+        );
 
         await disconnect();
     });
@@ -61,7 +58,7 @@ describe("Tooltip", () => {
     it("should not render the toolip when visible is false", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
-        
+
         tooltip.visible = false;
         tooltip.delay = 0;
 
@@ -154,9 +151,9 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
-     // bottom position settings
+    // bottom position settings
 
-     it("should set vertical positioning mode to locked and horizontal to dynamic when position is set to bottom", async () => {
+    it("should set vertical positioning mode to locked and horizontal to dynamic when position is set to bottom", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
 
@@ -198,9 +195,9 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
-     // left position settings
+    // left position settings
 
-     it("should set horizontal positioning mode to locked and vertical to dynamic when position is set to left", async () => {
+    it("should set horizontal positioning mode to locked and vertical to dynamic when position is set to left", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
 
@@ -285,5 +282,4 @@ describe("Tooltip", () => {
 
         await disconnect();
     });
-
 });

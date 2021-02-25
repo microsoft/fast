@@ -4,56 +4,9 @@
 
 The CSS controls consist of an abstract control and two extended controls, CSS styles and CSS stylesheets. These controls will provide a way to interpret CSS strings for inline (styles) and CSS stylesheets into form UI and back to strings.
 
-## Build script
+## Data import
 
-The package should have a `devDependency` for [MDN data](https://www.npmjs.com/package/mdn-data) and re-interpret the properties based on this. To only require what is needed there should be a build script which takes the MDN data and converts it to a `.ts` file with exports conforming to an interface which defines the example provided in [Variables](#variables).
-
-## Variables
-
-There should be a list of variables that are assigned to each CSS property. The structure should look like this:
-
-```typescript
-[
-    {
-        "border": { // The property name should be pascalCase
-            name: "border", // The name should be spinal-case
-            shorthand: true, // denotes that "border" CSS property is a shorthand
-            default: "none",
-            globalValues: [
-                {
-                    value: "inherit"
-                },
-                {
-                    value: "initial"
-                },
-                {
-                    value: "unset"
-                }
-            ],
-            values: [ // these must be in order
-                {
-                    mapsToCssProperty: "border-width",
-                    type: "width",
-                    default: "1px"
-                },
-                {
-                    mapsToCssProperty: "border-style",
-                    type: "border-style",
-                    default: "solid"
-                },
-                {
-                    mapsToCssProperty: "border-color",
-                    type: "color",
-                    default: "black"
-                }
-            ]
-        }
-    },
-    // Complete list of all potential CSS properties
-]
-```
-
-From this structure we can construct via the UI generated from the below methods: `border: 1px solid red`.
+The CSS data will be imported from `@microsoft/fast-tooling`, for more information on the exported data format for this, refer to [the documentation](../../../../fast-tooling/src/data-utilities/mapping.mdn-data.md).
 
 ## Wireframe
 

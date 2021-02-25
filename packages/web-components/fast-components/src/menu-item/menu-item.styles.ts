@@ -19,10 +19,11 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        font-family: var(--body-font);
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
-        grid-template-columns: 42px auto 42px;
+        grid-template-columns: minmax(42px, auto) 1fr minmax(42px, auto);
         grid-template-rows: auto;
         justify-items: center;
         align-items: center;
@@ -52,26 +53,30 @@ export const MenuItemStyles = css`
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
+    :host([checked="true"]) {
+        background: ${accentFillHoverBehavior.var};
+        color: ${accentForegroundCutRestBehavior.var};
+    }
 
     :host(:active) {
         background: ${accentFillActiveBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(.disabled) {
+    :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: var(--disabled-opacity);
     }
 
-    :host(.disabled:hover) {
+    :host([disabled]:hover) {
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         background: ${neutralFillStealthRestBehavior.var}
     }
 
-    :host(.disabled:hover) .start,
-    :host(.disabled:hover) .end,
-    :host(.disabled:hover)::slotted(svg) {
+    :host([disabled]:hover) .start,
+    :host([disabled]:hover) .end,
+    :host([disabled]:hover)::slotted(svg) {
         fill: ${neutralForegroundRestBehavior.var};
     }
 
@@ -83,7 +88,10 @@ export const MenuItemStyles = css`
     }
 
     .start,
-    .end,
+    .end {
+        display: flex;
+    }
+
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary - 
@@ -112,6 +120,7 @@ export const MenuItemStyles = css`
         css`
             :host {
                 border-color: transparent;
+                color: ${SystemColors.ButtonText};
                 forced-color-adjust: none;
             }
             :host(:hover) {
@@ -133,11 +142,11 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
-            :host(.disabled),
-            :host(.disabled:hover),
-            :host(.disabled:hover) .start,
-            :host(.disabled:hover) .end,
-            :host(.disabled:hover)::slotted(svg) {
+            :host([disabled]),
+            :host([disabled]:hover),
+            :host([disabled]:hover) .start,
+            :host([disabled]:hover) .end,
+            :host([disabled]:hover)::slotted(svg) {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
