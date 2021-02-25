@@ -57,7 +57,7 @@ export class Picker extends FASTElement {
      * HTML Attribute: auto-update-interval
      */
     @attr({ attribute: "auto-update-interval" })
-    public autoUpdateInterval: number = 100;
+    public autoUpdateInterval: number = 30;
 
     /**
      *
@@ -454,16 +454,6 @@ export class Picker extends FASTElement {
         return true;
     };
 
-    public handleRegionLoaded = (e: Event): void => {
-        if (!this.menuOpen) {
-            return;
-        }
-        this.updateTimer = window.setTimeout((): void => {
-            this.setFocusedOption(this.menuFocusIndex);
-            this.startUpdateTimer();
-        }, 100);
-    };
-
     public handleFocusOut = (e: FocusEvent): void => {
         if (
             this.menuElement === undefined ||
@@ -510,6 +500,84 @@ export class Picker extends FASTElement {
     public updatePosition = (): void => {
         if (this.region !== undefined) {
             this.region.update();
+        }
+    };
+
+    public handleRegionLoaded = (e: Event): void => {
+        if (!this.menuOpen) {
+            return;
+        }
+        this.updateTimer = window.setTimeout((): void => {
+            this.setFocusedOption(this.menuFocusIndex);
+            this.startUpdateTimer();
+        }, 100);
+    };
+
+    private setRegionProps = (): void => {
+        if (!this.menuOpen) {
+            return;
+        }
+        if (this.region === null || this.region === undefined) {
+            // TODO: limit this
+            DOM.queueUpdate(this.setRegionProps);
+            return;
+        }
+        this.region.viewportElement = document.body;
+        this.region.anchorElement = this.inputElement;
+    };
+
+    /**
+     * starts the update timer if not currently running
+     */
+    private startUpdateTimer = (): void => {
+        DOM.queueUpdate(() => {
+            this.region.classList.toggle("loaded", true);
+            this.region.style.pointerEvents = "none";
+        });
+
+        if (this.autoUpdateInterval > 0) {
+            this.updateTimer = window.setTimeout((): void => {
+                this.updateTimerTick();
+            }, this.autoUpdateInterval);
+        }
+    };
+
+    private updateTimerTick = (): void => {
+        this.clearUpdateTimer();
+        if (this.menuOpen) {
+            if (this.region !== undefined) {
+                this.region.update();
+            }
+
+            if (this.autoUpdateInterval > 0) {
+                this.updateTimer = window.setTimeout((): void => {
+                    this.updateTimerTick();
+                }, this.autoUpdateInterval);
+            }
+        }
+    };
+
+    /**
+     * clears the update timer
+     */
+    private clearUpdateTimer = (): void => {
+        if (this.updateTimer !== null) {
+            clearTimeout(this.updateTimer);
+            this.updateTimer = null;
+        }
+    };
+
+    private checkMaxItems = (): void => {
+        if (this.inputElement === undefined) {
+            return;
+        }
+        if (
+            this.maxSelected !== undefined &&
+            this.selectedOptions.length >= this.maxSelected
+        ) {
+            this.inputElement.hidden = true;
+        } else {
+            this.inputElement.hidden = false;
         }
     };
 
@@ -565,11 +633,11 @@ export class Picker extends FASTElement {
         this.menuFocusOptionId = this.menuElement.optionElements[optionIndex].id;
         this.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
 
-        this.menuElement.optionElements[this.menuFocusIndex].setAttribute(
-            "aria-selected",
-            "true"
-        );
-        this.menuElement.optionElements[this.menuFocusIndex].scrollIntoView();
+        const focusedOption = this.menuElement.optionElements[this.menuFocusIndex];
+
+        focusedOption.setAttribute("aria-selected", "true");
+
+        this.menuElement.scrollTo(0, focusedOption.offsetTop);
     };
 
     private toggleMenu = (open: boolean): void => {
@@ -610,77 +678,5 @@ export class Picker extends FASTElement {
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");
         return;
-    };
-
-    private setRegionProps = (): void => {
-        if (!this.menuOpen) {
-            return;
-        }
-        if (this.region === null || this.region === undefined) {
-            // TODO: limit this
-            DOM.queueUpdate(this.setRegionProps);
-            return;
-        }
-        this.region.viewportElement = document.body;
-        this.region.anchorElement = this.inputElement;
-    };
-
-    /**
-     * starts the update timer if not currently running
-     */
-    private startUpdateTimer = (): void => {
-        DOM.queueUpdate(() => {
-            this.region.classList.toggle("loaded", true);
-            this.region.style.pointerEvents = "none";
-        });
-
-        if (this.autoUpdateInterval <= 0) {
-            return;
-        }
-
-        if (this.autoUpdateInterval > 0) {
-            this.updateTimer = window.setTimeout((): void => {
-                this.updateTimerTick();
-            }, this.autoUpdateInterval);
-        }
-    };
-
-    private updateTimerTick = (): void => {
-        this.clearUpdateTimer();
-        if (this.menuOpen) {
-            if (this.region !== undefined) {
-                this.region.update();
-            }
-
-            if (this.autoUpdateInterval > 0) {
-                this.updateTimer = window.setTimeout((): void => {
-                    this.updateTimerTick();
-                }, this.autoUpdateInterval);
-            }
-        }
-    };
-
-    /**
-     * clears the update timer
-     */
-    private clearUpdateTimer = (): void => {
-        if (this.updateTimer !== null) {
-            clearTimeout(this.updateTimer);
-            this.updateTimer = null;
-        }
-    };
-
-    private checkMaxItems = (): void => {
-        if (this.inputElement === undefined) {
-            return;
-        }
-        if (
-            this.maxSelected !== undefined &&
-            this.selectedOptions.length >= this.maxSelected
-        ) {
-            this.inputElement.hidden = true;
-        } else {
-            this.inputElement.hidden = false;
-        }
     };
 }

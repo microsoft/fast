@@ -35,33 +35,12 @@ export const PeoplePickerStyles = css`
         display: flex;
     }
 
-    .loaded {
-        transition-duration: 100ms;
-        transition-timing-function: ease-out;
-    }
-
     .bottom {
         flex-direction: column;
     }
 
     .top {
         flex-direction: column-reverse;
-    }
-
-    .bottom.inset-right {
-        transition-property: top, left;
-    }
-
-    .top.inset-right {
-        transition-property: bottom, left;
-    }
-
-    .bottom.inset-left {
-        transition-property: top, right;
-    }
-
-    .top.inset-right {
-        transition-property: bottom, right;
     }
 `.withBehaviors(
     accentFillActiveBehavior,
