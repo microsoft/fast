@@ -52,7 +52,7 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
-        coverageCommand: yarn run coverage 
+        coverageCommand: coverage 
         coverageLocations: |
           ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
