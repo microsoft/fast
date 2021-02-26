@@ -261,29 +261,32 @@ export const MenuItemStyles = css`
                 background: ${SystemColors.HighlightText};
             }
 
+            :host([checked="true"]) .checkbox,
+            :host([checked="true"]) .radio {
+                border-color: ${SystemColors.HighlightText};
+            }
+
             :host(:hover) .checkbox,
-            :host(:hover) .radio ,
+            :host(:hover) .radio,
             :host(:${focusVisible}) .checkbox,
-            :host(:${focusVisible}) .radio{
+            :host(:${focusVisible}) .radio,
+            :host([checked="true"]:hover) .checkbox,
+            :host([checked="true"]:hover) .radio,
+            :host([checked="true"]:${focusVisible}) .checkbox,
+            :host([checked="true"]:${focusVisible}) .radio {
                 border-color: ${SystemColors.HighlightText};
             }
 
-            :host([checked="true"]) .checkbox-checked,
-            :host([checked="true"]) .radio-checked {
-                border-color: ${SystemColors.HighlightText};
-                background: ${SystemColors.HighlightText};
-            }
-
-            :host([checked="true"]) {
+            :host([aria-checked="true"]) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
             }
 
-            :host([checked="true"]) .checkbox-indicator{
+            :host([aria-checked="true"]) .checkbox-indicator{
                 fill: ${SystemColors.Highlight};
             }
 
-            :host([checked="true"]) .radio-indicator {
+            :host([aria-checked="true"]) .radio-indicator {
                 background: ${SystemColors.Highlight};
             }
         `
