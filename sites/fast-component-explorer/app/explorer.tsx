@@ -8,14 +8,6 @@ import {
 } from "@microsoft/fast-tooling-react";
 import React from "react";
 import { StandardLuminance } from "@microsoft/fast-components";
-import { ListboxItemProps } from "@microsoft/fast-components-react-base";
-import {
-    ActionToggle,
-    ActionToggleAppearance,
-    ActionToggleProps,
-    Select,
-    SelectOption,
-} from "@microsoft/fast-components-react-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     DataDictionary,
@@ -24,22 +16,25 @@ import {
 } from "@microsoft/fast-tooling";
 import {
     DirectionSwitch,
-    downChevron,
     Editor,
     Logo,
     ThemeSelector,
     TransparencyToggle,
-    upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
+import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
 import { ExplorerProps, ExplorerState } from "./explorer.props";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { renderDevToolsTabs } from "./web-components";
+import {
+    renderDevToolsTabs,
+    renderDevToolToggle,
+    renderScenarioSelect,
+} from "./web-components";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -202,16 +197,10 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                     2
                                 ),
                             })}
-                            <ActionToggle
-                                appearance={ActionToggleAppearance.stealth}
-                                selectedLabel={"Development tools expanded"}
-                                selectedGlyph={downChevron}
-                                unselectedLabel={"Development tools collapsed"}
-                                unselectedGlyph={upChevron}
-                                selected={this.state.devToolsVisible}
-                                onToggle={this.handleDevToolsToggle}
-                                className={"dev-tools-trigger"}
-                            />
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
                         </div>
                     </div>
                 </div>
@@ -224,7 +213,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     }
 
     public componentDidMount(): void {
-        this.setViewerToFullSize(this.webComponentEditorContainerRef);
+        this.setViewerToFullSize();
         this.updateMonacoEditor();
     }
 
@@ -316,31 +305,12 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         );
 
         if (Array.isArray(scenarioOptions)) {
-            return (
-                <Select
-                    onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[0].displayName]}
-                    selectedItems={[
-                        scenarioOptions[this.state.selectedScenarioIndex].displayName,
-                    ]}
-                >
-                    {this.renderScenarioOptions(scenarioOptions)}
-                </Select>
+            return renderScenarioSelect(
+                this.state.selectedScenarioIndex,
+                scenarioOptions,
+                this.handleUpdateScenario
             );
         }
-    }
-
-    private renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
-            return (
-                <SelectOption
-                    key={index}
-                    id={scenarioOption.displayName}
-                    displayString={scenarioOption.displayName}
-                    value={`${index}`}
-                />
-            );
-        });
     }
 
     private getComponentNameSpinalCaseByPath(path: string): string {
@@ -364,7 +334,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
 
     private handleUpdateScenario = (
         newValue: string | string[],
-        selectedItems: ListboxItemProps[]
+        selectedItems: ListboxOption[]
     ): void => {
         const selectedScenarioIndex: number = parseInt(selectedItems[0].value, 10);
 
@@ -415,17 +385,18 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         );
     };
 
-    private handleDevToolsToggle = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        props: ActionToggleProps
-    ): void => {
-        this.maxViewerHeight = !props.selected
+    private handleDevToolsToggle = (): void => {
+        const selected: boolean = !this.state.devToolsVisible;
+        this.maxViewerHeight = selected
             ? this.maxViewerHeight / 2
             : this.maxViewerHeight * 2;
 
-        this.setState({
-            devToolsVisible: !props.selected,
-        });
+        this.setState(
+            {
+                devToolsVisible: selected,
+            },
+            this.setViewerToFullSize
+        );
     };
 
     private handlePivotUpdate = (activeTab: string): void => {
