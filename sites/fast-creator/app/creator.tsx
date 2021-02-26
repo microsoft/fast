@@ -1,10 +1,5 @@
 import { memoize } from "lodash-es";
 import rafThrottle from "raf-throttle";
-import {
-    ActionToggle,
-    ActionToggleAppearance,
-    ActionToggleProps,
-} from "@microsoft/fast-components-react-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
@@ -34,14 +29,12 @@ import {
     AccentColorPicker,
     Dimension,
     DirectionSwitch,
-    downChevron,
     Editor,
     fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
-    upChevron,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
@@ -53,6 +46,7 @@ import { ProjectFileTransfer } from "./components";
 import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import { renderDevToolToggle } from "./web-components";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -240,21 +234,10 @@ class Creator extends Editor<{}, CreatorState> {
                                 ref={this.editorContainerRef}
                                 style={{ height: "100%", paddingTop: "24px" }}
                             />
-                            <ActionToggle
-                                appearance={ActionToggleAppearance.stealth}
-                                selectedLabel={"Development tools expanded"}
-                                selectedGlyph={downChevron}
-                                unselectedLabel={"Development tools collapsed"}
-                                unselectedGlyph={upChevron}
-                                selected={this.state.devToolsVisible}
-                                onToggle={this.handleDevToolsToggle}
-                                style={{
-                                    position: "absolute",
-                                    top: "12px",
-                                    right: 0,
-                                    backgroundColor: "var(--container-background)",
-                                }}
-                            />
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
                         </div>
                     </div>
                 </div>
@@ -440,13 +423,10 @@ class Creator extends Editor<{}, CreatorState> {
      * Handle the visibility of the dev tools
      * which contains the code editor
      */
-    private handleDevToolsToggle = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        props: ActionToggleProps
-    ): void => {
+    private handleDevToolsToggle = (): void => {
         this.setState(
             {
-                devToolsVisible: !props.selected,
+                devToolsVisible: !this.state.devToolsVisible,
             },
             () => {
                 this.setViewerToFullSize();

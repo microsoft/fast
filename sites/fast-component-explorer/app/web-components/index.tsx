@@ -2,18 +2,27 @@
 
 import React from "react";
 import {
+    FASTButton,
     FASTDesignSystemProvider,
+    FASTOption,
+    FASTSelect,
     FASTTab,
     FASTTabPanel,
     FASTTabs,
 } from "@microsoft/fast-components";
+import { downChevron, upChevron } from "@microsoft/site-utilities";
+import { Scenario } from "../fast-components/configs/data.props";
 import { neutralLayerL1, neutralLayerL3 } from "@microsoft/fast-components-styles-msft";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
+import { ListboxOption } from "@microsoft/fast-foundation";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
+FASTButton;
 FASTDesignSystemProvider;
+FASTOption;
+FASTSelect;
 FASTTab;
 FASTTabPanel;
 FASTTabs;
@@ -24,6 +33,68 @@ interface RenderDevToolsTabsConfig {
     guidanceTabPanelContent: React.ComponentClass<{}, any>;
     definitionTabPanelContent: string;
     schemaTabPanelContent: string;
+}
+
+function renderScenarioFastOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
+    return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
+        return (
+            <fast-option key={index} value={index}>
+                {scenarioOption.displayName}
+            </fast-option>
+        );
+    });
+}
+
+export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
+    return (
+        <fast-button
+            events={{
+                click: (e: React.ChangeEvent) => {
+                    onToggleCallback();
+                },
+            }}
+            class={"dev-tools-trigger"}
+        >
+            {selected ? downChevron() : upChevron()}
+        </fast-button>
+    );
+    /*
+        <ActionToggle
+        appearance={ActionToggleAppearance.stealth}
+        selectedLabel={"Development tools expanded"}
+        selectedGlyph={downChevron}
+        unselectedLabel={"Development tools collapsed"}
+        unselectedGlyph={upChevron}
+        selected={this.state.devToolsVisible}
+        onToggle={this.handleDevToolsToggle}
+        className={"dev-tools-trigger"}
+    />
+    */
+}
+
+export function renderScenarioFastSelect(
+    selectedScenarioIndex: number,
+    scenarioOptions: Array<Scenario>,
+    onChangeCallback: (
+        newValue: string | string[],
+        selectedItems: ListboxOption[]
+    ) => void
+) {
+    return (
+        <fast-select
+            selectedIndex={selectedScenarioIndex}
+            events={{
+                change: (e: React.ChangeEvent) => {
+                    onChangeCallback(
+                        (e.target as FASTSelect).value,
+                        (e.target as FASTSelect).selectedOptions
+                    );
+                },
+            }}
+        >
+            {renderScenarioFastOptions(scenarioOptions)}
+        </fast-select>
+    );
 }
 
 export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.ReactNode {
