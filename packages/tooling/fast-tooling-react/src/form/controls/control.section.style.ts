@@ -16,13 +16,12 @@ const styles: ComponentStyles<SectionControlClassNameContract, {}> = {
         padding: "0",
         border: "none",
         "min-inline-size": "unset", // override for fieldsets inherited style
-        "font-size": "14px",
         "line-height": "20px",
     },
     sectionControl_categoryTitle: {
         "font-weight": "bold",
+        "font-size": "16px",
         padding: "unset",
-        float: "left",
         "padding-top": "16px",
         "padding-bottom": "12px",
     },
