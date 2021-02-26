@@ -280,13 +280,16 @@ class SectionControl extends React.Component<
                             key={index}
                             className={this.props.managedClasses.sectionControl_category}
                         >
-                            <legend
-                                className={
-                                    this.props.managedClasses.sectionControl_categoryTitle
-                                }
-                            >
-                                {categoryItem.title}
-                            </legend>
+                            <div>
+                                <legend
+                                    className={
+                                        this.props.managedClasses
+                                            .sectionControl_categoryTitle
+                                    }
+                                >
+                                    {categoryItem.title}
+                                </legend>
+                            </div>
                             {categoryItem.dataLocations.map((dataLocation: string) => {
                                 if (
                                     navigationItem.items.findIndex(
