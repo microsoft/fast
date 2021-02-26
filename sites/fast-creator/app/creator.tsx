@@ -34,6 +34,7 @@ import {
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import {
     AccentColorPicker,
+    componentCategories,
     Dimension,
     DirectionSwitch,
     downChevron,
@@ -271,6 +272,7 @@ class Creator extends Editor<{}, CreatorState> {
                     <ModularForm
                         messageSystem={this.fastMessageSystem}
                         controls={[this.linkedDataControl]}
+                        categories={componentCategories}
                     />
                 </div>
                 <Footer />

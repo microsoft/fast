@@ -22,6 +22,7 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
         - [Dictionaries](#dictionaries)
+    - [Categories](#categories)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
@@ -482,6 +483,38 @@ Example:
     }
 }
 ```
+
+### Categories
+
+For improved UI when there become too many properties in an object, categories can be specified on a per-schema basis.
+
+Example:
+
+```jsx
+<Form
+    messageSystem={fastMessageSystem}
+    categories={{
+        "category-schema-id": {
+            "": [
+                {
+                    title: "Style",
+                    dataLocations: ["color", "outline", "font"],
+                },
+                {
+                    title: "Content",
+                    dataLocations: ["title", "body", "footer"],
+                },
+                {
+                    title: "Advanced",
+                    dataLocations: ["tracking", "accessibility"],
+                },
+            ],
+        },
+    }}
+/>
+```
+
+This shows the root object of a schema with `$id` of `category-schema-id` that has the properties `color`, `outline`, `font`, `title`, `body`, `footer`, `tracking` and `accessibility` and splits them into categories with the appropriate titles.
 
 ### JSON schema keywords
 
