@@ -291,20 +291,16 @@ export class Combobox extends FormAssociatedCombobox {
     control: HTMLInputElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
-    displayValue: string;
     filteredOptions: ListboxOption[];
+    filterOptions(): void;
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback: () => void;
-    // (undocumented)
-    getNextInlineOption(increment: number): void;
     // @internal
-    handleTypeAhead: () => undefined;
-    // (undocumented)
-    inputHandler(e: InputEvent): boolean | void;
+    keydownHandler(e: Event & KeyboardEvent): boolean | void;
     // @internal
-    keydownHandler(e: KeyboardEvent): boolean | void;
+    keyupHandler(e: KeyboardEvent): boolean | void;
     // @internal
     listboxId: string;
     // @internal
@@ -312,19 +308,20 @@ export class Combobox extends FormAssociatedCombobox {
     open: boolean;
     // (undocumented)
     protected openChanged(): void;
-    set options(value: ListboxOption[]);
-    // (undocumented)
     get options(): ListboxOption[];
+    set options(value: ListboxOption[]);
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
-    // @internal (undocumented)
+    // @internal
+    selectedIndexChanged(prev: number, next: number): void;
+    // @internal
+    selectPreviousOption(): void;
+    // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: any, next: any): void;
-    // @internal (undocumented)
-    typeaheadBufferChanged(prev: string | undefined, next: string): void;
     get value(): string;
     set value(next: string);
     }
@@ -652,11 +649,16 @@ export class DelegatesARIAButton {
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIACombobox" because one of its declarations is marked as @internal
+//
 // @public
-export class DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIACombobox {
     ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
-    ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
+}
+
+// @internal
+export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

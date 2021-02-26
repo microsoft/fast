@@ -23,13 +23,13 @@ async function setup() {
     );
 
     const option1 = document.createElement("fast-option") as FASTOption;
-    option1.value = "one";
+    option1.textContent = "one";
 
     const option2 = document.createElement("fast-option") as FASTOption;
-    option2.value = "two";
+    option2.textContent = "two";
 
     const option3 = document.createElement("fast-option") as FASTOption;
-    option3.value = "three";
+    option3.textContent = "three";
 
     element.appendChild(option1);
     element.appendChild(option2);
@@ -40,12 +40,12 @@ async function setup() {
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Combobox", () => {
-    it("should include a role of `combobox`", async () => {
+    it("should include a control with a role of `combobox`", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        assert.strictEqual(element.getAttribute("role"), "combobox");
+        assert.strictEqual(element.control.getAttribute("role"), "combobox");
 
         await disconnect();
     });
@@ -227,7 +227,7 @@ describe("Combobox", () => {
     });
 
     describe("when the owning form's reset() function is invoked", () => {
-        it("should reset the value property to ''", async () => {
+        it("should reset the value property to its initial value", async () => {
             const { connect, disconnect, element, parent } = await setup();
 
             element.value = "one";
@@ -267,8 +267,6 @@ describe("Combobox", () => {
             expect(element.value).to.equal("two");
 
             element.value = "one";
-
-            await DOM.nextUpdate();
 
             expect(element.value).to.equal("one");
 

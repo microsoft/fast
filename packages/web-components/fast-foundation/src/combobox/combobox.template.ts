@@ -10,37 +10,32 @@ import { Combobox } from "./combobox";
 export const ComboboxTemplate = html<Combobox>`
     <template
         autocomplete="${x => x.autocomplete}"
-        class="${x => (x.open ? "open" : "")} ${x =>
-            x.disabled ? "disabled" : ""} ${x => x.position}"
-        role="${x => x.role}"
+        class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-autocomplete="${x => x.autocomplete}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
-        @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
     >
         <div class="control" part="control">
             ${startTemplate}
-            <slot name="input-container">
-                <div class="selected-value" part="selected-value">
-                    <slot name="selected-value">
-                        <input
-                            aria-activedescendant="${x =>
-                                x.open ? x.ariaActiveDescendant : null}"
-                            aria-controls="${x => x.listboxId}"
-                            aria-expanded="${x => x.ariaExpanded}"
-                            aria-haspopup="listbox"
-                            class="selected-value"
-                            part="selected-value"
-                            type="text"
-                            @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
-                            :value="${x => x.displayValue}"
-                            ?disabled="${x => x.disabled}"
-                            ${ref("control")}
-                        />
-                    </slot>
-                </div>
+            <slot name="control">
+                <input
+                    class="selected-value"
+                    part="selected-value"
+                    role="${x => x.role}"
+                    type="text"
+                    aria-activedescendant="${x =>
+                        x.open ? x.ariaActiveDescendant : null}"
+                    aria-controls="${x => x.listboxId}"
+                    aria-expanded="${x => x.ariaExpanded}"
+                    aria-haspopup="listbox"
+                    ?disabled="${x => x.disabled}"
+                    :value="${x => x.value}"
+                    @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+                    @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
+                    ${ref("control")}
+                />
                 <div class="indicator" part="indicator" aria-hidden="true">
                     <slot name="indicator">
                         <svg

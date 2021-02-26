@@ -34,24 +34,25 @@ export class Listbox extends FASTElement {
      * @internal
      */
     @observable
-    protected typeaheadBuffer: string;
+    protected typeaheadBuffer: string = "";
     public typeaheadBufferChanged(prev: string, next: string): void {
-        const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
-        const re = new RegExp(`^${pattern}`, "gi");
+        if (this.$fastController.isConnected) {
+            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+            const re = new RegExp(`^${pattern}`, "gi");
 
-        const filteredOptions = this.options.filter((o: ListboxOption) =>
-            o.text.trim().match(re)
-        );
-        if (filteredOptions.length) {
-            const selectedIndex = this.options.findIndex(o =>
-                o.isSameNode(filteredOptions[0])
+            const filteredOptions = this.options.filter((o: ListboxOption) =>
+                o.text.trim().match(re)
             );
-            if (selectedIndex > -1) {
-                this.selectedIndex = selectedIndex;
-            }
-        }
 
-        this.typeAheadExpired = false;
+            if (filteredOptions.length) {
+                const selectedIndex = this.options.indexOf(filteredOptions[0]);
+                if (selectedIndex > -1) {
+                    this.selectedIndex = selectedIndex;
+                }
+            }
+
+            this.typeAheadExpired = false;
+        }
     }
 
     /**
@@ -272,7 +273,7 @@ export class Listbox extends FASTElement {
         ) as ListboxOption;
 
         if (captured && !captured.disabled) {
-            this.selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
+            this.selectedIndex = this.options.indexOf(captured);
             return true;
         }
     }
@@ -326,7 +327,7 @@ export class Listbox extends FASTElement {
 
             case "Tab": {
                 this.focusAndScrollOptionIntoView();
-                // fall through
+                return true;
             }
 
             case "Enter":

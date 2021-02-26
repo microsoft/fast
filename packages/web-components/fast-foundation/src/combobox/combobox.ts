@@ -15,97 +15,69 @@ import { FormAssociatedCombobox } from "./combobox.form-associated";
  */
 export class Combobox extends FormAssociatedCombobox {
     /**
-     * The internal list of options. Used to swap between a filtered and full option list.
+     * The internal unfiltered list of selectable options.
+     *
      * @internal
      */
     private _options: ListboxOption[] = [];
 
     /**
      * The internal value property.
+     *
      * @internal
      */
-    private _value: string;
-
-    /**
-     * The open attribute.
-     * @public
-     */
-    @attr({ attribute: "open", mode: "boolean" })
-    public open: boolean = false;
-    protected openChanged() {
-        this.ariaExpanded = this.open ? "true" : "false";
-        if (this.open) {
-            this.setPositioning();
-            this.focusAndScrollOptionIntoView();
-            this.indexWhenOpened = this.selectedIndex;
-        }
-    }
+    private _value: string = "";
 
     /**
      * The autocomplete attribute.
+     *
      * @public
+     * @remarks
+     * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
     autocomplete: "inline" | "list" | "both" | "none" | undefined;
 
     /**
-     * The value displayed on the button.
-     * @public
+     * Reference to the internal text input element.
+     *
+     * @internal
      */
-    @observable
-    public displayValue: string = "";
+    public control: HTMLInputElement;
 
     /**
-     * The
+     * The collection of currently filtered options.
+     *
      * @public
      */
     @observable
     public filteredOptions: ListboxOption[] = [];
 
-    public set options(value: ListboxOption[]) {
-        this._options = value;
-    }
-
-    public get options(): ListboxOption[] {
-        if (this.isAutocompleteList && this.filteredOptions.length) {
-            return this.filteredOptions;
-        }
-
-        return this._options;
-    }
+    /**
+     * The current filter value.
+     *
+     * @internal
+     */
+    private filter: string = "";
 
     /**
-     * Indicates the initial state of the position attribute.
+     * The initial state of the position attribute.
      *
      * @internal
      */
     private forcedPosition: boolean = false;
 
     /**
+     * Reset the element to its first selectable option when its parent form is reset.
+     *
      * @internal
      */
-    private indexWhenOpened: number;
-
-    /**
-     * @internal
-     */
-    private get isAutocompleteList(): boolean {
-        return this.autocomplete === "list" || this.isAutocompleteBoth;
-    }
-
-    /**
-     * @internal
-     */
-    private get isAutocompleteInline(): boolean {
-        return this.autocomplete === "inline";
-    }
-
-    /**
-     * @internal
-     */
-    private get isAutocompleteBoth(): boolean {
-        return this.autocomplete === "both";
-    }
+    public formResetCallback = (): void => {
+        this.value = this.initialValue;
+        this.dirtyValue = false;
+        this.setDefaultSelectedOption();
+        this.updateValue();
+    };
 
     /**
      * The unique id of the internal listbox.
@@ -123,7 +95,39 @@ export class Combobox extends FormAssociatedCombobox {
     public maxHeight: number = 0;
 
     /**
-     * Reflects the placement for the listbox when the combobox is open.
+     * The open attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: open
+     */
+    @attr({ attribute: "open", mode: "boolean" })
+    public open: boolean = false;
+    protected openChanged() {
+        this.ariaExpanded = this.open ? "true" : "false";
+        if (this.open) {
+            this.setPositioning();
+            this.focusAndScrollOptionIntoView();
+        }
+    }
+
+    /**
+     * The list of options.
+     *
+     * @public
+     * @remarks
+     * Overrides `Listbox.options`.
+     */
+    public get options(): ListboxOption[] {
+        return this.filteredOptions.length ? this.filteredOptions : this._options;
+    }
+
+    public set options(value: ListboxOption[]) {
+        this._options = value;
+    }
+
+    /**
+     * The placement for the listbox when the combobox is open.
      *
      * @public
      */
@@ -131,7 +135,7 @@ export class Combobox extends FormAssociatedCombobox {
     public positionAttribute: SelectPosition;
 
     /**
-     * Holds the current state for the calculated position of the listbox.
+     * The current state of the calculated position of the listbox.
      *
      * @public
      */
@@ -148,13 +152,6 @@ export class Combobox extends FormAssociatedCombobox {
     public role: SelectRole = SelectRole.combobox;
 
     /**
-     * Reference to the internal text input element.
-     *
-     * @internal
-     */
-    public control: HTMLInputElement;
-
-    /**
      * The value property.
      *
      * @public
@@ -168,48 +165,34 @@ export class Combobox extends FormAssociatedCombobox {
         const prev = `${this._value}`;
 
         if (this.$fastController.isConnected && this.options) {
-            const selectedIndex = this._options.findIndex(
-                el => el.value.toLowerCase() === next.toLowerCase()
+            const selectedIndex = this.options.findIndex(
+                el => el.text.toLowerCase() === next.toLowerCase()
             );
 
             const prevSelectedOption = this.options[this.selectedIndex];
+            const prevSelectedValue = prevSelectedOption ? prevSelectedOption.text : null;
+
             const nextSelectedOption = this.options[selectedIndex];
-
-            const prevSelectedValue = prevSelectedOption
-                ? prevSelectedOption.value
-                : null;
-
-            const nextSelectedValue = nextSelectedOption
-                ? nextSelectedOption.value
-                : null;
+            const nextSelectedValue = nextSelectedOption ? nextSelectedOption.text : null;
 
             if (prevSelectedValue !== nextSelectedValue) {
-                next = "";
                 this.selectedIndex = selectedIndex;
             }
 
             if (this.firstSelectedOption) {
-                next = this.firstSelectedOption.value;
+                next = this.firstSelectedOption.text;
             }
         }
 
         if (prev !== next) {
             this._value = next;
-            this.displayValue = this.firstSelectedOption
-                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
-                : next;
             super.valueChanged(prev, next);
             Observable.notify(this, "value");
         }
     }
 
-    public connectedCallback() {
-        super.connectedCallback();
-        this.forcedPosition = !!this.positionAttribute;
-    }
-
     /**
-     * Handle opening and closing the listbox when the select is clicked.
+     * Handle opening and closing the listbox when the combobox is clicked.
      *
      * @param e - the mouse event
      * @internal
@@ -229,7 +212,7 @@ export class Combobox extends FormAssociatedCombobox {
             }
 
             this.selectedOptions = [captured];
-            this.displayValue = captured.text;
+            this.control.value = captured.text;
         }
 
         this.open = !this.open;
@@ -239,6 +222,14 @@ export class Combobox extends FormAssociatedCombobox {
         }
 
         return true;
+    }
+
+    public connectedCallback() {
+        super.connectedCallback();
+        this.forcedPosition = !!this.positionAttribute;
+        if (this.value) {
+            this.initialValue = this.value;
+        }
     }
 
     /**
@@ -257,10 +248,37 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * Bypass the built-in listbox typeahead functionality
-     * @internal
+     * Filter available options by text value.
+     *
+     * @public
      */
-    public handleTypeAhead = () => void 0;
+    public filterOptions() {
+        if (!this.autocomplete || this.autocomplete === "none") {
+            this.filter = "";
+        }
+
+        const filter = this.filter.toLowerCase();
+
+        let filteredOptions: ListboxOption[] = [];
+
+        if (filter.length) {
+            filteredOptions = this._options.filter(o => {
+                return o.text.toLowerCase().startsWith(filter);
+            });
+        }
+
+        this.filteredOptions = filteredOptions;
+
+        if (this.autocomplete === "list" || this.autocomplete === "both") {
+            if (!this.filteredOptions.length && !filter) {
+                this.filteredOptions = this._options;
+            }
+
+            this._options.forEach(o => {
+                o.hidden = !this.filteredOptions.includes(o);
+            });
+        }
+    }
 
     /**
      * Handle focus state when the element or its children lose focus.
@@ -283,48 +301,42 @@ export class Combobox extends FormAssociatedCombobox {
             this.open = false;
         }
 
-        this.updateValue();
-    }
-
-    public inputHandler(e: InputEvent): boolean | void {
-        if (this.isAutocompleteInline || this.isAutocompleteList) {
-            this.typeaheadBuffer = this.control.value;
-            return true;
-        }
-
         this.value = this.control.value;
     }
 
     /**
-     * Handles keydown actions for listbox navigation and typeahead
+     * Handle keydown actions for listbox navigation.
      *
      * @param e - the keyboard event
      * @internal
      */
-    public keydownHandler(e: KeyboardEvent): boolean | void {
+    public keydownHandler(e: Event & KeyboardEvent): boolean | void {
         const key = e.key || e.key.charCodeAt(0);
+
+        if (e.ctrlKey || e.shiftKey) {
+            return true;
+        }
 
         switch (key) {
             case "Enter": {
-                e.preventDefault();
-
-                if (this.open) {
-                    if (this.firstSelectedOption) {
-                        this.updateValue(true);
-                    }
-                }
-
-                this.open = !this.open;
+                this.updateValue(true);
+                this.open = false;
+                this.control.setSelectionRange(
+                    this.control.value.length,
+                    this.control.value.length
+                );
                 break;
             }
 
             case "Escape": {
                 if (this.open) {
-                    e.preventDefault();
+                    this.open = false;
+                    this.filter = this.control.value;
+                    this.filterOptions();
+                } else {
+                    this.value = "";
+                    this.control.value = "";
                 }
-
-                this.typeaheadBuffer = this.control.value;
-                this.open = false;
                 break;
             }
 
@@ -335,90 +347,168 @@ export class Combobox extends FormAssociatedCombobox {
 
                 e.preventDefault();
                 this.open = false;
-                return true;
-            }
-
-            case "Home":
-            case "End": {
-                return true;
+                break;
             }
 
             case "ArrowUp":
             case "ArrowDown": {
-                if (this.typeaheadBuffer) {
-                    e.preventDefault();
-                    if (this.isAutocompleteInline && this.typeaheadBuffer) {
-                        const increment = key === "ArrowUp" ? -1 : 1;
-                        this.getNextInlineOption(increment);
-                        return true;
+                if (!this.open) {
+                    this.open = true;
+                    return true;
+                }
+
+                this.filterOptions();
+
+                if (this.options.length > 0) {
+                    super.keydownHandler(e);
+                }
+
+                if (this.autocomplete === "inline" || this.autocomplete === "both") {
+                    this.setInlineSelection();
+                    this.updateValue();
+                }
+
+                break;
+            }
+
+            default: {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * Handle keyup actions for value input and text field manipulations.
+     *
+     * @param e - the keyboard event
+     * @internal
+     */
+    public keyupHandler(e: KeyboardEvent): boolean | void {
+        const key = e.key;
+
+        if (key.length === 1) {
+            this.filter += e.key;
+        }
+
+        switch (key) {
+            case "Backspace": {
+                this.filter = this.control.value;
+                this.filterOptions();
+                this.selectedIndex = -1;
+                this.setSelectedOptions();
+                break;
+            }
+
+            case "ArrowLeft":
+            case "ArrowRight":
+            case "Home":
+            case "End": {
+                if (this.autocomplete === "both") {
+                    this.filter = this.control.value;
+                    this.filterOptions();
+                } else {
+                    this.selectedIndex = -1;
+                    this.setSelectedOptions();
+                }
+                break;
+            }
+
+            default: {
+                if (key.length === 1 && key.match(/\S/)) {
+                    this.filterOptions();
+                    if (this.autocomplete === "list" || this.autocomplete === "both") {
+                        if (!this.open && this.control.value.length) {
+                            this.open = true;
+                        }
                     }
 
-                    if (this.isAutocompleteBoth) {
-                        super.keydownHandler(e);
-                        this.setInlineSelection(
-                            (this.typeaheadBuffer && this.typeaheadBuffer.length) || 0
-                        );
-                        return true;
+                    if (this.autocomplete === "inline" || this.autocomplete === "both") {
+                        if (this.filteredOptions.length && this.filter) {
+                            this.selectedIndex = this._options.indexOf(
+                                this.filteredOptions[0]
+                            );
+                            this.setInlineSelection();
+                        }
                     }
                 }
                 break;
             }
         }
-
-        super.keydownHandler(e);
-
-        return true;
     }
 
-    getNextInlineOption(increment: number) {
-        const filteredIndex = this.filteredOptions.indexOf(this.firstSelectedOption);
-        const nextFilteredOption = this.filteredOptions[filteredIndex + increment];
+    /**
+     * Ensure that the selectedIndex is within the current allowable filtered range.
+     *
+     * @internal
+     * @remarks
+     * Overrides: `Listbox.selectedIndexChanged`
+     */
+    public selectedIndexChanged(prev: number, next: number): void {
+        if (this.$fastController.isConnected) {
+            if (next > this.options.length - 1) {
+                next = this.options.length - 1;
+            }
 
-        if (nextFilteredOption) {
-            this.selectedIndex = this._options.findIndex(o =>
-                o.isSameNode(nextFilteredOption)
-            );
+            if (next < -1) {
+                next = -1;
+            }
 
-            this.setInlineSelection(this.typeaheadBuffer.length || 0);
+            if (next !== this.selectedIndex) {
+                this.selectedIndex = next;
+                return;
+            }
+
+            super.selectedIndexChanged(prev, next);
         }
     }
 
     /**
-     * Reset the element to its first selectable option when its parent form is reset.
+     * Move focus to the previous selectable option.
      *
      * @internal
+     * @remarks
+     * Overrides `Listbox.selectPreviousOption`
      */
-    public formResetCallback = (): void => {
-        this.setDefaultSelectedOption();
-        this.updateValue();
-    };
+    public selectPreviousOption(): void {
+        if (!this.disabled && this.selectedIndex >= 0) {
+            this.selectedIndex = this.selectedIndex - 1;
+        }
+    }
 
     /**
+     * Set the default selected options at initialization or reset.
+     *
      * @internal
+     * @remarks
+     * Overrides `Listbox.setDefaultSelectedOption`
      */
     public setDefaultSelectedOption(): void {
-        if (this.options && this.$fastController.isConnected) {
+        if (this.$fastController.isConnected && this.options) {
             const selectedIndex = this.options.findIndex(
-                el => el.getAttribute("selected") !== null
+                el => el.getAttribute("selected") !== null || el.selected
             );
 
             this.selectedIndex = selectedIndex;
+            if (!this.dirtyValue && this.firstSelectedOption) {
+                this.value = this.firstSelectedOption.text;
+            }
             this.setSelectedOptions();
         }
     }
 
     /**
-     * Focuses and selects the content of the control based on the first selected option.
+     * Focus and select the content of the control based on the first selected option.
+     *
      * @param start - The index for the starting range
      * @internal
      */
-    private setInlineSelection(start: number): void {
+    private setInlineSelection(): void {
         if (this.firstSelectedOption) {
             this.control.value = this.firstSelectedOption.text;
             this.control.focus();
             this.control.setSelectionRange(
-                start,
-                this.firstSelectedOption.text.length,
+                this.filter.length,
+                this.control.value.length,
                 "backward"
             );
         }
@@ -465,51 +555,11 @@ export class Combobox extends FormAssociatedCombobox {
     /**
      * @internal
      */
-    public typeaheadBufferChanged(prev: string = "", next: string) {
-        const matchNext = next.toLowerCase();
-        this.filteredOptions = this._options.filter((o: ListboxOption) => {
-            return o.text.toLowerCase().startsWith(matchNext);
-        });
-
-        if (!this.filteredOptions.length) {
-            this.options = this._options;
-        }
-
-        const selectedIndex = this.isAutocompleteInline
-            ? this.options.findIndex(o => o.isSameNode(this.filteredOptions[0]))
-            : this.isAutocompleteList &&
-              this.filteredOptions.length !== this._options.length
-            ? 0
-            : -1;
-
-        if (this.isAutocompleteList) {
-            this._options.forEach(o => {
-                o.hidden = !this.filteredOptions.includes(o);
-            });
-        }
-
-        if (selectedIndex !== this.selectedIndex) {
-            this.selectedIndex = selectedIndex;
-        } else {
-            this.setSelectedOptions();
-        }
-
-        if (
-            next.length > prev.length &&
-            (this.isAutocompleteInline || this.isAutocompleteBoth)
-        ) {
-            this.setInlineSelection(this.typeaheadBuffer.length);
-        }
-    }
-
-    /**
-     * @internal
-     */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
             if (this.firstSelectedOption) {
-                this.value = this.firstSelectedOption.value;
-            } else {
+                this.value = this.firstSelectedOption.text;
+            } else if (this.dirtyValue) {
                 this.value = this.control.value;
             }
         }
@@ -525,25 +575,7 @@ export class Combobox extends FormAssociatedCombobox {
  *
  * @public
  */
-export class DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-expanded
-     */
-    @observable
-    public ariaExpanded: "true" | "false" | undefined;
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-pressed
-     */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
-
+export class DelegatesARIACombobox {
     /**
      * See {@link https://w3c.github.io/aria/#aria-autocomplete} for more information
      * @public
@@ -554,6 +586,13 @@ export class DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
     public ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
 }
 
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIACombobox, ARIAGlobalStatesAndProperties);
 
 /**
