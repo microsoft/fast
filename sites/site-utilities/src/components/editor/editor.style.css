@@ -161,8 +161,8 @@ html::-webkit-scrollbar-thumb {
 .dev-tools-trigger svg {
     display: inline-block;
     position: relative;
-    width:14px;
-    height:14px;
+    width: 14px;
+    height: 14px;
 }
 
 .mobile-menu-bar {

@@ -3,10 +3,6 @@
 import React from "react";
 import h from "../web-components/pragma";
 
-interface RotateGlyphProps {
-    className?: string;
-}
-
 export function RotateGlyph(): React.ReactNode {
     return (
         <svg

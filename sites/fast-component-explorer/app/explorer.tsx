@@ -33,7 +33,7 @@ import { Footer } from "./site-footer";
 import {
     renderDevToolsTabs,
     renderDevToolToggle,
-    renderScenarioFastSelect,
+    renderScenarioSelect,
 } from "./web-components";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
@@ -305,7 +305,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         );
 
         if (Array.isArray(scenarioOptions)) {
-            return renderScenarioFastSelect(
+            return renderScenarioSelect(
                 this.state.selectedScenarioIndex,
                 scenarioOptions,
                 this.handleUpdateScenario
@@ -391,10 +391,12 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             ? this.maxViewerHeight / 2
             : this.maxViewerHeight * 2;
 
-        this.setState({
-            devToolsVisible: selected,
-        });
-        this.setViewerToFullSize();
+        this.setState(
+            {
+                devToolsVisible: selected,
+            },
+            this.setViewerToFullSize
+        );
     };
 
     private handlePivotUpdate = (activeTab: string): void => {

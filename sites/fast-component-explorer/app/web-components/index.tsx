@@ -35,7 +35,7 @@ interface RenderDevToolsTabsConfig {
     schemaTabPanelContent: string;
 }
 
-function renderScenarioFastOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
+function renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
     return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
         return (
             <fast-option key={index} value={index}>
@@ -63,7 +63,7 @@ export function renderDevToolToggle(
     );
 }
 
-export function renderScenarioFastSelect(
+export function renderScenarioSelect(
     selectedScenarioIndex: number,
     scenarioOptions: Array<Scenario>,
     onChangeCallback: (
@@ -83,7 +83,7 @@ export function renderScenarioFastSelect(
                 },
             }}
         >
-            {renderScenarioFastOptions(scenarioOptions)}
+            {renderScenarioOptions(scenarioOptions)}
         </fast-select>
     );
 }
