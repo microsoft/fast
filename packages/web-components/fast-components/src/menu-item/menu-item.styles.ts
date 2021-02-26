@@ -58,7 +58,7 @@ export const MenuItemStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host([checked="true"]) {
+    :host([aria-checked="true"]) {
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
@@ -116,24 +116,22 @@ export const MenuItemStyles = css`
         fill: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host .start-container {
-        display: grid;
-        grid-template-columns: auto auto;
-        align-items: center;
-        justify-content: center;
-    }
-
-    :host([role="menuitemcheckbox"]) .start-container,
-    :host([role="menuitemradio"]) .start-container {
-        column-gap: 10px;
-    }
-
     :host([role="menuitemcheckbox"]),
     :host([role="menuitemradio"]) {
         display: grid;
-        grid-template-columns: auto 1fr minmax(42px, auto);
+        grid-template-columns: auto auto 1fr minmax(42px, auto);
         align-items: center;
         min-height: 32px;
+    }
+
+    :host .input-container {
+        display: none;
+    }
+
+    :host([role="menuitemcheckbox"]) .input-container,
+    :host([role="menuitemradio"]) .input-container {
+        display: grid;
+        margin-inline-end: 10px;
     }
 
     :host([role="menuitemcheckbox"]) .start,
@@ -142,9 +140,14 @@ export const MenuItemStyles = css`
         margin-inline-end: 10px;
     }
 
+    :host([role="menuitemcheckbox"]) .content,
+    :host([role="menuitemradio"]) .content {
+        grid-column-start: 3;
+    }
+
     :host([role="menuitemcheckbox"]) .end,
     :host([role="menuitemradio"]) .end {
-        grid-column-start: 3;
+        grid-column-start: 4;
     }
 
     :host .checkbox {
@@ -160,33 +163,15 @@ export const MenuItemStyles = css`
         margin-inline-start: 10px;
     }
 
-    :host(:hover) .checkbox {
-        border-color: ${accentForegroundCutRestBehavior.var};
-    }
-
-    :host([checked="true"]) .checkbox {
+    :host .checkbox-indicator{
         display: none;
     }
 
-    :host([checked="true"]) .checkbox-checked {
-        position: relative;
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${
-            accentForegroundCutRestBehavior.var
-        };
-        background: ${accentForegroundCutRestBehavior.var};
-        outline: none;
-        margin-inline-start: 10px;
-    }
-
-    :host([checked="true"]) .checkbox-indicator{
+    :host([aria-checked="true"]) .checkbox-indicator{
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${accentFillRestBehavior.var};
+        fill: ${accentForegroundCutRestBehavior.var};
         pointer-events: none;
     }
 
@@ -203,29 +188,11 @@ export const MenuItemStyles = css`
         margin-inline-start: 10px;
     }
 
-    :host(:hover) .radio {
-        border-color: ${accentForegroundCutRestBehavior.var};
-    }
-
-    :host([checked="true"]) .radio {
+    :host .radio-indicator {
         display: none;
     }
 
-    :host([checked="true"]) .radio-checked {
-        position: relative;
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        border-radius: 999px;
-        border: calc(var(--outline-width) * 1px) solid ${
-            accentForegroundCutRestBehavior.var
-        };
-        background: ${accentForegroundCutRestBehavior.var};
-        outline: none;
-        margin-inline-start: 10px;
-    }
-
-    :host([checked="true"]) .radio-indicator {
+    :host([aria-checked="true"]) .radio-indicator {
         position: absolute;
         top: 4px;
         left: 4px;
@@ -233,7 +200,7 @@ export const MenuItemStyles = css`
         bottom: 4px;
         border-radius: 999px;
         display: inline-block;
-        background: ${accentFillRestBehavior.var};
+        background: ${accentForegroundCutRestBehavior.var};
         pointer-events: none;
     }
 `.withBehaviors(

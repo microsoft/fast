@@ -20,17 +20,11 @@ export const MenuItemTemplate = html<MenuItem>`
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
             x.expanded ? "expanded" : ""}"
     >
-        <div part="start-container" class="start-container">
+        <div part="input-container" class="input-container">
             ${when(
                 x => x.role === MenuItemRole.menuitemcheckbox,
                 html<MenuItem>`
-                    <span part="checkbox" class="checkbox"></span>
-                `
-            )}
-            ${when(
-                x => x.role === MenuItemRole.menuitemcheckbox && x.checked,
-                html<MenuItem>`
-                    <span part="checkbox-checked" class="checkbox-checked">
+                    <span part="checkbox" class="checkbox">
                         <svg
                             aria-hidden="true"
                             part="checkbox-indicator"
@@ -50,19 +44,13 @@ export const MenuItemTemplate = html<MenuItem>`
             ${when(
                 x => x.role === MenuItemRole.menuitemradio,
                 html<MenuItem>`
-                    <span part="radio" class="radio"></span>
-                `
-            )}
-            ${when(
-                x => x.role === MenuItemRole.menuitemradio && x.checked,
-                html<MenuItem>`
-                    <span part="radio-checked" class="radio-checked">
+                    <span part="radio" class="radio">
                         <div part="radio-indicator" class="radio-indicator"></div>
                     </span>
                 `
             )}
-            ${startTemplate}
         </div>
+        ${startTemplate}
         <span class="content" part="content">
             <slot></slot>
         </span>
