@@ -6,7 +6,7 @@ import {
     DesignSystem,
     DesignSystemDefaults,
 } from "@microsoft/fast-components-styles-msft";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import Explorer from "./explorer";
 import { accent } from "./explorer.style";
 

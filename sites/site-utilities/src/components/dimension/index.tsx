@@ -78,7 +78,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                     minWidth: "initial",
                 }}
             >
-                <RotateGlyph />
+                {RotateGlyph()}
             </fast-button>
         </div>
     );

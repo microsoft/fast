@@ -1,12 +1,9 @@
-import React, { FC } from "react";
+/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
-interface RotateGlyphProps {
-    className?: string;
-}
+import React from "react";
+import h from "../web-components/pragma";
 
-export const RotateGlyph: FC<RotateGlyphProps> = ({
-    className,
-}: RotateGlyphProps): JSX.Element => {
+export function RotateGlyph(): React.ReactNode {
     return (
         <svg
             width="16"
@@ -14,7 +11,6 @@ export const RotateGlyph: FC<RotateGlyphProps> = ({
             viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={className}
         >
             <mask
                 id="mask0"
@@ -35,4 +31,4 @@ export const RotateGlyph: FC<RotateGlyphProps> = ({
             </g>
         </svg>
     );
-};
+}
