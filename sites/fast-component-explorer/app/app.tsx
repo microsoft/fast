@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import ExplorerRegion from "./explorer-region";
 import Preview from "./preview";
 import { history, initialComponentRoute } from "./config";
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 
 FASTDesignSystemProvider;
 

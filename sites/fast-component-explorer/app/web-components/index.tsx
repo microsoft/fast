@@ -11,10 +11,10 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
-import { Scenario } from "../fast-components/configs/data.props";
 import { neutralLayerL1, neutralLayerL3 } from "@microsoft/fast-components-styles-msft";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ListboxOption } from "@microsoft/fast-foundation";
+import { Scenario } from "../fast-components/configs/data.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
@@ -45,11 +45,14 @@ function renderScenarioFastOptions(scenarioOptions: Array<Scenario>): React.Reac
     });
 }
 
-export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
+export function renderDevToolToggle(
+    selected: boolean,
+    onToggleCallback: () => void
+): React.ReactNode {
     return (
         <fast-button
             events={{
-                click: (e: React.ChangeEvent) => {
+                click: (e: React.ChangeEvent): void => {
                     onToggleCallback();
                 },
             }}
@@ -58,18 +61,6 @@ export function renderDevToolToggle(selected: boolean, onToggleCallback: () => v
             {selected ? downChevron() : upChevron()}
         </fast-button>
     );
-    /*
-        <ActionToggle
-        appearance={ActionToggleAppearance.stealth}
-        selectedLabel={"Development tools expanded"}
-        selectedGlyph={downChevron}
-        unselectedLabel={"Development tools collapsed"}
-        unselectedGlyph={upChevron}
-        selected={this.state.devToolsVisible}
-        onToggle={this.handleDevToolsToggle}
-        className={"dev-tools-trigger"}
-    />
-    */
 }
 
 export function renderScenarioFastSelect(
@@ -84,7 +75,7 @@ export function renderScenarioFastSelect(
         <fast-select
             selectedIndex={selectedScenarioIndex}
             events={{
-                change: (e: React.ChangeEvent) => {
+                change: (e: React.ChangeEvent): void => {
                     onChangeCallback(
                         (e.target as FASTSelect).value,
                         (e.target as FASTSelect).selectedOptions

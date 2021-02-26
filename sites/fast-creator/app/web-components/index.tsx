@@ -23,21 +23,4 @@ export function renderDevToolToggle(selected: boolean, onToggleCallback: () => v
             {selected ? downChevron() : upChevron()}
         </fast-button>
     );
-    /*
-<ActionToggle
-                                appearance={ActionToggleAppearance.stealth}
-                                selectedLabel={"Development tools expanded"}
-                                selectedGlyph={downChevron}
-                                unselectedLabel={"Development tools collapsed"}
-                                unselectedGlyph={upChevron}
-                                selected={this.state.devToolsVisible}
-                                onToggle={this.handleDevToolsToggle}
-                                style={{
-                                    position: "absolute",
-                                    top: "12px",
-                                    right: 0,
-                                    backgroundColor: "var(--container-background)",
-                                }}
-                            />
-    */
 }

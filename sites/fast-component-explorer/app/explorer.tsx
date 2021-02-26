@@ -23,6 +23,7 @@ import {
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
+import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
@@ -31,10 +32,9 @@ import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
 import {
     renderDevToolsTabs,
-    renderScenarioFastSelect,
     renderDevToolToggle,
+    renderScenarioFastSelect,
 } from "./web-components";
-import { ListboxOption } from "@microsoft/fast-foundation";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
