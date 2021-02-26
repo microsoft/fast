@@ -70,7 +70,7 @@ export function renderScenarioFastSelect(
         newValue: string | string[],
         selectedItems: ListboxOption[]
     ) => void
-) {
+): React.ReactNode {
     return (
         <fast-select
             selectedIndex={selectedScenarioIndex}
