@@ -95,7 +95,7 @@
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
     "mocha": "^8.2.1",
-    "playwright": "^1.8.0",
+    "playwright": "^1.9.1",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
