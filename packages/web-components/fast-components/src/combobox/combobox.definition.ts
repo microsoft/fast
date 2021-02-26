@@ -12,43 +12,47 @@ export const fastComboboxDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the combobox",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "position",
-                    description: "The position attribute",
+                    description: "Controls the placement of the combobox dropdown",
                     default: undefined,
                     required: false,
                     type: DataType.string,
                     values: Object.keys(SelectPosition).map(x => ({ name: x })),
+                },
+                {
+                    name: "value",
+                    title: "Value",
+                    description: "The initial value of the combobox",
+                    default: undefined,
+                    required: false,
+                    type: DataType.string,
                 },
             ],
             slots: [
                 {
                     name: "",
                     title: "Default slot",
-                    description: "Supports fast-option or option elements",
-                },
-                {
-                    name: "button-container",
-                    title: "Button container slot",
                     description:
-                        "Slot to replace the entire invoking element and its contents",
+                        "Supports fast-option, option elements, or elements with a role of option",
                 },
                 {
-                    name: "selected-value",
-                    title: "Selected value slot",
-                    description: "Slot to replace the displayed value contents",
+                    name: "control",
+                    title: "Input Control slot",
+                    description: "Slot to replace the contents of the control container",
                 },
                 {
                     name: "indicator",
@@ -60,13 +64,13 @@ export const fastComboboxDefinition: WebComponentDefinition = {
                     name: "start",
                     title: "Start slot",
                     description:
-                        "Contents of the start slot are positioned before the button container",
+                        "Contents of the start slot are positioned before the contents of the control container",
                 },
                 {
                     name: "end",
                     title: "End slot",
                     description:
-                        "Contents of the end slot are positioned after the button container and after the indicator",
+                        "Contents of the end slot are positioned after the contents of the control container",
                 },
             ],
         },
