@@ -4,7 +4,7 @@ import { endTemplate, startTemplate } from "../patterns/start-end";
 import { Combobox } from "./combobox";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
  * @public
  */
 export const ComboboxTemplate = html<Combobox>`
@@ -39,8 +39,8 @@ export const ComboboxTemplate = html<Combobox>`
                 <div class="indicator" part="indicator" aria-hidden="true">
                     <slot name="indicator">
                         <svg
-                            class="select-indicator"
-                            part="select-indicator"
+                            class="combobox-indicator"
+                            part="combobox-indicator"
                             viewBox="0 0 12 7"
                             xmlns="http://www.w3.org/2000/svg"
                         >

@@ -33,12 +33,13 @@ export const ComboboxStyles = css`
         border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         box-sizing: border-box;
         color: ${neutralForegroundRestBehavior.var};
-        contain: contents;
+        font-family: var(--body-font);
         height: calc(${heightNumber} * 1px);
         position: relative;
         user-select: none;
         min-width: 250px;
         outline: none;
+        vertical-align: top;
     }
 
     :host(:empty) .listbox {
@@ -72,7 +73,7 @@ export const ComboboxStyles = css`
         cursor: pointer;
         display: flex;
         font-size: var(--type-ramp-base-font-size);
-        font: inherit;
+        font-family: inherit;
         line-height: var(--type-ramp-base-line-height);
         min-height: 100%;
         padding: 0 calc(var(--design-unit) * 2.25px);
@@ -149,20 +150,18 @@ export const ComboboxStyles = css`
     }
 
     .selected-value {
-        flex: 1 1 auto;
-        text-align: start;
         -webkit-appearance: none;
-        font: inherit;
         background: transparent;
-        border: 0;
-        color: inherit;
-        height: calc(100% - (var(--outline-width) * 1px));
-        width: 100%;
-        margin-top: auto;
-        margin-bottom: auto;
         border: none;
+        color: inherit;
+        flex: 1 1 auto;
+        font-family: inherit;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
+        height: calc(100% - (var(--outline-width) * 1px));
+        margin: auto 0;
+        text-align: start;
+        width: 100%;
     }
 
     .selected-value:hover,
@@ -195,7 +194,7 @@ export const ComboboxStyles = css`
     .start,
     .end,
     .indicator,
-    .select-indicator,
+    .combobox-indicator,
     ::slotted(svg) {
         ${`` /* Glyph size is temporary - replace when glyph-size var is added */}
         fill: currentcolor;
@@ -253,7 +252,7 @@ export const ComboboxStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
 
-            :host([disabled]) .control .select-indicator {
+            :host([disabled]) .control .combobox-indicator {
                 fill: ${SystemColors.GrayText};
             }
 
@@ -270,7 +269,7 @@ export const ComboboxStyles = css`
             .start,
             .end,
             .indicator,
-            .select-indicator,
+            .combobox-indicator,
             ::slotted(svg) {
                 color: ${SystemColors.ButtonText};
                 fill: currentcolor;
