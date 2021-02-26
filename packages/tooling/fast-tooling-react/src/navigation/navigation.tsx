@@ -207,26 +207,39 @@ class Navigation extends Foundation<
             this.state.navigationDictionary[0][dictionaryId][1] === navigationConfigId;
         const isDraggable: boolean =
             isDictionaryLink && this.state.navigationDictionary[1] !== dictionaryId; // is linked data and not the root level item
-        const content: React.ReactNode = this.renderContent(
+        const isTriggerRenderable: boolean = this.shouldTriggerRender(
             dictionaryId,
             navigationConfigId
         );
-        const wrappedContent: React.ReactNode =
-            content !== null ? (
-                <div
-                    role={"group"}
-                    key={"content"}
-                    className={this.props.managedClasses.navigation_itemList}
-                >
-                    {content}
-                </div>
-            ) : null;
+        const content: React.ReactNode = this.renderContent(
+            dictionaryId,
+            navigationConfigId,
+            isTriggerRenderable
+        );
         const itemType: DragDropItemType = isDraggable
             ? DragDropItemType.linkedData
             : this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
                   .schema[dictionaryLink]
             ? DragDropItemType.linkedDataContainer
             : DragDropItemType.default;
+
+        const trigger: React.ReactNode = isTriggerRenderable
+            ? this.renderTrigger(
+                  itemType,
+                  this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
+                      .text,
+                  content !== null,
+                  isDraggable,
+                  itemType !== DragDropItemType.default,
+                  dictionaryId,
+                  navigationConfigId,
+                  index
+              )
+            : null;
+
+        if (trigger === null && content === null) {
+            return null;
+        }
 
         return (
             <div
@@ -235,21 +248,8 @@ class Navigation extends Foundation<
                 aria-expanded={this.getExpandedState(dictionaryId, navigationConfigId)}
                 key={dictionaryId + navigationConfigId}
             >
-                <React.Fragment key={"trigger"}>
-                    {this.renderTrigger(
-                        itemType,
-                        this.state.navigationDictionary[0][dictionaryId][0][
-                            navigationConfigId
-                        ].text,
-                        content !== null,
-                        isDraggable,
-                        itemType !== DragDropItemType.default,
-                        dictionaryId,
-                        navigationConfigId,
-                        index
-                    )}
-                </React.Fragment>
-                {wrappedContent}
+                {trigger}
+                {content}
             </div>
         );
     }
@@ -316,14 +316,15 @@ class Navigation extends Foundation<
 
     private renderContent(
         dictionaryId: string,
-        navigationConfigId: string
+        navigationConfigId: string,
+        isTriggerRendered: boolean
     ): React.ReactNode {
         const navigationConfig: TreeNavigationItem = this.state.navigationDictionary[0][
             dictionaryId
         ][0][navigationConfigId];
 
         if (Array.isArray(navigationConfig.items) && navigationConfig.items.length > 0) {
-            return navigationConfig.items.map(
+            const content: React.ReactNode[] = navigationConfig.items.map(
                 (navigationConfigItemId: string, index: number) => {
                     if (
                         navigationConfig.schema[dictionaryLink] &&
@@ -343,6 +344,26 @@ class Navigation extends Foundation<
                     );
                 }
             );
+            const isEmpty: boolean =
+                content.find((contentItem: React.ReactNode) => {
+                    return contentItem !== null;
+                }) === undefined;
+
+            if (!isEmpty) {
+                if (isTriggerRendered) {
+                    return (
+                        <div
+                            role={"group"}
+                            key={"content"}
+                            className={this.props.managedClasses.navigation_itemList}
+                        >
+                            {content}
+                        </div>
+                    );
+                }
+
+                return content;
+            }
         }
 
         return null;
@@ -353,6 +374,19 @@ class Navigation extends Foundation<
             this.state.activeItem[0] === dictionaryId &&
             this.state.activeItem[1] === navigationConfigId &&
             this.state.activeItem[1] === ""
+        );
+    }
+
+    private shouldTriggerRender(
+        dictionaryId: string,
+        navigationConfigId: string
+    ): boolean {
+        return (
+            !Array.isArray(this.props.types) ||
+            this.props.types.includes(
+                this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
+                    .type
+            )
         );
     }
 
