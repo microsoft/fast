@@ -13,7 +13,7 @@ const ltrControlStyles = css`
         background: linear-gradient(to right, transparent, var(--scroller-fade-next));
     }
 
-    .scroll-next .scroll-cntrl {
+    .scroll-next .scroll-action {
         left: auto;
         right: 0;
         transform: translate(50%, -50%);
@@ -36,7 +36,7 @@ const rtlControlStyles = css`
         background: linear-gradient(to right, transparent, var(--scroller-fade-previous));
     }
 
-    .scroll-prev .scroll-cntrl {
+    .scroll-prev .scroll-action {
         left: auto;
         right: 0;
         transform: translate(50%, -50%);
@@ -78,7 +78,7 @@ export const ScrollerControlStyles = css`
         background: linear-gradient(to right, var(--scroller-fade-previous), transparent);
     }
 
-    .scroll-cntrl {
+    .scroll-action {
         position: absolute;
         top: 50%;
         left: 0;
@@ -108,14 +108,14 @@ export const ScrollerStyles = css`
         display: none;
     }
 
-    .scroll-content {
+    .content-container {
         white-space: nowrap;
         transform: translate3d(0, 0, 0);
         transition: transform var(--scroller-duration) var(--scroller-easing);
         display: inline-block;
     }
 
-    .scroll-content ::slotted(*) {
+    .content-container ::slotted(*) {
         display: inline-block;
         white-space: normal;
         vertical-align: var(--scroller-align);

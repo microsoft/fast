@@ -148,7 +148,6 @@ describe("Scroller", () => {
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
-            await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToPrevious();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
@@ -168,7 +167,7 @@ describe("Scroller", () => {
             await connect();
             await DOM.nextUpdate();
 
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             expect(getXPosition(scrollContent)).to.equal(0);
 
@@ -185,7 +184,7 @@ describe("Scroller", () => {
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToNext();
 
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
             const position: number = getXPosition(scrollContent);
             const currentInView: boolean = (position + cardSpace) * -1 < scrollerWidth;
             const nextInView: boolean = (position - cardSpace * 2) * -1 < scrollerWidth;
@@ -205,7 +204,7 @@ describe("Scroller", () => {
             await DOM.nextUpdate();
             await (element as FASTScroller).scrollToPrevious();
 
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             expect(getXPosition(scrollContent) >= 0).to.equal(true);
 
@@ -226,9 +225,11 @@ describe("Scroller", () => {
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
             await (element as FASTScroller).scrollToNext();
+            await (element as FASTScroller).scrollToNext();
 
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
             let cardViewWidth: number = cardSpace * 5 * -1;
+            console.log(getXPosition(scrollContent), cardViewWidth);
 
             expect(getXPosition(scrollContent) > cardViewWidth).to.equal(true);
 
@@ -249,7 +250,7 @@ describe("Scroller", () => {
             element.style.width = `${scrollerWidth * 2}px`;
             await DOM.nextUpdate();
 
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             expect(getXPosition(scrollContent)).to.equal(0);
 
@@ -265,7 +266,7 @@ describe("Scroller", () => {
             `);
             await connect();
             await DOM.nextUpdate();
-            const scrollContent: any = element.shadowRoot?.querySelector(".scroll-content");
+            const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             await (element as FASTScroller).scrollToNext();
             const firstXPos: number = getXPosition(scrollContent);

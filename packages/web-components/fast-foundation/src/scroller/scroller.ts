@@ -31,7 +31,7 @@ export class Scroller extends FASTElement {
      * Reference to DOM element containing the content to scroll
      * @public
      */
-    public content: HTMLDivElement;
+    public contentContainer: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to previous content
@@ -192,8 +192,8 @@ export class Scroller extends FASTElement {
                 const lastRtl: boolean = isRtl && idx === ary.length - 1;
 
                 /* Getting the final stop after the last item or before the first RTL item */
-                if (isRtl || idx === 0) {
-                    lastStop = left + width * (isRtl ? 1 : -1);
+                if (!isRtl || idx === 0) {
+                    lastStop = (left + width) * (isRtl ? 1 : -1);
                 }
 
                 /* Remove extra margin on first item and last RTL item */
@@ -237,14 +237,18 @@ export class Scroller extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
-        const right: number = this.scrollStops[
-            this.scrollStops.findIndex((stop: number) => stop === this.position) + 1
-        ];
-        const left: number =
-            this.scrollStops.find(
+        const current: number = this.scrollStops.findIndex(
+            (stop: number): boolean => stop === this.position
+        );
+        const right: number = this.scrollStops[current + 1];
+        const nextIndex: number =
+            this.scrollStops.findIndex(
                 (stop: number): boolean => Math.abs(stop) + this.width > Math.abs(right)
             ) || 0;
-        this.content.style.transform = `translate3d(${left}px, 0, 0)`;
+        const left = this.scrollStops[
+            nextIndex < current ? nextIndex : current > 0 ? current - 1 : 0
+        ];
+        this.contentContainer.style.transform = `translate3d(${left}px, 0, 0)`;
         this.position = left;
         this.setFlippers();
     }
@@ -254,12 +258,21 @@ export class Scroller extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
+        const current: number = this.scrollStops.findIndex(
+            (stop: number): boolean => stop === this.position
+        );
         const outOfView: number = this.scrollStops.findIndex(
             (stop: number): boolean =>
                 Math.abs(stop) >= Math.abs(this.position) + this.width
         );
-        const nextStop: number = this.scrollStops[outOfView > 1 ? outOfView - 2 : 0];
-        this.content.style.transform = `translate3d(${nextStop}px, 0, 0)`;
+        let nextIndex = current;
+        if (outOfView > current + 2) {
+            nextIndex = outOfView - 2;
+        } else if (current < this.scrollStops.length - 2) {
+            nextIndex = current + 1;
+        }
+        const nextStop: number = this.scrollStops[nextIndex];
+        this.contentContainer.style.transform = `translate3d(${nextStop}px, 0, 0)`;
         this.position = nextStop;
         this.setFlippers();
     }
@@ -270,7 +283,7 @@ export class Scroller extends FASTElement {
      */
     public moveToStart(): void {
         this.position = 0;
-        this.content.style.transform = "translate3d(0, 0, 0)";
+        this.contentContainer.style.transform = "translate3d(0, 0, 0)";
         this.setFlippers();
     }
 }

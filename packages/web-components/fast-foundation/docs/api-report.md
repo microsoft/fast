@@ -1448,7 +1448,7 @@ export const enum ResolverStrategy {
 export class Scroller extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
-    content: HTMLDivElement;
+    contentContainer: HTMLDivElement;
     // (undocumented)
     disconnectedCallback(): void;
     moveToStart(): void;

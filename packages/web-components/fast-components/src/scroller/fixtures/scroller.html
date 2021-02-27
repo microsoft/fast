@@ -32,6 +32,12 @@
     .bottom-align {
         --scroller-align: bottom;
     }
+
+    .full-width,
+    .full-width fast-card {
+        width: 600px;
+        height: 300px;
+    }
 </style>
 
 <h2>Default</h2>
@@ -54,6 +60,18 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
+</fast-scroller>
+
+<h2>Full width cards</h2>
+<fast-scroller class="full-width">
+    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
+    <fast-flipper slot="next-flipper"></fast-flipper>
+    <fast-card>Card number 1</fast-card>
+    <fast-card>Card number 2</fast-card>
+    <fast-card>Card number 3</fast-card>
+    <fast-card>Card number 4</fast-card>
+    <fast-card>Card number 5</fast-card>
+    <fast-card>Card number 6</fast-card>
 </fast-scroller>
 
 <h2>Slow scroll (1.5s)</h2>
