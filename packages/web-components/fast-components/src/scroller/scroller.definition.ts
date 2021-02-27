@@ -13,6 +13,14 @@ export const fastScrollerDefinition: WebComponentDefinition = {
                     name: "view",
                     description: "Default or mobile view",
                     type: DataType.string,
+                    values: [
+                        {
+                            name: "mobile",
+                        },
+                        {
+                            name: "default",
+                        },
+                    ],
                     default: false,
                     required: false,
                 },
