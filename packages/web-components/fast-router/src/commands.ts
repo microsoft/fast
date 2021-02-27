@@ -7,7 +7,6 @@ import {
     FASTElementDefinition,
     defaultExecutionContext,
 } from "@microsoft/fast-element";
-import { navigationParticipant } from "./participants";
 import { Router } from "./router";
 import { RouterConfiguration } from "./configuration";
 import { Transition } from "./transition";
@@ -19,12 +18,13 @@ import {
     TemplateFallbackRouteDefinition,
 } from "./routes";
 import { Navigation } from "./navigation";
-import {
-    NavigationCommitPhase,
-    NavigationContributor,
-    NavigationPhase,
-} from "./navigation-process";
 import { RecognizedRoute } from "./recognizer";
+import {
+    navigationContributor,
+    NavigationContributor,
+    RouterExecutionContext,
+} from "./contributors";
+import { NavigationCommitPhase, NavigationPhase } from "./phases";
 
 export interface NavigationCommand {
     createContributor(
@@ -57,7 +57,7 @@ export class Redirect implements NavigationCommand {
 }
 
 function factoryFromElementName(name: string) {
-    return html`<${name} ${navigationParticipant()}></${name}>`;
+    return html`<${name} ${navigationContributor()}></${name}>`;
 }
 
 type ViewFactory = { create(): HTMLView };
@@ -67,7 +67,7 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     fragment.appendChild(element);
 
     const view = new HTMLView(fragment, [
-        navigationParticipant().createBehavior(element),
+        navigationContributor().createBehavior(element),
     ]);
 
     return {
@@ -101,9 +101,10 @@ class RenderContributor {
             }
         }
 
+        const context = RouterExecutionContext.create(this.router);
         this.newView = await this.command.createView();
+        this.newView.bind(this.route.typedParams, context);
         this.newView.appendTo(this.router);
-        this.newView.bind(this.route.typedParams, defaultExecutionContext);
 
         phase.onCancel(async () => {
             if (this.newView) {

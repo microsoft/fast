@@ -9,8 +9,9 @@ import { NavigationCommand } from "./commands";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 import { RouterConfiguration } from "./configuration";
-import { childRouteParameter, RouteLocationResult } from "./routes";
-import { NavigationContributor, NavigationPhase } from "./navigation-process";
+import { childRouteParameter } from "./routes";
+import { NavigationContributor } from "./contributors";
+import { NavigationPhase } from "./phases";
 
 @customElement("fast-router")
 export class FASTRouter extends FASTElement implements Router {
@@ -59,12 +60,6 @@ export class FASTRouter extends FASTElement implements Router {
         this.contributors.delete(contributor);
     }
 
-    findRoute<TSettings = any>(
-        path: string
-    ): Promise<RouteLocationResult<TSettings> | null> {
-        return this.config!.findRoute(path);
-    }
-
     private childCommandContributor: NavigationContributor | null = null;
     private childRoute: RecognizedRoute | null = null;
 
@@ -85,7 +80,7 @@ export class FASTRouter extends FASTElement implements Router {
     async construct(phase: NavigationPhase) {
         if (this.enlistment!.isChild) {
             const rest = phase.route.params[childRouteParameter] || "";
-            const result = await this.findRoute(rest);
+            const result = await this.config!.findRoute(rest);
 
             if (result === null) {
                 phase.cancel();

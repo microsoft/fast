@@ -1,54 +1,12 @@
-import { RouterConfiguration } from "./configuration";
 import { NavigationMessage } from "./navigation";
+import { isNavigationPhaseContributor } from "./contributors";
+import {
+    NavigationCommitPhase,
+    NavigationPhaseFollowupAction,
+    NavigationPhaseName,
+} from "./phases";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
-
-export type NavigationPhaseName = "navigate" | "leave" | "construct" | "enter" | "commit";
-
-export type NavigationPhaseHook<TSettings = any> = (
-    phase: NavigationPhase<TSettings>
-) => Promise<any> | any;
-
-export type NavigationCommitPhaseHook<TSettings = any> = (
-    phase: NavigationCommitPhase<TSettings>
-) => Promise<any> | any;
-
-export type NavigationContributor<TSettings = any> = Partial<
-    Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
-> & {
-    commit?: NavigationCommitPhaseHook<TSettings>;
-};
-
-export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
-    object: any,
-    phase: T
-): object is Record<T, NavigationPhaseHook> {
-    return phase in object;
-}
-
-type NavigationPhaseFollowupAction = () => Promise<any> | any;
-
-export interface NavigationPhase<TSettings = any> {
-    readonly name: NavigationPhaseName;
-    readonly route: RecognizedRoute<TSettings>;
-    readonly router: Router;
-    readonly canceled: boolean;
-
-    cancel(callback?: NavigationPhaseFollowupAction): void;
-    onCancel(callback: NavigationPhaseFollowupAction): void;
-    onCommit(callback: NavigationPhaseFollowupAction): void;
-
-    evaluateContributor(
-        contributor: any,
-        route?: RecognizedRoute<TSettings>,
-        router?: Router
-    ): Promise<void>;
-}
-
-export interface NavigationCommitPhase<TSettings = any>
-    extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {
-    setTitle(title: string);
-}
 
 class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSettings> {
     private routes: RecognizedRoute<TSettings>[] = [];
@@ -117,7 +75,7 @@ class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSet
 }
 
 export interface NavigationProcess {
-    run(): Promise<void>;
+    run(router: Router, message: NavigationMessage): Promise<void>;
 }
 
 export class DefaultNavigationProcess<TSettings> {
@@ -129,15 +87,8 @@ export class DefaultNavigationProcess<TSettings> {
         "commit",
     ];
 
-    constructor(
-        private router: Router,
-        private config: RouterConfiguration,
-        private message: NavigationMessage
-    ) {}
-
-    public async run() {
-        const router = this.router;
-        const routeResult = await router.findRoute(this.message.path);
+    public async run(router: Router, message: NavigationMessage) {
+        const routeResult = await router.config!.findRoute(message.path);
 
         if (routeResult == null) {
             return;
@@ -181,7 +132,7 @@ export class DefaultNavigationProcess<TSettings> {
     }
 
     commit(phase: NavigationPhaseImpl) {
-        const builder = this.config.createTitleBuilder();
-        document.title = builder.buildTitle(this.config.title, phase.titles);
+        const builder = phase.router.config!.createTitleBuilder();
+        document.title = builder.buildTitle(phase.router.config!.title, phase.titles);
     }
 }

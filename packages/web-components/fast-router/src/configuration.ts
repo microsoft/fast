@@ -1,18 +1,13 @@
 import { Constructable, html } from "@microsoft/fast-element";
-import { NavigationMessage, NavigationQueue, DefaultNavigationQueue } from "./navigation";
+import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
 import { defaultTransition } from "./transition";
 import { RouteCollection, RouteLocationResult, Layout } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
-import {
-    DefaultNavigationProcess,
-    isNavigationPhaseContributor,
-    NavigationContributor,
-    NavigationPhaseHook,
-    NavigationPhaseName,
-    NavigationProcess,
-} from "./navigation-process";
-import { Router } from "./router";
+import { DefaultNavigationProcess, NavigationProcess } from "./process";
 import { DefaultTitleBuilder, TitleBuilder } from "./titles";
+import { DefaultRoutingEventSink, RoutingEventSink } from "./events";
+import { isNavigationPhaseContributor, NavigationContributor } from "./contributors";
+import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
 
 export const defaultLayout = {
     template: html`
@@ -40,11 +35,12 @@ export abstract class RouterConfiguration<TSettings = any> {
         return this.construct(DefaultLinkHandler);
     }
 
-    public createNavigationProcess(
-        router: Router,
-        message: NavigationMessage
-    ): NavigationProcess {
-        return new DefaultNavigationProcess(router, this, message);
+    public createNavigationProcess(): NavigationProcess {
+        return new DefaultNavigationProcess();
+    }
+
+    public createEventSink(): RoutingEventSink {
+        return this.construct(DefaultRoutingEventSink);
     }
 
     public createTitleBuilder(): TitleBuilder {
@@ -52,7 +48,7 @@ export abstract class RouterConfiguration<TSettings = any> {
     }
 
     public construct<T>(Type: Constructable<T>): T {
-        return Reflect.construct(Type, []);
+        return new Type();
     }
 
     public async findRoute(path: string): Promise<RouteLocationResult<TSettings> | null> {

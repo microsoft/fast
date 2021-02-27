@@ -14,6 +14,4 @@ export const defaultTransition: Transition = async function transition(
     if (prev) {
         prev.dispose();
     }
-
-    next.appendTo(host);
 };

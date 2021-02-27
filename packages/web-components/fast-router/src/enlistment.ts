@@ -45,8 +45,8 @@ export class MainEnlistment {
     }
 
     private onNavigationMessage = async (message: NavigationMessage) => {
-        await this.config.createNavigationProcess(this.router, message).run();
-
+        const process = this.config.createNavigationProcess();
+        await process.run(this.router, message);
         this.navigationQueue!.receive().then(this.onNavigationMessage);
     };
 }

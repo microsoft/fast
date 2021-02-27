@@ -1,11 +1,12 @@
 import { FASTElement, HTMLView } from "@microsoft/fast-element";
+import { composedParent } from "@microsoft/fast-foundation";
 import { NavigationCommand } from "./commands";
 import { RecognizedRoute } from "./recognizer";
-import { NavigationContributor } from "./navigation-process";
-import { RouteLocationResult } from "./routes";
-import { composedParent } from "@microsoft/fast-foundation";
+import { RouterConfiguration } from "./configuration";
+import { NavigationContributor } from "./contributors";
 
 export interface Router extends FASTElement, HTMLElement {
+    readonly config: RouterConfiguration | null;
     readonly route: RecognizedRoute | null;
     readonly command: NavigationCommand | null;
     readonly view: HTMLView | null;
@@ -13,10 +14,6 @@ export interface Router extends FASTElement, HTMLElement {
 
     addContributor(contributor: NavigationContributor): void;
     removeContributor(contributor: NavigationContributor): void;
-
-    findRoute<TSettings = any>(
-        path: string
-    ): Promise<RouteLocationResult<TSettings> | null>;
 }
 
 export const Router = Object.freeze({
