@@ -36,6 +36,11 @@ export interface NavigationTreeItemProps
     contentClassName: string;
 
     /**
+     * The class name assigned to the display text input
+     */
+    displayTextInputClassName: string;
+
+    /**
      * The dictionary ID
      */
     dictionaryId: string;
@@ -56,6 +61,16 @@ export interface NavigationTreeItemProps
     isCollapsible: boolean;
 
     /**
+     * Whether this navigation item is editable
+     */
+    isEditable: boolean;
+
+    /**
+     * The text content
+     */
+    text: string;
+
+    /**
      * The click handler for expanding an item
      */
     handleExpandClick: React.MouseEventHandler<HTMLElement>;
@@ -64,6 +79,21 @@ export interface NavigationTreeItemProps
      * The click handler for activating an item
      */
     handleClick: React.MouseEventHandler<HTMLElement>;
+
+    /**
+     * The change handler for updating an items display text
+     */
+    handleInputChange: React.ChangeEventHandler<HTMLInputElement>;
+
+    /**
+     * The blur handler for defocusing the display text input
+     */
+    handleInputBlur: React.FocusEventHandler<HTMLInputElement>;
+
+    /**
+     * The keydown handler for the display text input
+     */
+    handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
 
     /**
      * The keyDown handler
