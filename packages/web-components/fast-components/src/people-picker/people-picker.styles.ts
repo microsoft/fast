@@ -35,6 +35,11 @@ export const PeoplePickerStyles = css`
         display: flex;
     }
 
+    .loaded {
+        opacity: 1;
+        pointer-events: none;
+    }
+
     .bottom {
         flex-direction: column;
     }

@@ -532,7 +532,6 @@ export class Picker extends FASTElement {
     private startUpdateTimer = (): void => {
         DOM.queueUpdate(() => {
             this.region.classList.toggle("loaded", true);
-            this.region.style.pointerEvents = "none";
         });
 
         if (this.autoUpdateInterval > 0) {
