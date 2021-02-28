@@ -1,4 +1,4 @@
-import { FASTElement, HTMLView } from "@microsoft/fast-element";
+import { Constructable, FASTElement, HTMLView } from "@microsoft/fast-element";
 import { composedParent } from "@microsoft/fast-foundation";
 import { RenderCommand } from "./commands";
 import { RouterConfiguration } from "./configuration";
@@ -34,33 +34,89 @@ export interface Router<TSettings = any> {
     removeContributor(contributor: NavigationContributor): void;
 }
 
-const associatedRouterProperty = "$router";
+const routerProperty = "$router";
 
 function findParentRouterForElement(element: HTMLElement) {
     let parent: HTMLElement | null = element;
 
     while ((parent = composedParent(parent))) {
-        if (associatedRouterProperty in parent) {
-            return parent[associatedRouterProperty];
+        if (routerProperty in parent) {
+            return parent[routerProperty];
         }
     }
 
     return null;
 }
 
+export interface RouterElement extends HTMLElement {
+    readonly [routerProperty]: Router;
+    config: RouterConfiguration | null;
+    connectedCallback();
+    disconnectedCallback();
+}
+
 export const Router = Object.freeze({
     getOrCreateFor(element: HTMLElement) {
-        const router: Router = element[associatedRouterProperty];
+        const router: Router = element[routerProperty];
 
         if (router !== void 0) {
             return router;
         }
 
-        return (element[associatedRouterProperty] = new DefaultRouter(element));
+        return (element[routerProperty] = new DefaultRouter(element));
     },
 
     find(element: HTMLElement): Router | null {
-        return element[associatedRouterProperty] || findParentRouterForElement(element);
+        return element[routerProperty] || findParentRouterForElement(element);
+    },
+
+    from<TBase extends typeof HTMLElement>(
+        Type: TBase
+    ): TBase & Constructable<RouterElement> {
+        class RouterBase extends (Type as any) {
+            public readonly [routerProperty]!: Router;
+
+            public get config(): RouterConfiguration {
+                return this[routerProperty].config!;
+            }
+
+            public set config(value: RouterConfiguration) {
+                this[routerProperty].config = value;
+            }
+
+            constructor() {
+                super();
+                Router.getOrCreateFor(this as any);
+            }
+        }
+
+        const proto = RouterBase.prototype;
+
+        if ("connectedCallback" in proto) {
+            const original = proto.connectedCallback;
+            proto.connectedCallback = function () {
+                original.call(this);
+                this[routerProperty].connect();
+            };
+        } else {
+            proto.connectedCallback = function () {
+                this[routerProperty].connect();
+            };
+        }
+
+        if ("disconnectedCallback" in proto) {
+            const original = proto.disconnectedCallback;
+            proto.disconnectedCallback = function () {
+                original.call(this);
+                this[routerProperty].disconnect();
+            };
+        } else {
+            proto.disconnectedCallback = function () {
+                this[routerProperty].disconnect();
+            };
+        }
+
+        return RouterBase as any;
     },
 });
 
@@ -87,7 +143,7 @@ export class DefaultRouter implements Router {
     private route: RecognizedRoute | null = null;
 
     public constructor(public readonly host: HTMLElement) {
-        host[associatedRouterProperty] = this;
+        host[routerProperty] = this;
     }
 
     public get config(): RouterConfiguration | null {
