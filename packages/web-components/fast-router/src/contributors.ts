@@ -73,7 +73,7 @@ class NavigationContributorBehavior implements Behavior {
 
     bind(source: unknown, context: RouterExecutionContext): void {
         if (this.options.lifecycle) {
-            this.router = context.router || Router.findParent(this.contributor);
+            this.router = context.router || Router.find(this.contributor);
             this.router.addContributor(this.contributor);
         }
 

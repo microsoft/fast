@@ -6,12 +6,6 @@ export type Transition = (
     next: HTMLView
 ) => Promise<void>;
 
-export const defaultTransition: Transition = async function transition(
-    host: HTMLElement,
-    prev: HTMLView | null,
-    next: HTMLView
-): Promise<void> {
-    if (prev) {
-        prev.dispose();
-    }
-};
+export const Transition = Object.freeze({
+    async default(): Promise<void> {},
+});

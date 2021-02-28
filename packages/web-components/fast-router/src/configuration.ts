@@ -1,20 +1,14 @@
-import { Constructable, html } from "@microsoft/fast-element";
+import { Constructable } from "@microsoft/fast-element";
 import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
-import { defaultTransition } from "./transition";
-import { RouteCollection, RouteLocationResult, Layout } from "./routes";
+import { Transition } from "./transition";
+import { RouteCollection, RouteLocationResult } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
 import { DefaultNavigationProcess, NavigationProcess } from "./process";
 import { DefaultTitleBuilder, TitleBuilder } from "./titles";
 import { DefaultRoutingEventSink, RoutingEventSink } from "./events";
 import { isNavigationPhaseContributor, NavigationContributor } from "./contributors";
 import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
-
-export const defaultLayout = {
-    template: html`
-        <slot></slot>
-    `,
-    styles: null,
-};
+import { Layout } from "./layout";
 
 export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;
@@ -23,8 +17,8 @@ export abstract class RouterConfiguration<TSettings = any> {
         TSettings
     >(this);
     public readonly contributors: NavigationContributor<TSettings>[] = [];
-    public defaultLayout: Layout = defaultLayout;
-    public defaultTransition = defaultTransition;
+    public defaultLayout: Layout = Layout.default;
+    public defaultTransition = Transition.default;
     public title = "";
 
     public createNavigationQueue(): NavigationQueue {

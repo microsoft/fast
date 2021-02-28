@@ -7,28 +7,13 @@ import {
     RouteParameterConverter,
 } from "./recognizer";
 import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
-import {
-    ViewTemplate,
-    FASTElement,
-    ElementStyles,
-    ComposableStyles,
-    Constructable,
-} from "@microsoft/fast-element";
+import { ViewTemplate, FASTElement, Constructable } from "@microsoft/fast-element";
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
+import { LayoutDefinition } from "./layout";
 
 export const childRouteParameter = "fast-child-route";
-
-export type LayoutDefinition = {
-    template?: ViewTemplate | null;
-    styles?: ComposableStyles | ComposableStyles[] | null;
-};
-
-export type Layout = {
-    template: ViewTemplate | null;
-    styles: ElementStyles | null;
-};
 
 export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;

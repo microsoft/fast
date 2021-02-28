@@ -25,7 +25,7 @@ class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSet
     constructor(
         public readonly name: NavigationPhaseName,
         route: RecognizedRoute<TSettings>,
-        router: Router,
+        router: Router<TSettings>,
         private readonly commitActions: NavigationPhaseFollowupAction[],
         private readonly cancelActions: NavigationPhaseFollowupAction[]
     ) {

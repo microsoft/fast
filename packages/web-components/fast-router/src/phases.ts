@@ -16,7 +16,7 @@ export type NavigationPhaseFollowupAction = () => Promise<any> | any;
 export interface NavigationPhase<TSettings = any> {
     readonly name: NavigationPhaseName;
     readonly route: RecognizedRoute<TSettings>;
-    readonly router: Router;
+    readonly router: Router<TSettings>;
     readonly canceled: boolean;
 
     cancel(callback?: NavigationPhaseFollowupAction): void;
@@ -26,7 +26,7 @@ export interface NavigationPhase<TSettings = any> {
     evaluateContributor(
         contributor: any,
         route?: RecognizedRoute<TSettings>,
-        router?: Router
+        router?: Router<TSettings>
     ): Promise<void>;
 }
 

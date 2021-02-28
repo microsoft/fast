@@ -1,17 +1,14 @@
 import {
-    Mutable,
     ElementStyles,
     html,
     HTMLView,
     ViewTemplate,
     FASTElementDefinition,
-    defaultExecutionContext,
 } from "@microsoft/fast-element";
-import { Router } from "./router";
+import { RenderOperation, Router } from "./router";
 import { RouterConfiguration } from "./configuration";
 import { Transition } from "./transition";
 import {
-    Layout,
     ElementRouteDefinition,
     TemplateRouteDefinition,
     ElementFallbackRouteDefinition,
@@ -19,18 +16,21 @@ import {
 } from "./routes";
 import { Navigation } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
-import {
-    navigationContributor,
-    NavigationContributor,
-    RouterExecutionContext,
-} from "./contributors";
+import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
+import { Layout } from "./layout";
 
 export interface NavigationCommand {
     createContributor(
         router: Router,
         route: RecognizedRoute
     ): Promise<NavigationContributor>;
+}
+
+export interface RenderCommand extends NavigationCommand {
+    layout: Layout;
+    transition: Transition;
+    createView(): Promise<HTMLView>;
 }
 
 export class Ignore implements NavigationCommand {
@@ -78,71 +78,34 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
 }
 
 class RenderContributor {
-    private currentView: HTMLView | null;
-    private newView: HTMLView | null = null;
+    private operation!: RenderOperation;
 
     constructor(
         private router: Router,
         private route: RecognizedRoute,
         private command: Render
-    ) {
-        this.currentView = router.view;
-    }
+    ) {}
 
     async construct(phase: NavigationPhase) {
-        const rawParams = this.route.params;
-
-        if (this.router.command === this.command) {
-            const previousParams = this.router.route?.params;
-
-            if (JSON.stringify(previousParams) === JSON.stringify(rawParams)) {
-                phase.cancel();
-                return;
-            }
+        if (!this.router.shouldRender(this.route)) {
+            phase.cancel();
+            return;
         }
 
-        const context = RouterExecutionContext.create(this.router);
-        this.newView = await this.command.createView();
-        this.newView.bind(this.route.typedParams, context);
-        this.newView.appendTo(this.router);
-
-        phase.onCancel(async () => {
-            if (this.newView) {
-                this.newView.dispose();
-            }
-        });
+        this.operation = await this.router.beginRender(this.route, this.command);
+        phase.onCancel(() => this.operation.rollback());
     }
 
     async commit(phase: NavigationCommitPhase) {
-        const router = this.router;
-        const command = this.command;
+        await this.operation.commit();
 
-        if (router.$fastController.template !== command.layout.template) {
-            if (this.currentView !== null) {
-                this.currentView.dispose();
-                this.currentView = null;
-            }
-
-            router.$fastController.template = command.layout.template!;
-        }
-
-        if (router.$fastController.styles !== command.layout.styles) {
-            router.$fastController.styles = command.layout.styles!;
-        }
-
-        await command.transition(this.router, this.currentView, this.newView!);
-
-        (router as Mutable<Router>).view = this.newView!;
-        (router as Mutable<Router>).route = this.route;
-        (router as Mutable<Router>).command = command;
-
-        if (command.title) {
-            phase.setTitle(command.title);
+        if (this.command.title) {
+            phase.setTitle(this.command.title);
         }
     }
 }
 
-export class Render implements NavigationCommand {
+export class Render implements RenderCommand {
     private _layout: Layout | null = null;
     private _transition: Transition | null = null;
 
