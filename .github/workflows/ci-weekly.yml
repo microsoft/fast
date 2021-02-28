@@ -4,14 +4,8 @@ on:
   push: 
     branches:
     - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
   schedule:
-  - cron: 0 7 * * 3
+    - cron: 0 7 * * 3
   
 jobs:
   linux_cross-platform_cross-browser:
@@ -47,8 +41,7 @@ jobs:
 
     - name: Test Playwright
       run: |
-        cd packages/web-components/fast-components 
-        npm install playwright
+        cd packages/web-components/fast-components
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
@@ -114,8 +107,7 @@ jobs:
      
     - name: Test Playwright
       run: |
-        cd packages/web-components/fast-components 
-        npm install playwright
+        cd packages/web-components/fast-components
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
@@ -172,8 +164,7 @@ jobs:
 
     - name: Test Playwright
       run: |
-        cd packages/web-components/fast-components 
-        npm install playwright
+        cd packages/web-components/fast-components
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
