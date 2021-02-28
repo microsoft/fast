@@ -259,6 +259,7 @@ export class DefaultRouter implements Router {
             this.linkHandler = this.config!.createLinkHandler();
             this.linkHandler.connect();
         } else {
+            this.config.parent = this.parent.config;
             this.parent!.addContributor(this as any);
         }
     }

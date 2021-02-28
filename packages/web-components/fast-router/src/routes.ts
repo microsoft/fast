@@ -161,6 +161,16 @@ const booleanConverter = value => {
     }
 };
 
+const defaultConverters = {
+    number: value => (value === void 0 ? NaN : parseFloat(value)),
+    float: value => (value === void 0 ? NaN : parseFloat(value)),
+    int: value => (value === void 0 ? NaN : parseInt(value)),
+    integer: value => (value === void 0 ? NaN : parseInt(value)),
+    Date: value => (value === void 0 ? new Date(Date.now()) : new Date(value)),
+    boolean: booleanConverter,
+    bool: booleanConverter,
+};
+
 export class RouteCollection<TSettings = any> {
     private recognizer = new RouteRecognizer<TSettings>();
     private configToCommand = new Map<string, NavigationCommand>();
@@ -168,17 +178,7 @@ export class RouteCollection<TSettings = any> {
     private fallbackSettings: TSettings | null = null;
     private converters: Record<string, RouteParameterConverter> = {};
 
-    public constructor(private owner: RouterConfiguration) {
-        this.converter("number", value => (value === void 0 ? NaN : parseFloat(value)));
-        this.converter("float", value => (value === void 0 ? NaN : parseFloat(value)));
-        this.converter("int", value => (value === void 0 ? NaN : parseInt(value)));
-        this.converter("integer", value => (value === void 0 ? NaN : parseInt(value)));
-        this.converter("Date", value =>
-            value === void 0 ? new Date(Date.now()) : new Date(value)
-        );
-        this.converter("boolean", booleanConverter);
-        this.converter("bool", booleanConverter);
-    }
+    public constructor(private owner: RouterConfiguration) {}
 
     public ignore(definitionOrString: IgnorableRouteDefinition<TSettings> | string) {
         if (typeof definitionOrString === "string") {
@@ -283,7 +283,7 @@ export class RouteCollection<TSettings = any> {
     }
 
     public async find(path: string): Promise<RouteLocationResult<TSettings> | null> {
-        const result = await this.recognizer.recognize(path, this.converters);
+        const result = await this.recognizer.recognize(path, this.aggregateConverters());
 
         if (result !== null) {
             return {
@@ -309,5 +309,19 @@ export class RouteCollection<TSettings = any> {
         }
 
         return null;
+    }
+
+    private aggregateConverters() {
+        if (this.owner.parent === null) {
+            return {
+                ...defaultConverters,
+                ...this.converters,
+            };
+        }
+
+        return {
+            ...this.owner.parent.routes.aggregateConverters(),
+            ...this.converters,
+        };
     }
 }

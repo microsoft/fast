@@ -13,13 +13,14 @@ import { Layout } from "./layout";
 export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;
 
-    protected readonly routes: RouteCollection<TSettings> = new RouteCollection<
-        TSettings
-    >(this);
+    public readonly routes: RouteCollection<TSettings> = new RouteCollection<TSettings>(
+        this
+    );
     public readonly contributors: NavigationContributor<TSettings>[] = [];
     public defaultLayout: Layout = Layout.default;
     public defaultTransition = Transition.default;
     public title = "";
+    public parent: RouterConfiguration<TSettings> | null = null;
 
     public createNavigationQueue(): NavigationQueue {
         return this.construct(DefaultNavigationQueue);
@@ -42,6 +43,10 @@ export abstract class RouterConfiguration<TSettings = any> {
     }
 
     public construct<T>(Type: Constructable<T>): T {
+        if (this.parent !== null) {
+            return this.parent.construct(Type);
+        }
+
         return new Type();
     }
 
