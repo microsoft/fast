@@ -170,13 +170,40 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public submenuLoaded = (): void => {
-        if (this.focusSubmenuOnLoad) {
-            this.focusSubmenuOnLoad = false;
+        if (!this.focusSubmenuOnLoad) {
+            return;
         }
+        this.focusSubmenuOnLoad = false;
         if (this.submenu !== undefined) {
             (this.submenu as HTMLElement).focus();
             this.setAttribute("tabindex", "-1");
         }
+    };
+
+    /**
+     * @internal
+     */
+    public handleMouseOver = (e: MouseEvent): boolean => {
+        if (this.disabled || this.submenu === undefined || this.expanded) {
+            return false;
+        }
+
+        this.expanded = true;
+
+        return false;
+    };
+
+    /**
+     * @internal
+     */
+    public handleMouseOut = (e: MouseEvent): boolean => {
+        if (!this.expanded || this.contains(document.activeElement)) {
+            return false;
+        }
+
+        this.expanded = false;
+
+        return false;
     };
 
     /**

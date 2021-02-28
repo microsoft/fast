@@ -1205,6 +1205,10 @@ export class MenuItem extends FASTElement {
     handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
+    // @internal (undocumented)
+    handleMouseOut: (e: MouseEvent) => boolean;
+    // @internal (undocumented)
+    handleMouseOver: (e: MouseEvent) => boolean;
     role: MenuItemRole;
     // @internal (undocumented)
     submenu: Element | undefined;
