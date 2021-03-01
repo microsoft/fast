@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
@@ -731,7 +732,7 @@ export const DI: Readonly<{
     getDependencies(Type: Constructable | Injectable): Key[];
     defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
     createInterface<K extends Key>(nameConfigOrCallback?: string | InterfaceConfiguration | ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined, configuror?: ((builder: ResolverBuilder<K>) => Resolver<K>) | undefined): InterfaceSymbol<K>;
-    inject(...dependencies: Key[]): (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+    inject(...dependencies: Key[]): (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
     transient<T extends Constructable<{}>>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
 }>;
@@ -959,7 +960,7 @@ export interface FormAssociatedProxy {
 // @alpha
 export class FoundationElement extends FASTElement {
     protected get $presentation(): ComponentPresentation;
-    static configuration(elementDefinition: FoundationElementDefinition): (overrideDefinition?: OverrideFoundationElementDefinition) => Registry;
+    static compose<T extends FoundationElementDefinition = FoundationElementDefinition>(elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => Registry;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
     // (undocumented)
@@ -970,10 +971,15 @@ export class FoundationElement extends FASTElement {
 }
 
 // @alpha
-export type FoundationElementDefinition = Omit<PartialFASTElementDefinition, "name"> & {
+export interface FoundationElementDefinition {
+    readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
     baseName: string;
-    type: typeof FASTElement;
-};
+    readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
+    readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
+    readonly styles?: EagerOrLazyFoundationOption<ComposableStyles | ComposableStyles[], this>;
+    // Warning: (ae-forgotten-export) The symbol "EagerOrLazyFoundationOption" needs to be exported by the entry point index.d.ts
+    readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
+}
 
 // @public
 export enum GenerateHeaderOptions {
@@ -1022,7 +1028,7 @@ export type HorizontalScrollView = "default" | "mobile";
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
 // @alpha (undocumented)
-export const inject: (...dependencies: Key[]) => (target: Injectable, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
+export const inject: (...dependencies: Key[]) => (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
 
 // @alpha (undocumented)
 export type Injectable<T = {}> = Constructable<T> & {
@@ -1293,7 +1299,7 @@ export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate
 export const optional: (key: any) => any;
 
 // @alpha
-export type OverrideFoundationElementDefinition = Partial<Omit<FoundationElementDefinition, "type">> & {
+export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type">> & {
     prefix?: string;
 };
 
