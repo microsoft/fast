@@ -24,6 +24,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
+import { HorizontalScroll } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -31,7 +32,6 @@ import { MenuItem } from '@microsoft/fast-foundation';
 import { NumberField } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
-import { Scroller } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -562,6 +562,10 @@ export class FASTFlipper extends Flipper {
 }
 
 // @public
+export class FASTHorizontalScroll extends HorizontalScroll {
+}
+
+// @public
 export class FASTListbox extends Listbox {
 }
 
@@ -598,10 +602,6 @@ export class FASTRadio extends Radio {
 
 // @public
 export class FASTRadioGroup extends RadioGroup {
-}
-
-// @public
-export class FASTScroller extends Scroller {
 }
 
 // @public

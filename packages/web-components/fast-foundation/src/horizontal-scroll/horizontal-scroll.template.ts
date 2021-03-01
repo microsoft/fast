@@ -1,11 +1,11 @@
 import { html, ref } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { Scroller } from "./scroller";
+import { HorizontalScroll } from "./horizontal-scroll";
 
 /**
  * @public
  */
-export const ControlsTemplate = html<Scroller>`
+export const ActionsTemplate = html<HorizontalScroll>`
     <div ${ref("previousFlipper")} class="scroll scroll-prev">
         <div @click="${x => x.scrollToPrevious()}" class="scroll-action">
             <slot name="previous-flipper"></slot>
@@ -21,8 +21,8 @@ export const ControlsTemplate = html<Scroller>`
 /**
  * @public
  */
-export const ScrollerTemplate = html<Scroller>`
-    <template role="scroller" class="scroller">
+export const HorizontalScrollTemplate = html<HorizontalScroll>`
+    <template role="horizontal-scroll" class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">
             <div class="scroll-view">
@@ -30,7 +30,7 @@ export const ScrollerTemplate = html<Scroller>`
                     <slot></slot>
                 </div>
             </div>
-            ${x => (x.view === "mobile" ? "" : ControlsTemplate)}
+            ${x => (x.view === "mobile" ? "" : ActionsTemplate)}
         </div>
         ${endTemplate}
     </template>

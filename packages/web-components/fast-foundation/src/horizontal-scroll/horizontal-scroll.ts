@@ -8,7 +8,7 @@ import {
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
 import { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
-import { ScrollerControlStyles } from "./scroller.styles";
+import { ActionsStyles } from "./horizontal-scroll.styles";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -17,16 +17,16 @@ declare global {
 }
 
 /**
- * The views types for a scroller {@link @microsoft/fast-foundation#(Scroller:class)}
+ * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
  * @public
  */
-export type ScrollerView = "default" | "mobile";
+export type HorizontalScrollView = "default" | "mobile";
 
 /**
- * A Scroller Custom HTML Element
+ * A HorizontalScroll Custom HTML Element
  * @public
  */
-export class Scroller extends FASTElement {
+export class HorizontalScroll extends FASTElement {
     /**
      * Reference to DOM element containing the content to scroll
      * @public
@@ -79,7 +79,7 @@ export class Scroller extends FASTElement {
     @attr({
         attribute: "view",
     })
-    public view: ScrollerView;
+    public view: HorizontalScrollView;
 
     /**
      * @public
@@ -87,7 +87,7 @@ export class Scroller extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         if (this.view !== "mobile") {
-            this.$fastController.addStyles(ScrollerControlStyles);
+            this.$fastController.addStyles(ActionsStyles);
         }
 
         DOM.queueUpdate(this.setStops.bind(this));

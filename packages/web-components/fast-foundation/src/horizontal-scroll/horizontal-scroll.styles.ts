@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { DirectionalStyleSheetBehavior } from "../utilities/style/direction";
 
-const ltrControlStyles = css`
+const ltrActionsStyles = css`
     .scroll-prev {
         right: auto;
         left: 0;
@@ -10,7 +10,7 @@ const ltrControlStyles = css`
     .scroll-next:before {
         left: auto;
         right: 0;
-        background: linear-gradient(to right, transparent, var(--scroller-fade-next));
+        background: linear-gradient(to right, transparent, var(--scroll-fade-next));
     }
 
     .scroll-next .scroll-action {
@@ -20,7 +20,7 @@ const ltrControlStyles = css`
     }
 `;
 
-const rtlControlStyles = css`
+const rtlActionsStyles = css`
     .scroll-next {
         right: auto;
         left: 0;
@@ -29,11 +29,11 @@ const rtlControlStyles = css`
     .scroll-next:before {
         left: auto;
         right: 0;
-        background: linear-gradient(to right, var(--scroller-fade-next), transparent);
+        background: linear-gradient(to right, var(--scroll-fade-next), transparent);
     }
 
     .scroll-prev:before {
-        background: linear-gradient(to right, transparent, var(--scroller-fade-previous));
+        background: linear-gradient(to right, transparent, var(--scroll-fade-previous));
     }
 
     .scroll-prev .scroll-action {
@@ -47,7 +47,7 @@ const rtlControlStyles = css`
  * Styles used for the flipper container and gradient fade
  * @public
  */
-export const ScrollerControlStyles = css`
+export const ActionsStyles = css`
     .scroll-area {
         position: relative;
     }
@@ -75,7 +75,7 @@ export const ScrollerControlStyles = css`
         height: 100%;
         position: absolute;
         left: 0;
-        background: linear-gradient(to right, var(--scroller-fade-previous), transparent);
+        background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
     }
 
     .scroll-action {
@@ -85,17 +85,17 @@ export const ScrollerControlStyles = css`
         right: auto;
         transform: translate(-50%, -50%);
     }
-`.withBehaviors(new DirectionalStyleSheetBehavior(ltrControlStyles, rtlControlStyles));
+`.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
 /**
  * Styles handling the scroll container and content
  * @public
  */
-export const ScrollerStyles = css`
+export const HorizontalScrollStyles = css`
     :host {
-        --scroller-align: middle;
-        --scroller-duration: 0.5s;
-        --scroller-easing: ease-out;
+        --scroll-align: middle;
+        --scroll-duration: 0.5s;
+        --scroll-easing: ease-out;
         display: block;
         position: relative;
     }
@@ -111,13 +111,13 @@ export const ScrollerStyles = css`
     .content-container {
         white-space: nowrap;
         transform: translate3d(0, 0, 0);
-        transition: transform var(--scroller-duration) var(--scroller-easing);
+        transition: transform var(--scroll-duration) var(--scroll-easing);
         display: inline-block;
     }
 
     .content-container ::slotted(*) {
         display: inline-block;
         white-space: normal;
-        vertical-align: var(--scroller-align);
+        vertical-align: var(--scroll-align);
     }
 `;

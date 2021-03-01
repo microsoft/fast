@@ -1,4 +1,4 @@
-<h1>Scroller</h1>
+<h1>Horizontal-scroll</h1>
 
 <style type="text/css">
     fast-card {
@@ -7,30 +7,30 @@
         margin: 5px;
     }
 
-    fast-scroller {
+    fast-horizontal-scroll {
         max-width: 620px;
         margin: 20px;
     }
 
     .slow-scroll {
-        --scroller-duration: 1.5s;
+        --scroll-duration: 1.5s;
     }
 
     .right-gradient {
-        --scroller-fade-next: var(--background-color);
+        --scroll-fade-next: var(--background-color);
     }
 
     .both-gradient {
-        --scroller-fade-next: var(--background-color);
-        --scroller-fade-previous: var(--background-color);
+        --scroll-fade-next: var(--background-color);
+        --scroll-fade-previous: var(--background-color);
     }
 
     .top-align {
-        --scroller-align: top;
+        --scroll-align: top;
     }
 
     .bottom-align {
-        --scroller-align: bottom;
+        --scroll-align: bottom;
     }
 
     .full-width,
@@ -41,7 +41,7 @@
 </style>
 
 <h2>Default</h2>
-<fast-scroller>
+<fast-horizontal-scroll>
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -60,10 +60,10 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Full width cards</h2>
-<fast-scroller class="full-width">
+<fast-horizontal-scroll class="full-width">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -72,10 +72,10 @@
     <fast-card>Card number 4</fast-card>
     <fast-card>Card number 5</fast-card>
     <fast-card>Card number 6</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Slow scroll (1.5s)</h2>
-<fast-scroller class="slow-scroll">
+<fast-horizontal-scroll class="slow-scroll">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -94,10 +94,10 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Right gradient</h2>
-<fast-scroller class="right-gradient">
+<fast-horizontal-scroll class="right-gradient">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -116,10 +116,10 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Gradient both sides</h2>
-<fast-scroller class="both-gradient">
+<fast-horizontal-scroll class="both-gradient">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -138,10 +138,10 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Varying heights and widths (default middle aligned)</h2>
-<fast-scroller class="right-gradient">
+<fast-horizontal-scroll class="right-gradient">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -160,10 +160,10 @@
     <fast-card style="width: 100px; height: 300px;">Card number 14</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Top aligned</h2>
-<fast-scroller class="right-gradient top-align">
+<fast-horizontal-scroll class="right-gradient top-align">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -182,10 +182,10 @@
     <fast-card style="width: 100px; height: 300px;">Card number 14</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
 <h2>Bottom aligned</h2>
-<fast-scroller class="right-gradient bottom-align">
+<fast-horizontal-scroll class="right-gradient bottom-align">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
@@ -204,10 +204,10 @@
     <fast-card style="width: 100px; height: 300px;">Card number 14</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
-<h2>Mobile scroller</h2>
-<fast-scroller class="right-gradient" view="mobile">
+<h2>Mobile horizontal-scroll</h2>
+<fast-horizontal-scroll class="right-gradient" view="mobile">
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -224,9 +224,9 @@
     <fast-card>Card number 14</fast-card>
     <fast-card>Card number 15</fast-card>
     <fast-card>Card number 16</fast-card>
-</fast-scroller>
+</fast-horizontal-scroll>
 
-<h2>RTL scroller</h2>
+<h2>RTL horizontal-scroll</h2>
 <fast-design-system-provider
     id="design-system"
     use-defaults
@@ -234,7 +234,7 @@
     direction="rtl"
     dir="rtl"
 >
-    <fast-scroller class="right-gradient">
+    <fast-horizontal-scroll class="right-gradient">
         <fast-flipper slot="previous-flipper"></fast-flipper>
         <fast-flipper slot="next-flipper" direction="previous"></fast-flipper>
         <fast-card>Card number 1</fast-card>
@@ -253,5 +253,5 @@
         <fast-card>Card number 14</fast-card>
         <fast-card>Card number 15</fast-card>
         <fast-card>Card number 16</fast-card>
-    </fast-scroller>
+    </fast-horizontal-scroll>
 </fast-design-system-provider>

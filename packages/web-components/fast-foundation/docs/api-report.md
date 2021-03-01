@@ -55,6 +55,12 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
+// @public
+export const ActionsStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const ActionsTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
+
 // @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
@@ -380,9 +386,6 @@ export class ContainerImpl implements Container {
 
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
-
-// @public (undocumented)
-export const ControlsTemplate: import("@microsoft/fast-element").ViewTemplate<Scroller, any>;
 
 // @public
 export function createDataGridCellTemplate(prefix: string): ViewTemplate;
@@ -991,6 +994,30 @@ export const hidden = ":host([hidden]){display:none}";
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
+// @public
+export class HorizontalScroll extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    contentContainer: HTMLDivElement;
+    // (undocumented)
+    disconnectedCallback(): void;
+    moveToStart(): void;
+    nextFlipper: HTMLDivElement;
+    previousFlipper: HTMLDivElement;
+    scrollToNext(): void;
+    scrollToPrevious(): void;
+    view: HorizontalScrollView;
+    }
+
+// @public
+export const HorizontalScrollStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const HorizontalScrollTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
+
+// @public
+export type HorizontalScrollView = "default" | "mobile";
+
 // @alpha
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
@@ -1443,33 +1470,6 @@ export const enum ResolverStrategy {
     // (undocumented)
     transient = 2
 }
-
-// @public
-export class Scroller extends FASTElement {
-    // (undocumented)
-    connectedCallback(): void;
-    contentContainer: HTMLDivElement;
-    // (undocumented)
-    disconnectedCallback(): void;
-    moveToStart(): void;
-    nextFlipper: HTMLDivElement;
-    previousFlipper: HTMLDivElement;
-    scrollToNext(): void;
-    scrollToPrevious(): void;
-    view: ScrollerView;
-    }
-
-// @public
-export const ScrollerControlStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const ScrollerStyles: import("@microsoft/fast-element").ElementStyles;
-
-// @public (undocumented)
-export const ScrollerTemplate: import("@microsoft/fast-element").ViewTemplate<Scroller, any>;
-
-// @public
-export type ScrollerView = "default" | "mobile";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

@@ -1,13 +1,13 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
-export const fastScrollerDefinition: WebComponentDefinition = {
+export const fastHorizontalScrollDefinition: WebComponentDefinition = {
     version: 1,
     tags: [
         {
-            name: "fast-scroller",
-            title: "Scroller",
-            description: "The FAST scroller element",
+            name: "fast-horizontal-scroll",
+            title: "HorizontalScroll",
+            description: "The FAST HorizontalScroll element",
             attributes: [
                 {
                     name: "view",
@@ -35,7 +35,7 @@ export const fastScrollerDefinition: WebComponentDefinition = {
                     name: "start",
                     title: "Start slot",
                     description:
-                        "Contents of the start slot are positioned above the scroller",
+                        "Contents of the start slot are positioned above the horizontal-scroll",
                 },
                 {
                     name: "previousFlipper",
@@ -51,7 +51,7 @@ export const fastScrollerDefinition: WebComponentDefinition = {
                     name: "end",
                     title: "End slot",
                     description:
-                        "Contents of the end slot are positioned below the scroller",
+                        "Contents of the end slot are positioned below the horizontal-scroll",
                 },
             ],
         },
