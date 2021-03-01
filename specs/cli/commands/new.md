@@ -29,7 +29,7 @@ $ fast new [arg-1] [arg-2]
 
 ### Project Generator
 ```
-$ fast new [Project-Name]
+$ fast new [project-Name] [destination]
 ```
 
 #### Arguments

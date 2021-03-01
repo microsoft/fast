@@ -1,14 +1,14 @@
 # FAST Generate (WIP)
 
 ## Overview
-FAST `generate` is a command that is used to scaffold out file structures for resources such as a new component in a FAST project. 
+FAST `generate` is a command that is used to generate new FAST design system resources such as new components. The initial release will focus on component generation. Future iterations will include the ability to generate other resources.
 
 ## Use Cases
-- A Front-End Engineer can generate a new component file structure in FAST using a single command in FAST CLI
+- A users can generate a new component file structure in FAST using a single command in FAST CLI
 
 ## Features
-- Component generator nased on given name string
-- Interactive input
+- Resource generator based name string argument
+- Interactive input questions
 
 ## Prior Art/Examples
 - [Aurelia CLI, `au generate`](https://aurelia.io/docs/cli/basics#generators)
@@ -20,29 +20,30 @@ FAST `generate` is a command that is used to scaffold out file structures for re
 
 **Usage**:
 ```
-$ fast generate [element-name] [destination]
+$ fast generate <resource> [element-name] [destination]
  ```
 
 #### Arguments
-| Argument         | Type              | Required | Default Value  | Description                    |
-|------------------|-------------------|----------|----------------|--------------------------------|
-| `element-name`   | User Input        | Yes      | `my-component` | Name of component              |
-| `destination`    | User input        | No       | `./src`        | Destination of component files |
+| Argument         | Type              | Required | Default Value  | Description                        |
+|------------------|-------------------|----------|----------------|------------------------------------|
+| `resource`       | User Input        | Yes      | `component`    | The type of resource being created |
+| `element-name`   | User Input        | Yes      | `my-component` | Name of component                  |
+| `destination`    | User input        | No       | `./src`        | Destination of component files     |
 
 
 ## Design
 
-### Component Generator
+### Component Generation
 
 Example:
 ```
 $ fast generate
 ```
 
-#### Interactive Input Questions:
+#### Interactive Input Questions (Component):
 ```
 $ What would you like to name your component? [Input]: (my-component)
-$ Would you like to extend and existing component? [Choice]: (yN)
+$ Would you like to extend an existing component? [Choice]: (yN)
   [Yes]: 
     $ Which component would you like to extend?
       (Multiple Choice: List of components)
@@ -71,4 +72,6 @@ In `src/index.ts`
 export * from "./example-card/"
 ...
 ```
-## Next Steps
+## Roadmap
+
+While the initial focus of the `generate` command will be `generate component`. Possible future resources include: templates, styles, design tokens and color recipes.
