@@ -525,12 +525,12 @@ export const DI = Object.freeze({
     inject(
         ...dependencies: Key[]
     ): (
-        target: Injectable,
+        target: any,
         key?: string | number,
         descriptor?: PropertyDescriptor | number
     ) => void {
         return function (
-            target: Injectable,
+            target: any,
             key?: string | number,
             descriptor?: PropertyDescriptor | number
         ): void {
@@ -542,14 +542,7 @@ export const DI = Object.freeze({
                     annotationParamtypes[descriptor] = dep;
                 }
             } else if (key) {
-                // It's a property decorator. Not supported by the container without plugins.
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(
-                    ((target as unknown) as { constructor: Injectable }).constructor
-                );
-                const dep = dependencies[0];
-                if (dep !== void 0) {
-                    annotationParamtypes[key as number] = dep;
-                }
+                DI.defineProperty(target, key as string, dependencies[0]);
             } else {
                 const annotationParamtypes = descriptor
                     ? DI.getOrCreateAnnotationParamTypes(descriptor.value)
