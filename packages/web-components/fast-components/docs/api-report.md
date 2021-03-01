@@ -563,6 +563,8 @@ export class FASTFlipper extends Flipper {
 
 // @public
 export class FASTHorizontalScroll extends HorizontalScroll {
+    // (undocumented)
+    connectedCallback(): void;
 }
 
 // @public

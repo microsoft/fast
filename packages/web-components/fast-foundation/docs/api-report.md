@@ -56,9 +56,6 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// @public
-export const ActionsStyles: import("@microsoft/fast-element").ElementStyles;
-
 // @public (undocumented)
 export const ActionsTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
 
@@ -1014,9 +1011,6 @@ export class HorizontalScroll extends FASTElement {
     scrollToPrevious(): void;
     view: HorizontalScrollView;
     }
-
-// @public
-export const HorizontalScrollStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
 export const HorizontalScrollTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;

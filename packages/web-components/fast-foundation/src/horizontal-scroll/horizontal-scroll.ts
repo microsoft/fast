@@ -8,7 +8,6 @@ import {
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
 import { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
-import { ActionsStyles } from "./horizontal-scroll.styles";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -86,10 +85,6 @@ export class HorizontalScroll extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        if (this.view !== "mobile") {
-            this.$fastController.addStyles(ActionsStyles);
-        }
-
         DOM.queueUpdate(this.setStops.bind(this));
         this.initializeResizeDetector();
         this.startObservers();

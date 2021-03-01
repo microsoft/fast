@@ -1,9 +1,12 @@
 import { customElement } from "@microsoft/fast-element";
 import {
     HorizontalScroll,
-    HorizontalScrollStyles as styles,
     HorizontalScrollTemplate as template,
 } from "@microsoft/fast-foundation";
+import {
+    ActionsStyles,
+    HorizontalScrollStyles as styles,
+} from "./horizontal-scroll.styles";
 
 /**
  * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
@@ -19,4 +22,15 @@ import {
     template,
     styles,
 })
-export class FASTHorizontalScroll extends HorizontalScroll {}
+export class FASTHorizontalScroll extends HorizontalScroll {
+    /**
+     * @public
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.view !== "mobile") {
+            this.$fastController.addStyles(ActionsStyles);
+        }
+    }
+}

@@ -1,8 +1,28 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { customElement, DOM, css } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { html } from "@microsoft/fast-element";
-import { HorizontalScroll, HorizontalScrollTemplate as template, HorizontalScrollStyles as styles } from "./index";
+import { HorizontalScroll, HorizontalScrollTemplate as template } from "./index";
+
+const styles = css`
+    :host {
+        display: block;
+    }
+
+    .content-container {
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .content-container ::slotted(*) {
+        display: inline-block;
+        white-space: normal;
+    }
+
+    div.scroll-view {
+        overflow-x: hidden;
+    }
+`;
 
 @customElement({
     name: "fast-horizontal-scroll",

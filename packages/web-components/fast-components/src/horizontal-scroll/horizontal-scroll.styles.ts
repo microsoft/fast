@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { DirectionalStyleSheetBehavior } from "../utilities/style/direction";
+import { DirectionalStyleSheetBehavior } from "@microsoft/fast-foundation";
 
 const ltrActionsStyles = css`
     .scroll-prev {
