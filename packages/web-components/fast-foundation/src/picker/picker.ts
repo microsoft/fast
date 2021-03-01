@@ -14,11 +14,7 @@ import { PickerMenu } from "./picker-menu";
 /**
  *
  */
-export enum PickerMenuPosition {
-    top = "top",
-    bottom = "bottom",
-    dynamic = "dynamic",
-}
+export type PickerMenuPosition = "top" | "bottom" | "dynamic";
 
 /**
  * A List Picker Custom HTML Element.
@@ -34,7 +30,7 @@ export class Picker extends FASTElement {
      * HTML Attribute: menu-position
      */
     @attr({ attribute: "menu-position" })
-    public menuPosition: PickerMenuPosition = PickerMenuPosition.dynamic;
+    public menuPosition: PickerMenuPosition = "dynamic";
 
     /**
      * Whether the menu is positioned using css "position: fixed".
@@ -50,7 +46,7 @@ export class Picker extends FASTElement {
     public fixedPlacement: boolean = true;
 
     /**
-     * Auto position update interval in ms. Values of 0 or lower turn off auto position update.
+     * Auto position update interval in ms.
      *
      * @public
      * @remarks
@@ -258,11 +254,6 @@ export class Picker extends FASTElement {
 
     private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node | null = null;
-
-    /**
-     * The timer that controls the time between position updates
-     */
-    private updateTimer: number | null = null;
 
     /**
      * @internal
@@ -503,15 +494,7 @@ export class Picker extends FASTElement {
         }
     };
 
-    public handleRegionLoaded = (e: Event): void => {
-        if (!this.menuOpen) {
-            return;
-        }
-        this.updateTimer = window.setTimeout((): void => {
-            this.setFocusedOption(this.menuFocusIndex);
-            this.startUpdateTimer();
-        }, 100);
-    };
+    public handleRegionLoaded = (e: Event): void => {};
 
     private setRegionProps = (): void => {
         if (!this.menuOpen) {
@@ -524,46 +507,6 @@ export class Picker extends FASTElement {
         }
         this.region.viewportElement = document.body;
         this.region.anchorElement = this.inputElement;
-    };
-
-    /**
-     * starts the update timer if not currently running
-     */
-    private startUpdateTimer = (): void => {
-        DOM.queueUpdate(() => {
-            this.region.classList.toggle("loaded", true);
-        });
-
-        if (this.autoUpdateInterval > 0) {
-            this.updateTimer = window.setTimeout((): void => {
-                this.updateTimerTick();
-            }, this.autoUpdateInterval);
-        }
-    };
-
-    private updateTimerTick = (): void => {
-        this.clearUpdateTimer();
-        if (this.menuOpen) {
-            if (this.region !== undefined) {
-                this.region.update();
-            }
-
-            if (this.autoUpdateInterval > 0) {
-                this.updateTimer = window.setTimeout((): void => {
-                    this.updateTimerTick();
-                }, this.autoUpdateInterval);
-            }
-        }
-    };
-
-    /**
-     * clears the update timer
-     */
-    private clearUpdateTimer = (): void => {
-        if (this.updateTimer !== null) {
-            clearTimeout(this.updateTimer);
-            this.updateTimer = null;
-        }
     };
 
     private checkMaxItems = (): void => {
@@ -646,9 +589,6 @@ export class Picker extends FASTElement {
 
         if (open && document.activeElement === this.inputElement) {
             this.menuOpen = open;
-            if (this.region !== undefined) {
-                this.region.classList.toggle("loaded", false);
-            }
             this.inputElement.setAttribute("aria-owns", this.menuId);
             this.inputElement.setAttribute("aria-expanded", "true");
             if (
@@ -668,11 +608,7 @@ export class Picker extends FASTElement {
         }
 
         this.menuOpen = false;
-        this.clearUpdateTimer();
         this.menuFocusIndex = -1;
-        if (this.region !== undefined) {
-            this.region.classList.toggle("loaded", false);
-        }
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");

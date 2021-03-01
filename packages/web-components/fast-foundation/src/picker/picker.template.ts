@@ -26,16 +26,14 @@ export function createPickerTemplate(
                 x => x.menuOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
+                    auto-update-mode="auto"
+                    auto-update-interval="${x => x.autoUpdateInterval}"
                     class="region"
                     fixed-placement="${x => x.fixedPlacement}"
                     vertical-positioning-mode="${x =>
-                        x.menuPosition === PickerMenuPosition.dynamic
-                            ? x.menuPosition
-                            : "locktodefault"}"
+                        x.menuPosition === "dynamic" ? x.menuPosition : "locktodefault"}"
                     vertical-default-position="${x =>
-                        x.menuPosition === PickerMenuPosition.dynamic
-                            ? null
-                            : x.menuPosition}"
+                        x.menuPosition === "dynamic" ? null : x.menuPosition}"
                     vertical-scaling="fill"
                     vertical-inset="false"
                     horizontal-positioning-mode="locktodefault"
