@@ -336,14 +336,13 @@ export interface ContainerConfiguration {
     defaultResolver(key: Key, handler: Container): Resolver;
     // (undocumented)
     parentLocator: ParentLocator;
+    // (undocumented)
+    responsibleForOwnerRequests: boolean;
 }
 
 // @alpha (undocumented)
 export const ContainerConfiguration: Readonly<{
-    default: Readonly<{
-        parentLocator: () => null;
-        defaultResolver: (key: Key) => Resolver;
-    }>;
+    default: Readonly<ContainerConfiguration>;
 }>;
 
 // @alpha (undocumented)
@@ -377,7 +376,9 @@ export class ContainerImpl implements Container {
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     // (undocumented)
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-    }
+    // (undocumented)
+    get responsibleForOwnerRequests(): boolean;
+}
 
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
@@ -570,11 +571,11 @@ export class DefaultComponentPresentation implements ComponentPresentation {
 }
 
 // @alpha (undocumented)
-export const DefaultResolver: {
+export const DefaultResolver: Readonly<{
     none(key: Key): Resolver;
     singleton(key: Key): Resolver;
     transient(key: Key): Resolver;
-};
+}>;
 
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
@@ -718,8 +719,9 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 // @alpha (undocumented)
 export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
-    findContainer(element: HTMLElement): Container;
-    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "defaultResolver">> | undefined): Container;
+    findResponsibleContainer(element: HTMLElement): Container;
+    findParentContainer(element: HTMLElement): Container;
+    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -2008,7 +2010,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/di/di.d.ts:205:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
