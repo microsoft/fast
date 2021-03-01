@@ -1,62 +1,41 @@
-import {
-    Controller,
-    FASTElement,
-    html,
-    Observable,
-    repeat,
-    Subscriber,
-} from "@microsoft/fast-element";
-import { DI, Registration } from "../di/di";
+import { Controller, FASTElement, Observable, Subscriber } from "@microsoft/fast-element";
+import { Container, DI, Registration } from "../di/di";
 
 export interface DesignTokenStorage {
     readonly upstream: DesignTokenStorage | null;
-    connect(element: HTMLElement): void;
-    disconnect(): void;
 }
 
 export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     #upstream: DesignTokenStorage | null = null;
-
-    private trackConnection(target: FASTElement) {}
+    #container: Container;
+    #owner: HTMLElement & FASTElement;
 
     public get upstream() {
         return this.#upstream;
     }
 
-    /**
-     *
-     * @param element - Connects the storage service to an Element
-     */
-    public connect(element: HTMLElement & FASTElement): DesignTokenStorage {
-        const container = DI.getOrCreateDOMContainer(element);
+    constructor(owner: HTMLElement & FASTElement) {
+        this.#owner = owner;
+        this.#container = DI.getOrCreateDOMContainer(owner);
 
-        if (container.has(DesignTokenStorage, false)) {
+        if (this.#container.has(DesignTokenStorage, false)) {
             throw new Error(
-                `A DesignTokenStorage has already been connected to ${element}.`
+                "DesignTokenStorageImpl was constructed with an owner element that already has an associated DesignTokenStorage. Use DesignTokenStorageImpl.for() to safely create new DesignTokenStorageImpl instances."
             );
-        } else if (container.has(DesignTokenStorage, true)) {
-            this.#upstream = container.get(DesignTokenStorage);
         }
 
-        container.register(Registration.instance(DesignTokenStorage, this));
+        this.#container.register(Registration.instance(DesignTokenStorage, this));
 
-        Observable.getNotifier(element.$fastController).subscribe(this, "isConnected");
-
-        return this;
+        Observable.getNotifier(owner.$fastController).subscribe(this, "isConnected");
+        this.handleChange(owner.$fastController, "isConnected");
     }
 
-    public disconnect(): DesignTokenStorage {
-        return this;
-    }
-
-    static getOrCreateTokenStorage(
-        element: FASTElement & HTMLElement
-    ): DesignTokenStorage {
+    static for(element: FASTElement & HTMLElement): DesignTokenStorage {
         const container = DI.getOrCreateDOMContainer(element);
 
         return container.has(DesignTokenStorage, false)
             ? container.get<DesignTokenStorage>(DesignTokenStorage)
-            : new DesignTokenStorageImpl().connect(element);
+            : new DesignTokenStorageImpl(element);
     }
 
     /**
@@ -64,9 +43,13 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
      */
     public handleChange(source: Controller, key: "isConnected") {
         if (source[key]) {
-            this.#upstream = DI.getOrCreateDOMContainer(
-                source.element.parentElement!
-            ).get(DesignTokenStorage);
+            try {
+                this.#upstream = DI.getOrCreateDOMContainer(
+                    source.element.parentElement!
+                ).get(DesignTokenStorage);
+            } catch (e) {
+                this.#upstream = null;
+            }
         }
     }
 }

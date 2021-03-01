@@ -1,6 +1,4 @@
-import { Controller, CSSDirective, FASTElement } from "@microsoft/fast-element";
-import { intersection } from "lodash";
-import { DI, Registration } from "../di/di";
+import { CSSDirective } from "@microsoft/fast-element";
 
 /**
  * Notes:
