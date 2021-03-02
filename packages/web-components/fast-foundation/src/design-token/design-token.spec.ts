@@ -80,5 +80,21 @@ describe("A DesignToken", () => {
 
             removeElement(target);
         });
+
+        it("should update the emitted CSS custom property for the element when reset", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test", true);
+
+            token.setValueFor(target, 12);
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal((12).toString())
+
+            token.setValueFor(target, 14);
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal((14).toString())
+
+            token.setValueFor(target, 12);
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal((12).toString())
+
+            removeElement(target);
+        });
     })
 });

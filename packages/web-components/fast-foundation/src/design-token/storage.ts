@@ -1,5 +1,6 @@
 import { Controller, FASTElement, Observable, Subscriber } from "@microsoft/fast-element";
 import { Container, DI, Registration } from "../di/di";
+import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignToken } from "./design-token";
 
 export interface DesignTokenStorage {
@@ -73,6 +74,18 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     }
 
     public set<T>(token: DesignToken<T>, value: T): void {
+        if (token.writeCSSProperty) {
+            const controller = this.#owner.$fastController;
+
+            if (this.#tokens.has(token)) {
+                controller.removeStyles(
+                    CustomPropertyManager.get(token, this.get(token))
+                );
+            }
+
+            controller.addStyles(CustomPropertyManager.get(token, value));
+        }
+
         this.#tokens.set(token, value);
     }
 }
