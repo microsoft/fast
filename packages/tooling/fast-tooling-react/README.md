@@ -507,6 +507,7 @@ Example:
                 {
                     title: "Advanced",
                     dataLocations: ["tracking", "accessibility"],
+                    expandByDefault: false // default true
                 },
             ],
         },
@@ -515,6 +516,8 @@ Example:
 ```
 
 This shows the root object of a schema with `$id` of `category-schema-id` that has the properties `color`, `outline`, `font`, `title`, `body`, `footer`, `tracking` and `accessibility` and splits them into categories with the appropriate titles.
+
+The "Advanced" category has its expand default set to `false`, this means that initially it will be collapsed.
 
 ### JSON schema keywords
 

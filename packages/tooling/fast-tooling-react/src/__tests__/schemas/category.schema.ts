@@ -32,6 +32,9 @@ export default {
                 number: {
                     type: "number",
                 },
+                string: {
+                    type: "string",
+                },
             },
         },
         array: {

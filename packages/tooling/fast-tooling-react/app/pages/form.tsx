@@ -319,6 +319,13 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                         {
                             title: "Advanced",
                             dataLocations: ["array", "object"],
+                            expandByDefault: false,
+                        },
+                    ],
+                    object: [
+                        {
+                            title: "Test",
+                            dataLocations: ["object.string"],
                         },
                     ],
                 },
