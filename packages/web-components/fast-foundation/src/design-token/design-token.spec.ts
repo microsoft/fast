@@ -69,4 +69,16 @@ describe("A DesignToken", () => {
             removeElement(ancestor);
         });
     });
+
+    describe("setting a simple value", () => {
+        it("should emit the value to a CSS custom property for the element when configured", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test", true);
+            token.setValueFor(target, 12);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal((12).toString())
+
+            removeElement(target);
+        });
+    })
 });

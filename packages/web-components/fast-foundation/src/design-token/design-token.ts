@@ -47,6 +47,7 @@ export class DesignToken<T = any> extends CSSDirective {
 
     setValueFor(element: HTMLElement & FASTElement, value: T): void {
         DesignTokenStorageImpl.for(element).set(this, value);
+        element.style.setProperty(this.cssCustomProperty, (value as unknown) as string); // TODO: leverage Controller.addStyles
     }
 
     /**
