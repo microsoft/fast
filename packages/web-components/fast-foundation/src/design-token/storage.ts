@@ -15,7 +15,7 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     #upstream: DesignTokenStorage | null = null;
     #container: Container;
     #owner: HTMLElement & FASTElement;
-    #tokens: Map<DesignToken<any>, any>;
+    #tokens: Map<DesignToken<any>, any> = new Map();
 
     public get upstream() {
         return this.#upstream;

@@ -1,4 +1,5 @@
 import { CSSDirective, FASTElement } from "@microsoft/fast-element";
+import { DesignTokenStorageImpl } from "./storage";
 
 /**
  * Notes:
@@ -40,11 +41,13 @@ export class DesignToken<T = any> extends CSSDirective {
      */
     public readonly cssCustomProperty: string;
 
-    getValueFor(element: HTMLElement): T {
-        return ("" as unknown) as T;
+    getValueFor(element: HTMLElement & FASTElement): T {
+        return DesignTokenStorageImpl.for(element).get(this);
     }
 
-    setValueFor(element: HTMLElement, value: T): void {}
+    setValueFor(element: HTMLElement & FASTElement, value: T): void {
+        DesignTokenStorageImpl.for(element).set(this, value);
+    }
 
     /**
      * Creates a new DesignToken

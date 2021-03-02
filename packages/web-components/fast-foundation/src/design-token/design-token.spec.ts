@@ -30,7 +30,8 @@ describe("A DesignToken", () => {
             expect(DesignToken.create("implicit").cssCustomProperty).to.equal("--implicit");
             expect(DesignToken.create("explicit", true).cssCustomProperty).to.equal("--explicit");
         });
-    })
+    });
+
     describe("without the writeCssProperty configuration", () => {
         it("should have a createCSS() method that returns an empty string", () => {
             expect(DesignToken.create("explicit", false).createCSS()).to.equal("");
@@ -38,5 +39,34 @@ describe("A DesignToken", () => {
         it("should have a readonly cssCustomProperty property that is an empty string", () => {
             expect(DesignToken.create("explicit", false).cssCustomProperty).to.equal("");
         });
-    })
+    });
+
+    describe("getting a simple value", () => {
+        it("should throw if the token value has never been set on the element or it's any ancestors", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+
+            expect(() => token.getValueFor(target)).to.throw();
+            removeElement(target);
+        });
+
+        it("should return the value set for the element if one has been set", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(target, 12);
+
+            expect(token.getValueFor(target)).to.equal(12);
+            removeElement(target);
+        });
+
+        it("should return the value set for an ancestor if a value has not been set for the target", () => {
+            const ancestor = addElement();
+            const target = addElement(ancestor);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(ancestor, 12);
+
+            expect(token.getValueFor(target)).to.equal(12);
+            removeElement(ancestor);
+        });
+    });
 });
