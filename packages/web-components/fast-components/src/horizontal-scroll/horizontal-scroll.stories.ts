@@ -2,7 +2,7 @@ import HorizontalScrollTemplate from "./fixtures/horizontal-scroll.html";
 import "./index";
 
 export default {
-    title: "HorizontalScroll",
+    title: "Horizontal Scroll",
 };
 
 export const HorizontalScroll = () => HorizontalScrollTemplate;

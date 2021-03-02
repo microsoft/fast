@@ -11,6 +11,7 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
             attributes: [
                 {
                     name: "view",
+                    title: "View",
                     description: "Default or mobile view",
                     type: DataType.string,
                     values: [
