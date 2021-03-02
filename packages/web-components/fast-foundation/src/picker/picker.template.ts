@@ -26,7 +26,7 @@ export function createPickerTemplate(
                 x => x.menuOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
-                    auto-update-mode="auto"
+                    auto-update-mode="constant"
                     auto-update-interval="${x => x.autoUpdateInterval}"
                     class="region"
                     fixed-placement="${x => x.fixedPlacement}"
