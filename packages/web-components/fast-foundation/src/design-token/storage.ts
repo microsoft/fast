@@ -1,14 +1,21 @@
 import { Controller, FASTElement, Observable, Subscriber } from "@microsoft/fast-element";
 import { Container, DI, Registration } from "../di/di";
+import { DesignToken } from "./design-token";
 
 export interface DesignTokenStorage {
     readonly upstream: DesignTokenStorage | null;
+    get<T>(token: DesignToken<T>): T;
+    set<T>(
+        token: DesignToken<T>,
+        value: T | ((target: HTMLElement & FASTElement) => T)
+    ): void;
 }
 
 export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     #upstream: DesignTokenStorage | null = null;
     #container: Container;
     #owner: HTMLElement & FASTElement;
+    #tokens: Map<DesignToken<any>, any>;
 
     public get upstream() {
         return this.#upstream;
@@ -51,6 +58,22 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
                 this.#upstream = null;
             }
         }
+    }
+
+    public get<T>(token: DesignToken<T>): T {
+        if (this.#tokens.has(token)) {
+            return this.#tokens.get(token);
+        } else if (this.upstream) {
+            return this.upstream.get(token);
+        } else {
+            throw new Error(
+                `Cannot get token ${token}. Ensure that token's value has been set.`
+            );
+        }
+    }
+
+    public set<T>(token: DesignToken<T>, value: T): void {
+        this.#tokens.set(token, value);
     }
 }
 

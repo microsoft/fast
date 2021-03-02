@@ -1,4 +1,4 @@
-import { CSSDirective } from "@microsoft/fast-element";
+import { CSSDirective, FASTElement } from "@microsoft/fast-element";
 
 /**
  * Notes:
