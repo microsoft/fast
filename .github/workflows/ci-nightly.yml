@@ -35,27 +35,8 @@ jobs:
       run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream
-
-    - name: Collect and upload code coverage to Code Climate
-      uses: paambaati/codeclimate-action@v2.7.5
-      env: 
-        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        coverageCommand: yarn coverage
-        coverageLocations: |
-          ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/tooling/fast-tooling-wasm/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
-          ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
-        debug: false
-
+      run: lerna run test --stream   
+      
     - name: Publish NPM changed packages
       run: |
         npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
