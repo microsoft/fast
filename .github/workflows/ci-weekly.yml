@@ -42,7 +42,6 @@ jobs:
     - name: Test Playwright
       run: |
         cd packages/web-components/fast-components
-        npm install playwright
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
@@ -90,7 +89,6 @@ jobs:
     - name: Test Playwright
       run: |
         cd packages/web-components/fast-components
-        npm install playwright
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
@@ -129,7 +127,6 @@ jobs:
     - name: Test Playwright
       run: |
         cd packages/web-components/fast-components
-        npm install playwright
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
