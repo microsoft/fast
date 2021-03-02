@@ -3,7 +3,7 @@ import rafThrottle from "raf-throttle";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
-    CustomMessage,
+    CustomMessageIncomingOutgoing,
     DataType,
     MessageSystemType,
     SchemaDictionary,
@@ -40,7 +40,7 @@ import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-de
 import { StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
-import { CreatorState, ProjectFile } from "./creator.props";
+import { CreatorState, FormId, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
@@ -96,11 +96,15 @@ class Creator extends Editor<{}, CreatorState> {
         super(props);
 
         const componentLinkedDataId: string = "root";
+        const designSystemLinkedDataId: string = "design-system";
 
         this.devices = this.getDevices();
 
         if ((window as any).Worker) {
             this.fastMessageSystem.add({ onMessage: this.handleMessageSystem });
+            this.fastDesignMessageSystem.add({
+                onMessage: this.handleDesignSystemMessageSystem,
+            });
         }
 
         window.onresize = rafThrottle(this.handleWindowResize);
@@ -121,6 +125,18 @@ class Creator extends Editor<{}, CreatorState> {
             devToolsVisible: true,
             mobileFormVisible: false,
             mobileNavigationVisible: false,
+            activeFormId: FormId.component,
+            designSystemDataDictionary: [
+                {
+                    [designSystemLinkedDataId]: {
+                        schemaId: "fast-design-system-provider",
+                        data: {
+                            "use-defaults": true,
+                        },
+                    },
+                },
+                designSystemLinkedDataId,
+            ],
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
@@ -186,6 +202,7 @@ class Creator extends Editor<{}, CreatorState> {
                                         marginLeft: "auto",
                                     }}
                                 >
+                                    {/* TODO: Map these selectors to the state "designSystemDataDictionary" */}
                                     <ThemeSelector
                                         id={"theme-selector"}
                                         theme={this.state.theme}
@@ -246,16 +263,55 @@ class Creator extends Editor<{}, CreatorState> {
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
-                    <ModularForm
-                        messageSystem={this.fastMessageSystem}
-                        controls={[this.linkedDataControl]}
-                        categories={componentCategories}
-                    />
+                    <button onClick={this.handleFormVisibility(FormId.component)}>
+                        Components
+                    </button>
+                    <button onClick={this.handleFormVisibility(FormId.designSystem)}>
+                        Design System
+                    </button>
+                    <div
+                        style={{
+                            display:
+                                this.state.activeFormId === FormId.component
+                                    ? "block"
+                                    : "none",
+                        }}
+                    >
+                        <ModularForm
+                            key={FormId.component}
+                            messageSystem={this.fastMessageSystem}
+                            controls={[this.linkedDataControl]}
+                            categories={componentCategories}
+                        />
+                    </div>
+                    <div
+                        style={{
+                            display:
+                                this.state.activeFormId === FormId.designSystem
+                                    ? "block"
+                                    : "none",
+                        }}
+                    >
+                        <ModularForm
+                            key={FormId.designSystem}
+                            messageSystem={this.fastDesignMessageSystem}
+                        />
+                    </div>
                 </div>
                 <Footer />
             </div>
         );
     }
+
+    private handleFormVisibility = (
+        formId
+    ): ((e: React.MouseEvent<HTMLButtonElement>) => void) => {
+        return (e: React.MouseEvent<HTMLButtonElement>): void => {
+            this.setState({
+                activeFormId: formId,
+            });
+        };
+    };
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
@@ -279,6 +335,11 @@ class Creator extends Editor<{}, CreatorState> {
                     dataDictionary: this.state.dataDictionary,
                     schemaDictionary,
                 });
+                this.fastDesignMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.state.designSystemDataDictionary,
+                    schemaDictionary,
+                });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
             }
@@ -296,6 +357,17 @@ class Creator extends Editor<{}, CreatorState> {
         }
 
         this.setState(updatedState as CreatorState);
+    };
+
+    private handleDesignSystemMessageSystem = (e: MessageEvent): void => {
+        if (e.data.type === MessageSystemType.data) {
+            // TODO: pass data property from the e.data if there is an update action
+            // add to below message to pass to the preview.tsx code
+            this.fastMessageSystem.postMessage({
+                type: MessageSystemType.custom,
+                originatorId: "design-system",
+            } as CustomMessageIncomingOutgoing<any>);
+        }
     };
 
     private handleUpdateProjectFile = (projectFile: ProjectFile): void => {
@@ -414,14 +486,24 @@ class Creator extends Editor<{}, CreatorState> {
         const value: string = e.currentTarget.value;
 
         this.setState({
-            accentColor: value,
+            designSystemDataDictionary: [
+                {
+                    schemaId: this.state.designSystemDataDictionary[0].schemaId,
+                    data: {
+                        ...this.state.designSystemDataDictionary[0].data,
+                        "accent-color": value,
+                    } as any,
+                },
+                this.state.designSystemDataDictionary[1],
+            ],
         });
 
-        this.fastMessageSystem.postMessage({
-            type: MessageSystemType.custom,
-            id: previewAccentColor,
-            value,
-        } as CustomMessage<{}, {}>);
+        // this.fastMessageSystem.postMessage({
+        //     type: MessageSystemType.data,
+        //     action: MessageSystemDataTypeAction.update,
+        //     dataLocation: "accent-color",
+        //     data: value,
+        // });
     };
 
     /**
