@@ -38,6 +38,35 @@ describe(`The DI object`, function () {
         });
     });
 
+    describe(`findResponsibleContainer()`, function () {
+        it(`finds the parent by default`, function () {
+            const parent = document.createElement('div');
+            const child = document.createElement('div');
+
+            parent.appendChild(child);
+
+            const parentContainer = DI.getOrCreateDOMContainer(parent);
+            const childContainer = DI.getOrCreateDOMContainer(child);
+
+            expect(DI.findResponsibleContainer(child)).equal(parentContainer);
+        });
+
+        it(`uses the owner when specified at creation time`, function () {
+            const parent = document.createElement('div');
+            const child = document.createElement('div');
+
+            parent.appendChild(child);
+
+            const parentContainer = DI.getOrCreateDOMContainer(parent);
+            const childContainer = DI.getOrCreateDOMContainer(
+                child, 
+                { responsibleForOwnerRequests: true }
+            );
+
+            expect(DI.findResponsibleContainer(child)).equal(childContainer);
+        });
+    });
+
     describe(`getDependencies()`, function () {
         it(`throws when inject is not an array`, function () {
             class Bar {}
