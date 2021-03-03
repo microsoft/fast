@@ -1,4 +1,6 @@
-import { CSSDirective, FASTElement } from "@microsoft/fast-element";
+import { Behavior, css, CSSDirective, FASTElement } from "@microsoft/fast-element";
+import { DesignSystem } from "../design-system";
+import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenStorageImpl } from "./storage";
 
 /**
@@ -41,11 +43,21 @@ export class DesignToken<T = any> extends CSSDirective {
      */
     public readonly cssCustomProperty: string;
 
-    getValueFor(element: HTMLElement & FASTElement): T {
+    /**
+     * Get the token value for an element.
+     * @param element - The element to get the value for
+     * @returns - The value set for the element, or the value set for the nearest element ancestor.
+     */
+    public getValueFor(element: HTMLElement & FASTElement): T {
         return DesignTokenStorageImpl.for(element).get(this);
     }
 
-    setValueFor(element: HTMLElement & FASTElement, value: T): void {
+    /**
+     * Sets the token to a value for an element.
+     * @param element - The element to set the value for.
+     * @param value - The value.
+     */
+    public setValueFor(element: HTMLElement & FASTElement, value: T): void {
         DesignTokenStorageImpl.for(element).set(this, value);
     }
 
