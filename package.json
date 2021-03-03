@@ -51,6 +51,7 @@
     "test:validation": "yarn test:diff",
     "test": "yarn eslint \"/**/*.{ts}\" ",
     "unit-tests": "jest --maxWorkers=4",
+    "coverage": "yarn jest --coverage",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "lerna run prettier:diff",
@@ -62,7 +63,7 @@
     }
   },
   "jest": {
-    "collectCoverage": false,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
     ],
@@ -86,7 +87,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest"
+      "^.+\\.js?$": "babel-jest" 
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
