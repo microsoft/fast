@@ -129,7 +129,11 @@ fast-card > fast-button {
 }
 ```
 
+:::tip
+
 Third party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName or NgModel directives:
+
+:::
 
 ```html 
 <fast-text-field placeholder="name" id="name" formControlName="name" ngDefaultControl></fast-text-field>
