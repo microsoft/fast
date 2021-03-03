@@ -1046,4 +1046,59 @@ describe("getNavigationDictionary", () => {
             navigation[0].def[0][navigation[0].def[1]].parentDictionaryItem.dataLocation
         ).toEqual("foo");
     });
+    test("should use text from a data location if displayTextDataLocation has been specified", () => {
+        const navigation: NavigationConfigDictionary = getNavigationDictionary(
+            {
+                baz: {
+                    id: "baz",
+                    type: "object",
+                    properties: {
+                        foo: {
+                            [dictionaryLink]: "foo",
+                        },
+                    },
+                },
+                bat: {
+                    id: "bat",
+                    type: "object",
+                    properties: {
+                        bar: {
+                            type: "string",
+                        },
+                    },
+                },
+            },
+            [
+                {
+                    abc: {
+                        schemaId: "baz",
+                        data: {
+                            foo: [
+                                {
+                                    id: "def",
+                                },
+                            ],
+                            displayText: "test1"
+                        },
+                    },
+                    def: {
+                        schemaId: "bat",
+                        parent: {
+                            id: "abc",
+                            dataLocation: "foo",
+                        },
+                        data: {
+                            bar: "hello world",
+                            displayText: "test2"
+                        },
+                    },
+                },
+                "abc",
+            ],
+            "displayText"
+        );
+
+        expect(navigation[0]["abc"][0][""].text).toEqual("test1");
+        expect(navigation[0]["def"][0][""].text).toEqual("test2");
+    });
 });

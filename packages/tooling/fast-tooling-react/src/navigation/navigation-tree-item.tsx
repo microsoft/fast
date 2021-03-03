@@ -23,6 +23,7 @@ function editableOverlay(
     return (
         <input
             className={className}
+            key={"overlay"}
             value={value}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
