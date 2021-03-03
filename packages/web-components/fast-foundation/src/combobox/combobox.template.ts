@@ -40,8 +40,8 @@ export const ComboboxTemplate = html<Combobox>`
                 <div class="indicator" part="indicator" aria-hidden="true">
                     <slot name="indicator">
                         <svg
-                            class="combobox-indicator"
-                            part="combobox-indicator"
+                            class="select-indicator"
+                            part="select-indicator"
                             viewBox="0 0 12 7"
                             xmlns="http://www.w3.org/2000/svg"
                         >
