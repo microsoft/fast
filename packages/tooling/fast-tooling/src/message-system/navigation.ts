@@ -16,6 +16,7 @@ import { DataDictionary, Parent } from "./data.props";
 function getNavigationRecursive(
     schema: any,
     disabled: boolean,
+    displayTextDataLocation?: string,
     data?: any,
     dictionaryParent?: Parent,
     displayText?: string,
@@ -33,8 +34,12 @@ function getNavigationRecursive(
         dataLocation,
         schemaLocation,
         self,
-        displayText
+        displayTextDataLocation
     );
+    const text: string =
+        typeof displayTextDataLocation === "string"
+            ? get(data, displayTextDataLocation, schema.title)
+            : schema.title;
 
     return [
         {
@@ -53,7 +58,7 @@ function getNavigationRecursive(
                 schema,
                 disabled,
                 data,
-                text: displayText && parent === null ? displayText : schema.title,
+                text,
                 type: schema.type || DataType.unknown,
                 items: items.map((item: NavigationConfig) => {
                     return item[1];
@@ -74,14 +79,21 @@ export function getNavigation(
     schema: any,
     data?: any,
     parent?: Parent,
-    displayText?: string
+    displayTextDataLocation?: string
 ): NavigationConfig {
-    return getNavigationRecursive(schema, !!schema.disabled, data, parent, displayText);
+    return getNavigationRecursive(
+        schema,
+        !!schema.disabled,
+        displayTextDataLocation,
+        data,
+        parent
+    );
 }
 
 export function getNavigationDictionary(
     schemaDictionary: SchemaDictionary,
-    data: DataDictionary<unknown>
+    data: DataDictionary<unknown>,
+    displayTextDataLocation?: string
 ): NavigationConfigDictionary {
     const navigationConfigs: NavigationConfigDictionary[] = [];
 
@@ -92,7 +104,7 @@ export function getNavigationDictionary(
                     schemaDictionary[data[0][dataKey].schemaId],
                     data[0][dataKey].data,
                     data[0][dataKey].parent,
-                    data[0][dataKey].displayText
+                    displayTextDataLocation
                 ),
             },
             dataKey,
@@ -122,7 +134,7 @@ function getNavigationItems(
     dataLocation: string,
     schemaLocation: string,
     parent: string,
-    displayText: string
+    displayTextDataLocation: string
 ): NavigationConfig[] {
     const combiningKeyword: CombiningKeyword | void = schema[CombiningKeyword.oneOf]
         ? CombiningKeyword.oneOf
@@ -143,6 +155,7 @@ function getNavigationItems(
             return getNavigationRecursive(
                 subSchema,
                 disabled || !!subSchema.disabled,
+                displayTextDataLocation,
                 data,
                 undefined,
                 displayText,
@@ -161,6 +174,7 @@ function getNavigationItems(
                     return getNavigationRecursive(
                         schema.properties[propertyKey],
                         disabled || !!schema.properties[propertyKey].disabled,
+                        displayTextDataLocation,
                         get(data, propertyKey) ? data[propertyKey] : void 0,
                         undefined,
                         displayText,
@@ -178,6 +192,7 @@ function getNavigationItems(
                     return getNavigationRecursive(
                         schema.items,
                         disabled || !!schema.items.disabled,
+                        displayTextDataLocation,
                         data[index],
                         undefined,
                         displayText,

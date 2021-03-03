@@ -25,6 +25,7 @@ import {
 import { DraggableNavigationTreeItem } from "./navigation-tree-item";
 import { DragDropItemType } from "./navigation-tree-item.props";
 import {
+    dataSetName,
     dictionaryLink,
     LinkedData,
     MessageSystemDataTypeAction,
@@ -38,6 +39,10 @@ import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
 
 export const navigationId = "fast-tooling-react::navigation";
+
+interface NavigationRegisterConfig {
+    displayTextDataLocation: string;
+}
 
 class Navigation extends Foundation<
     NavigationHandledProps & ManagedClasses<NavigationClassNameContract>,
@@ -56,7 +61,7 @@ class Navigation extends Foundation<
         messageSystem: void 0,
     };
 
-    private messageSystemConfig: Register;
+    private messageSystemConfig: Register<NavigationRegisterConfig>;
 
     private rootElement: React.RefObject<HTMLDivElement>;
 
@@ -65,6 +70,9 @@ class Navigation extends Foundation<
 
         this.messageSystemConfig = {
             onMessage: this.handleMessageSystem,
+            config: {
+                displayTextDataLocation: dataSetName,
+            },
         };
 
         if (props.messageSystem !== undefined) {
@@ -74,7 +82,8 @@ class Navigation extends Foundation<
         this.state = {
             navigationDictionary: null,
             dataDictionary: null,
-            activeItem: null,
+            activeDictionaryId: "",
+            activeNavigationConfigId: "",
             activeItemEditable: false,
             expandedNavigationConfigItems: {},
             linkedData: void 0,
@@ -144,39 +153,34 @@ class Navigation extends Foundation<
                 this.setState({
                     navigationDictionary: e.data.navigationDictionary,
                     dataDictionary: e.data.dataDictionary,
-                    activeItem: [
-                        e.data.navigationDictionary[1],
-                        e.data.navigationDictionary[0][e.data.navigationDictionary[1]][1],
-                    ],
+                    activeDictionaryId: e.data.activeDictionaryId
+                        ? e.data.activeDictionaryId
+                        : e.data.navigationDictionary[1],
+                    activeNavigationConfigId: e.data.activeNavigationConfigId
+                        ? e.data.activeNavigationConfigId
+                        : e.data.navigationDictionary[0][
+                              e.data.navigationDictionary[1]
+                          ][1],
                 });
 
                 break;
             case MessageSystemType.data:
-                switch (e.data.action) {
-                    case MessageSystemDataTypeAction.updateDisplayText:
-                        this.setState({
-                            navigationDictionary: e.data.navigationDictionary,
-                            dataDictionary: e.data.dataDictionary,
-                        });
-                        break;
-                    default:
-                        this.setState({
-                            navigationDictionary: e.data.navigationDictionary,
-                            dataDictionary: e.data.dataDictionary,
-                            activeItem: [
-                                e.data.activeDictionaryId,
-                                e.data.activeNavigationConfigId,
-                            ],
-                        });
-                }
+                this.setState({
+                    navigationDictionary: e.data.navigationDictionary,
+                    dataDictionary: e.data.dataDictionary,
+                    activeDictionaryId: e.data.activeDictionaryId
+                        ? e.data.activeDictionaryId
+                        : this.state.activeDictionaryId,
+                    activeNavigationConfigId: e.data.activeNavigationConfigId
+                        ? e.data.activeNavigationConfigId
+                        : this.state.activeNavigationConfigId,
+                });
 
                 break;
             case MessageSystemType.navigation:
                 this.setState({
-                    activeItem: [
-                        e.data.activeDictionaryId,
-                        e.data.activeNavigationConfigId,
-                    ],
+                    activeDictionaryId: e.data.activeDictionaryId,
+                    activeNavigationConfigId: e.data.activeNavigationConfigId,
                 });
                 break;
         }
@@ -246,7 +250,7 @@ class Navigation extends Foundation<
                 role={"treeitem"}
                 className={this.props.managedClasses.navigation_itemRegion}
                 aria-expanded={this.getExpandedState(dictionaryId, navigationConfigId)}
-                key={dictionaryId + navigationConfigId}
+                key={index}
             >
                 {trigger}
                 {content}
@@ -268,6 +272,7 @@ class Navigation extends Foundation<
             <DraggableNavigationTreeItem
                 type={type}
                 index={index}
+                key={index}
                 isCollapsible={isCollapsible}
                 isEditable={
                     this.state.activeItemEditable &&
@@ -371,9 +376,9 @@ class Navigation extends Foundation<
 
     private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
         return (
-            this.state.activeItem[0] === dictionaryId &&
-            this.state.activeItem[1] === navigationConfigId &&
-            this.state.activeItem[1] === ""
+            this.state.activeDictionaryId === dictionaryId &&
+            this.state.activeNavigationConfigId === navigationConfigId &&
+            this.state.activeNavigationConfigId === ""
         );
     }
 
@@ -438,8 +443,8 @@ class Navigation extends Foundation<
         }
 
         if (
-            this.state.activeItem[0] === dictionaryId &&
-            this.state.activeItem[1] === navigationConfigId
+            this.state.activeDictionaryId === dictionaryId &&
+            this.state.activeNavigationConfigId === navigationConfigId
         ) {
             className += ` ${this.props.managedClasses.navigation_item__active}`;
         }
@@ -644,9 +649,13 @@ class Navigation extends Foundation<
         return (e: React.ChangeEvent<HTMLInputElement>) => {
             this.props.messageSystem.postMessage({
                 type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.updateDisplayText,
+                action: MessageSystemDataTypeAction.update,
                 dictionaryId,
-                displayText: e.target.value,
+                dataLocation: dataSetName,
+                data: e.target.value,
+                options: {
+                    originatorId: navigationId,
+                },
             });
         };
     };

@@ -16,11 +16,7 @@ export interface ShortcutOptions {
     originatorId: shortcutsMessageId;
 }
 
-export interface ShortCutOptionsConfig {
-    options: ShortcutOptions;
-}
-
-export interface ShortcutMessageOutgoing extends CustomMessage<{}, {}> {
+export interface ShortcutMessageOutgoing extends CustomMessage<{}, ShortcutOptions> {
     /**
      * The custom message id
      */

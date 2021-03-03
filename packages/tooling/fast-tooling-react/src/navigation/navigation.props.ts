@@ -22,19 +22,14 @@ export enum HoverLocation {
 
 export interface NavigationState {
     /**
-     * The current active item
+     * The active dictionary ID
      */
-    activeItem: {
-        /**
-         * Dictionary key
-         */
-        0: string;
+    activeDictionaryId: string;
 
-        /**
-         * Navigation config key
-         */
-        1: string;
-    } | null;
+    /**
+     * The active navigation config ID
+     */
+    activeNavigationConfigId: string;
 
     /**
      * Whether the current active item is editable
