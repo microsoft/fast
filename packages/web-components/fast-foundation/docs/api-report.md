@@ -1173,6 +1173,7 @@ export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListE
 
 // @public
 export class Menu extends FASTElement {
+    collapseExpandedItem(): void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -1183,6 +1184,8 @@ export class Menu extends FASTElement {
     // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
     // @internal (undocumented)
+    readonly isNestedMenu: () => boolean;
+    // @internal (undocumented)
     items: HTMLSlotElement;
     }
 
@@ -1192,13 +1195,29 @@ export class Menu extends FASTElement {
 // @public
 export class MenuItem extends FASTElement {
     checked: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    currentDirection: Direction;
     disabled: boolean;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     expanded: boolean;
     // @internal (undocumented)
-    handleMenuItemClick: (e: MouseEvent) => void;
+    handleMenuItemClick: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMenuItemKeyDown: (e: KeyboardEvent) => boolean;
+    // @internal (undocumented)
+    handleMouseOut: (e: MouseEvent) => boolean;
+    // @internal (undocumented)
+    handleMouseOver: (e: MouseEvent) => boolean;
     role: MenuItemRole;
+    // @internal (undocumented)
+    submenu: Element | undefined;
+    // @internal (undocumented)
+    submenuLoaded: () => void;
+    // @internal
+    submenuRegion: AnchoredRegion;
 }
 
 // @internal
