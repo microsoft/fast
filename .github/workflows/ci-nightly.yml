@@ -35,8 +35,8 @@ jobs:
       run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream
-
+      run: lerna run test --stream   
+      
     - name: Publish NPM changed packages
       run: |
         npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
