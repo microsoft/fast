@@ -282,7 +282,7 @@ export interface ColumnDefinition {
 //
 // @public
 export class Combobox extends FormAssociatedCombobox {
-    autocomplete: "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -297,6 +297,8 @@ export class Combobox extends FormAssociatedCombobox {
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback: () => void;
+    // @internal
+    inputHandler(e: InputEvent): boolean | void;
     // @internal
     keydownHandler(e: Event & KeyboardEvent): boolean | void;
     // @internal
@@ -316,6 +318,8 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
+    selectedOptionsChanged(prev: any, next: any): void;
+    // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
@@ -326,8 +330,20 @@ export class Combobox extends FormAssociatedCombobox {
     set value(next: string);
     }
 
-// @internal (undocumented)
+// @internal
 export interface Combobox extends StartEnd, DelegatesARIACombobox {
+}
+
+// @public
+export enum ComboboxAutocomplete {
+    // (undocumented)
+    both = "both",
+    // (undocumented)
+    inline = "inline",
+    // (undocumented)
+    list = "list",
+    // (undocumented)
+    none = "none"
 }
 
 // @public

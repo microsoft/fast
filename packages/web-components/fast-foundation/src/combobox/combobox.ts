@@ -1,4 +1,5 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
+import { limit } from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
@@ -6,6 +7,7 @@ import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { SelectPosition, SelectRole } from "../select/select.options";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
+import { ComboboxAutocomplete } from "./combobox.options";
 
 /**
  * A Combobox Custom HTML Element.
@@ -36,7 +38,7 @@ export class Combobox extends FormAssociatedCombobox {
      * HTML Attribute: autocomplete
      */
     @attr({ attribute: "autocomplete", mode: "fromView" })
-    autocomplete: "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
 
     /**
      * Reference to the internal text input element.
@@ -50,7 +52,6 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @public
      */
-    @observable
     public filteredOptions: ListboxOption[] = [];
 
     /**
@@ -78,6 +79,20 @@ export class Combobox extends FormAssociatedCombobox {
         this.setDefaultSelectedOption();
         this.updateValue();
     };
+
+    private get isAutocompleteInline(): boolean {
+        return (
+            this.autocomplete === ComboboxAutocomplete.inline || this.isAutocompleteBoth
+        );
+    }
+
+    private get isAutocompleteList(): boolean {
+        return this.autocomplete === ComboboxAutocomplete.list || this.isAutocompleteBoth;
+    }
+
+    private get isAutocompleteBoth(): boolean {
+        return this.autocomplete === ComboboxAutocomplete.both;
+    }
 
     /**
      * The unique id of the internal listbox.
@@ -169,19 +184,15 @@ export class Combobox extends FormAssociatedCombobox {
                 el => el.text.toLowerCase() === next.toLowerCase()
             );
 
-            const prevSelectedOption = this.options[this.selectedIndex];
-            const prevSelectedValue = prevSelectedOption ? prevSelectedOption.text : null;
+            const prevSelectedValue = this.options[this.selectedIndex]?.text;
+            const nextSelectedValue = this.options[selectedIndex]?.text;
 
-            const nextSelectedOption = this.options[selectedIndex];
-            const nextSelectedValue = nextSelectedOption ? nextSelectedOption.text : null;
+            this.selectedIndex =
+                prevSelectedValue !== nextSelectedValue
+                    ? selectedIndex
+                    : this.selectedIndex;
 
-            if (prevSelectedValue !== nextSelectedValue) {
-                this.selectedIndex = selectedIndex;
-            }
-
-            if (this.firstSelectedOption) {
-                next = this.firstSelectedOption.text;
-            }
+            next = this.firstSelectedOption?.text || next;
         }
 
         if (prev !== next) {
@@ -252,24 +263,18 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @public
      */
-    public filterOptions() {
-        if (!this.autocomplete || this.autocomplete === "none") {
+    public filterOptions(): void {
+        if (!this.autocomplete || this.autocomplete === ComboboxAutocomplete.none) {
             this.filter = "";
         }
 
         const filter = this.filter.toLowerCase();
 
-        let filteredOptions: ListboxOption[] = [];
+        this.filteredOptions = this._options.filter(o =>
+            o.text.toLowerCase().startsWith(this.filter.toLowerCase())
+        );
 
-        if (filter.length) {
-            filteredOptions = this._options.filter(o => {
-                return o.text.toLowerCase().startsWith(filter);
-            });
-        }
-
-        this.filteredOptions = filteredOptions;
-
-        if (this.autocomplete === "list" || this.autocomplete === "both") {
+        if (this.isAutocompleteList) {
             if (!this.filteredOptions.length && !filter) {
                 this.filteredOptions = this._options;
             }
@@ -287,6 +292,8 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
+        this.updateValue();
+
         if (!this.open) {
             return true;
         }
@@ -300,8 +307,33 @@ export class Combobox extends FormAssociatedCombobox {
         if (!this.options || !this.options.includes(focusTarget as ListboxOption)) {
             this.open = false;
         }
+    }
 
-        this.value = this.control.value;
+    /**
+     * Handle content changes on the control input.
+     *
+     * @param e - the input event
+     * @internal
+     */
+    public inputHandler(e: InputEvent): boolean | void {
+        this.filter = this.control.value;
+        this.filterOptions();
+
+        if (e.inputType === "deleteContentBackward" || !this.filter.length) {
+            return true;
+        }
+
+        if (this.isAutocompleteList && !this.open) {
+            this.open = true;
+        }
+
+        if (this.isAutocompleteInline && this.filteredOptions.length) {
+            this.selectedOptions = [this.filteredOptions[0]];
+            this.selectedIndex = this.options.indexOf(this.firstSelectedOption);
+            this.setInlineSelection();
+        }
+
+        return;
     }
 
     /**
@@ -311,7 +343,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public keydownHandler(e: Event & KeyboardEvent): boolean | void {
-        const key = e.key || e.key.charCodeAt(0);
+        const key = e.key;
 
         if (e.ctrlKey || e.shiftKey) {
             return true;
@@ -320,11 +352,13 @@ export class Combobox extends FormAssociatedCombobox {
         switch (key) {
             case "Enter": {
                 this.updateValue(true);
+                if (this.isAutocompleteInline) {
+                    this.filter = this.value;
+                }
+
                 this.open = false;
-                this.control.setSelectionRange(
-                    this.control.value.length,
-                    this.control.value.length
-                );
+                const controlValueLength = this.control.value.length;
+                this.control.setSelectionRange(controlValueLength, controlValueLength);
                 break;
             }
 
@@ -333,14 +367,17 @@ export class Combobox extends FormAssociatedCombobox {
                     this.open = false;
                     this.filter = this.control.value;
                     this.filterOptions();
-                } else {
-                    this.value = "";
-                    this.control.value = "";
+                    break;
                 }
+
+                this.value = "";
+                this.control.value = "";
                 break;
             }
 
             case "Tab": {
+                this.updateValue();
+
                 if (!this.open) {
                     return true;
                 }
@@ -359,13 +396,13 @@ export class Combobox extends FormAssociatedCombobox {
 
                 this.filterOptions();
 
-                if (this.options.length > 0) {
+                if (this.filteredOptions.length > 0) {
                     super.keydownHandler(e);
                 }
 
-                if (this.autocomplete === "inline" || this.autocomplete === "both") {
-                    this.setInlineSelection();
+                if (this.isAutocompleteInline) {
                     this.updateValue();
+                    this.setInlineSelection();
                 }
 
                 break;
@@ -386,51 +423,16 @@ export class Combobox extends FormAssociatedCombobox {
     public keyupHandler(e: KeyboardEvent): boolean | void {
         const key = e.key;
 
-        if (key.length === 1) {
-            this.filter += e.key;
-        }
-
         switch (key) {
-            case "Backspace": {
-                this.filter = this.control.value;
-                this.filterOptions();
-                this.selectedIndex = -1;
-                this.setSelectedOptions();
-                break;
-            }
-
             case "ArrowLeft":
             case "ArrowRight":
+            case "Backspace":
+            case "Delete":
             case "Home":
             case "End": {
-                if (this.autocomplete === "both") {
-                    this.filter = this.control.value;
-                    this.filterOptions();
-                } else {
-                    this.selectedIndex = -1;
-                    this.setSelectedOptions();
-                }
-                break;
-            }
-
-            default: {
-                if (key.length === 1 && key.match(/\S/)) {
-                    this.filterOptions();
-                    if (this.autocomplete === "list" || this.autocomplete === "both") {
-                        if (!this.open && this.control.value.length) {
-                            this.open = true;
-                        }
-                    }
-
-                    if (this.autocomplete === "inline" || this.autocomplete === "both") {
-                        if (this.filteredOptions.length && this.filter) {
-                            this.selectedIndex = this._options.indexOf(
-                                this.filteredOptions[0]
-                            );
-                            this.setInlineSelection();
-                        }
-                    }
-                }
+                this.filter = this.control.value;
+                this.selectedIndex = -1;
+                this.filterOptions();
                 break;
             }
         }
@@ -445,14 +447,9 @@ export class Combobox extends FormAssociatedCombobox {
      */
     public selectedIndexChanged(prev: number, next: number): void {
         if (this.$fastController.isConnected) {
-            if (next > this.options.length - 1) {
-                next = this.options.length - 1;
-            }
+            next = limit(-1, this.options.length - 1, next);
 
-            if (next < -1) {
-                next = -1;
-            }
-
+            // we only want to call the super method when the selectedIndex is in range
             if (next !== this.selectedIndex) {
                 this.selectedIndex = next;
                 return;
@@ -540,6 +537,21 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
+     * Ensure that the entire list of options is used when setting the selected property.
+     *
+     * @internal
+     * @remarks
+     * Overrides: `Listbox.selectedOptionsChanged`
+     */
+    public selectedOptionsChanged(prev, next): void {
+        if (this.$fastController.isConnected) {
+            this._options.forEach(o => {
+                o.selected = next.includes(o);
+            });
+        }
+    }
+
+    /**
      * Synchronize the form-associated proxy and update the value property of the element.
      *
      * @param prev - the previous collection of slotted option elements
@@ -557,11 +569,7 @@ export class Combobox extends FormAssociatedCombobox {
      */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
-            if (this.firstSelectedOption) {
-                this.value = this.firstSelectedOption.text;
-            } else if (this.dirtyValue) {
-                this.value = this.control.value;
-            }
+            this.value = this.firstSelectedOption?.text || this.control.value;
         }
 
         if (shouldEmit) {
@@ -596,6 +604,9 @@ export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIACombobox, ARIAGlobalStatesAndProperties);
 
 /**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
 export interface Combobox extends StartEnd, DelegatesARIACombobox {}

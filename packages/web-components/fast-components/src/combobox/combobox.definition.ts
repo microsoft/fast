@@ -1,6 +1,7 @@
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { SelectPosition } from "@microsoft/fast-foundation/dist/esm/select/select.options";
+import { ComboboxAutocomplete } from "@microsoft/fast-foundation/dist/esm/combobox/combobox.options";
 
 export const fastComboboxDefinition: WebComponentDefinition = {
     version: 1,
@@ -11,7 +12,17 @@ export const fastComboboxDefinition: WebComponentDefinition = {
             description: "The FAST combobox element",
             attributes: [
                 {
+                    name: "autocomplete",
+                    title: "Autocomplete",
+                    description:
+                        "Sets the autocomplete method to use when the combobox receives user input",
+                    default: "",
+                    type: DataType.string,
+                    values: Object.keys(ComboboxAutocomplete).map(x => ({ name: x })),
+                },
+                {
                     name: "disabled",
+                    title: "Disabled",
                     description: "Sets the disabled state of the combobox",
                     type: DataType.boolean,
                     default: false,
@@ -19,6 +30,7 @@ export const fastComboboxDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "name",
+                    title: "Name",
                     description:
                         "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
@@ -27,6 +39,7 @@ export const fastComboboxDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "position",
+                    title: "Position",
                     description: "Controls the placement of the combobox dropdown",
                     default: undefined,
                     required: false,

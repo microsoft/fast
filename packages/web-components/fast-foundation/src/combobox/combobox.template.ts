@@ -32,6 +32,7 @@ export const ComboboxTemplate = html<Combobox>`
                     aria-haspopup="listbox"
                     ?disabled="${x => x.disabled}"
                     :value="${x => x.value}"
+                    @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
                     @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
                     @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
                     ${ref("control")}
