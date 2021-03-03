@@ -150,12 +150,15 @@ export const MenuItemStyles = css`
         grid-column-start: 4;
     }
 
-    :host .checkbox {
+    :host .checkbox,
+    :host .radio {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         width: 20px;
         height: 20px;
         box-sizing: border-box;
-        border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--outline-width) * 1px) solid ${
             accentForegroundCutRestBehavior.var
         };
@@ -163,33 +166,28 @@ export const MenuItemStyles = css`
         margin-inline-start: 10px;
     }
 
-    :host .checkbox-indicator{
+    :host .checkbox {
+        border-radius: calc(var(--corner-radius) * 1px);
+    }
+
+    :host .radio {
+        border-radius: 999px;
+    }
+
+    :host .checkbox-indicator,
+    :host .radio-indicator,
+    ::slotted([slot="checkbox-indicator"]),
+    ::slotted([slot="radio-indicator"]) {
         display: none;
     }
 
-    :host([aria-checked="true"]) .checkbox-indicator{
+    :host([aria-checked="true"]) .checkbox-indicator,
+    :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
         width: 100%;
         height: 100%;
         display: block;
         fill: ${accentForegroundCutRestBehavior.var};
         pointer-events: none;
-    }
-
-    :host .radio {
-        position: relative;
-        width: 20px;
-        height: 20px;
-        box-sizing: border-box;
-        border-radius: 999px;
-        border: calc(var(--outline-width) * 1px) solid ${
-            accentForegroundCutRestBehavior.var
-        };
-        outline: none;
-        margin-inline-start: 10px;
-    }
-
-    :host .radio-indicator {
-        display: none;
     }
 
     :host([aria-checked="true"]) .radio-indicator {
@@ -199,8 +197,13 @@ export const MenuItemStyles = css`
         right: 4px;
         bottom: 4px;
         border-radius: 999px;
-        display: inline-block;
+        display: block;
         background: ${accentForegroundCutRestBehavior.var};
+        pointer-events: none;
+    }
+
+    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
+        display: block;
         pointer-events: none;
     }
 `.withBehaviors(
@@ -282,7 +285,9 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.HighlightText};
             }
 
-            :host([aria-checked="true"]) .checkbox-indicator{
+            :host([aria-checked="true"]) .checkbox-indicator,
+            :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]),
+            :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
                 fill: ${SystemColors.Highlight};
             }
 
