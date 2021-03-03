@@ -16,15 +16,11 @@ import { DesignTokenStorageImpl } from "./storage";
 export class DesignToken<T = any> extends CSSDirective {
     private cssVar: string;
 
-    constructor(public readonly name: string, public readonly writeCSSProperty = true) {
+    constructor(public readonly name: string) {
         super();
 
-        if (writeCSSProperty) {
-            this.cssCustomProperty = `--${name}`;
-            this.cssVar = `var(${this.cssCustomProperty})`;
-        } else {
-            this.cssCustomProperty = this.cssVar = "";
-        }
+        this.cssCustomProperty = `--${name}`;
+        this.cssVar = `var(${this.cssCustomProperty})`;
     }
 
     /**
@@ -57,8 +53,17 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to set the value for.
      * @param value - The value.
      */
-    public setValueFor(element: HTMLElement & FASTElement, value: T): void {
+    public setValueFor(element: HTMLElement & FASTElement, value: T): this {
         DesignTokenStorageImpl.for(element).set(this, value);
+        return this;
+    }
+
+    /**
+     * Adds the token as a CSS Custom Property to an element
+     * @param element - The element to add the CSS Custom Property to
+     */
+    public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
+        return this;
     }
 
     /**
@@ -68,7 +73,7 @@ export class DesignToken<T = any> extends CSSDirective {
      *
      * @returns - {@link DesignToken}
      */
-    public static create<T>(name: string, writeCSSProperty = true): DesignToken<T> {
-        return new DesignToken<T>(name, writeCSSProperty);
+    public static create<T>(name: string): DesignToken<T> {
+        return new DesignToken<T>(name);
     }
 }

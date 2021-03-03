@@ -1,5 +1,4 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { DesignToken } from "./design-token";
 
 /**
  * Caching mechanism for CSS custom properties
