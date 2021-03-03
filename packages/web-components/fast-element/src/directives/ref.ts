@@ -1,6 +1,6 @@
 import { CaptureType } from "../template";
 import { Behavior } from "./behavior";
-import { AttachedBehaviorDirective } from "./directive";
+import { AttachedBehaviorHTMLDirective } from "./directive";
 
 /**
  * The runtime behavior for template references.
@@ -37,5 +37,5 @@ export class RefBehavior implements Behavior {
  * @public
  */
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new AttachedBehaviorDirective("fast-ref", RefBehavior, propertyName);
+    return new AttachedBehaviorHTMLDirective("fast-ref", RefBehavior, propertyName);
 }

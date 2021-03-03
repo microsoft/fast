@@ -11,7 +11,7 @@ import { Subscriber, Notifier } from "../observation/notifier";
 import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
 import { Behavior } from "./behavior";
-import { Directive } from "./directive";
+import { HTMLDirective } from "./directive";
 import { emptyArray } from "../interfaces";
 
 /**
@@ -290,7 +290,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
  * A directive that configures list rendering.
  * @public
  */
-export class RepeatDirective<TSource = any> extends Directive {
+export class RepeatDirective<TSource = any> extends HTMLDirective {
     private isItemsBindingVolatile: boolean;
     private isTemplateBindingVolatile: boolean;
 

@@ -7,7 +7,7 @@ import {
 import { Observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { SyntheticView } from "../view";
-import { NamedTargetDirective } from "./directive";
+import { TargetedHTMLDirective } from "./directive";
 import { Behavior } from "./behavior";
 
 function normalBind(
@@ -187,7 +187,7 @@ function updateClassTarget(this: BindingBehavior, value: string): void {
  * A directive that configures data binding to element content and attributes.
  * @public
  */
-export class BindingDirective extends NamedTargetDirective {
+export class HTMLBindingDirective extends TargetedHTMLDirective {
     private cleanedTargetName?: string;
     private originalTargetName?: string;
     private bind: typeof normalBind = normalBind;

@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { BindingDirective } from "./binding";
+import { HTMLBindingDirective } from "./binding";
 import { observable, defaultExecutionContext } from "../observation/observable";
 import { DOM } from "../dom";
 import { html, ViewTemplate } from "../template";
 import { toHTML } from "../__test__/helpers";
 import { SyntheticView, HTMLView } from "../view";
 
-describe("The binding directive", () => {
+describe("The HTML binding directive", () => {
     class Model {
         constructor(value: any) {
             this.value = value;
@@ -27,7 +27,7 @@ describe("The binding directive", () => {
     }
 
     function contentBinding(propertyName: keyof Model = "value") {
-        const directive = new BindingDirective(x => x[propertyName]);
+        const directive = new HTMLBindingDirective(x => x[propertyName]);
         directive.targetAtContent();
 
         const node = document.createTextNode(" ");

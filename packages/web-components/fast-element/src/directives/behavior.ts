@@ -25,7 +25,7 @@ export interface Behavior {
  * location within a DOM fragment.
  * @public
  */
-export interface BehaviorFactory {
+export interface NodeBehaviorFactory {
     /**
      * The index of the DOM node to which the created behavior will apply.
      */

@@ -1,10 +1,10 @@
-import { BehaviorFactory } from "./directives/behavior";
+import { NodeBehaviorFactory } from "./directives/behavior";
 import { DOM, _interpolationEnd, _interpolationStart } from "./dom";
-import { BindingDirective } from "./directives/binding";
-import { Directive } from "./directives/directive";
+import { HTMLBindingDirective } from "./directives/binding";
+import { HTMLDirective } from "./directives/directive";
 import { ExecutionContext, Binding } from "./observation/observable";
 
-type InlineDirective = Directive & {
+type InlineDirective = HTMLDirective & {
     targetName?: string;
     binding: Binding;
     targetAtContent(): void;
@@ -12,15 +12,15 @@ type InlineDirective = Directive & {
 
 class CompilationContext {
     public targetIndex!: number;
-    public behaviorFactories!: BehaviorFactory[];
-    public directives: ReadonlyArray<Directive>;
+    public behaviorFactories!: NodeBehaviorFactory[];
+    public directives: ReadonlyArray<HTMLDirective>;
 
-    public addFactory(factory: BehaviorFactory): void {
+    public addFactory(factory: NodeBehaviorFactory): void {
         factory.targetIndex = this.targetIndex;
         this.behaviorFactories.push(factory);
     }
 
-    public captureContentBinding(directive: BindingDirective): void {
+    public captureContentBinding(directive: HTMLBindingDirective): void {
         directive.targetAtContent();
         this.addFactory(directive);
     }
@@ -34,7 +34,7 @@ class CompilationContext {
         sharedContext = this;
     }
 
-    public static borrow(directives: ReadonlyArray<Directive>): CompilationContext {
+    public static borrow(directives: ReadonlyArray<HTMLDirective>): CompilationContext {
         const shareable = sharedContext || new CompilationContext();
         shareable.directives = directives;
         shareable.reset();
@@ -45,9 +45,11 @@ class CompilationContext {
 
 let sharedContext: CompilationContext | null = null;
 
-function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDirective {
+function createAggregateBinding(
+    parts: (string | InlineDirective)[]
+): HTMLBindingDirective {
     if (parts.length === 1) {
-        return parts[0] as BindingDirective;
+        return parts[0] as HTMLBindingDirective;
     }
 
     let targetName: string | undefined;
@@ -71,7 +73,7 @@ function createAggregateBinding(parts: (string | InlineDirective)[]): BindingDir
         return output;
     };
 
-    const directive = new BindingDirective(binding);
+    const directive = new HTMLBindingDirective(binding);
     directive.targetName = targetName;
     return directive;
 }
@@ -122,11 +124,11 @@ function compileAttributes(
         const attr = attributes[i];
         const attrValue = attr.value;
         const parseResult = parseContent(context, attrValue);
-        let result: BindingDirective | null = null;
+        let result: HTMLBindingDirective | null = null;
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = new BindingDirective(() => attrValue);
+                result = new HTMLBindingDirective(() => attrValue);
                 result.targetName = attr.name;
             }
         } else {
@@ -165,7 +167,7 @@ function compileContent(
                 currentNode.textContent = currentPart;
             } else {
                 currentNode.textContent = " ";
-                context.captureContentBinding(currentPart as BindingDirective);
+                context.captureContentBinding(currentPart as HTMLBindingDirective);
             }
 
             lastNode = currentNode;
@@ -192,12 +194,12 @@ export interface CompilationResult {
     /**
      * The behaviors that should be applied to the template's HTML.
      */
-    viewBehaviorFactories: BehaviorFactory[];
+    viewBehaviorFactories: NodeBehaviorFactory[];
     /**
      * The behaviors that should be applied to the host element that
      * the template is rendered into.
      */
-    hostBehaviorFactories: BehaviorFactory[];
+    hostBehaviorFactories: NodeBehaviorFactory[];
     /**
      * An index offset to apply to BehaviorFactory target indexes when
      * matching factories to targets.
@@ -219,7 +221,7 @@ export interface CompilationResult {
  */
 export function compileTemplate(
     template: HTMLTemplateElement,
-    directives: ReadonlyArray<Directive>
+    directives: ReadonlyArray<HTMLDirective>
 ): CompilationResult {
     const fragment = template.content;
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864

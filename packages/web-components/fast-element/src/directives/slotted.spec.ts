@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { slotted, SlottedBehavior } from "./slotted";
-import { AttachedBehaviorDirective } from "./directive";
+import { AttachedBehaviorHTMLDirective } from "./directive";
 import { observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
@@ -9,13 +9,13 @@ describe("The slotted", () => {
     context("template function", () => {
         it("returns an AttachedBehaviorDirective", () => {
             const directive = slotted("test");
-            expect(directive).to.be.instanceOf(AttachedBehaviorDirective);
+            expect(directive).to.be.instanceOf(AttachedBehaviorHTMLDirective);
         });
     });
 
     context("directive", () => {
         it("creates a SlottedBehavior", () => {
-            const directive = slotted("test") as AttachedBehaviorDirective;
+            const directive = slotted("test") as AttachedBehaviorHTMLDirective;
             const target = document.createElement("slot");
             const behavior = directive.createBehavior(target);
 

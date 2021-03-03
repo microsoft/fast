@@ -1,5 +1,5 @@
 import { CaptureType } from "../template";
-import { AttachedBehaviorDirective } from "./directive";
+import { AttachedBehaviorHTMLDirective } from "./directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 /**
@@ -99,7 +99,7 @@ export function children<T = any>(
         };
     }
 
-    return new AttachedBehaviorDirective(
+    return new AttachedBehaviorHTMLDirective(
         "fast-children",
         ChildrenBehavior,
         propertyOrOptions as any

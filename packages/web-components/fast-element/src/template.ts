@@ -1,9 +1,9 @@
 import { compileTemplate } from "./template-compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { DOM } from "./dom";
-import { Behavior, BehaviorFactory } from "./directives/behavior";
-import { Directive, NamedTargetDirective } from "./directives/directive";
-import { BindingDirective } from "./directives/binding";
+import { Behavior, NodeBehaviorFactory } from "./directives/behavior";
+import { HTMLDirective, TargetedHTMLDirective } from "./directives/directive";
+import { HTMLBindingDirective } from "./directives/binding";
 import { defaultExecutionContext, Binding } from "./observation/observable";
 
 /**
@@ -48,8 +48,8 @@ export class ViewTemplate<TSource = any, TParent = any>
     private hasHostBehaviors: boolean = false;
     private fragment: DocumentFragment | null = null;
     private targetOffset: number = 0;
-    private viewBehaviorFactories: BehaviorFactory[] | null = null;
-    private hostBehaviorFactories: BehaviorFactory[] | null = null;
+    private viewBehaviorFactories: NodeBehaviorFactory[] | null = null;
+    private hostBehaviorFactories: NodeBehaviorFactory[] | null = null;
 
     /**
      * The html representing what this template will
@@ -60,7 +60,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * The directives that will be connected to placeholders in the html.
      */
-    public readonly directives: ReadonlyArray<Directive>;
+    public readonly directives: ReadonlyArray<HTMLDirective>;
 
     /**
      * Creates an instance of ViewTemplate.
@@ -69,7 +69,7 @@ export class ViewTemplate<TSource = any, TParent = any>
      */
     public constructor(
         html: string | HTMLTemplateElement,
-        directives: ReadonlyArray<Directive>
+        directives: ReadonlyArray<HTMLDirective>
     ) {
         this.html = html;
         this.directives = directives;
@@ -194,7 +194,7 @@ export type TemplateValue<TScope, TParent = any> =
     | Binding<TScope, any, TParent>
     | string
     | number
-    | Directive
+    | HTMLDirective
     | CaptureType<TScope>;
 
 /**
@@ -210,7 +210,7 @@ export function html<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent> {
-    const directives: Directive[] = [];
+    const directives: HTMLDirective[] = [];
     let html = "";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
@@ -225,17 +225,17 @@ export function html<TSource = any, TParent = any>(
         }
 
         if (typeof value === "function") {
-            value = new BindingDirective(value as Binding);
+            value = new HTMLBindingDirective(value as Binding);
         }
 
-        if (value instanceof NamedTargetDirective) {
+        if (value instanceof TargetedHTMLDirective) {
             const match = lastAttributeNameRegex.exec(currentString);
             if (match !== null) {
                 value.targetName = match[2];
             }
         }
 
-        if (value instanceof Directive) {
+        if (value instanceof HTMLDirective) {
             // Since not all values are directives, we can't use i
             // as the index for the placeholder. Instead, we need to
             // use directives.length to get the next index.
