@@ -19,6 +19,8 @@ import {
 
 export const MenuItemStyles = css`
     ${display("grid")} :host {
+        contain: layout;
+        overflow: visible;
         font-family: var(--body-font);
         outline: none;
         box-sizing: border-box;
@@ -30,7 +32,6 @@ export const MenuItemStyles = css`
         padding: 0;
         margin: 0 calc(var(--design-unit) * 1px);
         white-space: nowrap;
-        overflow: hidden;
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         cursor: pointer;
@@ -58,7 +59,8 @@ export const MenuItemStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host(:active) {
+    :host(:active),
+    :host(.expanded) {
         background: ${accentFillActiveBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
@@ -91,7 +93,7 @@ export const MenuItemStyles = css`
     .end {
         display: flex;
     }
-
+    
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary - 
