@@ -63,6 +63,10 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to add the CSS Custom Property to
      */
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
+        const value = this.getValueFor(element);
+
+        element.$fastController.addStyles(CustomPropertyManager.get(this, value));
+
         return this;
     }
 

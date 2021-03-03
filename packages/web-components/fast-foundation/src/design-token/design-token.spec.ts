@@ -1,5 +1,6 @@
 
 import { expect } from "chai";
+import { AnchoredRegionTemplate } from "../anchored-region";
 import { DesignSystem } from "../design-system";
 import { FoundationElement } from "../foundation-element";
 import { DesignToken } from "./design-token";
@@ -57,5 +58,55 @@ describe("A DesignToken", () => {
             expect(token.getValueFor(target)).to.equal(12);
             removeElement(ancestor);
         });
+    });
+    describe("setting CSS Custom Properties", () => {
+        it("should emit the value set for an element when emitted to the same element", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(target, 12)
+            
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            removeElement(target);
+        });
+
+        it("should emit the value set for an element ancestor", () => {
+            const ancestor = addElement()
+            const target = addElement(ancestor);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(ancestor, 12)
+            
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            removeElement(ancestor);
+        });
+
+        it("should emit the value set for an nearest element ancestor", () => {
+            const grandparent = addElement();
+            const parent = addElement(grandparent);
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(grandparent, 12)
+            token.setValueFor(parent, 14)
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+            removeElement(grandparent);
+        });
+
+        it("should emit the value set for the element when a value is set for both the element and an ancestor", () => {
+            const ancestor = addElement()
+            const target = addElement(ancestor);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(ancestor, 12)
+            token.setValueFor(target, 14)
+            
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+            removeElement(ancestor);
+        })
     });
 });
