@@ -26,7 +26,6 @@ import {
     previewTheme,
 } from "@microsoft/site-utilities";
 import {
-    PreviewHandledProps,
     PreviewProps,
     PreviewState,
     PreviewUnhandledProps,
@@ -43,11 +42,7 @@ export const previewReady: string = "PREVIEW::READY";
  * The preview component exists on a route inside an iframe
  * This allows for an isolated view of any component or components.
  */
-class Preview extends Foundation<
-    PreviewHandledProps,
-    PreviewUnhandledProps,
-    PreviewState
-> {
+class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
     private ref: React.RefObject<HTMLDivElement>;
 
     constructor(props: PreviewProps) {

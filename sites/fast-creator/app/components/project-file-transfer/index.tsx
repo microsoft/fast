@@ -3,8 +3,8 @@
 import React from "react";
 import { FASTButton } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
-import { ProjectFileTransferProps } from "./project-file-transfer.props";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
+import { ProjectFileTransferProps } from "./project-file-transfer.props";
 
 FASTButton;
 

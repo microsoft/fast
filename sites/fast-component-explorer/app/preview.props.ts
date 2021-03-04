@@ -3,9 +3,7 @@ import { Direction } from "@microsoft/fast-web-utilities";
 
 export type PreviewUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
-export interface PreviewHandledProps {}
-
-export type PreviewProps = PreviewHandledProps & PreviewUnhandledProps;
+export type PreviewProps = PreviewUnhandledProps;
 
 export enum StandardLuminance {
     LightMode = 1,
