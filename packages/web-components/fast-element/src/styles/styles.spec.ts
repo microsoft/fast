@@ -4,10 +4,10 @@ import {
     StyleElementStyles,
     StyleTarget,
     ElementStyles,
-    CSSDirective,
-    css,
-} from "./styles";
-import { DOM } from "./dom";
+} from "./element-styles";
+import { DOM } from "../dom";
+import { CSSDirective } from "./css-directive";
+import { css } from "./css";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStyles", () => {
@@ -103,7 +103,6 @@ describe("StyleSheetStyles", () => {
         expect(elementStyles.isAttachedTo(document)).to.equal(false)
 
         elementStyles.addStylesTo(document);
-        console.log(document)
         expect(elementStyles.isAttachedTo(document)).to.equal(true)
 
         elementStyles.removeStylesFrom(document);

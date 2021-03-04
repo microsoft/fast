@@ -1,16 +1,17 @@
 import { expect } from "chai";
-import { DOM } from "./dom";
-import { BindingDirective } from "./directives/binding";
-import { compileTemplate } from "./template-compiler";
-import { Directive } from "./directives/directive";
-import { defaultExecutionContext } from "./observation/observable";
-import { toHTML, uniqueElementName } from "./__test__/helpers";
+import { DOM } from "../dom";
+import { HTMLBindingDirective } from "./binding";
+import { compileTemplate } from "./compiler";
+import { HTMLDirective } from "./html-directive";
+import { defaultExecutionContext } from "../observation/observable";
+import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { html } from "./template";
-import { css, StyleTarget } from "./styles";
-import { FASTElement, customElement } from "./fast-element";
+import { StyleTarget } from "../styles/element-styles";
+import { FASTElement, customElement } from "../components/fast-element";
+import { css } from "../styles/css";
 
 describe("The template compiler", () => {
-    function compile(html: string, directives: Directive[]) {
+    function compile(html: string, directives: HTMLDirective[]) {
         const template = document.createElement("template");
         template.innerHTML = html;
         return compileTemplate(template, directives);
@@ -21,7 +22,7 @@ describe("The template compiler", () => {
     }
 
     function binding(result = "result") {
-        return new BindingDirective(() => result);
+        return new HTMLBindingDirective(() => result);
     }
 
     const scope = {};
@@ -322,7 +323,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (viewBehaviorFactories[0] as BindingDirective).binding(
+                        (viewBehaviorFactories[0] as HTMLBindingDirective).binding(
                             scope,
                             defaultExecutionContext
                         )

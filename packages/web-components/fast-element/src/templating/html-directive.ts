@@ -1,11 +1,29 @@
 import { DOM } from "../dom";
-import { Behavior, BehaviorFactory } from "./behavior";
+import { Behavior } from "../observation/behavior";
+
+/**
+ * A factory that can create a {@link Behavior} associated with a particular
+ * location within a DOM fragment.
+ * @public
+ */
+export interface NodeBehaviorFactory {
+    /**
+     * The index of the DOM node to which the created behavior will apply.
+     */
+    targetIndex: number;
+
+    /**
+     * Creates a behavior for the provided target node.
+     * @param target - The node instance to create the behavior for.
+     */
+    createBehavior(target: Node): Behavior;
+}
 
 /**
  * Instructs the template engine to apply behavior to a node.
  * @public
  */
-export abstract class Directive implements BehaviorFactory {
+export abstract class HTMLDirective implements NodeBehaviorFactory {
     /**
      * The index of the DOM node to which the created behavior will apply.
      */
@@ -25,13 +43,13 @@ export abstract class Directive implements BehaviorFactory {
 }
 
 /**
- * A {@link Directive} that targets a named attribute or property on a node or object.
+ * A {@link HTMLDirective} that targets a named attribute or property on a node.
  * @public
  */
-export abstract class NamedTargetDirective extends Directive {
+export abstract class TargetedHTMLDirective extends HTMLDirective {
     /**
      * Gets/sets the name of the attribute or property that this
-     * directive is targeting on the associated node or object.
+     * directive is targeting on the associated node.
      */
     public abstract targetName: string | undefined;
 
@@ -45,7 +63,7 @@ export abstract class NamedTargetDirective extends Directive {
 
 /**
  * Describes the shape of a behavior constructor that can be created by
- * an {@link AttachedBehaviorDirective}.
+ * an {@link AttachedBehaviorHTMLDirective}.
  * @public
  */
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
@@ -54,7 +72,7 @@ export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Beh
  * A directive that attaches special behavior to an element via a custom attribute.
  * @public
  */
-export class AttachedBehaviorDirective<T = any> extends Directive {
+export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     /**
      *
      * @param name - The name of the behavior; used as a custom attribute on the element.
