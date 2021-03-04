@@ -166,6 +166,11 @@ export const MenuItemStyles = css`
         margin-inline-start: 10px;
     }
 
+    :host([aria-checked="true"]) .checkbox,
+    :host([aria-checked="true"]) .radio {
+        background: ${neutralFillInputRestBehavior.var};
+    }
+
     :host .checkbox {
         border-radius: calc(var(--corner-radius) * 1px);
     }
