@@ -52,11 +52,7 @@ export const MenuItemStyles = css`
         color: ${neutralForegroundHoverBehavior.var};
     }
 
-    :host([aria-checked="true"]) {
-        background: ${neutralLayerL2Behavior.var};
-        color: ${neutralForegroundRestBehavior.var};
-    }
-
+    :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
         background: ${neutralLayerL2Behavior.var};
@@ -234,6 +230,12 @@ export const MenuItemStyles = css`
             :host(:active) .end,
             :host(:active)::slotted(svg) {
                 fill: ${SystemColors.HighlightText};
+            }
+
+            :host(.expanded) {
+                background: ${SystemColors.Highlight};
+                border-color: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
             }
 
             :host(:${focusVisible}) {
