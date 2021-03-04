@@ -94,8 +94,6 @@ export const ActionsStyles = css`
 export const HorizontalScrollStyles = css`
     :host {
         --scroll-align: middle;
-        --scroll-duration: 0.5s;
-        --scroll-easing: ease-out;
         display: block;
         position: relative;
     }
