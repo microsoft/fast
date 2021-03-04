@@ -8,6 +8,7 @@ import {
     keyCodeEnter,
     keyCodeHome,
     keyCodeSpace,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import Foundation, {
     FoundationProps,
@@ -74,6 +75,7 @@ class Navigation extends Foundation<
             navigationDictionary: null,
             dataDictionary: null,
             activeItem: null,
+            activeItemEditable: false,
             expandedNavigationConfigItems: {},
             linkedData: void 0,
             linkedDataLocation: null,
@@ -150,14 +152,24 @@ class Navigation extends Foundation<
 
                 break;
             case MessageSystemType.data:
-                this.setState({
-                    navigationDictionary: e.data.navigationDictionary,
-                    dataDictionary: e.data.dataDictionary,
-                    activeItem: [
-                        e.data.activeDictionaryId,
-                        e.data.activeNavigationConfigId,
-                    ],
-                });
+                switch (e.data.action) {
+                    case MessageSystemDataTypeAction.updateDisplayText:
+                        this.setState({
+                            navigationDictionary: e.data.navigationDictionary,
+                            dataDictionary: e.data.dataDictionary,
+                        });
+                        break;
+                    default:
+                        this.setState({
+                            navigationDictionary: e.data.navigationDictionary,
+                            dataDictionary: e.data.dataDictionary,
+                            activeItem: [
+                                e.data.activeDictionaryId,
+                                e.data.activeNavigationConfigId,
+                            ],
+                        });
+                }
+
                 break;
             case MessageSystemType.navigation:
                 this.setState({
@@ -195,26 +207,39 @@ class Navigation extends Foundation<
             this.state.navigationDictionary[0][dictionaryId][1] === navigationConfigId;
         const isDraggable: boolean =
             isDictionaryLink && this.state.navigationDictionary[1] !== dictionaryId; // is linked data and not the root level item
-        const content: React.ReactNode = this.renderContent(
+        const isTriggerRenderable: boolean = this.shouldTriggerRender(
             dictionaryId,
             navigationConfigId
         );
-        const wrappedContent: React.ReactNode =
-            content !== null ? (
-                <div
-                    role={"group"}
-                    key={"content"}
-                    className={this.props.managedClasses.navigation_itemList}
-                >
-                    {content}
-                </div>
-            ) : null;
+        const content: React.ReactNode = this.renderContent(
+            dictionaryId,
+            navigationConfigId,
+            isTriggerRenderable
+        );
         const itemType: DragDropItemType = isDraggable
             ? DragDropItemType.linkedData
             : this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
                   .schema[dictionaryLink]
             ? DragDropItemType.linkedDataContainer
             : DragDropItemType.default;
+
+        const trigger: React.ReactNode = isTriggerRenderable
+            ? this.renderTrigger(
+                  itemType,
+                  this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
+                      .text,
+                  content !== null,
+                  isDraggable,
+                  itemType !== DragDropItemType.default,
+                  dictionaryId,
+                  navigationConfigId,
+                  index
+              )
+            : null;
+
+        if (trigger === null && content === null) {
+            return null;
+        }
 
         return (
             <div
@@ -223,21 +248,8 @@ class Navigation extends Foundation<
                 aria-expanded={this.getExpandedState(dictionaryId, navigationConfigId)}
                 key={dictionaryId + navigationConfigId}
             >
-                <React.Fragment key={"trigger"}>
-                    {this.renderTrigger(
-                        itemType,
-                        this.state.navigationDictionary[0][dictionaryId][0][
-                            navigationConfigId
-                        ].text,
-                        content !== null,
-                        isDraggable,
-                        itemType !== DragDropItemType.default,
-                        dictionaryId,
-                        navigationConfigId,
-                        index
-                    )}
-                </React.Fragment>
-                {wrappedContent}
+                {trigger}
+                {content}
             </div>
         );
     }
@@ -257,6 +269,10 @@ class Navigation extends Foundation<
                 type={type}
                 index={index}
                 isCollapsible={isCollapsible}
+                isEditable={
+                    this.state.activeItemEditable &&
+                    this.isEditable(dictionaryId, navigationConfigId)
+                }
                 className={this.getDraggableItemClassName(
                     isCollapsible,
                     isDraggable,
@@ -268,6 +284,9 @@ class Navigation extends Foundation<
                     this.props.managedClasses.navigation_itemExpandTrigger
                 }
                 contentClassName={this.props.managedClasses.navigation_itemContent}
+                displayTextInputClassName={
+                    this.props.managedClasses.navigation_itemDisplayTextInput
+                }
                 handleExpandClick={this.handleNavigationItemExpandClick(
                     dictionaryId,
                     navigationConfigId
@@ -276,6 +295,11 @@ class Navigation extends Foundation<
                     dictionaryId,
                     navigationConfigId
                 )}
+                handleInputChange={this.handleNavigationItemChangeDisplayText(
+                    dictionaryId
+                )}
+                handleInputBlur={this.handleNavigationItemBlurDisplayTextInput()}
+                handleInputKeyDown={this.handleNavigationItemKeyDownDisplayTextInput()}
                 handleKeyDown={this.handleNavigationItemKeyDown(
                     dictionaryId,
                     navigationConfigId
@@ -285,22 +309,22 @@ class Navigation extends Foundation<
                 dragStart={this.handleDragStart(index)}
                 dragEnd={this.handleDragEnd}
                 dragHover={this.handleDragHover}
-            >
-                {text}
-            </DraggableNavigationTreeItem>
+                text={text}
+            />
         );
     }
 
     private renderContent(
         dictionaryId: string,
-        navigationConfigId: string
+        navigationConfigId: string,
+        isTriggerRendered: boolean
     ): React.ReactNode {
         const navigationConfig: TreeNavigationItem = this.state.navigationDictionary[0][
             dictionaryId
         ][0][navigationConfigId];
 
         if (Array.isArray(navigationConfig.items) && navigationConfig.items.length > 0) {
-            return navigationConfig.items.map(
+            const content: React.ReactNode[] = navigationConfig.items.map(
                 (navigationConfigItemId: string, index: number) => {
                     if (
                         navigationConfig.schema[dictionaryLink] &&
@@ -320,9 +344,50 @@ class Navigation extends Foundation<
                     );
                 }
             );
+            const isEmpty: boolean =
+                content.find((contentItem: React.ReactNode) => {
+                    return contentItem !== null;
+                }) === undefined;
+
+            if (!isEmpty) {
+                if (isTriggerRendered) {
+                    return (
+                        <div
+                            role={"group"}
+                            key={"content"}
+                            className={this.props.managedClasses.navigation_itemList}
+                        >
+                            {content}
+                        </div>
+                    );
+                }
+
+                return content;
+            }
         }
 
         return null;
+    }
+
+    private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
+        return (
+            this.state.activeItem[0] === dictionaryId &&
+            this.state.activeItem[1] === navigationConfigId &&
+            this.state.activeItem[1] === ""
+        );
+    }
+
+    private shouldTriggerRender(
+        dictionaryId: string,
+        navigationConfigId: string
+    ): boolean {
+        return (
+            !Array.isArray(this.props.types) ||
+            this.props.types.includes(
+                this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
+                    .type
+            )
+        );
     }
 
     private getExpandedState(
@@ -519,14 +584,101 @@ class Navigation extends Foundation<
     };
 
     /**
-     * Update the active item
+     * Handle clicks on a navigation item
      */
     private handleNavigationItemClick = (
+        dictionaryId: string,
+        navigationConfigId: string
+    ): ((event: React.MouseEvent<HTMLElement>) => void) => {
+        let timer;
+
+        return (event: React.MouseEvent<HTMLElement>): void => {
+            clearTimeout(timer);
+
+            if (event.detail === 1) {
+                timer = setTimeout(
+                    this.handleNavigationItemSingleClick(
+                        dictionaryId,
+                        navigationConfigId
+                    ),
+                    200
+                );
+            } else if (event.detail === 2) {
+                this.handleNavigationItemDoubleClick(dictionaryId, navigationConfigId)();
+            }
+        };
+    };
+
+    /**
+     * Update the active item
+     */
+    private handleNavigationItemSingleClick = (
         dictionaryId: string,
         navigationConfigId: string
     ): (() => void) => {
         return (): void => {
             this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
+        };
+    };
+
+    /**
+     * Allows editing of the active item
+     */
+    private handleNavigationItemDoubleClick = (
+        dictionaryId: string,
+        navigationConfigId: string
+    ): (() => void) => {
+        return (): void => {
+            if (this.isEditable(dictionaryId, navigationConfigId)) {
+                this.triggerNavigationEdit();
+            }
+        };
+    };
+
+    /**
+     * Update the active items display text
+     */
+    private handleNavigationItemChangeDisplayText = (
+        dictionaryId: string
+    ): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+        return (e: React.ChangeEvent<HTMLInputElement>) => {
+            this.props.messageSystem.postMessage({
+                type: MessageSystemType.data,
+                action: MessageSystemDataTypeAction.updateDisplayText,
+                dictionaryId,
+                displayText: e.target.value,
+            });
+        };
+    };
+
+    /**
+     * Update the active items display text focus state
+     */
+    private handleNavigationItemBlurDisplayTextInput = (): ((
+        e: React.FocusEvent<HTMLInputElement>
+    ) => void) => {
+        return () => {
+            this.setState({
+                activeItemEditable: false,
+            });
+        };
+    };
+
+    /**
+     * Handles key up on the active items display text
+     */
+    private handleNavigationItemKeyDownDisplayTextInput = (): ((
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) => void) => {
+        return (e: React.KeyboardEvent<HTMLInputElement>): void => {
+            if (e.target === e.currentTarget) {
+                switch (e.keyCode) {
+                    case keyCodeEnter:
+                        this.setState({
+                            activeItemEditable: false,
+                        });
+                }
+            }
         };
     };
 
@@ -554,19 +706,32 @@ class Navigation extends Foundation<
         });
     }
 
+    private triggerNavigationEdit(): void {
+        this.setState({
+            activeItemEditable: true,
+        });
+    }
+
     private triggerNavigationUpdate(
         dictionaryId: string,
         navigationConfigId: string
     ): void {
-        this.props.messageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: dictionaryId,
-            activeNavigationConfigId: navigationConfigId,
-            options: {
-                originatorId: navigationId,
+        this.setState(
+            {
+                activeItemEditable: false,
             },
-        });
+            () => {
+                this.props.messageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: dictionaryId,
+                    activeNavigationConfigId: navigationConfigId,
+                    options: {
+                        originatorId: navigationId,
+                    },
+                });
+            }
+        );
     }
 
     private findCurrentTreeItemIndex(

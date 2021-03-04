@@ -1,6 +1,7 @@
 import {
     Data,
     DataDictionary,
+    DataType,
     MessageSystem,
     NavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
@@ -34,6 +35,11 @@ export interface NavigationState {
          */
         1: string;
     } | null;
+
+    /**
+     * Whether the current active item is editable
+     */
+    activeItemEditable: boolean;
 
     /**
      * Expanded navigation config items
@@ -130,6 +136,11 @@ export interface NavigationHandledProps {
      * used for sending and receiving data to the message system
      */
     messageSystem: MessageSystem;
+
+    /**
+     * The JSON schema types that will be visible
+     */
+    types?: DataType[];
 }
 
 export type NavigationProps = NavigationHandledProps;

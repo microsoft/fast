@@ -56,9 +56,7 @@
     "test-pw:full": "yarn clean:test && yarn build:pw && yarn test-pw",
     "test-pw": "mocha --config ./__test__/.mocharc.json ./__test__/**/*.spec.js",
     "test-webkit:pw": "cross-env PLAYWRIGHT_BROWSER=webkit && yarn test-pw:full",
-    "test:diff:error": "echo \"You have untracked files, try running yarn prepare.\" && exit 1",
-    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
-    "test": "yarn test-chrome:verbose && yarn doc:ci && yarn test:diff"
+    "test": "yarn test-chrome:verbose && yarn doc:ci"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
@@ -95,7 +93,7 @@
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
     "mocha": "^8.2.1",
-    "playwright": "^1.8.0",
+    "playwright": "^1.9.1",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",

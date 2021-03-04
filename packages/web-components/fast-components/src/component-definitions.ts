@@ -8,6 +8,7 @@ export * from "./breadcrumb-item/breadcrumb-item.definition";
 export * from "./button/button.definition";
 export * from "./card/card.definition";
 export * from "./checkbox/checkbox.definition";
+export * from "./combobox/combobox.definition";
 export * from "./data-grid/data-grid.definition";
 export * from "./data-grid/data-grid-cell.definition";
 export * from "./data-grid/data-grid-row.definition";

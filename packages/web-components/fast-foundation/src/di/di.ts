@@ -232,13 +232,14 @@ export type ParentLocator = (owner: any) => Container | null;
  */
 export interface ContainerConfiguration {
     parentLocator: ParentLocator;
+    responsibleForOwnerRequests: boolean;
     defaultResolver(key: Key, handler: Container): Resolver;
 }
 
 /**
  * @alpha
  */
-export const DefaultResolver = {
+export const DefaultResolver = Object.freeze({
     none(key: Key): Resolver {
         throw Error(
             `${key.toString()} not registered, did you forget to add @singleton()?`
@@ -250,7 +251,7 @@ export const DefaultResolver = {
     transient(key: Key): Resolver {
         return new ResolverImpl(key, ResolverStrategy.transient, key);
     },
-};
+});
 
 /**
  * @alpha
@@ -258,8 +259,9 @@ export const DefaultResolver = {
 export const ContainerConfiguration = Object.freeze({
     default: Object.freeze({
         parentLocator: () => null,
+        responsibleForOwnerRequests: false,
         defaultResolver: DefaultResolver.singleton,
-    }),
+    } as ContainerConfiguration),
 });
 
 /**
@@ -300,7 +302,17 @@ export const DI = Object.freeze({
         );
     },
 
-    findContainer(element: HTMLElement): Container {
+    findResponsibleContainer(element: HTMLElement): Container {
+        const owned = (element as any).$container as ContainerImpl;
+
+        if (owned && owned.responsibleForOwnerRequests) {
+            return owned;
+        }
+
+        return DI.findParentContainer(element);
+    },
+
+    findParentContainer(element: HTMLElement) {
         const event = new CustomEvent<DOMParentLocatorEventDetail>(
             DILocateParentEventType,
             {
@@ -326,7 +338,7 @@ export const DI = Object.freeze({
                 element,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator:
-                        element === document.body ? () => null : DI.findContainer,
+                        element === document.body ? () => null : DI.findParentContainer,
                 })
             )
         );
@@ -436,7 +448,7 @@ export const DI = Object.freeze({
                 if (value === void 0) {
                     const container: Container =
                         this instanceof HTMLElement
-                            ? DI.findContainer(this)
+                            ? DI.findResponsibleContainer(this)
                             : DI.getOrCreateDOMContainer();
 
                     value = container.get(key);
@@ -445,7 +457,7 @@ export const DI = Object.freeze({
                     if (respectConnection && this instanceof FASTElement) {
                         const notifier = (this as FASTElement).$fastController;
                         const handleChange = () => {
-                            const newContainer = DI.findContainer(this);
+                            const newContainer = DI.findResponsibleContainer(this);
                             const newValue = newContainer.get(key) as any;
                             const oldValue = this[diPropertyKey];
 
@@ -525,12 +537,12 @@ export const DI = Object.freeze({
     inject(
         ...dependencies: Key[]
     ): (
-        target: Injectable,
+        target: any,
         key?: string | number,
         descriptor?: PropertyDescriptor | number
     ) => void {
         return function (
-            target: Injectable,
+            target: any,
             key?: string | number,
             descriptor?: PropertyDescriptor | number
         ): void {
@@ -542,14 +554,7 @@ export const DI = Object.freeze({
                     annotationParamtypes[descriptor] = dep;
                 }
             } else if (key) {
-                // It's a property decorator. Not supported by the container without plugins.
-                const annotationParamtypes = DI.getOrCreateAnnotationParamTypes(
-                    ((target as unknown) as { constructor: Injectable }).constructor
-                );
-                const dep = dependencies[0];
-                if (dep !== void 0) {
-                    annotationParamtypes[key as number] = dep;
-                }
+                DI.defineProperty(target, key as string, dependencies[0]);
             } else {
                 const annotationParamtypes = descriptor
                     ? DI.getOrCreateAnnotationParamTypes(descriptor.value)
@@ -1130,6 +1135,10 @@ export class ContainerImpl implements Container {
 
     public get depth(): number {
         return this.parent === null ? 0 : this.parent.depth + 1;
+    }
+
+    public get responsibleForOwnerRequests(): boolean {
+        return this.config.responsibleForOwnerRequests;
     }
 
     constructor(protected owner: any, protected config: ContainerConfiguration) {
