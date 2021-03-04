@@ -1,5 +1,4 @@
 import React from "react";
-import manageJss from "@microsoft/fast-jss-manager-react";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import {
     DataMessageOutgoing,
@@ -70,15 +69,18 @@ class Preview extends Foundation<
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
-                <div
-                    className={classNames(this.props.managedClasses.preview, [
-                        this.props.managedClasses.preview__transparent,
-                        this.state.transparentBackground,
-                    ])}
-                    dir={this.state.direction}
-                >
-                    <div ref={this.ref} />
-                </div>
+                <fast-design-system-provider use-defaults>
+                    <style>{style}</style>
+                    <div
+                        className={classNames("preview", [
+                            "preview__transparent",
+                            this.state.transparentBackground,
+                        ])}
+                        dir={this.state.direction}
+                    >
+                        <div ref={this.ref} />
+                    </div>
+                </fast-design-system-provider>
             );
         }
 
@@ -220,4 +222,4 @@ class Preview extends Foundation<
     }
 }
 
-export default manageJss(style)(Preview as React.ComponentType);
+export default Preview as React.ComponentType;
