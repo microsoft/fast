@@ -124,7 +124,7 @@ describe("A DesignToken", () => {
             removeElement(ancestor);
         });
 
-        it("should update the CSS custom property value when the value changes", () => {
+        it("should update the CSS custom property value for an element when the value changes for that element", () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");
             token.setValueFor(target, 12)
@@ -137,6 +137,22 @@ describe("A DesignToken", () => {
 
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             removeElement(target);
-        })
+        });
+
+        it("should update the CSS custom property value for an element when the value changes for an ancestor node", () => {
+            const parent = addElement()
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(parent, 12)
+            
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+            token.setValueFor(parent, 14);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+            removeElement(parent);
+        });
     });
 });

@@ -40,6 +40,12 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
         return set;
     }
 
+    private notifyObservers = (token: DesignToken<any>): void => {
+        if (this.#observers.has(token)) {
+            this.#observers.get(token)!.forEach(observer => observer(this));
+        }
+    };
+
     /**
      * The Custom Element for which the token is associated
      */
@@ -91,7 +97,14 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     /**
      * @internal
      */
-    public notify(...tokens: DesignToken<any>[]) {}
+    public notify(...tokens: DesignToken<any>[]) {
+        tokens = tokens.filter(token => !this.#tokens.has(token));
+
+        tokens.forEach(this.notifyObservers);
+        this.#children.forEach((child: DesignTokenStorageImpl) =>
+            child.notify(...tokens)
+        );
+    }
 
     public get<T>(token: DesignToken<T>): T {
         if (this.#tokens.has(token)) {
@@ -108,13 +121,9 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     public set<T>(token: DesignToken<T>, value: T | DerivedDesignTokenValue<T>): void {
         this.#tokens.set(token, value);
 
-        if (this.#observers.has(token)) {
-            this.#observers.get(token)!.forEach(observer => {
-                observer(this);
-            });
-        }
+        this.notifyObservers(token);
 
-        // TODO: how do we notify downstream?
+        this.#children.forEach((child: DesignTokenStorageImpl) => child.notify(token));
     }
 
     /**
