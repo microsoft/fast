@@ -5,10 +5,10 @@ import {
     BindingObserver,
 } from "../observation/observable";
 import { Observable } from "../observation/observable";
+import { Behavior } from "../observation/behavior";
 import { DOM } from "../dom";
-import { SyntheticView } from "../view";
-import { TargetedHTMLDirective } from "./directive";
-import { Behavior } from "./behavior";
+import { SyntheticView } from "./view";
+import { TargetedHTMLDirective } from "./html-directive";
 
 function normalBind(
     this: BindingBehavior,

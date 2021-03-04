@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../observation/observable";
+import { ExecutionContext } from "./observable";
 
 /**
  * Represents and object that can contribute behavior to a view or
@@ -18,22 +18,4 @@ export interface Behavior {
      * @param source - The source to unbind from.
      */
     unbind(source: unknown): void;
-}
-
-/**
- * A factory that can create a {@link Behavior} associated with a particular
- * location within a DOM fragment.
- * @public
- */
-export interface NodeBehaviorFactory {
-    /**
-     * The index of the DOM node to which the created behavior will apply.
-     */
-    targetIndex: number;
-
-    /**
-     * Creates a behavior for the provided target node.
-     * @param target - The node instance to create the behavior for.
-     */
-    createBehavior(target: Node): Behavior;
 }

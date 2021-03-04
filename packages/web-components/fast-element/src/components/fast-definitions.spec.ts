@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { DOM } from "./dom";
+import { DOM } from "../dom";
 import { FASTElementDefinition } from "./fast-definitions";
-import { ElementStyles } from "./styles";
+import { ElementStyles } from "../styles/element-styles";
 
 describe("FASTElementDefinition", () => {
     class MyElement {}

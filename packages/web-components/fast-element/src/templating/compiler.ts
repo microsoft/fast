@@ -1,8 +1,7 @@
-import { NodeBehaviorFactory } from "./directives/behavior";
-import { DOM, _interpolationEnd, _interpolationStart } from "./dom";
-import { HTMLBindingDirective } from "./directives/binding";
-import { HTMLDirective } from "./directives/directive";
-import { ExecutionContext, Binding } from "./observation/observable";
+import { DOM, _interpolationEnd, _interpolationStart } from "../dom";
+import { HTMLBindingDirective } from "./binding";
+import { HTMLDirective, NodeBehaviorFactory } from "./html-directive";
+import { ExecutionContext, Binding } from "../observation/observable";
 
 type InlineDirective = HTMLDirective & {
     targetName?: string;

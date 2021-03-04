@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
-import { DOM } from "./dom";
-import { HTMLBindingDirective } from "./directives/binding";
-import { HTMLDirective, TargetedHTMLDirective } from "./directives/directive";
+import { DOM } from "../dom";
+import { HTMLBindingDirective } from "./binding";
+import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {

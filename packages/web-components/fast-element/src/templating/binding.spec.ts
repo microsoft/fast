@@ -2,9 +2,9 @@ import { expect } from "chai";
 import { HTMLBindingDirective } from "./binding";
 import { observable, defaultExecutionContext } from "../observation/observable";
 import { DOM } from "../dom";
-import { html, ViewTemplate } from "../template";
+import { html, ViewTemplate } from "./template";
 import { toHTML } from "../__test__/helpers";
-import { SyntheticView, HTMLView } from "../view";
+import { SyntheticView, HTMLView } from "./view";
 
 describe("The HTML binding directive", () => {
     class Model {

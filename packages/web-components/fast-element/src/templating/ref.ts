@@ -1,6 +1,6 @@
-import { CaptureType } from "../template";
-import { Behavior } from "./behavior";
-import { AttachedBehaviorHTMLDirective } from "./directive";
+import { CaptureType } from "./template";
+import { Behavior } from "../observation/behavior";
+import { AttachedBehaviorHTMLDirective } from "./html-directive";
 
 /**
  * The runtime behavior for template references.

@@ -1,4 +1,4 @@
-import { CaptureType, SyntheticViewTemplate } from "../template";
+import { CaptureType, SyntheticViewTemplate } from "./template";
 import { DOM } from "../dom";
 import {
     ExecutionContext,
@@ -6,13 +6,13 @@ import {
     Observable,
     BindingObserver,
 } from "../observation/observable";
-import { HTMLView, SyntheticView } from "../view";
+import { HTMLView, SyntheticView } from "./view";
 import { Subscriber, Notifier } from "../observation/notifier";
 import { enableArrayObservation } from "../observation/array-observer";
 import { Splice } from "../observation/array-change-records";
-import { Behavior } from "./behavior";
-import { HTMLDirective } from "./directive";
-import { emptyArray } from "../interfaces";
+import { Behavior } from "../observation/behavior";
+import { HTMLDirective } from "./html-directive";
+import { emptyArray } from "../platform";
 
 /**
  * Options for configuring repeat behavior.

@@ -1,5 +1,23 @@
 import { DOM } from "../dom";
-import { Behavior, NodeBehaviorFactory } from "./behavior";
+import { Behavior } from "../observation/behavior";
+
+/**
+ * A factory that can create a {@link Behavior} associated with a particular
+ * location within a DOM fragment.
+ * @public
+ */
+export interface NodeBehaviorFactory {
+    /**
+     * The index of the DOM node to which the created behavior will apply.
+     */
+    targetIndex: number;
+
+    /**
+     * Creates a behavior for the provided target node.
+     * @param target - The node instance to create the behavior for.
+     */
+    createBehavior(target: Node): Behavior;
+}
 
 /**
  * Instructs the template engine to apply behavior to a node.
@@ -45,7 +63,7 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
 
 /**
  * Describes the shape of a behavior constructor that can be created by
- * an {@link AttachedBehaviorDirective}.
+ * an {@link AttachedBehaviorHTMLDirective}.
  * @public
  */
 export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;

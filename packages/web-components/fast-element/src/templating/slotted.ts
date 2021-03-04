@@ -1,5 +1,5 @@
-import { CaptureType } from "../template";
-import { AttachedBehaviorHTMLDirective } from "./directive";
+import { CaptureType } from "./template";
+import { AttachedBehaviorHTMLDirective } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 
 /**

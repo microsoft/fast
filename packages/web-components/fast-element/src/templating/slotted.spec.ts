@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { slotted, SlottedBehavior } from "./slotted";
-import { AttachedBehaviorHTMLDirective } from "./directive";
+import { AttachedBehaviorHTMLDirective } from "./html-directive";
 import { observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
