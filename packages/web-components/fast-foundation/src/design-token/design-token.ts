@@ -3,6 +3,7 @@ import { DesignSystem } from "../design-system";
 import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenStorageImpl } from "./storage";
 
+export type DerivedDesignTokenValue<T> = (target: HTMLElement & FASTElement) => T;
 /**
  * Notes:
  *

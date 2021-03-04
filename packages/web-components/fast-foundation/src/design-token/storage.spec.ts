@@ -24,7 +24,7 @@ function removeElement(...els: HTMLElement[]) {
 describe("A DesignTokenStorage", () => {
     describe("after construction", () => {
         it("should have a null upstream", () => {
-            expect(new DesignTokenStorageImpl(addElement()).upstream).to.equal(null);
+            expect(new DesignTokenStorageImpl(addElement()).parentNode).to.equal(null);
         });
 
         it("should register itself as a DI registration on the element's container", () => {
@@ -46,9 +46,9 @@ describe("A DesignTokenStorage", () => {
             const sB = new DesignTokenStorageImpl(b);
             const sC = new DesignTokenStorageImpl(c);
 
-            expect(sA.upstream).to.equal(null);
-            expect(sB.upstream).to.equal(sA);
-            expect(sC.upstream).to.equal(sB);
+            expect(sA.parentNode).to.equal(null);
+            expect(sB.parentNode).to.equal(sA);
+            expect(sC.parentNode).to.equal(sB);
 
             removeElement(a, b, c);
         });
@@ -63,10 +63,10 @@ describe("A DesignTokenStorage", () => {
 
             const storage = new DesignTokenStorageImpl(target);
 
-            expect(storage.upstream).to.equal(sOldParent);
+            expect(storage.parentNode).to.equal(sOldParent);
             newParent.appendChild(target);
 
-            expect(storage.upstream).to.equal(sNewParent);
+            expect(storage.parentNode).to.equal(sNewParent);
         });
 
         it("should throw if separate instances are connected to the same element", () => {

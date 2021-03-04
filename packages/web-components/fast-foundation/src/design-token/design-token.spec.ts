@@ -22,13 +22,11 @@ function removeElement(...els: HTMLElement[]) {
 }
 
 describe("A DesignToken", () => {
-    describe("with the writeCssProperty configuration", () => {
-        it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
-            expect(DesignToken.create("implicit").createCSS()).to.equal("var(--implicit)");
-        });
-        it("should have a readonly cssCustomProperty property that is the name formatted as a CSS custom property", () => {
-            expect(DesignToken.create("implicit").cssCustomProperty).to.equal("--implicit");
-        });
+    it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
+        expect(DesignToken.create("implicit").createCSS()).to.equal("var(--implicit)");
+    });
+    it("should have a readonly cssCustomProperty property that is the name formatted as a CSS custom property", () => {
+        expect(DesignToken.create("implicit").cssCustomProperty).to.equal("--implicit");
     });
 
     describe("getting and setting a simple value", () => {
@@ -58,6 +56,23 @@ describe("A DesignToken", () => {
             expect(token.getValueFor(target)).to.equal(12);
             removeElement(ancestor);
         });
+
+        it("sound return the nearest ancestor's value after an intermediary value is set where no value was set prior", () => {
+            const grandparent = addElement();
+            const parent = addElement(grandparent);
+            const target = addElement(parent);
+
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(grandparent, 12);
+
+            expect(token.getValueFor(target)).to.equal(12);
+
+            token.setValueFor(parent, 14);
+
+            expect(token.getValueFor(target)).to.equal(14);
+
+        })
     });
     describe("setting CSS Custom Properties", () => {
         it("should emit the value set for an element when emitted to the same element", () => {
