@@ -1,4 +1,4 @@
-import { CaptureType, SyntheticViewTemplate } from "../template";
+import { CaptureType, SyntheticViewTemplate } from "./template";
 import { ExecutionContext, Binding } from "../observation/observable";
 
 /**

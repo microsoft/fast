@@ -1,16 +1,16 @@
 import { FASTElementDefinition } from "./fast-definitions";
-import { ElementView } from "./view";
-import { PropertyChangeNotifier } from "./observation/notifier";
+import { ElementView } from "../templating/view";
+import { PropertyChangeNotifier } from "../observation/notifier";
 import {
     defaultExecutionContext,
     Observable,
     observable,
-} from "./observation/observable";
-import { Behavior } from "./directives/behavior";
-import { ElementStyles, StyleTarget } from "./styles";
-import { Mutable } from "./interfaces";
-import { ElementViewTemplate } from "./template";
-import { DOM } from "./dom";
+} from "../observation/observable";
+import { Behavior } from "../observation/behavior";
+import { ElementStyles, StyleTarget } from "../styles/element-styles";
+import { Mutable } from "../interfaces";
+import { ElementViewTemplate } from "../templating/template";
+import { DOM } from "../dom";
 
 const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {

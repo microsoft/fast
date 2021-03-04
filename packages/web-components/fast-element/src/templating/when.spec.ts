@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { when } from "./when";
-import { html } from "../template";
+import { html } from "./template";
 import { Binding, defaultExecutionContext } from "../observation/observable";
 
 describe("The 'when' template function", () => {
