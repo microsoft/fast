@@ -179,9 +179,8 @@ describe("HorinzontalScroll", () => {
                 expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
 
                 await disconnect();
-            }
+            }, 1);
         });
-
     });
 
     describe("Scrolling", () => {

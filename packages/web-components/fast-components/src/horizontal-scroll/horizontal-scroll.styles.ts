@@ -7,7 +7,7 @@ const ltrActionsStyles = css`
         left: 0;
     }
 
-    .scroll-next:before {
+    .scroll.scroll-next:before {
         left: auto;
         right: 0;
         background: linear-gradient(to right, transparent, var(--scroll-fade-next));
@@ -26,13 +26,13 @@ const rtlActionsStyles = css`
         left: 0;
     }
 
-    .scroll-next:before {
+    .scroll.scroll-next:before {
         left: auto;
         right: 0;
         background: linear-gradient(to right, var(--scroll-fade-next), transparent);
     }
 
-    .scroll-prev:before {
+    .scroll.scroll-prev:before {
         background: linear-gradient(to right, transparent, var(--scroll-fade-previous));
     }
 
@@ -100,6 +100,7 @@ export const HorizontalScrollStyles = css`
 
     .scroll-view {
         overflow-x: auto;
+        scrollbar-width: none;
     }
 
     ::-webkit-scrollbar {
@@ -109,6 +110,7 @@ export const HorizontalScrollStyles = css`
     .content-container {
         white-space: nowrap;
         display: inline-block;
+        transform: translate3d(0, 0, 0);
     }
 
     .content-container ::slotted(*) {

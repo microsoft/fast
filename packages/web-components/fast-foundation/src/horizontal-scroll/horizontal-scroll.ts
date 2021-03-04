@@ -187,15 +187,15 @@ export class HorizontalScroll extends FASTElement {
         const stops: Array<number> = scrollItems.map(
             (
                 { offsetLeft: left, offsetWidth: width }: any,
-                idx: number,
-                ary: Array<any>
+                index: number,
+                array: Array<any>
             ): number => {
-                const firstLtr: boolean = !isRtl && idx === 0;
-                const lastRtl: boolean = isRtl && idx === ary.length - 1;
+                const firstLtr: boolean = !isRtl && index === 0;
+                const lastRtl: boolean = isRtl && index === array.length - 1;
                 const right: number = (left + width) * (isRtl ? -1 : 1);
 
                 /* Getting the final stop after the last item or before the first RTL item */
-                if (!isRtl || idx === 0) {
+                if (!isRtl || index === 0) {
                     lastStop = right;
                 }
 
@@ -256,11 +256,11 @@ export class HorizontalScroll extends FASTElement {
         const stops: Array<number> = this.scrollStops;
         if (this.isRtl) stops.sort((a: number, b: number): number => b - a);
         const current: number = stops.findIndex(
-            (stop: number, idx: number, ary: Array<number>): boolean =>
+            (stop: number, index: number, array: Array<number>): boolean =>
                 this.isRtl
                     ? stop <= position
                     : stop <= position &&
-                      (idx === ary.length - 1 || ary[idx + 1] > position)
+                      (index === array.length - 1 || array[index + 1] > position)
         );
         const right: number = stops[current + 1];
         const nextIndex: number =
