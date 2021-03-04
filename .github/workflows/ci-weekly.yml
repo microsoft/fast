@@ -47,6 +47,16 @@ jobs:
         yarn test-firefox:pw 
         yarn test-webkit:pw
 
+    - name: Initialize CodeQL
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master'}}
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, typescript, csharp
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+      
+
   windows_cross-platform_cross-browser:
     runs-on: [windows-latest]
 
@@ -94,6 +104,16 @@ jobs:
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
+    
+    - name: Initialize CodeQL
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master'}}
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, typescript, csharp
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
 
   macos_cross-platform_cross-browser:
     runs-on: [macos-latest]
@@ -133,3 +153,12 @@ jobs:
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
+
+    - name: Initialize CodeQL
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master'}}
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, typescript, csharp
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
