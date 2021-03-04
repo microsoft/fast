@@ -7,17 +7,14 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
     accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     heightNumber,
-    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
+    neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
+    neutralLayerL2Behavior,
+    neutralLayerL3Behavior,
 } from "../styles/index";
 
 export const MenuItemStyles = css`
@@ -45,28 +42,25 @@ export const MenuItemStyles = css`
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
-            neutralFocusInnerAccentBehavior.var
-        };
         border-color: ${neutralFocusBehavior.var};
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${neutralLayerL3Behavior.var};
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     :host(:hover) {
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${neutralLayerL3Behavior.var};
+        color: ${neutralForegroundHoverBehavior.var};
     }
 
     :host([aria-checked="true"]) {
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${neutralLayerL2Behavior.var};
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     :host(:active),
     :host(.expanded) {
-        background: ${accentFillActiveBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${neutralLayerL2Behavior.var};
+        color: ${neutralForegroundRestBehavior.var};
     }
 
     :host([disabled]) {
@@ -113,7 +107,7 @@ export const MenuItemStyles = css`
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: ${accentForegroundCutRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
     }
 
     :host([role="menuitemcheckbox"]),
@@ -160,7 +154,7 @@ export const MenuItemStyles = css`
         height: 20px;
         box-sizing: border-box;
         border: calc(var(--outline-width) * 1px) solid ${
-            accentForegroundCutRestBehavior.var
+            neutralForegroundRestBehavior.var
         };
         outline: none;
         margin-inline-start: 10px;
@@ -168,7 +162,8 @@ export const MenuItemStyles = css`
 
     :host([aria-checked="true"]) .checkbox,
     :host([aria-checked="true"]) .radio {
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${accentFillRestBehavior.var};
+        border-color: ${accentFillRestBehavior.var};
     }
 
     :host .checkbox {
@@ -191,7 +186,7 @@ export const MenuItemStyles = css`
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${accentForegroundCutRestBehavior.var};
+        fill: ${neutralForegroundRestBehavior.var};
         pointer-events: none;
     }
 
@@ -203,7 +198,7 @@ export const MenuItemStyles = css`
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${accentForegroundCutRestBehavior.var};
+        background: ${neutralForegroundRestBehavior.var};
         pointer-events: none;
     }
 
@@ -212,16 +207,13 @@ export const MenuItemStyles = css`
         pointer-events: none;
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
     accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
+    neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
+    neutralLayerL2Behavior,
+    neutralLayerL3Behavior,
     forcedColorsStylesheetBehavior(
         css`
             :host {
@@ -271,6 +263,7 @@ export const MenuItemStyles = css`
 
             :host([checked="true"]) .checkbox,
             :host([checked="true"]) .radio {
+                background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.HighlightText};
             }
 
