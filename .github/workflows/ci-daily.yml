@@ -18,9 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Clean and remove untracked files
-      run: git clean -xfd
-
     - name: Add or Update packages
       run: sudo yarn global add lerna
 
