@@ -27,7 +27,7 @@
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "yarn generate-default-palettes && yarn build:tsc && yarn generate-open-ui-definition && yarn build:rollup && yarn doc",
     "clean:dist": "node ../../../build/clean.js dist",
-    "clean:test": "node ../../../build/clean.js test/dist test/public",
+    "clean:test": "node ../../../build/clean.js __test__/dist __test__/public",
     "dev": "tsc -p ./tsconfig.json -w",
     "doc:ci": "api-extractor run",
     "doc": "api-extractor run --local",
