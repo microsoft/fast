@@ -110,8 +110,6 @@ export const HorizontalScrollStyles = css`
 
     .content-container {
         white-space: nowrap;
-        transform: translate3d(0, 0, 0);
-        transition: transform var(--scroll-duration) var(--scroll-easing);
         display: inline-block;
     }
 

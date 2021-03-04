@@ -25,6 +25,36 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
                     default: false,
                     required: false,
                 },
+                {
+                    name: "speed",
+                    title: "Speed",
+                    description: "Scroll speed in pixels per second",
+                    type: DataType.number,
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "easing",
+                    title: "Easing",
+                    description: "Scroll easing",
+                    type: DataType.string,
+                    values: [
+                        {
+                            name: "linear",
+                        },
+                        {
+                            name: "ease-in",
+                        },
+                        {
+                            name: "ease-out",
+                        },
+                        {
+                            name: "ease-in-out",
+                        },
+                    ],
+                    default: false,
+                    required: false,
+                },
             ],
             slots: [
                 {

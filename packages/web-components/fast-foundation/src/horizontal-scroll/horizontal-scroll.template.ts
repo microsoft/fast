@@ -25,8 +25,12 @@ export const HorizontalScrollTemplate = html<HorizontalScroll>`
     <template role="horizontal-scroll" class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">
-            <div class="scroll-view">
-                <div ${ref("contentContainer")} class="content-container">
+            <div
+                class="scroll-view"
+                ${ref("scrollContainer")}
+                @scroll="${x => x.scrolled()}"
+            >
+                <div class="content-container">
                     <slot></slot>
                 </div>
             </div>

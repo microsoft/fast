@@ -1,4 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement } from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
@@ -22,15 +22,21 @@ declare global {
 export type HorizontalScrollView = "default" | "mobile";
 
 /**
+ * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * @public
+ */
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+
+/**
  * A HorizontalScroll Custom HTML Element
  * @public
  */
 export class HorizontalScroll extends FASTElement {
     /**
-     * Reference to DOM element containing the content to scroll
+     * Reference to DOM element that scrolls the content
      * @public
      */
-    public contentContainer: HTMLDivElement;
+    public scrollContainer: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to previous content
@@ -45,17 +51,24 @@ export class HorizontalScroll extends FASTElement {
     public nextFlipper: HTMLDivElement;
 
     /**
+     * Speed of scroll in pixels per second
+     * @public
+     */
+    @attr
+    public speed: number = 600;
+
+    /**
+     * Attribute used for easing, defaults to ease-in-out
+     * @public
+     */
+    @attr
+    public easing: ScrollEasing = "ease-in-out";
+
+    /**
      * Detects if the component has been resized
      * @internal
      */
     private resizeDetector: ResizeObserverClassDefinition | null = null;
-
-    /**
-     * Current scroll position
-     * @internal
-     */
-    @attr
-    private position: number;
 
     /**
      * Width of the parent container
@@ -71,6 +84,9 @@ export class HorizontalScroll extends FASTElement {
     @attr
     private scrollStops: Array<number>;
 
+    @attr
+    private isRtl: boolean = false;
+
     /**
      * View: default | mobile
      * @public
@@ -85,6 +101,7 @@ export class HorizontalScroll extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
         DOM.queueUpdate(this.setStops.bind(this));
         this.initializeResizeDetector();
         this.startObservers();
@@ -105,10 +122,7 @@ export class HorizontalScroll extends FASTElement {
      */
     private startObservers = (): void => {
         this.stopObservers();
-
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.observe(this);
-        }
+        this.resizeDetector?.observe(this);
     };
 
     /**
@@ -116,9 +130,7 @@ export class HorizontalScroll extends FASTElement {
      * @internal
      */
     private stopObservers = (): void => {
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.disconnect();
-        }
+        this.resizeDetector?.disconnect();
     };
 
     /**
@@ -127,11 +139,7 @@ export class HorizontalScroll extends FASTElement {
      */
     private disconnectResizeDetector(): void {
         this.stopObservers();
-
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.disconnect();
-            this.resizeDetector = null;
-        }
+        this.resizeDetector = null;
     }
 
     /**
@@ -151,9 +159,7 @@ export class HorizontalScroll extends FASTElement {
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
         entries.forEach((entry: ResizeObserverEntry) => {
-            if (entry.target === this) {
-                this.setStops();
-            }
+            if (entry.target === this) this.resized();
         });
     };
 
@@ -176,8 +182,9 @@ export class HorizontalScroll extends FASTElement {
         const isRtl: boolean =
             scrollItems.length > 1 &&
             scrollItems[0].offsetLeft > scrollItems[1].offsetLeft;
+        this.isRtl = isRtl;
 
-        const stops = scrollItems.map(
+        const stops: Array<number> = scrollItems.map(
             (
                 { offsetLeft: left, offsetWidth: width }: any,
                 idx: number,
@@ -185,18 +192,18 @@ export class HorizontalScroll extends FASTElement {
             ): number => {
                 const firstLtr: boolean = !isRtl && idx === 0;
                 const lastRtl: boolean = isRtl && idx === ary.length - 1;
+                const right: number = (left + width) * (isRtl ? -1 : 1);
 
                 /* Getting the final stop after the last item or before the first RTL item */
                 if (!isRtl || idx === 0) {
-                    lastStop = (left + width) * (isRtl ? 1 : -1);
+                    lastStop = right;
                 }
 
                 /* Remove extra margin on first item and last RTL item */
                 if (lastRtl || firstLtr) {
                     left = 0;
-                } else if (!isRtl) {
-                    /* account for negative position for LTR */
-                    left = 0 - left;
+                } else if (isRtl) {
+                    left = right;
                 }
 
                 return left;
@@ -209,7 +216,15 @@ export class HorizontalScroll extends FASTElement {
         stops.sort((a, b) => Math.abs(a) - Math.abs(b));
 
         this.scrollStops = stops;
-        this.moveToStart();
+        this.setFlippers();
+    }
+
+    /**
+     * Returns the current scroll position of the scrollContainer
+     * @internal
+     */
+    private getScrollPosition(): number {
+        return this.scrollContainer.scrollLeft;
     }
 
     /**
@@ -217,12 +232,17 @@ export class HorizontalScroll extends FASTElement {
      * @internal
      */
     private setFlippers(): void {
-        if (this.previousFlipper && this.nextFlipper) {
-            this.previousFlipper.classList.toggle("disabled", this.position === 0);
+        const position: number = this.getScrollPosition();
+        if (this.previousFlipper) {
+            this.previousFlipper.classList.toggle("disabled", position === 0);
+        }
+        if (this.nextFlipper) {
             const lastStop: number = this.scrollStops[this.scrollStops.length - 1];
             this.nextFlipper.classList.toggle(
                 "disabled",
-                Math.abs(this.position) + this.width >= Math.abs(lastStop)
+                this.isRtl
+                    ? position - this.width <= lastStop
+                    : position + this.width >= lastStop
             );
         }
     }
@@ -232,20 +252,25 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
-        const current: number = this.scrollStops.findIndex(
-            (stop: number): boolean => stop === this.position
+        const position: number = this.getScrollPosition();
+        const stops: Array<number> = this.scrollStops;
+        if (this.isRtl) stops.sort((a: number, b: number): number => b - a);
+        const current: number = stops.findIndex(
+            (stop: number, idx: number, ary: Array<number>): boolean =>
+                this.isRtl
+                    ? stop <= position
+                    : stop <= position &&
+                      (idx === ary.length - 1 || ary[idx + 1] > position)
         );
-        const right: number = this.scrollStops[current + 1];
+        const right: number = stops[current + 1];
         const nextIndex: number =
-            this.scrollStops.findIndex(
-                (stop: number): boolean => Math.abs(stop) + this.width > Math.abs(right)
+            stops.findIndex((stop: number): boolean =>
+                this.isRtl ? stop - this.width < right : stop + this.width > right
             ) || 0;
-        const left = this.scrollStops[
+        const left: number = this.scrollStops[
             nextIndex < current ? nextIndex : current > 0 ? current - 1 : 0
         ];
-        this.contentContainer.style.transform = `translate3d(${left}px, 0, 0)`;
-        this.position = left;
-        this.setFlippers();
+        this.scrollToPosition(left, position);
     }
 
     /**
@@ -253,22 +278,78 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
+        const position: number = this.getScrollPosition();
         const current: number = this.scrollStops.findIndex(
-            (stop: number): boolean => stop === this.position
+            (stop: number): boolean => stop === position
         );
-        const outOfView: number = this.scrollStops.findIndex(
-            (stop: number): boolean =>
-                Math.abs(stop) >= Math.abs(this.position) + this.width
+        const outOfView: number = this.scrollStops.findIndex((stop: number): boolean =>
+            this.isRtl ? stop <= position - this.width : stop >= position + this.width
         );
-        let nextIndex = current;
+        let nextIndex: number = current;
         if (outOfView > current + 2) {
             nextIndex = outOfView - 2;
         } else if (current < this.scrollStops.length - 2) {
             nextIndex = current + 1;
         }
         const nextStop: number = this.scrollStops[nextIndex];
-        this.contentContainer.style.transform = `translate3d(${nextStop}px, 0, 0)`;
-        this.position = nextStop;
+        this.scrollToPosition(nextStop, position);
+    }
+
+    /**
+     * Handles scrolling with easing
+     * @param position - starting position
+     * @param newPosition - position to scroll to
+     */
+    private scrollToPosition(
+        newPosition: number,
+        position: number = this.scrollContainer.scrollLeft
+    ): void {
+        const getEasedTime = (ease: ScrollEasing, k: number): number => {
+            if (k > 1) k = 1;
+            switch (ease) {
+                case "ease-in":
+                    return Math.pow(k, 1.675);
+                case "ease-out":
+                    return 1 - Math.pow(1 - k, 1.675);
+                case "ease-in-out":
+                    return 0.5 * (Math.sin((k - 0.5) * Math.PI) + 1);
+                default:
+                    return k;
+            }
+        };
+        const fps: number = 120;
+        const dir: number = position < newPosition ? 1 : -1;
+        const distance: number = Math.abs(newPosition - position);
+        const seconds: number = distance / this.speed;
+        const steps: number = fps * seconds;
+        const move = (step: number, time: number): void => {
+            const progress: number = step / steps;
+            const eased: number = getEasedTime(this.easing, progress);
+            const nextStop: number = position + distance * eased * dir;
+            if (step < steps) {
+                this.scrollContainer.scrollLeft = nextStop;
+                setTimeout(() => move(step + 1, time), time);
+            } else {
+                this.scrollContainer.scrollLeft = newPosition;
+                this.setFlippers();
+            }
+        };
+        move(0, 1000 / fps);
+    }
+    /**
+     * Monitors resize event on the horizontal-scroll element
+     * @public
+     */
+    public resized(): void {
+        this.width = this.offsetWidth;
+        this.setFlippers();
+    }
+
+    /**
+     * Monitors scrolled event on the content container
+     * @public
+     */
+    public scrolled(): void {
         this.setFlippers();
     }
 
@@ -277,8 +358,6 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public moveToStart(): void {
-        this.position = 0;
-        this.contentContainer.style.transform = "translate3d(0, 0, 0)";
-        this.setFlippers();
+        this.scrollToPosition(0);
     }
 }

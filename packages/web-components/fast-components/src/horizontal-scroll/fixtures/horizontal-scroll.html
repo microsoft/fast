@@ -12,10 +12,6 @@
         margin: 20px;
     }
 
-    .slow-scroll {
-        --scroll-duration: 1.5s;
-    }
-
     .right-gradient {
         --scroll-fade-next: var(--background-color);
     }
@@ -44,22 +40,70 @@
 <fast-horizontal-scroll>
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
-    <fast-card>Card number 1</fast-card>
-    <fast-card>Card number 2</fast-card>
-    <fast-card>Card number 3</fast-card>
-    <fast-card>Card number 4</fast-card>
-    <fast-card>Card number 5</fast-card>
-    <fast-card>Card number 6</fast-card>
-    <fast-card>Card number 7</fast-card>
-    <fast-card>Card number 8</fast-card>
-    <fast-card>Card number 9</fast-card>
-    <fast-card>Card number 10</fast-card>
-    <fast-card>Card number 11</fast-card>
-    <fast-card>Card number 12</fast-card>
-    <fast-card>Card number 13</fast-card>
-    <fast-card>Card number 14</fast-card>
-    <fast-card>Card number 15</fast-card>
-    <fast-card>Card number 16</fast-card>
+    <fast-card>
+        Card number 1
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 2
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 3
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 4
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 5
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 6
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 7
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 8
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 9
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 10
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 11
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 12
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 13
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 14
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 15
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 16
+        <fast-button>A button</fast-button>
+    </fast-card>
 </fast-horizontal-scroll>
 
 <h2>Full width cards</h2>
@@ -74,8 +118,8 @@
     <fast-card>Card number 6</fast-card>
 </fast-horizontal-scroll>
 
-<h2>Slow scroll (1.5s)</h2>
-<fast-horizontal-scroll class="slow-scroll">
+<h2>Slow scroll (200 pixels/second)</h2>
+<fast-horizontal-scroll speed="200">
     <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
     <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>

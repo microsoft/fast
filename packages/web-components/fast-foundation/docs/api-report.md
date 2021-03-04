@@ -1001,14 +1001,18 @@ export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 export class HorizontalScroll extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
-    contentContainer: HTMLDivElement;
     // (undocumented)
     disconnectedCallback(): void;
+    easing: ScrollEasing;
     moveToStart(): void;
     nextFlipper: HTMLDivElement;
     previousFlipper: HTMLDivElement;
+    resized(): void;
+    scrollContainer: HTMLDivElement;
+    scrolled(): void;
     scrollToNext(): void;
     scrollToPrevious(): void;
+    speed: number;
     view: HorizontalScrollView;
     }
 
@@ -1470,6 +1474,9 @@ export const enum ResolverStrategy {
     // (undocumented)
     transient = 2
 }
+
+// @public
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
