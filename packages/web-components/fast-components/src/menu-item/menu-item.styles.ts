@@ -9,12 +9,15 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
+    accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     heightNumber,
+    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineRestBehavior,
 } from "../styles/index";
 
 export const MenuItemStyles = css`
@@ -54,7 +57,8 @@ export const MenuItemStyles = css`
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
-    :host([checked="true"]) {
+
+    :host([aria-checked="true"]) {
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
     }
@@ -92,6 +96,7 @@ export const MenuItemStyles = css`
     .start,
     .end {
         display: flex;
+        justify-content: center;
     }
     
     ::slotted(svg) {
@@ -110,14 +115,108 @@ export const MenuItemStyles = css`
     :host(:active)::slotted(svg) {
         fill: ${accentForegroundCutRestBehavior.var};
     }
+
+    :host([role="menuitemcheckbox"]),
+    :host([role="menuitemradio"]) {
+        display: grid;
+        grid-template-columns: auto auto 1fr minmax(42px, auto);
+        align-items: center;
+        min-height: 32px;
+    }
+
+    :host .input-container {
+        display: none;
+    }
+
+    :host([role="menuitemcheckbox"]) .input-container,
+    :host([role="menuitemradio"]) .input-container {
+        display: grid;
+        margin-inline-end: 10px;
+    }
+
+    :host([role="menuitemcheckbox"]) .start,
+    :host([role="menuitemradio"]) .start {
+        grid-column-start: 2;
+        margin-inline-end: 10px;
+    }
+
+    :host([role="menuitemcheckbox"]) .content,
+    :host([role="menuitemradio"]) .content {
+        grid-column-start: 3;
+    }
+
+    :host([role="menuitemcheckbox"]) .end,
+    :host([role="menuitemradio"]) .end {
+        grid-column-start: 4;
+    }
+
+    :host .checkbox,
+    :host .radio {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 20px;
+        height: 20px;
+        box-sizing: border-box;
+        border: calc(var(--outline-width) * 1px) solid ${
+            accentForegroundCutRestBehavior.var
+        };
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host .checkbox {
+        border-radius: calc(var(--corner-radius) * 1px);
+    }
+
+    :host .radio {
+        border-radius: 999px;
+    }
+
+    :host .checkbox-indicator,
+    :host .radio-indicator,
+    ::slotted([slot="checkbox-indicator"]),
+    ::slotted([slot="radio-indicator"]) {
+        display: none;
+    }
+
+    :host([aria-checked="true"]) .checkbox-indicator,
+    :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
+        width: 100%;
+        height: 100%;
+        display: block;
+        fill: ${accentForegroundCutRestBehavior.var};
+        pointer-events: none;
+    }
+
+    :host([aria-checked="true"]) .radio-indicator {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        border-radius: 999px;
+        display: block;
+        background: ${accentForegroundCutRestBehavior.var};
+        pointer-events: none;
+    }
+
+    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
+        display: block;
+        pointer-events: none;
+    }
 `.withBehaviors(
     accentFillActiveBehavior,
     accentFillHoverBehavior,
+    accentFillRestBehavior,
     accentForegroundCutRestBehavior,
+    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
+    neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host {
@@ -125,10 +224,12 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.ButtonText};
                 forced-color-adjust: none;
             }
+
             :host(:hover) {
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
             }
+
             :host(:hover) .start,
             :host(:hover) .end,
             :host(:hover)::slotted(svg),
@@ -137,6 +238,7 @@ export const MenuItemStyles = css`
             :host(:active)::slotted(svg) {
                 fill: ${SystemColors.HighlightText};
             }
+
             :host(:${focusVisible}) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
@@ -144,6 +246,7 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
+
             :host([disabled]),
             :host([disabled]:hover),
             :host([disabled]:hover) .start,
@@ -153,6 +256,43 @@ export const MenuItemStyles = css`
                 color: ${SystemColors.GrayText};
                 fill: currentcolor;
                 opacity: 1;
+            }
+
+            :host .checkbox,
+            :host .radio{
+                border-color: ${SystemColors.ButtonText};
+                background: ${SystemColors.HighlightText};
+            }
+
+            :host([checked="true"]) .checkbox,
+            :host([checked="true"]) .radio {
+                border-color: ${SystemColors.HighlightText};
+            }
+
+            :host(:hover) .checkbox,
+            :host(:hover) .radio,
+            :host(:${focusVisible}) .checkbox,
+            :host(:${focusVisible}) .radio,
+            :host([checked="true"]:hover) .checkbox,
+            :host([checked="true"]:hover) .radio,
+            :host([checked="true"]:${focusVisible}) .checkbox,
+            :host([checked="true"]:${focusVisible}) .radio {
+                border-color: ${SystemColors.HighlightText};
+            }
+
+            :host([aria-checked="true"]) {
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+            }
+
+            :host([aria-checked="true"]) .checkbox-indicator,
+            :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]),
+            :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
+                fill: ${SystemColors.Highlight};
+            }
+
+            :host([aria-checked="true"]) .radio-indicator {
+                background: ${SystemColors.Highlight};
             }
         `
     )

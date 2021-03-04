@@ -61,3 +61,6 @@ jobs:
           ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: false
+
+    - name: Testing final validation
+      run: yarn test:validation
