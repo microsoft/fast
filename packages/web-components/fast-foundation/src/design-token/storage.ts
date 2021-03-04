@@ -2,17 +2,22 @@ import { Controller, FASTElement, Observable, Subscriber } from "@microsoft/fast
 import { Container, DI, Registration } from "../di/di";
 import { DerivedDesignTokenValue, DesignToken } from "./design-token";
 
+export type DesignTokenStorageTarget = FASTElement & HTMLElement;
+
 export interface DesignTokenStorage {
-    readonly owner: HTMLElement & FASTElement;
+    readonly owner: DesignTokenStorageTarget;
     parentNode: DesignTokenStorage | null;
     get<T>(token: DesignToken<T>): T;
     set<T>(
         token: DesignToken<T>,
-        value: T | ((target: HTMLElement & FASTElement) => T)
+        value: T | ((target: DesignTokenStorageTarget) => T)
     ): void;
     connect(subscriber: DesignTokenStorage): void;
     disconnect(subscriber: DesignTokenStorage): void;
+    observe(token: DesignToken<any>, cb: () => void);
 }
+
+type Observer = (storage: DesignTokenStorage) => void;
 
 export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     /**
@@ -22,16 +27,28 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     #container: Container;
     #tokens: Map<DesignToken<any>, any> = new Map();
     #children: Set<DesignTokenStorage> = new Set();
+    #observers: Map<DesignToken<any>, Set<Observer>> = new Map();
+
+    private getOrCreateObserverSet(token: DesignToken<any>): Set<Observer> {
+        if (this.#observers.has(token)) {
+            return this.#observers.get(token)!;
+        }
+
+        const set = new Set<Observer>();
+        this.#observers.set(token, set);
+
+        return set;
+    }
 
     /**
      * The Custom Element for which the token is associated
      */
-    public readonly owner: HTMLElement & FASTElement;
+    public readonly owner: DesignTokenStorageTarget;
 
     /**
      * The upstream {@link DesignTokenStorage}
      */
-    constructor(owner: HTMLElement & FASTElement) {
+    constructor(owner: DesignTokenStorageTarget) {
         this.owner = owner;
         this.#container = DI.getOrCreateDOMContainer(owner);
 
@@ -47,7 +64,7 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
         this.handleChange(owner.$fastController, "isConnected");
     }
 
-    static for(element: FASTElement & HTMLElement): DesignTokenStorage {
+    static for(element: DesignTokenStorageTarget): DesignTokenStorage {
         const container = DI.getOrCreateDOMContainer(element);
 
         return container.has(DesignTokenStorage, false)
@@ -90,8 +107,20 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
 
     public set<T>(token: DesignToken<T>, value: T | DerivedDesignTokenValue<T>): void {
         this.#tokens.set(token, value);
+
+        if (this.#observers.has(token)) {
+            this.#observers.get(token)!.forEach(observer => {
+                observer(this);
+            });
+        }
+
+        // TODO: how do we notify downstream?
     }
 
+    /**
+     * Sets the provided node as a downstream node of the node.
+     * @param node - The {@link DesignTokenStorage} being connected to
+     */
     public connect(node: DesignTokenStorage) {
         node.parentNode = this;
         this.#children.forEach(ownSubscriber => {
@@ -110,8 +139,22 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
     }
 
     public disconnect(node: DesignTokenStorage) {
-        this.#children.delete(node);
-        node.parentNode = null;
+        if (node.parentNode === this) {
+            this.#children.delete(node);
+            node.parentNode = null;
+        }
+    }
+
+    /**
+     * Observers a token and any dependent tokens for changes
+     * @param token - The token to observe
+     * @param observer - The callback to invoke when the token or any dependent tokens change
+     */
+    public observe(token: DesignToken<any>, observer: Observer) {
+        const observers = this.getOrCreateObserverSet(token);
+        observers.add(observer);
+
+        observer(this);
     }
 }
 

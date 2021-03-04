@@ -122,6 +122,21 @@ describe("A DesignToken", () => {
 
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             removeElement(ancestor);
+        });
+
+        it("should update the CSS custom property value when the value changes", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(target, 12)
+            
+            token.addCustomPropertyFor(target);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+            token.setValueFor(target, 14);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+            removeElement(target);
         })
     });
 });
