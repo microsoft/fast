@@ -1,4 +1,4 @@
-import { Behavior } from "../observation/behavior";
+import type { Behavior } from "../observation/behavior";
 import { CSSDirective } from "./css-directive";
 import { ComposableStyles, ElementStyles } from "./element-styles";
 
