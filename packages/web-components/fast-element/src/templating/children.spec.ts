@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { children, ChildrenBehavior } from "./children";
-import { AttachedBehaviorDirective } from "./directive";
+import { AttachedBehaviorHTMLDirective } from "./html-directive";
 import { observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
@@ -9,13 +9,13 @@ describe("The children", () => {
     context("template function", () => {
         it("returns an AttachedBehaviorDirective", () => {
             const directive = children("test");
-            expect(directive).to.be.instanceOf(AttachedBehaviorDirective);
+            expect(directive).to.be.instanceOf(AttachedBehaviorHTMLDirective);
         });
     });
 
     context("directive", () => {
         it("creates a ChildrenBehavior", () => {
-            const directive = children("test") as AttachedBehaviorDirective;
+            const directive = children("test") as AttachedBehaviorHTMLDirective;
             const target = document.createElement("div");
             const behavior = directive.createBehavior(target);
 

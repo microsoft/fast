@@ -102,7 +102,7 @@ export const DOM = Object.freeze({
     },
 
     /**
-     * Given a marker node, extract the {@link Directive} index from the placeholder.
+     * Given a marker node, extract the {@link HTMLDirective} index from the placeholder.
      * @param node - The marker node to extract the index from.
      */
     extractDirectiveIndexFromMarker(node: Comment): number {

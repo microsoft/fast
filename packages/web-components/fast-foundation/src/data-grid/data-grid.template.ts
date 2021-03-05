@@ -18,11 +18,12 @@ function createRowItemTemplate(prefix: string): ViewTemplate {
  * @public
  */
 export function createDataGridTemplate(prefix: string): ViewTemplate {
+    const rowItemTemplate: ViewTemplate = createRowItemTemplate(prefix);
     return html<DataGrid>`
         <template
             role="grid"
             tabindex="0"
-            :defaultRowItemTemplate="${createRowItemTemplate(prefix)}"
+            :defaultRowItemTemplate="${rowItemTemplate}"
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),

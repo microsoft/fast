@@ -1,6 +1,6 @@
 import { Accessor, Observable } from "../observation/observable";
-import { emptyArray } from "../interfaces";
-import { Behavior } from "./behavior";
+import { emptyArray } from "../platform";
+import { Behavior } from "../observation/behavior";
 
 /**
  * Options for configuring node observation behavior.
