@@ -142,6 +142,21 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
+     * Sets the placeholder value of the element, generally used to provide a hint to the user.
+     * @public
+     * @remarks
+     * HTML Attribute: placeholder
+     * Using this attribute is not a valid substitute for a labeling element.
+     */
+    @attr
+    public placeholder: string;
+    protected placeholderChanged(): void {
+        if (this.proxy instanceof HTMLElement) {
+            this.proxy.placeholder = this.placeholder;
+        }
+    }
+
+    /**
      * The placement for the listbox when the combobox is open.
      *
      * @public

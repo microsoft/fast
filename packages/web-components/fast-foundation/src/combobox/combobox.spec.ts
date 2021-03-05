@@ -226,6 +226,20 @@ describe("Combobox", () => {
         });
     });
 
+    it("should set the `placeholder` attribute on the internal control equal to the value provided", async () => {
+        const { element, connect, disconnect } = await setup();
+        const placeholder = "placeholder";
+
+        element.placeholder = placeholder;
+
+        await connect();
+        expect(
+            element.shadowRoot?.querySelector(".selected-value")?.getAttribute("placeholder")
+        ).to.equal(placeholder);
+
+        await disconnect();
+    });
+
     describe("when the owning form's reset() function is invoked", () => {
         it("should reset the value property to its initial value", async () => {
             const { connect, disconnect, element, parent } = await setup();
