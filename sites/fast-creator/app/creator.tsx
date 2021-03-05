@@ -11,6 +11,7 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessage,
+    DataType,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -153,7 +154,10 @@ class Creator extends Editor<{}, CreatorState> {
                         version={"ALPHA"}
                     />
                     <div style={{ height: "calc(100% - 48px)" }}>
-                        <ModularNavigation messageSystem={this.fastMessageSystem} />
+                        <ModularNavigation
+                            messageSystem={this.fastMessageSystem}
+                            types={[DataType.object]}
+                        />
                     </div>
                     <ProjectFileTransfer
                         projectFile={this.state}

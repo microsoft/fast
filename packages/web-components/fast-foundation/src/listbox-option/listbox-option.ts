@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -24,6 +24,14 @@ export function isListboxOption(el: Element): el is ListboxOption {
  * @public
  */
 export class ListboxOption extends FASTElement {
+    /**
+     * @internal
+     */
+    private _value: string;
+
+    /**
+     * @internal
+     */
     public proxy: HTMLOptionElement;
 
     /**
@@ -126,17 +134,24 @@ export class ListboxOption extends FASTElement {
     }
 
     public get text(): string {
-        return this.textContent ? this.textContent : this.value;
+        return this.textContent as string;
     }
 
-    @observable
-    public value: string;
-    public valueChanged(previous: string, next: string) {
+    public set value(next: string) {
+        this._value = next;
+
         this.dirtyValue = true;
 
         if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
+            this.proxy.value = next;
         }
+
+        Observable.notify(this, "value");
+    }
+
+    public get value(): string {
+        Observable.track(this, "value");
+        return this._value ? this._value : this.text;
     }
 
     public get form(): HTMLFormElement | null {

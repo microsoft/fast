@@ -28,17 +28,37 @@ export class Listbox extends FASTElement {
      *
      * @internal
      */
-    private static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+    protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
 
     /**
      * @internal
      */
-    private typeaheadBuffer: string = "";
+    @observable
+    protected typeaheadBuffer: string = "";
+    public typeaheadBufferChanged(prev: string, next: string): void {
+        if (this.$fastController.isConnected) {
+            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+            const re = new RegExp(`^${pattern}`, "gi");
+
+            const filteredOptions = this.options.filter((o: ListboxOption) =>
+                o.text.trim().match(re)
+            );
+
+            if (filteredOptions.length) {
+                const selectedIndex = this.options.indexOf(filteredOptions[0]);
+                if (selectedIndex > -1) {
+                    this.selectedIndex = selectedIndex;
+                }
+            }
+
+            this.typeAheadExpired = false;
+        }
+    }
 
     /**
      * @internal
      */
-    private typeaheadTimeout: number = -1;
+    protected typeaheadTimeout: number = -1;
 
     /**
      * Flag for the typeahead timeout expiration.
@@ -184,7 +204,7 @@ export class Listbox extends FASTElement {
      * @public
      */
     public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.disabled;
+        isListboxOption(n) && !n.disabled && !n.hidden;
 
     /**
      * Moves focus to the first selectable option
@@ -253,7 +273,7 @@ export class Listbox extends FASTElement {
         ) as ListboxOption;
 
         if (captured && !captured.disabled) {
-            this.selectedIndex = this.options.findIndex(el => el.isEqualNode(captured));
+            this.selectedIndex = this.options.indexOf(captured);
             return true;
         }
     }
@@ -268,27 +288,33 @@ export class Listbox extends FASTElement {
             return true;
         }
 
-        const key = e.key || e.key.charCodeAt(0);
+        const key = e.key;
 
         switch (key) {
             // Select the first available option
             case "Home": {
-                e.preventDefault();
-                this.selectFirstOption();
+                if (!e.shiftKey) {
+                    e.preventDefault();
+                    this.selectFirstOption();
+                }
                 break;
             }
 
             // Select the next selectable option
             case "ArrowDown": {
-                e.preventDefault();
-                this.selectNextOption();
+                if (!e.shiftKey) {
+                    e.preventDefault();
+                    this.selectNextOption();
+                }
                 break;
             }
 
             // Select the previous selectable option
             case "ArrowUp": {
-                e.preventDefault();
-                this.selectPreviousOption();
+                if (!e.shiftKey) {
+                    e.preventDefault();
+                    this.selectPreviousOption();
+                }
                 break;
             }
 
@@ -301,7 +327,7 @@ export class Listbox extends FASTElement {
 
             case "Tab": {
                 this.focusAndScrollOptionIntoView();
-                // fall through
+                return true;
             }
 
             case "Enter":
@@ -317,7 +343,9 @@ export class Listbox extends FASTElement {
 
             // Send key to Typeahead handler
             default: {
-                this.handleTypeAhead(key);
+                if (key.length === 1) {
+                    this.handleTypeAhead(`${key}`);
+                }
                 return true;
             }
         }
@@ -331,7 +359,7 @@ export class Listbox extends FASTElement {
      *
      * @param key - the key to be evaluated
      */
-    public handleTypeAhead(key): void {
+    public handleTypeAhead = (key: string): void => {
         if (this.typeaheadTimeout) {
             window.clearTimeout(this.typeaheadTimeout);
         }
@@ -345,26 +373,10 @@ export class Listbox extends FASTElement {
             return;
         }
 
-        if (this.typeAheadExpired) {
-            this.typeaheadBuffer = "";
-        }
-
-        this.typeaheadBuffer += `${key}`;
-
-        const pattern = `^(${this.typeaheadBuffer.replace(
-            /[.*+\-?^${}()|[\]\\]/g,
-            "\\$&"
-        )})`;
-        const re = new RegExp(pattern, "gi");
-
-        const selectedIndex = this.options.findIndex(o => o.text!.trim().match(re));
-
-        if (selectedIndex > -1) {
-            this.selectedIndex = selectedIndex;
-        }
-
-        this.typeAheadExpired = false;
-    }
+        this.typeaheadBuffer = `${
+            this.typeAheadExpired ? "" : this.typeaheadBuffer
+        }${key}`;
+    };
 }
 
 /**

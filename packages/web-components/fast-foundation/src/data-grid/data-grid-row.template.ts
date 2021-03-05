@@ -28,12 +28,14 @@ function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
  * @public
  */
 export function createDataGridRowTemplate(prefix: string): ViewTemplate {
+    const cellItemTemplate: ViewTemplate = createCellItemTemplate(prefix);
+    const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(prefix);
     return html<DataGridRow>`
         <template
             role="row"
             class="${x => (x.rowType !== "default" ? x.rowType : "")}"
-            :defaultCellItemTemplate="${createCellItemTemplate(prefix)}"
-            :defaultHeaderCellItemTemplate="${createHeaderCellItemTemplate(prefix)}"
+            :defaultCellItemTemplate="${cellItemTemplate}"
+            :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({
                 property: "cellElements",
                 filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),

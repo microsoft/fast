@@ -15,7 +15,7 @@ export interface Accessor {
 }
 
 // @public
-export class AttachedBehaviorDirective<T = any> extends Directive {
+export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
     createBehavior(target: Node): Behavior;
     createPlaceholder(index: number): string;
@@ -64,12 +64,6 @@ export interface Behavior {
 }
 
 // @public
-export interface BehaviorFactory {
-    createBehavior(target: Node): Behavior;
-    targetIndex: number;
-}
-
-// @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
 // @public
@@ -106,17 +100,6 @@ export class BindingBehavior implements Behavior {
     // @internal (undocumented)
     version: number;
 }
-
-// @public
-export class BindingDirective extends NamedTargetDirective {
-    constructor(binding: Binding);
-    // (undocumented)
-    binding: Binding;
-    createBehavior(target: Node): BindingBehavior;
-    targetAtContent(): void;
-    get targetName(): string | undefined;
-    set targetName(value: string | undefined);
-    }
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -159,15 +142,15 @@ export type ChildrenBehaviorOptions<T = any> = ChildListBehaviorOptions<T> | Sub
 // @beta
 export interface CompilationResult {
     fragment: DocumentFragment;
-    hostBehaviorFactories: BehaviorFactory[];
+    hostBehaviorFactories: NodeBehaviorFactory[];
     targetOffset: number;
-    viewBehaviorFactories: BehaviorFactory[];
+    viewBehaviorFactories: NodeBehaviorFactory[];
 }
 
 // Warning: (ae-incompatible-release-tags) The symbol "compileTemplate" is marked as @public, but its signature references "CompilationResult" which is marked as @beta
 //
 // @public
-export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<Directive>): CompilationResult;
+export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): CompilationResult;
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
@@ -217,13 +200,6 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 
 // @public
 export const defaultExecutionContext: ExecutionContext<any, any>;
-
-// @public
-export abstract class Directive implements BehaviorFactory {
-    abstract createBehavior(target: Node): Behavior;
-    abstract createPlaceholder(index: number): string;
-    targetIndex: number;
-}
 
 // @public
 export const DOM: Readonly<{
@@ -344,6 +320,24 @@ export type Global = typeof globalThis & {
 export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
 
 // @public
+export class HTMLBindingDirective extends TargetedHTMLDirective {
+    constructor(binding: Binding);
+    // (undocumented)
+    binding: Binding;
+    createBehavior(target: Node): BindingBehavior;
+    targetAtContent(): void;
+    get targetName(): string | undefined;
+    set targetName(value: string | undefined);
+    }
+
+// @public
+export abstract class HTMLDirective implements NodeBehaviorFactory {
+    abstract createBehavior(target: Node): Behavior;
+    abstract createPlaceholder(index: number): string;
+    targetIndex: number;
+}
+
+// @public
 export class HTMLView implements ElementView, SyntheticView {
     constructor(fragment: DocumentFragment, behaviors: Behavior[]);
     appendTo(node: Node): void;
@@ -367,9 +361,9 @@ export type Mutable<T> = {
 };
 
 // @public
-export abstract class NamedTargetDirective extends Directive {
-    createPlaceholder: (index: number) => string;
-    abstract targetName: string | undefined;
+export interface NodeBehaviorFactory {
+    createBehavior(target: Node): Behavior;
+    targetIndex: number;
 }
 
 // @public
@@ -447,7 +441,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
 // @public
-export class RepeatDirective<TSource = any> extends Directive {
+export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(target: Node): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
@@ -529,7 +523,13 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | Directive | CaptureType<TScope>;
+export abstract class TargetedHTMLDirective extends HTMLDirective {
+    createPlaceholder: (index: number) => string;
+    abstract targetName: string | undefined;
+}
+
+// @public
+export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | HTMLDirective | CaptureType<TScope>;
 
 // @public
 export type TrustedTypes = {
@@ -558,9 +558,9 @@ export interface View {
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
-    constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<Directive>);
+    constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>);
     create(hostBindingTarget?: Element): HTMLView;
-    readonly directives: ReadonlyArray<Directive>;
+    readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
     }
