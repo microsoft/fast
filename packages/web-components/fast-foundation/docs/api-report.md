@@ -313,6 +313,8 @@ export class Combobox extends FormAssociatedCombobox {
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     placeholder: string;
+    // @internal
+    protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
