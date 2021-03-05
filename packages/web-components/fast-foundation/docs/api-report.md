@@ -276,6 +276,79 @@ export interface ColumnDefinition {
     title?: string;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedCombobox" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Combobox" because one of its declarations is marked as @internal
+//
+// @public
+export class Combobox extends FormAssociatedCombobox {
+    autocomplete: ComboboxAutocomplete | undefined;
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // (undocumented)
+    connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
+    // @internal
+    disabledChanged(prev: boolean, next: boolean): void;
+    filteredOptions: ListboxOption[];
+    filterOptions(): void;
+    // @internal
+    focusoutHandler(e: FocusEvent): boolean | void;
+    // @internal
+    formResetCallback: () => void;
+    // @internal
+    inputHandler(e: InputEvent): boolean | void;
+    // @internal
+    keydownHandler(e: Event & KeyboardEvent): boolean | void;
+    // @internal
+    keyupHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    listboxId: string;
+    // @internal
+    maxHeight: number;
+    open: boolean;
+    // (undocumented)
+    protected openChanged(): void;
+    get options(): ListboxOption[];
+    set options(value: ListboxOption[]);
+    position: SelectPosition;
+    positionAttribute: SelectPosition;
+    role: SelectRole;
+    // @internal
+    selectedIndexChanged(prev: number, next: number): void;
+    // @internal
+    selectedOptionsChanged(prev: any, next: any): void;
+    // @internal
+    selectPreviousOption(): void;
+    // @internal
+    setDefaultSelectedOption(): void;
+    setPositioning(): void;
+    // @internal
+    slottedOptionsChanged(prev: any, next: any): void;
+    get value(): string;
+    set value(next: string);
+    }
+
+// @internal
+export interface Combobox extends StartEnd, DelegatesARIACombobox {
+}
+
+// @public
+export enum ComboboxAutocomplete {
+    // (undocumented)
+    both = "both",
+    // (undocumented)
+    inline = "inline",
+    // (undocumented)
+    list = "list",
+    // (undocumented)
+    none = "none"
+}
+
+// @public
+export const ComboboxTemplate: import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
+
 // @alpha
 export interface ComponentPresentation {
     // (undocumented)
@@ -336,14 +409,13 @@ export interface ContainerConfiguration {
     defaultResolver(key: Key, handler: Container): Resolver;
     // (undocumented)
     parentLocator: ParentLocator;
+    // (undocumented)
+    responsibleForOwnerRequests: boolean;
 }
 
 // @alpha (undocumented)
 export const ContainerConfiguration: Readonly<{
-    default: Readonly<{
-        parentLocator: () => null;
-        defaultResolver: (key: Key) => Resolver;
-    }>;
+    default: Readonly<ContainerConfiguration>;
 }>;
 
 // @alpha (undocumented)
@@ -377,7 +449,9 @@ export class ContainerImpl implements Container {
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     // (undocumented)
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-    }
+    // (undocumented)
+    get responsibleForOwnerRequests(): boolean;
+}
 
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
@@ -570,11 +644,11 @@ export class DefaultComponentPresentation implements ComponentPresentation {
 }
 
 // @alpha (undocumented)
-export const DefaultResolver: {
+export const DefaultResolver: Readonly<{
     none(key: Key): Resolver;
     singleton(key: Key): Resolver;
     transient(key: Key): Resolver;
-};
+}>;
 
 // @public
 export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
@@ -590,6 +664,18 @@ export class DelegatesARIAButton {
 
 // @internal
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIACombobox" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIACombobox {
+    ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
+}
+
+// @internal
+export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -718,8 +804,9 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 // @alpha (undocumented)
 export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
-    findContainer(element: HTMLElement): Container;
-    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "defaultResolver">> | undefined): Container;
+    findResponsibleContainer(element: HTMLElement): Container;
+    findParentContainer(element: HTMLElement): Container;
+    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -1054,7 +1141,7 @@ export class Listbox extends FASTElement {
     protected focusAndScrollOptionIntoView(): void;
     // @internal (undocumented)
     focusinHandler(e: FocusEvent): void;
-    handleTypeAhead(key: any): void;
+    handleTypeAhead: (key: string) => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
@@ -1083,8 +1170,16 @@ export class Listbox extends FASTElement {
     // (undocumented)
     slottedOptionsChanged(prev: any, next: any): void;
     // @internal
+    protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
+    // @internal (undocumented)
+    protected typeaheadBuffer: string;
+    // (undocumented)
+    typeaheadBufferChanged(prev: string, next: string): void;
+    // @internal
     protected typeAheadExpired: boolean;
-    }
+    // @internal (undocumented)
+    protected typeaheadTimeout: number;
+}
 
 // @internal (undocumented)
 export interface Listbox extends DelegatesARIAListbox {
@@ -1110,7 +1205,7 @@ export class ListboxOption extends FASTElement {
     initialValueChanged(previous: string, next: string): void;
     // (undocumented)
     get label(): string;
-    // (undocumented)
+    // @internal (undocumented)
     proxy: HTMLOptionElement;
     selected: boolean;
     selectedAttribute: boolean;
@@ -1120,11 +1215,10 @@ export class ListboxOption extends FASTElement {
     protected selectedChanged(): void;
     // (undocumented)
     get text(): string;
+    set value(next: string);
     // (undocumented)
-    value: string;
-    // (undocumented)
-    valueChanged(previous: string, next: string): void;
-}
+    get value(): string;
+    }
 
 // @internal (undocumented)
 export interface ListboxOption extends StartEnd {
@@ -2027,7 +2121,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/di/di.d.ts:205:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

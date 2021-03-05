@@ -78,3 +78,12 @@ export const $global: Global = (function () {
 if ($global.trustedTypes === void 0) {
     $global.trustedTypes = { createPolicy: (n, r) => r };
 }
+
+/**
+ * A readonly, empty array.
+ * @remarks
+ * Typically returned by APIs that return arrays when there are
+ * no actual items to return.
+ * @internal
+ */
+export const emptyArray = Object.freeze([]);

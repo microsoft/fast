@@ -20,6 +20,40 @@ export const MenuItemTemplate = html<MenuItem>`
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
             x.expanded ? "expanded" : ""}"
     >
+        <div part="input-container" class="input-container">
+            ${when(
+                x => x.role === MenuItemRole.menuitemcheckbox,
+                html<MenuItem>`
+                    <span part="checkbox" class="checkbox">
+                        <slot name="checkbox-indicator">
+                            <svg
+                                aria-hidden="true"
+                                part="checkbox-indicator"
+                                class="checkbox-indicator"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"
+                                />
+                            </svg>
+                        </slot>
+                    </span>
+                `
+            )}
+            ${when(
+                x => x.role === MenuItemRole.menuitemradio,
+                html<MenuItem>`
+                    <span part="radio" class="radio">
+                        <slot name="radio-indicator">
+                            <span part="radio-indicator" class="radio-indicator"></span>
+                        </slot>
+                    </span>
+                `
+            )}
+        </div>
         ${startTemplate}
         <span class="content" part="content">
             <slot></slot>
