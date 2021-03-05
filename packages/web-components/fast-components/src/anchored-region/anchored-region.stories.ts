@@ -88,6 +88,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
                 scalingViewportPreviousXValue = target.scrollLeft;
                 scalingViewportPreviousYValue = target.scrollTop;
             });
+
+        const regionAutoUpdateAuto = document.getElementById(
+            "region-auto-update-auto"
+        ) as FASTAnchoredRegion;
+
+        const viewportAutoUpdateAuto = document.getElementById(
+            "viewport-auto-update-auto"
+        ) as HTMLElement;
+
+        viewportAutoUpdateAuto.onscroll = regionAutoUpdateAuto.update;
     }
 });
 
