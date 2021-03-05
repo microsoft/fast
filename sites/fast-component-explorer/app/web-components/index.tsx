@@ -11,7 +11,6 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
-import { neutralLayerL1, neutralLayerL3 } from "@microsoft/fast-components-styles-msft";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ListboxOption } from "@microsoft/fast-foundation";
 import { Scenario } from "../fast-components/configs/data.props";
@@ -115,13 +114,13 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
         }
 
         .tab-panel_region::-webkit-scrollbar {
-            background: ${neutralLayerL1};
+            background: var(--fast-tooling-l1-color);
             width: 8px;
             height: 8px;
         }
 
         .tab-panel_region::-webkit-scrollbar-thumb {
-            background: ${neutralLayerL3},
+            background: var(--fast-tooling-l3-color),
             border-radius: 8px;
         }
     `;
