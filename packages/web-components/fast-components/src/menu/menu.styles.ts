@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     elevation,
     neutralDividerRestBehavior,
@@ -31,4 +32,15 @@ export const MenuStyles = css`
         border: none;
         border-top: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
     }
-`.withBehaviors(neutralLayerFloatingBehavior, neutralDividerRestBehavior);
+`.withBehaviors(
+    neutralLayerFloatingBehavior,
+    neutralDividerRestBehavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                background: ${SystemColors.Canvas};
+                border-color: ${SystemColors.CanvasText};
+            }
+        `
+    )
+);
