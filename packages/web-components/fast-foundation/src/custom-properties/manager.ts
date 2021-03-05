@@ -5,7 +5,7 @@ import {
     Observable,
     observable,
 } from "@microsoft/fast-element";
-import { CSSCustomPropertyDefinition } from "./behavior";
+import type { CSSCustomPropertyDefinition } from "./behavior";
 
 const hostSelector = ":host{}";
 

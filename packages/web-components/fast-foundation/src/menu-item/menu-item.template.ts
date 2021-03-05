@@ -1,4 +1,5 @@
-import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
@@ -7,7 +8,7 @@ import { MenuItem, MenuItemRole } from "./menu-item";
  * @deprecated  use createMenuItemTemplate(<prefix>) instead
  * @public
  */
-export const MenuItemTemplate: ViewTemplate = createMenuItemTemplate("fast");
+export const MenuItemTemplate: ViewTemplate<MenuItem> = createMenuItemTemplate("fast");
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
@@ -30,7 +31,7 @@ export function createMenuItemTemplate(prefix: string): ViewTemplate {
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
         x.expanded ? "expanded" : ""}"
     >
-        
+
             ${when(
                 x => x.role === MenuItemRole.menuitemcheckbox,
                 html<MenuItem>`
