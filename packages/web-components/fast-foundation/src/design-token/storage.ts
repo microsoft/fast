@@ -14,7 +14,7 @@ export interface DesignTokenStorage {
     ): void;
     connect(subscriber: DesignTokenStorage): void;
     disconnect(subscriber: DesignTokenStorage): void;
-    observe(token: DesignToken<any>, cb: () => void);
+    observe(token: DesignToken<any>, observer: Observer);
 }
 
 type Observer = (storage: DesignTokenStorage) => void;

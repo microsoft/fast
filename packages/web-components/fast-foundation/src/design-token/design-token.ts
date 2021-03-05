@@ -1,6 +1,6 @@
 import { CSSDirective, FASTElement } from "@microsoft/fast-element";
 import { CustomPropertyManager } from "./custom-property-manager";
-import { DesignTokenStorageImpl } from "./storage";
+import { DesignTokenStorage, DesignTokenStorageImpl } from "./storage";
 
 export type DerivedDesignTokenValue<T> = (target: HTMLElement & FASTElement) => T;
 
@@ -84,4 +84,10 @@ export class DesignToken<T = any> extends CSSDirective {
     public static create<T>(name: string): DesignToken<T> {
         return new DesignToken<T>(name);
     }
+
+    private observer = (storage: DesignTokenStorage) => {
+        const value = storage.get(this);
+
+        element.$fastController.addStyles(CustomPropertyManager.get(this, value));
+    };
 }
