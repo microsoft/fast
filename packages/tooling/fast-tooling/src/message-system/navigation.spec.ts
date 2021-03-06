@@ -1078,7 +1078,7 @@ describe("getNavigationDictionary", () => {
                                     id: "def",
                                 },
                             ],
-                            displayText: "test1"
+                            displayText: "test1",
                         },
                     },
                     def: {
@@ -1089,7 +1089,7 @@ describe("getNavigationDictionary", () => {
                         },
                         data: {
                             bar: "hello world",
-                            displayText: "test2"
+                            displayText: "test2",
                         },
                     },
                 },
