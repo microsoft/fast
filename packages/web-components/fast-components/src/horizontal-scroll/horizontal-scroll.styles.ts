@@ -21,7 +21,7 @@ const ltrActionsStyles = css`
 `;
 
 const rtlActionsStyles = css`
-    .scroll-next {
+    div.scroll-next {
         right: auto;
         left: 0;
     }
@@ -62,6 +62,7 @@ export const ActionsStyles = css`
         top: 0;
         bottom: 0;
         right: 0;
+        pointer-events: none;
     }
 
     .scroll.disabled {
@@ -84,6 +85,7 @@ export const ActionsStyles = css`
         left: 0;
         right: auto;
         transform: translate(-50%, -50%);
+        pointer-events: auto;
     }
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
@@ -109,8 +111,7 @@ export const HorizontalScrollStyles = css`
 
     .content-container {
         white-space: nowrap;
-        display: inline-block;
-        transform: translate3d(0, 0, 0);
+        position: relative;
     }
 
     .content-container ::slotted(*) {
@@ -118,4 +119,17 @@ export const HorizontalScrollStyles = css`
         white-space: normal;
         vertical-align: var(--scroll-align);
     }
-`;
+`.withBehaviors(
+    new DirectionalStyleSheetBehavior(
+        css`
+            .content-container {
+                float: left;
+            }
+        `,
+        css`
+            .content-container {
+                float: right;
+            }
+        `
+    )
+);

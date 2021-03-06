@@ -1004,13 +1004,13 @@ export class HorizontalScroll extends FASTElement {
     // (undocumented)
     disconnectedCallback(): void;
     easing: ScrollEasing;
-    moveToStart(): void;
     nextFlipper: HTMLDivElement;
     previousFlipper: HTMLDivElement;
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollToNext(): void;
+    scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
     speed: number;
     view: HorizontalScrollView;
