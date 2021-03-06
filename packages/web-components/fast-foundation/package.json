@@ -89,7 +89,7 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^0.22.2",
+    "@microsoft/fast-element": "^1.0.0-alpha.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^4.0.0",
