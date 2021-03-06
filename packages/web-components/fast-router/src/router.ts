@@ -19,6 +19,7 @@ export interface RenderOperation {
 export interface Router<TSettings = any> {
     readonly level: number;
     readonly parent: Router | null;
+    readonly route: RecognizedRoute | null;
     config: RouterConfiguration | null;
 
     connect(): void;
@@ -140,7 +141,8 @@ export class DefaultRouter implements Router {
 
     private routerConfig: RouterConfiguration | null = null;
     private view: HTMLView | null = null;
-    private route: RecognizedRoute | null = null;
+
+    public route: RecognizedRoute | null = null;
 
     public constructor(public readonly host: HTMLElement) {
         host[routerProperty] = this;
@@ -191,9 +193,7 @@ export class DefaultRouter implements Router {
     public async beginRender(route: RecognizedRoute, command: RenderCommand) {
         this.newRoute = route;
         this.newView = await command.createView();
-
         this.newView.bind(route.typedParams, RouterExecutionContext.create(this));
-
         this.newView.appendTo(this.host);
 
         return {
@@ -324,6 +324,8 @@ export class DefaultRouter implements Router {
             const result = await this.config!.findRoute(rest);
 
             if (result === null) {
+                const events = this.config!.createEventSink();
+                events.onUnhandledMessage(this, new NavigationMessage(rest));
                 phase.cancel();
                 return;
             }

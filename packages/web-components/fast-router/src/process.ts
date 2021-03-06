@@ -88,14 +88,19 @@ export class DefaultNavigationProcess<TSettings> {
     ];
 
     public async run(router: Router, message: NavigationMessage) {
+        const events = router.config!.createEventSink();
         const routeResult = await router.config!.findRoute(message.path);
 
-        if (routeResult == null) {
+        if (routeResult === null) {
+            events.onUnhandledMessage(router, message);
             return;
         }
 
         const route = routeResult.route;
         const command = routeResult.command;
+
+        events.onNavigationBegin(router, route, command);
+
         const commitActions: NavigationPhaseFollowupAction[] = [];
         const cancelActions: NavigationPhaseFollowupAction[] = [];
         let finalActions = commitActions;
@@ -114,21 +119,31 @@ export class DefaultNavigationProcess<TSettings> {
                 cancelActions
             );
 
-            for (const contributor of contributors) {
-                await phase.evaluateContributor(contributor);
+            events.onPhaseBegin(phase);
 
-                if (phase.canceled) {
-                    finalActions = cancelActions;
-                    break;
+            if (phase.canceled) {
+                finalActions = cancelActions;
+            } else {
+                for (const contributor of contributors) {
+                    await phase.evaluateContributor(contributor);
+
+                    if (phase.canceled) {
+                        finalActions = cancelActions;
+                        break;
+                    }
                 }
             }
+
+            events.onPhaseEnd(phase);
 
             if (phase.canceled) {
                 break;
             }
         }
 
-        await Promise.all(finalActions.map(x => x()));
+        await Promise.all(finalActions.map(x => x())).then(() =>
+            events.onNavigationEnd(router, route, command)
+        );
     }
 
     commit(phase: NavigationPhaseImpl) {
