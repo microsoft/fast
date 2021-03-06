@@ -112,7 +112,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.2",
-    "@microsoft/fast-element": "^0.22.2",
+    "@microsoft/fast-element": "^1.0.0-alpha.0",
     "@microsoft/fast-foundation": "^1.14.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "tslib": "^1.13.0"
