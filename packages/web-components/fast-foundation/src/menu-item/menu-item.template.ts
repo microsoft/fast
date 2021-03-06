@@ -1,12 +1,22 @@
-import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component.
+ * NOTE: deprecated, use createMenuItemTemplate(<prefix>) instead
  * @public
  */
-export const MenuItemTemplate = html<MenuItem>`
+export const MenuItemTemplate: ViewTemplate = createMenuItemTemplate("fast");
+
+/**
+ * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
+ * the provided prefix.
+ *
+ * @public
+ */
+export function createMenuItemTemplate(prefix: string): ViewTemplate {
+    return html<MenuItem>`
     <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.submenu !== undefined ? "menu" : void 0)}"
@@ -18,7 +28,7 @@ export const MenuItemTemplate = html<MenuItem>`
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
-    x.expanded ? "expanded" : ""}"
+        x.expanded ? "expanded" : ""}"
     >
         
             ${when(
@@ -69,7 +79,7 @@ export const MenuItemTemplate = html<MenuItem>`
         ${when(
             x => x.expanded,
             html<MenuItem>`
-                <fast-anchored-region
+                <${prefix}-anchored-region
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
@@ -83,8 +93,9 @@ export const MenuItemTemplate = html<MenuItem>`
                     part="submenu-region"
                 >
                     <slot name="submenu"></slot>
-                </fast-anchored-region>
+                </${prefix}-anchored-region>
             `
         )}
     </template>
 `;
+}

@@ -469,6 +469,9 @@ export function createDataGridRowTemplate(prefix: string): ViewTemplate;
 export function createDataGridTemplate(prefix: string): ViewTemplate;
 
 // @public
+export function createMenuItemTemplate(prefix: string): ViewTemplate;
+
+// @public
 export function createTooltipTemplate(prefix: string): ViewTemplate;
 
 // @public
@@ -1327,7 +1330,7 @@ export enum MenuItemRole {
 }
 
 // @public
-export const MenuItemTemplate: import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
+export const MenuItemTemplate: ViewTemplate;
 
 // @public
 export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
