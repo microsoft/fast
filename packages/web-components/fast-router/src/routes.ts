@@ -12,6 +12,7 @@ import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
 import { LayoutDefinition } from "./layout";
+import { QueryString } from "./query-string";
 
 export const childRouteParameter = "fast-child-route";
 
@@ -306,6 +307,9 @@ export class RouteCollection<TSettings = any> {
         }
 
         if (this.fallbackCommand !== null) {
+            const separated = QueryString.separate(path);
+            const queryParams = QueryString.parse(separated.queryString);
+
             return {
                 route: new RecognizedRoute<TSettings>(
                     new Endpoint<TSettings>(
@@ -315,7 +319,8 @@ export class RouteCollection<TSettings = any> {
                         this.fallbackSettings
                     ),
                     {},
-                    {}
+                    {},
+                    queryParams
                 ),
                 command: this.fallbackCommand,
             };

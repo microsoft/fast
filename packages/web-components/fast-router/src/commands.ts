@@ -19,6 +19,7 @@ import { RecognizedRoute } from "./recognizer";
 import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
 import { Layout } from "./layout";
+import { QueryString } from "./query-string";
 
 export interface NavigationCommand {
     createContributor(
@@ -47,7 +48,8 @@ export class Redirect implements NavigationCommand {
     constructor(private redirect: string) {}
 
     public async createContributor() {
-        const path = this.redirect;
+        const path = this.redirect + QueryString.current;
+
         return {
             async navigate(phase: NavigationPhase) {
                 phase.cancel(async () => Navigation.replace(path));

@@ -24,6 +24,10 @@ export const NavigationHandler = Object.freeze({
 });
 
 export const Navigation = Object.freeze({
+    get path() {
+        return location.pathname + location.search;
+    },
+
     push(path: string, trigger = true) {
         if (path && absoluteUrl.test(path)) {
             location.href = path;
@@ -71,7 +75,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     private resolve: ((value: NavigationMessage) => void) | null = null;
 
     public connect() {
-        this.enqueue(new NavigationMessage(location.pathname));
+        this.enqueue(new NavigationMessage(Navigation.path));
         window.addEventListener("popstate", this);
         NavigationHandler.register(this);
     }
@@ -115,6 +119,6 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     }
 
     public handleEvent(event: PopStateEvent) {
-        this.enqueue(new NavigationMessage(location.pathname));
+        this.enqueue(new NavigationMessage(Navigation.path));
     }
 }

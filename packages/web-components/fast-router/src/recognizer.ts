@@ -32,11 +32,25 @@ export class Endpoint<TSettings = any> {
 }
 
 export class RecognizedRoute<TSettings = any> {
+    public readonly allParams: Readonly<Record<string, string | undefined>>;
+    public readonly allTypedParams: Readonly<Record<string, any>>;
+
     public constructor(
         public readonly endpoint: Endpoint<TSettings>,
         public readonly params: Readonly<Record<string, string | undefined>>,
-        public readonly typedParams: Readonly<Record<string, any>>
-    ) {}
+        public readonly typedParams: Readonly<Record<string, any>>,
+        public readonly queryParams: Readonly<Record<string, string>>
+    ) {
+        this.allParams = {
+            ...params,
+            ...queryParams,
+        };
+
+        this.allTypedParams = {
+            ...typedParams,
+            ...queryParams,
+        };
+    }
 
     public get settings() {
         return this.endpoint.settings;
@@ -459,7 +473,10 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
         path: string,
         converters: Readonly<Record<string, RouteParameterConverter>> = {}
     ): Promise<RecognizedRoute<TSettings> | null> {
-        path = decodeURI(path);
+        const separated = QueryString.separate(path);
+        const queryParams = QueryString.parse(separated.queryString);
+
+        path = decodeURI(separated.path);
 
         if (!path.startsWith("/")) {
             path = `/${path}`;
@@ -498,7 +515,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
             typedParams[name] = typedValue;
         }
 
-        return new RecognizedRoute<TSettings>(endpoint, params, typedParams);
+        return new RecognizedRoute<TSettings>(endpoint, params, typedParams, queryParams);
     }
 
     /**

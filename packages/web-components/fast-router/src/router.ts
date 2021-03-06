@@ -179,8 +179,8 @@ export class DefaultRouter implements Router {
 
     public shouldRender(route: RecognizedRoute): boolean {
         if (this.route && this.route.endpoint.path === route.endpoint.path) {
-            const newParams = route?.params;
-            const oldParams = this.route?.params;
+            const newParams = route?.allParams;
+            const oldParams = this.route?.allParams;
 
             if (JSON.stringify(oldParams) === JSON.stringify(newParams)) {
                 return false;
@@ -193,7 +193,7 @@ export class DefaultRouter implements Router {
     public async beginRender(route: RecognizedRoute, command: RenderCommand) {
         this.newRoute = route;
         this.newView = await command.createView();
-        this.newView.bind(route.typedParams, RouterExecutionContext.create(this));
+        this.newView.bind(route.allTypedParams, RouterExecutionContext.create(this));
         this.newView.appendTo(this.host);
 
         return {
@@ -320,7 +320,7 @@ export class DefaultRouter implements Router {
 
     private async construct(phase: NavigationPhase) {
         if (this.parent !== null) {
-            const rest = phase.route.params[childRouteParameter] || "";
+            const rest = phase.route.allParams[childRouteParameter] || "";
             const result = await this.config!.findRoute(rest);
 
             if (result === null) {
