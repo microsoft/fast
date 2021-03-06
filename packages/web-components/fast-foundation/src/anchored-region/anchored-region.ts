@@ -337,11 +337,11 @@ export class AnchoredRegion extends FASTElement {
                 this.stopAutoUpdateEventListeners();
             }
 
-            if (this.autoUpdateMode === "auto") {
+            if (newMode === "auto") {
                 this.startAutoUpdateEventListeners();
             }
 
-            if (this.autoUpdateMode === "constant" || this.autoUpdateMode === "auto") {
+            if (this.autoUpdateMode !== null) {
                 this.startUpdateTimer();
             } else {
                 this.clearUpdateTimer();
@@ -1330,7 +1330,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     * Auto update interval has passed
      */
     private updateTimerTick = (): void => {
         if (this.initialLayoutComplete) {
@@ -1346,7 +1346,8 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     * check to see if enough time has passed since an auto update trigger event
+     * to stop
      */
     private autoUpdateTimeStampExpired = (): boolean => {
         if (
@@ -1390,7 +1391,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
         window.addEventListener(eventResize, this.startUpdateTimer);
@@ -1399,7 +1400,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *
+     * stops event listeners that can trigger auto updating
      */
     private stopAutoUpdateEventListeners = (): void => {
         window.removeEventListener(eventResize, this.startUpdateTimer);
