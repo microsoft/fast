@@ -173,7 +173,7 @@ const defaultConverters = {
 
 export class RouteCollection<TSettings = any> {
     private recognizer = new RouteRecognizer<TSettings>();
-    private configToCommand = new Map<string, NavigationCommand>();
+    private pathToCommand = new Map<string, NavigationCommand>();
     private fallbackCommand: NavigationCommand | null = null;
     private fallbackSettings: TSettings | null = null;
     private converters: Record<string, RouteParameterConverter> = {};
@@ -185,7 +185,7 @@ export class RouteCollection<TSettings = any> {
             definitionOrString = { path: definitionOrString };
         }
 
-        this.configToCommand.set(definitionOrString.path, new Ignore());
+        this.pathToCommand.set(definitionOrString.path, new Ignore());
         this.recognizer.add(definitionOrString, definitionOrString.settings);
     }
 
@@ -209,6 +209,11 @@ export class RouteCollection<TSettings = any> {
                         );
                     }
 
+                    if ("name" in x) {
+                        const parentName = route.name ? route.name + "/" : "";
+                        childRoute.name = parentName + x.name;
+                    }
+
                     if (childRoute.children === route.children) {
                         delete (childRoute as any).children;
                     }
@@ -230,7 +235,7 @@ export class RouteCollection<TSettings = any> {
                 command = Render.fromDefinition(this.owner, route);
             }
 
-            this.configToCommand.set(route.path, command);
+            this.pathToCommand.set(route.path, command);
             this.recognizer.add(route, route.settings);
 
             if ("childRouters" in route && route.childRouters) {
@@ -239,7 +244,7 @@ export class RouteCollection<TSettings = any> {
                     path: route.path + `/*${childRouteParameter}`,
                 };
 
-                this.configToCommand.set(childRouterRoute.path, command);
+                this.pathToCommand.set(childRouterRoute.path, command);
                 this.recognizer.add(childRouterRoute, childRouterRoute.settings);
             }
         }
@@ -288,7 +293,7 @@ export class RouteCollection<TSettings = any> {
         if (result !== null) {
             return {
                 route: result,
-                command: this.configToCommand.get(result.endpoint.path)!,
+                command: this.pathToCommand.get(result.endpoint.path)!,
             };
         }
 
@@ -296,7 +301,7 @@ export class RouteCollection<TSettings = any> {
             return {
                 route: new RecognizedRoute<TSettings>(
                     new Endpoint<TSettings>(
-                        new ConfigurableRoute("*", false),
+                        new ConfigurableRoute("*", "", false),
                         [],
                         [],
                         this.fallbackSettings
@@ -309,6 +314,18 @@ export class RouteCollection<TSettings = any> {
         }
 
         return null;
+    }
+
+    /**
+     * Generate a path and query string from a route name or path and params object.
+     *
+     * @param nameOrPath The name of the route or the configured path.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public generate(nameOrPath: string, params: object): string {
+        return this.recognizer.generate(nameOrPath, params);
     }
 
     private aggregateConverters() {

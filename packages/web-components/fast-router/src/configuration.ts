@@ -59,6 +59,23 @@ export abstract class RouterConfiguration<TSettings = any> {
         return this.routes.find(path);
     }
 
+    /**
+     * Generate a path and query string from a route name or path and params object.
+     *
+     * @param nameOrPath The name of the route or the configured path.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public async generateRoute(nameOrPath: string, params: object): Promise<string> {
+        if (!this.isConfigured) {
+            await this.configure();
+            this.isConfigured = true;
+        }
+
+        return this.routes.generate(nameOrPath, params);
+    }
+
     public findContributors<T extends NavigationPhaseName>(
         phase: T
     ): Record<T, NavigationPhaseHook<TSettings>>[] {

@@ -1,14 +1,19 @@
+import { QueryString } from "./query-string";
+
 export interface Route {
     readonly path: string;
+    readonly name?: string;
     readonly caseSensitive?: boolean;
 }
 
 export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
-const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) => value;
+const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) =>
+    value;
 
 export class ConfigurableRoute implements Route {
     public constructor(
         public readonly path: string,
+        public readonly name: string,
         public readonly caseSensitive: boolean
     ) {}
 }
@@ -338,6 +343,8 @@ class RecognizeResult<T> {
 }
 
 export class RouteRecognizer<TSettings> {
+    private names = new Map<string, AnySegment<any>[]>();
+    private paths = new Map<string, AnySegment<any>[]>();
     private readonly rootState: SeparatorState<TSettings> = new State(
         null,
         null,
@@ -356,7 +363,11 @@ export class RouteRecognizer<TSettings> {
 
     private $add(route: Route, settings?: TSettings): void {
         const path = route.path;
-        const $route = new ConfigurableRoute(route.path, route.caseSensitive === true);
+        const $route = new ConfigurableRoute(
+            route.path,
+            route.name || "",
+            route.caseSensitive === true
+        );
 
         // Normalize leading, trailing and double slashes by ignoring empty segments
         const parts = path === "" ? [""] : path.split("/").filter(isNotEmpty);
@@ -364,6 +375,7 @@ export class RouteRecognizer<TSettings> {
         const paramTypes: string[] = [];
 
         let state = this.rootState as AnyState<TSettings>;
+        let segments: AnySegment<any>[] = [];
 
         for (const part of parts) {
             // Each segment always begins with a slash, so we represent this with a non-segment state
@@ -389,10 +401,9 @@ export class RouteRecognizer<TSettings> {
                         : nameAndType[0];
 
                     paramNames.push(name);
-
-                    state = new DynamicSegment<TSettings>(name, isOptional).appendTo(
-                        state
-                    );
+                    const segment = new DynamicSegment<TSettings>(name, isOptional);
+                    segments.push(segment);
+                    state = segment.appendTo(state);
                     break;
                 }
 
@@ -401,16 +412,20 @@ export class RouteRecognizer<TSettings> {
                     const name = part.slice(1);
                     paramNames.push(name);
                     paramTypes.push("string");
-                    state = new StarSegment<TSettings>(name).appendTo(state);
+                    const segment = new StarSegment<TSettings>(name);
+                    segments.push(segment);
+                    state = segment.appendTo(state);
                     break;
                 }
 
                 default: {
                     // standard path route
-                    state = new StaticSegment<TSettings>(
+                    const segment = new StaticSegment<TSettings>(
                         part,
                         $route.caseSensitive
-                    ).appendTo(state);
+                    );
+                    segments.push(segment);
+                    state = segment.appendTo(state);
                     break;
                 }
             }
@@ -424,6 +439,11 @@ export class RouteRecognizer<TSettings> {
         );
 
         state.setEndpoint(endpoint);
+        this.paths.set(path, segments);
+
+        if (route.name) {
+            this.names.set(route.name, segments);
+        }
     }
 
     public async recognize(
@@ -470,6 +490,55 @@ export class RouteRecognizer<TSettings> {
         }
 
         return new RecognizedRoute<TSettings>(endpoint, params, typedParams);
+    }
+
+    /**
+     * Generate a path and query string from a route name or path and params object.
+     *
+     * @param nameOrPath The name of the route or the configured path.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public generate(nameOrPath: string, params: object): string {
+        const segments = this.names.get(nameOrPath) || this.paths.get(nameOrPath);
+        if (!segments) {
+            throw new Error(`There is no route named ${nameOrPath}`);
+        }
+
+        const routeParams = Object.assign({}, params);
+        const consumed = {};
+        let output = "";
+
+        for (let i = 0, l = segments.length; i < l; i++) {
+            const segment = segments[i];
+            const segmentValue = segment.generate(routeParams, consumed);
+
+            if (segmentValue === null || segmentValue === undefined) {
+                if (segment instanceof DynamicSegment && !segment.optional) {
+                    throw new Error(
+                        `A value is required for route parameter '${segment.name}' in route '${nameOrPath}'.`
+                    );
+                }
+            } else {
+                output += "/";
+                output += segmentValue;
+            }
+        }
+
+        if (output.charAt(0) !== "/") {
+            output = "/" + output;
+        }
+
+        // remove params used in the path and add the rest to the querystring
+        for (let param in consumed) {
+            delete routeParams[param];
+        }
+
+        const queryString = QueryString.build(routeParams);
+        output += queryString ? `?${queryString}` : "";
+
+        return output;
     }
 }
 
@@ -662,6 +731,10 @@ class StaticSegment<T> {
         return state as StaticState<T>;
     }
 
+    public generate(): string {
+        return this.value;
+    }
+
     public equals(b: AnySegment<T>): boolean {
         return (
             b.kind === SegmentKind.static &&
@@ -684,6 +757,11 @@ class DynamicSegment<T> {
         return state;
     }
 
+    public generate(params: Object, consumed: Object): string {
+        consumed[this.name] = true;
+        return params[this.name];
+    }
+
     public equals(b: AnySegment<T>): boolean {
         return (
             b.kind === SegmentKind.dynamic &&
@@ -702,8 +780,12 @@ class StarSegment<T> {
 
     public appendTo(state: AnyState<T>): StarState<T> {
         state = state.append(/* segment */ this, /* value   */ "");
-
         return state;
+    }
+
+    public generate(params: Object, consumed: Object): string {
+        consumed[this.name] = true;
+        return params[this.name];
     }
 
     public equals(b: AnySegment<T>): boolean {
