@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.14.0...@microsoft/fast-foundation@1.15.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* add default expanded and collapsed SVGs to accordion-item component ([#4368](https://github.com/Microsoft/fast/issues/4368)) ([b0bea82](https://github.com/Microsoft/fast/commit/b0bea8203c3774b40e0561e37926a9f28794b4a9))
+* add radio and checkbox visual in fast-menu-item ([#4205](https://github.com/Microsoft/fast/issues/4205)) ([50efed4](https://github.com/Microsoft/fast/commit/50efed4a57b4a89d69a7079b581fdec8428dfe37))
+* data-grid stores generated templates ([#4412](https://github.com/Microsoft/fast/issues/4412)) ([7de9602](https://github.com/Microsoft/fast/commit/7de960213d593f0dcafcdcb291fc592564ca9ae4))
+* default selected option in listbox ([#4372](https://github.com/Microsoft/fast/issues/4372)) ([35870a6](https://github.com/Microsoft/fast/commit/35870a69d10ec52c983adb879d58343386d3a8d6))
+* focusout on empty select throws an error ([#4373](https://github.com/Microsoft/fast/issues/4373)) ([b2f2f29](https://github.com/Microsoft/fast/commit/b2f2f2907e0ad8f7f0eff89fc2106041edbe3474))
+* tooltip doc sample ([#4341](https://github.com/Microsoft/fast/issues/4341)) ([20e1b66](https://github.com/Microsoft/fast/commit/20e1b667abbe39058d5c4c358ccd8b8a93cee316))
+* whitespaceFilter filtering elements ([#4360](https://github.com/Microsoft/fast/issues/4360)) ([2f14137](https://github.com/Microsoft/fast/commit/2f14137579e1aa8f6724f0211c8baf2f2a6c8008))
+* **tooltip:** fix tooltip inside shadow root ([#4303](https://github.com/Microsoft/fast/issues/4303)) ([fc65f50](https://github.com/Microsoft/fast/commit/fc65f505fdf2b621c6cb9a29deccdb4a805b956a))
+
+
+### Features
+
+* add placeholder attribute to combobox component ([#4427](https://github.com/Microsoft/fast/issues/4427)) ([b507c25](https://github.com/Microsoft/fast/commit/b507c257c39ca44244bea7fdb4e07fc5b71b3eea))
+* **di:** enable dom containers to handle same element dep resolution ([#4406](https://github.com/Microsoft/fast/issues/4406)) ([e3145fe](https://github.com/Microsoft/fast/commit/e3145fe557eb56fc6aafa99f9803ecd7d07b55e5))
+* add combobox component ([#4379](https://github.com/Microsoft/fast/issues/4379)) ([aab8441](https://github.com/Microsoft/fast/commit/aab844120b40b14ef284718880dbe05da65a5392))
+* add nested menu support ([#4142](https://github.com/Microsoft/fast/issues/4142)) ([551ff04](https://github.com/Microsoft/fast/commit/551ff0467e9424bff00610c737744dbfa30cea9c))
+* **di:** enable use of the inject decorator on properties ([#4401](https://github.com/Microsoft/fast/issues/4401)) ([2f8355b](https://github.com/Microsoft/fast/commit/2f8355b932ba5083bdcb66a5c3381616699d2cef))
+* add prefers-color-scheme behaviors for light and dark mode ([#4382](https://github.com/Microsoft/fast/issues/4382)) ([1e467d7](https://github.com/Microsoft/fast/commit/1e467d7b6542e9e6910117e1d09c26cd73f7f599))
+* enable FoundationElement.compose to accept template functions ([#4390](https://github.com/Microsoft/fast/issues/4390)) ([468f2fc](https://github.com/Microsoft/fast/commit/468f2fca53be88d8551352c99b42c66c3d32fe47))
+
+
+
+
+
 # [1.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.12.0...@microsoft/fast-foundation@1.14.0) (2021-02-08)
 
 
