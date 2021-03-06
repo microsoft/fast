@@ -1,4 +1,4 @@
-import { emptyArray } from "../interfaces";
+import { emptyArray } from "../platform";
 
 /**
  * Represents a set of splice-based changes against an Array.

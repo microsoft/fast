@@ -46,8 +46,12 @@
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
-    "test": "yarn eslint \"/**/*.{ts}\"",
+    "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
+    "test:validation": "yarn test:diff",
+    "test": "yarn eslint \"/**/*.{ts}\" ",
     "unit-tests": "jest --maxWorkers=4",
+    "coverage": "yarn jest --coverage",
     "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "lerna run prettier:diff",
@@ -59,7 +63,7 @@
     }
   },
   "jest": {
-    "collectCoverage": false,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
     ],
@@ -83,7 +87,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest"
+      "^.+\\.js?$": "babel-jest" 
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",

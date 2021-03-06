@@ -20,12 +20,3 @@ export type Constructable<T = {}> = {
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
-
-/**
- * A readonly, empty array.
- * @remarks
- * Typically returned by APIs that return arrays when there are
- * no actual items to return.
- * @internal
- */
-export const emptyArray = Object.freeze([]);
