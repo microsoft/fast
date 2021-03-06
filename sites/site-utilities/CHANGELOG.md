@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.2...@microsoft/site-utilities@0.7.3) (2021-03-06)
+
+
+### Bug Fixes
+
+* adjust automapping of native html element definitions ([#4385](https://github.com/Microsoft/fast/issues/4385)) ([df0e21c](https://github.com/Microsoft/fast/commit/df0e21c0609620bafb1ee15e111ea8bd4ee65c7f))
+* tooltip doc sample ([#4341](https://github.com/Microsoft/fast/issues/4341)) ([20e1b66](https://github.com/Microsoft/fast/commit/20e1b667abbe39058d5c4c358ccd8b8a93cee316))
+
+
+
+
+
 ## [0.7.2](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.0...@microsoft/site-utilities@0.7.2) (2021-02-08)
 
 **Note:** Version bump only for package @microsoft/site-utilities
