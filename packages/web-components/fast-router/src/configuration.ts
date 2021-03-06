@@ -9,6 +9,7 @@ import { DefaultRoutingEventSink, RoutingEventSink } from "./events";
 import { isNavigationPhaseContributor, NavigationContributor } from "./contributors";
 import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
 import { Layout } from "./layout";
+import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer";
 
 export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;
@@ -40,6 +41,10 @@ export abstract class RouterConfiguration<TSettings = any> {
 
     public createTitleBuilder(): TitleBuilder {
         return this.construct(DefaultTitleBuilder);
+    }
+
+    public createRouteRecognizer(): RouteRecognizer<TSettings> {
+        return this.construct(DefaultRouteRecognizer);
     }
 
     public construct<T>(Type: Constructable<T>): T {

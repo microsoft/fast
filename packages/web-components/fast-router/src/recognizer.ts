@@ -342,7 +342,16 @@ class RecognizeResult<T> {
     }
 }
 
-export class RouteRecognizer<TSettings> {
+export interface RouteRecognizer<TSettings> {
+    add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
+    recognize(
+        path: string,
+        converters?: Readonly<Record<string, RouteParameterConverter>>
+    ): Promise<RecognizedRoute<TSettings> | null>;
+    generate(nameOrPath: string, params: object): string;
+}
+
+export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
     private names = new Map<string, AnySegment<any>[]>();
     private paths = new Map<string, AnySegment<any>[]>();
     private readonly rootState: SeparatorState<TSettings> = new State(

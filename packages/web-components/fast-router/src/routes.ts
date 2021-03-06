@@ -172,13 +172,21 @@ const defaultConverters = {
 };
 
 export class RouteCollection<TSettings = any> {
-    private recognizer = new RouteRecognizer<TSettings>();
+    private _recognizer: RouteRecognizer<TSettings> | null = null;
     private pathToCommand = new Map<string, NavigationCommand>();
     private fallbackCommand: NavigationCommand | null = null;
     private fallbackSettings: TSettings | null = null;
     private converters: Record<string, RouteParameterConverter> = {};
 
     public constructor(private owner: RouterConfiguration) {}
+
+    private get recognizer() {
+        if (this._recognizer === null) {
+            this._recognizer = this.owner.createRouteRecognizer();
+        }
+
+        return this._recognizer;
+    }
 
     public ignore(definitionOrString: IgnorableRouteDefinition<TSettings> | string) {
         if (typeof definitionOrString === "string") {
