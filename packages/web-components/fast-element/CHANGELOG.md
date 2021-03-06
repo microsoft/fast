@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.22.2...@microsoft/fast-element@1.0.0) (2021-03-06)
+
+
+* refactor(fast-element)!: rename Directive, disambiguate types, and reorganize (#4414) ([a96d364](https://github.com/Microsoft/fast/commit/a96d364af74524cb40cf8a8dfe220e4fe3c1e75a)), closes [#4414](https://github.com/Microsoft/fast/issues/4414)
+
+
+### Features
+
+* adds CSSDirective for use with the css tagged template literal ([#4383](https://github.com/Microsoft/fast/issues/4383)) ([6928afa](https://github.com/Microsoft/fast/commit/6928afae5b3734997bc8065b16c000e4965542d1))
+
+
+### BREAKING CHANGES
+
+* rename Directive and other types to disambiguate
+
+
+
+
+
 ## [0.22.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.22.0...@microsoft/fast-element@0.22.2) (2021-02-08)
 
 **Note:** Version bump only for package @microsoft/fast-element
