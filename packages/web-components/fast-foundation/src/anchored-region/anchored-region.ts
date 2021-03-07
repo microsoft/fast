@@ -1,10 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    Direction,
-    eventVisibilityChange,
-    eventScroll,
-    eventResize,
-} from "@microsoft/fast-web-utilities";
+import { Direction, eventVisibilityChange } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities";
 import { IntersectionService } from "./intersection-service";
 
@@ -53,13 +48,9 @@ export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 export type VerticalPosition = "top" | "bottom" | "unset";
 
 /**
- * Defines if the component updates its position automatically
- * none - no auto updating
- * constant - the component checks its position on a timer based on the auto-update-interval value
- * auto - The component enters constant mode for 1000 ms after the last "triggering event", otherwise no timer based checking.
- *        "triggering events" are: component initial layout, window resize, bubbled scroll events, and any call to to update()
+ *
  */
-export type AutoUpdateMode = "none" | "constant" | "auto";
+export type AutoUpdateMode = "none" | "constant";
 
 /**
  * @internal
@@ -325,23 +316,12 @@ export class AnchoredRegion extends FASTElement {
      */
     @attr({ attribute: "auto-update-mode" })
     public autoUpdateMode: AutoUpdateMode = "none";
-    private autoUpdateModeChanged(
-        prevMode: AutoUpdateMode,
-        newMode: AutoUpdateMode
-    ): void {
+    private autoUpdateModeChanged(): void {
         if (
             (this as FASTElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
-            if (prevMode === "auto") {
-                this.stopAutoUpdateEventListeners();
-            }
-
-            if (newMode === "auto") {
-                this.startAutoUpdateEventListeners();
-            }
-
-            if (this.autoUpdateMode !== null) {
+            if (this.autoUpdateMode === "constant") {
                 this.startUpdateTimer();
             } else {
                 this.clearUpdateTimer();
@@ -448,27 +428,11 @@ export class AnchoredRegion extends FASTElement {
     private updateTimer: number | null = null;
 
     /**
-     * The time in MS that the component will actively check for updates after the last
-     * "triggering event" when auto-update-mode is set to "auto"
-     */
-    private autoUpdateActiveModeDuration: number = 1000;
-
-    /**
-     * Records the time at which the last auto update trigger event happened
-     */
-    private lastAutoUpdateTriggerTimestamp: number;
-
-    /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
         document.addEventListener(eventVisibilityChange, this.handleVisibilityChange);
-
-        if (this.autoUpdateMode === "auto") {
-            this.startAutoUpdateEventListeners();
-        }
-
         this.initialize();
     }
 
@@ -480,9 +444,6 @@ export class AnchoredRegion extends FASTElement {
         document.removeEventListener(eventVisibilityChange, this.handleVisibilityChange);
         this.stopObservers();
         this.disconnectResizeDetector();
-        if (this.autoUpdateMode === "auto") {
-            this.stopAutoUpdateEventListeners();
-        }
     }
 
     /**
@@ -496,11 +457,12 @@ export class AnchoredRegion extends FASTElement {
      * update position
      */
     public update = (): void => {
-        if (this.autoUpdateMode === "none") {
-            this.doUpdate();
+        if (this.viewportRect === null || this.regionDimension === null) {
+            this.requestLayoutUpdate();
             return;
         }
-        this.startUpdateTimer();
+
+        this.requestPositionUpdates();
     };
 
     /**
@@ -553,7 +515,7 @@ export class AnchoredRegion extends FASTElement {
             (this as FASTElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
-            this.doUpdate();
+            this.update();
         }
     }
 
@@ -837,7 +799,6 @@ export class AnchoredRegion extends FASTElement {
         entries.forEach((entry: ResizeObserverEntry) => {
             if (entry.target === this.anchorElement) {
                 this.update();
-                return;
             }
         });
     };
@@ -1313,15 +1274,12 @@ export class AnchoredRegion extends FASTElement {
      * starts the update timer if not currently running
      */
     private startUpdateTimer = (): void => {
-        this.lastAutoUpdateTriggerTimestamp = Date.now();
-        if (this.updateTimer !== null) {
-            return;
-        }
+        this.clearUpdateTimer();
         if (
             !document.hidden &&
             this.initialLayoutComplete &&
             this.autoUpdateInterval > 0 &&
-            this.autoUpdateMode !== "none"
+            this.autoUpdateMode === "constant"
         ) {
             this.updateTimer = window.setInterval((): void => {
                 this.updateTimerTick();
@@ -1330,33 +1288,15 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * Auto update interval has passed
+     *
      */
     private updateTimerTick = (): void => {
         if (this.initialLayoutComplete) {
-            this.doUpdate();
+            this.update();
         }
-        if (
-            document.hidden ||
-            this.autoUpdateMode === "none" ||
-            (this.autoUpdateMode === "auto" && this.autoUpdateTimeStampExpired())
-        ) {
+        if (document.hidden || this.autoUpdateMode !== "constant") {
             this.clearUpdateTimer();
         }
-    };
-
-    /**
-     * check to see if enough time has passed since an auto update trigger event
-     * to stop
-     */
-    private autoUpdateTimeStampExpired = (): boolean => {
-        if (
-            this.lastAutoUpdateTriggerTimestamp + this.autoUpdateActiveModeDuration >
-            Date.now()
-        ) {
-            return true;
-        }
-        return false;
     };
 
     /**
@@ -1373,38 +1313,8 @@ export class AnchoredRegion extends FASTElement {
      * Restarts autoupdating when a hidden document is shown
      */
     private handleVisibilityChange = (): void => {
-        if (!document.hidden && this.autoUpdateMode !== "none") {
+        if (!document.hidden && this.autoUpdateMode === "constant") {
             this.startUpdateTimer();
         }
-    };
-
-    /**
-     * internal version of update that does not reset autoUpdating
-     */
-    private doUpdate = (): void => {
-        if (this.viewportRect === null || this.regionDimension === null) {
-            this.requestLayoutUpdate();
-            return;
-        }
-
-        this.requestPositionUpdates();
-    };
-
-    /**
-     * starts event listeners that can trigger auto updating
-     */
-    private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.startUpdateTimer);
-        window.addEventListener(eventScroll, this.startUpdateTimer);
-        document.addEventListener(eventScroll, this.startUpdateTimer);
-    };
-
-    /**
-     * stops event listeners that can trigger auto updating
-     */
-    private stopAutoUpdateEventListeners = (): void => {
-        window.removeEventListener(eventResize, this.startUpdateTimer);
-        window.removeEventListener(eventScroll, this.startUpdateTimer);
-        document.removeEventListener(eventScroll, this.startUpdateTimer);
     };
 }
