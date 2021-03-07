@@ -18,7 +18,7 @@ import { Route } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
 import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
-import { Layout } from "./layout";
+import { FASTElementLayout, Layout } from "./layout";
 
 export interface NavigationCommand {
     createContributor(
@@ -220,26 +220,11 @@ export class Render implements RenderCommand {
         const command = new Render(owner, createView);
 
         if (definition.layout) {
-            let layout: Layout = {} as any;
-
             if (definition.layout instanceof ViewTemplate) {
-                layout.template = definition.layout;
-                layout.styles = null;
+                command.layout = new FASTElementLayout(definition.layout);
             } else {
-                let styles = definition.layout.styles;
-
-                layout.template = definition.layout.template || null;
-                layout.styles =
-                    styles === void 0 || styles === null
-                        ? null
-                        : Array.isArray(styles)
-                        ? ElementStyles.create(styles)
-                        : styles instanceof ElementStyles
-                        ? styles
-                        : ElementStyles.create([styles]);
+                command.layout = definition.layout;
             }
-
-            command.layout = layout;
         }
 
         if (definition.transition) {

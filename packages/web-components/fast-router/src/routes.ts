@@ -10,9 +10,9 @@ import { ViewTemplate, FASTElement, Constructable } from "@microsoft/fast-elemen
 import { Transition } from "./transition";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
-import { LayoutDefinition } from "./layout";
 import { QueryString } from "./query-string";
 import { Route } from "./navigation";
+import { Layout } from "./layout";
 
 export const childRouteParameter = "fast-child-route";
 
@@ -25,7 +25,7 @@ export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings>
 export type IgnorableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings>;
 
 export type LayoutAndTransitionRouteDefinition = {
-    layout?: LayoutDefinition | ViewTemplate;
+    layout?: Layout | ViewTemplate;
     transition?: Transition;
 };
 

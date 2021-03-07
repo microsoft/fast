@@ -139,7 +139,7 @@ export const Router = Object.freeze({
     },
 });
 
-function isFASTElementHost(host: HTMLElement): host is HTMLElement & FASTElement {
+export function isFASTElementHost(host: HTMLElement): host is HTMLElement & FASTElement {
     return host instanceof FASTElement;
 }
 
@@ -289,19 +289,9 @@ export class DefaultRouter implements Router {
     };
 
     private async renderOperationCommit(layout: Layout, transition: Transition) {
-        const router = this.host;
-
-        if (isFASTElementHost(router)) {
-            if (router.$fastController.template !== layout.template) {
-                router.$fastController.template = layout.template!;
-            }
-
-            if (router.$fastController.styles !== layout.styles) {
-                router.$fastController.styles = layout.styles!;
-            }
-        }
-
+        await layout.beforeTransition(this.host);
         await transition(this.host, this.view, this.newView!);
+        await layout.afterTransition(this.host);
 
         if (this.view !== null) {
             this.view.dispose();
