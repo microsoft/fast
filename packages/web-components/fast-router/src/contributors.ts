@@ -1,4 +1,4 @@
-import { Behavior, Directive, DOM } from "@microsoft/fast-element";
+import { Behavior, HTMLDirective, DOM } from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
@@ -30,7 +30,7 @@ const defaultOptions: ContributorOptions = {
     parameters: true,
 };
 
-class NavigationContributorDirective extends Directive {
+class NavigationContributorDirective extends HTMLDirective {
     constructor(private options: Required<ContributorOptions>) {
         super();
     }
@@ -75,7 +75,7 @@ class NavigationContributorBehavior implements Behavior {
     }
 }
 
-export function navigationContributor(options?: ContributorOptions): Directive {
+export function navigationContributor(options?: ContributorOptions): HTMLDirective {
     return new NavigationContributorDirective(
         Object.assign({}, defaultOptions, options) as Required<ContributorOptions>
     );
