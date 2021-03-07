@@ -1,16 +1,11 @@
-import {
-    Behavior,
-    defaultExecutionContext,
-    Directive,
-    DOM,
-    ExecutionContext,
-} from "@microsoft/fast-element";
+import { Behavior, Directive, DOM } from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
     NavigationPhaseName,
 } from "./phases";
 import { Router } from "./router";
+import { RouterExecutionContext } from "./view";
 
 export type NavigationContributor<TSettings = any> = Partial<
     Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
@@ -34,20 +29,6 @@ const defaultOptions: ContributorOptions = {
     lifecycle: true,
     parameters: true,
 };
-
-export type RouterExecutionContext = ExecutionContext & {
-    router: Router;
-};
-
-export const RouterExecutionContext = Object.freeze({
-    create(router: Router) {
-        return Object.create(defaultExecutionContext, {
-            router: {
-                value: router,
-            },
-        });
-    },
-});
 
 class NavigationContributorDirective extends Directive {
     constructor(private options: Required<ContributorOptions>) {

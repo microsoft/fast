@@ -1,6 +1,6 @@
 import { Constructable } from "@microsoft/fast-element";
 import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
-import { Transition } from "./transition";
+import { Transition } from "./view";
 import { RouteCollection, RouteMatch } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
 import { DefaultNavigationProcess, NavigationProcess } from "./process";

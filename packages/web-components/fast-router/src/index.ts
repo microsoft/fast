@@ -11,4 +11,4 @@ export * from "./query-string";
 export * from "./recognizer";
 export * from "./router";
 export * from "./routes";
-export * from "./transition";
+export * from "./view";

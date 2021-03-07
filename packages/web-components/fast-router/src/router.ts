@@ -1,14 +1,14 @@
-import { Constructable, FASTElement, HTMLView } from "@microsoft/fast-element";
+import { Constructable, FASTElement } from "@microsoft/fast-element";
 import { RenderCommand } from "./commands";
 import { RouterConfiguration } from "./configuration";
-import { NavigationContributor, RouterExecutionContext } from "./contributors";
+import { NavigationContributor } from "./contributors";
 import { Layout } from "./layout";
 import { LinkHandler } from "./links";
 import { NavigationMessage, NavigationQueue } from "./navigation";
 import { NavigationPhase } from "./phases";
 import { RecognizedRoute } from "./recognizer";
 import { childRouteParameter } from "./routes";
-import { Transition } from "./transition";
+import { RouterExecutionContext, RouteView, Transition } from "./view";
 
 export interface RenderOperation {
     commit(): Promise<void>;
@@ -150,7 +150,7 @@ export class DefaultRouter implements Router {
     private navigationQueue: NavigationQueue | null = null;
     private linkHandler: LinkHandler | null = null;
 
-    private newView: HTMLView | null = null;
+    private newView: RouteView | null = null;
     private newRoute: RecognizedRoute | null = null;
 
     private childCommandContributor: NavigationContributor | null = null;
@@ -158,7 +158,7 @@ export class DefaultRouter implements Router {
     private isConnected = false;
 
     private routerConfig: RouterConfiguration | null = null;
-    private view: HTMLView | null = null;
+    private view: RouteView | null = null;
 
     public route: RecognizedRoute | null = null;
 

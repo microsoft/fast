@@ -1,5 +1,4 @@
 import {
-    ElementStyles,
     html,
     HTMLView,
     ViewTemplate,
@@ -7,7 +6,7 @@ import {
 } from "@microsoft/fast-element";
 import { RenderOperation, Router } from "./router";
 import { RouterConfiguration } from "./configuration";
-import { Transition } from "./transition";
+import { RouteView, Transition } from "./view";
 import {
     ElementRouteDefinition,
     TemplateRouteDefinition,
@@ -30,7 +29,7 @@ export interface NavigationCommand {
 export interface RenderCommand extends NavigationCommand {
     layout: Layout;
     transition: Transition;
-    createView(): Promise<HTMLView>;
+    createView(): Promise<RouteView>;
 }
 
 export class Ignore implements NavigationCommand {
@@ -127,7 +126,7 @@ export class Render implements RenderCommand {
 
     constructor(
         private owner: RouterConfiguration,
-        public createView: () => Promise<HTMLView>
+        public createView: () => Promise<RouteView>
     ) {}
 
     public get transition(): Transition {
@@ -158,7 +157,7 @@ export class Render implements RenderCommand {
             | ElementFallbackRouteDefinition
             | TemplateFallbackRouteDefinition
     ): Render {
-        let createView;
+        let createView: () => Promise<RouteView>;
 
         if ("template" in definition) {
             createView = async () => {
