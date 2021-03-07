@@ -1,12 +1,12 @@
 import {
     ConfigurableRoute,
+    DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
-    RouteRecognizer,
 } from "./recognizer";
 import { expect } from "chai";
 
-describe(RouteRecognizer.name, function () {
+describe(DefaultRouteRecognizer.name, function () {
     interface RecognizeSpec {
         routes: string[];
         tests: [string, string | null, Record<string, string | undefined> | null][];
@@ -2184,7 +2184,7 @@ describe(RouteRecognizer.name, function () {
 
                             it(title, async function () {
                                 // Arrange
-                                const sut = new RouteRecognizer();
+                                const sut = new DefaultRouteRecognizer();
                                 for (const route of routes) {
                                     sut.add({ path: route });
                                 }
@@ -2203,7 +2203,7 @@ describe(RouteRecognizer.name, function () {
 
                             it(title, async function () {
                                 // Arrange
-                                const sut = new RouteRecognizer();
+                                const sut = new DefaultRouteRecognizer();
                                 for (const route of routes) {
                                     sut.add({ path: route });
                                 }
@@ -2213,6 +2213,7 @@ describe(RouteRecognizer.name, function () {
                                 const paramNames = Object.keys(params);
                                 const configurableRoute = new ConfigurableRoute(
                                     match,
+                                    "",
                                     false
                                 );
                                 const endpoint = new Endpoint(
@@ -2224,7 +2225,8 @@ describe(RouteRecognizer.name, function () {
                                 const expected = new RecognizedRoute(
                                     endpoint,
                                     params,
-                                    typedParams
+                                    typedParams,
+                                    {}
                                 );
 
                                 // Act
@@ -2253,7 +2255,7 @@ describe(RouteRecognizer.name, function () {
         ["*1", "*2"],
     ]) {
         it(`throws on clashing patterns: [${route1},${route2}]`, function () {
-            const sut = new RouteRecognizer();
+            const sut = new DefaultRouteRecognizer();
             let err: Error | null = null;
 
             sut.add({ path: route1 });
