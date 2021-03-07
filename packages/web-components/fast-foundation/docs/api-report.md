@@ -1329,7 +1329,7 @@ export enum MenuItemRole {
     menuitemradio = "menuitemradio"
 }
 
-// @public
+// @public @deprecated
 export const MenuItemTemplate: ViewTemplate;
 
 // @public
