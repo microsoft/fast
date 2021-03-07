@@ -1,5 +1,12 @@
-import { defaultExecutionContext, ExecutionContext } from "@microsoft/fast-element";
-import { Router } from "./router";
+import {
+    ComposableStyles,
+    defaultExecutionContext,
+    ElementStyles,
+    ExecutionContext,
+    html,
+    ViewTemplate,
+} from "@microsoft/fast-element";
+import { isFASTElementHost, Router } from "./router";
 
 export type RouterExecutionContext = ExecutionContext & {
     router: Router;
@@ -24,12 +31,84 @@ export interface RouteView {
     dispose(): void;
 }
 
-export type Transition = (
-    host: HTMLElement,
-    prev: RouteView | null,
-    next: RouteView
-) => Promise<void>;
+export interface Transition {
+    begin(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
+    rollback(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
+    commit(host: HTMLElement, prev: RouteView | null, next: RouteView): Promise<void>;
+}
 
 export const Transition = Object.freeze({
-    async default(): Promise<void> {},
+    default: Object.freeze({
+        async begin(
+            host: HTMLElement,
+            prev: RouteView | null,
+            next: RouteView
+        ): Promise<void> {},
+        async rollback(
+            host: HTMLElement,
+            prev: RouteView | null,
+            next: RouteView
+        ): Promise<void> {},
+        async commit(
+            host: HTMLElement,
+            prev: RouteView | null,
+            next: RouteView
+        ): Promise<void> {},
+    } as Transition),
+});
+
+export interface Layout {
+    beforeCommit(routerElement: HTMLElement): Promise<void>;
+    afterCommit(routerElement: HTMLElement): Promise<void>;
+}
+
+export class FASTElementLayout implements Layout {
+    private styles: ElementStyles | null;
+
+    constructor(
+        private readonly template: ViewTemplate | null = null,
+        styles: ComposableStyles | ComposableStyles[] | null = null,
+        private runBeforeCommit = true
+    ) {
+        this.styles =
+            styles === void 0 || styles === null
+                ? null
+                : Array.isArray(styles)
+                ? ElementStyles.create(styles)
+                : styles instanceof ElementStyles
+                ? styles
+                : ElementStyles.create([styles]);
+    }
+
+    async beforeCommit(routerElement: HTMLElement) {
+        if (this.runBeforeCommit) {
+            this.apply(routerElement);
+        }
+    }
+
+    async afterCommit(routerElement: HTMLElement) {
+        if (!this.runBeforeCommit) {
+            this.apply(routerElement);
+        }
+    }
+
+    private apply(routerElement: HTMLElement) {
+        if (isFASTElementHost(routerElement)) {
+            if (routerElement.$fastController.template !== this.template) {
+                routerElement.$fastController.template = this.template!;
+            }
+
+            if (routerElement.$fastController.styles !== this.styles) {
+                routerElement.$fastController.styles = this.styles!;
+            }
+        }
+    }
+}
+
+export const Layout = Object.freeze({
+    default: new FASTElementLayout(
+        html`
+            <slot></slot>
+        `
+    ) as Readonly<Layout>,
 });

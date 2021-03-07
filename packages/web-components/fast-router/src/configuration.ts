@@ -1,6 +1,6 @@
 import { Constructable } from "@microsoft/fast-element";
 import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
-import { Transition } from "./view";
+import { Layout, Transition } from "./view";
 import { RouteCollection, RouteMatch } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
 import { DefaultNavigationProcess, NavigationProcess } from "./process";
@@ -8,7 +8,6 @@ import { DefaultTitleBuilder, TitleBuilder } from "./titles";
 import { DefaultRoutingEventSink, RoutingEventSink } from "./events";
 import { isNavigationPhaseContributor, NavigationContributor } from "./contributors";
 import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
-import { Layout } from "./layout";
 import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer";
 
 export abstract class RouterConfiguration<TSettings = any> {

@@ -6,7 +6,7 @@ import {
 } from "@microsoft/fast-element";
 import { RenderOperation, Router } from "./router";
 import { RouterConfiguration } from "./configuration";
-import { RouteView, Transition } from "./view";
+import { FASTElementLayout, Layout, RouteView, Transition } from "./view";
 import {
     ElementRouteDefinition,
     TemplateRouteDefinition,
@@ -17,7 +17,6 @@ import { Route } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
 import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
-import { FASTElementLayout, Layout } from "./layout";
 
 export interface NavigationCommand {
     createContributor(

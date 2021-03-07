@@ -2,13 +2,12 @@ import { Constructable, FASTElement } from "@microsoft/fast-element";
 import { RenderCommand } from "./commands";
 import { RouterConfiguration } from "./configuration";
 import { NavigationContributor } from "./contributors";
-import { Layout } from "./layout";
 import { LinkHandler } from "./links";
 import { NavigationMessage, NavigationQueue } from "./navigation";
 import { NavigationPhase } from "./phases";
 import { RecognizedRoute } from "./recognizer";
 import { childRouteParameter } from "./routes";
-import { RouterExecutionContext, RouteView, Transition } from "./view";
+import { Layout, RouterExecutionContext, RouteView, Transition } from "./view";
 
 export interface RenderOperation {
     commit(): Promise<void>;
@@ -214,13 +213,15 @@ export class DefaultRouter implements Router {
         this.newView.bind(route.allTypedParams, RouterExecutionContext.create(this));
         this.newView.appendTo(this.host);
 
+        await command.transition.begin(this.host, this.view, this.newView);
+
         return {
             commit: this.renderOperationCommit.bind(
                 this,
                 command.layout,
                 command.transition
             ),
-            rollback: this.renderOperationRollback.bind(this),
+            rollback: this.renderOperationRollback.bind(this, command.transition),
         };
     }
 
@@ -289,9 +290,9 @@ export class DefaultRouter implements Router {
     };
 
     private async renderOperationCommit(layout: Layout, transition: Transition) {
-        await layout.beforeTransition(this.host);
-        await transition(this.host, this.view, this.newView!);
-        await layout.afterTransition(this.host);
+        await layout.beforeCommit(this.host);
+        await transition.commit(this.host, this.view, this.newView!);
+        await layout.afterCommit(this.host);
 
         if (this.view !== null) {
             this.view.dispose();
@@ -304,8 +305,9 @@ export class DefaultRouter implements Router {
         this.newView = null;
     }
 
-    private async renderOperationRollback() {
+    private async renderOperationRollback(transition: Transition) {
         if (this.newView !== null) {
+            await transition.rollback(this.host, this.view, this.newView);
             this.newView.dispose();
             this.newRoute = null;
             this.newView = null;

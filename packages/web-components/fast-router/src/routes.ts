@@ -7,12 +7,11 @@ import {
 } from "./recognizer";
 import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
 import { ViewTemplate, FASTElement, Constructable } from "@microsoft/fast-element";
-import { Transition } from "./view";
+import { Layout, Transition } from "./view";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
 import { QueryString } from "./query-string";
 import { Route } from "./navigation";
-import { Layout } from "./layout";
 
 export const childRouteParameter = "fast-child-route";
 
