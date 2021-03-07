@@ -1,10 +1,5 @@
+import { Route } from "./navigation";
 import { QueryString } from "./query-string";
-
-export interface Route {
-    readonly path: string;
-    readonly name?: string;
-    readonly caseSensitive?: boolean;
-}
 
 export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
 const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) =>
@@ -362,7 +357,8 @@ export interface RouteRecognizer<TSettings> {
         path: string,
         converters?: Readonly<Record<string, RouteParameterConverter>>
     ): Promise<RecognizedRoute<TSettings> | null>;
-    generate(nameOrPath: string, params: object): string | null;
+    generateFromName(name: string, params: object): string | null;
+    generateFromPath(path: string, params: object): string | null;
 }
 
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
@@ -519,15 +515,33 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
     }
 
     /**
-     * Generate a path and query string from a route name or path and params object.
+     * Generate a path and query string from a route name and params object.
      *
-     * @param nameOrPath The name of the route or the configured path.
+     * @param name The name of the route to generate from.
      * @param params The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public generate(nameOrPath: string, params: object): string | null {
-        const segments = this.names.get(nameOrPath) || this.paths.get(nameOrPath);
+    public generateFromName(name: string, params: object): string | null {
+        return this.generate(this.names.get(name), params);
+    }
+
+    /**
+     * Generate a path and query string from a route path and params object.
+     *
+     * @param path The path of the route to generate from.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public generateFromPath(path: string, params: object): string | null {
+        return this.generate(this.paths.get(path), params);
+    }
+
+    private generate(
+        segments: AnySegment<any>[] | undefined,
+        params: object
+    ): string | null {
         if (!segments) {
             return null;
         }
@@ -543,7 +557,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
             if (segmentValue === null || segmentValue === undefined) {
                 if (segment instanceof DynamicSegment && !segment.optional) {
                     throw new Error(
-                        `A value is required for route parameter '${segment.name}' in route '${nameOrPath}'.`
+                        `A value is required for route parameter '${segment.name}'.`
                     );
                 }
             } else {

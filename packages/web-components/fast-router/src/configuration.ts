@@ -1,7 +1,7 @@
 import { Constructable } from "@microsoft/fast-element";
 import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
 import { Transition } from "./transition";
-import { RouteCollection, RouteLocationResult } from "./routes";
+import { RouteCollection, RouteMatch } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";
 import { DefaultNavigationProcess, NavigationProcess } from "./process";
 import { DefaultTitleBuilder, TitleBuilder } from "./titles";
@@ -55,33 +55,41 @@ export abstract class RouterConfiguration<TSettings = any> {
         return new Type();
     }
 
-    public async findRoute(path: string): Promise<RouteLocationResult<TSettings> | null> {
-        if (!this.isConfigured) {
-            await this.configure();
-            this.isConfigured = true;
-        }
-
-        return this.routes.find(path);
+    public async recognizeRoute(path: string): Promise<RouteMatch<TSettings> | null> {
+        await this.ensureConfigured();
+        return this.routes.recognize(path);
     }
 
     /**
-     * Generate a path and query string from a route name or path and params object.
+     * Generate a path and query string from a route name and params object.
      *
-     * @param nameOrPath The name of the route or the configured path.
+     * @param name The name of the route to generate from.
      * @param params The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public async generateRoute(
-        nameOrPath: string,
+    public async generateRouteFromName(
+        name: string,
         params: object
     ): Promise<string | null> {
-        if (!this.isConfigured) {
-            await this.configure();
-            this.isConfigured = true;
-        }
+        await this.ensureConfigured();
+        return this.routes.generateFromName(name, params);
+    }
 
-        return this.routes.generate(nameOrPath, params);
+    /**
+     * Generate a path and query string from a route path and params object.
+     *
+     * @param path The path of the route to generate from.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public async generateRouteFromPath(
+        path: string,
+        params: object
+    ): Promise<string | null> {
+        await this.ensureConfigured();
+        return this.routes.generateFromPath(path, params);
     }
 
     public findContributors<T extends NavigationPhaseName>(
@@ -103,5 +111,12 @@ export abstract class RouterConfiguration<TSettings = any> {
 
             return (instance as any) as HTMLElement;
         };
+    }
+
+    private async ensureConfigured() {
+        if (!this.isConfigured) {
+            await this.configure();
+            this.isConfigured = true;
+        }
     }
 }

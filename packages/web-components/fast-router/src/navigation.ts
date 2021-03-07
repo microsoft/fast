@@ -1,10 +1,10 @@
-// Cached regex for detecting if a URL is absolute,
-// i.e., starts with a scheme or is scheme-relative.
-
 import { Router } from "./router";
 
-// See http://www.ietf.org/rfc/rfc2396.txt section 3.1 for valid scheme format
-const absoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+export interface Route {
+    readonly path: string;
+    readonly name?: string;
+    readonly caseSensitive?: boolean;
+}
 
 export class NavigationMessage {
     constructor(public path: string) {}
@@ -26,105 +26,138 @@ export const NavigationHandler = Object.freeze({
     },
 });
 
-export const Navigation = Object.freeze({
-    get path() {
-        return location.pathname + location.search;
-    },
-
-    async generateRoute(
-        relativeTo: HTMLElement,
-        nameOrPath: string,
-        params: Object = {}
-    ) {
-        let router = Router.find(relativeTo);
-
-        while (router !== null) {
-            const path = await router.config!.generateRoute(nameOrPath, params);
-
-            if (path !== null) {
-                return path;
-            }
-
-            router = router.parent;
-        }
-
-        return null;
-    },
-
-    pushPath(path: string, trigger = true) {
-        if (path && absoluteUrl.test(path)) {
-            location.href = path;
-            return;
-        }
-
-        history.pushState({}, document.title, path);
-
-        if (trigger) {
-            this.triggerPath(path);
-        }
-    },
-
-    async pushName(
-        relativeTo: HTMLElement,
-        nameOrPath: string,
-        params: Object = {},
-        trigger = true
-    ) {
-        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
-
-        if (path !== null) {
-            Navigation.pushPath(path, trigger);
-        }
-    },
-
-    replacePath(path: string, trigger = true) {
-        if (path && absoluteUrl.test(path)) {
-            location.href = path;
-            return;
-        }
-
-        history.replaceState({}, document.title, path);
-
-        if (trigger) {
-            this.triggerPath(path);
-        }
-    },
-
-    async replaceName(
-        relativeTo: HTMLElement,
-        nameOrPath: string,
-        params: Object = {},
-        trigger = true
-    ) {
-        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
-
-        if (path !== null) {
-            Navigation.replacePath(path, trigger);
-        }
-    },
-
-    triggerPath(path: string) {
-        const message = new NavigationMessage(path);
-
-        for (const handler of handlers) {
-            handler.enqueue(message);
-        }
-    },
-
-    async triggerName(relativeTo: HTMLElement, nameOrPath: string, params: Object = {}) {
-        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
-
-        if (path !== null) {
-            Navigation.triggerPath(path);
-        }
-    },
-});
-
 export interface NavigationQueue {
     connect(): void;
     disconnect(): void;
     receive(): Promise<NavigationMessage>;
 }
+
+// Cached regex for detecting if a URL is absolute,
+// i.e., starts with a scheme or is scheme-relative.
+// See http://www.ietf.org/rfc/rfc2396.txt section 3.1 for valid scheme format
+const absoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
+export const Route = Object.freeze({
+    path: Object.freeze({
+        get current() {
+            return location.pathname + location.search;
+        },
+
+        async generateRoute(
+            relativeTo: HTMLElement | Router,
+            path: string,
+            params: Object = {}
+        ) {
+            let router = "config" in relativeTo ? relativeTo : Router.find(relativeTo);
+
+            while (router !== null) {
+                const p = await router.config!.generateRouteFromPath(path, params);
+
+                if (p !== null) {
+                    return p;
+                }
+
+                router = router.parent;
+            }
+
+            return null;
+        },
+
+        push(path: string, trigger = true) {
+            if (path && absoluteUrl.test(path)) {
+                location.href = path;
+                return;
+            }
+
+            history.pushState({}, document.title, path);
+
+            if (trigger) {
+                Route.path.trigger(path);
+            }
+        },
+
+        replace(path: string, trigger = true) {
+            if (path && absoluteUrl.test(path)) {
+                location.href = path;
+                return;
+            }
+
+            history.replaceState({}, document.title, path);
+
+            if (trigger) {
+                Route.path.trigger(path);
+            }
+        },
+
+        trigger(path: string) {
+            const message = new NavigationMessage(path);
+
+            for (const handler of handlers) {
+                handler.enqueue(message);
+            }
+        },
+    }),
+
+    name: Object.freeze({
+        async generateRoute(
+            relativeTo: HTMLElement | Router,
+            name: string,
+            params: Object = {}
+        ) {
+            let router = "config" in relativeTo ? relativeTo : Router.find(relativeTo);
+
+            while (router !== null) {
+                const path = await router.config!.generateRouteFromName(name, params);
+
+                if (path !== null) {
+                    return path;
+                }
+
+                router = router.parent;
+            }
+
+            return null;
+        },
+
+        async push(
+            relativeTo: HTMLElement | Router,
+            name: string,
+            params: Object = {},
+            trigger = true
+        ) {
+            const path = await Route.name.generateRoute(relativeTo, name, params);
+
+            if (path !== null) {
+                Route.path.push(path, trigger);
+            }
+        },
+
+        async replace(
+            relativeTo: HTMLElement | Router,
+            name: string,
+            params: Object = {},
+            trigger = true
+        ) {
+            const path = await Route.name.generateRoute(relativeTo, name, params);
+
+            if (path !== null) {
+                Route.path.replace(path, trigger);
+            }
+        },
+
+        async trigger(
+            relativeTo: HTMLElement | Router,
+            name: string,
+            params: Object = {}
+        ) {
+            const path = await Route.name.generateRoute(relativeTo, name, params);
+
+            if (path !== null) {
+                Route.path.trigger(path);
+            }
+        },
+    }),
+});
 
 export class DefaultNavigationQueue implements NavigationQueue, NavigationHandler {
     private queue: NavigationMessage[] = [];
@@ -132,7 +165,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     private resolve: ((value: NavigationMessage) => void) | null = null;
 
     public connect() {
-        this.enqueue(new NavigationMessage(Navigation.path));
+        this.enqueue(new NavigationMessage(Route.path.current));
         window.addEventListener("popstate", this);
         NavigationHandler.register(this);
     }
@@ -176,6 +209,6 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     }
 
     public handleEvent(event: PopStateEvent) {
-        this.enqueue(new NavigationMessage(Navigation.path));
+        this.enqueue(new NavigationMessage(Route.path.current));
     }
 }

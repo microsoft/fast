@@ -3,7 +3,6 @@ import {
     RecognizedRoute,
     Endpoint,
     ConfigurableRoute,
-    Route,
     RouteParameterConverter,
 } from "./recognizer";
 import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
@@ -13,6 +12,7 @@ import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";
 import { LayoutDefinition } from "./layout";
 import { QueryString } from "./query-string";
+import { Route } from "./navigation";
 
 export const childRouteParameter = "fast-child-route";
 
@@ -120,7 +120,7 @@ export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSett
         children: MappableRouteDefinition<TSettings>[];
     };
 
-export type RouteLocationResult<TSettings = any> = {
+export type RouteMatch<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
     command: NavigationCommand;
 };
@@ -296,7 +296,7 @@ export class RouteCollection<TSettings = any> {
         this.converters[name] = normalizedConverter;
     }
 
-    public async find(path: string): Promise<RouteLocationResult<TSettings> | null> {
+    public async recognize(path: string): Promise<RouteMatch<TSettings> | null> {
         const result = await this.recognizer.recognize(path, this.aggregateConverters());
 
         if (result !== null) {
@@ -330,15 +330,27 @@ export class RouteCollection<TSettings = any> {
     }
 
     /**
-     * Generate a path and query string from a route name or path and params object.
+     * Generate a path and query string from a route name and params object.
      *
-     * @param nameOrPath The name of the route or the configured path.
+     * @param name The name of the route to generate from.
      * @param params The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public generate(nameOrPath: string, params: object): string | null {
-        return this.recognizer.generate(nameOrPath, params);
+    public generateFromName(name: string, params: object): string | null {
+        return this.recognizer.generateFromName(name, params);
+    }
+
+    /**
+     * Generate a path and query string from a route path and params object.
+     *
+     * @param path The path of the route to generate from.
+     * @param params The route params to use when populating the pattern.
+     * Properties not required by the pattern will be appended to the query string.
+     * @returns The generated absolute path and query string.
+     */
+    public generateFromPath(path: string, params: object): string | null {
+        return this.recognizer.generateFromPath(path, params);
     }
 
     private aggregateConverters() {

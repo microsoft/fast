@@ -14,12 +14,11 @@ import {
     ElementFallbackRouteDefinition,
     TemplateFallbackRouteDefinition,
 } from "./routes";
-import { Navigation } from "./navigation";
+import { Route } from "./navigation";
 import { RecognizedRoute } from "./recognizer";
 import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
 import { Layout } from "./layout";
-import { QueryString } from "./query-string";
 
 export interface NavigationCommand {
     createContributor(
@@ -48,11 +47,24 @@ export class Redirect implements NavigationCommand {
     constructor(private redirect: string) {}
 
     public async createContributor() {
-        const path = this.redirect + QueryString.current;
-
+        const redirect = this.redirect;
         return {
             async navigate(phase: NavigationPhase) {
-                phase.cancel(async () => Navigation.replacePath(path));
+                const config = phase.router.config!;
+                const path =
+                    (await config.generateRouteFromName(
+                        redirect,
+                        phase.route.allParams
+                    )) ||
+                    (await config.generateRouteFromPath(redirect, phase.route.allParams));
+
+                if (path === null) {
+                    throw new Error(
+                        `Invalid redirect. Name or path not found: ${redirect}`
+                    );
+                }
+
+                phase.cancel(async () => Route.path.replace(path));
             },
         };
     }

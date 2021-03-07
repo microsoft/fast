@@ -89,15 +89,15 @@ export class DefaultNavigationProcess<TSettings> {
 
     public async run(router: Router, message: NavigationMessage) {
         const events = router.config!.createEventSink();
-        const routeResult = await router.config!.findRoute(message.path);
+        const match = await router.config!.recognizeRoute(message.path);
 
-        if (routeResult === null) {
-            events.onUnhandledMessage(router, message);
+        if (match === null) {
+            events.onUnhandledNavigationMessage(router, message);
             return;
         }
 
-        const route = routeResult.route;
-        const command = routeResult.command;
+        const route = match.route;
+        const command = match.command;
 
         events.onNavigationBegin(router, route, command);
 

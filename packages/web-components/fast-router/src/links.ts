@@ -1,4 +1,4 @@
-import { Navigation } from "./navigation";
+import { Route } from "./navigation";
 
 interface AnchorEventInfo {
     shouldHandleEvent: boolean;
@@ -17,7 +17,7 @@ export class DefaultLinkHandler implements LinkHandler {
 
         if (shouldHandleEvent) {
             e.preventDefault();
-            Navigation.pushPath(href!);
+            Route.path.push(href!);
         }
     };
 

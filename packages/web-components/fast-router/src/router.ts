@@ -339,19 +339,19 @@ export class DefaultRouter implements Router {
     private async construct(phase: NavigationPhase) {
         if (this.parent !== null) {
             const rest = phase.route.allParams[childRouteParameter] || "";
-            const result = await this.config!.findRoute(rest);
+            const match = await this.config!.recognizeRoute(rest);
 
-            if (result === null) {
+            if (match === null) {
                 const events = this.config!.createEventSink();
-                events.onUnhandledMessage(this, new NavigationMessage(rest));
+                events.onUnhandledNavigationMessage(this, new NavigationMessage(rest));
                 phase.cancel();
                 return;
             }
 
-            this.childRoute = result.route;
-            this.childCommandContributor = await result.command.createContributor(
+            this.childRoute = match.route;
+            this.childCommandContributor = await match.command.createContributor(
                 this,
-                result.route
+                match.route
             );
         }
 
