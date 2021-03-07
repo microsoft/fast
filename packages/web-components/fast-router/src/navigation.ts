@@ -1,5 +1,8 @@
 // Cached regex for detecting if a URL is absolute,
 // i.e., starts with a scheme or is scheme-relative.
+
+import { Router } from "./router";
+
 // See http://www.ietf.org/rfc/rfc2396.txt section 3.1 for valid scheme format
 const absoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
@@ -28,7 +31,27 @@ export const Navigation = Object.freeze({
         return location.pathname + location.search;
     },
 
-    push(path: string, trigger = true) {
+    async generateRoute(
+        relativeTo: HTMLElement,
+        nameOrPath: string,
+        params: Object = {}
+    ) {
+        let router = Router.find(relativeTo);
+
+        while (router !== null) {
+            const path = await router.config!.generateRoute(nameOrPath, params);
+
+            if (path !== null) {
+                return path;
+            }
+
+            router = router.parent;
+        }
+
+        return null;
+    },
+
+    pushPath(path: string, trigger = true) {
         if (path && absoluteUrl.test(path)) {
             location.href = path;
             return;
@@ -37,11 +60,24 @@ export const Navigation = Object.freeze({
         history.pushState({}, document.title, path);
 
         if (trigger) {
-            this.trigger(path);
+            this.triggerPath(path);
         }
     },
 
-    replace(path: string, trigger = true) {
+    async pushName(
+        relativeTo: HTMLElement,
+        nameOrPath: string,
+        params: Object = {},
+        trigger = true
+    ) {
+        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
+
+        if (path !== null) {
+            Navigation.pushPath(path, trigger);
+        }
+    },
+
+    replacePath(path: string, trigger = true) {
         if (path && absoluteUrl.test(path)) {
             location.href = path;
             return;
@@ -50,15 +86,36 @@ export const Navigation = Object.freeze({
         history.replaceState({}, document.title, path);
 
         if (trigger) {
-            this.trigger(path);
+            this.triggerPath(path);
         }
     },
 
-    trigger(path: string) {
+    async replaceName(
+        relativeTo: HTMLElement,
+        nameOrPath: string,
+        params: Object = {},
+        trigger = true
+    ) {
+        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
+
+        if (path !== null) {
+            Navigation.replacePath(path, trigger);
+        }
+    },
+
+    triggerPath(path: string) {
         const message = new NavigationMessage(path);
 
         for (const handler of handlers) {
             handler.enqueue(message);
+        }
+    },
+
+    async triggerName(relativeTo: HTMLElement, nameOrPath: string, params: Object = {}) {
+        const path = await Navigation.generateRoute(relativeTo, nameOrPath, params);
+
+        if (path !== null) {
+            Navigation.triggerPath(path);
         }
     },
 });

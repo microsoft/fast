@@ -17,7 +17,7 @@ export class DefaultLinkHandler implements LinkHandler {
 
         if (shouldHandleEvent) {
             e.preventDefault();
-            Navigation.push(href!);
+            Navigation.pushPath(href!);
         }
     };
 

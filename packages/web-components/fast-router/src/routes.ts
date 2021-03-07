@@ -337,7 +337,7 @@ export class RouteCollection<TSettings = any> {
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public generate(nameOrPath: string, params: object): string {
+    public generate(nameOrPath: string, params: object): string | null {
         return this.recognizer.generate(nameOrPath, params);
     }
 

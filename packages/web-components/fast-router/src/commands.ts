@@ -52,7 +52,7 @@ export class Redirect implements NavigationCommand {
 
         return {
             async navigate(phase: NavigationPhase) {
-                phase.cancel(async () => Navigation.replace(path));
+                phase.cancel(async () => Navigation.replacePath(path));
             },
         };
     }

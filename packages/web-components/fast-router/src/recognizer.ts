@@ -362,7 +362,7 @@ export interface RouteRecognizer<TSettings> {
         path: string,
         converters?: Readonly<Record<string, RouteParameterConverter>>
     ): Promise<RecognizedRoute<TSettings> | null>;
-    generate(nameOrPath: string, params: object): string;
+    generate(nameOrPath: string, params: object): string | null;
 }
 
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
@@ -526,10 +526,10 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public generate(nameOrPath: string, params: object): string {
+    public generate(nameOrPath: string, params: object): string | null {
         const segments = this.names.get(nameOrPath) || this.paths.get(nameOrPath);
         if (!segments) {
-            throw new Error(`There is no route named ${nameOrPath}`);
+            return null;
         }
 
         const routeParams = Object.assign({}, params);

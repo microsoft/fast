@@ -72,7 +72,10 @@ export abstract class RouterConfiguration<TSettings = any> {
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
-    public async generateRoute(nameOrPath: string, params: object): Promise<string> {
+    public async generateRoute(
+        nameOrPath: string,
+        params: object
+    ): Promise<string | null> {
         if (!this.isConfigured) {
             await this.configure();
             this.isConfigured = true;
