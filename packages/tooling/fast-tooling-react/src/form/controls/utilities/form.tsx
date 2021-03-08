@@ -506,7 +506,7 @@ export function updateControlSectionState(
               }
             : null,
         categories:
-            state !== undefined
+            state !== undefined && props.schema.id === state.schema.id
                 ? getUpdatedCategories(state.categories)
                 : getCategoryStateFromCategoryDictionary(
                       props.categories,
