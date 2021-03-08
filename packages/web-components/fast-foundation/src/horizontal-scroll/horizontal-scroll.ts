@@ -179,20 +179,8 @@ export class HorizontalScroll extends FASTElement {
     private setStops(): void {
         this.width = this.offsetWidth;
         let lastStop: number = 0;
-        const scrollItems: HTMLElement[] = [].slice
-            .call(this.children)
-            /* filter out non-default slots */
-            .filter(
-                (el: Element): boolean =>
-                    !el.getAttribute("slot") || el.getAttribute("slot") === "default"
-            );
-
-        /* RTL items will come in reverse offsetLeft */
-        const isRtl: boolean =
-            scrollItems.length > 1 &&
-            scrollItems[0].offsetLeft > scrollItems[1].offsetLeft;
-        this.isRtl = isRtl;
-
+        const scrollItems: HTMLElement[] = this.getScrollItems();
+        const isRtl: boolean = this.checkRTL(scrollItems);
         let stops: number[] = scrollItems.map(
             (
                 { offsetLeft: left, offsetWidth: width }: any,
@@ -204,12 +192,10 @@ export class HorizontalScroll extends FASTElement {
                 const lastRtl: boolean = isRtl && index === array.length - 1;
                 const right: number = (left + width) * direction;
 
-                /* Getting the final stop after the last item or before the first RTL item */
                 if (!isRtl || index === 0) {
                     lastStop = right;
                 }
 
-                /* Remove extra margin on first item and last RTL item */
                 if (lastRtl || firstLtr) {
                     left = 0;
                 } else if (isRtl) {
@@ -219,21 +205,54 @@ export class HorizontalScroll extends FASTElement {
                 return left;
             }
         );
-
         stops.push(lastStop);
 
         /* Fixes a FireFox bug where it doesn't scroll to the start */
-        if (isRtl && stops.find((stop: number): boolean => stop > 0)) {
-            stops.sort((a, b) => b - a);
-            const offset = stops[0];
-            stops = stops.map(stop => stop - offset);
-        }
+        stops = this.fixScrollMisalign(stops);
 
         /* Sort to zero */
         stops.sort((a: number, b: number) => Math.abs(a) - Math.abs(b));
 
         this.scrollStops = stops;
         this.setFlippers();
+    }
+
+    /**
+     * Gets the horizontal scroll items in the default slot
+     * @internal
+     */
+    private getScrollItems(): HTMLElement[] {
+        return [].slice
+            .call(this.children)
+            .filter(
+                (el: HTMLElement): boolean =>
+                    !el.getAttribute("slot") || el.getAttribute("slot") === "default"
+            );
+    }
+
+    /**
+     * Checks if a group of items are RTL and sets it internally
+     * @param items - Children nodes that are being scrolled
+     * @internal
+     */
+    private checkRTL(items: HTMLElement[]): boolean {
+        const isRtl = items.length > 1 && items[0].offsetLeft > items[1].offsetLeft;
+        this.isRtl = isRtl;
+
+        return isRtl;
+    }
+
+    /**
+     *
+     */
+    private fixScrollMisalign(stops: number[]) {
+        if (this.isRtl && stops.find((stop: number): boolean => stop > 0)) {
+            stops.sort((a, b) => b - a);
+            const offset = stops[0];
+            stops = stops.map(stop => stop - offset);
+        }
+
+        return stops;
     }
 
     /**
@@ -271,9 +290,6 @@ export class HorizontalScroll extends FASTElement {
     public scrollToPrevious(): void {
         const position: number = this.getScrollPosition();
         const stops: number[] = this.scrollStops;
-        if (this.isRtl) {
-            stops.sort((a: number, b: number): number => b - a);
-        }
         const endOrHigher = (array, index, position) =>
             index === array.length - 1 || array[index + 1] > position;
         const current: number = stops.findIndex(
@@ -281,19 +297,13 @@ export class HorizontalScroll extends FASTElement {
                 stop <= position && (this.isRtl || endOrHigher(array, index, position))
         );
         const right: number = Math.abs(stops[current + 1]);
-        let nextIndex: number =
-            stops.findIndex(
-                (stop: number): boolean => Math.abs(stop) + this.width > right
-            ) || 0;
-        if (nextIndex > current) {
-            if (current > 0) {
-                nextIndex = current - 1;
-            } else {
-                nextIndex = 0;
-            }
+        let nextIndex: number = stops.findIndex(
+            (stop: number): boolean => Math.abs(stop) + this.width > right
+        );
+        if (nextIndex > current || !nextIndex) {
+            nextIndex = current > 0 ? current - 1 : 0;
         }
-        const left: number = this.scrollStops[nextIndex];
-        this.scrollToPosition(left, position);
+        this.scrollToPosition(this.scrollStops[nextIndex], position);
     }
 
     /**
