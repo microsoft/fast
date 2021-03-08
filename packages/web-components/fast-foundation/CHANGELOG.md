@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.0...@microsoft/fast-foundation@1.15.1) (2021-03-06)
+
+
+### Bug Fixes
+
+* conditionally render input container for menuitemcheckbox and menuitemradio ([#4429](https://github.com/Microsoft/fast/issues/4429)) ([8561a99](https://github.com/Microsoft/fast/commit/8561a99898d012f1accd0658eef4e8fb211d5683))
+
+
+
+
+
 # [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.14.0...@microsoft/fast-foundation@1.15.0) (2021-03-06)
 
 

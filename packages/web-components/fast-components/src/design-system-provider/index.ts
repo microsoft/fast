@@ -4,9 +4,10 @@ import {
     designSystemProperty,
     DesignSystemProvider,
     designSystemProvider,
+    forcedColorsStylesheetBehavior,
     DesignSystemProviderTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralForegroundRest } from "../color";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
@@ -22,7 +23,18 @@ const backgroundStyles = css`
         background-color: var(--background-color);
         color: ${color.var};
     }
-`.withBehaviors(color);
+`.withBehaviors(
+    color,
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                background-color: ${SystemColors.ButtonFace};
+                box-shadow: 0 0 0 1px ${SystemColors.CanvasText};
+                color: ${SystemColors.ButtonText};
+            }
+        `
+    )
+);
 
 /**
  * The FAST DesignSystemProvider Element. Implements {@link @microsoft/fast-foundation#DesignSystemProvider},
