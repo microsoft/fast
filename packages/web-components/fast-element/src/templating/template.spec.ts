@@ -245,4 +245,17 @@ describe(`The html tag template helper`, () => {
             ":someAttribute"
         );
     });
+
+    it("should dispose of embedded ViewTemplate when the rendering template only contains the embedded template", () => {
+        const embedded = html`<div id="embedded"></div>`
+        const template = html`${x => embedded}`;
+        const target = document.createElement("div");
+        const view = template.render(void 0, target);
+
+        expect(target.querySelector('#embedded')).not.to.be.equal(null)
+
+        view.dispose();
+
+        expect(target.querySelector('#embedded')).to.be.equal(null)
+    })
 });
