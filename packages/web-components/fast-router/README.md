@@ -45,6 +45,126 @@ A pre-bundled script that contains all APIs needed to use FAST Router and FAST E
 </html>
 ```
 
+:::important
 The above CDN location points to the latest release of `fast-router`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
+:::
 
+:::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
+:::
+
+## Configuration at a Glance
+
+#### A Sample Route Configuration
+
+```ts
+import { RouterConfiguration, Route } from '@microsoft/fast-router';
+import { HomeScreen } from './home';
+import { AccountLogin } from './account/login';
+import { AccountSignup } from './account/signup';
+import { ConfirmEmail } from './account/confirm-email';
+import { Session } from './account/session';
+import { AccountSettings } from './account/settings';
+import { StoreArea } from './store/store-area';
+import { NotFound } from './not-found';
+import { pageLayout } from './layouts/page-layout';
+import { anonymousLayout } from './layouts/anonymous-layout';
+
+type RouteSettings = {
+  public?: boolean
+};
+
+export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
+  public configure() {
+    this.title = 'My App';
+    this.defaultLayout = pageLayout;
+    this.routes.map(
+      { path: '', redirect: 'home' },
+      { path: 'home', title: 'Home', element: HomeScreen },
+      { 
+        path: 'account', 
+        layout: anonymousLayout, 
+        title: 'Account',
+        settings: { public: true }, 
+        children: [
+          { path: "login", title: 'Login', element: AccountLogin, name: 'login' },
+          { path: 'signup' title: 'Signup', element: AccountSignup },
+          { path: 'confirm/{confirmation:Confirmation}', title: 'Confirm', element: ConfirmEmail },
+          { path: 'settings', title: 'Settings', element: AccountSettings, layout: pageLayout, settings: { public: false } },
+        ] 
+      },
+      { path: 'store', title: 'Store', element: StoreArea, childRouters: true },
+      { path: 'not-found', title: 'Not Found', element: NotFound }
+    );
+
+    this.routes.fallback(
+      () => Session.isLoggedIn
+        ? { redirect: 'not-found' }
+        : { redirect: 'login' }
+    );
+
+    this.routes.converter("Confirmation", async (confirmationId) => {
+      // ...fetch confirmation from web service...
+      return confirmation;
+    });
+
+    this.contributors.push({
+      navigate(phase) {
+        const settings = phase.route.settings;
+  
+        if (settings && settings.public) {
+          return;
+        }
+  
+        if (Session.loggedIn) {
+          return;
+        }
+  
+        phase.cancel(() => {
+          Session.returnUrl = Route.path.current;
+          Route.name.replace(phase.router, 'login');
+        });
+      }
+    });
+  }
+}
+```
+
+#### Using the Configuration with a Router
+
+```ts
+import { FASTElement, customElement, html, css } from '@microsoft/fast-element';
+import { FASTDesignSystemProvider } from '@microsoft/fast-components';
+import { FASTRouter } from '@microsoft/fast-router';
+import { AppRouterConfiguration } from './routes';
+
+FASTDesignSystemProvider;
+FASTRouter;
+
+const template = html<MainApplication>`
+  <fast-design-system-provider use-defaults>
+    <fast-router :config=${x => x.routerConfiguration}></fast-router>
+  </fast-design-system-provider>
+`;
+
+const styles = css`
+  :host {
+    contain: content;
+  }
+
+  :host, fast-design-system-provider, fast-router {  
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+@customElement({
+  name: 'main-application',
+  template,
+  styles
+})
+export class MainApplication extends FASTElement {
+  routerConfiguration = new AppRouterConfiguration();
+}
+```
