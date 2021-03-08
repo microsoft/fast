@@ -420,6 +420,10 @@ export class AnchoredRegion extends FASTElement {
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
 
+    // defines how big a difference in pixels there must be between states to
+    // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
+    private updateThreshold: number = 0.5;
+
     private static intersectionService: IntersectionService = new IntersectionService();
 
     /**
@@ -726,6 +730,7 @@ export class AnchoredRegion extends FASTElement {
             return false;
         }
 
+        // don't update the dom unless there is a significant difference in rect positions
         if (
             this.regionRect === null ||
             this.anchorRect === null ||
@@ -754,12 +759,11 @@ export class AnchoredRegion extends FASTElement {
         rectA: DOMRect | ClientRect,
         rectB: DOMRect | ClientRect
     ): boolean => {
-        const threshold: number = 0.5;
         if (
-            Math.abs(rectA.top - rectB.top) > threshold ||
-            Math.abs(rectA.right - rectB.right) > threshold ||
-            Math.abs(rectA.bottom - rectB.bottom) > threshold ||
-            Math.abs(rectA.left - rectB.left) > threshold
+            Math.abs(rectA.top - rectB.top) > this.updateThreshold ||
+            Math.abs(rectA.right - rectB.right) > this.updateThreshold ||
+            Math.abs(rectA.bottom - rectB.bottom) > this.updateThreshold ||
+            Math.abs(rectA.left - rectB.left) > this.updateThreshold
         ) {
             return true;
         }
