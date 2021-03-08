@@ -246,7 +246,7 @@ describe(`The html tag template helper`, () => {
         );
     });
 
-    it("should dispose of embedded ViewTemplate when the rendering template only contains the embedded template", () => {
+    it("should dispose of embedded ViewTemplate when the rendering template contains *only* the embedded template", () => {
         const embedded = html`<div id="embedded"></div>`
         const template = html`${x => embedded}`;
         const target = document.createElement("div");
