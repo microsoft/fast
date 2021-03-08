@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/microsoft/fast/compare/fast-site@0.5.2...fast-site@0.6.0) (2021-03-06)
+
+
+### Features
+
+* add playwright ([#4337](https://github.com/microsoft/fast/issues/4337)) ([be996ee](https://github.com/microsoft/fast/commit/be996eea6c2a19dbf7b1f8afac51cba22bbc8045)), closes [#4229](https://github.com/microsoft/fast/issues/4229)
+
+
+
+
+
 ## [0.5.2](https://github.com/microsoft/fast/compare/fast-site@0.5.0...fast-site@0.5.2) (2021-02-08)
 
 **Note:** Version bump only for package fast-site

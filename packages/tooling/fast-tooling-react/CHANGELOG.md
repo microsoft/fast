@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.5...@microsoft/fast-tooling-react@2.6.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* improve UI interactions for triggering expand/collapse in the navigation component and selecting an item ([#4339](https://github.com/Microsoft/fast/issues/4339)) ([482348c](https://github.com/Microsoft/fast/commit/482348c4ec86f14d0f746045d2e654f8a7be5320))
+* remove the line showing the folder structure in Navigation ([#4384](https://github.com/Microsoft/fast/issues/4384)) ([efde4e9](https://github.com/Microsoft/fast/commit/efde4e921bee59f4e2ca8c65f55e1f423b79b237))
+
+
+### Features
+
+* add editing behavior for dictionary items display text represented in the Navigation component ([#4375](https://github.com/Microsoft/fast/issues/4375)) ([ed2bc82](https://github.com/Microsoft/fast/commit/ed2bc8200fa226feca74d1ffeb907931494447fb))
+* allow the specification of types to display in the Navigation ([#4392](https://github.com/Microsoft/fast/issues/4392)) ([fd0dd78](https://github.com/Microsoft/fast/commit/fd0dd78086ce4f6f295dfa38ec5309ea4b3d83b6)), closes [#4351](https://github.com/Microsoft/fast/issues/4351)
+
+
+
+
+
 ## [2.5.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.3...@microsoft/fast-tooling-react@2.5.5) (2021-02-08)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
