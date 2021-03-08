@@ -30,7 +30,6 @@ import {
     SchemaSetValidationMessageRequest,
     TreeNavigationItem,
 } from "@microsoft/fast-tooling";
-import { FormCategory } from "../form.props";
 
 /**
  * Schema form component definition
@@ -262,7 +261,16 @@ class SectionControl extends React.Component<
     private getFormControls(): React.ReactNode {
         const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
 
-        if (this.state.categories) {
+        if (
+            this.state.categories &&
+            this.props.categories &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ] &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ][this.props.dataLocation]
+        ) {
             const formControls: React.ReactNode[] = [];
             const categorizedControls: string[] = [];
 
