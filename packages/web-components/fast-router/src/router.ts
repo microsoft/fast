@@ -89,9 +89,9 @@ export const Router = Object.freeze({
     },
 
     from<TBase extends typeof HTMLElement>(
-        Type: TBase
-    ): TBase & Constructable<RouterElement> {
-        class RouterBase extends (Type as any) {
+        BaseType: TBase
+    ): { new (): InstanceType<TBase> & RouterElement } {
+        class RouterBase extends (BaseType as any) {
             public readonly [routerProperty]!: Router;
 
             public get config(): RouterConfiguration {

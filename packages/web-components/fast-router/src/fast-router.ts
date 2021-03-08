@@ -1,5 +1,7 @@
 import { customElement, FASTElement } from "@microsoft/fast-element";
-import { Router } from "./router";
+import { Router, RouterElement } from "./router";
 
 @customElement("fast-router")
-export class FASTRouter extends Router.from(FASTElement) {}
+export class FASTRouter extends (Router.from(FASTElement) as {
+    new (): FASTElement & RouterElement;
+}) {}
