@@ -6,7 +6,7 @@ import { AnchoredRegion } from "./anchored-region";
  * @beta
  */
 export const AnchoredRegionTemplate = html<AnchoredRegion>`
-    <template>
+    <template class="${x => (x.initialLayoutComplete ? "loaded" : "")}">
         ${when(
             x => x.initialLayoutComplete,
             html<AnchoredRegion>`
