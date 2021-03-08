@@ -4,6 +4,9 @@ import { NavigationPhase } from "./phases";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 
+/**
+ * @alpha
+ */
 export interface RoutingEventSink {
     onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void;
     onNavigationBegin(
@@ -20,6 +23,9 @@ export interface RoutingEventSink {
     ): void;
 }
 
+/**
+ * @alpha
+ */
 export class DefaultRoutingEventSink implements RoutingEventSink {
     onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void {}
     onNavigationBegin(

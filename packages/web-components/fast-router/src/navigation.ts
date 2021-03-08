@@ -1,21 +1,33 @@
 import { Router } from "./router";
 
+/**
+ * @alpha
+ */
 export interface Route {
     readonly path: string;
     readonly name?: string;
     readonly caseSensitive?: boolean;
 }
 
+/**
+ * @alpha
+ */
 export class NavigationMessage {
     constructor(public path: string) {}
 }
 
+/**
+ * @alpha
+ */
 export interface NavigationHandler {
     enqueue(msg: NavigationMessage): void;
 }
 
 const handlers = new Set<NavigationHandler>();
 
+/**
+ * @alpha
+ */
 export const NavigationHandler = Object.freeze({
     register(handler: NavigationHandler) {
         handlers.add(handler);
@@ -26,6 +38,9 @@ export const NavigationHandler = Object.freeze({
     },
 });
 
+/**
+ * @alpha
+ */
 export interface NavigationQueue {
     connect(): void;
     disconnect(): void;
@@ -37,6 +52,9 @@ export interface NavigationQueue {
 // See http://www.ietf.org/rfc/rfc2396.txt section 3.1 for valid scheme format
 const absoluteUrl = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
 
+/**
+ * @alpha
+ */
 export const Route = Object.freeze({
     path: Object.freeze({
         get current() {
@@ -159,6 +177,9 @@ export const Route = Object.freeze({
     }),
 });
 
+/**
+ * @alpha
+ */
 export class DefaultNavigationQueue implements NavigationQueue, NavigationHandler {
     private queue: NavigationMessage[] = [];
     private promise: Promise<NavigationMessage> | null = null;

@@ -13,39 +13,69 @@ import { Router } from "./router";
 import { QueryString } from "./query-string";
 import { Route } from "./navigation";
 
+/**
+ * @internal
+ */
 export const childRouteParameter = "fast-child-route";
 
+/**
+ * @alpha
+ */
 export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;
 };
 
+/**
+ * @alpha
+ */
 export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings> & Route;
 
+/**
+ * @alpha
+ */
 export type IgnorableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings>;
 
+/**
+ * @alpha
+ */
 export type LayoutAndTransitionRouteDefinition = {
     layout?: Layout | ViewTemplate;
     transition?: Transition;
 };
 
+/**
+ * @alpha
+ */
 export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
     TSettings
 > & {
     redirect: string;
 };
 
+/**
+ * @alpha
+ */
 export type HasTitle = {
     title?: string;
 };
 
+/**
+ * @alpha
+ */
 export type NavigableRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     LayoutAndTransitionRouteDefinition &
     HasTitle & {
         childRouters?: boolean;
     };
 
+/**
+ * @alpha
+ */
 export type FASTElementConstructor = new () => FASTElement;
 
+/**
+ * @alpha
+ */
 export type HasElement = {
     element:
         | string
@@ -54,6 +84,9 @@ export type HasElement = {
         | (() => Promise<string | FASTElementConstructor | HTMLElement>);
 };
 
+/**
+ * @alpha
+ */
 export type ElementFallbackRouteDefinition<
     TSettings = any
 > = LayoutAndTransitionRouteDefinition &
@@ -61,15 +94,24 @@ export type ElementFallbackRouteDefinition<
     SupportsSettings<TSettings> &
     HasTitle;
 
+/**
+ * @alpha
+ */
 export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
 > &
     HasElement;
 
+/**
+ * @alpha
+ */
 export type HasTemplate = {
     template: ViewTemplate | (() => Promise<ViewTemplate>);
 };
 
+/**
+ * @alpha
+ */
 export type TemplateFallbackRouteDefinition<
     TSettings = any
 > = LayoutAndTransitionRouteDefinition &
@@ -77,48 +119,78 @@ export type TemplateFallbackRouteDefinition<
     SupportsSettings<TSettings> &
     HasTitle;
 
+/**
+ * @alpha
+ */
 export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
     TSettings
 > &
     HasTemplate;
 
+/**
+ * @alpha
+ */
 export type HasCommand = {
     command: NavigationCommand;
 };
 
+/**
+ * @alpha
+ */
 export type CommandRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     HasCommand &
     HasTitle;
 
+/**
+ * @alpha
+ */
 export type CommandFallbackRouteDefinition<TSettings = any> = HasCommand &
     SupportsSettings<TSettings> &
     HasTitle;
 
+/**
+ * @alpha
+ */
 export type FallbackRouteDefinition<TSettings = any> =
     | ElementFallbackRouteDefinition<TSettings>
     | TemplateFallbackRouteDefinition<TSettings>
     | Pick<RedirectRouteDefinition<TSettings>, "redirect">
     | CommandFallbackRouteDefinition<TSettings>;
 
+/**
+ * @alpha
+ */
 export type DefinitionCallback = () =>
     | Promise<FallbackRouteDefinition>
     | FallbackRouteDefinition;
 
+/**
+ * @alpha
+ */
 export type RenderableRouteDefinition<TSettings = any> =
     | ElementRouteDefinition<TSettings>
     | TemplateRouteDefinition<TSettings>;
 
+/**
+ * @alpha
+ */
 export type MappableRouteDefinition<TSettings = any> =
     | RenderableRouteDefinition<TSettings>
     | RedirectRouteDefinition<TSettings>
     | CommandRouteDefinition<TSettings>
     | ParentRouteDefinition<TSettings>;
 
+/**
+ * @alpha
+ */
 export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> &
     LayoutAndTransitionRouteDefinition & {
         children: MappableRouteDefinition<TSettings>[];
     };
 
+/**
+ * @alpha
+ */
 export type RouteMatch<TSettings = any> = {
     route: RecognizedRoute<TSettings>;
     command: NavigationCommand;
@@ -137,10 +209,16 @@ function getFallbackCommand(
     }
 }
 
+/**
+ * @alpha
+ */
 export type ConverterObject = {
     convert: RouteParameterConverter;
 };
 
+/**
+ * @alpha
+ */
 export type ParameterConverter =
     | RouteParameterConverter
     | ConverterObject
@@ -171,6 +249,9 @@ const defaultConverters = {
     bool: booleanConverter,
 };
 
+/**
+ * @alpha
+ */
 export class RouteCollection<TSettings = any> {
     private _recognizer: RouteRecognizer<TSettings> | null = null;
     private pathToCommand = new Map<string, NavigationCommand>();
@@ -331,8 +412,8 @@ export class RouteCollection<TSettings = any> {
     /**
      * Generate a path and query string from a route name and params object.
      *
-     * @param name The name of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param name - The name of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
@@ -343,8 +424,8 @@ export class RouteCollection<TSettings = any> {
     /**
      * Generate a path and query string from a route path and params object.
      *
-     * @param path The path of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param path - The path of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */

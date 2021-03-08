@@ -9,11 +9,17 @@ import { RecognizedRoute } from "./recognizer";
 import { childRouteParameter } from "./routes";
 import { Layout, RouterExecutionContext, RouteView, Transition } from "./view";
 
+/**
+ * @alpha
+ */
 export interface RenderOperation {
     commit(): Promise<void>;
     rollback(): Promise<void>;
 }
 
+/**
+ * @alpha
+ */
 export interface Router<TSettings = any> {
     readonly level: number;
     readonly parent: Router | null;
@@ -66,6 +72,9 @@ function findParentRouterForElement(element: HTMLElement) {
     return null;
 }
 
+/**
+ * @alpha
+ */
 export interface RouterElement extends HTMLElement {
     readonly [routerProperty]: Router;
     config: RouterConfiguration | null;
@@ -73,6 +82,9 @@ export interface RouterElement extends HTMLElement {
     disconnectedCallback();
 }
 
+/**
+ * @alpha
+ */
 export const Router = Object.freeze({
     getOrCreateFor(element: HTMLElement) {
         const router: Router = element[routerProperty];
@@ -138,10 +150,16 @@ export const Router = Object.freeze({
     },
 });
 
+/**
+ * @alpha
+ */
 export function isFASTElementHost(host: HTMLElement): host is HTMLElement & FASTElement {
     return host instanceof FASTElement;
 }
 
+/**
+ * @alpha
+ */
 export class DefaultRouter implements Router {
     private parentRouter: Router | null | undefined = void 0;
     private contributors = new Set<NavigationContributor>();

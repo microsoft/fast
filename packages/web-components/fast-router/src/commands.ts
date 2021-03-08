@@ -18,6 +18,9 @@ import { RecognizedRoute } from "./recognizer";
 import { navigationContributor, NavigationContributor } from "./contributors";
 import { NavigationCommitPhase, NavigationPhase } from "./phases";
 
+/**
+ * @alpha
+ */
 export interface NavigationCommand {
     createContributor(
         router: Router,
@@ -25,12 +28,18 @@ export interface NavigationCommand {
     ): Promise<NavigationContributor>;
 }
 
+/**
+ * @alpha
+ */
 export interface RenderCommand extends NavigationCommand {
     layout: Layout;
     transition: Transition;
     createView(): Promise<RouteView>;
 }
 
+/**
+ * @alpha
+ */
 export class Ignore implements NavigationCommand {
     public async createContributor() {
         return {
@@ -41,6 +50,9 @@ export class Ignore implements NavigationCommand {
     }
 }
 
+/**
+ * @alpha
+ */
 export class Redirect implements NavigationCommand {
     constructor(private redirect: string) {}
 
@@ -117,6 +129,9 @@ class RenderContributor {
     }
 }
 
+/**
+ * @alpha
+ */
 export class Render implements RenderCommand {
     private _layout: Layout | null = null;
     private _transition: Transition | null = null;

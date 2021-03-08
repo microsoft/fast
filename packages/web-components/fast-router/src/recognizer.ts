@@ -1,10 +1,16 @@
 import { Route } from "./navigation";
 import { QueryString } from "./query-string";
 
+/**
+ * @alpha
+ */
 export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
 const defaultParameterConverter: RouteParameterConverter = (value: string | undefined) =>
     value;
 
+/**
+ * @alpha
+ */
 export class ConfigurableRoute implements Route {
     public constructor(
         public readonly path: string,
@@ -13,6 +19,9 @@ export class ConfigurableRoute implements Route {
     ) {}
 }
 
+/**
+ * @alpha
+ */
 export class Endpoint<TSettings = any> {
     public constructor(
         public readonly route: ConfigurableRoute,
@@ -26,6 +35,9 @@ export class Endpoint<TSettings = any> {
     }
 }
 
+/**
+ * @alpha
+ */
 export class RecognizedRoute<TSettings = any> {
     public readonly allParams: Readonly<Record<string, string | undefined>>;
     public readonly allTypedParams: Readonly<Record<string, any>>;
@@ -351,6 +363,9 @@ class RecognizeResult<T> {
     }
 }
 
+/**
+ * @alpha
+ */
 export interface RouteRecognizer<TSettings> {
     add(routeOrRoutes: Route | readonly Route[], settings?: TSettings): void;
     recognize(
@@ -361,6 +376,9 @@ export interface RouteRecognizer<TSettings> {
     generateFromPath(path: string, params: object): string | null;
 }
 
+/**
+ * @alpha
+ */
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
     private names = new Map<string, AnySegment<any>[]>();
     private paths = new Map<string, AnySegment<any>[]>();
@@ -517,8 +535,8 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
     /**
      * Generate a path and query string from a route name and params object.
      *
-     * @param name The name of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param name - The name of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
@@ -529,8 +547,8 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
     /**
      * Generate a path and query string from a route path and params object.
      *
-     * @param path The path of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param path - The path of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */

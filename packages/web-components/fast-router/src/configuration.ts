@@ -10,6 +10,9 @@ import { isNavigationPhaseContributor, NavigationContributor } from "./contribut
 import { NavigationPhaseHook, NavigationPhaseName } from "./phases";
 import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer";
 
+/**
+ * @alpha
+ */
 export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;
 
@@ -62,8 +65,8 @@ export abstract class RouterConfiguration<TSettings = any> {
     /**
      * Generate a path and query string from a route name and params object.
      *
-     * @param name The name of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param name - The name of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */
@@ -78,8 +81,8 @@ export abstract class RouterConfiguration<TSettings = any> {
     /**
      * Generate a path and query string from a route path and params object.
      *
-     * @param path The path of the route to generate from.
-     * @param params The route params to use when populating the pattern.
+     * @param path - The path of the route to generate from.
+     * @param params - The route params to use when populating the pattern.
      * Properties not required by the pattern will be appended to the query string.
      * @returns The generated absolute path and query string.
      */

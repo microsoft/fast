@@ -6,11 +6,17 @@ interface AnchorEventInfo {
     anchor: Element | null;
 }
 
+/**
+ * @alpha
+ */
 export interface LinkHandler {
     connect(): void;
     disconnect(): void;
 }
 
+/**
+ * @alpha
+ */
 export class DefaultLinkHandler implements LinkHandler {
     private handler = (e: MouseEvent) => {
         let { shouldHandleEvent, href } = this.getEventInfo(e);

@@ -72,6 +72,9 @@ function parseComplexParam(queryParams: Object, keys: string[], value: any): voi
     }
 }
 
+/**
+ * @alpha
+ */
 export const QueryString = Object.freeze({
     get current() {
         return location.search;
@@ -80,8 +83,8 @@ export const QueryString = Object.freeze({
     /**
      * Generate a query string from an object.
      *
-     * @param params Object containing the keys and values to be used.
-     * @param traditional Boolean Use the old URI template standard (RFC6570)
+     * @param params - Object containing the keys and values to be used.
+     * @param traditional - Boolean Use the old URI template standard (RFC6570)
      * @returns The generated query string, excluding leading '?'.
      */
     build(params: Object, traditional?: boolean): string {
@@ -102,7 +105,7 @@ export const QueryString = Object.freeze({
 
     /**
      * Separate the query string from the path and returns the two parts.
-     * @param path The path to separate.
+     * @param path - The path to separate.
      */
     separate(path: string): Readonly<{ path: string; queryString: string }> {
         const queryStart = path.indexOf("?");
@@ -122,7 +125,7 @@ export const QueryString = Object.freeze({
     /**
      * Parse a query string.
      *
-     * @param queryString The query string to parse.
+     * @param queryString - The query string to parse.
      * @returns Object with keys and values mapped from the query string.
      */
     parse(queryString: string): Readonly<Record<string, string>> {

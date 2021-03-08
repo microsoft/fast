@@ -7,12 +7,18 @@ import {
 import { Router } from "./router";
 import { RouterExecutionContext } from "./view";
 
+/**
+ * @alpha
+ */
 export type NavigationContributor<TSettings = any> = Partial<
     Record<Exclude<NavigationPhaseName, "commit">, NavigationPhaseHook<TSettings>>
 > & {
     commit?: NavigationCommitPhaseHook<TSettings>;
 };
 
+/**
+ * @alpha
+ */
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     object: any,
     phase: T
@@ -20,6 +26,9 @@ export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     return phase in object;
 }
 
+/**
+ * @alpha
+ */
 export type ContributorOptions = {
     lifecycle?: boolean;
     parameters?: boolean;
@@ -75,6 +84,9 @@ class NavigationContributorBehavior implements Behavior {
     }
 }
 
+/**
+ * @alpha
+ */
 export function navigationContributor(options?: ContributorOptions): HTMLDirective {
     return new NavigationContributorDirective(
         Object.assign({}, defaultOptions, options) as Required<ContributorOptions>
