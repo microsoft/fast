@@ -33,19 +33,19 @@ export const AvatarStyles = css`
         overflow: hidden;
     }
 
-    .coin {
-        position: relative;
-        display: flex;
-    }
-
     .circle {
         border-radius: 100%;
         min-width: 100%;
         overflow: hidden;
     }
 
+    .coin {
+        position: relative;
+        display: flex;
+    }
+
     .image {
-        width: 100%;
+        max-width: 100%;
         position: absolute;
         display: block;
     }
