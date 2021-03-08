@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.18.0...@microsoft/fast-components@1.18.1) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-components
+
+
+
+
+
+# [1.18.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.17.0...@microsoft/fast-components@1.18.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* add default expanded and collapsed SVGs to accordion-item component ([#4368](https://github.com/Microsoft/fast/issues/4368)) ([b0bea82](https://github.com/Microsoft/fast/commit/b0bea8203c3774b40e0561e37926a9f28794b4a9))
+* add in missing attributes to the design system provider definition ([#4324](https://github.com/Microsoft/fast/issues/4324)) ([61d7ae4](https://github.com/Microsoft/fast/commit/61d7ae41bbc9052a933597b45f584bba5066e0cd)), closes [#3974](https://github.com/Microsoft/fast/issues/3974)
+* add radio and checkbox visual in fast-menu-item ([#4205](https://github.com/Microsoft/fast/issues/4205)) ([50efed4](https://github.com/Microsoft/fast/commit/50efed4a57b4a89d69a7079b581fdec8428dfe37))
+* data-grid stores generated templates ([#4412](https://github.com/Microsoft/fast/issues/4412)) ([7de9602](https://github.com/Microsoft/fast/commit/7de960213d593f0dcafcdcb291fc592564ca9ae4))
+* default selected option in listbox ([#4372](https://github.com/Microsoft/fast/issues/4372)) ([35870a6](https://github.com/Microsoft/fast/commit/35870a69d10ec52c983adb879d58343386d3a8d6))
+* mismatched paths for clean:test in fast-components ([#4415](https://github.com/Microsoft/fast/issues/4415)) ([e860c0a](https://github.com/Microsoft/fast/commit/e860c0a74daddaf2e3486862b9017bebeb4f0041))
+* select control max-height overlap ([#4378](https://github.com/Microsoft/fast/issues/4378)) ([be5abc3](https://github.com/Microsoft/fast/commit/be5abc350fb7b2b4e4e25ae83bfb601483c3514b))
+* tooltip doc sample ([#4341](https://github.com/Microsoft/fast/issues/4341)) ([20e1b66](https://github.com/Microsoft/fast/commit/20e1b667abbe39058d5c4c358ccd8b8a93cee316))
+* whitespaceFilter filtering elements ([#4360](https://github.com/Microsoft/fast/issues/4360)) ([2f14137](https://github.com/Microsoft/fast/commit/2f14137579e1aa8f6724f0211c8baf2f2a6c8008))
+
+
+### Features
+
+* add combobox component ([#4379](https://github.com/Microsoft/fast/issues/4379)) ([aab8441](https://github.com/Microsoft/fast/commit/aab844120b40b14ef284718880dbe05da65a5392))
+* add nested menu support ([#4142](https://github.com/Microsoft/fast/issues/4142)) ([551ff04](https://github.com/Microsoft/fast/commit/551ff0467e9424bff00610c737744dbfa30cea9c))
+* add placeholder attribute to combobox component ([#4427](https://github.com/Microsoft/fast/issues/4427)) ([b507c25](https://github.com/Microsoft/fast/commit/b507c257c39ca44244bea7fdb4e07fc5b71b3eea))
+* add playwright ([#4337](https://github.com/Microsoft/fast/issues/4337)) ([be996ee](https://github.com/Microsoft/fast/commit/be996eea6c2a19dbf7b1f8afac51cba22bbc8045)), closes [#4229](https://github.com/Microsoft/fast/issues/4229)
+
+
+
+
+
 # [1.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.15.0...@microsoft/fast-components@1.17.0) (2021-02-08)
 
 
