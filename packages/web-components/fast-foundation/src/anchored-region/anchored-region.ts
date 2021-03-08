@@ -525,6 +525,9 @@ export class AnchoredRegion extends FASTElement {
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
+        this.style.opacity = "0";
+        this.style.pointerEvents = "none";
+
         this.updateRegionStyle();
     }
 
@@ -878,6 +881,8 @@ export class AnchoredRegion extends FASTElement {
 
         if (!this.initialLayoutComplete) {
             this.initialLayoutComplete = true;
+            this.style.removeProperty("opacity");
+            this.style.removeProperty("pointer-events");
             DOM.queueUpdate(() => this.$emit("loaded", this, { bubbles: false }));
         }
 
@@ -903,8 +908,6 @@ export class AnchoredRegion extends FASTElement {
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
-        this.style.opacity = this.initialLayoutComplete ? "1" : "0";
-        this.style.pointerEvents = this.initialLayoutComplete ? "unset" : "none";
 
         if (this.horizontalPositioningMode === "uncontrolled") {
             this.style.width = "unset";
