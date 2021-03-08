@@ -47,6 +47,15 @@ export const fastComboboxDefinition: WebComponentDefinition = {
                     values: Object.keys(SelectPosition).map(x => ({ name: x })),
                 },
                 {
+                    name: "placeholder",
+                    title: "Placeholder",
+                    description:
+                        "Sets the placeholder value of the combobox to provide a hint to the user",
+                    required: false,
+                    type: DataType.string,
+                    default: undefined,
+                },
+                {
                     name: "value",
                     title: "Value",
                     description: "The initial value of the combobox",

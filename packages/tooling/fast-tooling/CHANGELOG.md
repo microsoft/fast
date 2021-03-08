@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.2...@microsoft/fast-tooling@0.16.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* remove redundant slot from DataDictionary when mapping an HTML string ([#4358](https://github.com/Microsoft/fast/issues/4358)) ([39b2bcc](https://github.com/Microsoft/fast/commit/39b2bccb6b6b97767497b93ca715e18387c138f3))
+* update mapping between web component definition and JSON schema for title and description ([#4347](https://github.com/Microsoft/fast/issues/4347)) ([4dfb9f2](https://github.com/Microsoft/fast/commit/4dfb9f29dbde57db737bf378b358ae0a03c37500)), closes [#4344](https://github.com/Microsoft/fast/issues/4344)
+* update the event listener to be passed to a config to the message system ([#4356](https://github.com/Microsoft/fast/issues/4356)) ([a2092d3](https://github.com/Microsoft/fast/commit/a2092d3e35e18e55d4f81238fad752a0dda09539)), closes [#4355](https://github.com/Microsoft/fast/issues/4355)
+
+
+### Features
+
+* allow the message system to store and retrieve configs from registered services ([#4355](https://github.com/Microsoft/fast/issues/4355)) ([63848b0](https://github.com/Microsoft/fast/commit/63848b0b41345dfc2ff8efd86bdbc228f82cad97))
+* allow users to update display text for a data dictionary and navigation dictionary ([#4371](https://github.com/Microsoft/fast/issues/4371)) ([d30fd5b](https://github.com/Microsoft/fast/commit/d30fd5bd246a30b3dd1541b35c358eb7d7bf761a)), closes [#4352](https://github.com/Microsoft/fast/issues/4352)
+
+
+
+
+
 ## [0.15.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.0...@microsoft/fast-tooling@0.15.2) (2021-02-08)
 
 **Note:** Version bump only for package @microsoft/fast-tooling
