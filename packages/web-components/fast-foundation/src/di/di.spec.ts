@@ -38,6 +38,35 @@ describe(`The DI object`, function () {
         });
     });
 
+    describe(`findResponsibleContainer()`, function () {
+        it(`finds the parent by default`, function () {
+            const parent = document.createElement('div');
+            const child = document.createElement('div');
+
+            parent.appendChild(child);
+
+            const parentContainer = DI.getOrCreateDOMContainer(parent);
+            const childContainer = DI.getOrCreateDOMContainer(child);
+
+            expect(DI.findResponsibleContainer(child)).equal(parentContainer);
+        });
+
+        it(`uses the owner when specified at creation time`, function () {
+            const parent = document.createElement('div');
+            const child = document.createElement('div');
+
+            parent.appendChild(child);
+
+            const parentContainer = DI.getOrCreateDOMContainer(parent);
+            const childContainer = DI.getOrCreateDOMContainer(
+                child, 
+                { responsibleForOwnerRequests: true }
+            );
+
+            expect(DI.findResponsibleContainer(child)).equal(childContainer);
+        });
+    });
+
     describe(`getDependencies()`, function () {
         it(`throws when inject is not an array`, function () {
             class Bar {}
@@ -194,31 +223,20 @@ describe(`The inject decorator`, function () {
         expect(DI.getDependencies(Foo)).deep.eq([Dep1, Dep2, Dep3]);
     });
 
-    // it(`can decorate properties explicitly`, function () {
-    //     // @ts-ignore
-    //     class Foo {
-    //         @inject(Dep1) public dep1;
-    //         @inject(Dep2) public dep2;
-    //         @inject(Dep3) public dep3;
-    //     }
+    it(`can decorate properties explicitly`, function () {
+        // @ts-ignore
+        class Foo {
+            @inject(Dep1) public dep1;
+            @inject(Dep2) public dep2;
+            @inject(Dep3) public dep3;
+        }
 
-    //     expect(DI.getDependencies(Foo)["dep1"]).eq(Dep1, `Foo['inject'].dep1`);
-    //     expect(DI.getDependencies(Foo)["dep2"]).eq(Dep2, `Foo['inject'].dep2`);
-    //     expect(DI.getDependencies(Foo)["dep3"]).eq(Dep3, `Foo['inject'].dep3`);
-    // });
+        const instance = new Foo();
 
-    // it(`cannot decorate properties implicitly`, function () {
-    //     // @ts-ignore
-    //     class Foo {
-    //         @inject() public dep1: Dep1;
-    //         @inject() public dep2: Dep2;
-    //         @inject() public dep3: Dep3;
-    //     }
-
-    //     expect(DI.getDependencies(Foo)["dep1"]).eq(undefined, `Foo['inject'].dep1`);
-    //     expect(DI.getDependencies(Foo)["dep2"]).eq(undefined, `Foo['inject'].dep2`);
-    //     expect(DI.getDependencies(Foo)["dep3"]).eq(undefined, `Foo['inject'].dep3`);
-    // });
+        expect(instance.dep1).instanceof(Dep1);
+        expect(instance.dep2).instanceof(Dep2);
+        expect(instance.dep3).instanceof(Dep3);
+    });
 });
 
 describe(`The transient decorator`, function () {

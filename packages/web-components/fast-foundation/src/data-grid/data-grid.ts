@@ -248,7 +248,7 @@ export class DataGrid extends FASTElement {
     }
 
     /**
-     * The default cell item template.  Set by the component templates.
+     * The default row item template.  Set by the component templates.
      *
      * @internal
      */

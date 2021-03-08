@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "1.17.0",
+  "version": "1.18.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -27,7 +27,7 @@
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "yarn generate-default-palettes && yarn build:tsc && yarn generate-open-ui-definition && yarn build:rollup && yarn doc",
     "clean:dist": "node ../../../build/clean.js dist",
-    "clean:test": "node ../../../build/clean.js test/dist test/public",
+    "clean:test": "node ../../../build/clean.js __test__/dist __test__/public",
     "dev": "tsc -p ./tsconfig.json -w",
     "doc:ci": "api-extractor run",
     "doc": "api-extractor run --local",
@@ -56,13 +56,11 @@
     "test-pw:full": "yarn clean:test && yarn build:pw && yarn test-pw",
     "test-pw": "mocha --config ./__test__/.mocharc.json ./__test__/**/*.spec.js",
     "test-webkit:pw": "cross-env PLAYWRIGHT_BROWSER=webkit && yarn test-pw:full",
-    "test:diff:error": "echo \"You have untracked files, try running yarn prepare.\" && exit 1",
-    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
-    "test": "yarn test-chrome:verbose && yarn doc:ci && yarn test:diff"
+    "test": "yarn test-chrome:verbose && yarn doc:ci"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
-    "@microsoft/fast-tooling": "^0.15.2",
+    "@microsoft/fast-tooling": "^0.16.0",
     "@storybook/addons": "^6.1.17",
     "@storybook/html": "^6.1.17",
     "@storybook/theming": "^6.1.17",
@@ -95,7 +93,7 @@
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
     "mocha": "^8.2.1",
-    "playwright": "^1.8.0",
+    "playwright": "^1.9.1",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -114,8 +112,8 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.2",
-    "@microsoft/fast-element": "^0.22.2",
-    "@microsoft/fast-foundation": "^1.14.0",
+    "@microsoft/fast-element": "^1.0.0",
+    "@microsoft/fast-foundation": "^1.15.1",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "tslib": "^1.13.0"
   },

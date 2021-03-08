@@ -15,6 +15,7 @@ import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
+import { Combobox } from '@microsoft/fast-foundation';
 import { DataGrid } from '@microsoft/fast-foundation';
 import { DataGridCell } from '@microsoft/fast-foundation';
 import { DataGridRow } from '@microsoft/fast-foundation';
@@ -236,6 +237,9 @@ export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 export const CheckboxStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export const ComboboxStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export function createColorPalette(baseColor: any): string[];
 
 // @public
@@ -317,6 +321,10 @@ export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSys
 
 // @public
 export class FASTCheckbox extends Checkbox {
+}
+
+// @public
+export class FASTCombobox extends Combobox {
 }
 
 // @public

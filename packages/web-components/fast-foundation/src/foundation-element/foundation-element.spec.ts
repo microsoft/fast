@@ -6,8 +6,9 @@ import {
     ComponentPresentation,
     DefaultComponentPresentation,
     DesignSystem,
+    ElementDefinitionContext,
 } from "../design-system";
-import { FoundationElement } from "./foundation-element";
+import { FoundationElement, FoundationElementDefinition, OverrideFoundationElementDefinition } from "./foundation-element";
 
 const styles = css`
     :host {
@@ -117,18 +118,17 @@ describe("FoundationElement", () => {
         });
     });
 
-    describe(".configuration", () => {
+    describe(".compose", () => {
         it("should register an element, default template, and default styles", () => {
             const styles = css``;
             const template = html``;
             const baseName = uniqueElementName();
             class MyElement extends FoundationElement {}
 
-            const myElement = FoundationElement.configuration({
+            const myElement = MyElement.compose({
                 styles,
                 template,
-                baseName,
-                type: MyElement,
+                baseName
             });
 
             const host = document.createElement("div");
@@ -144,14 +144,51 @@ describe("FoundationElement", () => {
             expect(customElements.get(fullName)).to.equal(MyElement);
         });
 
-        it("should provider opportunity to override template, styles, prefix, and baseName of a registry", () => {
+        it("should register an element, default template, and default styles with functions", () => {
+            const styles = css``;
+            const template = html``;
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            class MyElement extends FoundationElement {}
+
+            function checkCallback<T>(
+                context: ElementDefinitionContext, 
+                definition: OverrideFoundationElementDefinition<FoundationElementDefinition>,
+                part: T
+            ) {
+                expect(context.name).to.equal(fullName);
+                expect(context.type).to.equal(MyElement);
+                expect(context.willDefine).to.be.true;
+                expect(context.tagFor(MyElement)).to.equal(fullName);
+                expect(definition.baseName).to.equal(baseName);
+                return part;
+            }
+
+            const myElement = MyElement.compose({
+                styles: (c, d) => checkCallback(c, d, styles),
+                template: (c, d) => checkCallback(c, d, template),
+                baseName
+            });
+
+            const host = document.createElement("div");
+            const container = new DesignSystem().register(myElement()).applyTo(host);
+
+            const presentation = container.get<DefaultComponentPresentation>(
+                ComponentPresentation.keyFrom(fullName)
+            );
+
+            expect(presentation.styles).to.equal(styles);
+            expect(presentation.template).to.equal(template);
+            expect(customElements.get(fullName)).to.equal(MyElement);
+        });
+
+        it("should provide opportunity to override template, styles, prefix, and baseName of a registry", () => {
             class MyElement extends FoundationElement {}
             const originalName = uniqueElementName();
-            const myElement = FoundationElement.configuration({
+            const myElement = MyElement.compose({
                 styles: css``,
                 template: html``,
-                baseName: originalName,
-                type: MyElement,
+                baseName: originalName
             });
 
             const overrideName = uniqueElementName();
