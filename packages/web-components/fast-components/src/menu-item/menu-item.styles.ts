@@ -127,11 +127,11 @@ export const MenuItemStyles = css`
     }
 
     :host .input-container,
-    :host expand-collapse-glyph-container {
+    :host .expand-collapse-glyph-container {
         display: none;
     }
 
-    :host([aria-haspopup="menu"]) .input-container,
+    :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
     :host([role="menuitemcheckbox"]) .input-container,
     :host([role="menuitemradio"]) .input-container {
         display: grid;
