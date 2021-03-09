@@ -17,13 +17,6 @@ import { ComboboxAutocomplete } from "./combobox.options";
  */
 export class Combobox extends FormAssociatedCombobox {
     /**
-     * The internal unfiltered list of selectable options.
-     *
-     * @internal
-     */
-    private _options: ListboxOption[] = [];
-
-    /**
      * The internal value property.
      *
      * @internal
@@ -134,11 +127,13 @@ export class Combobox extends FormAssociatedCombobox {
      * Overrides `Listbox.options`.
      */
     public get options(): ListboxOption[] {
+        Observable.track(this, "options");
         return this.filteredOptions.length ? this.filteredOptions : this._options;
     }
 
     public set options(value: ListboxOption[]) {
         this._options = value;
+        Observable.notify(this, "options");
     }
 
     /**

@@ -1152,7 +1152,10 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
-    options: ListboxOption[];
+    get options(): ListboxOption[];
+    set options(value: ListboxOption[]);
+    // @internal
+    protected _options: ListboxOption[];
     role: string;
     selectedIndex: number;
     // (undocumented)
