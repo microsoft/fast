@@ -13,6 +13,8 @@ import {
     WebComponentSlot,
 } from "./web-component";
 
+export const dataSetName: string = "data-fast-tooling-name";
+
 export interface MapperConfig<T> {
     /**
      * Data that maps to the JSON schema

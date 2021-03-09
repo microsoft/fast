@@ -46,11 +46,6 @@ export interface Data<T> {
     schemaId: string;
 
     /**
-     * The display text
-     */
-    displayText?: string;
-
-    /**
      * The parent in the data dictionary
      */
     parent?: Parent;

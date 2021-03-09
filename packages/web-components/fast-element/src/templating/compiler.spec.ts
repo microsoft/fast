@@ -42,7 +42,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: ` `,
                 targetIndexes: [0],
-                childCount: 1,
+                childCount: 2,
             },
             {
                 type: "a single starting",
