@@ -1309,14 +1309,14 @@ export class MenuItem extends FASTElement {
     handleMouseOut: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMouseOver: (e: MouseEvent) => boolean;
-    role: MenuItemRole;
     // @internal (undocumented)
-    submenu: Element | undefined;
+    hasSubmenu: boolean;
+    role: MenuItemRole;
     // @internal (undocumented)
     submenuLoaded: () => void;
     // @internal
     submenuRegion: AnchoredRegion;
-}
+    }
 
 // @internal
 export interface MenuItem extends StartEnd {
