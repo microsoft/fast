@@ -35,6 +35,7 @@ import styles from "./form.style";
 import defaultStrings from "./form.strings";
 import { classNames } from "@microsoft/fast-web-utilities";
 import {
+    dataSetName,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
@@ -43,6 +44,10 @@ import {
 } from "@microsoft/fast-tooling";
 
 export const formId: string = "fast-tooling-react::form";
+
+interface FormRegisterConfig {
+    displayTextDataLocation: string;
+}
 
 /**
  * Schema form component definition
@@ -86,7 +91,7 @@ class Form extends React.Component<
         [key: string]: React.ComponentClass | React.FunctionComponent;
     } = {};
 
-    private messageSystemConfig: Register;
+    private messageSystemConfig: Register<FormRegisterConfig>;
     private strings: FormStrings = defaultStrings;
 
     constructor(props: FormProps & ManagedClasses<FormClassNameContract>) {
@@ -98,6 +103,9 @@ class Form extends React.Component<
 
         this.messageSystemConfig = {
             onMessage: this.handleMessageSystem,
+            config: {
+                displayTextDataLocation: dataSetName,
+            },
         };
 
         if (props.messageSystem !== undefined) {
