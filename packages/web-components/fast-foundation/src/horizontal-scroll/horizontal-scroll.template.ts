@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { elements, html, ref, slotted } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { HorizontalScroll } from "./horizontal-scroll";
 
@@ -31,7 +31,12 @@ export const HorizontalScrollTemplate = html<HorizontalScroll>`
                 @scroll="${x => x.scrolled()}"
             >
                 <div class="content-container">
-                    <slot></slot>
+                    <slot
+                        ${slotted({
+                            property: "scrollItems",
+                            filter: elements(),
+                        })}
+                    ></slot>
                 </div>
             </div>
             ${x => (x.view === "mobile" ? "" : ActionsTemplate)}
