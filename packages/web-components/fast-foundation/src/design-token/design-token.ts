@@ -64,12 +64,7 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to add the CSS Custom Property to
      */
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
-        // TODO de-dupe observer if invoked multiple times
-        DesignTokenStorageImpl.for(element).observe(this, () => {
-            const value = this.getValueFor(element);
-
-            element.$fastController.addStyles(CustomPropertyManager.get(this, value));
-        });
+        DesignTokenStorageImpl.for(element).observe(this, this.observer);
 
         return this;
     }
@@ -88,6 +83,6 @@ export class DesignToken<T = any> extends CSSDirective {
     private observer = (storage: DesignTokenStorage) => {
         const value = storage.get(this);
 
-        element.$fastController.addStyles(CustomPropertyManager.get(this, value));
+        storage.owner.$fastController.addStyles(CustomPropertyManager.get(this, value));
     };
 }
