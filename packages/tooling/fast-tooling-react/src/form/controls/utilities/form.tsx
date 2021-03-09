@@ -1,13 +1,18 @@
 import React from "react";
-import { FormState } from "../../form.props";
+import { FormCategoryDictionary, FormState } from "../../form.props";
 import {
     AttributeSettingsMappingToPropertyNames,
     FormChildOptionItem,
 } from "../../types";
-import { SectionControlProps, SectionControlState } from "../control.section.props";
+import {
+    CategoryState,
+    SectionControlProps,
+    SectionControlState,
+} from "../control.section.props";
 import { cloneDeep, get, isEmpty, mergeWith, omit, set, unset } from "lodash-es";
 import {
     CombiningKeyword,
+    DataDictionary,
     getDataFromSchema,
     MessageSystem,
     MessageSystemType,
@@ -450,8 +455,40 @@ export function isDefault<T>(value: T | void, defaultValue: T | void): boolean {
     return typeof value === "undefined" && typeof defaultValue !== "undefined";
 }
 
+function getCategoryStateFromCategoryDictionary(
+    categoryDictionary: FormCategoryDictionary,
+    dataDictionary: DataDictionary<unknown>,
+    dataLocation: string
+): CategoryState[] {
+    return categoryDictionary &&
+        categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId] &&
+        categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId][dataLocation]
+        ? categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId][
+              dataLocation
+          ].map(category => {
+              return {
+                  expanded: !!(category.expandByDefault !== false),
+              };
+          })
+        : [];
+}
+
+export function getUpdatedCategories(
+    categories: CategoryState[] = [],
+    index?: number
+): CategoryState[] {
+    const updatedCategories = [].concat(categories);
+
+    if (index !== undefined) {
+        updatedCategories[index].expanded = !updatedCategories[index].expanded;
+    }
+
+    return updatedCategories;
+}
+
 export function updateControlSectionState(
-    props: SectionControlProps
+    props: SectionControlProps,
+    state?: SectionControlState
 ): SectionControlState {
     return {
         schema: props.schema,
@@ -468,6 +505,14 @@ export function updateControlSectionState(
                   activeIndex: -1,
               }
             : null,
+        categories:
+            state !== undefined && props.schema.id === state.schema.id
+                ? getUpdatedCategories(state.categories)
+                : getCategoryStateFromCategoryDictionary(
+                      props.categories,
+                      props.dataDictionary,
+                      props.dataLocation
+                  ),
     };
 }
 

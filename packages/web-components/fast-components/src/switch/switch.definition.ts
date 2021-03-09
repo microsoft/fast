@@ -10,6 +10,7 @@ export const fastSwitchDefinition: WebComponentDefinition = {
             description: "The FAST switch element",
             attributes: [
                 {
+                    name: "checked",
                     title: "Checked",
                     description: "Provides the default checked value",
                     default: undefined,

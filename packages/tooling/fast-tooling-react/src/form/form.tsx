@@ -472,6 +472,7 @@ class Form extends React.Component<
             messageSystem: this.props.messageSystem,
             strings: this.strings,
             messageSystemOptions: this.state.options,
+            categories: this.props.categories || {},
         });
 
         return control.render();
