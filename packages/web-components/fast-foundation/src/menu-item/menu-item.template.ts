@@ -78,7 +78,7 @@ export function createMenuItemTemplate(prefix: string): ViewTemplate {
                         class="expand-collapse-glyph-container"
                     >
                         <span part="expand-collapse" class="expand-collapse">
-                            <slot name="expand-collapse-glyph">
+                            <slot name="expand-collapse-indicator">
                                 <svg
                                     viewBox="0 0 16 16"
                                     xmlns="http://www.w3.org/2000/svg"
