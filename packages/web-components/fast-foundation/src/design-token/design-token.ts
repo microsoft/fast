@@ -1,6 +1,5 @@
 import { CSSDirective, FASTElement, Observable } from "@microsoft/fast-element";
 import { CustomPropertyManager } from "./custom-property-manager";
-import { DesignTokenStorage, DesignTokenStorageImpl } from "./storage";
 import { DesignTokenNode } from "./token-node";
 
 export type DerivedDesignTokenValue<T> = (target: HTMLElement & FASTElement) => T;
