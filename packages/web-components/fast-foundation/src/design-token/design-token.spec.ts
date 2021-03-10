@@ -1,4 +1,5 @@
 
+import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { AnchoredRegionTemplate } from "../anchored-region";
 import { DesignSystem } from "../design-system";
@@ -19,6 +20,12 @@ function removeElement(...els: HTMLElement[]) {
     els.forEach(el => {
         el.parentElement?.removeChild(el);
     })
+}
+
+async function DOMUpdate() {
+    return new Promise(resolve => {
+        DOM.queueUpdate(() => resolve(void 0))
+    });
 }
 
 describe("A DesignToken", () => {
@@ -57,7 +64,7 @@ describe("A DesignToken", () => {
             removeElement(ancestor);
         });
 
-        it("sound return the nearest ancestor's value after an intermediary value is set where no value was set prior", () => {
+        it("sound return the nearest ancestor's value after an intermediary value is set where no value was set prior", async () => {
             const grandparent = addElement();
             const parent = addElement(grandparent);
             const target = addElement(parent);
@@ -70,8 +77,9 @@ describe("A DesignToken", () => {
 
             token.setValueFor(parent, 14);
 
+            await DOMUpdate();
+            
             expect(token.getValueFor(target)).to.equal(14);
-
         })
     });
     describe("setting CSS Custom Properties", () => {

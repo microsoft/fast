@@ -46,7 +46,7 @@ export class DesignToken<T = any> extends CSSDirective {
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
      */
     public getValueFor(element: HTMLElement & FASTElement): T {
-        return DesignTokenStorageImpl.for(element).get(this);
+        return DesignTokenStorageImpl.for(element).get(this).value;
     }
 
     /**
@@ -64,8 +64,6 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to add the CSS Custom Property to
      */
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
-        DesignTokenStorageImpl.for(element).observe(this, this.observer);
-
         return this;
     }
 
@@ -79,10 +77,4 @@ export class DesignToken<T = any> extends CSSDirective {
     public static create<T>(name: string): DesignToken<T> {
         return new DesignToken<T>(name);
     }
-
-    private observer = (storage: DesignTokenStorage) => {
-        const value = storage.get(this);
-
-        storage.owner.$fastController.addStyles(CustomPropertyManager.get(this, value));
-    };
 }

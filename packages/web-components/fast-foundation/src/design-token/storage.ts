@@ -1,4 +1,10 @@
-import { Controller, FASTElement, Observable, Subscriber } from "@microsoft/fast-element";
+import {
+    Controller,
+    FASTElement,
+    observable,
+    Observable,
+    Subscriber,
+} from "@microsoft/fast-element";
 import { Container, DI, Registration } from "../di/di";
 import { DerivedDesignTokenValue, DesignToken } from "./design-token";
 
@@ -7,44 +13,61 @@ export type DesignTokenStorageTarget = FASTElement & HTMLElement;
 export interface DesignTokenStorage {
     readonly owner: DesignTokenStorageTarget;
     parentNode: DesignTokenStorage | null;
-    get<T>(token: DesignToken<T>): T;
+    get<T>(token: DesignToken<T>): DesignTokenStorageValue<T>;
     set<T>(
         token: DesignToken<T>,
         value: T | ((target: DesignTokenStorageTarget) => T)
     ): void;
-    connect(subscriber: DesignTokenStorage): void;
-    disconnect(subscriber: DesignTokenStorage): void;
-    observe(token: DesignToken<any>, observer: Observer);
+    connect(subscriber: DesignTokenStorage): DesignTokenStorage;
+    disconnect(): DesignTokenStorage;
 }
 
-type Observer = (storage: DesignTokenStorage) => void;
+class DesignTokenStorageValue<T> implements Subscriber {
+    @observable
+    public value: T;
+
+    constructor(initialValue?: T) {
+        if (initialValue) {
+            this.value = initialValue;
+        }
+    }
+
+    public handleChange(source, key) {
+        this.value = source[key];
+    }
+}
 
 export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
+    private container: Container;
+    private tokens: Map<DesignToken<any>, DesignTokenStorageValue<any>> = new Map();
+    private connections: Set<DesignTokenStorage> = new Set();
+
     /**
      * @internal
      */
-    parentNode: DesignTokenStorage | null = null;
-    #container: Container;
-    #tokens: Map<DesignToken<any>, any> = new Map();
-    #children: Set<DesignTokenStorage> = new Set();
-    #observers: Map<DesignToken<any>, Set<Observer>> = new Map();
+    @observable
+    public parentNode: DesignTokenStorage | null = null;
+    public parentNodeChanged(
+        previous: DesignTokenStorage | null,
+        next: DesignTokenStorage | null
+    ) {
+        if (previous) {
+            for (const [token, value] of this.tokens) {
+                const upstreamValue = previous.get(token);
 
-    private getOrCreateObserverSet(token: DesignToken<any>): Set<Observer> {
-        if (this.#observers.has(token)) {
-            return this.#observers.get(token)!;
+                Observable.getNotifier(upstreamValue).unsubscribe(value, "value");
+            }
         }
 
-        const set = new Set<Observer>();
-        this.#observers.set(token, set);
+        if (next) {
+            for (const [token, value] of this.tokens) {
+                const upstreamValue = next.get(token);
 
-        return set;
+                Observable.getNotifier(upstreamValue).subscribe(value, "value");
+                value.value = upstreamValue.value; // This isn't right
+            }
+        }
     }
-
-    private notifyObservers = (token: DesignToken<any>): void => {
-        if (this.#observers.has(token)) {
-            this.#observers.get(token)!.forEach(observer => observer(this));
-        }
-    };
 
     /**
      * The Custom Element for which the token is associated
@@ -56,15 +79,15 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
      */
     constructor(owner: DesignTokenStorageTarget) {
         this.owner = owner;
-        this.#container = DI.getOrCreateDOMContainer(owner);
+        this.container = DI.getOrCreateDOMContainer(owner);
 
-        if (this.#container.has(DesignTokenStorage, false)) {
+        if (this.container.has(DesignTokenStorage, false)) {
             throw new Error(
                 "DesignTokenStorageImpl was constructed with an owner element that already has an associated DesignTokenStorage. Use DesignTokenStorageImpl.for() to safely create new DesignTokenStorageImpl instances."
             );
         }
 
-        this.#container.register(Registration.instance(DesignTokenStorage, this));
+        this.container.register(Registration.instance(DesignTokenStorage, this));
 
         Observable.getNotifier(owner.$fastController).subscribe(this, "isConnected");
         this.handleChange(owner.$fastController, "isConnected");
@@ -94,36 +117,26 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
         }
     }
 
-    /**
-     * @internal
-     */
-    public notify(...tokens: DesignToken<any>[]) {
-        tokens = tokens.filter(token => !this.#tokens.has(token));
+    public get<T>(token: DesignToken<T>): DesignTokenStorageValue<T> {
+        const local = this.getOrCreateLocalStorageValue(token);
 
-        tokens.forEach(this.notifyObservers);
-        this.#children.forEach((child: DesignTokenStorageImpl) =>
-            child.notify(...tokens)
+        if (local.value !== void 0) {
+            return local;
+        } else if (this.parentNode) {
+            const upstream = this.parentNode.get(token);
+            local.value = upstream.value;
+            Observable.getNotifier(upstream).subscribe(local);
+
+            return local;
+        }
+
+        throw new Error(
+            `Cannot get token ${token}. Ensure that token's value has been set.`
         );
     }
 
-    public get<T>(token: DesignToken<T>): T {
-        if (this.#tokens.has(token)) {
-            return this.#tokens.get(token);
-        } else if (this.parentNode) {
-            return this.parentNode.get(token);
-        } else {
-            throw new Error(
-                `Cannot get token ${token}. Ensure that token's value has been set.`
-            );
-        }
-    }
-
-    public set<T>(token: DesignToken<T>, value: T | DerivedDesignTokenValue<T>): void {
-        this.#tokens.set(token, value);
-
-        this.notifyObservers(token);
-
-        this.#children.forEach((child: DesignTokenStorageImpl) => child.notify(token));
+    public set<T>(token: DesignToken<T>, value: T): void {
+        this.getOrCreateLocalStorageValue(token).value = value;
     }
 
     /**
@@ -132,38 +145,35 @@ export class DesignTokenStorageImpl implements DesignTokenStorage, Subscriber {
      */
     public connect(node: DesignTokenStorage) {
         node.parentNode = this;
-        this.#children.forEach(ownSubscriber => {
-            if (node.owner.contains(ownSubscriber.owner)) {
-                // If a subscriber is attaching itself and there is a subscriber that is a child
-                // of the new subscriber, it means the new subscriber  is an intermediary
-                // that isn't in the tree yet, and we need to re-parent the subscriber.
-                this.disconnect(ownSubscriber);
-                node.connect(ownSubscriber);
+
+        this.connections.forEach(connection => {
+            if (node.parentNode!.owner.contains(connection.owner)) {
+                node.connect(connection.disconnect());
             }
         });
 
-        if (!this.#children.has(node)) {
-            this.#children.add(node);
-        }
+        this.connections.add(node);
+
+        return this;
     }
 
-    public disconnect(node: DesignTokenStorage) {
-        if (node.parentNode === this) {
-            this.#children.delete(node);
-            node.parentNode = null;
-        }
+    public disconnect(): this {
+        this.parentNode = null;
+
+        return this;
     }
 
-    /**
-     * Observers a token and any dependent tokens for changes
-     * @param token - The token to observe
-     * @param observer - The callback to invoke when the token or any dependent tokens change
-     */
-    public observe(token: DesignToken<any>, observer: Observer) {
-        const observers = this.getOrCreateObserverSet(token);
-        observers.add(observer);
+    private getOrCreateLocalStorageValue<T>(
+        token: DesignToken<T>
+    ): DesignTokenStorageValue<T> {
+        if (this.tokens.has(token)) {
+            return this.tokens.get(token)!;
+        }
 
-        observer(this);
+        const value = new DesignTokenStorageValue<T>();
+        this.tokens.set(token, value);
+
+        return value;
     }
 }
 
