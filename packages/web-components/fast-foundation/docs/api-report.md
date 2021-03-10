@@ -56,9 +56,6 @@ export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTempla
 // @public
 export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
 
-// @public (undocumented)
-export const ActionsTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
-
 // @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
@@ -1102,6 +1099,7 @@ export class HorizontalScroll extends FASTElement {
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;
+    scrollItems: HTMLElement[];
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;

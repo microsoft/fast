@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { DirectionalStyleSheetBehavior } from "@microsoft/fast-foundation";
+import { DirectionalStyleSheetBehavior, display } from "@microsoft/fast-foundation";
 
 const ltrActionsStyles = css`
     .scroll-prev {
@@ -7,32 +7,34 @@ const ltrActionsStyles = css`
         left: 0;
     }
 
-    .scroll.scroll-next:before {
+    .scroll.scroll-next::before,
+    .scroll-next .scroll-action {
         left: auto;
         right: 0;
+    }
+
+    .scroll.scroll-next::before {
         background: linear-gradient(to right, transparent, var(--scroll-fade-next));
     }
 
     .scroll-next .scroll-action {
-        left: auto;
-        right: 0;
         transform: translate(50%, -50%);
     }
 `;
 
 const rtlActionsStyles = css`
-    div.scroll-next {
+    .scroll.scroll-next {
         right: auto;
         left: 0;
     }
 
-    .scroll.scroll-next:before {
+    .scroll.scroll-next::before {
+        background: linear-gradient(to right, var(--scroll-fade-next), transparent);
         left: auto;
         right: 0;
-        background: linear-gradient(to right, var(--scroll-fade-next), transparent);
     }
 
-    .scroll.scroll-prev:before {
+    .scroll.scroll-prev::before {
         background: linear-gradient(to right, transparent, var(--scroll-fade-previous));
     }
 
@@ -57,35 +59,38 @@ export const ActionsStyles = css`
     }
 
     .scroll {
-        width: 100px;
-        position: absolute;
-        top: 0;
         bottom: 0;
-        right: 0;
         pointer-events: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        user-select: none;
+        width: 100px;
     }
 
     .scroll.disabled {
         display: none;
     }
 
-    .scroll:before {
+    .scroll::before,
+    .scroll-action {
+        left: 0;
+        position: absolute;
+    }
+
+    .scroll::before {
+        background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
         content: "";
         display: block;
-        width: 100%;
         height: 100%;
-        position: absolute;
-        left: 0;
-        background: linear-gradient(to right, var(--scroll-fade-previous), transparent);
+        width: 100%;
     }
 
     .scroll-action {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: auto;
-        transform: translate(-50%, -50%);
         pointer-events: auto;
+        right: auto;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
@@ -94,9 +99,9 @@ export const ActionsStyles = css`
  * @public
  */
 export const HorizontalScrollStyles = css`
-    :host {
-        --scroll-align: middle;
-        display: block;
+    ${display("block")} :host {
+        --scroll-align: center;
+        contain: layout;
         position: relative;
     }
 
@@ -110,26 +115,9 @@ export const HorizontalScrollStyles = css`
     }
 
     .content-container {
-        white-space: nowrap;
+        align-items: var(--scroll-align);
+        display: inline-flex;
+        flex-wrap: nowrap;
         position: relative;
     }
-
-    .content-container ::slotted(*) {
-        display: inline-block;
-        white-space: normal;
-        vertical-align: var(--scroll-align);
-    }
-`.withBehaviors(
-    new DirectionalStyleSheetBehavior(
-        css`
-            .content-container {
-                float: left;
-            }
-        `,
-        css`
-            .content-container {
-                float: right;
-            }
-        `
-    )
-);
+`;
