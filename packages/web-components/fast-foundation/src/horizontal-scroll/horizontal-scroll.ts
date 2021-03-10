@@ -338,8 +338,8 @@ export class HorizontalScroll extends FASTElement {
             return;
         }
 
-        for (let i = 0; i <= stepCount - 1; i++) {
-            const progress: number = i / stepCount;
+        for (let i = 0; i < stepCount; i++) {
+            const progress = i / stepCount;
             const easingFactor = this.getEasedFactor(this.easing, progress);
             const travel = scrollDistance * easingFactor * direction;
             steps.push(travel + position);
