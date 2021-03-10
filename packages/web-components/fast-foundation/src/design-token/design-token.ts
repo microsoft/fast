@@ -8,15 +8,7 @@ export type DerivedDesignTokenValue<T> = T extends Function
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
-const va: DesignTokenValue<number> = 12;
-const vb: DesignTokenValue<number> = (element: FASTElement & HTMLElement) => 12;
-
-/**
- * TODO: make DesignToken itself not constructable because that will
- * give us better generic type control
- */
-
-export class DesignToken<T = any> extends CSSDirective {
+class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     private cssVar: string;
 
     constructor(public readonly name: string) {
@@ -90,17 +82,21 @@ export class DesignToken<T = any> extends CSSDirective {
 
         return this;
     }
-
-    /**
-     * Creates a new DesignToken
-     * @param name - The name of the token.
-     * @param writeCSSProperty - Whether this token should be reflected to a CSS custom property when used.
-     *
-     * @returns - {@link DesignToken}
-     */
-    public static create<T extends Function>(name: string): never;
-    public static create<T>(name: string): DesignToken<T>;
-    public static create<T>(name: string): any {
-        return new DesignToken<StaticDesignTokenValue<T>>(name);
-    }
 }
+
+export interface DesignToken<T> extends CSSDirective {
+    readonly cssCustomProperty: string;
+    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
+    getValueFor(element: HTMLElement & FASTElement): StaticDesignTokenValue<T>;
+    setValueFor(element: HTMLElement & FASTElement, value: DesignTokenValue<T>): void;
+}
+
+function create<T extends Function>(name: string): never;
+function create<T>(name: string): DesignToken<T>;
+function create<T>(name: string): any {
+    return new DesignTokenImpl<T>(name);
+}
+
+export const DesignToken = Object.freeze({
+    create,
+});
