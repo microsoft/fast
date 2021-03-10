@@ -378,15 +378,19 @@ export class Combobox extends FormAssociatedCombobox {
             }
 
             case "Escape": {
+                if (!this.isAutocompleteInline) {
+                    this.selectedIndex = -1;
+                }
+
                 if (this.open) {
                     this.open = false;
-                    this.filter = this.control.value;
-                    this.filterOptions();
                     break;
                 }
 
                 this.value = "";
                 this.control.value = "";
+                this.filter = "";
+                this.filterOptions();
                 break;
             }
 
@@ -404,12 +408,12 @@ export class Combobox extends FormAssociatedCombobox {
 
             case "ArrowUp":
             case "ArrowDown": {
+                this.filterOptions();
+
                 if (!this.open) {
                     this.open = true;
-                    return true;
+                    break;
                 }
-
-                this.filterOptions();
 
                 if (this.filteredOptions.length > 0) {
                     super.keydownHandler(e);
