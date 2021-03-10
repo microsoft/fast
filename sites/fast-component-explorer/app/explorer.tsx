@@ -173,6 +173,10 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 responsive={true}
                                 messageSystem={this.fastMessageSystem as MessageSystem}
                             />
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
                         </div>
                         <div className={"dev-tools"}>
                             {renderDevToolsTabs({
@@ -197,10 +201,6 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                     2
                                 ),
                             })}
-                            {renderDevToolToggle(
-                                this.state.devToolsVisible,
-                                this.handleDevToolsToggle
-                            )}
                         </div>
                     </div>
                 </div>

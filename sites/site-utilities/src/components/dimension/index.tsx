@@ -19,14 +19,12 @@ export const Dimension: React.FC<DimensionProps> = ({
     disabled,
 }: React.PropsWithChildren<DimensionProps>): React.ReactElement => {
     return (
-        <div style={{ display: "flex", alignItems: "center", marginLeft: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
             <fast-number-field
                 value={width}
+                size={6}
                 events={{
                     input: onDimensionChange(onUpdateWidth),
-                }}
-                style={{
-                    width: "85px",
                 }}
                 disabled={disabled ? "true" : undefined}
             />
@@ -54,12 +52,12 @@ export const Dimension: React.FC<DimensionProps> = ({
             </svg>
             <fast-number-field
                 value={height}
+                size={6}
                 events={{
                     input: onDimensionChange(onUpdateHeight),
                 }}
                 style={{
-                    width: "85px",
-                    marginRight: 4,
+                    marginRight: 8,
                 }}
                 disabled={disabled ? "true" : undefined}
             />
@@ -69,14 +67,6 @@ export const Dimension: React.FC<DimensionProps> = ({
                     click: onUpdateOrientation,
                 }}
                 disabled={disabled ? "true" : undefined}
-                style={{
-                    padding: "0 6px",
-                    height: "24px",
-                    border: "2px solid transparent",
-                    borderRadius: "2px",
-                    background: "#454545",
-                    minWidth: "initial",
-                }}
             >
                 {RotateGlyph()}
             </fast-button>

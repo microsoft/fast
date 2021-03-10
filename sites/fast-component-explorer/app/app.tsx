@@ -15,7 +15,7 @@ FASTDesignSystemProvider;
 export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
-            <fast-design-system-provider use-defaults>
+            <fast-design-system-provider use-defaults density="-2">
                 <Router history={history}>
                     <Switch>
                         <Route
