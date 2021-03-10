@@ -131,6 +131,7 @@ export class DesignTokenNode<T> {
 
     public set(value: DesignTokenValue<T>) {
         if (DesignTokenNode.isDerivedTokenValue(value)) {
+            // TODO: add teardown behavior when value is reset or deleted
             const handler = {
                 handleChange: source => {
                     this._value = source(this.target);
