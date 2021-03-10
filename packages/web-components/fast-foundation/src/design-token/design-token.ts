@@ -2,16 +2,18 @@ import { CSSDirective, FASTElement, Observable } from "@microsoft/fast-element";
 import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenNode } from "./token-node";
 
-export type DerivedDesignTokenValue<T> = (target: HTMLElement & FASTElement) => T;
+export type DerivedDesignTokenValue<T> = T extends Function
+    ? never
+    : (target: HTMLElement & FASTElement) => T;
+export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
+
+const va: DesignTokenValue<number> = 12;
+const vb: DesignTokenValue<number> = (element: FASTElement & HTMLElement) => 12;
 
 /**
- * Notes:
- *
- * # We can establish token dependencies in much the same way that observable does:
- * Just before evaluating derived properties, flip a tracking bit. This causes the
- * `getValue` method to cache the token being retrieved. After the process,
- * all retrieved tokens will be in the cache and we can use that info to catalog dependencies
- * for a value, resetting the cache and flipping the tracking bit back to false.
+ * TODO: make DesignToken itself not constructable because that will
+ * give us better generic type control
  */
 
 export class DesignToken<T = any> extends CSSDirective {
@@ -45,7 +47,7 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to get the value for
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
      */
-    public getValueFor(element: HTMLElement & FASTElement): T {
+    public getValueFor(element: HTMLElement & FASTElement): StaticDesignTokenValue<T> {
         return DesignTokenNode.for(this, element).value;
     }
 
@@ -54,7 +56,10 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to set the value for.
      * @param value - The value.
      */
-    public setValueFor(element: HTMLElement & FASTElement, value: T): this {
+    public setValueFor(
+        element: HTMLElement & FASTElement,
+        value: DesignTokenValue<T>
+    ): this {
         DesignTokenNode.for(this, element).set(value);
         return this;
     }
@@ -93,7 +98,9 @@ export class DesignToken<T = any> extends CSSDirective {
      *
      * @returns - {@link DesignToken}
      */
-    public static create<T>(name: string): DesignToken<T> {
-        return new DesignToken<T>(name);
+    public static create<T extends Function>(name: string): never;
+    public static create<T>(name: string): DesignToken<T>;
+    public static create<T>(name: string): any {
+        return new DesignToken<StaticDesignTokenValue<T>>(name);
     }
 }

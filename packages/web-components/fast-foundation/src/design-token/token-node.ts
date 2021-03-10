@@ -1,7 +1,7 @@
 import { FASTElement, Observable, observable, Subscriber } from "@microsoft/fast-element";
 import { reverse } from "lodash-es";
 import { DI, InterfaceSymbol, Registration } from "../di";
-import { DesignToken } from "./design-token";
+import { DerivedDesignTokenValue, DesignToken } from "./design-token";
 
 /**
  * Where a DesignTokeNode can be targeted
@@ -10,9 +10,7 @@ type NodeTarget = HTMLElement & FASTElement;
 
 const nodeCache = new WeakMap<NodeTarget, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
-// child is key, parent is the value. This lets us maintain one -> many relationships
 const childToParent = new Map<DesignTokenNode<any>, DesignTokenNode<any>>();
-
 const noop = () => {};
 
 export class DesignTokenNode<T> {
@@ -92,9 +90,7 @@ export class DesignTokenNode<T> {
         });
 
         this.children.add(child);
-
         Observable.getNotifier(this).subscribe(child, "value");
-
         childToParent.set(child, this);
     }
 
@@ -121,8 +117,10 @@ export class DesignTokenNode<T> {
         }
     }
 
-    public set(value: T) {
-        if (this._value !== value) {
+    public set(value: T | DerivedDesignTokenValue<T>) {
+        if (typeof value === "function") {
+            console.log(value);
+        } else if (this._value !== value) {
             this._value = value;
             this.handleChange = noop;
             Observable.getNotifier(this).notify("value");
@@ -133,6 +131,7 @@ export class DesignTokenNode<T> {
         const prev = this.value;
         this._value = void 0;
         const next = this.value;
+        this.handleChange = this.valueChangeHandler;
 
         if (prev !== next) {
             Observable.getNotifier(this).notify("value");
