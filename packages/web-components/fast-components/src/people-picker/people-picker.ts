@@ -111,4 +111,11 @@ export class PeoplePicker extends Picker {
     public connectedCallback(): void {
         super.connectedCallback();
     }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+    }
 }
