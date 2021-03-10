@@ -10,24 +10,13 @@ type NodeTarget = HTMLElement & FASTElement;
 
 const nodeCache = new WeakMap<NodeTarget, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
+// child is key, parent is the value. This lets us maintain one -> many relationships
+const parentChild = new Map<DesignTokenNode<any>, DesignTokenNode<any>>();
 
 export class DesignTokenNode<T> {
-    private subscribers: Set<Subscriber> = new Set();
+    private children: Set<DesignTokenNode<any>> = new Set();
 
-    @observable
-    public parentNode: DesignTokenNode<T> | null;
-    private parentNodeChanged(
-        previous: DesignTokenNode<T> | null,
-        next: DesignTokenNode<T> | null
-    ) {
-        if (previous) {
-            previous.unsubscribe(this);
-        }
-
-        if (next) {
-            next.subscribe(this);
-        }
-    }
+    public parentNode: DesignTokenNode<T> | null = null;
 
     constructor(
         public readonly token: DesignToken<T>,
@@ -42,7 +31,11 @@ export class DesignTokenNode<T> {
         const container = DI.getOrCreateDOMContainer(this.target);
         const channel = DesignTokenNode.channel(token);
         container.register(Registration.instance(channel, this));
-        this.parentNode = this.findParentNode();
+        const parent = this.findParentNode();
+
+        if (parent) {
+            parent.appendChild(this);
+        }
     }
 
     private _value: T | undefined;
@@ -50,8 +43,8 @@ export class DesignTokenNode<T> {
     public get value(): T {
         if (this._value !== void 0) {
             return this._value;
-        } else if (this.parentNode) {
-            return this.parentNode.value;
+        } else if (parentChild.has(this)) {
+            return parentChild.get(this)!.value;
         }
 
         throw new Error("Value could not be retrieved. Ensure the value is set");
@@ -59,10 +52,6 @@ export class DesignTokenNode<T> {
 
     public set value(v: T) {
         this._value = v;
-
-        if (this.parentNode) {
-            this.parentNode.unsubscribe(this);
-        }
 
         Observable.getNotifier(this).notify("value");
     }
@@ -95,12 +84,30 @@ export class DesignTokenNode<T> {
         }
     }
 
-    public subscribe(subscriber: Subscriber) {
-        Observable.getNotifier(this).subscribe(subscriber, "value");
+    public appendChild<T>(child: DesignTokenNode<T>) {
+        this.children.forEach(c => {
+            if (child.contains(c)) {
+                // Re-parent child
+                this.removeChild(c);
+                child.appendChild(c);
+            }
+        });
+
+        this.children.add(child);
+
+        Observable.getNotifier(this).subscribe(child, "value");
+
+        parentChild.set(child, this);
     }
 
-    public unsubscribe(subscriber: Subscriber) {
-        Observable.getNotifier(this).unsubscribe(subscriber, "value");
+    public removeChild<T>(child: DesignTokenNode<T>) {
+        this.children.delete(child);
+        Observable.getNotifier(this).unsubscribe(child, "value");
+        parentChild.delete(child);
+    }
+
+    public contains<T>(node: DesignTokenNode<T>) {
+        return this.target.contains(node.target);
     }
 
     private findParentNode() {
