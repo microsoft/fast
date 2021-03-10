@@ -3,9 +3,7 @@ import {
     FASTElement,
     Observable,
     observable,
-    Subscriber,
 } from "@microsoft/fast-element";
-import { reverse } from "lodash-es";
 import { DI, InterfaceSymbol, Registration } from "../di";
 import { DerivedDesignTokenValue, DesignToken, DesignTokenValue } from "./design-token";
 
@@ -16,13 +14,11 @@ type NodeTarget = HTMLElement & FASTElement;
 
 const nodeCache = new WeakMap<NodeTarget, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
-const childToParent = new Map<DesignTokenNode<any>, DesignTokenNode<any>>();
+const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
 const noop = () => {};
 
 export class DesignTokenNode<T> {
     private children: Set<DesignTokenNode<any>> = new Set();
-
-    public parentNode: DesignTokenNode<T> | null = null;
 
     constructor(
         public readonly token: DesignToken<T>,
