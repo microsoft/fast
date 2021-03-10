@@ -281,7 +281,7 @@ export class HorizontalScroll extends FASTElement {
         let nextIndex: number = this.scrollStops.findIndex(
             (stop: number): boolean => Math.abs(stop) + this.width > right
         );
-        if (nextIndex > current || !nextIndex) {
+        if (nextIndex > current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
         this.scrollToPosition(this.scrollStops[nextIndex], scrollPosition);
