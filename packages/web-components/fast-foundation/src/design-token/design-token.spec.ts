@@ -1,17 +1,17 @@
 
-import { DOM } from "@microsoft/fast-element";
+import { DOM, Observable } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { AnchoredRegionTemplate } from "../anchored-region";
+import { FASTElement } from "../../../fast-element/dist/fast-element";
 import { DesignSystem } from "../design-system";
 import { FoundationElement } from "../foundation-element";
 import { DesignToken } from "./design-token";
 
 new DesignSystem().register(
-    FoundationElement.configuration({type: class extends FoundationElement {}, baseName: "custom-element"})()
+    FoundationElement.compose({type: class extends FoundationElement {}, baseName: "custom-element"})()
 ).applyTo(document.body)
 
-function addElement(parent = document.body): FoundationElement {
-    const el = document.createElement("fast-custom-element") as FoundationElement;
+function addElement(parent = document.body): FASTElement & HTMLElement {
+    const el = document.createElement("fast-custom-element") as any;
     parent.appendChild(el);
     return el;
 }
@@ -20,12 +20,6 @@ function removeElement(...els: HTMLElement[]) {
     els.forEach(el => {
         el.parentElement?.removeChild(el);
     })
-}
-
-async function DOMUpdate() {
-    return new Promise(resolve => {
-        DOM.queueUpdate(() => resolve(void 0))
-    });
 }
 
 describe("A DesignToken", () => {
@@ -77,11 +71,36 @@ describe("A DesignToken", () => {
 
             token.setValueFor(parent, 14);
 
-            await DOMUpdate();
+            await DOM.nextUpdate();
             
             expect(token.getValueFor(target)).to.equal(14);
         })
     });
+    describe("getting and setting derived values", () => {
+        it("should get the return value of a derived value", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(target, () => 12);
+
+            expect(token.getValueFor(target)).to.equal(12);
+        });
+        it("should re-evaluate when observable properties used in a derived property are changed", async () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            const dependencies: {value: number} = {} as {value: number}
+            Observable.defineProperty(dependencies, "value");
+            dependencies.value = 6
+
+            token.setValueFor(target, () => dependencies.value * 2);
+
+            expect(token.getValueFor(target)).to.equal(12);
+
+            dependencies.value = 7;
+            await DOM.nextUpdate();
+
+            expect(token.getValueFor(target)).to.equal(14);
+        });
+    })
     describe("setting CSS Custom Properties", () => {
         it("should emit the value set for an element when emitted to the same element", () => {
             const target = addElement();
@@ -142,7 +161,7 @@ describe("A DesignToken", () => {
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
             token.setValueFor(target, 14);
-            await DOMUpdate()
+            await DOM.nextUpdate()
 
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             removeElement(target);

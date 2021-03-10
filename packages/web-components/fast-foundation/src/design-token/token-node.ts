@@ -119,7 +119,16 @@ export class DesignTokenNode<T> {
 
     public set(value: T | DerivedDesignTokenValue<T>) {
         if (typeof value === "function") {
-            console.log(value);
+            const handler = {
+                handleChange: source => {
+                    this._value = source(this.target);
+                    Observable.getNotifier(this).notify("value");
+                },
+            };
+            const observer = Observable.binding(value as any, handler);
+            observer.observe(this.target, {} as any);
+
+            this._value = (value as any)(this.target);
         } else if (this._value !== value) {
             this._value = value;
             this.handleChange = noop;
