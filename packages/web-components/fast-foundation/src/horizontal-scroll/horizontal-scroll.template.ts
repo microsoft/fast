@@ -1,22 +1,6 @@
-import { elements, html, ref, slotted } from "@microsoft/fast-element";
+import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { HorizontalScroll } from "./horizontal-scroll";
-
-/**
- * @public
- */
-export const ActionsTemplate = html<HorizontalScroll>`
-    <div ${ref("previousFlipper")} class="scroll scroll-prev">
-        <div @click="${x => x.scrollToPrevious()}" class="scroll-action">
-            <slot name="previous-flipper"></slot>
-        </div>
-    </div>
-    <div ${ref("nextFlipper")} class="scroll scroll-next">
-        <div @click="${x => x.scrollToNext()}" class="scroll-action">
-            <slot name="next-flipper"></slot>
-        </div>
-    </div>
-`;
 
 /**
  * @public
@@ -27,8 +11,8 @@ export const HorizontalScrollTemplate = html<HorizontalScroll>`
         <div class="scroll-area">
             <div
                 class="scroll-view"
-                ${ref("scrollContainer")}
                 @scroll="${x => x.scrolled()}"
+                ${ref("scrollContainer")}
             >
                 <div class="content-container">
                     <slot
@@ -39,7 +23,29 @@ export const HorizontalScrollTemplate = html<HorizontalScroll>`
                     ></slot>
                 </div>
             </div>
-            ${x => (x.view === "mobile" ? "" : ActionsTemplate)}
+            ${when(
+                x => x.view !== "mobile",
+                html<HorizontalScroll>`
+                    <div
+                        class="scroll scroll-prev"
+                        part="scroll-prev"
+                        ${ref("previousFlipper")}
+                    >
+                        <div class="scroll-action" @click="${x => x.scrollToPrevious()}">
+                            <slot name="previous-flipper"></slot>
+                        </div>
+                    </div>
+                    <div
+                        class="scroll scroll-next"
+                        part="scroll-next"
+                        ${ref("nextFlipper")}
+                    >
+                        <div class="scroll-action" @click="${x => x.scrollToNext()}">
+                            <slot name="next-flipper"></slot>
+                        </div>
+                    </div>
+                `
+            )}
         </div>
         ${endTemplate}
     </template>
