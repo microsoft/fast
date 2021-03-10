@@ -65,6 +65,20 @@ export class HorizontalScroll extends FASTElement {
     }
 
     /**
+     * The timeout identifier for the scroll event throttling.
+     *
+     * @internal
+     */
+    private resizeTimeout?: number | void;
+
+    /**
+     * The timeout identifier for the scroll event throttling.
+     *
+     * @internal
+     */
+    private scrollTimeout?: number | void;
+
+    /**
      * Speed of scroll in pixels per second
      * @public
      */
@@ -394,8 +408,14 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public resized(): void {
-        this.width = this.offsetWidth;
-        this.setFlippers();
+        if (this.resizeTimeout) {
+            this.resizeTimeout = clearTimeout(this.resizeTimeout);
+        }
+
+        this.resizeTimeout = setTimeout(() => {
+            this.width = this.offsetWidth;
+            this.setFlippers();
+        }, this.frameTime);
     }
 
     /**
@@ -403,7 +423,13 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public scrolled(): void {
-        this.setFlippers();
+        if (this.scrollTimeout) {
+            this.scrollTimeout = clearTimeout(this.scrollTimeout);
+        }
+
+        this.scrollTimeout = setTimeout(() => {
+            this.setFlippers();
+        }, this.frameTime);
     }
 
     /**
