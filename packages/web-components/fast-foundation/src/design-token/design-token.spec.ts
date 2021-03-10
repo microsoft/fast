@@ -7,7 +7,7 @@ import { FoundationElement } from "../foundation-element";
 import { DesignToken } from "./design-token";
 
 new DesignSystem().register(
-    FoundationElement.compose({type: class extends FoundationElement {}, baseName: "custom-element"})()
+    FoundationElement.compose({ type: class extends FoundationElement { }, baseName: "custom-element" })()
 ).applyTo(document.body)
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
@@ -72,7 +72,7 @@ describe("A DesignToken", () => {
             token.setValueFor(parent, 14);
 
             await DOM.nextUpdate();
-            
+
             expect(token.getValueFor(target)).to.equal(14);
         })
     });
@@ -83,11 +83,12 @@ describe("A DesignToken", () => {
             token.setValueFor(target, () => 12);
 
             expect(token.getValueFor(target)).to.equal(12);
+            removeElement(target)
         });
-        it("should re-evaluate when observable properties used in a derived property are changed", async () => {
+        it("should get an updated value when observable properties used in a derived property are changed", async () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");
-            const dependencies: {value: number} = {} as {value: number}
+            const dependencies: { value: number } = {} as { value: number }
             Observable.defineProperty(dependencies, "value");
             dependencies.value = 6
 
@@ -99,88 +100,209 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
 
             expect(token.getValueFor(target)).to.equal(14);
+            removeElement(target)
         });
-    })
+        it("should get an updated value when other design tokens used in a derived property are changed", async () => {
+            const target = addElement();
+            const tokenA = DesignToken.create<number>("A");
+            const tokenB = DesignToken.create<number>("B");
+
+            tokenA.setValueFor(target, 6);
+            tokenB.setValueFor(target, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+
+            expect(tokenB.getValueFor(target)).to.equal(12);
+
+            tokenA.setValueFor(target, 7);
+            await DOM.nextUpdate();
+
+            expect(tokenB.getValueFor(target)).to.equal(14);
+            removeElement(target);
+        });
+    });
+
     describe("setting CSS Custom Properties", () => {
-        it("should emit the value set for an element when emitted to the same element", () => {
-            const target = addElement();
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(target, 12)
-            
-            token.addCustomPropertyFor(target);
+        describe("to static token values", () => {
+            it("should emit the value set for an element when emitted to the same element", () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, 12)
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            removeElement(target);
-        });
+                token.addCustomPropertyFor(target);
 
-        it("should emit the value set for an element ancestor", () => {
-            const ancestor = addElement()
-            const target = addElement(ancestor);
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(ancestor, 12)
-            
-            token.addCustomPropertyFor(target);
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                removeElement(target);
+            });
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            removeElement(ancestor);
-        });
+            it("should emit the value set for an element ancestor", () => {
+                const ancestor = addElement()
+                const target = addElement(ancestor);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(ancestor, 12)
 
-        it("should emit the value set for an nearest element ancestor", () => {
-            const grandparent = addElement();
-            const parent = addElement(grandparent);
-            const target = addElement(parent);
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(grandparent, 12)
-            token.setValueFor(parent, 14)
-            token.addCustomPropertyFor(target);
+                token.addCustomPropertyFor(target);
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
-            removeElement(grandparent);
-        });
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                removeElement(ancestor);
+            });
 
-        it("should emit the value set for the element when a value is set for both the element and an ancestor", () => {
-            const ancestor = addElement()
-            const target = addElement(ancestor);
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(ancestor, 12)
-            token.setValueFor(target, 14)
-            
-            token.addCustomPropertyFor(target);
+            it("should emit the value set for an nearest element ancestor", () => {
+                const grandparent = addElement();
+                const parent = addElement(grandparent);
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(grandparent, 12)
+                token.setValueFor(parent, 14)
+                token.addCustomPropertyFor(target);
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
-            removeElement(ancestor);
-        });
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(grandparent);
+            });
 
-        it("should update the CSS custom property value for an element when the value changes for that element", async () => {
-            const target = addElement();
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(target, 12)
-            
-            token.addCustomPropertyFor(target);
+            it("should emit the value set for the element when a value is set for both the element and an ancestor", () => {
+                const ancestor = addElement()
+                const target = addElement(ancestor);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(ancestor, 12)
+                token.setValueFor(target, 14)
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                token.addCustomPropertyFor(target);
 
-            token.setValueFor(target, 14);
-            await DOM.nextUpdate()
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(ancestor);
+            });
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
-            removeElement(target);
-        });
+            it("should update the CSS custom property value for an element when the value changes for that element", async () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, 12)
 
-        it("should update the CSS custom property value for an element when the value changes for an ancestor node", () => {
-            const parent = addElement()
-            const target = addElement(parent);
-            const token = DesignToken.create<number>("test");
-            token.setValueFor(parent, 12)
-            
-            token.addCustomPropertyFor(target);
+                token.addCustomPropertyFor(target);
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
-            token.setValueFor(parent, 14);
+                token.setValueFor(target, 14);
+                await DOM.nextUpdate()
 
-            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
-            removeElement(parent);
-        });
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(target);
+            });
+
+            it("should update the CSS custom property value for an element when the value changes for an ancestor node", () => {
+                const parent = addElement()
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(parent, 12)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                token.setValueFor(parent, 14);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(parent);
+            });
+        })
+
+        describe("to dynamic token values", () => {
+            it("should emit the value set for an element when emitted to the same element", () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, () => 12)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                removeElement(target);
+            });
+
+            it("should emit the value set for an element ancestor", () => {
+                const ancestor = addElement()
+                const target = addElement(ancestor);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(ancestor, () => 12)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                removeElement(ancestor);
+            });
+
+            it("should emit the value set for an nearest element ancestor", () => {
+                const grandparent = addElement();
+                const parent = addElement(grandparent);
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(grandparent, () => 12)
+                token.setValueFor(parent, () => 14)
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(grandparent);
+            });
+
+            it("should emit the value set for the element when a value is set for both the element and an ancestor", () => {
+                const ancestor = addElement()
+                const target = addElement(ancestor);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(ancestor, () => 12)
+                token.setValueFor(target, () => 14)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(ancestor);
+            });
+
+            it("should update the CSS custom property value for an element when the value changes for that element", async () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, () => 12)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                token.setValueFor(target, () => 14);
+                await DOM.nextUpdate()
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(target);
+            });
+
+            it("should update the CSS custom property value for an element when the value changes for an ancestor node", () => {
+                const parent = addElement()
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(parent, () => 12)
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                token.setValueFor(parent, () => 14);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                removeElement(parent);
+            });
+
+            it("should update the CSS custom property when a value's dependent design token", async () => {
+                const target = addElement();
+                const dep = DesignToken.create<number>("dependency");
+                const token = DesignToken.create<number>("test");
+                dep.setValueFor(target, 6)
+                token.setValueFor(target, (element) => dep.getValueFor(element) * 2);
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                dep.setValueFor(target, 7);
+
+                await DOM.nextUpdate();
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+            });
+        })
     });
 });

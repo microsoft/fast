@@ -1,7 +1,13 @@
-import { FASTElement, Observable, observable, Subscriber } from "@microsoft/fast-element";
+import {
+    defaultExecutionContext,
+    FASTElement,
+    Observable,
+    observable,
+    Subscriber,
+} from "@microsoft/fast-element";
 import { reverse } from "lodash-es";
 import { DI, InterfaceSymbol, Registration } from "../di";
-import { DerivedDesignTokenValue, DesignToken } from "./design-token";
+import { DerivedDesignTokenValue, DesignToken, DesignTokenValue } from "./design-token";
 
 /**
  * Where a DesignTokeNode can be targeted
@@ -38,7 +44,11 @@ export class DesignTokenNode<T> {
         }
     }
 
+    @observable
     private _value: T | undefined;
+    private _valueChanged() {
+        Observable.getNotifier(this).notify("value");
+    }
 
     public get value(): T {
         if (this._value !== void 0) {
@@ -69,12 +79,19 @@ export class DesignTokenNode<T> {
                   channelCache.get(token)!;
     }
 
+    private static isDerivedTokenValue<T>(
+        value: DesignTokenValue<T>
+    ): value is DerivedDesignTokenValue<T> {
+        return typeof value === "function";
+    }
+
     /**
      * Invoked when parent node's value changes
      */
     public handleChange = this.valueChangeHandler;
 
     public valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
+        // If not local value has been set, pass along notification to subscribers
         if (this._value === void 0) {
             Observable.getNotifier(this).notify("value");
         }
@@ -83,7 +100,6 @@ export class DesignTokenNode<T> {
     public appendChild<T>(child: DesignTokenNode<T>) {
         this.children.forEach(c => {
             if (child.contains(c)) {
-                // Re-parent child
                 this.removeChild(c);
                 child.appendChild(c);
             }
@@ -96,8 +112,8 @@ export class DesignTokenNode<T> {
 
     public removeChild<T>(child: DesignTokenNode<T>) {
         this.children.delete(child);
-        Observable.getNotifier(this).unsubscribe(child, "value");
         childToParent.delete(child);
+        Observable.getNotifier(this).unsubscribe(child, "value");
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
@@ -117,22 +133,20 @@ export class DesignTokenNode<T> {
         }
     }
 
-    public set(value: T | DerivedDesignTokenValue<T>) {
-        if (typeof value === "function") {
+    public set(value: DesignTokenValue<T>) {
+        if (DesignTokenNode.isDerivedTokenValue(value)) {
             const handler = {
                 handleChange: source => {
                     this._value = source(this.target);
-                    Observable.getNotifier(this).notify("value");
                 },
             };
-            const observer = Observable.binding(value as any, handler);
-            observer.observe(this.target, {} as any);
+            const observer = Observable.binding(value, handler);
+            observer.observe(this.target, defaultExecutionContext);
 
             this._value = (value as any)(this.target);
         } else if (this._value !== value) {
             this._value = value;
             this.handleChange = noop;
-            Observable.getNotifier(this).notify("value");
         }
     }
 
@@ -141,9 +155,5 @@ export class DesignTokenNode<T> {
         this._value = void 0;
         const next = this.value;
         this.handleChange = this.valueChangeHandler;
-
-        if (prev !== next) {
-            Observable.getNotifier(this).notify("value");
-        }
     }
 }
