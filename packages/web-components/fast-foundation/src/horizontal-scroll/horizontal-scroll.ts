@@ -56,6 +56,15 @@ export class HorizontalScroll extends FASTElement {
     private framesPerSecond: number = 120;
 
     /**
+     * The calculated duration for a frame.
+     *
+     * @internal
+     */
+    private get frameTime(): number {
+        return 1000 / this.framesPerSecond;
+    }
+
+    /**
      * Speed of scroll in pixels per second
      * @public
      */
@@ -347,7 +356,7 @@ export class HorizontalScroll extends FASTElement {
 
         steps.push(newPosition);
 
-        this.move(steps, 1000 / this.framesPerSecond);
+        this.move(steps, this.frameTime);
     }
 
     /**
