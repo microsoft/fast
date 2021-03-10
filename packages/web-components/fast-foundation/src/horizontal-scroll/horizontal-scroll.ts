@@ -235,29 +235,10 @@ export class HorizontalScroll extends FASTElement {
     }
 
     /**
-     * The previously set scroll position.
-     * @internal
-     */
-    private cachedScrollPosition: number;
-
-    /**
-     * Flag to determine if the returned scroll position will be live or cached.
-     * @internal
-     */
-    private useCachedPosition: boolean = true;
-
-    /**
      * Returns the current scroll position of the scrollContainer
      * @internal
      */
     private getScrollPosition(): number {
-        if (this.useCachedPosition && this.cachedScrollPosition) {
-            this.useCachedPosition = false;
-            return this.cachedScrollPosition;
-        }
-
-        this.useCachedPosition = true;
-        this.cachedScrollPosition = this.scrollContainer.scrollLeft;
         return this.scrollContainer.scrollLeft;
     }
 
