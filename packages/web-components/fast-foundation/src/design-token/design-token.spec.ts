@@ -132,7 +132,7 @@ describe("A DesignToken", () => {
             removeElement(ancestor);
         });
 
-        it("should update the CSS custom property value for an element when the value changes for that element", () => {
+        it("should update the CSS custom property value for an element when the value changes for that element", async () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");
             token.setValueFor(target, 12)
@@ -142,6 +142,7 @@ describe("A DesignToken", () => {
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
             token.setValueFor(target, 14);
+            await DOMUpdate()
 
             expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             removeElement(target);

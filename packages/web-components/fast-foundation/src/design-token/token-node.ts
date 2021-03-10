@@ -11,7 +11,9 @@ type NodeTarget = HTMLElement & FASTElement;
 const nodeCache = new WeakMap<NodeTarget, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
 // child is key, parent is the value. This lets us maintain one -> many relationships
-const parentChild = new Map<DesignTokenNode<any>, DesignTokenNode<any>>();
+const childToParent = new Map<DesignTokenNode<any>, DesignTokenNode<any>>();
+
+const noop = () => {};
 
 export class DesignTokenNode<T> {
     private children: Set<DesignTokenNode<any>> = new Set();
@@ -43,17 +45,11 @@ export class DesignTokenNode<T> {
     public get value(): T {
         if (this._value !== void 0) {
             return this._value;
-        } else if (parentChild.has(this)) {
-            return parentChild.get(this)!.value;
+        } else if (childToParent.has(this)) {
+            return childToParent.get(this)!.value;
         }
 
         throw new Error("Value could not be retrieved. Ensure the value is set");
-    }
-
-    public set value(v: T) {
-        this._value = v;
-
-        Observable.getNotifier(this).notify("value");
     }
 
     public static for<T>(token: DesignToken<T>, target: NodeTarget) {
@@ -78,8 +74,10 @@ export class DesignTokenNode<T> {
     /**
      * Invoked when parent node's value changes
      */
-    public handleChange(source: DesignTokenNode<T>, key: "value") {
-        if (!this._value) {
+    public handleChange = this.valueChangeHandler;
+
+    public valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
+        if (this._value === void 0) {
             Observable.getNotifier(this).notify("value");
         }
     }
@@ -97,13 +95,13 @@ export class DesignTokenNode<T> {
 
         Observable.getNotifier(this).subscribe(child, "value");
 
-        parentChild.set(child, this);
+        childToParent.set(child, this);
     }
 
     public removeChild<T>(child: DesignTokenNode<T>) {
         this.children.delete(child);
         Observable.getNotifier(this).unsubscribe(child, "value");
-        parentChild.delete(child);
+        childToParent.delete(child);
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
@@ -120,6 +118,24 @@ export class DesignTokenNode<T> {
             }
         } else {
             return null;
+        }
+    }
+
+    public set(value: T) {
+        if (this._value !== value) {
+            this._value = value;
+            this.handleChange = noop;
+            Observable.getNotifier(this).notify("value");
+        }
+    }
+
+    public delete() {
+        const prev = this.value;
+        this._value = void 0;
+        const next = this.value;
+
+        if (prev !== next) {
+            Observable.getNotifier(this).notify("value");
         }
     }
 }

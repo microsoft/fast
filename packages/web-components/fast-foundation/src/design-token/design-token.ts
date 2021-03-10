@@ -1,4 +1,4 @@
-import { CSSDirective, FASTElement } from "@microsoft/fast-element";
+import { CSSDirective, FASTElement, Observable } from "@microsoft/fast-element";
 import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenStorage, DesignTokenStorageImpl } from "./storage";
 import { DesignTokenNode } from "./token-node";
@@ -48,7 +48,6 @@ export class DesignToken<T = any> extends CSSDirective {
      */
     public getValueFor(element: HTMLElement & FASTElement): T {
         return DesignTokenNode.for(this, element).value;
-        // return DesignTokenStorageImpl.for(element).get(this).value;
     }
 
     /**
@@ -57,7 +56,7 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param value - The value.
      */
     public setValueFor(element: HTMLElement & FASTElement, value: T): this {
-        DesignTokenNode.for(this, element).value = value;
+        DesignTokenNode.for(this, element).set(value);
         return this;
     }
 
@@ -66,6 +65,25 @@ export class DesignToken<T = any> extends CSSDirective {
      * @param element - The element to add the CSS Custom Property to
      */
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
+        // Implementation should change so it doesn't result in multiple subscriptions
+        // if invoked for the same element twice. Also will want a way to remove the custom
+        // property, which this doesn't allow
+        const node = DesignTokenNode.for(this, element);
+        let style = CustomPropertyManager.get(this, node.value);
+
+        element.$fastController.addStyles(style);
+
+        Observable.getNotifier(node).subscribe(
+            {
+                handleChange: (source, value) => {
+                    element.$fastController.removeStyles(style);
+                    style = CustomPropertyManager.get(this, source[value]);
+                    element.$fastController.addStyles(style);
+                },
+            },
+            "value"
+        );
+
         return this;
     }
 
