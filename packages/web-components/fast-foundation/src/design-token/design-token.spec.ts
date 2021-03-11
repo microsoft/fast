@@ -129,7 +129,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(12)
 
-            token.deleteFor(target);
+            token.deleteValueFor(target);
 
             expect(() => token.getValueFor(target)).to.throw();
             removeElement(target)
@@ -144,7 +144,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(14)
 
-            token.deleteFor(target);
+            token.deleteValueFor(target);
 
             expect(token.getValueFor(target)).to.equal(12)
             removeElement(parent)
@@ -159,7 +159,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(12)
 
-            token.deleteFor(target);
+            token.deleteValueFor(target);
 
             expect(() => token.getValueFor(target)).to.throw();
             removeElement(target)
@@ -174,7 +174,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(14)
 
-            token.deleteFor(target);
+            token.deleteValueFor(target);
 
             expect(token.getValueFor(target)).to.equal(12)
             removeElement(parent)
@@ -192,7 +192,7 @@ describe("A DesignToken", () => {
 
             expect(tokenB.getValueFor(target)).to.equal(12);
 
-            tokenA.deleteFor(target);
+            tokenA.deleteValueFor(target);
 
             await DOM.nextUpdate();
             expect(tokenB.getValueFor(target)).to.equal(14);

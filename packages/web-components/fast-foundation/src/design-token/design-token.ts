@@ -73,7 +73,7 @@ export interface DesignToken<T> extends CSSDirective {
      * Removes a value set for an element.
      * @param element - The element to remove the value from
      */
-    deleteFor(element: DesignTokenTarget): this;
+    deleteValueFor(element: DesignTokenTarget): this;
 }
 
 interface Disposable {
@@ -109,7 +109,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         return this;
     }
 
-    public deleteFor(element: DesignTokenTarget): this {
+    public deleteValueFor(element: DesignTokenTarget): this {
         DesignTokenNode.for(this, element).delete();
         return this;
     }
