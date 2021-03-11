@@ -55,6 +55,12 @@ export interface DesignToken<T> extends CSSDirective {
      * @param value - The value.
      */
     setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): void;
+
+    /**
+     * Removes a value set for an element.
+     * @param element - The element to remove the value from
+     */
+    deleteFor(element: DesignTokenTarget): this;
 }
 
 class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
@@ -79,6 +85,11 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): this {
         DesignTokenNode.for(this, element).set(value);
+        return this;
+    }
+
+    public deleteFor(element: DesignTokenTarget): this {
+        DesignTokenNode.for(this, element).delete();
         return this;
     }
 

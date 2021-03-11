@@ -148,9 +148,7 @@ export class DesignTokenNode<T> {
     }
 
     public delete() {
-        const prev = this.value;
         this._value = void 0;
-        const next = this.value;
         this.handleChange = this.valueChangeHandler;
     }
 }

@@ -74,6 +74,7 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
 
             expect(token.getValueFor(target)).to.equal(14);
+            removeElement(grandparent);
         })
     });
     describe("getting and setting derived values", () => {
@@ -118,6 +119,85 @@ describe("A DesignToken", () => {
             expect(tokenB.getValueFor(target)).to.equal(14);
             removeElement(target);
         });
+    });
+    describe("deleting simple values", () => {
+        it("should throw when deleted and no parent token value is set", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(target, 12);
+
+            expect(token.getValueFor(target)).to.equal(12)
+
+            token.deleteFor(target);
+
+            expect(() => token.getValueFor(target)).to.throw();
+            removeElement(target)
+        });
+        it("should allow getting a value that was set upstream", () => {
+            const parent = addElement()
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(parent, 12);
+            token.setValueFor(target, 14);
+
+            expect(token.getValueFor(target)).to.equal(14)
+
+            token.deleteFor(target);
+
+            expect(token.getValueFor(target)).to.equal(12)
+            removeElement(parent)
+        });
+    });
+    describe("deleting derived values", () => {
+        it("should throw when deleted and no parent token value is set", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(target, () => 12);
+
+            expect(token.getValueFor(target)).to.equal(12)
+
+            token.deleteFor(target);
+
+            expect(() => token.getValueFor(target)).to.throw();
+            removeElement(target)
+        });
+        it("should allow getting a value that was set upstream", () => {
+            const parent = addElement()
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(parent, () => 12);
+            token.setValueFor(target, () => 14);
+
+            expect(token.getValueFor(target)).to.equal(14)
+
+            token.deleteFor(target);
+
+            expect(token.getValueFor(target)).to.equal(12)
+            removeElement(parent)
+        });
+
+        it("should cause dependent tokens to re-evaluate", async () => {
+            const tokenA = DesignToken.create<number>("A");
+            const tokenB = DesignToken.create<number>("B");
+            const parent = addElement();
+            const target = addElement(parent);
+
+            tokenA.setValueFor(parent, 7);
+            tokenA.setValueFor(target, 6);
+            tokenB.setValueFor(target, (element) => tokenA.getValueFor(element) * 2);
+
+            expect(tokenB.getValueFor(target)).to.equal(12);
+
+            tokenA.deleteFor(target);
+
+            await DOM.nextUpdate();
+            expect(tokenB.getValueFor(target)).to.equal(14);
+            removeElement(parent)
+        })
     });
 
     describe("setting CSS Custom Properties", () => {
