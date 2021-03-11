@@ -58,12 +58,6 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "start",
-                    title: "Start slot",
-                    description:
-                        "Contents of the start slot are positioned above the horizontal-scroll",
-                },
-                {
                     name: "previousFlipper",
                     title: "Prevous flipper slot",
                     description: "Flipper used to scroll to previous content",
@@ -77,6 +71,12 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
                     name: "",
                     title: "Default slot",
                     description: "The child nodes to scroll through",
+                },
+                {
+                    name: "start",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned above the horizontal-scroll",
                 },
                 {
                     name: "end",
