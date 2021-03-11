@@ -1,11 +1,18 @@
 import {
+    Binding,
+    BindingObserver,
     defaultExecutionContext,
     FASTElement,
     Observable,
     observable,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di";
-import { DerivedDesignTokenValue, DesignToken, DesignTokenValue } from "./design-token";
+import {
+    DerivedDesignTokenValue,
+    DesignToken,
+    DesignTokenTarget,
+    DesignTokenValue,
+} from "./design-token";
 
 /**
  * Where a DesignTokeNode can be targeted
@@ -19,6 +26,7 @@ const noop = Function.prototype;
 
 export class DesignTokenNode<T> {
     private children: Set<DesignTokenNode<any>> = new Set();
+    private bindingObserver: BindingObserver | void;
 
     constructor(
         public readonly token: DesignToken<T>,
@@ -132,15 +140,20 @@ export class DesignTokenNode<T> {
     public set(value: DesignTokenValue<T>) {
         this.handleChange = noop as () => void;
 
+        if (this.bindingObserver) {
+            this.bindingObserver = this.bindingObserver.disconnect();
+        }
+
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             // TODO: add teardown behavior when value is reset or deleted
             const handler = {
-                handleChange: source => {
-                    this._value = source(this.target);
+                handleChange: (source: Binding<DesignTokenTarget>) => {
+                    this._value = source(this.target, defaultExecutionContext);
                 },
             };
-            const observer = Observable.binding(value, handler);
-            observer.observe(this.target, defaultExecutionContext);
+
+            this.bindingObserver = Observable.binding(value, handler);
+            this.bindingObserver.observe(this.target, defaultExecutionContext);
 
             this._value = (value as any)(this.target);
         } else if (this._value !== value) {
@@ -151,5 +164,9 @@ export class DesignTokenNode<T> {
     public delete() {
         this._value = void 0;
         this.handleChange = this.valueChangeHandler;
+
+        if (this.bindingObserver) {
+            this.bindingObserver = this.bindingObserver.disconnect();
+        }
     }
 }
