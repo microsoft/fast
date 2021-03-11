@@ -15,7 +15,7 @@ type NodeTarget = HTMLElement & FASTElement;
 const nodeCache = new WeakMap<NodeTarget, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
 const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
-const noop = () => {};
+const noop = Function.prototype;
 
 export class DesignTokenNode<T> {
     private children: Set<DesignTokenNode<any>> = new Set();
@@ -130,6 +130,8 @@ export class DesignTokenNode<T> {
     }
 
     public set(value: DesignTokenValue<T>) {
+        this.handleChange = noop as () => void;
+
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             // TODO: add teardown behavior when value is reset or deleted
             const handler = {
@@ -143,7 +145,6 @@ export class DesignTokenNode<T> {
             this._value = (value as any)(this.target);
         } else if (this._value !== value) {
             this._value = value;
-            this.handleChange = noop;
         }
     }
 
