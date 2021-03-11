@@ -212,25 +212,17 @@ export class HorizontalScroll extends FASTElement {
     private setStops(): void {
         this.width = this.offsetWidth;
         let lastStop: number = 0;
-        const lastScrollItemIndex = this.scrollItems.length - 1;
         let stops: number[] = this.scrollItems
-            .map(({ offsetLeft: left, offsetWidth: width }, index): number => {
+            .map(({ offsetLeft: left, offsetWidth: width }, index: number): number => {
                 const right: number = left + width;
 
                 if (this.isRtl) {
-                    if (index === lastScrollItemIndex) {
-                        return 0;
-                    }
-
                     return -right;
                 }
 
                 lastStop = right;
-                if (index === 0) {
-                    return 0;
-                }
 
-                return left;
+                return index === 0 ? 0 : left;
             })
             .concat(lastStop);
 
@@ -386,21 +378,21 @@ export class HorizontalScroll extends FASTElement {
      * @internal
      */
     private move(steps: number[], time: number): void {
-        if (steps.length) {
-            this.moveStartTime = requestAnimationFrame(timestamp => {
-                if (timestamp - this.moveStartTime >= time) {
-                    const nextStep = steps.shift();
-                    this.scrollContainer.scrollLeft =
-                        nextStep ?? this.scrollContainer.scrollLeft;
-                }
-
-                this.move(steps, time);
-            });
+        if (!steps || steps.length <= 0) {
+            this.setFlippers();
+            this.scrolling = false;
             return;
         }
 
-        this.setFlippers();
-        this.scrolling = false;
+        this.moveStartTime = requestAnimationFrame(timestamp => {
+            if (timestamp - this.moveStartTime >= time) {
+                const nextStep = steps.shift();
+                this.scrollContainer.scrollLeft =
+                    nextStep ?? this.scrollContainer.scrollLeft;
+            }
+
+            this.move(steps, time);
+        });
     }
 
     /**
