@@ -333,9 +333,11 @@ export class Picker extends FASTElement {
         this.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
-    public handleTextInput = (e: InputEvent): void => {
+    protected handleTextInput = (e: InputEvent): boolean => {
         // e.stopPropagation();
         // e.preventDefault();
+
+        return false;
     };
 
     public handleInputClick = (e: MouseEvent): void => {
@@ -567,6 +569,7 @@ export class Picker extends FASTElement {
             this.menuFocusIndex = -1;
             this.menuFocusOptionId = null;
             this.inputElement.setAttribute("aria-activedescendant", "unset");
+            this.menuElement.scrollTo(0, 0);
             return;
         }
 
@@ -594,20 +597,20 @@ export class Picker extends FASTElement {
                 this.menuElement !== undefined &&
                 this.menuElement.optionElements.length > 0
             ) {
-                this.menuFocusIndex = 0;
+                this.setFocusedOption(0);
                 this.inputElement.setAttribute(
                     "aria-activedescendant",
                     this.menuElement.optionElements[0].id
                 );
             } else {
-                this.menuFocusIndex = -1;
+                this.setFocusedOption(-1);
                 this.inputElement.setAttribute("aria-activedescendant", "unset");
             }
             return;
         }
 
         this.menuOpen = false;
-        this.menuFocusIndex = -1;
+        this.setFocusedOption(-1);
         this.inputElement.setAttribute("aria-owns", "unset");
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");

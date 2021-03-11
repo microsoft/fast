@@ -3,6 +3,25 @@ import { Picker } from "@microsoft/fast-foundation";
 import { GroupType, PersonType, IDynamicPerson } from "@microsoft/mgt";
 
 /**
+ * ensures one call at a time
+ *
+ * @export
+ * @param {*} func
+ * @param {*} time
+ * @returns
+ */
+export function debounce(func, time) {
+    let timeout;
+
+    return function () {
+        const functionCall = () => func.apply(this, arguments);
+
+        clearTimeout(timeout);
+        timeout = setTimeout(functionCall, time);
+    };
+}
+
+/**
  * A List Picker Custom HTML Element.
  *
  * @public
@@ -105,6 +124,8 @@ export class PeoplePicker extends Picker {
      */
     public selectedPeople: IDynamicPerson[] = [];
 
+    private _debouncedSearch: { (): void; (): void };
+
     /**
      * @internal
      */
@@ -122,4 +143,25 @@ export class PeoplePicker extends Picker {
     protected handleSelectionChange(): void {
         super.handleSelectionChange();
     }
+
+    protected handleTextInput = (e: InputEvent): boolean => {
+        // if (!this._debouncedSearch) {
+        //   this._debouncedSearch = debounce(async () => {
+        //     const loadingTimeout = setTimeout(() => {
+        //       this._showLoading = true;
+        //     }, 50);
+
+        //     await this.loadState();
+        //     clearTimeout(loadingTimeout);
+        //     this._showLoading = false;
+        //     this.showFlyout();
+
+        //     this._arrowSelectionCount = 0;
+        //   }, 400);
+        // }
+
+        this._debouncedSearch();
+
+        return super.handleTextInput(e);
+    };
 }
