@@ -269,13 +269,15 @@ describe("MonacoAdapter", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
+        const callback = jest.fn();
+        messageSystem.postMessage = callback;
         const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
                 new MonacoAdapterAction({
                     id: "foo",
                     action: config => {
-                        config.updateMonacoModelValue(["bar"]);
+                        config.updateMonacoModelValue(["bar"], false);
                     },
                 }),
             ],
@@ -295,6 +297,59 @@ describe("MonacoAdapter", () => {
         monacoAdapter.action("foo").run();
 
         expect(monacoAdapter["monacoModelValue"]).toEqual(["bar"]);
+        expect(callback).toHaveBeenCalled();
+    });
+    test("should update the monaco value but not send a post message if the source is external", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const callback = jest.fn();
+        messageSystem.postMessage = callback;
+
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [
+                new MonacoAdapterAction({
+                    id: "foo",
+                    action: config => {
+                        config.updateMonacoModelValue(["bar"], true);
+                    },
+                }),
+            ],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                    activeDictionaryId: "div",
+                },
+            } as any);
+        });
+
+        monacoAdapter.action("foo").run();
+
+        expect(monacoAdapter["monacoModelValue"]).toEqual(["bar"]);
+        expect(callback).not.toHaveBeenCalled();
     });
     test("should remove newlines and leading spaces from the monaco model value", () => {
         const dataDictionary: DataDictionary<unknown> = [
