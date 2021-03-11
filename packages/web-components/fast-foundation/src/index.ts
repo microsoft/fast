@@ -30,6 +30,7 @@ export * from "./progress-ring/index";
 export * from "./progress/index";
 export * from "./radio-group/index";
 export * from "./radio/index";
+export * from "./horizontal-scroll/index";
 export * from "./select/index";
 export * from "./skeleton/index";
 export * from "./slider-label/index";
