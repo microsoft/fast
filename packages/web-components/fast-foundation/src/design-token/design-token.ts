@@ -1,4 +1,11 @@
-import { CSSDirective, FASTElement, Observable } from "@microsoft/fast-element";
+import {
+    Behavior,
+    CSSDirective,
+    FASTElement,
+    Observable,
+    Subscriber,
+} from "@microsoft/fast-element";
+import { StyleElementCustomPropertyManager } from "../custom-properties";
 import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenNode } from "./token-node";
 
@@ -43,6 +50,12 @@ export interface DesignToken<T> extends CSSDirective {
     addCustomPropertyFor(element: DesignTokenTarget): this;
 
     /**
+     *
+     * @param element - The element to remove the CSS Custom Property from
+     */
+    removeCustomPropertyFor(element: DesignTokenTarget): this;
+
+    /**
      * Get the token value for an element.
      * @param element - The element to get the value for
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
@@ -63,8 +76,16 @@ export interface DesignToken<T> extends CSSDirective {
     deleteFor(element: DesignTokenTarget): this;
 }
 
+interface Disposable {
+    dispose(): void;
+}
+
 class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     private cssVar: string;
+    private customPropertyChangeHandlers: WeakMap<
+        DesignTokenTarget,
+        Subscriber & Disposable
+    > = new Map();
 
     constructor(public readonly name: string) {
         super();
@@ -94,26 +115,61 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     }
 
     public addCustomPropertyFor(element: DesignTokenTarget): this {
-        // Implementation should change so it doesn't result in multiple subscriptions
-        // if invoked for the same element twice. Also will want a way to remove the custom
-        // property, which this doesn't allow
-        const node = DesignTokenNode.for(this, element);
-        let style = CustomPropertyManager.get(this, node.value);
+        // TODO: Can we do this in a way where we don't hold strong
+        // references to elements and create a memory leak if custom
+        // properties are not removed?
+        if (!this.customPropertyChangeHandlers.has(element)) {
+            const node = DesignTokenNode.for(this, element);
+            let style = CustomPropertyManager.get(this, node.value);
 
-        element.$fastController.addStyles(style);
+            const addStyles = () => element.$fastController.addStyles(style);
+            const removeStyles = () => element.$fastController.removeStyles(style);
 
-        Observable.getNotifier(node).subscribe(
-            {
+            const subscriber: Subscriber & Disposable = {
                 handleChange: (source, value) => {
-                    element.$fastController.removeStyles(style);
+                    removeStyles();
                     style = CustomPropertyManager.get(this, source[value]);
-                    element.$fastController.addStyles(style);
+                    addStyles();
                 },
-            },
-            "value"
-        );
+                dispose: () => {
+                    removeStyles();
+                    Observable.getNotifier(node).unsubscribe(subscriber, "value");
+                    this.customPropertyChangeHandlers.delete(element);
+                },
+            };
+
+            this.customPropertyChangeHandlers.set(element, subscriber);
+            addStyles();
+
+            Observable.getNotifier(node).subscribe(subscriber, "value");
+        }
 
         return this;
+    }
+
+    public removeCustomPropertyFor(element: DesignTokenTarget): this {
+        if (this.customPropertyChangeHandlers.has(element)) {
+            this.customPropertyChangeHandlers.get(element)!.dispose();
+        }
+
+        return this;
+    }
+
+    public createBehavior() {
+        return new DesignTokenBehavior(this);
+    }
+}
+
+// We probably want to de-dupe here so we don't add the same behavior
+// and re-retrieve values when a behavior is used multiple times
+class DesignTokenBehavior<T> implements Behavior {
+    constructor(public token: DesignToken<T>) {}
+
+    bind(target: HTMLElement & FASTElement) {
+        this.token.addCustomPropertyFor(target);
+    }
+    unbind(target: HTMLElement & FASTElement) {
+        this.token.removeCustomPropertyFor(target);
     }
 }
 

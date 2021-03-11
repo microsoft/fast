@@ -1,5 +1,5 @@
 
-import { DOM, Observable } from "@microsoft/fast-element";
+import { css, DOM, Observable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FASTElement } from "../../../fast-element/dist/fast-element";
 import { DesignSystem } from "../design-system";
@@ -383,6 +383,75 @@ describe("A DesignToken", () => {
 
                 expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             });
+        });
+    });
+
+    describe("removing CSS Custom Properties", () => {
+        it("should remove the custom property from the element", () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, 12);
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                token.removeCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+                removeElement(target);
+        });
+
+        it("should remove the custom property from the element on the first invocation if the property has been added multiple times", () => {
+                const target = addElement();
+                const token = DesignToken.create<number>("test");
+                token.setValueFor(target, 12);
+
+                token.addCustomPropertyFor(target);
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+                token.removeCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+                removeElement(target);
+        });
+    });
+
+    describe("when used as a CSSDirective", () => {
+        it("should throw if now value has been set for the token", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            const styles = css`:host{width: calc(${token} * 1px);}`
+
+
+            expect(() => target.$fastController.addStyles(styles)).to.throw()
+
+            removeElement(target)
+        })
+        it("should set a CSS custom property for the element when the token is set for the element", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(target, 12);
+            const styles = css`:host{width: calc(${token} * 1px);}`
+            target.$fastController.addStyles(styles);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            removeElement(target)
+        });
+        it("should set a CSS custom property for the element when the token is set for an ancestor element", () => {
+            const parent = addElement()
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+            token.setValueFor(parent, 12);
+            const styles = css`:host{width: calc(${token} * 1px);}`
+            target.$fastController.addStyles(styles);
+
+            expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            removeElement(parent)
         })
     });
 });
