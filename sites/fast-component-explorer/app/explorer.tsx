@@ -99,6 +99,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             activePivotTab: "code",
             mobileFormVisible: false,
             mobileNavigationVisible: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
