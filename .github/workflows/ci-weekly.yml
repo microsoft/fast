@@ -51,7 +51,7 @@ jobs:
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: github/codeql-action/init@v1
       with:
-        languages: javascript, typescript, csharp
+        languages: javascript, typescript
 
     - name: Perform CodeQL Analysis
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
