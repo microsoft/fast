@@ -101,7 +101,7 @@ export const ActionsStyles = css`
 export const HorizontalScrollStyles = css`
     ${display("block")} :host {
         --scroll-align: center;
-        --scroll-item-space: 5px;
+        --scroll-item-space: 5;
         contain: layout;
         position: relative;
     }
@@ -123,7 +123,7 @@ export const HorizontalScrollStyles = css`
     }
 
     .content-container ::slotted(*) {
-        margin-right: var(--scroll-item-space);
+        margin-right: calc(var(--scroll-item-space) * 1px);
     }
 
     .content-container ::slotted(*:last-child) {
