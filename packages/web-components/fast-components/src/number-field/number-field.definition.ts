@@ -104,6 +104,14 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                     required: false,
                 },
                 {
+                    name: "hide-step",
+                    title: "Hide step",
+                    description: "Hides the step controls",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
+                {
                     name: "readonly",
                     title: "Readonly",
                     description:
