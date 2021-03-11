@@ -1387,6 +1387,7 @@ export class NumberField extends FormAssociatedNumberField {
     handleChange(): void;
     // @internal
     handleTextInput(): void;
+    hideStep: boolean;
     list: string;
     max: number;
     // (undocumented)
