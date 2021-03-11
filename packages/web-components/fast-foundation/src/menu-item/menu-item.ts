@@ -102,8 +102,13 @@ export class MenuItem extends FASTElement {
     @observable
     public currentDirection: Direction = Direction.ltr;
 
+    /**
+     * @internal
+     */
+    @observable
+    public submenu: Element | undefined;
+
     private focusSubmenuOnLoad: boolean = false;
-    private submenu: Element | undefined;
 
     private observer: MutationObserver;
 
@@ -239,7 +244,7 @@ export class MenuItem extends FASTElement {
             case MenuItemRole.menuitem:
                 // update submenu
                 this.updateSubmenu();
-                if (this.submenu !== undefined) {
+                if (this.hasSubmenu) {
                     this.expandAndFocus();
                 } else {
                     this.$emit("change");
@@ -260,8 +265,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     private updateSubmenu = (): void => {
-        const domChildren: Element[] = Array.from(this.children);
-        this.submenu = domChildren.find((element: Element) => {
+        this.submenu = this.domChildren().find((element: Element) => {
             return element.getAttribute("role") === "menu";
         });
 

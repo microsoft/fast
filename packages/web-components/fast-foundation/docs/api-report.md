@@ -1313,6 +1313,8 @@ export class MenuItem extends FASTElement {
     hasSubmenu: boolean;
     role: MenuItemRole;
     // @internal (undocumented)
+    submenu: Element | undefined;
+    // @internal (undocumented)
     submenuLoaded: () => void;
     // @internal
     submenuRegion: AnchoredRegion;
