@@ -58,11 +58,6 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "",
-                    title: "Default slot",
-                    description: "The child nodes to scroll through",
-                },
-                {
                     name: "start",
                     title: "Start slot",
                     description:
@@ -77,6 +72,11 @@ export const fastHorizontalScrollDefinition: WebComponentDefinition = {
                     name: "nextFlipper",
                     title: "Next flipper slot",
                     description: "Flipper used to scroll to next content",
+                },
+                {
+                    name: "",
+                    title: "Default slot",
+                    description: "The child nodes to scroll through",
                 },
                 {
                     name: "end",
