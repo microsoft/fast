@@ -79,7 +79,11 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                         // also updates the DataDictionary which fires a
                         // postMessage to the MessageSystem if the udpate
                         // is coming from Monaco and not a data dictionary update
-                        config.updateMonacoModelValue(this.monacoValue, this.state.lastMappedDataDictionaryToMonacoEditorHTMLValue === this.monacoValue[0]);
+                        config.updateMonacoModelValue(
+                            this.monacoValue,
+                            this.state.lastMappedDataDictionaryToMonacoEditorHTMLValue ===
+                                this.monacoValue[0]
+                        );
                     },
                 }),
             ],
@@ -149,13 +153,14 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                 mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
             );
 
-            this.setState({
-                lastMappedDataDictionaryToMonacoEditorHTMLValue,
-            }, () => {
-                this.editor.setValue(
-                    lastMappedDataDictionaryToMonacoEditorHTMLValue
-                );
-            });
+            this.setState(
+                {
+                    lastMappedDataDictionaryToMonacoEditorHTMLValue,
+                },
+                () => {
+                    this.editor.setValue(lastMappedDataDictionaryToMonacoEditorHTMLValue);
+                }
+            );
         }
     }
 

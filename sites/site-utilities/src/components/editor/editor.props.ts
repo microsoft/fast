@@ -17,7 +17,7 @@ export interface EditorState {
     /**
      * The last value that was changed from the data dictionary to
      * a value used by monaco editor.
-     * 
+     *
      * This can be used to determine where a change comes from since
      * any update to the monaco editors value is treated the same (making a change
      * from within the editor vs setting the value externally)
