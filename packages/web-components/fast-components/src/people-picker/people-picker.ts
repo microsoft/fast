@@ -118,4 +118,8 @@ export class PeoplePicker extends Picker {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
     }
+
+    protected handleSelectionChange(): void {
+        super.handleSelectionChange();
+    }
 }

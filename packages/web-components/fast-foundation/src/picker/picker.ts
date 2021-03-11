@@ -76,27 +76,7 @@ export class Picker extends FASTElement {
     public selection: string = "";
     private selectionChanged(): void {
         if (this.$fastController.isConnected) {
-            if (this.selectedOptions.toString() !== this.selection) {
-                this.selectedOptions = this.selection.split(",");
-                this.$emit("selectionchange");
-            }
-        }
-    }
-
-    /**
-     *
-     *
-     * @public
-     */
-    @observable
-    public selectedOptions: string[] = [];
-    private selectedOptionsChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (this.selectedOptions !== this.selection.split(",")) {
-                this.selection = this.selectedOptions.toString();
-                this.$emit("selectionchange");
-                this.checkMaxItems();
-            }
+            this.handleSelectionChange();
         }
     }
 
@@ -249,6 +229,14 @@ export class Picker extends FASTElement {
      */
     public region: AnchoredRegion;
 
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public selectedOptions: string[] = [];
+
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node | null = null;
 
@@ -261,8 +249,8 @@ export class Picker extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.defaultSelection !== undefined) {
-            this.selectedOptions = this.defaultSelection.split(",");
+        if (this.defaultSelection !== undefined && this.selection === "") {
+            this.selection = this.defaultSelection;
         }
 
         if (this.options !== undefined) {
@@ -298,7 +286,7 @@ export class Picker extends FASTElement {
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
 
-        this.checkMaxItems();
+        this.handleSelectionChange();
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
@@ -460,10 +448,9 @@ export class Picker extends FASTElement {
         if (e.defaultPrevented) {
             return false;
         }
-        this.selectedOptions.push(value);
+        this.selection = `${this.selection}${this.selection === "" ? "" : ","}${value}`;
         this.toggleMenu(false);
         this.inputElement.value = "";
-        this.checkMaxItems();
         return false;
     };
 
@@ -496,6 +483,17 @@ export class Picker extends FASTElement {
 
     public handleRegionLoaded = (e: Event): void => {};
 
+    protected handleSelectionChange(): void {
+        if (this.selectedOptions.toString() === this.selection) {
+            return;
+        }
+
+        this.selectedOptions = this.selection === "" ? [] : this.selection.split(",");
+
+        this.checkMaxItems();
+        this.$emit("selectionchange");
+    }
+
     private setRegionProps = (): void => {
         if (!this.menuOpen) {
             return;
@@ -524,8 +522,9 @@ export class Picker extends FASTElement {
     };
 
     private handleItemInvoke = (itemIndex: number): void => {
-        this.selectedOptions.splice(itemIndex, 1);
-        this.checkMaxItems();
+        const newSelection: string[] = this.selectedOptions.slice();
+        newSelection.splice(itemIndex, 1);
+        this.selection = newSelection.toString();
         DOM.queueUpdate(() => this.incrementFocusedItem(0));
     };
 
