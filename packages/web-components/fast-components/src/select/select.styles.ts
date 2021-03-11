@@ -144,6 +144,9 @@ export const SelectStyles = css`
         flex: 1 1 auto;
         font-family: inherit;
         text-align: start;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .indicator {
