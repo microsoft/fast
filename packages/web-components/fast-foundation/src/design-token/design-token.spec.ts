@@ -75,7 +75,23 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(14);
             removeElement(grandparent);
-        })
+        });
+
+        it("should return the new ancestor's value after being re-parented", async () => {
+            const parentA = addElement();
+            const parentB = addElement();
+            const target = addElement(parentA);
+            const token = DesignToken.create<number>("test");
+
+            token.setValueFor(parentA, 12);
+            token.setValueFor(parentB, 14);
+
+            expect(token.getValueFor(target)).to.equal(12);
+            parentA.removeChild(target);
+            parentB.appendChild(target);
+
+            expect(token.getValueFor(target)).to.equal(14);
+        });
     });
     describe("getting and setting derived values", () => {
         it("should get the return value of a derived value", () => {

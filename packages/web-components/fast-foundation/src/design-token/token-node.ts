@@ -2,6 +2,7 @@ import {
     Binding,
     BindingObserver,
     defaultExecutionContext,
+    FASTElement,
     Observable,
     observable,
 } from "@microsoft/fast-element";
@@ -39,10 +40,16 @@ export class DesignTokenNode<T> {
         const container = DI.getOrCreateDOMContainer(this.target);
         const channel = DesignTokenNode.channel(token);
         container.register(Registration.instance(channel, this));
-        const parent = this.findParentNode();
 
-        if (parent) {
-            parent.appendChild(this);
+        if (target instanceof FASTElement) {
+            (target as FASTElement).$fastController.addBehaviors([
+                {
+                    bind: () => this.findParentNode()?.appendChild(this),
+                    unbind: () => childToParent.get(this)?.removeChild(this),
+                },
+            ]);
+        } else {
+            this.findParentNode()?.appendChild(this);
         }
     }
 
