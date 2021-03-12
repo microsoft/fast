@@ -11,13 +11,11 @@ import {
     ControlConfig,
     ControlType,
     defaultDevices,
-    Device,
     Display,
     LinkedDataControl,
     ModularForm,
     ModularNavigation,
     ModularViewer,
-    SelectDevice,
     StandardControlPlugin,
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
@@ -43,10 +41,10 @@ import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system
 import { CreatorState, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
-import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { renderDevToolToggle } from "./web-components";
+import { renderDevToolToggle, renderDeviceSelect } from "./web-components";
+import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -162,13 +160,11 @@ class Creator extends Editor<{}, CreatorState> {
                         </div>
                         <fast-design-system-provider background-color="#333">
                             <div className={this.canvasMenuBarClassNames}>
-                                <SelectDevice
-                                    devices={this.devices}
-                                    activeDeviceId={this.state.deviceId}
-                                    onUpdateDevice={this.handleUpdateDevice}
-                                    jssStyleSheet={selectDeviceOverrideStyles}
-                                    disabled={!this.state.previewReady}
-                                />
+                                {renderDeviceSelect(
+                                    this.state.deviceId,
+                                    this.handleUpdateDevice,
+                                    !this.state.previewReady
+                                )}
                                 <Dimension
                                     width={this.state.viewerWidth}
                                     height={this.state.viewerHeight}
