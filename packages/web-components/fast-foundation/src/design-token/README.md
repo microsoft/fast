@@ -28,7 +28,7 @@ const ancestor = document.querySelector("my-element") as FASTElement & HTMLEleme
 const descendent = ancestor.querySelector("my-element")
 
 accentColor.setValueFor(ancestor, "#DA1A5F");
-descendent.setValueFor(descendent, "#ADA1F5");
+accentColor.setValueFor(descendent, "#ADA1F5");
  ```
 
 ### 3. Getting the Design Token value
