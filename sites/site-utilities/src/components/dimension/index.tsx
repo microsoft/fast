@@ -27,6 +27,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                     input: onDimensionChange(onUpdateWidth),
                 }}
                 disabled={disabled ? "true" : undefined}
+                hide-step={true}
             />
             <svg
                 width="14"
@@ -60,6 +61,7 @@ export const Dimension: React.FC<DimensionProps> = ({
                     marginRight: 8,
                 }}
                 disabled={disabled ? "true" : undefined}
+                hide-step={true}
             />
             <fast-button
                 aria-label={"Rotate axis"}
