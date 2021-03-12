@@ -13,7 +13,13 @@ export * from "./custom-properties/index";
 export * from "./data-grid/index";
 export * from "./design-system/index";
 export * from "./design-system-provider/index";
-export { DesignToken } from "./design-token/design-token";
+export {
+    DesignToken,
+    DesignTokenTarget,
+    StaticDesignTokenValue,
+    DerivedDesignTokenValue,
+    DesignTokenValue,
+} from "./design-token/design-token";
 export * from "./di/index";
 export * from "./dialog/index";
 export * from "./disclosure/index";

@@ -737,6 +737,9 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// @alpha
+export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: DesignTokenTarget) => T;
+
 // @alpha (undocumented)
 export class DesignSystem {
     // (undocumented)
@@ -812,15 +815,12 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T> extends CSSDirective {
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenTarget" needs to be exported by the entry point index.d.ts
     addCustomPropertyFor(element: DesignTokenTarget): this;
     readonly cssCustomProperty: string;
     deleteValueFor(element: DesignTokenTarget): this;
-    // Warning: (ae-forgotten-export) The symbol "StaticDesignTokenValue" needs to be exported by the entry point index.d.ts
     getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
     // (undocumented)
     removeCustomPropertyFor(element: DesignTokenTarget): this;
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
     setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): void;
 }
 
@@ -828,6 +828,12 @@ export interface DesignToken<T> extends CSSDirective {
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
+
+// @alpha
+export type DesignTokenTarget = HTMLElement & FASTElement;
+
+// @alpha
+export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{
@@ -1848,6 +1854,9 @@ export class StartEnd {
 // @public
 export const startTemplate: ViewTemplate<StartEnd>;
 
+// @alpha
+export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
     constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient);
@@ -2183,7 +2192,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:65:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:69:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

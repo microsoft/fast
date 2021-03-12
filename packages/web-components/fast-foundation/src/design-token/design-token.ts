@@ -12,6 +12,7 @@ import { DesignTokenNode } from "./token-node";
 /**
  * A {@link (DesignToken:interface)} value that is derived. These values can depend on other {@link (DesignToken:interface)}s
  * or arbitrary observable properties.
+ * @alpha
  */
 export type DerivedDesignTokenValue<T> = T extends Function
     ? never
@@ -19,17 +20,20 @@ export type DerivedDesignTokenValue<T> = T extends Function
 
 /**
  * A design token value with no observable dependencies
+ * @alpha
  */
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
 /**
- * The type that a {@link DesignToken} can be set to.
+ * The type that a {@link (DesignToken:interface)} can be set to.
+ * @alpha
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 /**
  * Describes where Design Tokens can be retrieved from and set, and also
  * where css custom properties can be emitted to.
+ * @alpha
  */
 export type DesignTokenTarget = HTMLElement & FASTElement;
 
