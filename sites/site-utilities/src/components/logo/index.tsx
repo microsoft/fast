@@ -16,7 +16,6 @@ const backgroundStyle = {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "8px",
-    backgroundColor: "var(--neutral-fill-rest)",
 };
 const headerStyle = {
     fontSize: "var(--type-ramp-base-font-size)",

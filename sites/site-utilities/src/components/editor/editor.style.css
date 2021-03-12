@@ -122,7 +122,6 @@ html::-webkit-scrollbar-thumb {
     align-items: center;
     justify-content: space-between;
     padding: 8px 14px;
-    background-color: var(--menu-bar-background);
 }
 
 .menu-item-region {
@@ -132,13 +131,13 @@ html::-webkit-scrollbar-thumb {
 .preview {
     grid-row-start: 1;
     overflow: auto;
+    position: relative;
 }
 
 .dev-tools {
     position: relative;
     grid-row-start: 2;
     overflow: hidden;
-    background-color: var(--background-color);
 }
 
 .dev-tools-trigger {
@@ -173,10 +172,6 @@ html::-webkit-scrollbar-thumb {
     grid-row-start: 2;
     grid-column-start: 1;
     grid-column-end: 4;
-}
-
-.logo {
-    background: var(--neutral-fill-rest) !important;
 }
 
 @media screen and (max-width: 899px) {

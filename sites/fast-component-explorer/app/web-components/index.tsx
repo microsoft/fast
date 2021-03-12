@@ -37,7 +37,7 @@ interface RenderDevToolsTabsConfig {
 function renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
     return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
         return (
-            <fast-option key={index} value={index}>
+            <fast-option key={index} value={index} style={{ height: "auto" }}>
                 {scenarioOption.displayName}
             </fast-option>
         );
@@ -56,6 +56,7 @@ export function renderDevToolToggle(
                 },
             }}
             class={"dev-tools-trigger"}
+            style={{ top: "auto", bottom: 0 }}
         >
             {selected ? downChevron() : upChevron()}
         </fast-button>
@@ -89,7 +90,7 @@ export function renderScenarioSelect(
 
 export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.ReactNode {
     const styleOverrides: string = `
-        a {
+        .dev-tools a {
             color: var(--accent-foreground-rest);
         }
 
@@ -125,7 +126,9 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
         }
     `;
     return (
-        <fast-design-system-provider use-defaults style={{ height: "100%" }}>
+        <fast-design-system-provider
+            style={{ height: "100%", backgroundColor: "#181818" }}
+        >
             <style>{styleOverrides}</style>
             <fast-tabs id="dev-tools-tabs" events={{ change: config.tabUpdateCallback }}>
                 <fast-tab id="code" slot="tab">

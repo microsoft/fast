@@ -12,13 +12,11 @@ import {
     ControlConfig,
     ControlType,
     defaultDevices,
-    Device,
     Display,
     LinkedDataControl,
     ModularForm,
     ModularNavigation,
     ModularViewer,
-    SelectDevice,
     StandardControlPlugin,
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
@@ -45,10 +43,10 @@ import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system
 import { CreatorState, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
-import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { renderDevToolToggle } from "./web-components";
+import { renderDeviceSelect, renderDevToolToggle } from "./web-components";
+import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -166,51 +164,51 @@ class Creator extends Editor<{}, CreatorState> {
                             <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
                         </div>
-                        <div className={this.canvasMenuBarClassNames}>
-                            <SelectDevice
-                                devices={this.devices}
-                                activeDeviceId={this.state.deviceId}
-                                onUpdateDevice={this.handleUpdateDevice}
-                                jssStyleSheet={selectDeviceOverrideStyles}
-                                disabled={!this.state.previewReady}
-                            />
-                            <Dimension
-                                width={this.state.viewerWidth}
-                                height={this.state.viewerHeight}
-                                onUpdateWidth={this.handleUpdateWidth}
-                                onUpdateHeight={this.handleUpdateHeight}
-                                onUpdateOrientation={this.handleUpdateOrientation}
-                                onDimensionChange={this.handleDimensionChange}
-                                disabled={!this.state.previewReady}
-                            />
-                            <div
-                                style={{
-                                    display: "flex",
-                                    marginLeft: "auto",
-                                }}
-                            >
-                                <ThemeSelector
-                                    id={"theme-selector"}
-                                    theme={this.state.theme}
-                                    onUpdateTheme={this.handleUpdateTheme}
+                        <fast-design-system-provider background-color="#333">
+                            <div className={this.canvasMenuBarClassNames}>
+                                {renderDeviceSelect(
+                                    this.state.deviceId,
+                                    this.handleUpdateDevice,
+                                    !this.state.previewReady
+                                )}
+                                <Dimension
+                                    width={this.state.viewerWidth}
+                                    height={this.state.viewerHeight}
+                                    onUpdateWidth={this.handleUpdateWidth}
+                                    onUpdateHeight={this.handleUpdateHeight}
+                                    onUpdateOrientation={this.handleUpdateOrientation}
+                                    onDimensionChange={this.handleDimensionChange}
                                     disabled={!this.state.previewReady}
                                 />
-                                <DirectionSwitch
-                                    id={"direction-switch"}
-                                    direction={this.state.direction}
-                                    onUpdateDirection={this.handleUpdateDirection}
-                                    disabled={!this.state.previewReady}
-                                />
-                                <AccentColorPicker
-                                    id={"accent-color-picker"}
-                                    accentBaseColor={this.state.accentColor}
-                                    onAccentColorPickerChange={
-                                        this.handleAccentColorPickerChange
-                                    }
-                                    disabled={!this.state.previewReady}
-                                />
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        marginLeft: "auto",
+                                    }}
+                                >
+                                    <ThemeSelector
+                                        id={"theme-selector"}
+                                        theme={this.state.theme}
+                                        onUpdateTheme={this.handleUpdateTheme}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <DirectionSwitch
+                                        id={"direction-switch"}
+                                        direction={this.state.direction}
+                                        onUpdateDirection={this.handleUpdateDirection}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <AccentColorPicker
+                                        id={"accent-color-picker"}
+                                        accentBaseColor={this.state.accentColor}
+                                        onAccentColorPickerChange={
+                                            this.handleAccentColorPickerChange
+                                        }
+                                        disabled={!this.state.previewReady}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        </fast-design-system-provider>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [

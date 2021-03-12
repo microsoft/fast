@@ -23,6 +23,7 @@ declare namespace JSX {
             HTMLElement
         > & {
             value?: number;
+            size?: number;
             disabled?: string;
             events?: {
                 input?: (e: React.ChangeEvent<HTMLInputElement>) => void;
