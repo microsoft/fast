@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
@@ -76,6 +77,16 @@ export const MenuItemStyles = css`
         fill: ${neutralForegroundRestBehavior.var};
     }
 
+    .expand-collapse-glyph {
+        ${
+            /* Glyph size is temporary - 
+            replace when glyph-size var is added */ ""
+        } width: 16px;
+        height: 16px;
+        transition: transform 0.1s linear;
+        fill: currentcolor;
+    }
+
     .content {
         grid-column-start: 2;
         justify-self: start;
@@ -106,6 +117,7 @@ export const MenuItemStyles = css`
         fill: ${neutralForegroundRestBehavior.var};
     }
 
+    :host([aria-haspopup="menu"]),
     :host([role="menuitemcheckbox"]),
     :host([role="menuitemradio"]) {
         display: grid;
@@ -114,32 +126,38 @@ export const MenuItemStyles = css`
         min-height: 32px;
     }
 
-    :host .input-container {
+    :host .input-container,
+    :host .expand-collapse-glyph-container {
         display: none;
     }
 
+    :host([aria-haspopup="menu"]) .expand-collapse-glyph-container,
     :host([role="menuitemcheckbox"]) .input-container,
     :host([role="menuitemradio"]) .input-container {
         display: grid;
         margin-inline-end: 10px;
     }
 
+    :host([aria-haspopup="menu"]) .start,
     :host([role="menuitemcheckbox"]) .start,
     :host([role="menuitemradio"]) .start {
         grid-column-start: 2;
         margin-inline-end: 10px;
     }
 
+    :host([aria-haspopup="menu"]) .content,
     :host([role="menuitemcheckbox"]) .content,
     :host([role="menuitemradio"]) .content {
         grid-column-start: 3;
     }
 
+    :host([aria-haspopup="menu"]) .end,
     :host([role="menuitemcheckbox"]) .end,
     :host([role="menuitemradio"]) .end {
         grid-column-start: 4;
     }
 
+    :host .expand-collapse,
     :host .checkbox,
     :host .radio {
         display: flex;
@@ -149,11 +167,15 @@ export const MenuItemStyles = css`
         width: 20px;
         height: 20px;
         box-sizing: border-box;
+        outline: none;
+        margin-inline-start: 10px;
+    }
+
+    :host .checkbox,
+    :host .radio {
         border: calc(var(--outline-width) * 1px) solid ${
             neutralForegroundRestBehavior.var
         };
-        outline: none;
-        margin-inline-start: 10px;
     }
 
     :host([aria-checked="true"]) .checkbox,
@@ -172,8 +194,10 @@ export const MenuItemStyles = css`
 
     :host .checkbox-indicator,
     :host .radio-indicator,
+    :host .expand-collapse-indicator,
     ::slotted([slot="checkbox-indicator"]),
-    ::slotted([slot="radio-indicator"]) {
+    ::slotted([slot="radio-indicator"]),
+    ::slotted([slot="expand-collapse-indicator"]) {
         display: none;
     }
 
@@ -257,6 +281,7 @@ export const MenuItemStyles = css`
                 opacity: 1;
             }
 
+            :host .expanded-toggle,
             :host .checkbox,
             :host .radio{
                 border-color: ${SystemColors.ButtonText};
@@ -269,8 +294,10 @@ export const MenuItemStyles = css`
                 border-color: ${SystemColors.HighlightText};
             }
 
+            :host(:hover) .expanded-toggle,
             :host(:hover) .checkbox,
             :host(:hover) .radio,
+            :host(:${focusVisible}) .expanded-toggle,
             :host(:${focusVisible}) .checkbox,
             :host(:${focusVisible}) .radio,
             :host([checked="true"]:hover) .checkbox,
@@ -293,6 +320,25 @@ export const MenuItemStyles = css`
 
             :host([aria-checked="true"]) .radio-indicator {
                 background: ${SystemColors.Highlight};
+            }
+        `
+    ),
+
+    new DirectionalStyleSheetBehavior(
+        css`
+            .expand-collapse-glyph {
+                transform: rotate(0deg);
+            }
+            :host([expanded="true"]) .expand-collapse-glyph {
+                transform: rotate(45deg);
+            }
+        `,
+        css`
+            .expand-collapse-glyph {
+                transform: rotate(180deg);
+            }
+            :host([expanded="true"]) .expand-collapse-glyph {
+                transform: rotate(135deg);
             }
         `
     )

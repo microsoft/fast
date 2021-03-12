@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
@@ -111,11 +111,26 @@ export class Listbox extends FASTElement {
     }
 
     /**
+     * The internal unfiltered list of selectable options.
+     *
+     * @internal
+     */
+    protected _options: ListboxOption[] = [];
+
+    /**
      * The list of options.
      *
      * @public
      */
-    public options: ListboxOption[];
+    public get options(): ListboxOption[] {
+        Observable.track(this, "options");
+        return this._options;
+    }
+
+    public set options(value: ListboxOption[]) {
+        this._options = value;
+        Observable.notify(this, "options");
+    }
 
     /**
      * A collection of the selected options.

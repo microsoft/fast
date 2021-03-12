@@ -1,11 +1,13 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
-import { TextArea, TextAreaResize } from "./text-area";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import { TextAreaResize } from "./text-area";
+import type { TextArea } from "./text-area";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
  * @public
  */
-export const TextAreaTemplate = html<TextArea>`
+export const TextAreaTemplate: ViewTemplate<TextArea> = html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

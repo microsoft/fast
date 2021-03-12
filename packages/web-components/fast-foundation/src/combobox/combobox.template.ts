@@ -1,13 +1,14 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Combobox } from "./combobox";
+import type { Combobox } from "./combobox";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
  * @public
  */
-export const ComboboxTemplate = html<Combobox>`
+export const ComboboxTemplate: ViewTemplate<Combobox> = html`
     <template
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"

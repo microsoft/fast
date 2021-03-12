@@ -46,6 +46,16 @@ jobs:
         yarn test-chromium:pw 
         yarn test-firefox:pw 
         yarn test-webkit:pw
+      
+    - name: Initialize CodeQL
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, typescript
+
+    - name: Perform CodeQL Analysis
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      uses: github/codeql-action/analyze@v1
 
   windows_cross-platform_cross-browser:
     runs-on: [windows-latest]

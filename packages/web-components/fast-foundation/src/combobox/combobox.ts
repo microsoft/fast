@@ -1,11 +1,11 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
 import { limit } from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
-import { ListboxOption } from "../listbox-option/listbox-option";
+import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
 import { SelectPosition, SelectRole } from "../select/select.options";
+import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
 import { ComboboxAutocomplete } from "./combobox.options";
 
@@ -16,13 +16,6 @@ import { ComboboxAutocomplete } from "./combobox.options";
  * @public
  */
 export class Combobox extends FormAssociatedCombobox {
-    /**
-     * The internal unfiltered list of selectable options.
-     *
-     * @internal
-     */
-    private _options: ListboxOption[] = [];
-
     /**
      * The internal value property.
      *
@@ -134,11 +127,13 @@ export class Combobox extends FormAssociatedCombobox {
      * Overrides `Listbox.options`.
      */
     public get options(): ListboxOption[] {
+        Observable.track(this, "options");
         return this.filteredOptions.length ? this.filteredOptions : this._options;
     }
 
     public set options(value: ListboxOption[]) {
         this._options = value;
+        Observable.notify(this, "options");
     }
 
     /**

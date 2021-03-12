@@ -6,11 +6,11 @@ import {
     keyCodeEnter,
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
+import type { AnchoredRegion } from "../anchored-region";
+import type { Menu } from "../menu/menu";
 import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { AnchoredRegion } from "../anchored-region";
-import { Menu } from "../menu/menu";
 import { getDirection } from "../utilities/";
+import { applyMixins } from "../utilities/apply-mixins";
 import { MenuItemRole } from "./menu-item.options";
 
 export { MenuItemRole };
@@ -42,14 +42,12 @@ export class MenuItem extends FASTElement {
     @attr({ attribute: "expanded" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
-        const submenu: Element | undefined = this.getSubmenu();
         if (this.$fastController.isConnected) {
-            const submenu: Element | undefined = this.getSubmenu();
-            if (submenu === undefined) {
+            if (this.submenu === undefined) {
                 return;
             }
             if (this.expanded === false) {
-                (submenu as Menu).collapseExpandedItem();
+                (this.submenu as Menu).collapseExpandedItem();
             } else {
                 this.currentDirection = getDirection(this);
             }
@@ -83,17 +81,18 @@ export class MenuItem extends FASTElement {
     }
 
     /**
-     * @internal
-     */
-    @observable
-    public submenu: Element | undefined;
-
-    /**
      * reference to the anchored region
      *
      * @internal
      */
+    @observable
     public submenuRegion: AnchoredRegion;
+
+    /**
+     * @internal
+     */
+    @observable
+    public hasSubmenu: boolean = false;
 
     /**
      * Track current direction to pass to the anchored region
@@ -103,7 +102,15 @@ export class MenuItem extends FASTElement {
     @observable
     public currentDirection: Direction = Direction.ltr;
 
+    /**
+     * @internal
+     */
+    @observable
+    public submenu: Element | undefined;
+
     private focusSubmenuOnLoad: boolean = false;
+
+    private observer: MutationObserver;
 
     /**
      * @internal
@@ -111,8 +118,10 @@ export class MenuItem extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         DOM.queueUpdate(() => {
-            this.submenu = this.getSubmenu();
+            this.updateSubmenu();
         });
+
+        this.observer = new MutationObserver(this.updateSubmenu);
     }
 
     /**
@@ -121,6 +130,7 @@ export class MenuItem extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.submenu = undefined;
+        this.observer.disconnect();
     }
 
     /**
@@ -174,7 +184,7 @@ export class MenuItem extends FASTElement {
             return;
         }
         this.focusSubmenuOnLoad = false;
-        if (this.submenu !== undefined) {
+        if (this.hasSubmenu) {
             (this.submenu as HTMLElement).focus();
             this.setAttribute("tabindex", "-1");
         }
@@ -184,7 +194,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     public handleMouseOver = (e: MouseEvent): boolean => {
-        if (this.disabled || this.submenu === undefined || this.expanded) {
+        if (this.disabled || !this.hasSubmenu || this.expanded) {
             return false;
         }
 
@@ -210,7 +220,7 @@ export class MenuItem extends FASTElement {
      * @internal
      */
     private expandAndFocus = (): void => {
-        if (this.submenu === undefined) {
+        if (!this.hasSubmenu) {
             return;
         }
         this.focusSubmenuOnLoad = true;
@@ -233,8 +243,8 @@ export class MenuItem extends FASTElement {
 
             case MenuItemRole.menuitem:
                 // update submenu
-                this.submenu = this.getSubmenu();
-                if (this.submenu !== undefined) {
+                this.updateSubmenu();
+                if (this.hasSubmenu) {
                     this.expandAndFocus();
                 } else {
                     this.$emit("change");
@@ -254,11 +264,12 @@ export class MenuItem extends FASTElement {
      *
      * @internal
      */
-    private getSubmenu = (): undefined | Element => {
-        const domChildren: Element[] = Array.from(this.children);
-        return domChildren.find((element: Element) => {
+    private updateSubmenu = (): void => {
+        this.submenu = this.domChildren().find((element: Element) => {
             return element.getAttribute("role") === "menu";
         });
+
+        this.hasSubmenu = this.submenu === undefined ? false : true;
     };
 
     /**

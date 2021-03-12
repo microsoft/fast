@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { MenuItemRole } from "@microsoft/fast-foundation/dist/esm/menu-item/menu-item.options";
 
@@ -71,6 +71,21 @@ export const fastMenuItemDefinition: WebComponentDefinition = {
                     name: "submenu",
                     title: "Sub menu slot",
                     description: "The submenu slot",
+                },
+                {
+                    name: "checkbox-indicator",
+                    title: "Checkbox indicator",
+                    description: "The checkbox indicator slot",
+                },
+                {
+                    name: "radio-indicator",
+                    title: "Radio indicator",
+                    description: "The radio indicator slot",
+                },
+                {
+                    name: "expand-collapse-indicator",
+                    title: "Expand/collapse indicator",
+                    description: "The expand/collapse indicator slot",
                 },
             ],
         },

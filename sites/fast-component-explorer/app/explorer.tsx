@@ -28,6 +28,7 @@ import {
     MessageSystemType,
 } from "@microsoft/fast-tooling";
 import {
+    componentCategories,
     DirectionSwitch,
     downChevron,
     Editor,
@@ -98,6 +99,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             activePivotTab: "code",
             mobileFormVisible: false,
             mobileNavigationVisible: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
@@ -229,7 +231,10 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
-                    <ModularForm messageSystem={this.fastMessageSystem} />
+                    <ModularForm
+                        messageSystem={this.fastMessageSystem}
+                        categories={componentCategories}
+                    />
                 </div>
                 <Footer />
             </div>
