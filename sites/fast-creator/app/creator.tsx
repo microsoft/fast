@@ -141,6 +141,7 @@ class Creator extends Editor<{}, CreatorState> {
                 componentLinkedDataId,
             ],
             transparentBackground: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
