@@ -1087,6 +1087,32 @@ export const hidden = ":host([hidden]){display:none}";
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
+// @public
+export class HorizontalScroll extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    easing: ScrollEasing;
+    nextFlipper: HTMLDivElement;
+    previousFlipper: HTMLDivElement;
+    resized(): void;
+    scrollContainer: HTMLDivElement;
+    scrolled(): void;
+    scrollItems: HTMLElement[];
+    scrollToNext(): void;
+    scrollToPosition(newPosition: number, position?: number): void;
+    scrollToPrevious(): void;
+    speed: number;
+    view: HorizontalScrollView;
+    }
+
+// @public (undocumented)
+export const HorizontalScrollTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
+
+// @public
+export type HorizontalScrollView = "default" | "mobile";
+
 // @alpha
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
@@ -1152,7 +1178,10 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
-    options: ListboxOption[];
+    get options(): ListboxOption[];
+    set options(value: ListboxOption[]);
+    // @internal
+    protected _options: ListboxOption[];
     role: string;
     selectedIndex: number;
     // (undocumented)
@@ -1360,6 +1389,7 @@ export class NumberField extends FormAssociatedNumberField {
     handleChange(): void;
     // @internal
     handleTextInput(): void;
+    hideStep: boolean;
     list: string;
     max: number;
     // (undocumented)
@@ -1567,6 +1597,9 @@ export const enum ResolverStrategy {
     // (undocumented)
     transient = 2
 }
+
+// @public
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

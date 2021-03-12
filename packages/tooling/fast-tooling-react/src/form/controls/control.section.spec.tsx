@@ -71,7 +71,7 @@ const sectionControlProps: SectionControlProps = {
     schema: {},
     schemaDictionary: {},
     disabled: false,
-    value: "",
+    value: {},
     untitled: "",
     onChange: jest.fn(),
     onUpdateSection: jest.fn(),
@@ -95,11 +95,18 @@ const sectionControlProps: SectionControlProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 const managedClasses: SectionControlClassNameContract = {
     sectionControl: "sectionControl",
     sectionControl__disabled: "sectionControl__disabeld",
+    sectionControl_category: "sectionControl_category",
+    sectionControl_category__expanded: "sectionControl_category__expanded",
+    sectionControl_categoryTitle: "sectionControl_categoryTitle",
+    sectionControl_categoryTitleRegion: "sectionControl_categoryTitleRegion",
+    sectionControl_categoryExpandTrigger: "sectionControl_categoryExpandTrigger",
+    sectionControl_categoryContentRegion: "sectionControl_categoryContentRegion",
 };
 
 describe("SectionControl", () => {
@@ -270,5 +277,375 @@ describe("SectionControl", () => {
         );
 
         expect(rendered.find("SectionValidation")).toHaveLength(0);
+    });
+    test("should show categories and categorize items if categories have been passed", () => {
+        const schema: any = {
+            id: "",
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+                bar: {
+                    type: "string",
+                },
+                bat: {
+                    type: "string",
+                },
+            },
+        };
+
+        const rendered: any = mount(
+            <SectionControl
+                {...sectionControlProps}
+                managedClasses={managedClasses}
+                schema={schema}
+                validationErrors={[]}
+                categories={{
+                    "": {
+                        "": [
+                            {
+                                title: "category title",
+                                dataLocations: ["foo", "baz"],
+                            },
+                        ],
+                    },
+                }}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema,
+                        disabled: false,
+                        data: {},
+                        text: "foo",
+                        type: DataType.object,
+                        items: ["foo", "bar", "bat"],
+                    },
+                    foo: {
+                        self: "foo",
+                        parent: "",
+                        relativeDataLocation: "foo",
+                        schemaLocation: "properties.foo",
+                        schema: schema.properties.foo,
+                        disabled: false,
+                        data: undefined,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bar: {
+                        self: "bar",
+                        parent: "",
+                        relativeDataLocation: "bar",
+                        schemaLocation: "properties.bar",
+                        schema: schema.properties.bar,
+                        disabled: false,
+                        data: undefined,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bat: {
+                        self: "bat",
+                        parent: "",
+                        relativeDataLocation: "bat",
+                        schemaLocation: "properties.bat",
+                        schema: schema.properties.bat,
+                        disabled: false,
+                        data: undefined,
+                        text: "bat",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(3);
+        expect(rendered.find("legend").at(0).text()).toEqual("category title");
+    });
+    test("should show a category trigger if categories have been passed", () => {
+        const schema: any = {
+            id: "",
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+                bar: {
+                    type: "string",
+                },
+                bat: {
+                    type: "string",
+                },
+            },
+        };
+
+        const rendered: any = mount(
+            <SectionControl
+                {...sectionControlProps}
+                managedClasses={managedClasses}
+                schema={schema}
+                validationErrors={[]}
+                categories={{
+                    "": {
+                        "": [
+                            {
+                                title: "category title",
+                                dataLocations: ["foo", "baz"],
+                            },
+                        ],
+                    },
+                }}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema,
+                        disabled: false,
+                        data: {},
+                        text: "foo",
+                        type: DataType.object,
+                        items: ["foo", "bar", "bat"],
+                    },
+                    foo: {
+                        self: "foo",
+                        parent: "",
+                        relativeDataLocation: "foo",
+                        schemaLocation: "properties.foo",
+                        schema: schema.properties.foo,
+                        disabled: false,
+                        data: undefined,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bar: {
+                        self: "bar",
+                        parent: "",
+                        relativeDataLocation: "bar",
+                        schemaLocation: "properties.bar",
+                        schema: schema.properties.bar,
+                        disabled: false,
+                        data: undefined,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bat: {
+                        self: "bat",
+                        parent: "",
+                        relativeDataLocation: "bat",
+                        schemaLocation: "properties.bat",
+                        schema: schema.properties.bat,
+                        disabled: false,
+                        data: undefined,
+                        text: "bat",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(3);
+        expect(
+            rendered.find(`.${managedClasses.sectionControl_categoryExpandTrigger}`)
+        ).toHaveLength(1);
+    });
+    test("should update the category expanded state if the category trigger has been clicked", () => {
+        const schema: any = {
+            id: "",
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+                bar: {
+                    type: "string",
+                },
+                bat: {
+                    type: "string",
+                },
+            },
+        };
+
+        const rendered: any = mount(
+            <SectionControl
+                {...sectionControlProps}
+                managedClasses={managedClasses}
+                schema={schema}
+                validationErrors={[]}
+                categories={{
+                    "": {
+                        "": [
+                            {
+                                title: "category title",
+                                dataLocations: ["foo", "baz"],
+                            },
+                        ],
+                    },
+                }}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema,
+                        disabled: false,
+                        data: {},
+                        text: "foo",
+                        type: DataType.object,
+                        items: ["foo", "bar", "bat"],
+                    },
+                    foo: {
+                        self: "foo",
+                        parent: "",
+                        relativeDataLocation: "foo",
+                        schemaLocation: "properties.foo",
+                        schema: schema.properties.foo,
+                        disabled: false,
+                        data: undefined,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bar: {
+                        self: "bar",
+                        parent: "",
+                        relativeDataLocation: "bar",
+                        schemaLocation: "properties.bar",
+                        schema: schema.properties.bar,
+                        disabled: false,
+                        data: undefined,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bat: {
+                        self: "bat",
+                        parent: "",
+                        relativeDataLocation: "bat",
+                        schemaLocation: "properties.bat",
+                        schema: schema.properties.bat,
+                        disabled: false,
+                        data: undefined,
+                        text: "bat",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(3);
+        const trigger = rendered.find(
+            `.${managedClasses.sectionControl_categoryExpandTrigger}`
+        );
+        expect(
+            rendered.find(`.${managedClasses.sectionControl_category__expanded}`)
+        ).toHaveLength(1);
+        trigger.simulate("click");
+        expect(
+            rendered.find(`.${managedClasses.sectionControl_category__expanded}`)
+        ).toHaveLength(0);
+    });
+    test("should have a collapsed expanded state if the default expanded state is false", () => {
+        const schema: any = {
+            id: "",
+            type: "object",
+            properties: {
+                foo: {
+                    type: "string",
+                },
+                bar: {
+                    type: "string",
+                },
+                bat: {
+                    type: "string",
+                },
+            },
+        };
+
+        const rendered: any = mount(
+            <SectionControl
+                {...sectionControlProps}
+                managedClasses={managedClasses}
+                schema={schema}
+                validationErrors={[]}
+                categories={{
+                    "": {
+                        "": [
+                            {
+                                title: "category title",
+                                dataLocations: ["foo", "baz"],
+                                expandByDefault: false,
+                            },
+                        ],
+                    },
+                }}
+                navigation={{
+                    "": {
+                        self: "",
+                        parent: null,
+                        relativeDataLocation: "",
+                        schemaLocation: "",
+                        schema,
+                        disabled: false,
+                        data: {},
+                        text: "foo",
+                        type: DataType.object,
+                        items: ["foo", "bar", "bat"],
+                    },
+                    foo: {
+                        self: "foo",
+                        parent: "",
+                        relativeDataLocation: "foo",
+                        schemaLocation: "properties.foo",
+                        schema: schema.properties.foo,
+                        disabled: false,
+                        data: undefined,
+                        text: "foo",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bar: {
+                        self: "bar",
+                        parent: "",
+                        relativeDataLocation: "bar",
+                        schemaLocation: "properties.bar",
+                        schema: schema.properties.bar,
+                        disabled: false,
+                        data: undefined,
+                        text: "bar",
+                        type: DataType.string,
+                        items: [],
+                    },
+                    bat: {
+                        self: "bat",
+                        parent: "",
+                        relativeDataLocation: "bat",
+                        schemaLocation: "properties.bat",
+                        schema: schema.properties.bat,
+                        disabled: false,
+                        data: undefined,
+                        text: "bat",
+                        type: DataType.string,
+                        items: [],
+                    },
+                }}
+            />
+        );
+
+        expect(rendered.find("TextareaControl")).toHaveLength(3);
+        expect(
+            rendered.find(`.${managedClasses.sectionControl_category__expanded}`)
+        ).toHaveLength(0);
     });
 });

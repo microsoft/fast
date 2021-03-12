@@ -4,11 +4,7 @@ import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
 } from "../data-utilities/relocate";
-import {
-    getLinkedDataDictionary,
-    getLinkedDataList,
-    updateDataDictionaryDisplayText,
-} from "./data";
+import { getLinkedDataDictionary, getLinkedDataList } from "./data";
 import { MessageSystemType } from "./types";
 import {
     DataDictionaryMessageIncoming,
@@ -39,6 +35,11 @@ import { defaultHistoryLimit } from "./history";
 import { History } from "./history.props";
 import { SchemaDictionary } from "./schema.props";
 import { Validation } from "./validation.props";
+
+/**
+ * The default name that the display text maps to
+ */
+export const dataSetName: string = "data-fast-tooling-name";
 
 /**
  * This is the Message System, through which:
@@ -178,7 +179,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             );
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -198,7 +200,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             });
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -219,7 +222,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             });
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -247,7 +251,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -314,7 +319,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             // update the navigation dictionary
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -377,7 +383,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -400,7 +407,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
 
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
 
             return {
@@ -411,23 +419,6 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
                 options: data.options,
-            };
-        case MessageSystemDataTypeAction.updateDisplayText:
-            dataDictionary = updateDataDictionaryDisplayText(
-                dataDictionary,
-                data.dictionaryId,
-                data.displayText
-            );
-            navigationDictionary = getNavigationDictionary(
-                schemaDictionary,
-                dataDictionary
-            );
-
-            return {
-                type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.updateDisplayText,
-                navigationDictionary,
-                dataDictionary,
             };
     }
 }
@@ -507,7 +498,8 @@ export function getMessage<C = {}>(
             schemaDictionary = data.schemaDictionary;
             navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
-                dataDictionary
+                dataDictionary,
+                dataSetName
             );
             activeNavigationConfigId =
                 navigationDictionary[0][navigationDictionary[1]][1];
