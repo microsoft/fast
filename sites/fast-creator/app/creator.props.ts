@@ -83,6 +83,11 @@ export interface ProjectFile {
      * Preview background transparency
      */
     transparentBackground: boolean;
+
+    /**
+     * The last mapped data dictionary to monaco editor value
+     */
+    lastMappedDataDictionaryToMonacoEditorHTMLValue: string;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;
