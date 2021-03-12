@@ -15,7 +15,7 @@ The first step to using a token is to create it:
 ```ts
 import { DesignToken } from "@microsoft/fast-foundation";
 
-export const accentColor = DesignToken.create<string>("accent-color");
+export const backgroundColor = DesignToken.create<string>("background-color");
 ```
 
 The type assertion informs what types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
@@ -27,43 +27,43 @@ A `DesignToken` *value* is set for a `FASTElement` or `HTMLBodyElement` node. Th
 const ancestor = document.querySelector("my-element") as FASTElement;
 const descendent = ancestor.querySelector("my-element") as FASTElement;
 
-accentColor.setValueFor(ancestor, "#DA1A5F");
-accentColor.setValueFor(descendent, "#ADA1F5");
+backgroundColor.setValueFor(ancestor, "#FFFFFF");
+backgroundColor.setValueFor(descendent, "#F7F7F7");
  ```
 
 ### 3. Getting the Design Token value
 Once the value is set for a node, the value is available to use for that node or any descendent node. The value returned will be the value set for the nearest ancestor (or the element itself).
 
 ```ts
-accentColor.getValueFor(ancestor); // "#DA1A5F"
-accentColor.getValueFor(descendent); // "#ADA1F5"
+backgroundColor.getValueFor(ancestor); // "#FFFFFF"
+backgroundColor.getValueFor(descendent); // "#F7F7F7"
 ```
 
 ### 4. Deleting Design Token values
 Values can be deleted for a node. Doing so causes retrieval of the nearest ancestors value instead:
 
 ```ts
-accentColor.deleteValueFor(descendent);
-accentColor.getValueFor(descendent); // "#DA1A5F"
+backgroundColor.deleteValueFor(descendent);
+backgroundColor.getValueFor(descendent); // "#FFFFFF"
 ```
 
 ### 5. Emit a token to a CSS Custom Property
 A Design Token can be made available in CSS through CSS custom properties. The custom property value will be set to the token's value for the supplied target element.
 
 ```ts
-accentColor.addCustomPropertyFor(descendent); // --accent-color: #DA1A5F;
+backgroundColor.addCustomPropertyFor(descendent); // --background-color: #FFFFFF;
 ```
 
 If the value of the token *changes* for the target element, the CSS custom property will be updated to the new value:
 
 ```ts
-accentColor.setValueFor(descendent, "#FF0000"); // --accent-color: #FF0000;
+backgroundColor.setValueFor(descendent, "#F7F7F7"); // --background-color: #F7F7F7;
 ```
 
 The CSS custom property can also be removed through a parallel method:
 
 ```ts
-accentColor.removeCustomPropertyFor(descendent);
+backgroundColor.removeCustomPropertyFor(descendent);
 ```
 
 ## Using Design Tokens in CSS
@@ -74,7 +74,7 @@ import { css } from "@microsoft/fast-element";
 
 const styles = css`
     :host {
-        color: ${accentColor};
+        color: ${backgroundColor};
     }
 `
 ```
@@ -93,13 +93,13 @@ The above example is contrived, but the target element can be used to retrieve *
 
 **Example: A derived token value that uses another design token**
 ```ts
-const multiplier = DesignToken.create<number>("multiplier");
-const size = DesignToken.create("size");
-multiplier.setValueFor(target, 2);
+const foregroundColor = DesignToken.create<string>("foreground-color");
 
-size.setValueFor(target, (element) => {
-    return 12 * multiplier.getValueFor(element);
-});
+foregroundColor.setValueFor(target, (element) => 
+     backgroundColor.getValueFor(element) === "#FFFFFF"
+        ? "#2B2B2B" 
+        : "#262626"
+);
 ```
 
 For derived Design Token values, any change to dependent tokens will force the derived value to update (and update the CSS custom property if applicable). The same is true if an observable property is used by the derived value:
@@ -114,8 +114,8 @@ class ModeManager {
 
 const modeManager = new ModeManager();
 
-const foreground = DesignToken.create<string>("foreground");
-foreground.setValueFor(target, () => modeManager.mode === "light" ? "#000000" : "#FFFFFF");
+backgroundColor.setValueFor(target, () => modeManager.mode === "light" ? "#FFFFFF" : "#242424");
+foregroundColor.setValueFor(target, () => modeManager.mode === "light" ? "#2B2B2B" : "#F5F5F5");
 
-modeManager.mode = "dark"; // Forces the derived token to re-evaluate and CSS custom properties to update if applicable
+modeManager.mode = "dark"; // Forces the derived tokens to re-evaluate and CSS custom properties to update if applicable
 ```
