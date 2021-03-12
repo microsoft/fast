@@ -7,11 +7,11 @@ import { IntersectionService } from "./intersection-service";
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
 // https://github.com/microsoft/TypeScript/issues/37861
-import {
+import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "./resize-observer";
-import { ResizeObserverEntry } from "./resize-observer-entry";
+import type { ResizeObserverEntry } from "./resize-observer-entry";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
