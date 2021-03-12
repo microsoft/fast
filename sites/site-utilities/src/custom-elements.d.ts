@@ -28,6 +28,7 @@ declare namespace JSX {
             events?: {
                 input?: (e: React.ChangeEvent<HTMLInputElement>) => void;
             };
+            "hide-step"?: boolean;
         };
     }
 }
