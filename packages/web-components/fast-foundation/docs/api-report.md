@@ -821,7 +821,7 @@ export interface DesignToken<T> extends CSSDirective {
     getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
     // (undocumented)
     removeCustomPropertyFor(element: DesignTokenTarget): this;
-    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): void;
+    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
 }
 
 // @alpha
