@@ -14,7 +14,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { ColumnDefinition } from "./data-grid";
+import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes } from "./data-grid.options";
 
 /**
