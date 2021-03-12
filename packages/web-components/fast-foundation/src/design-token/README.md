@@ -48,7 +48,7 @@ accentColor.getValueFor(descendent); // "#DA1A5F"
 ```
 
 ### 5. Emit a token to a CSS Custom Property
-A Design Token can be made available in CSS through CSS custom properties. The custom property value be set to the tokens value for the supplied target element.
+A Design Token can be made available in CSS through CSS custom properties. The custom property value will be set to the token's value for the supplied target element.
 
 ```ts
 accentColor.addCustomPropertyFor(descendent); // --accent-color: #DA1A5F;
