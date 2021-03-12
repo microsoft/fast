@@ -119,3 +119,17 @@ foregroundColor.setValueFor(target, () => modeManager.mode === "light" ? "#2B2B2
 
 modeManager.mode = "dark"; // Forces the derived tokens to re-evaluate and CSS custom properties to update if applicable
 ```
+
+
+## Aliasing Design Tokens
+In complex design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
+
+```ts
+const neutralFill = DesignToken.create<string>("neutral-fill");
+const buttonBackgroundColor = DesignToken.create<string>("button-background-color");
+
+neutralFill.setValueFor(target, "#EDEDED");
+buttonBackgroundColor.setValueFor(target, neutralFill);
+
+buttonBackgroundColor.getValueFor(target); // "#EDEDED"
+```
