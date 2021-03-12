@@ -18,7 +18,7 @@ import { DesignToken } from "@microsoft/fast-foundation";
 export const accentColor = DesignToken.create<string>("accent-color");
 ```
 
-The type assertion informs why types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
+The type assertion informs what types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
 
 ### 2. Setting the Design Token
 A `DesignToken` *value* is set for a `FASTElement` node. This allows tokens to be set to different values for distinct DOM trees:
