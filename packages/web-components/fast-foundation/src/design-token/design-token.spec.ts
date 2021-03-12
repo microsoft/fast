@@ -136,6 +136,36 @@ describe("A DesignToken", () => {
             removeElement(target);
         });
     });
+    describe("getting and setting a token value", () => {
+        it("should retrieve the value of the token it was set to", () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+            const target = addElement();
+            
+            tokenA.setValueFor(target, 12);
+            tokenB.setValueFor(target, tokenA);
+
+            expect(tokenB.getValueFor(target)).to.equal(12);
+
+            removeElement(target);
+        });
+        it("should update the value of the token it was set to when the token's value changes", () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+            const target = addElement();
+            
+            tokenA.setValueFor(target, 12);
+            tokenB.setValueFor(target, tokenA);
+
+            expect(tokenB.getValueFor(target)).to.equal(12);
+
+            tokenA.setValueFor(target, 14);
+
+            expect(tokenB.getValueFor(target)).to.equal(14);
+
+            removeElement(target);
+        });
+    })
     describe("deleting simple values", () => {
         it("should throw when deleted and no parent token value is set", () => {
             const target = addElement();
@@ -298,6 +328,7 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
                 removeElement(parent);
             });
+
         })
 
         describe("to dynamic token values", () => {
@@ -400,6 +431,60 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
             });
         });
+
+        describe("to DesignToken values", () => {
+            it("should emit the CSS custom property with a value of the token's value", () => {
+                const tokenA = DesignToken.create<number>("token-a");
+                const tokenB = DesignToken.create<number>("token-b");
+                const target = addElement()
+
+                tokenA.setValueFor(target, 12);
+                tokenB.setValueFor(target, tokenA);
+
+                tokenB.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("12");
+                removeElement(target);
+            });
+            it("should update the CSS custom property when the value of the token changes", () => {
+                const tokenA = DesignToken.create<number>("token-a");
+                const tokenB = DesignToken.create<number>("token-b");
+                const target = addElement()
+
+                tokenA.setValueFor(target, 12);
+                tokenB.setValueFor(target, tokenA);
+
+                tokenB.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("12");
+
+                tokenA.setValueFor(target, 14);
+
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("14");
+
+                removeElement(target);
+            });
+
+            it("should update the CSS custom property of a downstream element when the token changes", () => {
+                const tokenA = DesignToken.create<number>("token-a");
+                const tokenB = DesignToken.create<number>("token-b");
+                const parent = addElement()
+                const target = addElement(parent);
+
+                tokenA.setValueFor(parent, 12);
+                tokenB.setValueFor(parent, tokenA);
+
+                tokenB.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("12");
+
+                tokenA.setValueFor(parent, 14);
+
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("14");
+
+                removeElement(parent);
+            })
+        })
     });
 
     describe("removing CSS Custom Properties", () => {
