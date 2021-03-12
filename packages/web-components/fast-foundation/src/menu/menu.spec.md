@@ -86,12 +86,21 @@ The third item in the menu has a glyph, which would inset the text from the othe
 - default - slot for the content (the default slot for the item)
 - after - slot which comes after content
 - submenu - the slot used to generate a submenu
+- radio-indicator - slot for radio item selection indicator
+- checkbox-indicator - slot for the checkbox selection indicator
+- expand-collapse-glyph - slot for the expand/collapse glyph for nested menus
 
 *CSS Parts*
 - before
 - content
 - after
 - submenu-region
+- checkbox
+- checkbox-indicator
+- radio
+- radio-indicator
+- expand-collapse
+- expand-collapse-glyph
 
 *Events:*
 - click (event) - event for when the item has been clicked or invoked via keyboard

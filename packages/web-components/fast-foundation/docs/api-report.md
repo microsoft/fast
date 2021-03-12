@@ -1338,6 +1338,8 @@ export class MenuItem extends FASTElement {
     handleMouseOut: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMouseOver: (e: MouseEvent) => boolean;
+    // @internal (undocumented)
+    hasSubmenu: boolean;
     role: MenuItemRole;
     // @internal (undocumented)
     submenu: Element | undefined;
@@ -1345,7 +1347,7 @@ export class MenuItem extends FASTElement {
     submenuLoaded: () => void;
     // @internal
     submenuRegion: AnchoredRegion;
-}
+    }
 
 // @internal
 export interface MenuItem extends StartEnd {
