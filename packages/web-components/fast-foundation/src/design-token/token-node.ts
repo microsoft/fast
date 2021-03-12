@@ -154,7 +154,7 @@ export class DesignTokenNode<T> {
             this.bindingObserver = Observable.binding(value, handler);
             this.bindingObserver.observe(this.target, defaultExecutionContext);
 
-            this._value = (value as any)(this.target);
+            this._value = value(this.target);
         } else if (this._value !== value) {
             this._value = value;
         }
