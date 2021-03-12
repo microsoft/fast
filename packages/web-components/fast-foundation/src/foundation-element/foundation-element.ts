@@ -1,11 +1,9 @@
-import {
+import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
+import type {
     AttributeConfiguration,
     ComposableStyles,
     Constructable,
-    ElementStyles,
     ElementViewTemplate,
-    FASTElement,
-    observable,
 } from "@microsoft/fast-element";
 import {
     ComponentPresentation,

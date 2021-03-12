@@ -7,7 +7,7 @@ import {
     Observable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import {
+import type {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index";
@@ -18,7 +18,7 @@ import {
     StyleElementCustomPropertyManager,
 } from "../custom-properties/manager";
 import { composedParent } from "../utilities/composed-parent";
-import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
+import type { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 

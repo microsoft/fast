@@ -1,11 +1,12 @@
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { HorizontalScroll } from "./horizontal-scroll";
+import type { HorizontalScroll } from "./horizontal-scroll";
 
 /**
  * @public
  */
-export const HorizontalScrollTemplate = html<HorizontalScroll>`
+export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll> = html`
     <template role="horizontal-scroll" class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">

@@ -1,13 +1,13 @@
-import { html } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { Slider } from "./slider";
+import type { Slider } from "./slider";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
-export const SliderTemplate = html<Slider>`
+export const SliderTemplate: ViewTemplate<Slider> = html`
     <template
         role="slider"
         class="${x => (x.readOnly ? "readonly" : "")}
