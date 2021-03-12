@@ -1,5 +1,6 @@
-import { children, elements, html, slotted, ViewTemplate } from "@microsoft/fast-element";
-import { DataGridRow } from "./data-grid-row";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { DataGridRow } from "./data-grid-row";
 
 function createCellItemTemplate(prefix: string): ViewTemplate {
     return html`

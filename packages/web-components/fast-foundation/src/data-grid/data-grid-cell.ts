@@ -14,12 +14,12 @@ import {
     keyCodeEscape,
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
-import { ColumnDefinition } from "./data-grid";
+import type { ColumnDefinition } from "./data-grid";
 import { DataGridCellTypes } from "./data-grid.options";
 
 export { DataGridCellTypes };
 
-const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const defaultCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         ${x =>
             x.rowData === null ||
@@ -30,7 +30,7 @@ const defaultCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     </template>
 `;
 
-const defaultHeaderCellContentsTemplate: ViewTemplate = html<DataGridCell>`
+const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
     <template>
         ${x =>
             x.columnDefinition === null

@@ -1,11 +1,12 @@
 import { html, when } from "@microsoft/fast-element";
-import { Skeleton } from "./skeleton";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { Skeleton } from "./skeleton";
 
 /**
  * The template for the fast-skeleton component
  * @public
  */
-export const SkeletonTemplate = html<Skeleton>`
+export const SkeletonTemplate: ViewTemplate<Skeleton> = html`
     <template
         class="${x => (x.shape === "circle" ? "circle" : "rect")}"
         pattern="${x => x.pattern}"

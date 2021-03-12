@@ -1,4 +1,4 @@
-import { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import type { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
 
 /**
  * An event listener fired by a {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList | MediaQueryList }.

@@ -5,6 +5,7 @@
         "outDir": "dist/esm",
         "strictNullChecks": true,
         "experimentalDecorators": true,
+        "importsNotUsedAsValues": "error",
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
