@@ -30,7 +30,7 @@ export class NumberField extends FormAssociatedNumberField {
     public autofocus: boolean;
 
     /**
-     * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
+     * When true, spin buttons will not be rendered
      * @public
      * @remarks
      * HTML Attribute: autofocus
