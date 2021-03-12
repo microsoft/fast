@@ -167,10 +167,10 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 class DesignTokenBehavior<T> implements Behavior {
     constructor(public token: DesignToken<T>) {}
 
-    bind(target: HTMLElement & FASTElement) {
+    bind(target: DesignTokenTarget) {
         this.token.addCustomPropertyFor(target);
     }
-    unbind(target: HTMLElement & FASTElement) {
+    unbind(target: DesignTokenTarget) {
         this.token.removeCustomPropertyFor(target);
     }
 }
