@@ -5,7 +5,6 @@ import {
     Observable,
     Subscriber,
 } from "@microsoft/fast-element";
-import { StyleElementCustomPropertyManager } from "../custom-properties";
 import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenNode } from "./token-node";
 
