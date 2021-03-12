@@ -192,27 +192,18 @@ export class Menu extends FASTElement {
             this.focusIndex = focusIndex;
         }
 
-        for (let item: number = 0; item < this.menuItems.length; item++) {
-            this.menuItems[item].setAttribute(
-                "tabindex",
-                item === focusIndex ? "0" : "-1"
-            );
-            this.menuItems[item].addEventListener(
-                "expanded-change",
-                this.handleExpandedChanged
-            );
-            this.menuItems[item].addEventListener("focus", this.handleItemFocus);
-        }
+        this.menuItems.forEach((item: HTMLElement, index: number) => {
+            item.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
+            item.addEventListener("expanded-change", this.handleExpandedChanged);
+            item.addEventListener("focus", this.handleItemFocus);
+        });
     };
 
-    private resetItems = (oldValue: any): void => {
-        for (let item: number = 0; item < oldValue.length; item++) {
-            oldValue[item].removeEventListener(
-                "expanded-change",
-                this.handleExpandedChanged
-            );
-            this.menuItems[item].removeEventListener("focus", this.handleItemFocus);
-        }
+    private resetItems = (oldValue: HTMLElement[]): void => {
+        oldValue.forEach((item: HTMLElement) => {
+            item.removeEventListener("expanded-change", this.handleExpandedChanged);
+            item.removeEventListener("focus", this.handleItemFocus);
+        });
     };
 
     /**
