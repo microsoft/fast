@@ -8,6 +8,7 @@ import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -808,6 +809,25 @@ export interface DesignSystemRegistrationContext {
 
 // @alpha (undocumented)
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
+
+// @alpha
+export interface DesignToken<T> extends CSSDirective {
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenTarget" needs to be exported by the entry point index.d.ts
+    addCustomPropertyFor(element: DesignTokenTarget): this;
+    readonly cssCustomProperty: string;
+    deleteValueFor(element: DesignTokenTarget): this;
+    // Warning: (ae-forgotten-export) The symbol "StaticDesignTokenValue" needs to be exported by the entry point index.d.ts
+    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    // (undocumented)
+    removeCustomPropertyFor(element: DesignTokenTarget): this;
+    // Warning: (ae-forgotten-export) The symbol "DesignTokenValue" needs to be exported by the entry point index.d.ts
+    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): void;
+}
+
+// @alpha
+export const DesignToken: Readonly<{
+    create: typeof create;
+}>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{
@@ -2163,6 +2183,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/design-token/design-token.d.ts:65:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

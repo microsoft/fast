@@ -10,7 +10,7 @@ import { CustomPropertyManager } from "./custom-property-manager";
 import { DesignTokenNode } from "./token-node";
 
 /**
- * A {@link DesignToken} value that is derived. These values can depend on other {@link DesignToken}s
+ * A {@link (DesignToken:interface)} value that is derived. These values can depend on other {@link (DesignToken:interface)}s
  * or arbitrary observable properties.
  */
 export type DerivedDesignTokenValue<T> = T extends Function
@@ -35,10 +35,11 @@ export type DesignTokenTarget = HTMLElement & FASTElement;
 
 /**
  * Describes a DesignToken instance.
+ * @alpha
  */
 export interface DesignToken<T> extends CSSDirective {
     /**
-     * The {@link DesignToken} formatted as a CSS custom property if the token is
+     * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
      * configured to write a CSS custom property, otherwise empty string;
      */
     readonly cssCustomProperty: string;
@@ -160,8 +161,6 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     }
 }
 
-// We probably want to de-dupe here so we don't add the same behavior
-// and re-retrieve values when a behavior is used multiple times
 class DesignTokenBehavior<T> implements Behavior {
     constructor(public token: DesignToken<T>) {}
 
@@ -180,7 +179,8 @@ function create<T>(name: string): any {
 }
 
 /**
- * Factory object for creating {@link DesignToken} instances.
+ * Factory object for creating {@link (DesignToken:interface)} instances.
+ * @alpha
  */
 export const DesignToken = Object.freeze({
     create,
