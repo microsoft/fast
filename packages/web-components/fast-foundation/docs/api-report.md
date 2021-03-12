@@ -830,7 +830,7 @@ export const DesignToken: Readonly<{
 }>;
 
 // @alpha
-export type DesignTokenTarget = HTMLElement & FASTElement;
+export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
 
 // @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
@@ -2192,7 +2192,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:69:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:68:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

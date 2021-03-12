@@ -18,6 +18,7 @@ export {
     StaticDesignTokenValue,
     DerivedDesignTokenValue,
     DesignTokenValue,
+    DesignTokenTarget,
 } from "./design-token/design-token";
 export * from "./di/index";
 export * from "./dialog/index";
