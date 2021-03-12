@@ -11,31 +11,27 @@ import { PeoplePickerMenuStyles as pickerMenuStyles } from "./people-picker-menu
 import { PeoplePickerListStyles as pickerListStyles } from "./people-picker-list.styles";
 import { PeoplePicker } from "./people-picker";
 
-function createItemTemplate(): ViewTemplate {
-    return html`
-        <button
-            role="listitem"
-            tabindex="0"
-            @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
-            @keydown="${(x, c) =>
-                c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
-        >
-            <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
-        </button>
-    `;
-}
+const itemTemplate: ViewTemplate = html`
+    <button
+        role="listitem"
+        tabindex="0"
+        @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
+        @keydown="${(x, c) =>
+            c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
+    >
+        <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
+    </button>
+`;
 
-function createOptionTemplate(): ViewTemplate {
-    return html`
-        <button
-            role="listitem"
-            tabindex="-1"
-            @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
-        >
-            <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
-        </button>
-    `;
-}
+const optionTemplate: ViewTemplate = html`
+    <button
+        role="listitem"
+        tabindex="-1"
+        @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
+    >
+        <mgt-person person-query="${x => x}" view="twoLines"></mgt-person>
+    </button>
+`;
 
 /**
  * The FAST People Picker Custom Element. Implements {@link @microsoft/fast-foundation#PeoplePicker},
@@ -50,12 +46,7 @@ function createOptionTemplate(): ViewTemplate {
  */
 @customElement({
     name: "fast-people-picker",
-    template: createPickerTemplate(
-        "fast",
-        "people",
-        createItemTemplate(),
-        createOptionTemplate()
-    ),
+    template: createPickerTemplate("fast", "people", itemTemplate, optionTemplate),
     styles: pickerStyles,
     shadowOptions: {
         delegatesFocus: true,

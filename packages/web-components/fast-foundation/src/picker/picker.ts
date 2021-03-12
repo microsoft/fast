@@ -202,6 +202,14 @@ export class Picker extends FASTElement {
     public menuFocusOptionId: string | null = null;
 
     /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public showOptions: boolean = true;
+
+    /**
      * reference to the edit box
      *
      * @internal

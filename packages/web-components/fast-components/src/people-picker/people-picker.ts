@@ -147,20 +147,13 @@ export class PeoplePicker extends Picker {
     protected handleTextInput = (e: InputEvent): boolean => {
         // if (!this._debouncedSearch) {
         //   this._debouncedSearch = debounce(async () => {
-        //     const loadingTimeout = setTimeout(() => {
-        //       this._showLoading = true;
-        //     }, 50);
-
+        //     this.showOptions = false;
         //     await this.loadState();
-        //     clearTimeout(loadingTimeout);
-        //     this._showLoading = false;
-        //     this.showFlyout();
-
-        //     this._arrowSelectionCount = 0;
+        //     this.showOptions = true;
         //   }, 400);
         // }
 
-        this._debouncedSearch();
+        // this._debouncedSearch();
 
         return super.handleTextInput(e);
     };

@@ -1,12 +1,4 @@
-import {
-    children,
-    elements,
-    html,
-    ref,
-    slotted,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
+import { html, ViewTemplate } from "@microsoft/fast-element";
 import { PickerList } from "./picker-list";
 
 /**
