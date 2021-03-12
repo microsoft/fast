@@ -129,6 +129,14 @@ When binding to `class`, the underlying engine will not over-write classes added
 <button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
 ```
 
+**Example: Nullish value**
+
+Some cases may occur where an attribute needs to have a value when used however not present if unused. These are different than boolean attributes by where their presence alone triggers their effect. In this situation a nullish value (`null` or `undefined`) may be provided so the attribute won't exist in that condition.
+
+```html
+<div aria-hidden="${x => x.isViewable ? 'true' : null}"></div>
+```
+
 ### Properties
 
 Properties can also be set directly on an HTML element. To do so, prepend the property name with `:` to indicate a property binding. The template engine will then use your expression to assign the element's property value.
