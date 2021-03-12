@@ -8,7 +8,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
-import { AnchoredRegion } from "../anchored-region";
+import { AnchoredRegion, AutoUpdateMode } from "../anchored-region";
 import { PickerMenu } from "./picker-menu";
 
 /**
@@ -54,6 +54,16 @@ export class Picker extends FASTElement {
      */
     @attr({ attribute: "auto-update-interval" })
     public autoUpdateInterval: number = 30;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: auto-update-mode
+     */
+    @attr({ attribute: "auto-update-mode" })
+    public autoUpdateMode: AutoUpdateMode = "auto";
 
     /**
      *
