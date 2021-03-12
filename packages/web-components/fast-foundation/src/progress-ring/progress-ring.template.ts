@@ -1,10 +1,12 @@
 import { html, when } from "@microsoft/fast-element";
-import { BaseProgress } from "../progress/base-progress";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { BaseProgress } from "../progress/base-progress";
+
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressRingTemplate = html<BaseProgress>`
+export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"

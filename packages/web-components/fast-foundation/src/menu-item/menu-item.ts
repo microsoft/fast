@@ -6,11 +6,11 @@ import {
     keyCodeEnter,
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
+import type { AnchoredRegion } from "../anchored-region";
+import type { Menu } from "../menu/menu";
 import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { AnchoredRegion } from "../anchored-region";
-import { Menu } from "../menu/menu";
 import { getDirection } from "../utilities/";
+import { applyMixins } from "../utilities/apply-mixins";
 import { MenuItemRole } from "./menu-item.options";
 
 export { MenuItemRole };

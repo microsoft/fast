@@ -1,11 +1,12 @@
 import { html, ref, when } from "@microsoft/fast-element";
-import { Dialog } from "./dialog";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { Dialog } from "./dialog";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Dialog} component.
  * @public
  */
-export const DialogTemplate = html<Dialog>`
+export const DialogTemplate: ViewTemplate<Dialog> = html`
     <div class="positioning-region" part="positioning-region">
         ${when(
             x => x.modal,

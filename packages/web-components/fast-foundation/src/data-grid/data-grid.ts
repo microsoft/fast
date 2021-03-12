@@ -17,8 +17,8 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
-import { DataGridCell } from "./data-grid-cell";
-import { DataGridRow } from "./data-grid-row";
+import type { DataGridCell } from "./data-grid-cell";
+import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
 
 export { DataGridRowTypes, GenerateHeaderOptions };
