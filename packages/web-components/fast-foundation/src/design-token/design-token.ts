@@ -15,7 +15,7 @@ import { DesignTokenNode } from "./token-node";
  */
 export type DerivedDesignTokenValue<T> = T extends Function
     ? never
-    : (target: DesignTokenTarget) => T;
+    : (target: HTMLElement) => T;
 
 /**
  * A design token value with no observable dependencies
@@ -28,13 +28,6 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  * @alpha
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
-
-/**
- * Describes where Design Tokens can be retrieved from and set, and also
- * where css custom properties can be emitted to.
- * @alpha
- */
-export type DesignTokenTarget = HTMLElement & FASTElement;
 
 /**
  * Describes a DesignToken instance.
@@ -51,33 +44,33 @@ export interface DesignToken<T> extends CSSDirective {
      * Adds the token as a CSS Custom Property to an element
      * @param element - The element to add the CSS Custom Property to
      */
-    addCustomPropertyFor(element: DesignTokenTarget): this;
+    addCustomPropertyFor(element: HTMLElement): this;
 
     /**
      *
      * @param element - The element to remove the CSS Custom Property from
      */
-    removeCustomPropertyFor(element: DesignTokenTarget): this;
+    removeCustomPropertyFor(element: HTMLElement): this;
 
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
      */
-    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
 
     /**
      * Sets the token to a value for an element.
      * @param element - The element to set the value for.
      * @param value - The value.
      */
-    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): void;
+    setValueFor(element: HTMLElement, value: DesignTokenValue<T>): void;
 
     /**
      * Removes a value set for an element.
      * @param element - The element to remove the value from
      */
-    deleteValueFor(element: DesignTokenTarget): this;
+    deleteValueFor(element: HTMLElement): this;
 }
 
 interface Disposable {
@@ -87,7 +80,7 @@ interface Disposable {
 class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     private cssVar: string;
     private customPropertyChangeHandlers: WeakMap<
-        DesignTokenTarget,
+        HTMLElement,
         Subscriber & Disposable
     > = new Map();
 
@@ -104,46 +97,46 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public readonly cssCustomProperty: string;
 
-    public getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T> {
+    public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
         return DesignTokenNode.for(this, element).value;
     }
 
-    public setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T>): this {
+    public setValueFor(element: HTMLElement, value: DesignTokenValue<T>): this {
         DesignTokenNode.for(this, element).set(value);
         return this;
     }
 
-    public deleteValueFor(element: DesignTokenTarget): this {
+    public deleteValueFor(element: HTMLElement): this {
         DesignTokenNode.for(this, element).delete();
         return this;
     }
 
-    public addCustomPropertyFor(element: DesignTokenTarget): this {
+    public addCustomPropertyFor(element: HTMLElement): this {
         // TODO: Can we do this in a way where we don't hold strong
         // references to elements and create a memory leak if custom
         // properties are not removed?
         if (!this.customPropertyChangeHandlers.has(element)) {
             const node = DesignTokenNode.for(this, element);
-            let style = CustomPropertyManager.get(this, node.value);
+            let value = node.value;
 
-            const addStyles = () => element.$fastController.addStyles(style);
-            const removeStyles = () => element.$fastController.removeStyles(style);
+            const add = () => CustomPropertyManager.addTo(element, this, value);
+            const remove = () => CustomPropertyManager.removeFrom(element, this, value);
 
             const subscriber: Subscriber & Disposable = {
-                handleChange: (source, value) => {
-                    removeStyles();
-                    style = CustomPropertyManager.get(this, source[value]);
-                    addStyles();
+                handleChange: (source, key) => {
+                    remove();
+                    value = source[key];
+                    add();
                 },
                 dispose: () => {
-                    removeStyles();
+                    remove();
                     Observable.getNotifier(node).unsubscribe(subscriber, "value");
                     this.customPropertyChangeHandlers.delete(element);
                 },
             };
 
             this.customPropertyChangeHandlers.set(element, subscriber);
-            addStyles();
+            add();
 
             Observable.getNotifier(node).subscribe(subscriber, "value");
         }
@@ -151,7 +144,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         return this;
     }
 
-    public removeCustomPropertyFor(element: DesignTokenTarget): this {
+    public removeCustomPropertyFor(element: HTMLElement): this {
         if (this.customPropertyChangeHandlers.has(element)) {
             this.customPropertyChangeHandlers.get(element)!.dispose();
         }
@@ -167,10 +160,10 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 class DesignTokenBehavior<T> implements Behavior {
     constructor(public token: DesignToken<T>) {}
 
-    bind(target: DesignTokenTarget) {
+    bind(target: HTMLElement) {
         this.token.addCustomPropertyFor(target);
     }
-    unbind(target: DesignTokenTarget) {
+    unbind(target: HTMLElement) {
         this.token.removeCustomPropertyFor(target);
     }
 }

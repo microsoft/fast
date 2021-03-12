@@ -21,11 +21,11 @@ export const accentColor = DesignToken.create<string>("accent-color");
 The type assertion informs what types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
 
 ### 2. Setting the Design Token
-A `DesignToken` *value* is set for a `FASTElement` node. This allows tokens to be set to different values for distinct DOM trees:
+A `DesignToken` *value* is set for a `HTMLElement` node. This allows tokens to be set to different values for distinct DOM trees:
 
 ```ts
-const ancestor = document.querySelector("my-element") as FASTElement & HTMLElement;
-const descendent = ancestor.querySelector("my-element")
+const ancestor = document.querySelector("my-element") as HTMLElement;
+const descendent = ancestor.querySelector("my-element") as HTMLElement;
 
 accentColor.setValueFor(ancestor, "#DA1A5F");
 accentColor.setValueFor(descendent, "#ADA1F5");

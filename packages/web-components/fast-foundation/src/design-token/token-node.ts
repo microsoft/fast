@@ -6,21 +6,13 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di";
-import {
-    DerivedDesignTokenValue,
-    DesignToken,
-    DesignTokenTarget,
-    DesignTokenValue,
-} from "./design-token";
+import { DerivedDesignTokenValue, DesignToken, DesignTokenValue } from "./design-token";
 
 /**
  * Where a DesignTokeNode can be targeted
  */
 
-const nodeCache = new WeakMap<
-    DesignTokenTarget,
-    Map<DesignToken<any>, DesignTokenNode<any>>
->();
+const nodeCache = new WeakMap<HTMLElement, Map<DesignToken<any>, DesignTokenNode<any>>>();
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
 const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
 const noop = Function.prototype;
@@ -31,7 +23,7 @@ export class DesignTokenNode<T> {
 
     constructor(
         public readonly token: DesignToken<T>,
-        public readonly target: DesignTokenTarget
+        public readonly target: HTMLElement
     ) {
         if (nodeCache.has(target) && nodeCache.get(target)!.has(token)) {
             throw new Error(
@@ -65,7 +57,7 @@ export class DesignTokenNode<T> {
         throw new Error("Value could not be retrieved. Ensure the value is set");
     }
 
-    public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
+    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
         const targetCache = nodeCache.has(target)
             ? nodeCache.get(target)!
             : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
@@ -147,7 +139,7 @@ export class DesignTokenNode<T> {
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             const handler = {
-                handleChange: (source: Binding<DesignTokenTarget>) => {
+                handleChange: (source: Binding<HTMLElement>) => {
                     this._value = source(this.target, defaultExecutionContext);
                 },
             };

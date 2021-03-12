@@ -387,7 +387,7 @@ describe("A DesignToken", () => {
     });
 
     describe("removing CSS Custom Properties", () => {
-        it("should remove the custom property from the element", () => {
+        it("should remove the custom property from the element", async () => {
                 const target = addElement();
                 const token = DesignToken.create<number>("test");
                 token.setValueFor(target, 12);

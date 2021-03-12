@@ -15,7 +15,6 @@ export * from "./design-system/index";
 export * from "./design-system-provider/index";
 export {
     DesignToken,
-    DesignTokenTarget,
     StaticDesignTokenValue,
     DerivedDesignTokenValue,
     DesignTokenValue,
