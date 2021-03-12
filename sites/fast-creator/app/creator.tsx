@@ -43,7 +43,7 @@ import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { renderDevToolToggle, renderDeviceSelect } from "./web-components";
+import { renderDeviceSelect, renderDevToolToggle } from "./web-components";
 import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
