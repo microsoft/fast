@@ -62,6 +62,10 @@ export const NumberFieldStyles = css`
         outline: none;
     }
 
+    .controls {
+        opacity: 0;
+    }
+
     .label {
         display: block;
         color: ${neutralForegroundRestBehavior.var};
@@ -132,6 +136,11 @@ export const NumberFieldStyles = css`
     :host(:focus-within:not([disabled])) .root {
         border-color: ${neutralFocusBehavior.var};
         box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+    }
+
+    :host(:hover:not([disabled])) .controls,
+    :host(:focus-within:not([disabled])) .controls {
+        opacity: 1;
     }
 
     :host([appearance="filled"]) .root {
