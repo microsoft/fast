@@ -1,7 +1,12 @@
+/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
+
 import React from "react";
-import { ActionTrigger } from "@microsoft/fast-components-react-msft";
+import { FASTButton } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ProjectFileTransferProps } from "./project-file-transfer.props";
+
+FASTButton;
 
 export const ProjectFileTransfer: React.FC<ProjectFileTransferProps> = ({
     projectFile,
@@ -49,11 +54,9 @@ export const ProjectFileTransfer: React.FC<ProjectFileTransferProps> = ({
                     }}
                     onChange={handleUploadOnChange}
                 />
-                <ActionTrigger
-                    glyph={upChevron}
-                    title={"upload a project file"}
-                    tabIndex={-1}
-                />
+                <fast-button tabIndex="-1" title="upload a project file">
+                    {upChevron()}
+                </fast-button>
             </div>
             <div
                 style={{
@@ -62,11 +65,16 @@ export const ProjectFileTransfer: React.FC<ProjectFileTransferProps> = ({
                     marginLeft: "4px",
                 }}
             >
-                <ActionTrigger
-                    glyph={downChevron}
-                    title={"download a project file"}
-                    onClick={handleDownloadOnClick}
-                />
+                <fast-button
+                    title="download a project file"
+                    events={{
+                        click: (e: React.MouseEvent<HTMLButtonElement>) => {
+                            handleDownloadOnClick(e);
+                        },
+                    }}
+                >
+                    {downChevron()}
+                </fast-button>
                 <a
                     id={downloadElementId}
                     style={{ display: "none" }}

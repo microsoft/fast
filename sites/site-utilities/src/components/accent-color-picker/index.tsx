@@ -1,6 +1,5 @@
 import React from "react";
-import { Label } from "@microsoft/fast-components-react-msft";
-import { selectorStyle } from "../style";
+import { labelStyle } from "../style";
 import { AccentColorPickerProps } from "./accent-color-picker.props";
 
 export const AccentColorPicker: React.FC<AccentColorPickerProps> = ({
@@ -11,9 +10,9 @@ export const AccentColorPicker: React.FC<AccentColorPickerProps> = ({
 }: React.PropsWithChildren<AccentColorPickerProps>): React.ReactElement => {
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
-            <Label htmlFor={id} style={selectorStyle}>
+            <label htmlFor={id} style={labelStyle}>
                 Accent color
-            </Label>
+            </label>
             <input
                 type={"color"}
                 id={id}
