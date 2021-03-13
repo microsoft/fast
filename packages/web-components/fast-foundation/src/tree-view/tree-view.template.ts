@@ -1,11 +1,12 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
-import { TreeView } from "./tree-view";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { TreeView } from "./tree-view";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#TreeView} component.
  * @public
  */
-export const TreeViewTemplate = html<TreeView>`
+export const TreeViewTemplate: ViewTemplate<TreeView> = html`
     <template
         role="tree"
         ${ref("treeView")}

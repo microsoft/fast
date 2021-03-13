@@ -1,5 +1,5 @@
 import { DataType } from "@microsoft/fast-tooling";
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 

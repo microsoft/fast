@@ -8,6 +8,12 @@ import { SectionControlConfig } from "../templates";
 export interface SectionControlClassNameContract {
     sectionControl: string;
     sectionControl__disabled: string;
+    sectionControl_category: string;
+    sectionControl_category__expanded: string;
+    sectionControl_categoryTitle: string;
+    sectionControl_categoryTitleRegion: string;
+    sectionControl_categoryExpandTrigger: string;
+    sectionControl_categoryContentRegion: string;
 }
 
 export interface InitialOneOfAnyOfState {
@@ -34,7 +40,19 @@ export interface OneOfAnyOf {
     activeIndex: number;
 }
 
-export type SectionControlState = InitialOneOfAnyOfState;
+export interface CategoryState {
+    /**
+     * The expanded state for this category
+     */
+    expanded: boolean;
+}
+
+export interface SectionControlState extends InitialOneOfAnyOfState {
+    /**
+     * The category states matching the category array for this object
+     */
+    categories: CategoryState[];
+}
 
 export type SectionControlProps = SectionControlConfig;
 

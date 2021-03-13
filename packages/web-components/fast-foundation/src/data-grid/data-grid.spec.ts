@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { fixture } from "../fixture";
 import { createDataGridTemplate, DataGrid, DataGridRow } from "./index";
-import { ColumnDefinition } from "./data-grid";
+import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
 import { customElement, DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";

@@ -1,4 +1,4 @@
-import { customElement } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { NumberField, NumberFieldTemplate as template } from "./index";
@@ -712,6 +712,25 @@ describe("NumberField", () => {
 
             await connect();
             expect(element.value).to.equal(`${value - step}`);
+
+            await disconnect();
+        });
+    });
+
+    describe("hide step", () => {
+        it("should not render step controls when `hide-step` attribute is present", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
+
+            element.setAttribute("hide-step", "");
+
+            await DOM.nextUpdate();
+
+            expect(
+                element.shadowRoot?.querySelector(".controls")).to.equal(null);
 
             await disconnect();
         });

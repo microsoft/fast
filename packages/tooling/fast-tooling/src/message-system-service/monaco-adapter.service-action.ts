@@ -10,7 +10,7 @@ export interface MonacoAdapterActionCallbackConfig {
     /**
      * Update the Monaco Model value
      */
-    updateMonacoModelValue: (value: string[]) => void;
+    updateMonacoModelValue: (value: string[], isExternal: boolean) => void;
 
     /**
      * The message system type to run on
@@ -26,7 +26,7 @@ export class MonacoAdapterAction extends MessageSystemServiceAction<
     MessageSystemType
 > {
     private getMonacoModelValue: () => string[];
-    private updateMonacoModelValue: (value: string[]) => void;
+    private updateMonacoModelValue: (value: string[], isExternal: boolean) => void;
     private messageSystemType: MessageSystemType;
 
     constructor(config) {

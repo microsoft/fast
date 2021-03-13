@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastSwitchDefinition: WebComponentDefinition = {
@@ -10,6 +10,7 @@ export const fastSwitchDefinition: WebComponentDefinition = {
             description: "The FAST switch element",
             attributes: [
                 {
+                    name: "checked",
                     title: "Checked",
                     description: "Provides the default checked value",
                     default: undefined,
