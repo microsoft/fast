@@ -452,7 +452,12 @@ export class AnchoredRegion extends FASTElement {
      * update position
      */
     public update = (): void => {
-        this.doUpdate();
+        if (this.viewportRect === null || this.regionDimension === null) {
+            this.requestLayoutUpdate();
+            return;
+        }
+
+        this.requestPositionUpdates();
     };
 
     /**
@@ -500,7 +505,7 @@ export class AnchoredRegion extends FASTElement {
             (this as FASTElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
-            this.doUpdate();
+            this.update();
         }
     }
 
@@ -1248,18 +1253,6 @@ export class AnchoredRegion extends FASTElement {
         }
 
         return newRegionDimension;
-    };
-
-    /**
-     * internal version of update that does not reset autoUpdating
-     */
-    private doUpdate = (): void => {
-        if (this.viewportRect === null || this.regionDimension === null) {
-            this.requestLayoutUpdate();
-            return;
-        }
-
-        this.requestPositionUpdates();
     };
 
     /**
