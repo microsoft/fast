@@ -88,8 +88,6 @@ export class AnchoredRegion extends FASTElement {
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
-    // @public
-    autoUpdateInterval: number;
     // @public (undocumented)
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
@@ -152,7 +150,7 @@ export class ARIAGlobalStatesAndProperties {
 }
 
 // @public
-export type AutoUpdateMode = "none" | "constant" | "auto";
+export type AutoUpdateMode = "anchor" | "auto";
 
 // @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";

@@ -154,17 +154,8 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     description:
                         "Defines whether the component automatically updates its position",
                     type: DataType.string,
-                    values: [{ name: "none" }, { name: "auto" }, { name: "constant" }],
+                    values: [{ name: "anchor" }, { name: "auto" }],
                     default: "none",
-                    required: false,
-                },
-                {
-                    name: "auto-update-interval",
-                    title: "Auto update interval",
-                    description:
-                        "The time in ms between position checks when the component is auto updating.",
-                    type: DataType.number,
-                    default: undefined,
                     required: false,
                 },
             ],

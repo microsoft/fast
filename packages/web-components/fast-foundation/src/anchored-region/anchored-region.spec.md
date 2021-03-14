@@ -197,8 +197,7 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
 - vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
 - vertical-scaling - Can be 'anchor', 'fill' or 'content'. Default is 'content' 
-- auto-update-mode - Can be 'none' or 'constant'. Default is 'none' 
-- auto-update-interval - The duration in ms between position checks when auto-updating. Default is 30. 
+- auto-update-mode - Can be 'anchor' or 'auto'. Default is 'anchor'. In 'anchor' mode only anchor resizes and attribute changes will provoke an update.  In 'auto' mode the component also updates because of - any scroll event on the document, window resizes and viewport resizes. Authors can always provoke an update via the 'update()' function.
 
 *Properties:*
 - anchorElement - Holds a reference to the HTMLElement currently being used as the anchor.  Can be set directly or be populated by setting the anchor attribute.
