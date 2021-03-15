@@ -1,5 +1,6 @@
-import { children, elements, html, ViewTemplate } from "@microsoft/fast-element";
-import { DataGrid } from "./data-grid";
+import { children, elements, html } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { DataGrid } from "./data-grid";
 
 function createRowItemTemplate(prefix: string): ViewTemplate {
     return html`
@@ -23,6 +24,7 @@ export function createDataGridTemplate(prefix: string): ViewTemplate {
         <template
             role="grid"
             tabindex="0"
+            :prefix=${prefix}
             :defaultRowItemTemplate="${rowItemTemplate}"
             ${children({
                 property: "rowElements",

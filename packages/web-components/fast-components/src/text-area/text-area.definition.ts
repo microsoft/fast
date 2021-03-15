@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { TextAreaResize } from "@microsoft/fast-foundation/dist/esm/text-area/text-area.options";
 

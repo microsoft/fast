@@ -51,10 +51,10 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
-export const AccordionItemTemplate: import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+export const AccordionItemTemplate: ViewTemplate<AccordionItem>;
 
 // @public
-export const AccordionTemplate: import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
+export const AccordionTemplate: ViewTemplate<Accordion>;
 
 // @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
@@ -115,10 +115,10 @@ export class AnchoredRegion extends FASTElement {
     }
 
 // @beta
-export const AnchoredRegionTemplate: import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
+export const AnchoredRegionTemplate: ViewTemplate<AnchoredRegion>;
 
 // @public
-export const AnchorTemplate: import("@microsoft/fast-element").ViewTemplate<Anchor, any>;
+export const AnchorTemplate: ViewTemplate<Anchor>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -162,7 +162,7 @@ export class Badge extends FASTElement {
 }
 
 // @public
-export const BadgeTemplate: import("@microsoft/fast-element").ViewTemplate<Badge, any>;
+export const BadgeTemplate: ViewTemplate<Badge>;
 
 // @public
 export class BaseProgress extends FASTElement {
@@ -194,10 +194,10 @@ export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
-export const BreadcrumbItemTemplate: import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
+export const BreadcrumbItemTemplate: ViewTemplate<BreadcrumbItem>;
 
 // @public
-export const BreadcrumbTemplate: import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
+export const BreadcrumbTemplate: ViewTemplate<Breadcrumb>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
@@ -227,14 +227,14 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
-export const ButtonTemplate: import("@microsoft/fast-element").ViewTemplate<Button, any>;
+export const ButtonTemplate: ViewTemplate<Button>;
 
 // @public
 export class Card extends FASTElement {
 }
 
 // @public
-export const CardTemplate: import("@microsoft/fast-element").ViewTemplate<Card, any>;
+export const CardTemplate: ViewTemplate<Card>;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
 //
@@ -261,7 +261,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     }
 
 // @public
-export const CheckboxTemplate: import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
+export const CheckboxTemplate: ViewTemplate<Checkbox>;
 
 // @public
 export interface ColumnDefinition {
@@ -350,7 +350,7 @@ export enum ComboboxAutocomplete {
 }
 
 // @public
-export const ComboboxTemplate: import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
+export const ComboboxTemplate: ViewTemplate<Combobox>;
 
 // @alpha
 export interface ComponentPresentation {
@@ -554,6 +554,8 @@ export class DataGrid extends FASTElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    prefix: string;
     // @internal
     rowElements: HTMLElement[];
     rowItemTemplate: ViewTemplate;
@@ -794,7 +796,7 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
 export const designSystemProvider: typeof defineDesignSystemProvider;
 
 // @public
-export const DesignSystemProviderTemplate: import("@microsoft/fast-element").ViewTemplate<DesignSystemProvider, any>;
+export const DesignSystemProviderTemplate: ViewTemplate<DesignSystemProvider>;
 
 // @alpha
 export interface DesignSystemRegistrationContext {
@@ -845,7 +847,7 @@ export class Dialog extends FASTElement {
     }
 
 // @public
-export const DialogTemplate: import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+export const DialogTemplate: ViewTemplate<Dialog>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -877,7 +879,7 @@ export class Disclosure extends FASTElement {
 }
 
 // @public
-export const DisclosureTemplate: import("@microsoft/fast-element").ViewTemplate<Disclosure, any>;
+export const DisclosureTemplate: ViewTemplate<Disclosure>;
 
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
@@ -894,7 +896,7 @@ export enum DividerRole {
 }
 
 // @public
-export const DividerTemplate: import("@microsoft/fast-element").ViewTemplate<Divider, any>;
+export const DividerTemplate: ViewTemplate<Divider>;
 
 // @alpha (undocumented)
 export interface DOMParentLocatorEventDetail {
@@ -925,7 +927,7 @@ export interface ElementDefinitionContext {
 export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
 
 // @public
-export const endTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+export const endTemplate: ViewTemplate<StartEnd>;
 
 // @alpha (undocumented)
 export interface Factory<T extends Constructable = any> {
@@ -966,7 +968,7 @@ export enum FlipperDirection {
 }
 
 // @public
-export const FlipperTemplate: import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
+export const FlipperTemplate: ViewTemplate<Flipper>;
 
 // @public
 export const focusVisible: string;
@@ -1108,7 +1110,7 @@ export class HorizontalScroll extends FASTElement {
     }
 
 // @public (undocumented)
-export const HorizontalScrollTemplate: import("@microsoft/fast-element").ViewTemplate<HorizontalScroll, any>;
+export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll>;
 
 // @public
 export type HorizontalScrollView = "default" | "mobile";
@@ -1260,7 +1262,7 @@ export interface ListboxOption extends StartEnd {
 }
 
 // @public
-export const ListboxOptionTemplate: import("@microsoft/fast-element").ViewTemplate<ListboxOption, any>;
+export const ListboxOptionTemplate: ViewTemplate<ListboxOption>;
 
 // @public
 export enum ListboxRole {
@@ -1269,7 +1271,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const ListboxTemplate: import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
+export const ListboxTemplate: ViewTemplate<Listbox>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -1338,6 +1340,8 @@ export class MenuItem extends FASTElement {
     handleMouseOut: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     handleMouseOver: (e: MouseEvent) => boolean;
+    // @internal (undocumented)
+    hasSubmenu: boolean;
     role: MenuItemRole;
     // @internal (undocumented)
     submenu: Element | undefined;
@@ -1345,7 +1349,7 @@ export class MenuItem extends FASTElement {
     submenuLoaded: () => void;
     // @internal
     submenuRegion: AnchoredRegion;
-}
+    }
 
 // @internal
 export interface MenuItem extends StartEnd {
@@ -1359,10 +1363,10 @@ export enum MenuItemRole {
 }
 
 // @public @deprecated
-export const MenuItemTemplate: ViewTemplate;
+export const MenuItemTemplate: ViewTemplate<MenuItem>;
 
 // @public
-export const MenuTemplate: import("@microsoft/fast-element").ViewTemplate<Menu, any>;
+export const MenuTemplate: ViewTemplate<Menu>;
 
 // @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;
@@ -1387,6 +1391,7 @@ export class NumberField extends FormAssociatedNumberField {
     handleChange(): void;
     // @internal
     handleTextInput(): void;
+    hideStep: boolean;
     list: string;
     max: number;
     // (undocumented)
@@ -1411,7 +1416,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const NumberFieldTemplate: import("@microsoft/fast-element").ViewTemplate<NumberField, any>;
+export const NumberFieldTemplate: ViewTemplate<NumberField>;
 
 // @alpha
 export const optional: (key: any) => any;
@@ -1425,10 +1430,10 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 export type ParentLocator = (owner: any) => Container | null;
 
 // @public
-export const ProgressRingTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+export const ProgressRingTemplate: ViewTemplate<BaseProgress>;
 
 // @public
-export const ProgressTemplate: import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+export const ProgressTemplate: ViewTemplate<BaseProgress>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {
@@ -1494,10 +1499,10 @@ export class RadioGroup extends FASTElement {
 }
 
 // @public
-export const RadioGroupTemplate: import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
+export const RadioGroupTemplate: ViewTemplate<RadioGroup>;
 
 // @public
-export const RadioTemplate: import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+export const RadioTemplate: ViewTemplate<Radio>;
 
 // @alpha (undocumented)
 export type RegisterSelf<T extends Constructable> = {
@@ -1654,7 +1659,7 @@ export enum SelectRole {
 }
 
 // @public
-export const SelectTemplate: import("@microsoft/fast-element").ViewTemplate<Select, any>;
+export const SelectTemplate: ViewTemplate<Select>;
 
 // @alpha (undocumented)
 export interface ServiceLocator {
@@ -1700,7 +1705,7 @@ export class Skeleton extends FASTElement {
 export type SkeletonShape = "rect" | "circle";
 
 // @public
-export const SkeletonTemplate: import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
+export const SkeletonTemplate: ViewTemplate<Skeleton>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
@@ -1795,7 +1800,7 @@ export class SliderLabel extends FASTElement {
 }
 
 // @public
-export const SliderLabelTemplate: import("@microsoft/fast-element").ViewTemplate<SliderLabel, any>;
+export const SliderLabelTemplate: ViewTemplate<SliderLabel>;
 
 // @public
 export enum SliderMode {
@@ -1804,7 +1809,7 @@ export enum SliderMode {
 }
 
 // @public
-export const SliderTemplate: import("@microsoft/fast-element").ViewTemplate<Slider, any>;
+export const SliderTemplate: ViewTemplate<Slider>;
 
 // @public
 export class StartEnd {
@@ -1823,7 +1828,7 @@ export class StartEnd {
 }
 
 // @public
-export const startTemplate: import("@microsoft/fast-element").ViewTemplate<StartEnd, any>;
+export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
@@ -1862,7 +1867,7 @@ export class Switch extends FormAssociatedSwitch {
     }
 
 // @public
-export const SwitchTemplate: import("@microsoft/fast-element").ViewTemplate<Switch, any>;
+export const SwitchTemplate: ViewTemplate<Switch>;
 
 // @public
 export class Tab extends FASTElement {
@@ -1874,7 +1879,7 @@ export class TabPanel extends FASTElement {
 }
 
 // @public
-export const TabPanelTemplate: import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
+export const TabPanelTemplate: ViewTemplate<TabPanel>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Tabs" because one of its declarations is marked as @internal
@@ -1917,10 +1922,10 @@ export enum TabsOrientation {
 }
 
 // @public
-export const TabsTemplate: import("@microsoft/fast-element").ViewTemplate<Tabs, any>;
+export const TabsTemplate: ViewTemplate<Tabs>;
 
 // @public
-export const TabTemplate: import("@microsoft/fast-element").ViewTemplate<Tab, any>;
+export const TabTemplate: ViewTemplate<Tab>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
@@ -1963,7 +1968,7 @@ export enum TextAreaResize {
 }
 
 // @public
-export const TextAreaTemplate: import("@microsoft/fast-element").ViewTemplate<TextArea, any>;
+export const TextAreaTemplate: ViewTemplate<TextArea>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
@@ -1998,7 +2003,7 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const TextFieldTemplate: import("@microsoft/fast-element").ViewTemplate<TextField, any>;
+export const TextFieldTemplate: ViewTemplate<TextField>;
 
 // @public
 export enum TextFieldType {
@@ -2118,7 +2123,7 @@ export interface TreeItem extends StartEnd {
 }
 
 // @public
-export const TreeItemTemplate: import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+export const TreeItemTemplate: ViewTemplate<TreeItem>;
 
 // @public
 export class TreeView extends FASTElement {
@@ -2143,7 +2148,7 @@ export class TreeView extends FASTElement {
 }
 
 // @public
-export const TreeViewTemplate: import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+export const TreeViewTemplate: ViewTemplate<TreeView>;
 
 // Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
 //

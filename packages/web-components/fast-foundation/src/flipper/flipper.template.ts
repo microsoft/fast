@@ -1,12 +1,13 @@
 import { html, when } from "@microsoft/fast-element";
-import { Flipper } from "./flipper";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { Flipper } from "./flipper";
 import { FlipperDirection } from "./flipper.options";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.
  * @public
  */
-export const FlipperTemplate = html<Flipper>`
+export const FlipperTemplate: ViewTemplate<Flipper> = html`
     <template
         role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"

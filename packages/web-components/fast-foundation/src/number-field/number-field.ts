@@ -30,6 +30,15 @@ export class NumberField extends FormAssociatedNumberField {
     public autofocus: boolean;
 
     /**
+     * When true, spin buttons will not be rendered
+     * @public
+     * @remarks
+     * HTML Attribute: autofocus
+     */
+    @attr({ attribute: "hide-step", mode: "boolean" })
+    public hideStep: boolean = false;
+
+    /**
      * Sets the placeholder value of the element, generally used to provide a hint to the user.
      * @public
      * @remarks

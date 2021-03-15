@@ -1,5 +1,5 @@
 import { Direction } from "@microsoft/fast-web-utilities";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import { EditorState } from "@microsoft/site-utilities";
 import { ComponentViewConfig } from "./fast-components/configs/data.props";

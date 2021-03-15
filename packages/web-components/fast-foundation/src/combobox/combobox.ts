@@ -1,11 +1,11 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
 import { limit } from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
-import { ListboxOption } from "../listbox-option/listbox-option";
+import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
 import { SelectPosition, SelectRole } from "../select/select.options";
+import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
 import { ComboboxAutocomplete } from "./combobox.options";
 
@@ -378,15 +378,19 @@ export class Combobox extends FormAssociatedCombobox {
             }
 
             case "Escape": {
+                if (!this.isAutocompleteInline) {
+                    this.selectedIndex = -1;
+                }
+
                 if (this.open) {
                     this.open = false;
-                    this.filter = this.control.value;
-                    this.filterOptions();
                     break;
                 }
 
                 this.value = "";
                 this.control.value = "";
+                this.filter = "";
+                this.filterOptions();
                 break;
             }
 
@@ -404,12 +408,12 @@ export class Combobox extends FormAssociatedCombobox {
 
             case "ArrowUp":
             case "ArrowDown": {
+                this.filterOptions();
+
                 if (!this.open) {
                     this.open = true;
-                    return true;
+                    break;
                 }
-
-                this.filterOptions();
 
                 if (this.filteredOptions.length > 0) {
                     super.keydownHandler(e);
