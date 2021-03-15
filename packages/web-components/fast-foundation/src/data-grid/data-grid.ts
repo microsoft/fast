@@ -256,6 +256,14 @@ export class DataGrid extends FASTElement {
     public defaultRowItemTemplate: ViewTemplate;
 
     /**
+     * Component prefix (ie. "fast" vs. "fluent" vs. "<mylib>").  Set by the component templates.
+     *
+     * @internal
+     */
+    @observable
+    public prefix: string;
+
+    /**
      * Children that are rows
      *
      * @internal
@@ -531,7 +539,7 @@ export class DataGrid extends FASTElement {
 
         if (this.generateHeader !== GenerateHeaderOptions.none) {
             const generatedHeaderElement: HTMLElement = document.createElement(
-                "fast-data-grid-row"
+                `${this.prefix}-data-grid-row`
             );
             this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;

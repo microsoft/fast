@@ -141,6 +141,14 @@ When binding to `class`, the underlying engine will not over-write classes added
 <button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
 ```
 
+**Example: Nullish value**
+
+Some cases may occur where an attribute needs to have a value when used however not present if unused. These are different than boolean attributes by where their presence alone triggers their effect. In this situation a nullish value (`null` or `undefined`) may be provided so the attribute won't exist in that condition.
+
+```html
+<div aria-hidden="${x => x.isViewable ? 'true' : null}"></div>
+```
+
 ### Properties
 
 Properties can also be set directly on an HTML element. To do so, prepend the property name with `:` to indicate a property binding. The template engine will then use your expression to assign the element's property value.
@@ -214,4 +222,4 @@ In the future we're planning new optimizations that will enable us to safely det
 
 In most cases, the template that `FASTElement` renders is determined by the `template` property of the Custom Element's configuration. However, you can also implement a method on your Custom Element class named `resolveTemplate()` that returns a template instance. If this method is present, it will be called during `connectedCallback` to obtain the template to use. This allows the element author to dynamically select completely different templates based on the state of the element at the time of connection.
 
-In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time though setting the controller's `template` property to any valid template.
+In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time through setting the controller's `template` property to any valid template.
