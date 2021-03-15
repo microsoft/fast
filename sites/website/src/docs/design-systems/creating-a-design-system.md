@@ -127,7 +127,7 @@ Thats it! Once you've configured all the Design System properties you can use yo
 ### Card Scenarios
 Cards are a popular UI pattern but pose an interesting problem because they often *should* be [DesignSystemProviders](/docs/api/fast-foundation.designsystemprovider) instances but often broadcast the *same* design system properties as sibling card elements. This can result in duplicate work if child elements depend on the same CSS custom properties.
 
-To address this, the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) exposes a [customPropertyManager](/docs/api/fast-foundation.designsystemprovider.custompropertymanager) property that can be assigned a [ConstructableStylesCustomPropertyManager](docs/api/fast-foundation.constructablestylescustompropertymanager). This manager instance can be shared between like-provider instances, avoiding duplicate registration and evaluation of CSS custom properties.
+To address this, the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) exposes a [customPropertyManager](/docs/api/fast-foundation.designsystemprovider.custompropertymanager) property that can be assigned a [ConstructableStylesCustomPropertyManager](/docs/api/fast-foundation.constructablestylescustompropertymanager). This manager instance can be shared between like-provider instances, avoiding duplicate registration and evaluation of CSS custom properties.
 
 ```ts
 // my-card.ts
