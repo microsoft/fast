@@ -126,10 +126,10 @@ In complex design systems, Design Tokens may have complex hierarchies with token
 
 ```ts
 const neutralFill = DesignToken.create<string>("neutral-fill");
-const buttonBackgroundColor = DesignToken.create<string>("button-background-color");
+const buttonFill = DesignToken.create<string>("button-fill");
 
 neutralFill.setValueFor(target, "#EDEDED");
-buttonBackgroundColor.setValueFor(target, neutralFill);
+buttonFill.setValueFor(target, neutralFill);
 
-buttonBackgroundColor.getValueFor(target); // "#EDEDED"
+buttonFill.getValueFor(target); // "#EDEDED"
 ```
