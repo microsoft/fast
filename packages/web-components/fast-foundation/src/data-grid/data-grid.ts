@@ -522,7 +522,7 @@ export class DataGrid extends FASTElement {
         }
         if (this.pendingFocusUpdate === false) {
             this.pendingFocusUpdate = true;
-            DOM.queueUpdate(this.updateFocus);
+            DOM.queueUpdate(() => this.updateFocus());
         }
     }
 
