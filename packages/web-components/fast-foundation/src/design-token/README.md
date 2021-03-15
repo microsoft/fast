@@ -7,7 +7,7 @@ The FAST Design Token implementation is designed to provide first-class support 
 A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [https://github.com/design-tokens/community-group#design-tokens](the Design Tokens Community Group) for more information on Design Tokens themselves.
 
 ## Using Design Tokens in FAST
-This usage guide walks through creating and using a Design Token *accent-color*, which is represented in code as a hexadecimal color string.
+This usage guide walks through creating and using a Design Token *background-color*, which is represented in code as a hexadecimal color string.
 
 ### 1. Create a Token
 The first step to using a token is to create it:
@@ -40,7 +40,7 @@ backgroundColor.getValueFor(descendent); // "#F7F7F7"
 ```
 
 ### 4. Deleting Design Token values
-Values can be deleted for a node. Doing so causes retrieval of the nearest ancestors value instead:
+Values can be deleted for a node. Doing so causes retrieval of the nearest ancestor's value instead:
 
 ```ts
 backgroundColor.deleteValueFor(descendent);
@@ -79,7 +79,7 @@ const styles = css`
 `
 ```
 
-At runtime, the directive is replaced with a CSS custom property, and the Directive also ensure that the CSS custom property is added for the element.
+At runtime, the directive is replaced with a CSS custom property, and the Directive ensures that the CSS custom property is added for the element.
 
 ## Derived Design Token Values
 In the examples above, the design token is always being set to a simple string value. But, we can also set a Design Token to be a function that *derives* a value. A derived value receives the target element as it's only argument and must return a value with a type matching the Design Token:
@@ -122,7 +122,7 @@ modeManager.mode = "dark"; // Forces the derived tokens to re-evaluate and CSS c
 
 
 ## Aliasing Design Tokens
-In complex design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
+In some design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
 
 ```ts
 const neutralFill = DesignToken.create<string>("neutral-fill");
