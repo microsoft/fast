@@ -1,11 +1,12 @@
 import { html, when } from "@microsoft/fast-element";
-import { Avatar } from "./avatar";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { Avatar } from "./avatar";
 
 /**
  * The template for {@link @microsoft/fast-foundation#Avatar} component.
  * @public
  */
-export const AvatarTemplate = html<Avatar>`
+export const AvatarTemplate: ViewTemplate<Avatar> = html`
     <div
         class="coin ${x => x.shape}"
         part="coin"

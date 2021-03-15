@@ -178,7 +178,7 @@ export class Avatar extends FASTElement {
 }
 
 // @public
-export const AvatarTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
+export const AvatarTemplate: ViewTemplate<Avatar>;
 
 // @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
