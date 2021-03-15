@@ -149,7 +149,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             this.proxy.min = `${this.min}`;
         }
 
-        this.validate;
+        this.validate();
     }
 
     /**

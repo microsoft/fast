@@ -5,7 +5,7 @@ import { MenuItem, MenuItemRole } from "./menu-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component.
- * @deprecated  use createMenuItemTemplate(<prefix>) instead
+ * @deprecated  use {@link @microsoft/fast-foundation#(createMenuItemTemplate:function)|createMenuItemTemplate} instead.
  * @public
  */
 export const MenuItemTemplate: ViewTemplate<MenuItem> = createMenuItemTemplate("fast");

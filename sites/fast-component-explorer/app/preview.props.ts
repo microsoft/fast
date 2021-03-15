@@ -1,14 +1,9 @@
 import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { PreviewClassNameContract } from "./preview.style";
 
 export type PreviewUnhandledProps = React.HTMLAttributes<HTMLDivElement>;
 
-export interface PreviewHandledProps {
-    managedClasses: PreviewClassNameContract;
-}
-
-export type PreviewProps = PreviewHandledProps & PreviewUnhandledProps;
+export type PreviewProps = PreviewUnhandledProps;
 
 export enum StandardLuminance {
     LightMode = 1,
