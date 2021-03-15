@@ -1,7 +1,6 @@
 
-import { css, DOM, Observable } from "@microsoft/fast-element";
+import { css, DOM, FASTElement, Observable } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { FASTElement } from "../../../fast-element/dist/fast-element";
 import { DesignSystem } from "../design-system";
 import { FoundationElement } from "../foundation-element";
 import { DesignToken } from "./design-token";
