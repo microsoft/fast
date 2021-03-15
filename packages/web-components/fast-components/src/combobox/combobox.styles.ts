@@ -15,10 +15,6 @@ export const ComboboxStyles = css`
         user-select: none;
     }
 
-    :host(:active) .selected-value {
-        user-select: none;
-    }
-
     .selected-value {
         -webkit-appearance: none;
         background: transparent;

@@ -15,9 +15,6 @@ import { ComboboxStyles as styles } from "./combobox.styles";
     name: "fast-combobox",
     template,
     styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 })
 export class FASTCombobox extends Combobox {}
 
