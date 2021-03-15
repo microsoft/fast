@@ -2,18 +2,26 @@
 
 import React from "react";
 import {
+    FASTButton,
     FASTDesignSystemProvider,
+    FASTOption,
+    FASTSelect,
     FASTTab,
     FASTTabPanel,
     FASTTabs,
 } from "@microsoft/fast-components";
-import { neutralLayerL1, neutralLayerL3 } from "@microsoft/fast-components-styles-msft";
+import { downChevron, upChevron } from "@microsoft/site-utilities";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
+import { ListboxOption } from "@microsoft/fast-foundation";
+import { Scenario } from "../fast-components/configs/data.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
+FASTButton;
 FASTDesignSystemProvider;
+FASTOption;
+FASTSelect;
 FASTTab;
 FASTTabPanel;
 FASTTabs;
@@ -26,9 +34,63 @@ interface RenderDevToolsTabsConfig {
     schemaTabPanelContent: string;
 }
 
+function renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
+    return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
+        return (
+            <fast-option key={index} value={index} style={{ height: "auto" }}>
+                {scenarioOption.displayName}
+            </fast-option>
+        );
+    });
+}
+
+export function renderDevToolToggle(
+    selected: boolean,
+    onToggleCallback: () => void
+): React.ReactNode {
+    return (
+        <fast-button
+            events={{
+                click: (e: React.ChangeEvent): void => {
+                    onToggleCallback();
+                },
+            }}
+            class={"dev-tools-trigger"}
+            style={{ top: "auto", bottom: 0 }}
+        >
+            {selected ? downChevron() : upChevron()}
+        </fast-button>
+    );
+}
+
+export function renderScenarioSelect(
+    selectedScenarioIndex: number,
+    scenarioOptions: Array<Scenario>,
+    onChangeCallback: (
+        newValue: string | string[],
+        selectedItems: ListboxOption[]
+    ) => void
+): React.ReactNode {
+    return (
+        <fast-select
+            selectedIndex={selectedScenarioIndex}
+            events={{
+                change: (e: React.ChangeEvent): void => {
+                    onChangeCallback(
+                        (e.target as FASTSelect).value,
+                        (e.target as FASTSelect).selectedOptions
+                    );
+                },
+            }}
+        >
+            {renderScenarioOptions(scenarioOptions)}
+        </fast-select>
+    );
+}
+
 export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.ReactNode {
     const styleOverrides: string = `
-        a {
+        .dev-tools a {
             color: var(--accent-foreground-rest);
         }
 
@@ -53,18 +115,20 @@ export function renderDevToolsTabs(config: RenderDevToolsTabsConfig): React.Reac
         }
 
         .tab-panel_region::-webkit-scrollbar {
-            background: ${neutralLayerL1};
+            background: var(--fast-tooling-l1-color);
             width: 8px;
             height: 8px;
         }
 
         .tab-panel_region::-webkit-scrollbar-thumb {
-            background: ${neutralLayerL3},
+            background: var(--fast-tooling-l3-color),
             border-radius: 8px;
         }
     `;
     return (
-        <fast-design-system-provider use-defaults style={{ height: "100%" }}>
+        <fast-design-system-provider
+            style={{ height: "100%", backgroundColor: "#181818" }}
+        >
             <style>{styleOverrides}</style>
             <fast-tabs id="dev-tools-tabs" events={{ change: config.tabUpdateCallback }}>
                 <fast-tab id="code" slot="tab">

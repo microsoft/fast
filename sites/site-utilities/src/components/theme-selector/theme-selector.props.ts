@@ -1,4 +1,4 @@
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 
 export interface ThemeSelectorProps {
     className?: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { accentColor, toggleStyle } from "../style";
 import { ThemeSelectorProps } from "./theme-selector.props";
 
