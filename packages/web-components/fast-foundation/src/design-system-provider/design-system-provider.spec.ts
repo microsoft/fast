@@ -250,7 +250,7 @@ describe("A DesignSystemProvider", () => {
         });
     });
     describe("that has no designSystemProperties", () => {
-        it("should not throw", () => {
+        it("should not throw when connected", () => {
             @defineDesignSystemProvider({
                 name: "dsp-no-properties",
                 template,
@@ -261,6 +261,8 @@ describe("A DesignSystemProvider", () => {
             expect(() => {
                 document.body.appendChild(child)
             }).not.to.throw()
+
+            document.body.removeChild(child);
         })
     })
 
