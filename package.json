@@ -41,7 +41,7 @@
     "change": "beachball change",
     "check": "beachball check",
     "publish": "beachball publish",
-    "publish-ci": "beachball publish -n -r $NPM_PAT",
+    "publish-ci": "beachball publish -n -y -r $PACK_TOKEN",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
