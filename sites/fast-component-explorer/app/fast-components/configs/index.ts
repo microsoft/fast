@@ -22,6 +22,9 @@ export { fastCardConfig };
 import fastCheckboxConfig from "./fast-checkbox";
 export { fastCheckboxConfig };
 
+import fastComboboxConfig from "./fast-combobox";
+export { fastComboboxConfig };
+
 import fastDialogConfig from "./fast-dialog";
 export { fastDialogConfig };
 
