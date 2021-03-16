@@ -183,6 +183,27 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (customHeaderCellTemplateButton) {
             customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
         }
+
+        // note: we use mouse enter because clicking to move focus seems to confuse focus-visible
+        const focusLeftButton = document.getElementById("btnfocusleft") as Button;
+        if (focusLeftButton) {
+            focusLeftButton.onmouseenter = moveFocus;
+        }
+
+        const focusRightButton = document.getElementById("btnfocusright") as Button;
+        if (focusRightButton) {
+            focusRightButton.onmouseenter = moveFocus;
+        }
+
+        const focusUpButton = document.getElementById("btnfocusup") as Button;
+        if (focusUpButton) {
+            focusUpButton.onmouseenter = moveFocus;
+        }
+
+        const focusDownButton = document.getElementById("btnfocusdown") as Button;
+        if (focusDownButton) {
+            focusDownButton.onmouseenter = moveFocus;
+        }
     }
 });
 
@@ -311,6 +332,29 @@ function setCustomHeaderCellItemTemplate(): void {
         return;
     }
     defaultGridElement.headerCellItemTemplate = customHeaderCellItemTemplate;
+}
+
+function moveFocus(e: MouseEvent): void {
+    if (defaultGridElement === null) {
+        return;
+    }
+    switch ((e.target as HTMLElement).id) {
+        case "btnfocusleft":
+            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex - 1;
+            break;
+
+        case "btnfocusright":
+            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex + 1;
+            break;
+
+        case "btnfocusup":
+            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex - 1;
+            break;
+
+        case "btnfocusdown":
+            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex + 1;
+            break;
+    }
 }
 
 function headerTemplateButtonClick(cell: DataGridCell): void {
