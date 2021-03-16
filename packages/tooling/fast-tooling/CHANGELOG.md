@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.0...@microsoft/fast-tooling@0.16.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* update the navigation display text to use a custom property in the data ([#4426](https://github.com/Microsoft/fast/issues/4426)) ([0e4308e](https://github.com/Microsoft/fast/commit/0e4308eca1dd482413d32051a448cc35015ddb3b))
+
+
+
+
+
 # [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.2...@microsoft/fast-tooling@0.16.0) (2021-03-06)
 
 
