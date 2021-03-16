@@ -125,6 +125,7 @@
     "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^9.4.7",
+    "beachball": "^1.53.1",
     "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
@@ -145,7 +146,6 @@
   },
   "dependencies": {
     "saucelabs": "^1.5.0",
-    "selenium-webdriver": "^3.6.0",
-    "beachball": "^1.53.1"
+    "selenium-webdriver": "^3.6.0"
   }
 }
