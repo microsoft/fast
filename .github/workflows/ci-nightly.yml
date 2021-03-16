@@ -43,7 +43,7 @@ jobs:
       
     - name: Publish NPM changed packages
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-    - run: yarn publish-ci -y -n $NPM_TOKEN
+    - run: yarn publish-ci 
         env:
           NPM_AUTHTOKEN: ${{ secrets.npm_authtoken }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
