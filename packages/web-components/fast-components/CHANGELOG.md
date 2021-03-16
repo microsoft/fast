@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.18.1...@microsoft/fast-components@1.19.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* add createMenuItem(<prefix>) to menu item template ([#4431](https://github.com/Microsoft/fast/issues/4431)) ([c86b63b](https://github.com/Microsoft/fast/commit/c86b63bd5323880f0dd859cbd2bf8a20ca1ccba0)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412)
+* add forced-colors to backgroundStyles and update high contrast colors on button components ([#4423](https://github.com/Microsoft/fast/issues/4423)) ([4c0a338](https://github.com/Microsoft/fast/commit/4c0a338fba35b8aa96bb85742b0f56d4839baa83)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412) [#4416](https://github.com/Microsoft/fast/issues/4416)
+* combobox interaction problems in firefox ([#4461](https://github.com/Microsoft/fast/issues/4461)) ([e040acb](https://github.com/Microsoft/fast/commit/e040acbf6a8f4634ac2f5cb042d61c39e4320fa3))
+* ensure button font size and line height map to design system properties ([#4464](https://github.com/Microsoft/fast/issues/4464)) ([366e51f](https://github.com/Microsoft/fast/commit/366e51f9906934fc5ef8ffe4371caaab067f4854))
+* reduce text clipping when changing design-unit on listbox option ([#4452](https://github.com/Microsoft/fast/issues/4452)) ([5ab6573](https://github.com/Microsoft/fast/commit/5ab6573b86584331473993220036771113befd78))
+* setting data grid focus should not throw ([#4466](https://github.com/Microsoft/fast/issues/4466)) ([3c56a18](https://github.com/Microsoft/fast/commit/3c56a185c6aa5dcb52c12a9393f51a36521c5f77))
+
+
+### Features
+
+* add ability to hide step controls and update reveal on hover and focus-within ([#4448](https://github.com/Microsoft/fast/issues/4448)) ([6f6497c](https://github.com/Microsoft/fast/commit/6f6497cba3883b741dddf3b6c78fd0d1571c02f3))
+* add categories for the form ([#4436](https://github.com/Microsoft/fast/issues/4436)) ([ad4480a](https://github.com/Microsoft/fast/commit/ad4480ae1157e9a4ac8fd8baa9dfe47346740409)), closes [#2530](https://github.com/Microsoft/fast/issues/2530) [#2575](https://github.com/Microsoft/fast/issues/2575)
+* add combobox scenario for component explorer ([#4460](https://github.com/Microsoft/fast/issues/4460)) ([dedd0e7](https://github.com/Microsoft/fast/commit/dedd0e789ef5dce6a4fce20321c58569a831f1d1))
+* add expand/collapse icon to menu items ([#4438](https://github.com/Microsoft/fast/issues/4438)) ([db4e9fa](https://github.com/Microsoft/fast/commit/db4e9facad71dbfefce9d2c063dfc16c6b415426))
+* add horizontal scroll web component ([#4391](https://github.com/Microsoft/fast/issues/4391)) ([08508a5](https://github.com/Microsoft/fast/commit/08508a5860d6bf1f5a5719028c11e17433ac5ac3)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412) [#4416](https://github.com/Microsoft/fast/issues/4416) [#4437](https://github.com/Microsoft/fast/issues/4437)
+
+
+
+
+
 ## [1.18.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.18.0...@microsoft/fast-components@1.18.1) (2021-03-06)
 
 **Note:** Version bump only for package @microsoft/fast-components

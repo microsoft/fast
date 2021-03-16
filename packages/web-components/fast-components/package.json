@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "1.18.1",
+  "version": "1.19.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
-    "@microsoft/fast-tooling": "^0.16.0",
+    "@microsoft/fast-tooling": "^0.16.1",
     "@storybook/addons": "^6.1.17",
     "@storybook/html": "^6.1.17",
     "@storybook/theming": "^6.1.17",
@@ -112,8 +112,8 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.2",
-    "@microsoft/fast-element": "^1.0.0",
-    "@microsoft/fast-foundation": "^1.15.1",
+    "@microsoft/fast-element": "^1.0.1",
+    "@microsoft/fast-foundation": "^1.16.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "tslib": "^1.13.0"
   },

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.1...@microsoft/fast-foundation@1.16.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* add createMenuItem(<prefix>) to menu item template ([#4431](https://github.com/Microsoft/fast/issues/4431)) ([c86b63b](https://github.com/Microsoft/fast/commit/c86b63bd5323880f0dd859cbd2bf8a20ca1ccba0)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412)
+* anchored region pointer events mk2 ([#4402](https://github.com/Microsoft/fast/issues/4402)) ([e0de62e](https://github.com/Microsoft/fast/commit/e0de62e0b1bbcccce9a757c6cd99b4130a702f8f))
+* broken formatting and link when generating docs site ([#4459](https://github.com/Microsoft/fast/issues/4459)) ([e817863](https://github.com/Microsoft/fast/commit/e81786349e7c65cfb888a151f0400c736c421912))
+* cannot use combobox with typescript ^4.0 ([#4442](https://github.com/Microsoft/fast/issues/4442)) ([3d52ef4](https://github.com/Microsoft/fast/commit/3d52ef43c327d4c5cdabc8f6a1dc514df4cea403))
+* combobox escape and arrow keys prevent listbox navigation ([#4443](https://github.com/Microsoft/fast/issues/4443)) ([aa594fe](https://github.com/Microsoft/fast/commit/aa594fecc8f237d80174e41dfff7cfe45562d6dd))
+* setting data grid focus should not throw ([#4466](https://github.com/Microsoft/fast/issues/4466)) ([3c56a18](https://github.com/Microsoft/fast/commit/3c56a185c6aa5dcb52c12a9393f51a36521c5f77))
+
+
+### Features
+
+* add ability to hide step controls and update reveal on hover and focus-within ([#4448](https://github.com/Microsoft/fast/issues/4448)) ([6f6497c](https://github.com/Microsoft/fast/commit/6f6497cba3883b741dddf3b6c78fd0d1571c02f3))
+* add expand/collapse icon to menu items ([#4438](https://github.com/Microsoft/fast/issues/4438)) ([db4e9fa](https://github.com/Microsoft/fast/commit/db4e9facad71dbfefce9d2c063dfc16c6b415426))
+* add horizontal scroll web component ([#4391](https://github.com/Microsoft/fast/issues/4391)) ([08508a5](https://github.com/Microsoft/fast/commit/08508a5860d6bf1f5a5719028c11e17433ac5ac3)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412) [#4416](https://github.com/Microsoft/fast/issues/4416) [#4437](https://github.com/Microsoft/fast/issues/4437)
+
+
+
+
+
 ## [1.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.0...@microsoft/fast-foundation@1.15.1) (2021-03-06)
 
 

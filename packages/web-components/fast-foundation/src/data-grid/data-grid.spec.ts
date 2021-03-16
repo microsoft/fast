@@ -218,4 +218,68 @@ describe("Data grid", () => {
 
         await disconnect();
     });
+
+    it("should move focus by setting focusRowIndex", async () => {
+        const { document, element, connect, disconnect } = await setup();
+
+        element.rowsData = newDataSet(2);
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
+        expect(rows.length).to.equal(3);
+        const cells: Element[] = Array.from(rows[0].querySelectorAll(cellQueryString));
+        expect(cells.length).to.equal(6);
+
+        (cells[0] as HTMLElement).focus();
+        expect(document.activeElement?.textContent).to.contain("item1");
+
+        element.focusRowIndex = 1;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("value 1-1");
+
+        element.focusRowIndex = 2;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("value 1-2");
+
+        element.focusRowIndex = 3;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("value 1-2");
+
+        await disconnect();
+    });
+
+    it("should move focus by setting focusColumnIndex", async () => {
+        const { document, element, connect, disconnect } = await setup();
+
+        element.rowsData = newDataSet(2);
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
+        expect(rows.length).to.equal(3);
+        const cells: Element[] = Array.from(rows[0].querySelectorAll(cellQueryString));
+        expect(cells.length).to.equal(6);
+
+        (cells[0] as HTMLElement).focus();
+        expect(document.activeElement?.textContent).to.contain("item1");
+
+        element.focusColumnIndex = 1;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("item2");
+
+        element.focusColumnIndex = 6;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("item6");
+
+        element.focusColumnIndex = 7;
+        await DOM.nextUpdate();
+        expect(document.activeElement?.textContent).to.contain("item6");
+
+        await disconnect();
+    });
 });
