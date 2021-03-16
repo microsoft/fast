@@ -41,7 +41,7 @@
     "change": "beachball change",
     "check": "beachball check",
     "publish": "beachball publish",
-    "publish-ci": "beachball publish -n $PACK_TOKEN -y -r https://www.npmjs.com/package/@microsoft/ ",
+    "publish-ci": "beachball publish -n env.NPM_PAT -y -r https://registry.npmjs.org/ ",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",

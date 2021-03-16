@@ -3,7 +3,8 @@ name: CI - FAST Publish
 on:
   pull_request:
     branches:
-    - master
+    - users/imaga/chore-update-beachball-configuration
+  
   #schedule:
   #  - cron: 0 12 * * 7
 
@@ -42,9 +43,6 @@ jobs:
     - run: yarn change
       
     - name: Publish NPM changed packages
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+     
     - run: yarn publish-ci 
-      env: 
-        NPM_AUTHTOKEN: ${{ secrets.PACK_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+     
