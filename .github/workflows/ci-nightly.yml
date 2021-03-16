@@ -11,13 +11,6 @@ jobs:
   build_linux:
     runs-on: ubuntu-latest
 
-    env:
-      NPM_PAT: ${{ secrets.PACK_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
-      GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-      GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
-
     steps:
     - uses: actions/checkout@v2
 
