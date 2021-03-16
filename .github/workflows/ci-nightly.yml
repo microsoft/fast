@@ -40,9 +40,8 @@ jobs:
       run: lerna run test --stream   
     
     - name: Check for Change
-    - run: yarn change
+      run: yarn change
       
-    - name: Publish NPM changed packages
-     
-    - run: yarn publish-ci 
+    - name: Publish NPM changed packages 
+      run: yarn publish-ci 
      
