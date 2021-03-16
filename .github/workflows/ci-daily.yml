@@ -35,7 +35,6 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
-      if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
 
     - name: Testing Prettier format
