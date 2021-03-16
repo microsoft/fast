@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      NPM_PAT: ${{ secrets.PACK_TOKEN }}
       GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
       GITHUB_SERVICE_USER: "Microsoft FAST Builds"
       GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
@@ -26,7 +27,7 @@ jobs:
       run: |
         git config user.name ${{ env.GITHUB_PUBLISH_USER }}
         git config user.email ${{ env.GITHUB_PUBLISH_EMAIL }}
-        git remote set-url origin https://${{GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
+        git remote set-url origin https://${{env.GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
     
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
@@ -39,6 +40,6 @@ jobs:
       
     - name: Publish NPM changed packages
       run: |
-        npm run beachball-publish -- -b origin/master -n $(npmToken) --access public -y
+        npm run beachball-publish -- -b origin/master -n ${{ env.NPM_PAT }} --access public -y
         git reset --hard origin/master
     
