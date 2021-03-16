@@ -27,7 +27,6 @@ jobs:
       run: |
         git config user.name ${{ env.GITHUB_PUBLISH_USER }}
         git config user.email ${{ env.GITHUB_PUBLISH_EMAIL }}
-        git remote set-url origin https://${{env.GITHUB_SERVICE_PAT}}:${{env.GITHUB_SERVICE_PAT}}@github.com/microsoft/fast.git
     
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
