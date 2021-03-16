@@ -1,5 +1,5 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import { PickerList } from "./picker-list";
+import type { PickerList } from "./picker-list";
 
 /**
  *

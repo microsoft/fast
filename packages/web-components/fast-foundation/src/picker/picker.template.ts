@@ -1,5 +1,5 @@
-import { html, ref, slotted, ViewTemplate, when } from "@microsoft/fast-element";
-import { Picker, PickerMenuPosition } from "./picker";
+import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import type { Picker } from "./picker";
 
 /**
  * The template for the List Picker component.

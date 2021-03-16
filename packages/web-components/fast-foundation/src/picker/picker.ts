@@ -8,8 +8,8 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
-import { AnchoredRegion, AutoUpdateMode } from "../anchored-region";
-import { PickerMenu } from "./picker-menu";
+import type { AnchoredRegion, AutoUpdateMode } from "../anchored-region";
+import type { PickerMenu } from "./picker-menu";
 
 /**
  *

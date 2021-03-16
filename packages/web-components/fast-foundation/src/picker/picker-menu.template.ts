@@ -7,7 +7,7 @@ import {
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
-import { PickerMenu } from "./picker-menu";
+import type { PickerMenu } from "./picker-menu";
 
 /**
  * The template for the List Picker component.
