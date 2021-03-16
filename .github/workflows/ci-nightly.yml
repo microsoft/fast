@@ -3,10 +3,7 @@ name: CI - FAST Publish
 on:
   pull_request:
     branches:
-    - users/imaga/chore-update-beachball-configuration
-  
-  #schedule:
-  #  - cron: 0 12 * * 7
+      - users/imaga/*
 
 jobs:
   build_linux:
