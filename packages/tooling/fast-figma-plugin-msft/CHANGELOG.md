@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.14](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.8.13...@microsoft/fast-figma-plugin-msft@0.8.14) (2021-03-16)
+
+**Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
+
+
+
+
+
 ## [0.8.13](https://github.com/Microsoft/fast/compare/@microsoft/fast-figma-plugin-msft@0.8.12...@microsoft/fast-figma-plugin-msft@0.8.13) (2021-03-06)
 
 **Note:** Version bump only for package @microsoft/fast-figma-plugin-msft
