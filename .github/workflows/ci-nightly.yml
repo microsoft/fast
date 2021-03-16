@@ -40,7 +40,7 @@ jobs:
       
     - name: Publish NPM changed packages
       run: |
-        yarn beachball publish -b origin/master -n $PACK_TOKEN
-        git reset --hard origin/master
+        yarn publish-ci
+      # git reset --hard origin/master
       # npm login -n ${{ env.NPM_PAT }} --access public -y
         
