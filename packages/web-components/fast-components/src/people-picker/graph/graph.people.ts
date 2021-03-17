@@ -11,6 +11,7 @@ import {
     CacheItem,
     CacheService,
     CacheStore,
+    CacheSchema,
 } from "@microsoft/mgt-element";
 import { Contact, Person, User } from "@microsoft/microsoft-graph-types";
 import { extractEmailAddress } from "../utils/Utils";
@@ -98,7 +99,7 @@ export async function findPeople(
     if (getIsPeopleCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePeopleQuery>(
-            schemas.people,
+            schemas.people as CacheSchema,
             schemas.people.stores.peopleQuery
         );
         const result: CachePeopleQuery = getIsPeopleCacheEnabled()
@@ -147,7 +148,7 @@ export async function getPeople(graph: IGraph): Promise<Person[]> {
     if (getIsPeopleCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePeopleQuery>(
-            schemas.people,
+            schemas.people as CacheSchema,
             schemas.people.stores.peopleQuery
         );
         const cacheRes = await cache.getValue("*");
@@ -207,7 +208,7 @@ export async function findContactsByEmail(
     if (getIsPeopleCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePerson>(
-            schemas.people,
+            schemas.people as CacheSchema,
             schemas.people.stores.contacts
         );
         const contact = await cache.getValue(email);

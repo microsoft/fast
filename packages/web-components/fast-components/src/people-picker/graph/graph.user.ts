@@ -11,6 +11,7 @@ import {
     CacheItem,
     CacheService,
     CacheStore,
+    CacheSchema,
 } from "@microsoft/mgt-element";
 import { User } from "@microsoft/microsoft-graph-types";
 
@@ -65,7 +66,7 @@ export async function getMe(graph: IGraph): Promise<User> {
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUser>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.users
         );
         const me = await cache.getValue("me");
@@ -95,7 +96,7 @@ export async function getUser(graph: IGraph, userPrincipleName: string): Promise
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUser>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.users
         );
         // check cache
@@ -140,7 +141,7 @@ export async function getUsersForUserIds(
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUser>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.users
         );
     }
@@ -216,7 +217,7 @@ export async function getUsersForPeopleQueries(
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUserQuery>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.usersQuery
         );
     }
@@ -306,7 +307,7 @@ export async function findUsers(
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUserQuery>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.usersQuery
         );
         const result: CacheUserQuery = await cache.getValue(query);
@@ -363,7 +364,7 @@ export async function findGroupMembers(
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CacheUserQuery>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.usersQuery
         );
         const result: CacheUserQuery = await cache.getValue(key);

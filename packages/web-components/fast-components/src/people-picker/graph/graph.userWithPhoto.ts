@@ -5,7 +5,7 @@
  * -------------------------------------------------------------------------------------------
  */
 
-import { CacheService, IGraph, prepScopes } from "@microsoft/mgt-element";
+import { CacheService, CacheSchema, IGraph, prepScopes } from "@microsoft/mgt-element";
 
 import {
     CachePhoto,
@@ -43,7 +43,7 @@ export async function getUserWithPhoto(
     if (getIsUsersCacheEnabled()) {
         // @ts-ignore
         const cache = CacheService.getCache<CacheUser>(
-            schemas.users,
+            schemas.users as CacheSchema,
             schemas.users.stores.users
         );
         cachedUser = await cache.getValue(userId || "me");
@@ -118,7 +118,7 @@ export async function getUserWithPhoto(
         if (getIsUsersCacheEnabled()) {
             // @ts-ignore
             const cache = CacheService.getCache<CacheUser>(
-                schemas.users,
+                schemas.users as CacheSchema,
                 schemas.users.stores.users
             );
             cache.putValue(userId || "me", { user: JSON.stringify(user) });
@@ -152,7 +152,7 @@ export async function getUserWithPhoto(
             if (getIsUsersCacheEnabled()) {
                 // @ts-ignore
                 const cache = CacheService.getCache<CacheUser>(
-                    schemas.users,
+                    schemas.users as CacheSchema,
                     schemas.users.stores.users
                 );
                 cache.putValue(userId || "me", { user: JSON.stringify(response) });

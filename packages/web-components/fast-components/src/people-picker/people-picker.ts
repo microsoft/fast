@@ -7,6 +7,14 @@ import {
     ProviderState,
     IDynamicPerson,
 } from "@microsoft/mgt";
+import { findPeople, getPeople } from "./graph/graph.people";
+import {
+    findUsers,
+    findGroupMembers,
+    getUser,
+    getUsersForUserIds,
+} from "./graph/graph.user";
+import { findGroups, findGroupsFromGroup } from "./graph/graph.groups";
 
 /**
  * ensures one call at a time
@@ -133,7 +141,9 @@ export class PeoplePicker extends Picker {
     private _debouncedSearch: { (): void; (): void };
 
     private defaultPeople: IDynamicPerson[];
-    private _groupPeople: IDynamicPerson[];
+    private groupPeople: IDynamicPerson[];
+    private showLoading: boolean;
+    private foundPeople: IDynamicPerson[];
 
     /**
      * @internal
@@ -156,9 +166,9 @@ export class PeoplePicker extends Picker {
     protected handleTextInput = (e: InputEvent): boolean => {
         if (!this._debouncedSearch) {
             this._debouncedSearch = debounce(async () => {
-                // this.showOptions = false;
+                this.showOptions = false;
                 await this.loadState();
-                // this.showOptions = true;
+                this.showOptions = true;
             }, 400);
         }
 
@@ -172,87 +182,138 @@ export class PeoplePicker extends Picker {
      * set's `this.groupPeople` to those members.
      */
     protected async loadState(): Promise<void> {
-        // let people = this.people;
-        // const input = this.inputElement.value.toLowerCase();
-        // const provider = Providers.globalProvider;
-        // if (!people && provider && provider.state === ProviderState.SignedIn) {
-        //   const graph = provider.graph.forComponent(this);
-        //   if (!input.length && this.contains(document.activeElement)) {
-        //     if (this.defaultPeople) {
-        //       people = this.defaultPeople;
-        //     } else {
-        //       if (this.groupId) {
-        //         if (this._groupPeople === null) {
-        //           try {
-        //             this._groupPeople = await findGroupMembers(
-        //               graph,
-        //               null,
-        //               this.groupId,
-        //               this.showMax,
-        //               this.type,
-        //               this.transitiveSearch
-        //             );
-        //           } catch (_) {
-        //             this._groupPeople = [];
-        //           }
-        //         }
-        //         people = this._groupPeople || [];
-        //       } else if (this.type === PersonType.person || this.type === PersonType.any) {
-        //         people = await getPeople(graph);
-        //       } else if (this.type === PersonType.group) {
-        //         const groups = (await findGroups(graph, '', this.showMax, this.groupType)) || [];
-        //         people = groups;
-        //       }
-        //       this.defaultPeople = people;
-        //     }
-        //   }
-        //   this._showLoading = false;
-        //   if (this.defaultSelectedUserIds && !this.selectedPeople.length && !this.defaultSelectedUsers) {
-        //     this.defaultSelectedUsers = await getUsersForUserIds(graph, this.defaultSelectedUserIds);
-        //     this.selectedPeople = [...this.defaultSelectedUsers];
-        //     this.requestUpdate();
-        //     this.fireCustomEvent('selectionChanged', this.selectedPeople);
-        //   }
-        //   if (input) {
-        //     people = [];
-        //     if (this.groupId) {
-        //       people =
-        //         (await findGroupMembers(graph, input, this.groupId, this.showMax, this.type, this.transitiveSearch)) || [];
-        //     } else {
-        //       if (this.type === PersonType.person || this.type === PersonType.any) {
-        //         try {
-        //           people = (await findPeople(graph, input, this.showMax)) || [];
-        //         } catch (e) {
-        //           // nop
-        //         }
-        //         if (people.length < this.showMax) {
-        //           try {
-        //             const users = (await findUsers(graph, input, this.showMax)) || [];
-        //             // make sure only unique people
-        //             const peopleIds = new Set(people.map(p => p.id));
-        //             for (const user of users) {
-        //               if (!peopleIds.has(user.id)) {
-        //                 people.push(user);
-        //               }
-        //             }
-        //           } catch (e) {
-        //             // nop
-        //           }
-        //         }
-        //       }
-        //       if ((this.type === PersonType.group || this.type === PersonType.any) && people.length < this.showMax) {
-        //         let groups = [];
-        //         try {
-        //           groups = (await findGroups(graph, input, this.showMax, this.groupType)) || [];
-        //           people = people.concat(groups);
-        //         } catch (e) {
-        //           // nop
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-        // //people = this.getUniquePeople(people);
-        // this._foundPeople = this.filterPeople(people);
+        let people = this.people;
+        const input = this.inputElement.value.toLowerCase();
+        const provider = Providers.globalProvider;
+        if (!people && provider && provider.state === ProviderState.SignedIn) {
+            const graph = provider.graph.forComponent(this);
+            if (!input.length && this.contains(document.activeElement)) {
+                if (this.defaultPeople) {
+                    people = this.defaultPeople;
+                } else {
+                    if (this.groupId) {
+                        if (this.groupPeople === null) {
+                            try {
+                                this.groupPeople = await findGroupMembers(
+                                    graph,
+                                    null,
+                                    this.groupId,
+                                    this.showMax,
+                                    this.type,
+                                    this.transitiveSearch
+                                );
+                            } catch (_) {
+                                this.groupPeople = [];
+                            }
+                        }
+                        people = this.groupPeople || [];
+                    } else if (
+                        this.type === PersonType.person ||
+                        this.type === PersonType.any
+                    ) {
+                        people = await getPeople(graph);
+                    } else if (this.type === PersonType.group) {
+                        // @ts-ignore
+                        const groups =
+                            (await findGroups(graph, "", this.showMax, this.groupType)) ||
+                            [];
+                        people = groups;
+                    }
+                    this.defaultPeople = people;
+                }
+            }
+            this.showLoading = false;
+            //   if (this.defaultSelectedUserIds && !this.selectedPeople.length && !this.defaultSelectedUsers) {
+            //     this.defaultSelectedUsers = await getUsersForUserIds(graph, this.defaultSelectedUserIds);
+            //     this.selectedPeople = [...this.defaultSelectedUsers];
+            //     this.requestUpdate();
+            //     this.fireCustomEvent('selectionChanged', this.selectedPeople);
+            //   }
+            if (input) {
+                people = [];
+                if (this.groupId) {
+                    people =
+                        (await findGroupMembers(
+                            graph,
+                            input,
+                            this.groupId,
+                            this.showMax,
+                            this.type,
+                            this.transitiveSearch
+                        )) || [];
+                } else {
+                    if (this.type === PersonType.person || this.type === PersonType.any) {
+                        try {
+                            people = (await findPeople(graph, input, this.showMax)) || [];
+                        } catch (e) {
+                            // nop
+                        }
+                        if (people.length < this.showMax) {
+                            try {
+                                const users =
+                                    (await findUsers(graph, input, this.showMax)) || [];
+                                // make sure only unique people
+                                const peopleIds = new Set(people.map(p => p.id));
+                                for (const user of users) {
+                                    if (!peopleIds.has(user.id)) {
+                                        people.push(user);
+                                    }
+                                }
+                            } catch (e) {
+                                // nop
+                            }
+                        }
+                    }
+                    if (
+                        (this.type === PersonType.group ||
+                            this.type === PersonType.any) &&
+                        people.length < this.showMax
+                    ) {
+                        let groups = [];
+                        try {
+                            // @ts-ignore
+                            groups =
+                                (await findGroups(
+                                    graph,
+                                    input,
+                                    this.showMax,
+                                    this.groupType
+                                )) || [];
+                            people = people.concat(groups);
+                        } catch (e) {
+                            // nop
+                        }
+                    }
+                }
+            }
+        }
+        //people = this.getUniquePeople(people);
+        this.foundPeople = this.filterPeople(people);
+    }
+
+    /**
+     * Filters people searched from already selected people
+     * @param people - array of people returned from query to Graph
+     */
+    private filterPeople(people: IDynamicPerson[]): IDynamicPerson[] {
+        // check if people need to be updated
+        // ensuring people list is displayed
+        // find ids from selected people
+        if (people) {
+            const idFilter = this.selectedPeople.map(el => {
+                return el.id ? el.id : el.displayName;
+            });
+
+            // filter id's
+            const filtered = people.filter((person: IDynamicPerson) => {
+                if (person.id) {
+                    return idFilter.indexOf(person.id) === -1;
+                } else {
+                    return idFilter.indexOf(person.displayName) === -1;
+                }
+            });
+
+            return filtered;
+        }
     }
 }

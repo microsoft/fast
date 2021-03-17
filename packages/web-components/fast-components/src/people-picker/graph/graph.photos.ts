@@ -11,6 +11,7 @@ import {
     CacheItem,
     CacheService,
     CacheStore,
+    CacheSchema,
 } from "@microsoft/mgt-element";
 import { ResponseType } from "@microsoft/microsoft-graph-client";
 import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
@@ -96,7 +97,7 @@ export async function getContactPhoto(graph: IGraph, contactId: string): Promise
     if (getIsPhotosCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePhoto>(
-            schemas.photos,
+            schemas.photos as CacheSchema,
             schemas.photos.stores.contacts
         );
         photoDetails = await cache.getValue(contactId);
@@ -130,7 +131,7 @@ export async function getUserPhoto(graph: IGraph, userId: string): Promise<strin
     if (getIsPhotosCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePhoto>(
-            schemas.photos,
+            schemas.photos as CacheSchema,
             schemas.photos.stores.users
         );
         photoDetails = await cache.getValue(userId);
@@ -178,7 +179,7 @@ export async function myPhoto(graph: IGraph): Promise<string> {
     if (getIsPhotosCacheEnabled()) {
         // @ts-ignore
         cache = CacheService.getCache<CachePhoto>(
-            schemas.photos,
+            schemas.photos as CacheSchema,
             schemas.photos.stores.users
         );
         photoDetails = await cache.getValue("me");
