@@ -243,6 +243,17 @@ class DesignTokenNode<T> {
             return childToParent.get(this)!.value;
         }
 
+        // Try to find the parent before throwing. This can happen
+        // when a token is used in a CSS directive and the directive's
+        // behavior accesses a token prior to *this* class's behavior
+        // finds the parent node.
+        const parent = this.findParentNode();
+
+        if (parent) {
+            parent.appendChild(this);
+            return parent.value;
+        }
+
         throw new Error("Value could not be retrieved. Ensure the value is set");
     }
 
