@@ -41,8 +41,7 @@ export interface PreviewState {
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
     theme: FASTComponents.StandardLuminance;
-    direction: Direction;
-    accentColor: string;
+    designSystemDataDictionary: DataDictionary<unknown>;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
@@ -51,20 +50,35 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     constructor(props: {}) {
         super(props);
+        const designSystemLinkedDataId: string = "design-system";
 
         this.ref = React.createRef();
         this.activeDictionaryItemWrapperRef = React.createRef();
 
-        // TODO: The theme, direction, accentColor should consolidate into
-        // a "designSystemDataDictionary" which should hold all of them as a single
-        // object
         this.state = {
             activeDictionaryId: "",
             dataDictionary: void 0,
             schemaDictionary: {},
             theme: FASTComponents.StandardLuminance.LightMode,
-            direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            designSystemDataDictionary: [
+                {
+                    [designSystemLinkedDataId]: {
+                        schemaId: "fast-design-system-provider",
+                        data: {
+                            "use-defaults": true,
+                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            direction: Direction.ltr,
+                            "background-color": FASTComponents.neutralLayerL1(
+                                Object.assign({}, fastDesignSystemDefaults, {
+                                    baseLayerLuminance:
+                                        FASTComponents.StandardLuminance.LightMode,
+                                })
+                            ),
+                        },
+                    },
+                },
+                designSystemLinkedDataId,
+            ],
         };
 
         window.addEventListener("message", this.handleMessage);
@@ -75,9 +89,13 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
+            const direction: Direction = (this.state.designSystemDataDictionary[0][
+                "design-system"
+            ].data as any)["direction"];
+
             return (
                 <React.Fragment>
-                    <div className="preview" dir={this.state.direction} ref={this.ref}>
+                    <div className="preview" dir={direction} ref={this.ref}>
                         <div />
                     </div>
                     <div ref={this.activeDictionaryItemWrapperRef}>
@@ -117,33 +135,26 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 "fast-design-system-provider"
             );
 
-            // designSystemProvider.setAttribute(
-            //     "accent-base-color",
-            //     this.state.accentColor
-            // );
-            // const generatedAccentPalette = createColorPalette(
-            //     parseColorHexRGB(this.state.accentColor)
-            // );
-            // (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
+            Object.entries(
+                this.state.designSystemDataDictionary[0]["design-system"].data as any
+            ).forEach(([attribute, value]: [string, any]) => {
+                designSystemProvider.setAttribute(attribute, value);
+            });
 
-            designSystemProvider.setAttribute(
-                "background-color",
-                FASTComponents.neutralLayerL1(
-                    Object.assign({}, fastDesignSystemDefaults, {
-                        baseLayerLuminance: this.state.theme,
-                    })
-                )
+            const accentColor: string = (this.state.designSystemDataDictionary[0][
+                "design-system"
+            ].data as any)["accent-base-color"];
+
+            const generatedAccentPalette = createColorPalette(
+                parseColorHexRGB(accentColor)
             );
+            (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
+
             designSystemProvider.setAttribute(
                 "style",
                 "background: var(--background-color); height: 100vh;"
             );
-            console.log("data dictionary", this.state.dataDictionary[0]);
-            // Object.entries(this.state.dataDictionary[0]["design-system"].data as any).forEach(([attribute, value]: [string, any]) => {
-            //     designSystemProvider.setAttribute(attribute, value);
-            // });
 
-            // designSystemProvider.setAttribute("use-defaults", "");
             designSystemProvider.appendChild(
                 mapDataDictionary({
                     dataDictionary: this.state.dataDictionary,
@@ -239,36 +250,26 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.custom:
-                        // TODO: consolidate changes from the top level icons which change the
-                        // direction, accent color, and theme with the full design system changes
-                        // that come from the design system form editing UI (should remain in sync)
-                        if ((messageData as any).id === previewDirection) {
+                        if ((messageData as any).originatorId === "design-system") {
                             this.setState(
                                 {
-                                    direction: (messageData as any).value,
+                                    designSystemDataDictionary: [
+                                        {
+                                            ["design-system"]: {
+                                                schemaId: this.state
+                                                    .designSystemDataDictionary[0][
+                                                    "design-system"
+                                                ].schemaId,
+                                                data: {
+                                                    ...(messageData as any).data,
+                                                },
+                                            },
+                                        },
+                                        "design-system",
+                                    ],
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
-                        } else if ((messageData as any).id === previewAccentColor) {
-                            this.setState(
-                                {
-                                    accentColor: (messageData as any).value,
-                                },
-                                this.updateDOM(messageData as MessageSystemOutgoing)
-                            );
-                        } else if ((messageData as any).id === previewTheme) {
-                            this.setState(
-                                {
-                                    theme: (messageData as any).value,
-                                },
-                                this.updateDOM(messageData as MessageSystemOutgoing)
-                            );
-                        } else if (
-                            (messageData as any).originatorId === "design-system"
-                        ) {
-                            console.log(messageData);
-                            // TODO: Take message and apply data to state, use this when calling
-                            // attachMappedComponents
                         }
                         break;
                 }
