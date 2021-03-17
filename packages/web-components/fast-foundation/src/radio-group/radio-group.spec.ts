@@ -20,23 +20,23 @@ describe("Radio Group", () => {
     class FASTRadio extends Radio {}
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
+        const { element, connect, disconnect, parent } = await fixture<FASTRadioGroup>(
             "fast-radio-group"
         );
 
-        const radio1 = document.createElement("fast-radio");
-        const radio2 = document.createElement("fast-radio");
-        const radio3 = document.createElement("fast-radio");
+        const radio1 = document.createElement("fast-radio") as FASTRadio;
+        const radio2 = document.createElement("fast-radio") as FASTRadio;
+        const radio3 = document.createElement("fast-radio") as FASTRadio;
 
-        (radio1 as FASTRadio).className = "one";
-        (radio2 as FASTRadio).className = "two";
-        (radio3 as FASTRadio).className = "three";
+        radio1.className = "one";
+        radio2.className = "two";
+        radio3.className = "three";
 
         element.appendChild(radio1);
         element.appendChild(radio2);
         element.appendChild(radio3);
 
-        return { element, connect, disconnect, radio1, radio2, radio3 };
+        return { element, connect, disconnect, parent, radio1, radio2, radio3 };
     }
 
     it("should have a role of `radiogroup`", async () => {
@@ -281,6 +281,8 @@ describe("Radio Group", () => {
         const radios: NodeList = element.querySelectorAll("fast-radio");
         expect((radios[2] as HTMLInputElement).checked).to.equal(true);
         expect((radios[1] as HTMLInputElement).checked).to.equal(false);
+
+        await disconnect();
     });
 
     it("should mark radio matching value on radio-group over any checked attributes", async () => {
@@ -302,6 +304,8 @@ describe("Radio Group", () => {
         // but the attribute should still persist.
         expect((radios[2] as HTMLInputElement).hasAttribute("checked")).to.equal(true);
         expect((radios[2] as HTMLInputElement).checked).to.equal(false);
+
+        await disconnect();
     });
 
     it("should NOT set a child radio to `checked` if its value does not match the radiogroup `value`", async () => {
@@ -334,31 +338,35 @@ describe("Radio Group", () => {
     });
 
     it("should allow resetting of elements by the parent form", async () => {
-        const { element, connect, disconnect } = await fixture(html`
-            <form>
-                <fast-radio-group value="bar" name='foo'>
-                    <fast-radio value="foo">Foo</fast-radio>
-                    <fast-radio value="bar" checked>Bar</fast-radio>
-                    <fast-radio value="baz" ></fast-radio>Baz</fast-radio>
-                </fast-radio-group>
-            </form>
-        `);
+        const {
+            element,
+            connect,
+            disconnect,
+            parent,
+            radio1,
+            radio2,
+            radio3,
+        } = await setup();
+
+        radio2.setAttribute("checked", "");
+
+        const form = document.createElement("form");
+        form.appendChild(element);
+        parent.appendChild(form);
 
         await connect();
 
-        const elements = element.querySelectorAll("fast-radio") as NodeListOf<Radio>;
+        radio1.checked = true;
 
-        elements[0].checked = true;
+        assert.isTrue(!!radio1.checked);
+        assert.isFalse(!!radio2.checked);
+        assert.isFalse(!!radio3.checked);
 
-        assert(element[0].checked === true);
-        assert(element[1].checked === false);
-        assert(element[2].checked === false);
+        form.reset();
 
-        (element as HTMLFormElement).reset();
-
-        assert(element[0].checked === false);
-        assert(element[1].checked === true);
-        assert(element[2].checked === false);
+        assert.isFalse(!!radio1.checked);
+        assert.isTrue(!!radio2.checked);
+        assert.isFalse(!!radio3.checked);
 
         await disconnect();
     });

@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
@@ -7,39 +7,45 @@ export const fastSliderDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-slider",
+            title: "Slider",
             description: "The FAST slider element",
             attributes: [
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description: "The slider value",
                     default: undefined,
                     required: false,
                     type: DataType.number,
                 },
                 {
-                    name: "min",
-                    description: "The min attribute",
-                    default: 0,
+                    name: "max",
+                    title: "Maximum",
+                    description: "The maximum value",
+                    type: DataType.string,
+                    default: false,
                     required: false,
-                    type: DataType.number,
                 },
                 {
-                    name: "max",
-                    description: "The max attribute",
-                    default: 100,
+                    name: "min",
+                    title: "Minimum",
+                    description: "The minimum value",
+                    type: DataType.string,
+                    default: false,
                     required: false,
-                    type: DataType.number,
                 },
                 {
                     name: "step",
-                    description: "The step attribute",
-                    default: 1,
+                    title: "Increment",
+                    description: "Amount to increment or decrement the value by",
+                    type: DataType.string,
+                    default: false,
                     required: false,
-                    type: DataType.number,
                 },
                 {
                     name: "orientation",
-                    description: "The orientation attribute",
+                    title: "Orientation",
+                    description: "The orientation of the slider",
                     default: Orientation.horizontal,
                     values: [
                         { name: Orientation.horizontal },
@@ -50,28 +56,35 @@ export const fastSliderDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "required",
-                    description: "The required attribute",
+                    title: "Required",
+                    description:
+                        "Require the field to be completed prior to form submission",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the slider",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "readonly",
-                    description: "The readonly attribute",
+                    title: "Readonly",
+                    description:
+                        "When true, the control will be immutable by user interaction",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -80,15 +93,19 @@ export const fastSliderDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "Default slotted content of the slider represents its visual labels",
                 },
                 {
                     name: "track",
-                    description: "The horizontal or vertical track slot",
+                    title: "Track slot",
+                    description: "Slot to replace the slider track",
                 },
                 {
                     name: "thumb",
-                    description: "The thumb slot",
+                    title: "Thumb slot",
+                    description: "Slot to replace the slider thumb",
                 },
             ],
         },

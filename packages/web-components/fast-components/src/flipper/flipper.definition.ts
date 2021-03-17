@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { FlipperDirection } from "@microsoft/fast-foundation/dist/esm/flipper/flipper.options";
 
@@ -7,26 +7,31 @@ export const fastFlipperDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-flipper",
+            title: "Flipper",
             description: "The FAST flipper element",
             attributes: [
                 {
                     name: "disabled",
+                    title: "Disabled",
                     type: DataType.boolean,
-                    description: "The disabled attribute",
+                    description: "Sets the disabled state of the flipper",
                     default: true,
                     required: false,
                 },
                 {
                     name: "aria-hidden",
+                    title: "ARIA hidden",
                     type: DataType.boolean,
-                    description: "The aria-hidden attribute",
+                    description:
+                        "Flippers are often a duplicate method of navigation, so by default they are hidden from assistive technology (AT). When set to true, the element is exposed to AT",
                     default: true,
                     required: false,
                 },
                 {
                     name: "direction",
                     type: DataType.string,
-                    description: "The direction attribute",
+                    title: "Direction",
+                    description: "The navigation direction of the flipper",
                     values: [
                         {
                             name: FlipperDirection.previous,
@@ -42,11 +47,15 @@ export const fastFlipperDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "previous",
-                    description: "The previous slot",
+                    title: "Previous slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'previous' flipper state",
                 },
                 {
                     name: "next",
-                    description: "The next slot",
+                    title: "Next slot",
+                    description:
+                        "Slot to provide a custom icon to represent the 'next' flipper state",
                 },
             ],
         },

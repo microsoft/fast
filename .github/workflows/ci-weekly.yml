@@ -1,74 +1,145 @@
 name: CI - FAST Validation
 
 on:
+  push: 
+    branches:
+    - master
   schedule:
-  - cron: 0 7 * * 3
-
-
-jobs:
-  build_windows:
-    name: Validate on Windows
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.0
-      with:
-        node-version: '10'
-
-    - name: Install Lerna
-      run: npm i -g lerna
-
-    - name: Install package dependencies / prepare workspaces
-      run: |
-        yarn install --frozen-lockfile
-
-    - name: Ensure Prettier formatting
-      run: lerna run prettier:diff
-
-    - name: Execute unit tests
-      run: lerna run test --stream
-
+    - cron: 0 7 * * 3
   
-  build_macos:
-    name: Validate on MacOS
+jobs:
+  linux_cross-platform_cross-browser:
+    runs-on: [ubuntu-latest]
     
-    runs-on: macos-latest
-
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.0
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
       with:
-        node-version: '10'
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
 
-    - name: Install Lerna
-      run: sudo yarn global add lerna 
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+    - name: Prepare workspaces
+      run: yarn prepare
 
-    - name: Ensure Prettier formatting
-      run: lerna run prettier:diff
+    - name: Testing Prettier format
+      run: yarn format:check
 
-    - name: Execute unit tests
-      run: lerna run test --stream
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
 
-  code_scan:
-    name: Validate Security
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
+    - name: Test Playwright
+      run: |
+        cd packages/web-components/fast-components
+        npm install playwright
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw
+      
     - name: Initialize CodeQL
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: github/codeql-action/init@v1
       with:
-        languages: javascript
+        languages: javascript, typescript
 
     - name: Perform CodeQL Analysis
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: github/codeql-action/analyze@v1
+
+  windows_cross-platform_cross-browser:
+    runs-on: [windows-latest]
+
+    steps:
+    - name: Set git to use LF
+      run: |
+        git config --global core.autocrlf false
+        git config --global core.eol lf
+
+    - uses: actions/checkout@v2
+
+    - name: Display the path
+      run: echo $PATH
+      shell: bash
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
+
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
+     
+    - name: Test Playwright
+      run: |
+        cd packages/web-components/fast-components
+        npm install playwright
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw
+
+  macos_cross-platform_cross-browser:
+    runs-on: [macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v1.1.2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts
+    
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
+
+    - name: Test Playwright
+      run: |
+        cd packages/web-components/fast-components
+        npm install playwright
+        yarn test-chromium:pw 
+        yarn test-firefox:pw 
+        yarn test-webkit:pw

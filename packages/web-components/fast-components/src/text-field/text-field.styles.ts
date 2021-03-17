@@ -41,6 +41,7 @@ export const TextFieldStyles = css`
 
     .control {
         -webkit-appearance: none;
+        font: inherit;
         background: transparent;
         border: 0;
         color: inherit;

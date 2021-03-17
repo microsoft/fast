@@ -10,11 +10,11 @@ import { customElement } from "@microsoft/fast-element";
 class FASTTextArea extends TextArea {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTextArea>(
+    const { element, connect, disconnect, parent } = await fixture<FASTTextArea>(
         "fast-text-area"
     );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("TextArea", () => {
@@ -564,11 +564,15 @@ describe("TextArea", () => {
     });
 
     describe("when the owning form's reset() method is invoked", () => {
-        it("should reset it's value property to an empty string if no value attribute is set", () => {
-            const element = document.createElement("fast-text-area") as FASTTextArea;
+        it("should reset it's value property to an empty string if no value attribute is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
+            await connect();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === null);
@@ -577,30 +581,45 @@ describe("TextArea", () => {
             form.reset();
 
             assert(element.value === "");
+
+            await disconnect();
         });
 
-        it("should reset it's value property to the value of the value attribute if it is set", () => {
-            const element = document.createElement("fast-text-area") as FASTTextArea;
+        it("should reset it's value property to the value of the value attribute if it is set", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.setAttribute("value", "attr-value");
+
             element.value = "test-value";
 
             assert(element.getAttribute("value") === "attr-value");
+
             assert(element.value === "test-value");
 
             form.reset();
 
             assert(element.value === "attr-value");
+
+            await disconnect();
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-text-area") as FASTTextArea;
+        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.value = "test-value";
+
             element.setAttribute("value", "attr-value");
 
             assert(element.value === "test-value");
@@ -612,6 +631,8 @@ describe("TextArea", () => {
             element.setAttribute("value", "new-attr-value");
 
             assert(element.value === "new-attr-value");
+
+            await disconnect();
         });
     });
 });

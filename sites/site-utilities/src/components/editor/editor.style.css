@@ -8,6 +8,8 @@ html {
     --fast-tooling-l1-color: #3B3B3B;
     --fast-tooling-l3-color: #2B2B2B;
     --fast-tooling-l4-color: #1B1B1B;
+    --menu-bar-background: #333333;
+    --container-background-hover: #434343;
 }
 
 @font-face {
@@ -99,11 +101,15 @@ html::-webkit-scrollbar-thumb {
 
 .canvas-content {
     display: grid;
-    grid-template-rows: calc(100vh / 2) calc(100vh / 2);
+    grid-template-rows: calc(50vh - 20px) calc(50vh - 20px);
 }
 
 .canvas-content.canvas-content__dev-tools-hidden {
-    grid-template-rows: auto 36px;
+    grid-template-rows: auto 72px;
+}
+
+.canvas-content .tab-panel_region {
+    padding: 0px 12px;
 }
 
 .menu-bar {
@@ -125,19 +131,37 @@ html::-webkit-scrollbar-thumb {
 .preview {
     grid-row-start: 1;
     overflow: auto;
+    position: relative;
 }
 
 .dev-tools {
     position: relative;
     grid-row-start: 2;
-    padding-top: 12px;
     overflow: hidden;
 }
 
 .dev-tools-trigger {
     position: absolute;
-    top: 8px;
-    right: 16px;
+    top: 0;
+    right: 0;
+    background-color: var(--container-background);
+    fill: #fff;
+    height: 20px;
+    border: 2px solid transparent;
+    border-radius: 0 0 2px 2px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.dev-tools-trigger:hover {
+    background-color: var(--container-background-hover);
+}
+
+.dev-tools-trigger svg {
+    display: inline-block;
+    position: relative;
+    width: 14px;
+    height: 14px;
 }
 
 .mobile-menu-bar {
@@ -148,10 +172,6 @@ html::-webkit-scrollbar-thumb {
     grid-row-start: 2;
     grid-column-start: 1;
     grid-column-end: 4;
-}
-
-.logo {
-    background: var(--fast-tooling-l4-color) !important;
 }
 
 @media screen and (max-width: 899px) {
@@ -202,6 +222,11 @@ html::-webkit-scrollbar-thumb {
         height: calc(100vh - var(--mobile-menu-bar-height));
         margin-top: var(--mobile-menu-bar-height);
         overflow: hidden;
+        grid-template-rows: calc(50%) calc(50%);
+    }
+
+    .canvas-content .tab-panel_region {
+        height: calc(50vh - 130px);
     }
 
     .pane {
@@ -234,6 +259,7 @@ html::-webkit-scrollbar-thumb {
         align-items: flex-start;
         justify-content: space-between;
         height: 100%;
+        background-color: var(--menu-bar-background);
     }
 
     .footer-region {

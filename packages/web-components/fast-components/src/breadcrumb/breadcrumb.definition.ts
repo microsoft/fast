@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastBreadcrumbDefinition: WebComponentDefinition = {
@@ -6,20 +6,15 @@ export const fastBreadcrumbDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-breadcrumb",
+            title: "Breadcrumb",
             description: "The FAST breadcrumb element",
-            attributes: [
-                {
-                    name: "separator",
-                    description: "The separator attribute",
-                    type: DataType.string,
-                    default: "/",
-                    required: false,
-                },
-            ],
+            attributes: [],
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the breadcrumb, typically composed of fast-breadcrumb-items or anchors",
                 },
             ],
         },

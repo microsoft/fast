@@ -1,4 +1,4 @@
-import { Behavior, FASTElement } from "@microsoft/fast-element";
+import type { Behavior, FASTElement } from "@microsoft/fast-element";
 
 /**
  * A structure representing a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/--* | CSS custom property}.

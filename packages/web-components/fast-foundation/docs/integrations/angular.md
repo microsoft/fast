@@ -43,7 +43,8 @@ First, open your `src/main.ts` file and add the following code:
 import { 
   FASTDesignSystemProvider, 
   FASTCard, 
-  FASTButton 
+  FASTButton,
+  FASTTextField
 } from '@microsoft/fast-components';
 
 /*
@@ -53,15 +54,17 @@ import {
 FASTDesignSystemProvider;
 FASTCard;
 FASTButton;
+FASTTextField;
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the HTML template in your `app/app.component.html` file with the following markup:
+This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, `<fast-button>` and `<fast-text-field>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the HTML template in your `app/app.component.html` file with the following markup:
 
 ```html
 <template>
   <fast-design-system-provider use-defaults>
     <fast-card>
       <h2>{{title}}</h2>
+      <fast-text-field [(ngModel)]='exampleTextField' name='exampleTextField' ngDefaultControl placeholder="Enter Some Text"></fast-text-field>
       <fast-button appearance="accent" (click)="onClick()">Click Me</fast-button>
     </fast-card>
   </fast-design-system-provider>
@@ -80,13 +83,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'fast-angular';
+  
+  exampleTextField = '';
 
   onClick() {
-    console.log('clicked!');
+    console.log(this.exampleTextField);
   }
 }
 ```
-
 
 To allow an NgModule to contain Non-Angular element names, add the following code in your `app/app.module.ts` file:
 
@@ -111,6 +115,10 @@ fast-card {
   flex-direction: column;
 }
 
+fast-text-field {
+  margin-bottom: 12px;
+}
+
 h2 {
   font-size: var(--type-ramp-plus-5-font-size);
   line-height: var(--type-ramp-plus-5-line-height);
@@ -119,6 +127,16 @@ h2 {
 fast-card > fast-button {
   align-self: flex-end;
 }
+```
+
+:::note
+
+Third party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName or NgModel directives:
+
+:::
+
+```html
+<fast-text-field placeholder="name" id="name" formControlName="name" ngDefaultControl></fast-text-field>
 ```
 
 Congratulations! You're now set up to use FAST and Angular!

@@ -1,6 +1,5 @@
 import React from "react";
 import Foundation from "@microsoft/fast-components-foundation-react";
-import manageJss from "@microsoft/fast-jss-manager-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
@@ -15,7 +14,7 @@ import {
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
@@ -30,7 +29,6 @@ import { createColorPalette } from "@microsoft/fast-components/src/color/create-
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { previewAccentColor } from "./creator";
 import { dataSetDictionaryId, htmlMapper } from "./utilities";
-import style from "./preview.style";
 import { createWrapper } from "./utilities/wrapper";
 
 // Prevent tree shaking
@@ -76,7 +74,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (this.state.dataDictionary !== undefined) {
             return (
                 <React.Fragment>
-                    <div dir={this.state.direction} ref={this.ref}>
+                    <div className="preview" dir={this.state.direction} ref={this.ref}>
                         <div />
                     </div>
                     <div ref={this.activeDictionaryItemWrapperRef}>
@@ -262,4 +260,4 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     };
 }
 
-export default manageJss(style)(Preview as React.ComponentType);
+export default Preview as React.ComponentType;

@@ -110,6 +110,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     disabled: boolean;
     readonly elementInternals: ElementInternals | null;
     readonly formAssociated: boolean;
+    initialValue: string;
     readonly labels: ReadonlyArray<Node[]>;
     name: string;
     required: boolean;
@@ -128,24 +129,46 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 }
 
 /**
+ * Identifies a class as having a proxy element and optional submethods related
+ * to the proxy element.
+ *
+ * @alpha
+ */
+export interface FormAssociatedProxy {
+    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    disabledChanged?(previous: boolean, next: boolean): void;
+    formDisabledCallback?(disabled: boolean): void;
+    formResetCallback?(): void;
+    initialValueChanged?(previous, next): void;
+    valueChanged?(previous, next): void;
+    nameChanged?(previous, next): void;
+}
+
+/**
+ * Combined type to describe a Form-associated element.
+ *
+ * @alpha
+ */
+export type FormAssociatedElement = FormAssociated &
+    FASTElement &
+    HTMLElement &
+    FormAssociatedProxy;
+
+/**
+ * Combined type to describe a Constructable Form-Associated type.
+ *
+ * @alpha
+ */
+export type ConstructableFormAssociated = Constructable<
+    FASTElement & HTMLElement & FormAssociatedProxy
+>;
+
+/**
  * Base function for providing Custom Element Form Association.
  *
  * @alpha
  */
-export function FormAssociated<
-    T extends Constructable<
-        FASTElement &
-            HTMLElement & {
-                proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
-                disabledChanged?(previous: boolean, next: boolean): void;
-                formDisabledCallback?(disabled: boolean): void;
-                formResetCallback?(): void;
-                initialValueChanged?(previous, next): void;
-                valueChanged?(previous, next): void;
-                nameChanged?(previous, next): void;
-            }
-    >
->(BaseCtor: T): T {
+export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T {
     const C = class extends BaseCtor {
         /**
          * The proxy element - this element serves as the communication layer with the parent form
@@ -171,8 +194,8 @@ export function FormAssociated<
          * @alpha
          */
         public get validity(): ValidityState {
-            return supportsElementInternals
-                ? this.elementInternals!.validity
+            return this.elementInternals
+                ? this.elementInternals.validity
                 : this.proxy.validity;
         }
 
@@ -183,9 +206,7 @@ export function FormAssociated<
          * @alpha
          */
         public get form(): HTMLFormElement | null {
-            return supportsElementInternals
-                ? this.elementInternals!.form
-                : this.proxy.form;
+            return this.elementInternals ? this.elementInternals.form : this.proxy.form;
         }
 
         /**
@@ -195,8 +216,8 @@ export function FormAssociated<
          * @alpha
          */
         public get validationMessage(): string {
-            return supportsElementInternals
-                ? this.elementInternals!.validationMessage
+            return this.elementInternals
+                ? this.elementInternals.validationMessage
                 : this.proxy.validationMessage;
         }
 
@@ -205,8 +226,8 @@ export function FormAssociated<
          * form is submitted
          */
         public get willValidate(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.willValidate
+            return this.elementInternals
+                ? this.elementInternals.willValidate
                 : this.proxy.willValidate;
         }
 
@@ -214,7 +235,7 @@ export function FormAssociated<
          * A reference to all associated label elements
          */
         public get labels(): ReadonlyArray<Node> {
-            if (supportsElementInternals) {
+            if (this.elementInternals) {
                 return Object.freeze(Array.from(this.elementInternals!.labels));
             } else if (
                 this.proxy instanceof HTMLElement &&
@@ -284,7 +305,7 @@ export function FormAssociated<
          * @remarks
          * HTML Attribute: value
          */
-        protected initialValue: string;
+        public initialValue: string;
 
         /**
          * Invoked when the `initialValue` property changes
@@ -434,8 +455,12 @@ export function FormAssociated<
                 this.dirtyValue = false;
             }
 
-            if (!supportsElementInternals) {
+            if (!this.elementInternals) {
                 this.attachProxy();
+            }
+
+            if (this.form) {
+                this.form.addEventListener("reset", this.formResetCallback);
             }
         }
 
@@ -446,14 +471,18 @@ export function FormAssociated<
             this.proxyEventsToBlock.forEach(name =>
                 this.proxy.removeEventListener(name, this.stopPropagation)
             );
+
+            if (this.form) {
+                this.form.removeEventListener("reset", this.formResetCallback);
+            }
         }
 
         /**
          * Return the current validity of the element.
          */
         public checkValidity(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.checkValidity()
+            return this.elementInternals
+                ? this.elementInternals.checkValidity()
                 : this.proxy.checkValidity();
         }
 
@@ -462,8 +491,8 @@ export function FormAssociated<
          * If false, fires an invalid event at the element.
          */
         public reportValidity(): boolean {
-            return supportsElementInternals
-                ? this.elementInternals!.reportValidity()
+            return this.elementInternals
+                ? this.elementInternals.reportValidity()
                 : this.proxy.reportValidity();
         }
 
@@ -481,8 +510,8 @@ export function FormAssociated<
             message?: string,
             anchor?: HTMLElement
         ): void {
-            if (supportsElementInternals) {
-                this.elementInternals!.setValidity(flags, message, anchor);
+            if (this.elementInternals) {
+                this.elementInternals.setValidity(flags, message, anchor);
             } else if (typeof message === "string") {
                 this.proxy.setCustomValidity(message);
             }
@@ -493,14 +522,14 @@ export function FormAssociated<
          * state changed.
          * @param disabled - the disabled value of the form / fieldset
          */
-        public formDisabledCallback(disabled: boolean): void {
+        public formDisabledCallback = (disabled: boolean): void => {
             this.disabled = disabled;
-        }
+        };
 
-        public formResetCallback() {
+        public formResetCallback = (): void => {
             this.value = this.initialValue;
             this.dirtyValue = false;
-        }
+        };
 
         protected proxyInitialized: boolean = false;
 
@@ -566,7 +595,7 @@ export function FormAssociated<
             value: File | string | FormData | null,
             state?: File | string | FormData | null
         ): void {
-            if (supportsElementInternals && this.elementInternals) {
+            if (this.elementInternals) {
                 this.elementInternals.setFormValue(value, state || value);
             }
         }

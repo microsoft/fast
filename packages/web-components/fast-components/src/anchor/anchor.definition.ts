@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastAnchorDefinition: WebComponentDefinition = {
@@ -6,11 +6,13 @@ export const fastAnchorDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-anchor",
+            title: "Anchor",
             description: "The FAST anchor element",
             attributes: [
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    title: "Appearance",
+                    description: "The anchor's visual treatment",
                     type: DataType.string,
                     values: [
                         {
@@ -37,49 +39,68 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "download",
-                    description: "The download attribute",
+                    title: "Download",
+                    description: "The HTML download attribute of the anchor",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "href",
-                    description: "The href attribute",
+                    title: "URL",
+                    description: "The URL the anchor points to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "hreflang",
-                    description: "The hreflang attribute",
+                    title: "Linked page language",
+                    description: "The language of the URL the anchor points to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "ping",
-                    description: "The ping attribute",
+                    title: "Ping URLs",
+                    description: "A space-separated list of URLs typically for tracking",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "referrerpolicy",
-                    description: "The referrerpolicy attribute",
+                    title: "Referrer policy",
+                    description:
+                        "The amount of referrer information that should be included with requests",
                     type: DataType.string,
                     default: undefined,
                     required: false,
+                    values: [
+                        { name: "no-referrer" },
+                        { name: "no-referrer-when-downgrade" },
+                        { name: "origin" },
+                        { name: "origin-when-cross-origin" },
+                        { name: "same-origin" },
+                        { name: "strict-origin" },
+                        { name: "strict-origin-when-cross-origin" },
+                        { name: "unsafe-url" },
+                    ],
                 },
                 {
                     name: "rel",
-                    description: "The rel attribute",
+                    title: "Relationship",
+                    description:
+                        "Space-separated link types indicating the relationship of the linked URL",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "target",
-                    description: "The target attribute",
+                    title: "Target",
+                    description: "The display target of the URL",
                     type: DataType.string,
                     default: "_self",
                     values: [
@@ -100,7 +121,8 @@ export const fastAnchorDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "type",
-                    description: "The type attribute",
+                    title: "Type",
+                    description: "The linked URL's format using a MIME type",
                     type: DataType.string,
                     default: undefined,
                     required: false,
@@ -109,15 +131,20 @@ export const fastAnchorDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the anchor",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the anchor content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the anchor content",
                 },
             ],
         },

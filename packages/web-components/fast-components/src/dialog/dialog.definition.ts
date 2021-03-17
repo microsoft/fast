@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastDialogDefinition: WebComponentDefinition = {
@@ -6,46 +6,54 @@ export const fastDialogDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-dialog",
+            title: "Dialog",
             description: "The FAST dialog element",
             attributes: [
                 {
                     name: "modal",
+                    title: "Modal",
                     type: DataType.boolean,
-                    description: "The model attribute",
+                    description:
+                        "When modal, user interaction will be limited to the contents of the element",
                     default: true,
                     required: false,
                 },
                 {
                     name: "hidden",
-                    description: "The hidden attribute",
+                    title: "Hidden",
+                    description: "The hidden state of the element",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "trap-focus",
-                    description: "The trap-focus attribute",
+                    title: "Trap focus",
+                    description: "Indicates that the dialog should trap focus",
                     type: DataType.boolean,
                     default: true,
                     required: false,
                 },
                 {
                     name: "aria-describedby",
-                    description: "The aria-describedby attribute",
+                    title: "Accessibility description ID",
+                    description: "The HTML aria-describedby attribute",
                     type: DataType.string,
                     default: false,
                     required: false,
                 },
                 {
                     name: "aria-labelledby",
-                    description: "The aria-labelledby attribute",
+                    title: "Accessibility label ID",
+                    description: "The HTML aria-labelledby attribute",
                     type: DataType.string,
                     default: false,
                     required: false,
                 },
                 {
                     name: "aria-label",
-                    description: "The aria-label attribute",
+                    title: "Accessibility label",
+                    description: "The HTML aria-label attribute",
                     type: DataType.string,
                     default: false,
                     required: false,
@@ -54,7 +62,8 @@ export const fastDialogDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The dialog content",
                 },
             ],
         },

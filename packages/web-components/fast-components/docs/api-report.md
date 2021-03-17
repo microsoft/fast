@@ -7,6 +7,7 @@
 import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItem } from '@microsoft/fast-foundation';
 import { Anchor } from '@microsoft/fast-foundation';
+import { AnchoredRegion } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
@@ -14,15 +15,25 @@ import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
+import { Combobox } from '@microsoft/fast-foundation';
+import { DataGrid } from '@microsoft/fast-foundation';
+import { DataGridCell } from '@microsoft/fast-foundation';
+import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
+import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
+import { HorizontalScroll } from '@microsoft/fast-foundation';
+import { Listbox } from '@microsoft/fast-foundation';
+import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
+import { NumberField } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
+import { Select } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
 import { SliderLabel } from '@microsoft/fast-foundation';
@@ -206,6 +217,9 @@ export const AccordionStyles: import("@microsoft/fast-element").ElementStyles;
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
+export const AnchoredRegionStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const AnchorStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -224,10 +238,28 @@ export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 export const CheckboxStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export const ComboboxStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export function createColorPalette(baseColor: any): string[];
 
 // @public
+export const DataGridCellStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const DataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export type DisclosureAppearance = "accent" | "lightweight";
+
+// @public
+export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
@@ -247,6 +279,12 @@ export class FASTAnchor extends Anchor {
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
     // (undocumented)
     connectedCallback(): void;
+    // @internal
+    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+}
+
+// @beta
+export class FASTAnchoredRegion extends AnchoredRegion {
 }
 
 // @public
@@ -266,6 +304,7 @@ export class FASTButton extends Button {
     appearance: ButtonAppearance;
     // (undocumented)
     connectedCallback(): void;
+    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
 
 // @public
@@ -283,6 +322,22 @@ export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSys
 
 // @public
 export class FASTCheckbox extends Checkbox {
+}
+
+// @public
+export class FASTCombobox extends Combobox {
+}
+
+// @public
+export class FASTDataGrid extends DataGrid {
+}
+
+// @public
+export class FASTDataGridCell extends DataGridCell {
+}
+
+// @public
+export class FASTDataGridRow extends DataGridRow {
 }
 
 // @public
@@ -315,6 +370,14 @@ export interface FASTDesignSystem {
     direction: Direction;
     disabledOpacity: number;
     focusOutlineWidth: number;
+    // (undocumented)
+    neutralContrastFillActiveDelta: number;
+    // (undocumented)
+    neutralContrastFillFocusDelta: number;
+    // (undocumented)
+    neutralContrastFillHoverDelta: number;
+    // (undocumented)
+    neutralContrastFillRestDelta: number;
     neutralDividerRestDelta: number;
     // (undocumented)
     neutralFillActiveDelta: number;
@@ -427,6 +490,10 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
     direction: Direction;
     disabledOpacity: number;
     focusOutlineWidth: number;
+    neutralContrastFillActiveDelta: number;
+    neutralContrastFillFocusDelta: number;
+    neutralContrastFillHoverDelta: number;
+    neutralContrastFillRestDelta: number;
     neutralDividerRestDelta: number;
     neutralFillActiveDelta: number;
     neutralFillCardDelta: number;
@@ -482,6 +549,19 @@ export class FASTDialog extends Dialog {
 }
 
 // @public
+export class FASTDisclosure extends Disclosure {
+    appearance: DisclosureAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    get disclosureHeight(): number;
+    // @override
+    protected onToggle(): void;
+    // @override
+    protected setup(): void;
+    }
+
+// @public
 export class FASTDivider extends Divider {
 }
 
@@ -490,11 +570,32 @@ export class FASTFlipper extends Flipper {
 }
 
 // @public
+export class FASTHorizontalScroll extends HorizontalScroll {
+    // (undocumented)
+    connectedCallback(): void;
+}
+
+// @public
+export class FASTListbox extends Listbox {
+}
+
+// @public
 export class FASTMenu extends Menu {
 }
 
 // @public
 export class FASTMenuItem extends MenuItem {
+}
+
+// @public
+export class FASTNumberField extends NumberField {
+    appearance: NumberFieldAppearance;
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
+
+// @public
+export class FASTOption extends ListboxOption {
 }
 
 // @public
@@ -511,6 +612,10 @@ export class FASTRadio extends Radio {
 
 // @public
 export class FASTRadioGroup extends RadioGroup {
+}
+
+// @public
+export class FASTSelect extends Select {
 }
 
 // @public
@@ -582,10 +687,48 @@ export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustom
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
+export const ListboxStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const MenuStyles: import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFill" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const neutralContrastFill: SwatchFamilyResolver;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillActive" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const neutralContrastFillActive: SwatchRecipe;
+
+// @public
+export const neutralContrastFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const neutralContrastFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillHover" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const neutralContrastFillHover: SwatchRecipe;
+
+// @public
+export const neutralContrastFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillRest" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const neutralContrastFillRest: SwatchRecipe;
+
+// @public
+export const neutralContrastFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public
+export const neutralContrastForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -941,6 +1084,15 @@ export const neutralOutlineRest: SwatchRecipe;
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
+export type NumberFieldAppearance = "filled" | "outline";
+
+// @public
+export const NumberFieldStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const OptionStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export type Palette = Swatch[];
 
 // Warning: (ae-internal-missing-underscore) The name "palette" should be prefixed with an underscore because the declaration is marked as @internal
@@ -970,6 +1122,9 @@ export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const SelectStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;

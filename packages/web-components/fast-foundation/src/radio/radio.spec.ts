@@ -11,9 +11,11 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 class FASTRadio extends Radio {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTRadio>("fast-radio");
+    const { connect, disconnect, element, parent } = await fixture<FASTRadio>(
+        "fast-radio"
+    );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("Radio", () => {
@@ -337,16 +339,20 @@ describe("Radio", () => {
 
     describe("who's parent form has it's reset() method invoked", () => {
         it("should set it's checked property to false if the checked attribute is unset", async () => {
-            const { element, connect, disconnect } = await setup();
-            await connect();
+            const { connect, disconnect, element, parent } = await setup();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
             form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
             element.checked = true;
 
             assert(element.getAttribute("checked") === null);
+
             assert(element.checked);
+
             form.reset();
 
             assert(!element.checked);
@@ -355,12 +361,14 @@ describe("Radio", () => {
         });
 
         it("should set it's checked property to true if the checked attribute is set", async () => {
-            const { element, connect, disconnect } = await setup();
-            await connect();
+            const { connect, disconnect, element, parent } = await setup();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
             form.appendChild(element);
+            parent.appendChild(form);
+
+            await connect();
+
             element.setAttribute("checked", "");
 
             assert(element.getAttribute("checked") === "");
@@ -375,12 +383,17 @@ describe("Radio", () => {
             await disconnect();
         });
 
-        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-radio") as FASTRadio;
+        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
             const form = document.createElement("form");
             form.appendChild(element);
-            document.body.appendChild(form);
+            parent.appendChild(form);
+
+            await connect();
+
             element.checked = true;
+
             element.removeAttribute("checked");
 
             assert(element.checked);
@@ -392,6 +405,8 @@ describe("Radio", () => {
             element.setAttribute("checked", "");
 
             assert(element.value);
+
+            await disconnect();
         });
     });
 });

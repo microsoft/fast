@@ -3,6 +3,212 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.1...@microsoft/fast-foundation@1.16.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* add createMenuItem(<prefix>) to menu item template ([#4431](https://github.com/Microsoft/fast/issues/4431)) ([c86b63b](https://github.com/Microsoft/fast/commit/c86b63bd5323880f0dd859cbd2bf8a20ca1ccba0)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412)
+* anchored region pointer events mk2 ([#4402](https://github.com/Microsoft/fast/issues/4402)) ([e0de62e](https://github.com/Microsoft/fast/commit/e0de62e0b1bbcccce9a757c6cd99b4130a702f8f))
+* broken formatting and link when generating docs site ([#4459](https://github.com/Microsoft/fast/issues/4459)) ([e817863](https://github.com/Microsoft/fast/commit/e81786349e7c65cfb888a151f0400c736c421912))
+* cannot use combobox with typescript ^4.0 ([#4442](https://github.com/Microsoft/fast/issues/4442)) ([3d52ef4](https://github.com/Microsoft/fast/commit/3d52ef43c327d4c5cdabc8f6a1dc514df4cea403))
+* combobox escape and arrow keys prevent listbox navigation ([#4443](https://github.com/Microsoft/fast/issues/4443)) ([aa594fe](https://github.com/Microsoft/fast/commit/aa594fecc8f237d80174e41dfff7cfe45562d6dd))
+* setting data grid focus should not throw ([#4466](https://github.com/Microsoft/fast/issues/4466)) ([3c56a18](https://github.com/Microsoft/fast/commit/3c56a185c6aa5dcb52c12a9393f51a36521c5f77))
+
+
+### Features
+
+* add ability to hide step controls and update reveal on hover and focus-within ([#4448](https://github.com/Microsoft/fast/issues/4448)) ([6f6497c](https://github.com/Microsoft/fast/commit/6f6497cba3883b741dddf3b6c78fd0d1571c02f3))
+* add expand/collapse icon to menu items ([#4438](https://github.com/Microsoft/fast/issues/4438)) ([db4e9fa](https://github.com/Microsoft/fast/commit/db4e9facad71dbfefce9d2c063dfc16c6b415426))
+* add horizontal scroll web component ([#4391](https://github.com/Microsoft/fast/issues/4391)) ([08508a5](https://github.com/Microsoft/fast/commit/08508a5860d6bf1f5a5719028c11e17433ac5ac3)), closes [#4414](https://github.com/Microsoft/fast/issues/4414) [#4412](https://github.com/Microsoft/fast/issues/4412) [#4416](https://github.com/Microsoft/fast/issues/4416) [#4437](https://github.com/Microsoft/fast/issues/4437)
+
+
+
+
+
+## [1.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.0...@microsoft/fast-foundation@1.15.1) (2021-03-06)
+
+
+### Bug Fixes
+
+* conditionally render input container for menuitemcheckbox and menuitemradio ([#4429](https://github.com/Microsoft/fast/issues/4429)) ([8561a99](https://github.com/Microsoft/fast/commit/8561a99898d012f1accd0658eef4e8fb211d5683))
+
+
+
+
+
+# [1.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.14.0...@microsoft/fast-foundation@1.15.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* add default expanded and collapsed SVGs to accordion-item component ([#4368](https://github.com/Microsoft/fast/issues/4368)) ([b0bea82](https://github.com/Microsoft/fast/commit/b0bea8203c3774b40e0561e37926a9f28794b4a9))
+* add radio and checkbox visual in fast-menu-item ([#4205](https://github.com/Microsoft/fast/issues/4205)) ([50efed4](https://github.com/Microsoft/fast/commit/50efed4a57b4a89d69a7079b581fdec8428dfe37))
+* data-grid stores generated templates ([#4412](https://github.com/Microsoft/fast/issues/4412)) ([7de9602](https://github.com/Microsoft/fast/commit/7de960213d593f0dcafcdcb291fc592564ca9ae4))
+* default selected option in listbox ([#4372](https://github.com/Microsoft/fast/issues/4372)) ([35870a6](https://github.com/Microsoft/fast/commit/35870a69d10ec52c983adb879d58343386d3a8d6))
+* focusout on empty select throws an error ([#4373](https://github.com/Microsoft/fast/issues/4373)) ([b2f2f29](https://github.com/Microsoft/fast/commit/b2f2f2907e0ad8f7f0eff89fc2106041edbe3474))
+* tooltip doc sample ([#4341](https://github.com/Microsoft/fast/issues/4341)) ([20e1b66](https://github.com/Microsoft/fast/commit/20e1b667abbe39058d5c4c358ccd8b8a93cee316))
+* whitespaceFilter filtering elements ([#4360](https://github.com/Microsoft/fast/issues/4360)) ([2f14137](https://github.com/Microsoft/fast/commit/2f14137579e1aa8f6724f0211c8baf2f2a6c8008))
+* **tooltip:** fix tooltip inside shadow root ([#4303](https://github.com/Microsoft/fast/issues/4303)) ([fc65f50](https://github.com/Microsoft/fast/commit/fc65f505fdf2b621c6cb9a29deccdb4a805b956a))
+
+
+### Features
+
+* add placeholder attribute to combobox component ([#4427](https://github.com/Microsoft/fast/issues/4427)) ([b507c25](https://github.com/Microsoft/fast/commit/b507c257c39ca44244bea7fdb4e07fc5b71b3eea))
+* **di:** enable dom containers to handle same element dep resolution ([#4406](https://github.com/Microsoft/fast/issues/4406)) ([e3145fe](https://github.com/Microsoft/fast/commit/e3145fe557eb56fc6aafa99f9803ecd7d07b55e5))
+* add combobox component ([#4379](https://github.com/Microsoft/fast/issues/4379)) ([aab8441](https://github.com/Microsoft/fast/commit/aab844120b40b14ef284718880dbe05da65a5392))
+* add nested menu support ([#4142](https://github.com/Microsoft/fast/issues/4142)) ([551ff04](https://github.com/Microsoft/fast/commit/551ff0467e9424bff00610c737744dbfa30cea9c))
+* **di:** enable use of the inject decorator on properties ([#4401](https://github.com/Microsoft/fast/issues/4401)) ([2f8355b](https://github.com/Microsoft/fast/commit/2f8355b932ba5083bdcb66a5c3381616699d2cef))
+* add prefers-color-scheme behaviors for light and dark mode ([#4382](https://github.com/Microsoft/fast/issues/4382)) ([1e467d7](https://github.com/Microsoft/fast/commit/1e467d7b6542e9e6910117e1d09c26cd73f7f599))
+* enable FoundationElement.compose to accept template functions ([#4390](https://github.com/Microsoft/fast/issues/4390)) ([468f2fc](https://github.com/Microsoft/fast/commit/468f2fca53be88d8551352c99b42c66c3d32fe47))
+
+
+
+
+
+# [1.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.12.0...@microsoft/fast-foundation@1.14.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+* add check for intersection observer support before instanciating ([#4349](https://github.com/Microsoft/fast/issues/4349)) ([d106995](https://github.com/Microsoft/fast/commit/d106995dea3e7384633dbf2653b83aba3c815713))
+
+
+### Features
+
+* adds DI system, Configuration, and FoundationElement ([#4166](https://github.com/Microsoft/fast/issues/4166)) ([cfbe786](https://github.com/Microsoft/fast/commit/cfbe786f23623d69f2d658b51fe9211527ef9f0f))
+
+
+
+
+
+# [1.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.12.0...@microsoft/fast-foundation@1.13.0) (2021-02-08)
+
+
+### Bug Fixes
+
+* accordion arrow key press moves focus from content to accordion header ([#4331](https://github.com/Microsoft/fast/issues/4331)) ([d959c18](https://github.com/Microsoft/fast/commit/d959c18e5a5cba3b983c2cba096face14bec2bb8))
+* add check for intersection observer support before instanciating ([#4349](https://github.com/Microsoft/fast/issues/4349)) ([d106995](https://github.com/Microsoft/fast/commit/d106995dea3e7384633dbf2653b83aba3c815713))
+
+
+### Features
+
+* adds DI system, Configuration, and FoundationElement ([#4166](https://github.com/Microsoft/fast/issues/4166)) ([cfbe786](https://github.com/Microsoft/fast/commit/cfbe786f23623d69f2d658b51fe9211527ef9f0f))
+
+
+
+
+
+# [1.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.1...@microsoft/fast-foundation@1.12.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* `UnhandledPromiseRejectionWarning`s when building fast-components ([#4218](https://github.com/Microsoft/fast/issues/4218)) ([48d52f4](https://github.com/Microsoft/fast/commit/48d52f43d8aa9938139f4dc0a2318fe400050216))
+* add class content to fix missing underline on button component ([#4226](https://github.com/Microsoft/fast/issues/4226)) ([bb9caaf](https://github.com/Microsoft/fast/commit/bb9caafd0edcbb0da46d74035fff246d36661f56)), closes [#4201](https://github.com/Microsoft/fast/issues/4201) [#16271](https://github.com/Microsoft/fast/issues/16271)
+* add whitespace filter to text-field template to correctly hide label div with start and end content ([#4245](https://github.com/Microsoft/fast/issues/4245)) ([70ce353](https://github.com/Microsoft/fast/commit/70ce3537c3d29789b5030abe4ea6c58b098f69b5))
+* display active indicator when tab is disabled ([#4207](https://github.com/Microsoft/fast/issues/4207)) ([ca0efbb](https://github.com/Microsoft/fast/commit/ca0efbb2968b0f9b017f3b28ab5c1bb688fafd47))
+* expand collapse tree view svg ([#4225](https://github.com/Microsoft/fast/issues/4225)) ([c6d6259](https://github.com/Microsoft/fast/commit/c6d62597a89b7329b83f01520eebd811608c37d3))
+* tooltips are incorrectly positioned when parent is a flex container ([#4256](https://github.com/Microsoft/fast/issues/4256)) ([bc47c02](https://github.com/Microsoft/fast/commit/bc47c02a44b7b274f458322b65ce7b4555de49e3))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* add fast-number-field component for data applications ([#4204](https://github.com/Microsoft/fast/issues/4204)) ([7196215](https://github.com/Microsoft/fast/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add getPosition service for anchored region ([#4210](https://github.com/Microsoft/fast/issues/4210)) ([94d5ffa](https://github.com/Microsoft/fast/commit/94d5ffa2235e2d681e03e32442346018a81c693f))
+* add radio group functionality to menu items ([#4208](https://github.com/Microsoft/fast/issues/4208)) ([89a3930](https://github.com/Microsoft/fast/commit/89a3930be83434b9039d25f82ae0c251e2d03956))
+* add select spec ([#4194](https://github.com/Microsoft/fast/issues/4194)) ([7af127a](https://github.com/Microsoft/fast/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* Create a behavior for attaching component styles based on an appearance ([#4238](https://github.com/Microsoft/fast/issues/4238)) ([7b498ce](https://github.com/Microsoft/fast/commit/7b498ce3101d90dee2558433fa0abadca5149d36))
+
+
+
+
+
+## [1.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.11.0...@microsoft/fast-foundation@1.11.1) (2020-12-17)
+
+
+### Bug Fixes
+
+* update applyMixin function to ensure metadata for attrs are copied and applied correctly ([#4200](https://github.com/Microsoft/fast/issues/4200)) ([dcbd6a5](https://github.com/Microsoft/fast/commit/dcbd6a57d73691ced50c22db2b909ee6b6f96e1f))
+
+
+
+
+
+# [1.11.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.10.0...@microsoft/fast-foundation@1.11.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* anchored region default viewport ([#4146](https://github.com/Microsoft/fast/issues/4146)) ([a6806e9](https://github.com/Microsoft/fast/commit/a6806e9ed289e7ce570a542de5da9b6e0ba9e60b))
+* select should match native behavior for value changes and change event emitting ([#4176](https://github.com/Microsoft/fast/issues/4176)) ([07f5eaa](https://github.com/Microsoft/fast/commit/07f5eaa93b907cc4f712c954e8f6669c391a8d7f))
+* **dialog:** accidental improperly bound this in callback ([#4168](https://github.com/Microsoft/fast/issues/4168)) ([9d54fe9](https://github.com/Microsoft/fast/commit/9d54fe9c078cd3e16291a8c599d8d53f0df52670))
+* **fast-foundation:** ensure global aria attrs are applied ([#4172](https://github.com/Microsoft/fast/issues/4172)) ([dd3a1c9](https://github.com/Microsoft/fast/commit/dd3a1c9f9f5c96c1d7eb67a1f57f5f72136791cc))
+* disabled menu items should be focusable ([#4154](https://github.com/Microsoft/fast/issues/4154)) ([b971a18](https://github.com/Microsoft/fast/commit/b971a18281ba33f094a8dbc59a799a3e9c82ccb8))
+* ensure DSP subscribes to upstream DSP properties ([#4143](https://github.com/Microsoft/fast/issues/4143)) ([b403909](https://github.com/Microsoft/fast/commit/b403909282c115c99bf3dc66d5a9ff8715086dc7))
+* formassociated tests on firefox ([#4158](https://github.com/Microsoft/fast/issues/4158)) ([b3266fb](https://github.com/Microsoft/fast/commit/b3266fb5d12a200aeee5afb2ae44979db3c051f6))
+* remove shadowRoot in direction utility ([#4157](https://github.com/Microsoft/fast/issues/4157)) ([041ae70](https://github.com/Microsoft/fast/commit/041ae70ba3a8ba7280b1a571ba8952f443e724e2))
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+* add default slot changed to anchor ([#4159](https://github.com/Microsoft/fast/issues/4159)) ([8a264ec](https://github.com/Microsoft/fast/commit/8a264ec2a22d4f02e901a260b85f77c381a52231))
+* add loaded event to anchored region ([#4165](https://github.com/Microsoft/fast/issues/4165)) ([b54ac1b](https://github.com/Microsoft/fast/commit/b54ac1b09ccff95fc58ab84204a138dbfac9b8ba))
+
+
+
+
+
+# [1.10.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.9.0...@microsoft/fast-foundation@1.10.0) (2020-12-02)
+
+
+### Bug Fixes
+
+* fix type error in custom property manager running on safari ([#4147](https://github.com/Microsoft/fast/issues/4147)) ([6320973](https://github.com/Microsoft/fast/commit/6320973ff0e14165b2f957b42a8feee1f71af9c1))
+
+
+### Features
+
+* add default slot change method ([#4148](https://github.com/Microsoft/fast/issues/4148)) ([5e9fb05](https://github.com/Microsoft/fast/commit/5e9fb0590833fe89d0a12132abdc0e88f64fbbcb))
+
+
+
+
+
+# [1.9.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.1...@microsoft/fast-foundation@1.9.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* active indicator losing track if double click ([#4085](https://github.com/Microsoft/fast/issues/4085)) ([fcecc75](https://github.com/Microsoft/fast/commit/fcecc759ed1cdddd3a5c73d38514dfce7edf432d))
+* active indicator no longer animating ([#4126](https://github.com/Microsoft/fast/issues/4126)) ([49e2608](https://github.com/Microsoft/fast/commit/49e26089c9275c5794af5d4e47427237363d333f))
+* corrects ElementInternals feature detection ([#4087](https://github.com/Microsoft/fast/issues/4087)) ([58b3e54](https://github.com/Microsoft/fast/commit/58b3e540c77eafa95ade021fd90b184d6f929a50))
+* ensure form elements reset when the parent form's reset() method is invoked. ([#4075](https://github.com/Microsoft/fast/issues/4075)) ([f19894e](https://github.com/Microsoft/fast/commit/f19894e746f0e1b7cffcce9d1269b9e6080f723a))
+* ensure StyleElementCustomPropertyManager works with disconnected elements ([#4112](https://github.com/Microsoft/fast/issues/4112)) ([e903bfa](https://github.com/Microsoft/fast/commit/e903bfa38b3ce2e8689c4eef4b552d9e7f8a9b88))
+* ensure tree items with children have a value for aria-expanded ([#4114](https://github.com/Microsoft/fast/issues/4114)) ([e7a7553](https://github.com/Microsoft/fast/commit/e7a7553c8e2fb205927d4d913de0d2790720ced7))
+* fast-slider sets value to NaN if developer tools open ([#4033](https://github.com/Microsoft/fast/issues/4033)) ([35d6903](https://github.com/Microsoft/fast/commit/35d6903cdc73fb4c5283bdfc5dcb0955b09d9b4c))
+* handle initially set value in FormAssociated ([#4047](https://github.com/Microsoft/fast/issues/4047)) ([bf7e874](https://github.com/Microsoft/fast/commit/bf7e87403883efcd438902bbfb43a74491a47b3f))
+* move component options to independent modules ([#4048](https://github.com/Microsoft/fast/issues/4048)) ([f8a88a8](https://github.com/Microsoft/fast/commit/f8a88a8b14b2eee4dd26619f7927be73bea94277))
+* revert radio to using class selector instead of attr, update slider-label to use internal styles for orientation ([#4108](https://github.com/Microsoft/fast/issues/4108)) ([c6ecedf](https://github.com/Microsoft/fast/commit/c6ecedf8427caf686bfebe89e78d2a6c2b7153f2))
+
+
+### Features
+
+* Add disabled attr to fast-tab ([#4013](https://github.com/Microsoft/fast/issues/4013)) ([caef4b1](https://github.com/Microsoft/fast/commit/caef4b15ce729ab1c1762bf0578edcf4d809351c)), closes [#4017](https://github.com/Microsoft/fast/issues/4017)
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+* add show and hide methods to dialog ([#4030](https://github.com/Microsoft/fast/issues/4030)) ([00b69ff](https://github.com/Microsoft/fast/commit/00b69fff994035e769906563190cca86e3ae61f7))
+* convert FormAssociated to a constructable function ([#4115](https://github.com/Microsoft/fast/issues/4115)) ([da8d54b](https://github.com/Microsoft/fast/commit/da8d54b5a057812622471e1261200b8f9b290d12))
+* enable shared CSSStyleSheets in DesignSystemProvider ([#4065](https://github.com/Microsoft/fast/issues/4065)) ([5579c2e](https://github.com/Microsoft/fast/commit/5579c2ef424f8f63e00c8e29b5c4d43acb32c6db))
+
+
+
+
+
 ## [1.8.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.8.0...@microsoft/fast-foundation@1.8.1) (2020-10-14)
 
 

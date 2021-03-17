@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.17](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.16...@microsoft/fast-color-explorer@1.6.17) (2021-03-16)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.16](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.15...@microsoft/fast-color-explorer@1.6.16) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.15](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.14...@microsoft/fast-color-explorer@1.6.15) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.14](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.12...@microsoft/fast-color-explorer@1.6.14) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.13](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.12...@microsoft/fast-color-explorer@1.6.13) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.12](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.11...@microsoft/fast-color-explorer@1.6.12) (2021-01-30)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.11](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.10...@microsoft/fast-color-explorer@1.6.11) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.10](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.9...@microsoft/fast-color-explorer@1.6.10) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.9](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.8...@microsoft/fast-color-explorer@1.6.9) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
+## [1.6.8](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.7...@microsoft/fast-color-explorer@1.6.8) (2020-11-19)
+
+**Note:** Version bump only for package @microsoft/fast-color-explorer
+
+
+
+
+
 ## [1.6.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-color-explorer@1.6.6...@microsoft/fast-color-explorer@1.6.7) (2020-10-14)
 
 **Note:** Version bump only for package @microsoft/fast-color-explorer

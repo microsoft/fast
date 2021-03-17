@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "declaration": false,
+        "declarationDir": null,
+        "target": "ES2017",
+        "outDir": "dist",
+        "importsNotUsedAsValues": "preserve",
+        "types": [
+            "mocha",
+            "node"
+        ],
+    },
+    "include": ["../src/**/*.pw.spec.ts"]
+}

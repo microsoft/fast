@@ -5,8 +5,8 @@ import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
     WebComponentSlot,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
-import { voidElements } from "@microsoft/fast-tooling/dist/data-utilities/html-element";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import { voidElements } from "@microsoft/fast-tooling/dist/esm/data-utilities/html-element";
 /**
  * These native html tag definitions are dependent on a devDependency on "vscode-web-custom-data"
  * specifically the browsers.html-data.json file which defines native html elements and their attributes
@@ -25,6 +25,7 @@ const valueSets: VSCodeNativeHTMLValueSet[] = vscodeHTMLData.valueSets;
 const defaultSlotValue: WebComponentSlot[] = [
     {
         name: "",
+        title: "Default slot",
         description: "The default slot",
     },
 ];
@@ -67,7 +68,7 @@ function convertAttributeData(tag: VSCodeNativeHTMLTag): WebComponentAttribute[]
     return tag.attributes?.map((attribute: VSCodeNativeHTMLAttribute) => {
         return {
             name: attribute.name,
-            description: attribute.name,
+            title: attribute.name,
             type: getDataTypeForAttribute(attribute),
             default: "",
             required: false,
@@ -80,6 +81,7 @@ const convertedTags: WebComponentDefinitionTag[] = (vscodeHTMLData as VSCodeNati
     (tag: VSCodeNativeHTMLTag): WebComponentDefinitionTag => {
         const newWebComponentDefinitionTag: WebComponentDefinitionTag = {
             name: tag.name,
+            title: tag.name,
             description:
                 typeof tag.description === "string"
                     ? tag.description

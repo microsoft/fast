@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { Orientation } from "@microsoft/fast-web-utilities";
 
@@ -7,18 +7,21 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-radio-group",
+            title: "Radio group",
             description: "The FAST radio-group element",
             attributes: [
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description: "The value of the radio group",
                     default: undefined,
                     required: false,
                     type: DataType.string,
                 },
                 {
                     name: "orientation",
-                    description: "The orientation attribute",
+                    title: "Orientation",
+                    description: "The visual orientation of the group",
                     default: Orientation.horizontal,
                     values: [
                         { name: Orientation.horizontal },
@@ -29,28 +32,26 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "Setting this value will set the name value for all child radios",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
-                    name: "required",
-                    description: "The required attribute",
-                    type: DataType.boolean,
-                    default: false,
-                    required: false,
-                },
-                {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Disables the radio group and child radios",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "readonly",
-                    description: "The readonly attribute",
+                    title: "Readonly",
+                    description:
+                        "When true, the child radios will be immutable by user interaction",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -59,11 +60,14 @@ export const fastRadioGroupDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "Supports fast-radio elements or elements with a role of 'radio'",
                 },
                 {
                     name: "label",
-                    description: "Label slot",
+                    title: "Label slot",
+                    description: "The visual label for the group",
                 },
             ],
         },

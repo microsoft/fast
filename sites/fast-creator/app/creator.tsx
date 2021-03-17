@@ -1,16 +1,10 @@
 import { memoize } from "lodash-es";
 import rafThrottle from "raf-throttle";
-import {
-    ActionToggle,
-    ActionToggleAppearance,
-    ActionToggleProps,
-    Background,
-} from "@microsoft/fast-components-react-msft";
-import { neutralLayerL1, neutralLayerL2 } from "@microsoft/fast-components-styles-msft";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessage,
+    DataType,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -18,13 +12,11 @@ import {
     ControlConfig,
     ControlType,
     defaultDevices,
-    Device,
     Display,
     LinkedDataControl,
     ModularForm,
     ModularNavigation,
     ModularViewer,
-    SelectDevice,
     StandardControlPlugin,
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
@@ -34,27 +26,27 @@ import {
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import {
     AccentColorPicker,
+    componentCategories,
     Dimension,
     DirectionSwitch,
-    downChevron,
     Editor,
     fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
-    upChevron,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { CreatorState, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
-import { selectDeviceOverrideStyles } from "./utilities/style-overrides";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import { renderDeviceSelect, renderDevToolToggle } from "./web-components";
+import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -139,6 +131,7 @@ class Creator extends Editor<{}, CreatorState> {
                 componentLinkedDataId,
             ],
             transparentBackground: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
@@ -153,7 +146,10 @@ class Creator extends Editor<{}, CreatorState> {
                         version={"ALPHA"}
                     />
                     <div style={{ height: "calc(100% - 48px)" }}>
-                        <ModularNavigation messageSystem={this.fastMessageSystem} />
+                        <ModularNavigation
+                            messageSystem={this.fastMessageSystem}
+                            types={[DataType.object]}
+                        />
                     </div>
                     <ProjectFileTransfer
                         projectFile={this.state}
@@ -163,67 +159,56 @@ class Creator extends Editor<{}, CreatorState> {
                 <div className={this.canvasClassNames}>
                     {this.renderCanvasOverlay()}
                     <div className={this.menuBarClassNames}>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.mobileMenuBarClassNames}
-                        >
+                        <div className={this.mobileMenuBarClassNames}>
                             {this.renderMobileNavigationTrigger()}
-                            <Logo
-                                backgroundColor={neutralLayerL2}
-                                logo={FASTInlineLogo}
-                            />
+                            <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
-                        </Background>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.canvasMenuBarClassNames}
-                        >
-                            <SelectDevice
-                                devices={this.devices}
-                                activeDeviceId={this.state.deviceId}
-                                onUpdateDevice={this.handleUpdateDevice}
-                                jssStyleSheet={selectDeviceOverrideStyles}
-                                disabled={!this.state.previewReady}
-                            />
-                            <Dimension
-                                width={this.state.viewerWidth}
-                                height={this.state.viewerHeight}
-                                onUpdateWidth={this.handleUpdateWidth}
-                                onUpdateHeight={this.handleUpdateHeight}
-                                onUpdateOrientation={this.handleUpdateOrientation}
-                                onDimensionChange={this.handleDimensionChange}
-                                disabled={!this.state.previewReady}
-                            />
-                            <div
-                                style={{
-                                    display: "flex",
-                                    marginLeft: "auto",
-                                }}
-                            >
-                                <ThemeSelector
-                                    id={"theme-selector"}
-                                    theme={this.state.theme}
-                                    onUpdateTheme={this.handleUpdateTheme}
+                        </div>
+                        <fast-design-system-provider background-color="#333">
+                            <div className={this.canvasMenuBarClassNames}>
+                                {renderDeviceSelect(
+                                    this.state.deviceId,
+                                    this.handleUpdateDevice,
+                                    !this.state.previewReady
+                                )}
+                                <Dimension
+                                    width={this.state.viewerWidth}
+                                    height={this.state.viewerHeight}
+                                    onUpdateWidth={this.handleUpdateWidth}
+                                    onUpdateHeight={this.handleUpdateHeight}
+                                    onUpdateOrientation={this.handleUpdateOrientation}
+                                    onDimensionChange={this.handleDimensionChange}
                                     disabled={!this.state.previewReady}
                                 />
-                                <DirectionSwitch
-                                    id={"direction-switch"}
-                                    direction={this.state.direction}
-                                    onUpdateDirection={this.handleUpdateDirection}
-                                    disabled={!this.state.previewReady}
-                                />
-                                <AccentColorPicker
-                                    id={"accent-color-picker"}
-                                    accentBaseColor={this.state.accentColor}
-                                    onAccentColorPickerChange={
-                                        this.handleAccentColorPickerChange
-                                    }
-                                    disabled={!this.state.previewReady}
-                                />
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        marginLeft: "auto",
+                                    }}
+                                >
+                                    <ThemeSelector
+                                        id={"theme-selector"}
+                                        theme={this.state.theme}
+                                        onUpdateTheme={this.handleUpdateTheme}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <DirectionSwitch
+                                        id={"direction-switch"}
+                                        direction={this.state.direction}
+                                        onUpdateDirection={this.handleUpdateDirection}
+                                        disabled={!this.state.previewReady}
+                                    />
+                                    <AccentColorPicker
+                                        id={"accent-color-picker"}
+                                        accentBaseColor={this.state.accentColor}
+                                        onAccentColorPickerChange={
+                                            this.handleAccentColorPickerChange
+                                        }
+                                        disabled={!this.state.previewReady}
+                                    />
+                                </div>
                             </div>
-                        </Background>
+                        </fast-design-system-provider>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [
@@ -248,32 +233,23 @@ class Creator extends Editor<{}, CreatorState> {
                                 responsive={true}
                             />
                         </div>
-                        <Background value={neutralLayerL1} className={"dev-tools"}>
+                        <div className={"dev-tools"}>
                             <div
                                 ref={this.editorContainerRef}
                                 style={{ height: "100%", paddingTop: "24px" }}
                             />
-                            <ActionToggle
-                                appearance={ActionToggleAppearance.stealth}
-                                selectedLabel={"Development tools expanded"}
-                                selectedGlyph={downChevron}
-                                unselectedLabel={"Development tools collapsed"}
-                                unselectedGlyph={upChevron}
-                                selected={this.state.devToolsVisible}
-                                onToggle={this.handleDevToolsToggle}
-                                style={{
-                                    position: "absolute",
-                                    top: "12px",
-                                    right: 0,
-                                }}
-                            />
-                        </Background>
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
                     <ModularForm
                         messageSystem={this.fastMessageSystem}
                         controls={[this.linkedDataControl]}
+                        categories={componentCategories}
                     />
                 </div>
                 <Footer />
@@ -452,13 +428,10 @@ class Creator extends Editor<{}, CreatorState> {
      * Handle the visibility of the dev tools
      * which contains the code editor
      */
-    private handleDevToolsToggle = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        props: ActionToggleProps
-    ): void => {
+    private handleDevToolsToggle = (): void => {
         this.setState(
             {
-                devToolsVisible: !props.selected,
+                devToolsVisible: !this.state.devToolsVisible,
             },
             () => {
                 this.setViewerToFullSize();

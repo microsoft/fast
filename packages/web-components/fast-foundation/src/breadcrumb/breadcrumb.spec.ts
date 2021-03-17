@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { Breadcrumb, BreadcrumbTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement, html } from "@microsoft/fast-element";
+import type { BreadcrumbItem } from "../breadcrumb-item";
 
 @customElement({
     name: "fast-breadcrumb",
@@ -51,9 +52,11 @@ describe("Breadcrumb", () => {
 
         await connect();
 
-        expect(
-            element.querySelectorAll("fast-breadcrumb-item")[2].getAttribute("separator")
-        ).to.equal(null);
+        let items: NodeListOf<BreadcrumbItem> = element.querySelectorAll("fast-breadcrumb-item");
+
+        let lastItem: BreadcrumbItem = items[items.length - 1];
+
+        expect(lastItem.separator).to.equal(false);
 
         await disconnect();
     });

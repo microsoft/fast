@@ -109,13 +109,10 @@ export const SliderStyles = css`
         min-height: calc(var(--thumb-size) * 1px);
         min-width: calc(var(--design-unit) * 20px);
     }
-    :host(.disabled) .label,
-    :host(.readonly) .label,
-    :host(.readonly) .slider,
-    :host(.disabled) .slider {
+    :host([disabled]), :host([readonly]) {
         cursor: ${disabledCursor};
     }
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
@@ -143,13 +140,11 @@ export const SliderStyles = css`
             :host(:${focusVisible}) .thumb-cursor {
                 border-color: ${SystemColors.Highlight};
             }
-            :host(.disabled) {
+            :host([disabled]) {
                 opacity: 1;
-                cursor: ${disabledCursor};
             }
-            :host(.disabled) .slider,
-            :host(.disabled) .track,
-            :host(.disabled) .thumb-cursor {
+            :host([disabled]) .track,
+            :host([disabled]) .thumb-cursor {
                 forced-color-adjust: none;
                 background: ${SystemColors.GrayText};
             }

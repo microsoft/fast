@@ -6,8 +6,8 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import type { SliderConfiguration } from "../slider/index";
 import { convertPixelToPercent } from "../slider/slider-utilities";
-import { SliderConfiguration } from "../slider/index";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,

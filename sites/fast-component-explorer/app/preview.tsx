@@ -1,5 +1,4 @@
 import React from "react";
-import manageJss from "@microsoft/fast-jss-manager-react";
 import Foundation from "@microsoft/fast-components-foundation-react";
 import {
     DataMessageOutgoing,
@@ -17,7 +16,7 @@ import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fa
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
-} from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,
@@ -27,7 +26,6 @@ import {
     previewTheme,
 } from "@microsoft/site-utilities";
 import {
-    PreviewHandledProps,
     PreviewProps,
     PreviewState,
     PreviewUnhandledProps,
@@ -44,11 +42,7 @@ export const previewReady: string = "PREVIEW::READY";
  * The preview component exists on a route inside an iframe
  * This allows for an isolated view of any component or components.
  */
-class Preview extends Foundation<
-    PreviewHandledProps,
-    PreviewUnhandledProps,
-    PreviewState
-> {
+class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
     private ref: React.RefObject<HTMLDivElement>;
 
     constructor(props: PreviewProps) {
@@ -70,15 +64,18 @@ class Preview extends Foundation<
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
-                <div
-                    className={classNames(this.props.managedClasses.preview, [
-                        this.props.managedClasses.preview__transparent,
-                        this.state.transparentBackground,
-                    ])}
-                    dir={this.state.direction}
-                >
-                    <div ref={this.ref} />
-                </div>
+                <fast-design-system-provider use-defaults>
+                    <style>{style}</style>
+                    <div
+                        className={classNames("preview", [
+                            "preview__transparent",
+                            this.state.transparentBackground,
+                        ])}
+                        dir={this.state.direction}
+                    >
+                        <div ref={this.ref} />
+                    </div>
+                </fast-design-system-provider>
             );
         }
 
@@ -220,4 +217,4 @@ class Preview extends Foundation<
     }
 }
 
-export default manageJss(style)(Preview as React.ComponentType);
+export default Preview as React.ComponentType;

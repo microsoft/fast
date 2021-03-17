@@ -1,12 +1,13 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Button } from "./button";
+import type { Button } from "./button";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
  * @public
  */
-export const ButtonTemplate = html<Button>`
+export const ButtonTemplate: ViewTemplate<Button> = html`
     <button
         class="control"
         part="control"
@@ -42,10 +43,11 @@ export const ButtonTemplate = html<Button>`
         aria-pressed="${x => x.ariaPressed}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
+        ${ref("control")}
     >
         ${startTemplate}
         <span class="content" part="content">
-            <slot></slot>
+            <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
         ${endTemplate}
     </button>

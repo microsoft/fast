@@ -117,10 +117,10 @@ export class Switch extends FormAssociatedSwitch {
     /**
      * @internal
      */
-    public formResetCallback() {
+    public formResetCallback = (): void => {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
-    }
+    };
 
     private updateForm(): void {
         const value = this.checked ? this.value : null;

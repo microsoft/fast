@@ -55,6 +55,23 @@ export class FASTAnchor extends Anchor {
             this.appearance = "neutral";
         }
     }
+
+    /**
+     * Applies 'icon-only' class when there is only an SVG in the default slot
+     *
+     * @internal
+     *
+     */
+    public defaultSlottedContentChanged(oldValue, newValue): void {
+        const slottedElements = this.defaultSlottedContent.filter(
+            x => x.nodeType === Node.ELEMENT_NODE
+        );
+        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
+            this.control.classList.add("icon-only");
+        } else {
+            this.control.classList.remove("icon-only");
+        }
+    }
 }
 
 /**

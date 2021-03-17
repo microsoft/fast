@@ -5,6 +5,7 @@ import {
     defaultTextSizeCSSProperty,
     gutterCSSProperty,
     inactiveTextColorCSSProperty,
+    inputStyle,
     insetStrongBoxShadow,
     L3OutlineColorProperty,
     L4CSSProperty,
@@ -13,16 +14,19 @@ import {
 
 export interface NavigationClassNameContract {
     navigation?: string;
+    navigation_itemRegion?: string;
     navigation_item?: string;
-    navigation_itemTrigger?: string;
-    navigation_itemTrigger__active?: string;
-    navigation_itemTrigger__draggable?: string;
-    navigation_itemTrigger__droppable?: string;
-    navigation_itemTrigger__expandable?: string;
-    navigation_itemTrigger__hover?: string;
-    navigation_itemTrigger__hoverBefore?: string;
-    navigation_itemTrigger__hoverAfter?: string;
+    navigation_item__active?: string;
+    navigation_item__draggable?: string;
+    navigation_item__droppable?: string;
+    navigation_item__expandable?: string;
+    navigation_item__hover?: string;
+    navigation_item__hoverBefore?: string;
+    navigation_item__hoverAfter?: string;
+    navigation_itemExpandTrigger?: string;
+    navigation_itemContent?: string;
     navigation_itemList?: string;
+    navigation_itemDisplayTextInput?: string;
 }
 
 const styles: ComponentStyles<NavigationClassNameContract, {}> = {
@@ -34,21 +38,20 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
         overflow: "auto",
         "font-size": defaultTextSizeCSSProperty,
         "text-indent": "1em",
-        "& $navigation_item::before": {
+        "& $navigation_itemRegion::before": {
             content: "''",
             height: "100%",
             position: "absolute",
             left: "calc(1em - 12px)",
-            "border-right": `1px solid ${L3OutlineColorProperty}`,
             "z-index": "1",
         },
     },
-    navigation_item: {
+    navigation_itemRegion: {
         position: "relative",
         "text-indent": "1em",
-        "line-height": "20px",
+        "line-height": "28px",
         "&[aria-expanded='true']": {
-            "& > $navigation_itemTrigger__expandable::before": {
+            "& > $navigation_item > $navigation_itemExpandTrigger": {
                 transform: "rotate(45deg)",
             },
             "& > $navigation_itemList": {
@@ -56,46 +59,55 @@ const styles: ComponentStyles<NavigationClassNameContract, {}> = {
             },
         },
     },
-    navigation_itemTrigger: {
+    navigation_itemContent: {},
+    navigation_itemDisplayTextInput: {
+        ...inputStyle,
+        width: "160px",
+    },
+    navigation_itemExpandTrigger: {
+        content: "''",
+        display: "inline-block",
+        "margin-left": "-2px",
+        "margin-right": "2px",
+        "border-top": "4px solid transparent",
+        "border-left": "4px solid transparent",
+        "border-right": "4px solid transparent",
+        "border-bottom": "4px solid transparent",
+        "vertical-align": "middle",
+    },
+    navigation_item: {
         "font-size": defaultTextSizeCSSProperty,
         display: "block",
         cursor: "pointer",
         border: "1px solid transparent",
         color: inactiveTextColorCSSProperty,
         ...ellipsis(),
-        ...applyFocusVisible({
-            ...insetStrongBoxShadow(accentColorCSSProperty),
-        }),
-        "&::before": {
-            content: "''",
-            display: "inline-block",
-            "margin-left": "-2px",
-            "margin-right": "2px",
-            "border-top": "4px solid transparent",
-            "border-left": "4px solid transparent",
-            "border-right": "4px solid transparent",
-            "border-bottom": "4px solid transparent",
-            "vertical-align": "middle",
+        "& > [data-dictionaryid]": {
+            padding: "6px 8px",
+            "border-radius": "var(--fast-tooling-border-radius, 3px)",
+            ...applyFocusVisible({
+                ...insetStrongBoxShadow(accentColorCSSProperty),
+            }),
         },
     },
-    navigation_itemTrigger__draggable: {
+    navigation_item__draggable: {
         cursor: "grab",
     },
-    navigation_itemTrigger__hover: {
+    navigation_item__hover: {
         "border-color": L3OutlineColorProperty,
     },
-    navigation_itemTrigger__hoverAfter: {
+    navigation_item__hoverAfter: {
         "border-bottom-color": L3OutlineColorProperty,
     },
-    navigation_itemTrigger__hoverBefore: {
+    navigation_item__hoverBefore: {
         "border-top-color": L3OutlineColorProperty,
     },
-    navigation_itemTrigger__expandable: {
-        "&::before": {
+    navigation_item__expandable: {
+        "& > $navigation_itemExpandTrigger": {
             "border-left": `4px solid ${textColorCSSProperty}`,
         },
     },
-    navigation_itemTrigger__active: {
+    navigation_item__active: {
         color: textColorCSSProperty,
         "font-weight": "600",
     },

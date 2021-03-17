@@ -7,26 +7,7 @@ import {
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
 import React from "react";
-import {
-    neutralLayerL1,
-    neutralLayerL2,
-    StandardLuminance,
-} from "@microsoft/fast-components-styles-msft";
-import {
-    ListboxItemProps,
-    TabsItem,
-    TypographySize,
-} from "@microsoft/fast-components-react-base";
-import {
-    ActionToggle,
-    ActionToggleAppearance,
-    ActionToggleProps,
-    Background,
-    Pivot,
-    Select,
-    SelectOption,
-    Typography,
-} from "@microsoft/fast-components-react-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     DataDictionary,
@@ -34,23 +15,27 @@ import {
     MessageSystemType,
 } from "@microsoft/fast-tooling";
 import {
+    componentCategories,
     DirectionSwitch,
-    downChevron,
     Editor,
     Logo,
     ThemeSelector,
     TransparencyToggle,
-    upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/message-system-service/monaco-adapter.service";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
+import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
-import { pivotStyleSheetOverrides } from "./explorer.style";
 import { ExplorerProps, ExplorerState } from "./explorer.props";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
+import {
+    renderDevToolsTabs,
+    renderDevToolToggle,
+    renderScenarioSelect,
+} from "./web-components";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
@@ -58,6 +43,7 @@ let componentLinkedDataId: string = "root";
 
 class Explorer extends Editor<ExplorerProps, ExplorerState> {
     public static displayName: string = "Explorer";
+    public webComponentEditorContainerRef: HTMLElement;
     public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     private windowResizing: number;
@@ -103,6 +89,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             activePivotTab: "code",
             mobileFormVisible: false,
             mobileNavigationVisible: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
@@ -135,23 +122,12 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                 <div className={this.canvasClassNames}>
                     {this.renderCanvasOverlay()}
                     <div className={this.menuBarClassNames}>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.mobileMenuBarClassNames}
-                        >
+                        <div className={this.mobileMenuBarClassNames}>
                             {this.renderMobileNavigationTrigger()}
-                            <Logo
-                                backgroundColor={neutralLayerL2}
-                                logo={FASTInlineLogo}
-                            />
+                            <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
-                        </Background>
-                        <Background
-                            value={neutralLayerL2}
-                            drawBackground={true}
-                            className={this.canvasMenuBarClassNames}
-                        >
+                        </div>
+                        <div className={this.canvasMenuBarClassNames}>
                             <div className={this.menuItemRegionClassNames}>
                                 {this.renderScenarioSelect()}
                             </div>
@@ -175,7 +151,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                     disabled={!this.state.previewReady}
                                 />
                             </div>
-                        </Background>
+                        </div>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [
@@ -199,29 +175,42 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 responsive={true}
                                 messageSystem={this.fastMessageSystem as MessageSystem}
                             />
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
                         </div>
-                        <Background value={neutralLayerL1} className={"dev-tools"}>
-                            <Pivot
-                                label={"documentation"}
-                                items={this.renderPivotItems()}
-                                jssStyleSheet={pivotStyleSheetOverrides}
-                                onUpdate={this.handlePivotUpdate}
-                            />
-                            <ActionToggle
-                                appearance={ActionToggleAppearance.stealth}
-                                selectedLabel={"Development tools expanded"}
-                                selectedGlyph={downChevron}
-                                unselectedLabel={"Development tools collapsed"}
-                                unselectedGlyph={upChevron}
-                                selected={this.state.devToolsVisible}
-                                onToggle={this.handleDevToolsToggle}
-                                className={"dev-tools-trigger"}
-                            />
-                        </Background>
+                        <div className={"dev-tools"}>
+                            {renderDevToolsTabs({
+                                codeRenderCallback: (e: HTMLElement) => {
+                                    this.webComponentEditorContainerRef = e;
+                                },
+                                tabUpdateCallback: (
+                                    e: React.ChangeEvent<HTMLElement>
+                                ) => {
+                                    this.handlePivotUpdate((e as any).detail.id);
+                                },
+                                guidanceTabPanelContent: this.state.componentConfig
+                                    .guidance,
+                                definitionTabPanelContent: JSON.stringify(
+                                    this.state.componentConfig.definition,
+                                    null,
+                                    2
+                                ),
+                                schemaTabPanelContent: JSON.stringify(
+                                    this.state.componentConfig.schema,
+                                    null,
+                                    2
+                                ),
+                            })}
+                        </div>
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
-                    <ModularForm messageSystem={this.fastMessageSystem} />
+                    <ModularForm
+                        messageSystem={this.fastMessageSystem}
+                        categories={componentCategories}
+                    />
                 </div>
                 <Footer />
             </div>
@@ -229,8 +218,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     }
 
     public componentDidMount(): void {
-        this.setViewerToFullSize();
-        this.updateMonacoEditor();
+        this.handleWindowResize();
     }
 
     private handleWindowPopState = (): void => {
@@ -240,7 +228,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     };
 
     private handleWindowResize = (): void => {
-        if (this.editorContainerRef.current) {
+        if (this.webComponentEditorContainerRef) {
             if (this.windowResizing) {
                 clearTimeout(this.windowResizing);
             }
@@ -261,10 +249,10 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
     };
 
     private updateMonacoEditor = (): void => {
-        this.createMonacoEditor(monaco);
+        this.createMonacoEditor(monaco, this.webComponentEditorContainerRef);
 
         if (
-            this.editorContainerRef.current &&
+            this.webComponentEditorContainerRef &&
             this.editor &&
             this.state.activePivotTab === "code"
         ) {
@@ -314,118 +302,6 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         }
     };
 
-    private renderPivotItems(): TabsItem[] {
-        return [
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            id={"code"}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Code
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div
-                            ref={this.editorContainerRef}
-                            className={className}
-                            style={{ height: "100%" }}
-                        />
-                    );
-                },
-                id: "code",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Guidance
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>
-                            <this.state.componentConfig.guidance />
-                        </div>
-                    );
-                },
-                id: "guidance",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Definition
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    if (typeof this.state.componentConfig.definition !== "undefined") {
-                        return (
-                            <div className={className}>
-                                <pre>
-                                    {JSON.stringify(
-                                        this.state.componentConfig.definition,
-                                        null,
-                                        2
-                                    )}
-                                </pre>
-                            </div>
-                        );
-                    }
-
-                    return null;
-                },
-                id: "definition",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Schema
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    if (typeof this.state.componentConfig.schema !== "undefined") {
-                        return (
-                            <div className={className}>
-                                <pre>
-                                    {JSON.stringify(
-                                        this.state.componentConfig.schema,
-                                        null,
-                                        2
-                                    )}
-                                </pre>
-                            </div>
-                        );
-                    }
-
-                    return null;
-                },
-                id: "schema",
-            },
-        ];
-    }
-
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
             componentConfigs[`${camelCase(this.state.componentName)}Config`],
@@ -433,31 +309,12 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         );
 
         if (Array.isArray(scenarioOptions)) {
-            return (
-                <Select
-                    onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[0].displayName]}
-                    selectedItems={[
-                        scenarioOptions[this.state.selectedScenarioIndex].displayName,
-                    ]}
-                >
-                    {this.renderScenarioOptions(scenarioOptions)}
-                </Select>
+            return renderScenarioSelect(
+                this.state.selectedScenarioIndex,
+                scenarioOptions,
+                this.handleUpdateScenario
             );
         }
-    }
-
-    private renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
-            return (
-                <SelectOption
-                    key={index}
-                    id={scenarioOption.displayName}
-                    displayString={scenarioOption.displayName}
-                    value={`${index}`}
-                />
-            );
-        });
     }
 
     private getComponentNameSpinalCaseByPath(path: string): string {
@@ -481,7 +338,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
 
     private handleUpdateScenario = (
         newValue: string | string[],
-        selectedItems: ListboxItemProps[]
+        selectedItems: ListboxOption[]
     ): void => {
         const selectedScenarioIndex: number = parseInt(selectedItems[0].value, 10);
 
@@ -532,17 +389,18 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         );
     };
 
-    private handleDevToolsToggle = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        props: ActionToggleProps
-    ): void => {
-        this.maxViewerHeight = !props.selected
+    private handleDevToolsToggle = (): void => {
+        const selected: boolean = !this.state.devToolsVisible;
+        this.maxViewerHeight = selected
             ? this.maxViewerHeight / 2
             : this.maxViewerHeight * 2;
 
-        this.setState({
-            devToolsVisible: !props.selected,
-        });
+        this.setState(
+            {
+                devToolsVisible: selected,
+            },
+            this.setViewerToFullSize
+        );
     };
 
     private handlePivotUpdate = (activeTab: string): void => {
@@ -553,17 +411,6 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
         if (activeTab === "code") {
             window.setTimeout(() => {
                 this.updateMonacoEditor();
-            });
-        }
-    };
-
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private handleDevToolsTabTriggerClick = (e: React.MouseEvent<unknown>): void => {
-        if (!this.state.devToolsVisible) {
-            this.maxViewerHeight = this.maxViewerHeight * 2;
-
-            this.setState({
-                devToolsVisible: true,
             });
         }
     };

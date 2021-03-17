@@ -23,6 +23,7 @@ module.exports = {
                             compilerOptions: {
                                 declaration: false,
                             },
+                            configFile: "tsconfig.esm.json",
                         },
                     },
                 ],

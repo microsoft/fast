@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { TooltipPosition } from "@microsoft/fast-foundation/dist/esm/tooltip/tooltip.options";
 
@@ -7,32 +7,40 @@ export const fastTooltipDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-tooltip",
+            title: "Tooltip",
             description: "The FAST tooltip element",
             attributes: [
                 {
                     name: "visible",
-                    description: "The visible attribute",
+                    title: "Visible",
+                    description: "Sets whether the tooltip is visible or not",
                     type: DataType.boolean,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "anchor",
-                    description: "The anchor attribute",
+                    title: "Anchor ID",
+                    description:
+                        "The HTML ID of the element the tooltip is positioned relative to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "delay",
-                    description: "The delay attribute",
+                    title: "Delay",
+                    description:
+                        "The delay in milliseconds before a tooltip is shown after a hover event",
                     type: DataType.number,
                     default: 300,
                     required: false,
                 },
                 {
                     name: "position",
-                    description: "The position attribute",
+                    title: "Position",
+                    description:
+                        "Controls the placement of the tooltip relative to the configured 'Anchor ID'",
                     values: [
                         { name: TooltipPosition.top },
                         { name: TooltipPosition.right },
@@ -49,7 +57,8 @@ export const fastTooltipDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The tooltip content",
                 },
             ],
         },

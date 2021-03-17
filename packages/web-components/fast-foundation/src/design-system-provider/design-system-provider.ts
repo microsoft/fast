@@ -7,7 +7,7 @@ import {
     Observable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
-import {
+import type {
     CSSCustomPropertyDefinition,
     CSSCustomPropertyTarget,
 } from "../custom-properties/index";
@@ -18,7 +18,7 @@ import {
     StyleElementCustomPropertyManager,
 } from "../custom-properties/manager";
 import { composedParent } from "../utilities/composed-parent";
-import { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
+import type { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
 
 const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
@@ -210,8 +210,21 @@ export class DesignSystemProvider extends FASTElement
             DesignSystemProvider.isDesignSystemProvider(next)
         ) {
             const notifier = Observable.getNotifier(next.designSystem);
+            const localAccessors = Observable.getAccessors(this.designSystem).reduce(
+                (prev, next) => {
+                    return { ...prev, [next.name]: next };
+                },
+                {}
+            );
+            const localNotifier = Observable.getNotifier(this.designSystem);
             Observable.getAccessors(next.designSystem).forEach(x => {
                 notifier.subscribe(this.providerDesignSystemChangeHandler, x.name);
+
+                // Hook up parallel design system property to react to changes to this property
+                if (!localAccessors[x.name]) {
+                    observable(this.designSystem, x.name);
+                    localNotifier.subscribe(this.localDesignSystemChangeHandler, x.name);
+                }
             });
 
             this.syncDesignSystemWithProvider();
@@ -358,6 +371,10 @@ export class DesignSystemProvider extends FASTElement
             this.customPropertyManager = new ConstructableStylesCustomPropertyManager(
                 new CSSStyleSheet()
             );
+        }
+
+        if (this.designSystemProperties === undefined) {
+            this.designSystemProperties = {};
         }
 
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);

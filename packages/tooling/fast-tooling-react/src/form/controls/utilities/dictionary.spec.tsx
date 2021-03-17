@@ -1,11 +1,7 @@
-import React from "react";
+import { configure, mount, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, mount, render, shallow } from "enzyme";
-import { controls } from "./control-switch.spec";
-import { Dictionary } from "./dictionary";
-import { DictionaryProps } from "./dictionary.props";
-import { DictionaryClassNameContract } from "./dictionary.style";
-import { ControlType } from "../../templates";
+import React from "react";
+import defaultStrings from "../../form.strings";
 import {
     ArrayControl,
     ButtonControl,
@@ -16,7 +12,11 @@ import {
     SelectControl,
     TextareaControl,
 } from "../../index";
-import defaultStrings from "../../form.strings";
+import { ControlType } from "../../templates";
+import { controls } from "./control-switch.spec";
+import { Dictionary } from "./dictionary";
+import type { DictionaryProps } from "./dictionary.props";
+import type { DictionaryClassNameContract } from "./dictionary.style";
 
 /*
  * Configure Enzyme
@@ -76,6 +76,7 @@ const dictionaryProps: DictionaryProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("Dictionary", () => {
@@ -348,7 +349,7 @@ describe("Dictionary", () => {
             randoma: "foo",
             b: "bar",
         };
-        const rendered: any = render(
+        const rendered: any = mount(
             <Dictionary
                 {...dictionaryProps}
                 managedClasses={managedClasses}

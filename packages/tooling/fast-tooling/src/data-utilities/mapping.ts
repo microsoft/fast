@@ -13,6 +13,8 @@ import {
     WebComponentSlot,
 } from "./web-component";
 
+export const dataSetName: string = "data-fast-tooling-name";
+
 export interface MapperConfig<T> {
     /**
      * Data that maps to the JSON schema
@@ -425,7 +427,8 @@ function mapAttributesToJSONSchema(
                 ...accumulation,
                 [attribute.name]: {
                     ...optionalAttributeProperties,
-                    title: attribute.description,
+                    title: attribute.title,
+                    description: attribute.description,
                     [ReservedElementMappingKeyword.mapsToAttribute]: attribute.name,
                     type: attribute.type,
                 },
@@ -447,7 +450,8 @@ function mapSlotsToJSONSchema(slots: WebComponentSlot[]): { [key: string]: any }
             return {
                 ...accumulation,
                 [`Slot${slotName}`]: {
-                    title: slot.description,
+                    title: slot.title,
+                    description: slot.description,
                     [ReservedElementMappingKeyword.mapsToSlot]: slot.name,
                     ...linkedDataSchema,
                 },
@@ -476,7 +480,7 @@ export function mapWebComponentDefinitionToJSONSchema(
                 $schema: "http://json-schema.org/schema#",
                 $id: webComponentDefinition.tags[i].name,
                 id: webComponentDefinition.tags[i].name,
-                title: `<${webComponentDefinition.tags[i].name}>`,
+                title: `${webComponentDefinition.tags[i].title}`,
                 description: `${webComponentDefinition.tags[i].description}`,
                 type: "object",
                 version: webComponentDefinition.version,

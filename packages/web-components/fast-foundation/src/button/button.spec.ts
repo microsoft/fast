@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { customElement } from "@microsoft/fast-element";
+import { customElement, DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { Button, ButtonTemplate as template } from "./index";
 
@@ -10,9 +10,11 @@ import { Button, ButtonTemplate as template } from "./index";
 class FASTButton extends Button {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTButton>("fast-button");
+    const { connect, disconnect, element, parent } = await fixture<FASTButton>(
+        "fast-button"
+    );
 
-    return { element, connect, disconnect };
+    return { connect, disconnect, element, parent };
 }
 
 describe("Button", () => {
@@ -507,46 +509,61 @@ describe("Button", () => {
     });
 
     describe("of type 'submit'", () => {
-        it("should submit the parent form when clicked", () => {
-            let wasSumbitted = false;
-            let event: any;
+        it("should submit the parent form when clicked", async () => {
+            const { connect, disconnect, element, parent } = await setup();
             const form = document.createElement("form");
-            const submit = document.createElement("fast-button");
-            submit.setAttribute("type", "submit");
-            form.appendChild(submit);
-            form.addEventListener("submit", e => {
-                e.preventDefault();
-                wasSumbitted = true;
-                event = e;
-            });
-            document.body.appendChild(form);
+            element.setAttribute("type", "submit");
+            form.appendChild(element);
+            parent.appendChild(form);
 
-            submit.click();
+            await connect();
+
+            const wasSumbitted = await new Promise(resolve => {
+                // Resolve as true when the event listener is handled
+                form.addEventListener(
+                    "submit",
+                    (event: Event & { submitter: HTMLElement }) => {
+                        event.preventDefault();
+                        expect(event.submitter).to.equal(element.proxy);
+                        resolve(true);
+                    }
+                );
+
+                element.click();
+
+                // Resolve false on the next update in case reset hasn't happened
+                DOM.queueUpdate(() => resolve(false));
+            });
 
             expect(wasSumbitted).to.equal(true);
-            expect(event.submitter).to.equal(submit["proxy"] as any);
 
-            document.body.removeChild(form);
+            await disconnect();
         });
     });
 
     describe("of type 'reset'", () => {
-        it("should submit the parent form when clicked", () => {
-            let wasReset = false;
+        it("should reset the parent form when clicked", async () => {
+            const { connect, disconnect, element, parent } = await setup();
             const form = document.createElement("form");
-            const reset = document.createElement("fast-button");
-            reset.setAttribute("type", "reset");
-            form.appendChild(reset);
-            document.body.appendChild(form);
-            form.addEventListener("reset", () => {
-                wasReset = true;
-            });
+            element.setAttribute("type", "reset");
+            form.appendChild(element);
+            parent.appendChild(form);
 
-            reset.click();
+            await connect();
+
+            const wasReset = await new Promise(resolve => {
+                // Resolve true when the event listener is handled
+                form.addEventListener("reset", () => resolve(true));
+
+                element.click();
+
+                // Resolve false on the next update in case reset hasn't happened
+                DOM.queueUpdate(() => resolve(false));
+            });
 
             expect(wasReset).to.equal(true);
 
-            document.body.removeChild(form);
+            await disconnect();
         });
     });
 });

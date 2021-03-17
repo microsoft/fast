@@ -132,11 +132,10 @@ export class Checkbox extends FormAssociatedCheckbox {
     /**
      * @internal
      */
-    public formResetCallback(): void {
+    public formResetCallback = (): void => {
         this.checked = this.checkedAttribute;
         this.dirtyChecked = false;
-        super.formResetCallback();
-    }
+    };
 
     private updateForm(): void {
         const value = this.checked ? this.value : null;

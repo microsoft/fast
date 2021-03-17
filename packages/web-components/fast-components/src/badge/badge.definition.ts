@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastBadgeDefinition: WebComponentDefinition = {
@@ -6,25 +6,31 @@ export const fastBadgeDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-badge",
+            title: "Badge",
             description: "The FAST badge element",
             attributes: [
                 {
                     name: "circular",
-                    description: "The circular attribute",
+                    title: "Circular",
+                    description: "Sets the visual appearance of the badge to circular",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "fill",
-                    description: "The fill attribute",
+                    title: "Fill",
+                    description:
+                        "Sets the background color to a CSS custom property of the attribute value - var(--badge-fill-[value])",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "color",
-                    description: "The color attribute",
+                    title: "Color",
+                    description:
+                        "Sets the color to a CSS custom property of the attribute value - var(--badge-color-[value])",
                     type: DataType.string,
                     default: undefined,
                     required: false,
@@ -33,7 +39,8 @@ export const fastBadgeDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the badge",
                 },
             ],
         },

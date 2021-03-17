@@ -155,10 +155,10 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     /**
      * @internal
      */
-    public formResetCallback() {
+    public formResetCallback = (): void => {
         this.checked = !!this.defaultChecked;
         this.dirtyChecked = false;
-    }
+    };
 
     private isInsideRadioGroup(): boolean {
         const parent: HTMLElement | null = (this as HTMLElement).closest(

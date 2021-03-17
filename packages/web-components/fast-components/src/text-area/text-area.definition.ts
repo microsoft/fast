@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 import { TextAreaResize } from "@microsoft/fast-foundation/dist/esm/text-area/text-area.options";
 
@@ -7,11 +7,13 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-text-area",
+            title: "Text area",
             description: "The FAST text-area element",
             attributes: [
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    title: "Appearance",
+                    description: "The text area's visual treatment",
                     default: "outline",
                     required: false,
                     type: DataType.string,
@@ -19,7 +21,8 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "resize",
-                    description: "The resize attribute",
+                    title: "Resize",
+                    description: "The resize mode of the element",
                     required: false,
                     type: DataType.string,
                     values: [
@@ -32,14 +35,18 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "autofocus",
-                    description: "The autofocus attribute",
+                    title: "Autofocus",
+                    description:
+                        "Determines if the element should receive document focus on page load",
                     required: false,
                     type: DataType.boolean,
                     default: false,
                 },
                 {
                     name: "cols",
-                    description: "The cols attribute",
+                    title: "Columns",
+                    description:
+                        "Sizes the element vertically by a number of character columns",
                     required: false,
                     type: DataType.number,
                     default: 20,
@@ -53,77 +60,94 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "list",
-                    description: "The list attribute",
+                    title: "List ID",
+                    description: "Allows associating a datalist to the component",
                     required: false,
                     type: DataType.string,
                     default: "",
                 },
                 {
                     name: "maxlength",
-                    description: "The maxlength attribute",
+                    title: "Maximum length",
+                    description: "The maximum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
                     default: undefined,
                 },
                 {
                     name: "minlength",
-                    description: "The minlength attribute",
+                    title: "Minimum length",
+                    description: "The minimum number of characters a user can enter",
                     required: false,
                     type: DataType.number,
                     default: undefined,
                 },
                 {
                     name: "placeholder",
-                    description: "The placeholder attribute",
+                    title: "Placeholder",
+                    description:
+                        "Sets the placeholder value of the element, generally used to provide a hint to the user",
                     required: false,
                     type: DataType.string,
                     default: undefined,
                 },
                 {
                     name: "rows",
-                    description: "The rows attribute",
+                    title: "Rows",
+                    description:
+                        "Sizes the element vertically by a number of character rows",
                     required: false,
                     type: DataType.number,
                     default: undefined,
                 },
                 {
                     name: "spellcheck",
-                    description: "The spellcheck attribute",
+                    title: "Spellcheck",
+                    description:
+                        "Controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used",
                     required: false,
                     type: DataType.boolean,
                     default: undefined,
                 },
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description: "The HTML value attribute of the text area",
                     default: undefined,
                     required: false,
                     type: DataType.string,
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "required",
-                    description: "The required attribute",
+                    title: "Required",
+                    description:
+                        "Require the field to be completed prior to form submission",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the text area",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "readonly",
-                    description: "The readonly attribute",
+                    title: "Readonly",
+                    description:
+                        "When true, the control will be immutable by user interaction",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -132,7 +156,9 @@ export const fastTextAreaDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the text area represents its visual label",
                 },
             ],
         },

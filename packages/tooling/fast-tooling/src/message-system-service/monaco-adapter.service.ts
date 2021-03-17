@@ -90,7 +90,8 @@ export function findUpdatedDictionaryId(
 }
 
 export class MonacoAdapter extends MessageSystemService<
-    MonacoAdapterActionCallbackConfig
+    MonacoAdapterActionCallbackConfig,
+    {}
 > {
     private monacoModelValue: string[];
     private schemaDictionary: SchemaDictionary;
@@ -183,7 +184,7 @@ export class MonacoAdapter extends MessageSystemService<
     /**
      * Update the Monaco Model value
      */
-    private updateMonacoModelValue = (value: string[]): void => {
+    private updateMonacoModelValue = (value: string[], isExternal: boolean): void => {
         /**
          * Normalize values by converting all new lines into an array
          * and remove the leading spaces
@@ -200,14 +201,17 @@ export class MonacoAdapter extends MessageSystemService<
         });
 
         this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(dataDictionary);
-        this.messageSystem.postMessage({
-            type: MessageSystemType.initialize,
-            dataDictionary,
-            schemaDictionary: this.schemaDictionary,
-            options: {
-                originatorId: monacoAdapterId,
-            },
-            dictionaryId: this.dictionaryId,
-        } as InitializeMessageIncoming);
+
+        if (!isExternal) {
+            this.messageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary,
+                schemaDictionary: this.schemaDictionary,
+                options: {
+                    originatorId: monacoAdapterId,
+                },
+                dictionaryId: this.dictionaryId,
+            } as InitializeMessageIncoming);
+        }
     };
 }

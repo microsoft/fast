@@ -11,9 +11,11 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 class FASTSwitch extends Switch {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSwitch>("fast-switch");
+    const { element, connect, disconnect, parent } = await fixture<FASTSwitch>(
+        "fast-switch"
+    );
 
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("Switch", () => {
@@ -299,11 +301,11 @@ describe("Switch", () => {
 
     describe("who's parent form has it's reset() method invoked", () => {
         it("should set it's checked property to false if the checked attribute is unset", async () => {
-            const { element, connect, disconnect } = await setup();
+            const { element, connect, disconnect, parent } = await setup();
             await connect();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
+            parent.appendChild(form);
             form.appendChild(element);
             element.checked = true;
 
@@ -311,17 +313,17 @@ describe("Switch", () => {
             assert(element.checked);
             form.reset();
 
-            assert(!element.checked);
+            assert.isFalse(!!element.checked);
 
             await disconnect();
         });
 
         it("should set it's checked property to true if the checked attribute is set", async () => {
-            const { element, connect, disconnect } = await setup();
+            const { element, connect, disconnect, parent } = await setup();
             await connect();
 
             const form = document.createElement("form");
-            document.body.appendChild(form);
+            parent.appendChild(form);
             form.appendChild(element);
             element.setAttribute("checked", "");
 
@@ -337,11 +339,13 @@ describe("Switch", () => {
             await disconnect();
         });
 
-        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", () => {
-            const element = document.createElement("fast-switch") as FASTSwitch;
+        it("should put the control into a clean state, where checked attribute changes change the checked property prior to user or programmatic interaction", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+            await connect();
+
             const form = document.createElement("form");
+            parent.appendChild(form);
             form.appendChild(element);
-            document.body.appendChild(form);
             element.checked = true;
             element.removeAttribute("checked");
 
@@ -349,11 +353,13 @@ describe("Switch", () => {
 
             form.reset();
 
-            assert(!element.checked);
+            assert.isFalse(!!element.checked);
 
             element.setAttribute("checked", "");
 
-            assert(element.value);
+            assert(element.checked);
+
+            await disconnect();
         });
     });
 });

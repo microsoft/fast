@@ -1,12 +1,14 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { TextField } from "./text-field";
+import { whitespaceFilter } from "../utilities";
+import type { TextField } from "./text-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
  */
-export const TextFieldTemplate = html<TextField>`
+export const TextFieldTemplate: ViewTemplate<TextField> = html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}
@@ -20,7 +22,9 @@ export const TextFieldTemplate = html<TextField>`
                     ? "label"
                     : "label label__hidden"}"
         >
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+            <slot
+                ${slotted({ property: "defaultSlottedNodes", filter: whitespaceFilter })}
+            ></slot>
         </label>
         <div class="root" part="root">
             ${startTemplate}

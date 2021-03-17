@@ -3,6 +3,115 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.0...@microsoft/fast-tooling@0.16.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* update the navigation display text to use a custom property in the data ([#4426](https://github.com/Microsoft/fast/issues/4426)) ([0e4308e](https://github.com/Microsoft/fast/commit/0e4308eca1dd482413d32051a448cc35015ddb3b))
+
+
+
+
+
+# [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.2...@microsoft/fast-tooling@0.16.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* remove redundant slot from DataDictionary when mapping an HTML string ([#4358](https://github.com/Microsoft/fast/issues/4358)) ([39b2bcc](https://github.com/Microsoft/fast/commit/39b2bccb6b6b97767497b93ca715e18387c138f3))
+* update mapping between web component definition and JSON schema for title and description ([#4347](https://github.com/Microsoft/fast/issues/4347)) ([4dfb9f2](https://github.com/Microsoft/fast/commit/4dfb9f29dbde57db737bf378b358ae0a03c37500)), closes [#4344](https://github.com/Microsoft/fast/issues/4344)
+* update the event listener to be passed to a config to the message system ([#4356](https://github.com/Microsoft/fast/issues/4356)) ([a2092d3](https://github.com/Microsoft/fast/commit/a2092d3e35e18e55d4f81238fad752a0dda09539)), closes [#4355](https://github.com/Microsoft/fast/issues/4355)
+
+
+### Features
+
+* allow the message system to store and retrieve configs from registered services ([#4355](https://github.com/Microsoft/fast/issues/4355)) ([63848b0](https://github.com/Microsoft/fast/commit/63848b0b41345dfc2ff8efd86bdbc228f82cad97))
+* allow users to update display text for a data dictionary and navigation dictionary ([#4371](https://github.com/Microsoft/fast/issues/4371)) ([d30fd5b](https://github.com/Microsoft/fast/commit/d30fd5bd246a30b3dd1541b35c358eb7d7bf761a)), closes [#4352](https://github.com/Microsoft/fast/issues/4352)
+
+
+
+
+
+## [0.15.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.0...@microsoft/fast-tooling@0.15.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling
+
+
+
+
+
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.15.0...@microsoft/fast-tooling@0.15.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling
+
+
+
+
+
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.14.0...@microsoft/fast-tooling@0.15.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* include numerals, parenthesis and capital letters from MDN data conversion combinator RegEx ([#4195](https://github.com/Microsoft/fast/issues/4195)) ([e9308a2](https://github.com/Microsoft/fast/commit/e9308a22cb78de095d8e704065c87ce34e0a037f))
+* resolve nesting issues in converted MDN data ([#4203](https://github.com/Microsoft/fast/issues/4203)) ([2aecf3c](https://github.com/Microsoft/fast/commit/2aecf3c4507dc1b03d6e9f26bdb3b2d195a56b9f))
+* update nesting to be interpreted by manual parsing instead of RegEx ([#4253](https://github.com/Microsoft/fast/issues/4253)) ([f32e34a](https://github.com/Microsoft/fast/commit/f32e34aa699dd550cd79361b99437dbf9c810044))
+
+
+### Features
+
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.13.0...@microsoft/fast-tooling@0.14.0) (2020-12-16)
+
+
+### Bug Fixes
+
+* added more precision when dealing with brackets ([#4184](https://github.com/Microsoft/fast/issues/4184)) ([bbb4c06](https://github.com/Microsoft/fast/commit/bbb4c068e2f70f2b4116cabcf472f072a5312e8f))
+
+
+### Features
+
+* allow filtering MDN data by status ([#4164](https://github.com/Microsoft/fast/issues/4164)) ([dc58c34](https://github.com/Microsoft/fast/commit/dc58c344bbe449501fde918044352c78f11a64f6))
+
+
+
+
+
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.12.0...@microsoft/fast-tooling@0.13.0) (2020-12-02)
+
+
+### Features
+
+* add a mapping of MDN syntaxes to be used as reference ([#4139](https://github.com/Microsoft/fast/issues/4139)) ([e5b3545](https://github.com/Microsoft/fast/commit/e5b3545864ee9ed5117960cb65feef9fbb4f88a4))
+
+
+
+
+
+# [0.12.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.1...@microsoft/fast-tooling@0.12.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+* assigns children to named slots properly ([#4026](https://github.com/Microsoft/fast/issues/4026)) ([cddf930](https://github.com/Microsoft/fast/commit/cddf930108696eab7481389776aaf5895b9ea8c0))
+
+
+### Features
+
+* add a utility to map MDN data to a format that will be usable by generated UI ([#4066](https://github.com/Microsoft/fast/issues/4066)) ([faad57e](https://github.com/Microsoft/fast/commit/faad57ee3982832c67d01f1c00047665727e2c6f))
+* update generated css data to include more nesting solutions as well as new exports for property, syntax and types lists ([#4125](https://github.com/Microsoft/fast/issues/4125)) ([b814aed](https://github.com/Microsoft/fast/commit/b814aed588eadc0d24185243ac864105d22cd190))
+
+
+
+
+
 ## [0.11.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.11.0...@microsoft/fast-tooling@0.11.1) (2020-10-14)
 
 
