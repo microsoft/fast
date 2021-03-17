@@ -5,16 +5,16 @@ import {
     FASTButton,
     FASTSelect,
     FASTTab,
-    FASTTabs,
     FASTTabPanel,
+    FASTTabs,
 } from "@microsoft/fast-components";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
+import { MessageSystem } from "@microsoft/fast-tooling";
 import { ModularForm, StandardControlPlugin } from "@microsoft/fast-tooling-react";
 
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { FormId } from "../creator.props";
 import { defaultDevices, Device } from "./devices";
-import { MessageSystem } from "@microsoft/fast-tooling";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle

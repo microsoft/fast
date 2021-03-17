@@ -14,7 +14,6 @@ import {
     defaultDevices,
     Display,
     LinkedDataControl,
-    ModularForm,
     ModularNavigation,
     ModularViewer,
     StandardControlPlugin,
@@ -26,7 +25,6 @@ import {
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import {
     AccentColorPicker,
-    componentCategories,
     Dimension,
     DirectionSwitch,
     Editor,
@@ -37,13 +35,7 @@ import {
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import {
-    FASTTab,
-    FASTTabs,
-    FASTTabPanel,
-    StandardLuminance,
-    neutralLayerL1,
-} from "@microsoft/fast-components";
+import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
@@ -58,9 +50,6 @@ import {
 } from "./web-components";
 import { Device } from "./web-components/devices";
 
-FASTTab;
-FASTTabs;
-FASTTabPanel;
 StandardLuminance;
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
