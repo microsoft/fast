@@ -44,6 +44,8 @@ export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
  * @alpha
  */
 export interface DesignToken<T> extends CSSDirective {
+    readonly name: string;
+
     /**
      * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
      * configured to write a CSS custom property, otherwise empty string;
@@ -210,7 +212,7 @@ class DesignTokenNode<T> {
     ) {
         if (nodeCache.has(target) && nodeCache.get(target)!.has(token)) {
             throw new Error(
-                `DesignTokenNode already created for ${token} and ${target}. Use DesignTokenNode.for() to ensure proper reuse`
+                `DesignTokenNode already created for ${token.name} and ${target}. Use DesignTokenNode.for() to ensure proper reuse`
             );
         }
 
@@ -254,7 +256,9 @@ class DesignTokenNode<T> {
             return parent.value;
         }
 
-        throw new Error("Value could not be retrieved. Ensure the value is set");
+        throw new Error(
+            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}.`
+        );
     }
 
     public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
@@ -318,7 +322,7 @@ class DesignTokenNode<T> {
     }
 
     private findParentNode() {
-        if (this.target.parentNode) {
+        if (this.target !== document.body && this.target.parentNode) {
             const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
             try {
                 return container.get(DesignTokenNode.channel(this.token));

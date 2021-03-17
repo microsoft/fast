@@ -820,6 +820,8 @@ export interface DesignToken<T> extends CSSDirective {
     deleteValueFor(element: DesignTokenTarget): this;
     getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
     // (undocumented)
+    readonly name: string;
+    // (undocumented)
     removeCustomPropertyFor(element: DesignTokenTarget): this;
     setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
 }
@@ -2192,7 +2194,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:68:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:69:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
