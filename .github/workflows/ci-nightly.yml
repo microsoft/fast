@@ -41,5 +41,6 @@ jobs:
     - name: Publish NPM changed packages
       run: |
         yarn publish-ci -y -n $NAT_PAT
-      env: 
-        NPM_PAT: ${{ secrets.PACK_TOKEN }}
+      ## If the global NAT_PAT env variable doesn't appear here, then uncomment below to activate it for this specific task
+      # env: 
+      #   NPM_PAT: ${{ secrets.PACK_TOKEN }}
