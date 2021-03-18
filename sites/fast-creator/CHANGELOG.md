@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.6.0...@microsoft/fast-creator@0.6.1) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-creator
+
+
+
+
+
 # [0.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.5.4...@microsoft/fast-creator@0.6.0) (2021-03-16)
 
 
