@@ -50,8 +50,6 @@ import {
 } from "./web-components";
 import { Device } from "./web-components/devices";
 
-StandardLuminance;
-
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const schemaDictionary: SchemaDictionary = {
@@ -222,7 +220,6 @@ class Creator extends Editor<{}, CreatorState> {
                                         marginLeft: "auto",
                                     }}
                                 >
-                                    {/* TODO: Map these selectors to the state "designSystemDataDictionary" */}
                                     <ThemeSelector
                                         id={"theme-selector"}
                                         theme={this.state.theme}
@@ -354,7 +351,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleDesignSystemMessageSystem = (e: MessageEvent): void => {
         if (e.data.type === MessageSystemType.data) {
-            console.log("send update message", e.data.data);
             this.updateDesignSystemDataDictionaryState(e.data.data);
         }
     };
