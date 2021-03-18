@@ -40,8 +40,6 @@ jobs:
       
     - name: Publish NPM changed packages
       run: |
-        yarn add beachball -W
-        yarn publish-ci
-      # git reset --hard origin/master
-      # npm login -n ${{ env.NPM_PAT }} --access public -y
-        
+        yarn publish-ci -y -n $NAT_PAT
+      env: 
+        NPM_PAT: ${{ secrets.PACK_TOKEN }}
