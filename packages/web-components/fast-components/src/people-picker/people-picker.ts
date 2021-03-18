@@ -1,12 +1,6 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Picker } from "@microsoft/fast-foundation";
-import {
-    GroupType,
-    PersonType,
-    Providers,
-    ProviderState,
-    IDynamicPerson,
-} from "@microsoft/mgt";
+import { PersonType, Providers, ProviderState, IDynamicPerson } from "@microsoft/mgt";
 import { findPeople, getPeople } from "./graph/graph.people";
 import {
     findUsers,
@@ -14,7 +8,7 @@ import {
     getUser,
     getUsersForUserIds,
 } from "./graph/graph.user";
-import { findGroups, findGroupsFromGroup } from "./graph/graph.groups";
+import { GroupType, findGroups, findGroupsFromGroup } from "./graph/graph.groups";
 
 /**
  * ensures one call at a time
@@ -129,7 +123,7 @@ export class PeoplePicker extends Picker {
      *
      * @public
      */
-    public people: IDynamicPerson[] = [];
+    public people: IDynamicPerson[];
 
     /**
      *
@@ -163,7 +157,9 @@ export class PeoplePicker extends Picker {
         super.handleSelectionChange();
     }
 
-    protected handleTextInput = (e: InputEvent): boolean => {
+    protected handleTextInput = (e: InputEvent): void => {
+        super.handleTextInput(e);
+
         if (!this._debouncedSearch) {
             this._debouncedSearch = debounce(async () => {
                 this.showOptions = false;
@@ -173,8 +169,6 @@ export class PeoplePicker extends Picker {
         }
 
         this._debouncedSearch();
-
-        return super.handleTextInput(e);
     };
 
     /**
