@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.16.0...@microsoft/fast-foundation@1.16.1) (2021-03-18)
+
+
+### Bug Fixes
+
+* combobox with typescript ^4.0 ([#4475](https://github.com/Microsoft/fast/issues/4475)) ([e9d3b34](https://github.com/Microsoft/fast/commit/e9d3b345870b35c8ea9f2079537232c110129be1))
+* ensure no exception is thrown when no properties are defined ([#4469](https://github.com/Microsoft/fast/issues/4469)) ([40dc56c](https://github.com/Microsoft/fast/commit/40dc56c3b3a75af73d2bb92f653db11ae424cbf9))
+
+
+
+
+
 # [1.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.15.1...@microsoft/fast-foundation@1.16.0) (2021-03-16)
 
 

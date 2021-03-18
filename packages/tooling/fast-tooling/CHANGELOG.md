@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.1...@microsoft/fast-tooling@0.17.0) (2021-03-18)
+
+
+### Features
+
+* create a utility that consolidates the changes made to the data structure to preserve as much of the data dictionary as possible ([#4473](https://github.com/Microsoft/fast/issues/4473)) ([c86aa87](https://github.com/Microsoft/fast/commit/c86aa87b1c05556ab32d1de7bdd71805370f78c7))
+
+
+
+
+
 ## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.0...@microsoft/fast-tooling@0.16.1) (2021-03-16)
 
 
