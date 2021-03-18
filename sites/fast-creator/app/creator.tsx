@@ -3,7 +3,7 @@ import rafThrottle from "raf-throttle";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
-    CustomMessage,
+    CustomMessageIncomingOutgoing,
     DataType,
     MessageSystemType,
     SchemaDictionary,
@@ -14,7 +14,6 @@ import {
     defaultDevices,
     Display,
     LinkedDataControl,
-    ModularForm,
     ModularNavigation,
     ModularViewer,
     StandardControlPlugin,
@@ -26,7 +25,6 @@ import {
 } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import {
     AccentColorPicker,
-    componentCategories,
     Dimension,
     DirectionSwitch,
     Editor,
@@ -37,15 +35,19 @@ import {
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { StandardLuminance } from "@microsoft/fast-components";
+import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
-import { CreatorState, ProjectFile } from "./creator.props";
+import { CreatorState, FormId, ProjectFile } from "./creator.props";
 import { divTag, linkedDataExamples } from "./configs";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
-import { renderDeviceSelect, renderDevToolToggle } from "./web-components";
+import {
+    renderDeviceSelect,
+    renderDevToolToggle,
+    renderFormTabs,
+} from "./web-components";
 import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
@@ -96,11 +98,15 @@ class Creator extends Editor<{}, CreatorState> {
         super(props);
 
         const componentLinkedDataId: string = "root";
+        const designSystemLinkedDataId: string = "design-system";
 
         this.devices = this.getDevices();
 
         if ((window as any).Worker) {
             this.fastMessageSystem.add({ onMessage: this.handleMessageSystem });
+            this.fastDesignMessageSystem.add({
+                onMessage: this.handleDesignSystemMessageSystem,
+            });
         }
 
         window.onresize = rafThrottle(this.handleWindowResize);
@@ -121,6 +127,25 @@ class Creator extends Editor<{}, CreatorState> {
             devToolsVisible: true,
             mobileFormVisible: false,
             mobileNavigationVisible: false,
+            activeFormId: FormId.component,
+            designSystemDataDictionary: [
+                {
+                    [designSystemLinkedDataId]: {
+                        schemaId: "fast-design-system-provider",
+                        data: {
+                            "use-defaults": true,
+                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            direction: Direction.ltr,
+                            "background-color": neutralLayerL1(
+                                Object.assign({}, fastDesignSystemDefaults, {
+                                    baseLayerLuminance: StandardLuminance.LightMode,
+                                })
+                            ),
+                        },
+                    },
+                },
+                designSystemLinkedDataId,
+            ],
             dataDictionary: [
                 {
                     [componentLinkedDataId]: {
@@ -136,8 +161,17 @@ class Creator extends Editor<{}, CreatorState> {
     }
 
     public render(): React.ReactNode {
+        const accentColor: string = (this.state.designSystemDataDictionary[0][
+            "design-system"
+        ].data as any)["accent-base-color"];
+        const direction: Direction = (this.state.designSystemDataDictionary[0][
+            "design-system"
+        ].data as any)["direction"];
         return (
-            <div className={this.getContainerClassNames()}>
+            <div
+                className={this.getContainerClassNames()}
+                style={{ gridTemplateColumns: "260px auto 280px" }}
+            >
                 <div className={this.paneStartClassNames}>
                     <Logo
                         className={this.logoClassNames}
@@ -194,13 +228,17 @@ class Creator extends Editor<{}, CreatorState> {
                                     />
                                     <DirectionSwitch
                                         id={"direction-switch"}
-                                        direction={this.state.direction}
+                                        direction={direction}
                                         onUpdateDirection={this.handleUpdateDirection}
                                         disabled={!this.state.previewReady}
                                     />
                                     <AccentColorPicker
                                         id={"accent-color-picker"}
-                                        accentBaseColor={this.state.accentColor}
+                                        accentBaseColor={
+                                            accentColor !== undefined
+                                                ? accentColor
+                                                : fastDesignSystemDefaults.accentBaseColor
+                                        }
                                         onAccentColorPickerChange={
                                             this.handleAccentColorPickerChange
                                         }
@@ -246,16 +284,24 @@ class Creator extends Editor<{}, CreatorState> {
                     </div>
                 </div>
                 <div className={this.paneEndClassNames}>
-                    <ModularForm
-                        messageSystem={this.fastMessageSystem}
-                        controls={[this.linkedDataControl]}
-                        categories={componentCategories}
-                    />
+                    {renderFormTabs(
+                        this.state.activeFormId,
+                        this.fastMessageSystem,
+                        this.fastDesignMessageSystem,
+                        this.linkedDataControl,
+                        this.handleFormVisibility
+                    )}
                 </div>
                 <Footer />
             </div>
         );
     }
+
+    private handleFormVisibility = (formId): void => {
+        this.setState({
+            activeFormId: formId,
+        });
+    };
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
@@ -279,6 +325,11 @@ class Creator extends Editor<{}, CreatorState> {
                     dataDictionary: this.state.dataDictionary,
                     schemaDictionary,
                 });
+                this.fastDesignMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.state.designSystemDataDictionary,
+                    schemaDictionary,
+                });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
             }
@@ -296,6 +347,12 @@ class Creator extends Editor<{}, CreatorState> {
         }
 
         this.setState(updatedState as CreatorState);
+    };
+
+    private handleDesignSystemMessageSystem = (e: MessageEvent): void => {
+        if (e.data.type === MessageSystemType.data) {
+            this.updateDesignSystemDataDictionaryState(e.data.data);
+        }
     };
 
     private handleUpdateProjectFile = (projectFile: ProjectFile): void => {
@@ -405,23 +462,85 @@ class Creator extends Editor<{}, CreatorState> {
         this.setResponsiveDeviceId();
     };
 
+    private updateDesignSystemDataDictionaryState(newData: any) {
+        this.setState(
+            {
+                designSystemDataDictionary: [
+                    {
+                        ["design-system"]: {
+                            schemaId: this.state.designSystemDataDictionary[0][
+                                "design-system"
+                            ].schemaId,
+                            data: {
+                                ...(this.state.designSystemDataDictionary[0][
+                                    "design-system"
+                                ] as any).data,
+                                ...newData,
+                            },
+                        },
+                    },
+                    "design-system",
+                ],
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    originatorId: "design-system",
+                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                } as CustomMessageIncomingOutgoing<any>);
+                this.fastDesignMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.state.designSystemDataDictionary,
+                    schemaDictionary,
+                });
+            }
+        );
+    }
+
     /**
-     * Event handler for all color input changes
+     * Event handler for accent color input changes
      */
     private handleAccentColorPickerChange = (
         e: React.FormEvent<HTMLInputElement>
     ): void => {
         const value: string = e.currentTarget.value;
+        this.updateDesignSystemDataDictionaryState({ "accent-base-color": value });
+    };
+
+    /**
+     * Event handler for theme changes
+     */
+    public handleUpdateTheme = (): void => {
+        const updatedTheme: StandardLuminance =
+            this.state.theme === StandardLuminance.DarkMode
+                ? StandardLuminance.LightMode
+                : StandardLuminance.DarkMode;
 
         this.setState({
-            accentColor: value,
+            theme: updatedTheme,
         });
 
-        this.fastMessageSystem.postMessage({
-            type: MessageSystemType.custom,
-            id: previewAccentColor,
-            value,
-        } as CustomMessage<{}, {}>);
+        this.updateDesignSystemDataDictionaryState({
+            "background-color": neutralLayerL1(
+                Object.assign({}, fastDesignSystemDefaults, {
+                    baseLayerLuminance: updatedTheme,
+                })
+            ),
+        });
+    };
+
+    /**
+     * Event handler for direction changes
+     */
+    public handleUpdateDirection = (): void => {
+        const updatedDirection: Direction =
+            (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
+                "direction"
+            ] === Direction.ltr
+                ? Direction.rtl
+                : Direction.ltr;
+
+        this.updateDesignSystemDataDictionaryState({ direction: updatedDirection });
     };
 
     /**

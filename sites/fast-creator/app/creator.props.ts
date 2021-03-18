@@ -3,6 +3,11 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
 
+export enum FormId {
+    component,
+    designSystem,
+}
+
 /**
  * Data for a single view
  */
@@ -73,6 +78,16 @@ export interface ProjectFile {
      * Show form
      */
     mobileFormVisible: boolean;
+
+    /**
+     * The active form id
+     */
+    activeFormId: FormId;
+
+    /**
+     * The dictionary of design system data
+     */
+    designSystemDataDictionary: DataDictionary<unknown>;
 
     /**
      * The dictionary of data
