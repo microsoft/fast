@@ -121,23 +121,60 @@ export class PeoplePicker extends Picker {
     /**
      *
      *
-     * @public
+     * @internal
      */
+    @observable
     public people: IDynamicPerson[];
 
     /**
      *
      *
-     * @public
+     * @internal
      */
+    @observable
     public selectedPeople: IDynamicPerson[] = [];
 
-    private _debouncedSearch: { (): void; (): void };
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public defaultPeople: IDynamicPerson[];
+    private defaultPeopleChanged(): void {
+        const newOptions: string[] = this.defaultPeople.map(p => p.id);
+        this.optionsList = newOptions;
+    }
 
-    private defaultPeople: IDynamicPerson[];
-    private groupPeople: IDynamicPerson[];
-    private showLoading: boolean;
-    private foundPeople: IDynamicPerson[];
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public groupPeople: IDynamicPerson[];
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public showLoading: boolean;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public foundPeople: IDynamicPerson[];
+    private foundPeopleChanged(): void {
+        const newOptions: string[] = this.foundPeople.map(p => p.id);
+        this.optionsList = newOptions;
+    }
+
+    private _debouncedSearch: { (): void; (): void };
 
     /**
      * @internal
