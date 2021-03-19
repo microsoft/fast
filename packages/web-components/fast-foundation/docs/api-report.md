@@ -88,7 +88,7 @@ export class AnchoredRegion extends FASTElement {
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
-    // @public (undocumented)
+    // (undocumented)
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -149,7 +149,7 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
-// @public
+// @beta
 export type AutoUpdateMode = "anchor" | "auto";
 
 // @beta

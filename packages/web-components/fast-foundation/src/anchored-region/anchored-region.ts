@@ -56,6 +56,8 @@ export type VerticalPosition = "top" | "bottom" | "unset";
  * - the window resizes
  * - the viewport resizes
  * - any scroll event in the document
+ *
+ * @beta
  */
 export type AutoUpdateMode = "anchor" | "auto";
 
@@ -297,7 +299,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      *
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: auto-update-mode
      */
