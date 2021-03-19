@@ -151,7 +151,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     protected placeholderChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.placeholder = this.placeholder;
         }
     }
