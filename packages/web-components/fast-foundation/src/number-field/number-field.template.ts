@@ -1,17 +1,14 @@
-import { html, ref, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted, when } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { NumberField } from "./number-field";
+import type { NumberField } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const NumberFieldTemplate = html<NumberField>`
-    <template
-        class="
-            ${x => (x.readOnly ? "readonly" : "")}
-        "
-    >
+export const NumberFieldTemplate: ViewTemplate<NumberField> = html`
+    <template class="${x => (x.readOnly ? "readonly" : "")}">
         <label
             part="label"
             for="control"
@@ -66,10 +63,23 @@ export const NumberFieldTemplate = html<NumberField>`
                 aria-roledescription="${x => x.ariaRoledescription}"
                 ${ref("control")}
             />
-            <div class="controls">
-                <div class="step-up" @click="${x => x.stepUp()}"></div>
-                <div class="step-down" @click="${x => x.stepDown()}"></div>
-            </div>
+            ${when(
+                x => !x.hideStep,
+                html`
+                    <div class="controls" part="controls">
+                        <div
+                            class="step-up"
+                            part="step-up"
+                            @click="${x => x.stepUp()}"
+                        ></div>
+                        <div
+                            class="step-down"
+                            part="step-down"
+                            @click="${x => x.stepDown()}"
+                        ></div>
+                    </div>
+                `
+            )}
             ${endTemplate}
         </div>
     </template>

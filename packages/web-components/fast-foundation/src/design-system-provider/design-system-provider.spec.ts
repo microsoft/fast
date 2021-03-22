@@ -249,6 +249,22 @@ describe("A DesignSystemProvider", () => {
             });
         });
     });
+    describe("that has no designSystemProperties", () => {
+        it("should not throw when connected", () => {
+            @defineDesignSystemProvider({
+                name: "dsp-no-properties",
+                template,
+            })
+            class DSPA extends DesignSystemProvider {}
+
+            const child = document.createElement("dsp-no-properties")
+            expect(() => {
+                document.body.appendChild(child)
+            }).not.to.throw()
+
+            document.body.removeChild(child);
+        })
+    })
 
     describe("that is nested inside an instance of the same DesignSystemProvider definition", () => {
         it("should sync all unset design system properties from the parent provider", done => {

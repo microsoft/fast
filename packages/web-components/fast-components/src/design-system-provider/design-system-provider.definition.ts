@@ -1,5 +1,5 @@
 import { DataType } from "@microsoft/fast-tooling";
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 
@@ -8,6 +8,7 @@ export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-design-system-provider",
+            title: "Design System",
             description: "The FAST design system provider element",
             attributes: [
                 {
@@ -64,7 +65,14 @@ export const fastDesignSystemProviderDefinition: WebComponentDefinition = {
                     title: "Direction",
                     description: "Support localized styles",
                     type: DataType.string,
-                    values: [Direction.ltr, Direction.rtl],
+                    values: [
+                        {
+                            name: Direction.ltr,
+                        },
+                        {
+                            name: Direction.rtl,
+                        },
+                    ],
                     default: fastDesignSystemDefaults.direction,
                     required: false,
                 },

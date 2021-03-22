@@ -1,13 +1,14 @@
 import { html, when } from "@microsoft/fast-element";
-import { BreadcrumbItem } from "./breadcrumb-item";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchorTemplate } from "../anchor";
+import { endTemplate, startTemplate } from "../patterns/start-end";
+import type { BreadcrumbItem } from "./breadcrumb-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(BreadcrumbItem:class)} component.
  * @public
  */
-export const BreadcrumbItemTemplate = html<BreadcrumbItem>`
+export const BreadcrumbItemTemplate: ViewTemplate<BreadcrumbItem> = html`
     <div role="listitem" class="listitem" part="listitem">
         ${when(
             x => x.href && x.href.length > 0,

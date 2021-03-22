@@ -1,12 +1,13 @@
-import { html, ref, slotted, elements } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Button } from "./button";
+import type { Button } from "./button";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
  * @public
  */
-export const ButtonTemplate = html<Button>`
+export const ButtonTemplate: ViewTemplate<Button> = html`
     <button
         class="control"
         part="control"

@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastNumberFieldDefinition: WebComponentDefinition = {
@@ -99,6 +99,14 @@ export const fastNumberFieldDefinition: WebComponentDefinition = {
                     name: "disabled",
                     title: "Disabled",
                     description: "Sets the disabled state of the text field",
+                    type: DataType.boolean,
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "hide-step",
+                    title: "Hide step",
+                    description: "Hides the step controls",
                     type: DataType.boolean,
                     default: false,
                     required: false,

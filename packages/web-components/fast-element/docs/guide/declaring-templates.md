@@ -38,13 +38,25 @@ export class NameTag extends FASTElement {
 
 There are several important details in the above example, so let's break them down one-by-one.
 
-First, we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `ViewTemplate`. Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we simply provide the type as part of the tag: `html<NameTag>`.
+First, we create a template by using a [tagged template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). The tag, `html`, provides special processing for the HTML string that follows, returning an instance of `ViewTemplate`.
 
 Within a template, we provide *bindings* that declare the *dynamic parts* of our template. These bindings are declared with [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). Because the template is typed, the input to your arrow function will be an instance of the data model you declared in your `html` tag. When the `html` tag processes your template, it identifies these dynamic expressions and builds up an optimized model, capable of high-performance rendering, and efficient, incremental batched updates.
 
 Finally, we associate the template with our custom element by using a new form of the `@customElement` decorator, which allows us to pass more options. In this configuration, we pass an options object specifying the `name` and the `template`.
 
 With this in place, we now have a `name-tag` element that will render its template into the Shadow DOM and automatically update the `h3` content whenever the name tag's `greeting` attribute changes. Give it a try!
+
+### Typed Templates
+
+Your templates can be *typed* to the data model that they are rendering over. In TypeScript, we provide the type as part of the tag: `html<NameTag>`. For TypeScript 3.8 or higher, you can import `ViewTemplate` as a type:
+
+```ts
+import type { ViewTemplate } from '@microsoft/fast-element';
+
+const template: ViewTemplate<NameTag> = html`
+  <div>${x => x.greeting}</div>
+`;
+```
 
 ## Understanding bindings
 
@@ -129,6 +141,14 @@ When binding to `class`, the underlying engine will not over-write classes added
 <button type="submit" ?disabled="${x => !x.enabled}">Submit</button>
 ```
 
+**Example: Nullish value**
+
+Some cases may occur where an attribute needs to have a value when used however not present if unused. These are different than boolean attributes by where their presence alone triggers their effect. In this situation a nullish value (`null` or `undefined`) may be provided so the attribute won't exist in that condition.
+
+```html
+<div aria-hidden="${x => x.isViewable ? 'true' : null}"></div>
+```
+
 ### Properties
 
 Properties can also be set directly on an HTML element. To do so, prepend the property name with `:` to indicate a property binding. The template engine will then use your expression to assign the element's property value.
@@ -202,4 +222,4 @@ In the future we're planning new optimizations that will enable us to safely det
 
 In most cases, the template that `FASTElement` renders is determined by the `template` property of the Custom Element's configuration. However, you can also implement a method on your Custom Element class named `resolveTemplate()` that returns a template instance. If this method is present, it will be called during `connectedCallback` to obtain the template to use. This allows the element author to dynamically select completely different templates based on the state of the element at the time of connection.
 
-In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time though setting the controller's `template` property to any valid template.
+In addition to dynamic template selection during the `connectedCallback`, the `$fastController` property of `FASTElement` enables dynamically changing the template at any time through setting the controller's `template` property to any valid template.

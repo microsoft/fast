@@ -1,10 +1,6 @@
-import {
-    Constructable,
-    FASTElement,
-    FASTElementDefinition,
-} from "@microsoft/fast-element";
+import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { Container } from "../di";
+import type { Container } from "../di";
 import { uniqueElementName } from "../fixture";
 import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
 

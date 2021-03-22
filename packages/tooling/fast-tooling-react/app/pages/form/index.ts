@@ -8,6 +8,7 @@ import {
     anyOfSchema,
     arraysSchema,
     badgeSchema,
+    categorySchema,
     checkboxSchema,
     childrenSchema,
     constSchema as constKeywordSchema,
@@ -28,6 +29,10 @@ import {
     textSchema,
     tooltipSchema,
 } from "../../../src/__tests__/schemas";
+
+export const category: ExampleComponent = {
+    schema: categorySchema,
+};
 
 export const textField: ExampleComponent = {
     schema: textareaSchema,

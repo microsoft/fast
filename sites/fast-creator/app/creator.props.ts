@@ -1,7 +1,12 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
+
+export enum FormId {
+    component,
+    designSystem,
+}
 
 /**
  * Data for a single view
@@ -75,6 +80,16 @@ export interface ProjectFile {
     mobileFormVisible: boolean;
 
     /**
+     * The active form id
+     */
+    activeFormId: FormId;
+
+    /**
+     * The dictionary of design system data
+     */
+    designSystemDataDictionary: DataDictionary<unknown>;
+
+    /**
      * The dictionary of data
      */
     dataDictionary: DataDictionary<unknown>;
@@ -83,6 +98,11 @@ export interface ProjectFile {
      * Preview background transparency
      */
     transparentBackground: boolean;
+
+    /**
+     * The last mapped data dictionary to monaco editor value
+     */
+    lastMappedDataDictionaryToMonacoEditorHTMLValue: string;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;

@@ -13,7 +13,7 @@ import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 // This is only used as a typescript reference, the actual monaco import must
 // be passed from the derived class or it will cause import issues
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { MonacoAdapter } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
@@ -29,6 +29,7 @@ export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
+const fastDesignMessageSystemWorker = new FASTMessageSystemWorker();
 
 abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public editor: monaco.editor.IStandaloneCodeEditor;
@@ -38,6 +39,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public maxViewerHeight: number = 0;
     public maxViewerWidth: number = 0;
     public fastMessageSystem: MessageSystem;
+    public fastDesignMessageSystem: MessageSystem;
     // This is the current monaco editor models string value
     public monacoValue: string[];
     public paneStartClassNames: string = "pane pane__start";
@@ -62,6 +64,12 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
             this.fastMessageSystem = new MessageSystem({
                 webWorker: fastMessageSystemWorker,
             });
+            this.fastDesignMessageSystem = new MessageSystem({
+                webWorker: fastDesignMessageSystemWorker,
+            });
+            new AjvMapper({
+                messageSystem: this.fastDesignMessageSystem,
+            });
             new AjvMapper({
                 messageSystem: this.fastMessageSystem,
             });
@@ -77,8 +85,13 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                     action: (config: MonacoAdapterActionCallbackConfig): void => {
                         // trigger an update to the monaco value that
                         // also updates the DataDictionary which fires a
-                        // postMessage to the MessageSystem
-                        config.updateMonacoModelValue(this.monacoValue);
+                        // postMessage to the MessageSystem if the udpate
+                        // is coming from Monaco and not a data dictionary update
+                        config.updateMonacoModelValue(
+                            this.monacoValue,
+                            this.state.lastMappedDataDictionaryToMonacoEditorHTMLValue ===
+                                this.monacoValue[0]
+                        );
                     },
                 }),
             ],
@@ -144,10 +157,17 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
 
     public updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
         if (this.editor) {
-            this.editor.setValue(
-                html_beautify(
-                    mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
-                )
+            const lastMappedDataDictionaryToMonacoEditorHTMLValue = html_beautify(
+                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+            );
+
+            this.setState(
+                {
+                    lastMappedDataDictionaryToMonacoEditorHTMLValue,
+                },
+                () => {
+                    this.editor.setValue(lastMappedDataDictionaryToMonacoEditorHTMLValue);
+                }
             );
         }
     }

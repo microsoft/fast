@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@1.0.0...@microsoft/fast-element@1.0.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* ensure embedded templates dispose correctly ([#4432](https://github.com/Microsoft/fast/issues/4432)) ([cb8ae10](https://github.com/Microsoft/fast/commit/cb8ae10c0e84efe510d465525dd2dadae0dfb232))
+
+
+
+
+
 # [1.0.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@0.22.2...@microsoft/fast-element@1.0.0) (2021-03-06)
 
 

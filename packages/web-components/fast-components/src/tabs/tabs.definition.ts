@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DataType } from "@microsoft/fast-tooling";
 

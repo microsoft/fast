@@ -1,7 +1,13 @@
+/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
+
 import React from "react";
-import { ActionTrigger, NumberField } from "@microsoft/fast-components-react-msft";
-import { rotateGlyph } from "../../icons/rotate";
+import { FASTButton, FASTNumberField } from "@microsoft/fast-components";
+import { RotateGlyph } from "../../icons/rotate";
+import h from "../../web-components/pragma";
 import { DimensionProps } from "./dimension.props";
+
+FASTButton;
+FASTNumberField;
 
 export const Dimension: React.FC<DimensionProps> = ({
     width,
@@ -13,14 +19,15 @@ export const Dimension: React.FC<DimensionProps> = ({
     disabled,
 }: React.PropsWithChildren<DimensionProps>): React.ReactElement => {
     return (
-        <div style={{ display: "flex", alignItems: "center", marginLeft: 4 }}>
-            <NumberField
+        <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
+            <fast-number-field
                 value={width}
-                onChange={onDimensionChange(onUpdateWidth)}
-                style={{
-                    width: "64px",
+                size={6}
+                events={{
+                    input: onDimensionChange(onUpdateWidth),
                 }}
-                disabled={disabled}
+                disabled={disabled ? "true" : undefined}
+                hide-step={true}
             />
             <svg
                 width="14"
@@ -44,21 +51,27 @@ export const Dimension: React.FC<DimensionProps> = ({
                     strokeMiterlimit="10"
                 />
             </svg>
-            <NumberField
+            <fast-number-field
                 value={height}
-                onChange={onDimensionChange(onUpdateHeight)}
-                style={{
-                    width: "64px",
-                    marginRight: 4,
+                size={6}
+                events={{
+                    input: onDimensionChange(onUpdateHeight),
                 }}
-                disabled={disabled}
+                style={{
+                    marginRight: 8,
+                }}
+                disabled={disabled ? "true" : undefined}
+                hide-step={true}
             />
-            <ActionTrigger
-                glyph={rotateGlyph}
+            <fast-button
                 aria-label={"Rotate axis"}
-                onClick={onUpdateOrientation}
-                disabled={disabled}
-            />
+                events={{
+                    click: onUpdateOrientation,
+                }}
+                disabled={disabled ? "true" : undefined}
+            >
+                {RotateGlyph()}
+            </fast-button>
         </div>
     );
 };

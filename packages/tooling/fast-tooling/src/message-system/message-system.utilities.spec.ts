@@ -25,7 +25,6 @@ import {
     UpdateActiveIdNavigationDictionaryMessageIncoming,
     UpdateActiveIdNavigationDictionaryMessageOutgoing,
     UpdateDataMessageOutgoing,
-    UpdateDisplayTextDataMessageOutgoing,
     ValidationMessageIncoming,
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
@@ -939,59 +938,6 @@ describe("getMessage", () => {
             expect((message.data as any).linkedData.length).toEqual(2);
             expect((message.data as any).linkedData[0].id).toEqual("bar");
             expect((message.data as any).linkedData[1].id).toEqual("foo");
-        });
-        test("should return a data dictionary with updated display text", () => {
-            getMessage({
-                type: MessageSystemType.initialize,
-                data: [
-                    {
-                        data: {
-                            schemaId: "foo",
-                            data: {
-                                linkedData: [
-                                    {
-                                        id: "foo",
-                                    },
-                                    {
-                                        id: "bar",
-                                    },
-                                ],
-                            },
-                        },
-                        foo: {
-                            schemaId: "foo",
-                            data: {
-                                test: "hello world",
-                            },
-                        },
-                        bar: {
-                            schemaId: "foo",
-                            data: {
-                                test: "hello world",
-                            },
-                        },
-                    },
-                    "data",
-                ],
-                schemaDictionary: {
-                    foo: { id: "foo" },
-                },
-            });
-            const message: UpdateDisplayTextDataMessageOutgoing = getMessage({
-                type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.updateDisplayText,
-                displayText: "foobarbat",
-                dictionaryId: "data",
-            }) as UpdateDisplayTextDataMessageOutgoing;
-
-            expect((message as any).dataDictionary[0].data.displayText).toEqual(
-                "foobarbat"
-            );
-            expect(
-                (message as any).navigationDictionary[0].data[0][
-                    (message as any).navigationDictionary[0].data[1]
-                ].text
-            ).toEqual("foobarbat");
         });
     });
     describe("navigation", () => {

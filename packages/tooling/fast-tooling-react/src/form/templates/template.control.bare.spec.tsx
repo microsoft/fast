@@ -82,6 +82,7 @@ const props: BareControlTemplateProps = {
     messageSystem: void 0,
     strings: defaultStrings,
     messageSystemOptions: null,
+    categories: {},
 };
 
 describe("BareControlTemplate", () => {
