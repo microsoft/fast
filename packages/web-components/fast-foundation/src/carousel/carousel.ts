@@ -577,17 +577,6 @@ export class Carousel extends Tabs {
                 "focusout",
                 this.handleMouseLeave
             );
-
-            if (
-                this.previousFlipperSlottedItem.length &&
-                this.nextFlipperSlottedItem.length
-            ) {
-                // when tabbed the next and previous buttons should not be in the tab sequence
-                DOM.queueUpdate(() => {
-                    this.previousFlipperSlottedItem[0].setAttribute("tabindex", "-1");
-                    this.nextFlipperSlottedItem[0].setAttribute("tabindex", "-1");
-                });
-            }
         } else {
             this.basicContent.addEventListener("focusin", this.handleMouseOver);
             this.basicContent.addEventListener("focusout", this.handleMouseLeave);
