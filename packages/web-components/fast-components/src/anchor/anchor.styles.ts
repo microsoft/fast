@@ -1,11 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
     AccentButtonStyles,
-    accentForegroundCutRestBehavior,
-    accentFillHoverBehavior,
-    accentFillActiveBehavior,
-    neutralFocusInnerAccentBehavior,
-    accentFillRestBehavior,
     BaseButtonStyles,
     HypertextStyles,
     LightweightButtonStyles,
