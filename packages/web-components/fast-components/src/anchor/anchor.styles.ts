@@ -7,12 +7,14 @@ import {
     OutlineButtonStyles,
     StealthButtonStyles,
 } from "../styles/index";
+import { appearanceBehavior } from "../utilities/behaviors";
 
 export const AnchorStyles = css`
     ${BaseButtonStyles}
-    ${AccentButtonStyles}
-    ${HypertextStyles}
-    ${LightweightButtonStyles}
-    ${OutlineButtonStyles}
-    ${StealthButtonStyles}
-`;
+`.withBehaviors(
+    appearanceBehavior("accent", AccentButtonStyles),
+    appearanceBehavior("hypertext", HypertextStyles),
+    appearanceBehavior("lightweight", LightweightButtonStyles),
+    appearanceBehavior("outline", OutlineButtonStyles),
+    appearanceBehavior("stealth", StealthButtonStyles)
+);
