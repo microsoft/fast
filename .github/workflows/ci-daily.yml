@@ -37,6 +37,9 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
 
+    - name: Check for file changes
+      run: yarn checkchange
+
     - name: Testing Prettier format
       run: yarn format:check
 

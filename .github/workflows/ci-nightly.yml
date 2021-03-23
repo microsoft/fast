@@ -1,6 +1,7 @@
 name: CI - FAST Publish
 
 on:
+  push:
   pull_request:
     branches:
     - master

@@ -39,7 +39,8 @@
   "scripts": {
     "bump": "beachball bump",
     "change": "beachball change",
-    "check": "beachball check",
+    "checkchange": "beachball check  --scope \"!packages/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+    "check": "beachball check ",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -b origin/master",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
