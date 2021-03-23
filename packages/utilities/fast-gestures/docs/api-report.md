@@ -5,43 +5,268 @@
 ```ts
 
 // @public (undocumented)
+export abstract class Disposable implements IDisposable {
+    // (undocumented)
+    dispose(): void;
+    // (undocumented)
+    static None: Readonly<IDisposable>;
+    // (undocumented)
+    protected _register<T extends IDisposable>(t: T): T;
+    // (undocumented)
+    protected get toDispose(): IDisposable[];
+    // (undocumented)
+    protected _toDispose: IDisposable[];
+}
+
+// @public (undocumented)
+export interface IDisposable {
+    // (undocumented)
+    dispose(): void;
+}
+
+// @public (undocumented)
 export interface IPointer {
     // (undocumented)
     pointerId: number;
-    // Warning: (ae-forgotten-export) The symbol "IPointerInfo" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     pointerInfo: IPointerInfo;
 }
 
-// Warning: (ae-forgotten-export) The symbol "PointerGestureFeature" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type IPointerGestureConfig = Partial<Record<PointerGestureFeature, boolean>>;
 
-// Warning: (ae-forgotten-export) The symbol "IPointerGestureInfo" needs to be exported by the entry point index.d.ts
-//
+// @public (undocumented)
+export interface IPointerGestureInfo {
+    // (undocumented)
+    pointerInfo: IPointerInfo;
+    // (undocumented)
+    target?: PointerTarget;
+}
+
+// @public (undocumented)
+export interface IPointerGestureOptions {
+    // (undocumented)
+    coordinateType?: PointerCoordinateType;
+    // (undocumented)
+    doubleTapTimeout?: number;
+    // (undocumented)
+    isHoverEnabled?: boolean;
+    // (undocumented)
+    isMultiTouchEnabled?: boolean;
+    // (undocumented)
+    longPressDuration?: number;
+    // (undocumented)
+    mouseMoveThreshold?: number;
+    // (undocumented)
+    pinchDistanceThreshold?: number;
+    // (undocumented)
+    pressThreshold?: number;
+    // (undocumented)
+    rotationAngleThreshold?: number;
+    // (undocumented)
+    singleTapTime?: number;
+    // (undocumented)
+    swipeThresholdX?: number;
+    // (undocumented)
+    swipeThresholdY?: number;
+    // (undocumented)
+    swipeVelocityThreshold?: number;
+    // (undocumented)
+    touchMoveThreshold?: number;
+    // (undocumented)
+    translationDirection?: PointerTranslationDirection;
+}
+
+// @public (undocumented)
+export interface IPointerInfo extends Partial<PointerEvent> {
+    eventType: string;
+    gestureType?: PointerGesture;
+    height: number;
+    id: number;
+    initialPinchDistance: number;
+    initialPressTime: number;
+    initialRotationAngle: number;
+    isDown: boolean;
+    isLongPressComplete: boolean;
+    lastUpdateTime: number;
+    longPressProgress: number;
+    movementX: number;
+    movementY: number;
+    offsetX: number;
+    offsetY: number;
+    pinchDistance: number;
+    rotationAngle: number;
+    rotationDirection: PointerRotationDirection;
+    screenX: number;
+    screenXDelta: number;
+    screenXInitial: number;
+    screenY: number;
+    screenYDelta: number;
+    screenYInitial: number;
+    tangentialPressure: number;
+    tiltX: number;
+    tiltY: number;
+    twist: number;
+    width: number;
+    x: number;
+    xDelta: number;
+    xInitial: number;
+    xVelocity: number;
+    y: number;
+    yDelta: number;
+    yInitial: number;
+    yVelocity: number;
+}
+
+// @public (undocumented)
+export interface IPointerInfoInternal extends IPointerInfo {
+    _previousPinchDistance: number;
+    _previousRotationAngle: number;
+}
+
+// @public (undocumented)
+export enum PointerCoordinateType {
+    // (undocumented)
+    Client = "client",
+    // (undocumented)
+    Offset = "offset",
+    // (undocumented)
+    Page = "page",
+    // (undocumented)
+    Screen = "screen"
+}
+
+// @public (undocumented)
+export enum PointerGesture {
+    // (undocumented)
+    DoubleTap = "doubletap",
+    // (undocumented)
+    Drag = "drag",
+    // (undocumented)
+    End = "end",
+    // (undocumented)
+    General = "general",
+    // (undocumented)
+    LongPressComplete = "longpresscomplete",
+    // (undocumented)
+    LongPressProgress = "longpressprogress",
+    // (undocumented)
+    MouseEnter = "mouseenter",
+    // (undocumented)
+    MouseLeave = "mouseleave",
+    // (undocumented)
+    MouseMove = "mousemove",
+    // (undocumented)
+    Pan = "pan",
+    // (undocumented)
+    PanDown = "pandown",
+    // (undocumented)
+    PanDownLeft = "pandownleft",
+    // (undocumented)
+    PanDownRight = "pandownright",
+    // (undocumented)
+    PanLeft = "panleft",
+    // (undocumented)
+    PanRight = "panright",
+    // (undocumented)
+    PanUp = "panup",
+    // (undocumented)
+    PanUpLeft = "panupleft",
+    // (undocumented)
+    PanUpRight = "panupright",
+    // (undocumented)
+    Pinch = "pinch",
+    // (undocumented)
+    PinchIn = "pinchin",
+    // (undocumented)
+    PinchOut = "pinchout",
+    // (undocumented)
+    Rotate = "rotate",
+    // (undocumented)
+    RotateClockwise = "rotateclockwise",
+    // (undocumented)
+    RotateCounterClockwise = "rotatecounterclockwise",
+    // (undocumented)
+    Start = "start",
+    // (undocumented)
+    Swipe = "swipe",
+    // (undocumented)
+    SwipeDown = "swipedown",
+    // (undocumented)
+    SwipeDownLeft = "swipedownleft",
+    // (undocumented)
+    SwipeDownRight = "swipedownright",
+    // (undocumented)
+    SwipeLeft = "swipeleft",
+    // (undocumented)
+    SwipeRight = "swiperight",
+    // (undocumented)
+    SwipeUp = "swipeup",
+    // (undocumented)
+    SwipeUpLeft = "swipeupleft",
+    // (undocumented)
+    SwipeUpRight = "swipeupright",
+    // (undocumented)
+    Tap = "tap"
+}
+
 // @public (undocumented)
 export type PointerGestureCallback = (pointerGestureInfo: IPointerGestureInfo) => void | null;
 
-// Warning: (ae-forgotten-export) The symbol "Disposable" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "IDisposable" needs to be exported by the entry point index.d.ts
-//
+// @public (undocumented)
+export enum PointerGestureFeature {
+    // (undocumented)
+    DoubleTap = "doubletap",
+    // (undocumented)
+    LongPress = "longpress",
+    // (undocumented)
+    Pan = "pan",
+    // (undocumented)
+    Pinch = "pinch",
+    // (undocumented)
+    Rotate = "rotate",
+    // (undocumented)
+    Swipe = "swipe",
+    // (undocumented)
+    Tap = "tap"
+}
+
 // @public
 export class PointerGestureHandler extends Disposable implements IDisposable {
-    // Warning: (ae-forgotten-export) The symbol "IPointerGestureOptions" needs to be exported by the entry point index.d.ts
     constructor(_target?: Window | HTMLElement | null, options?: IPointerGestureOptions);
     // (undocumented)
     dispose(): void;
-    // Warning: (ae-forgotten-export) The symbol "PointerGesture" needs to be exported by the entry point index.d.ts
     onGesture(gesture: PointerGesture, listener: (args: IPointerGestureInfo) => any): IDisposable;
-    // Warning: (ae-forgotten-export) The symbol "IPointerInfoInternal" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     get pointers(): Map<number, IPointerInfoInternal>;
     // (undocumented)
     get pointersArray(): IPointer[];
     }
+
+// @public (undocumented)
+export enum PointerRotationDirection {
+    // (undocumented)
+    Clockwise = "clockwise",
+    // (undocumented)
+    CounterClockwise = "counterclockwise",
+    // (undocumented)
+    Null = "null"
+}
+
+// @public (undocumented)
+export type PointerTarget = Window | HTMLElement | null;
+
+// @public (undocumented)
+export enum PointerTranslationDirection {
+    // (undocumented)
+    Cardinal = "cardinal",
+    // (undocumented)
+    Horizontal = "horizontal",
+    // (undocumented)
+    Ordinal = "ordinal",
+    // (undocumented)
+    Vertical = "vertical"
+}
 
 
 // (No @packageDocumentation comment for this package)

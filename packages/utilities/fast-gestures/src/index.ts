@@ -1,1 +1,12 @@
+export { IDisposable, Disposable } from "./base/lifecycle";
+export { IPointerGestureInfo } from "./interfaces/pointer-gesture-info";
+export { IPointerGestureOptions } from "./interfaces/pointer-gesture-options";
+export { IPointerInfo } from "./interfaces/pointer-info";
+export { IPointerInfoInternal } from "./interfaces/pointer-info-internal";
+export { PointerGesture } from "./pointer-gesture";
+export { PointerGestureFeature } from "./pointer-gesture-feature";
+export { PointerTarget } from "./pointer-target";
+export { PointerCoordinateType } from "./pointer-coordinate-type";
+export { PointerTranslationDirection } from "./pointer-translation-direction";
+export { PointerRotationDirection } from "./pointer-rotation-direction";
 export * from "./pointer-gesture-handler";
