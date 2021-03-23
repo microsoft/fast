@@ -126,13 +126,13 @@ export class PeoplePicker extends Picker {
     @observable
     public people: IDynamicPerson[];
 
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public selectedPeople: IDynamicPerson[] = [];
+    // /**
+    //  *
+    //  *
+    //  * @internal
+    //  */
+    // @observable
+    // public selectedPeople: IDynamicPerson[] = [];
 
     /**
      *
@@ -182,6 +182,7 @@ export class PeoplePicker extends Picker {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.loadState();
     }
 
     /**
@@ -257,7 +258,7 @@ export class PeoplePicker extends Picker {
             this.showLoading = false;
             if (
                 this.defaultSelection &&
-                !this.selectedPeople.length &&
+                !this.selectedOptions.length &&
                 !this.defaultSelectedUsers
             ) {
                 this.defaultSelectedUsers = await getUsersForUserIds(
@@ -326,7 +327,6 @@ export class PeoplePicker extends Picker {
                 }
             }
         }
-        //people = this.getUniquePeople(people);
         this.foundPeople = this.filterPeople(people);
     }
 
@@ -338,11 +338,9 @@ export class PeoplePicker extends Picker {
         // check if people need to be updated
         // ensuring people list is displayed
         // find ids from selected people
-        if (people) {
-            const idFilter = this.selectedPeople.map(el => {
-                return el.id ? el.id : el.displayName;
-            });
+        const idFilter = this.selectedOptions;
 
+        if (people) {
             // filter id's
             const filtered = people.filter((person: IDynamicPerson) => {
                 if (person.id) {
