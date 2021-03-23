@@ -22,7 +22,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr({ mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -51,7 +51,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.autofocus = this.autofocus;
         }
     }
@@ -72,7 +72,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr
     public list: string;
     private listChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.setAttribute("list", this.list);
         }
     }
@@ -86,7 +86,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.maxLength = this.maxlength;
         }
     }
@@ -100,7 +100,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.minLength = this.minlength;
         }
     }
@@ -154,7 +154,7 @@ export class TextArea extends FormAssociatedTextArea {
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
     }

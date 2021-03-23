@@ -18,7 +18,7 @@ export class Switch extends FormAssociatedSwitch {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
 
@@ -60,7 +60,7 @@ export class Switch extends FormAssociatedSwitch {
      * @public
      */
     @observable
-    public defaultChecked: boolean = !!this.checkedAttribute;
+    public defaultChecked: boolean;
     private defaultCheckedChanged(): void {
         if (!this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
@@ -77,7 +77,7 @@ export class Switch extends FormAssociatedSwitch {
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean;
     private checkedChanged(): void {
         if (!this.dirtyChecked) {
             this.dirtyChecked = true;
@@ -85,7 +85,7 @@ export class Switch extends FormAssociatedSwitch {
 
         this.updateForm();
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.checked = this.checked;
         }
 
@@ -112,6 +112,13 @@ export class Switch extends FormAssociatedSwitch {
         this.proxy.setAttribute("type", "checkbox");
 
         this.updateForm();
+    }
+
+    public constructor() {
+        super();
+
+        this.defaultChecked = !!this.checkedAttribute;
+        this.checked = this.defaultChecked;
     }
 
     /**
