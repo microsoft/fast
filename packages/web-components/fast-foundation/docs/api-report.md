@@ -367,7 +367,7 @@ export const ComponentPresentation: Readonly<{
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @alpha
-export type ConstructableFormAssociated = Constructable<FASTElement & HTMLElement & FormAssociatedProxy>;
+export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
 //
@@ -499,7 +499,7 @@ export interface CSSCustomPropertyDefinition {
 // @public
 export interface CSSCustomPropertyTarget {
     // (undocumented)
-    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
+    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[] | void;
     // (undocumented)
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     // (undocumented)
@@ -776,8 +776,8 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     // (undocumented)
     disconnectedCallback(): void;
     // @deprecated
-    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
-    disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
+    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[];
+    disconnectedRegistry?: Array<(provider: DesignSystemProvider) => void> | void;
     evaluate(definition: CSSCustomPropertyDefinition): string;
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
@@ -1041,7 +1041,7 @@ export interface FormAssociatedProxy {
     // (undocumented)
     nameChanged?(previous: any, next: any): void;
     // (undocumented)
-    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    proxy: ProxyElement;
     // (undocumented)
     valueChanged?(previous: any, next: any): void;
 }
@@ -1445,10 +1445,14 @@ export class PropertyStyleSheetBehavior implements Behavior {
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
 
+// @alpha
+export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
+    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -1707,9 +1711,7 @@ export type SkeletonShape = "rect" | "circle";
 // @public
 export const SkeletonTemplate: ViewTemplate<Skeleton>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Slider" because one of its declarations is marked as @internal
 //
 // @public
 export class Slider extends FormAssociatedSlider implements SliderConfiguration {
@@ -1752,10 +1754,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     // @internal (undocumented)
     valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
-}
-
-// @internal (undocumented)
-export interface Slider extends FormAssociatedSlider {
 }
 
 // @public
@@ -1848,6 +1846,7 @@ export const supportsElementInternals: boolean;
 //
 // @public
 export class Switch extends FormAssociatedSwitch {
+    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)

@@ -1,18 +1,14 @@
 import { FASTElement } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
 
+class _Button extends FASTElement {}
+interface _Button extends FormAssociated {}
+
 /**
- * A form-associated base class for the {@link (Button:class)} component.
+ * A form-associated base class for the {@link @microsoft/fast-foundation#(Button:class)} component.
  *
  * @internal
  */
-export class FormAssociatedButton extends FormAssociated(
-    class extends FASTElement {
-        public proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
-
-/**
- * @internal
- */
-export interface FormAssociatedButton extends FormAssociated {}
+export class FormAssociatedButton extends FormAssociated(_Button) {
+    proxy = document.createElement("input");
+}

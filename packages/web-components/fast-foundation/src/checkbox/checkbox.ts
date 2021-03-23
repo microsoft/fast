@@ -18,7 +18,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -58,7 +58,7 @@ export class Checkbox extends FormAssociatedCheckbox {
      * @public
      */
     @observable
-    public defaultChecked: boolean = !!this.checkedAttribute;
+    public defaultChecked: boolean;
     private defaultCheckedChanged(): void {
         if (!this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
@@ -75,7 +75,7 @@ export class Checkbox extends FormAssociatedCheckbox {
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean;
     private checkedChanged(): void {
         if (!this.dirtyChecked) {
             this.dirtyChecked = true;
@@ -83,7 +83,7 @@ export class Checkbox extends FormAssociatedCheckbox {
 
         this.updateForm();
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.checked = this.checked;
         }
 
@@ -114,6 +114,9 @@ export class Checkbox extends FormAssociatedCheckbox {
 
     constructor() {
         super();
+
+        this.defaultChecked = !!this.checkedAttribute;
+        this.checked = this.defaultChecked;
 
         this.constructed = true;
     }
