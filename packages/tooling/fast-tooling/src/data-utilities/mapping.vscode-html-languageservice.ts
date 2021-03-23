@@ -318,6 +318,11 @@ export interface ParsedValue {
     startTagEnd: number;
     endTagStart?: number;
     content?: string;
+    closed: boolean;
+}
+
+function checkIsIncompleteElement(parsedValue: ParsedValue): boolean {
+    return parsedValue.closed === false && typeof parsedValue.tag !== "string";
 }
 
 function consolidateHTMLElementsWithTextNodes(
@@ -356,7 +361,19 @@ function consolidateHTMLElementsWithTextNodes(
 
         // Check for text nodes in the middle
         for (let i = 0; i < nodeChildrenLength; i++) {
-            consolidatedNodes.push(parsedValue.children[i]);
+            // Replace any incomplete elements with text nodes
+            const isIncompleteElement: boolean = checkIsIncompleteElement(
+                parsedValue.children[i]
+            );
+
+            if (isIncompleteElement) {
+                consolidatedNodes.push({
+                    tag: null,
+                    content: "<",
+                });
+            } else {
+                consolidatedNodes.push(parsedValue.children[i]);
+            }
 
             if (
                 parsedValue.children[i + 1] &&
@@ -374,6 +391,7 @@ function consolidateHTMLElementsWithTextNodes(
 
         // Check for text nodes after children
         if (
+            parsedValue.endTagStart &&
             parsedValue.children[nodeChildrenLength - 1].end !== parsedValue.endTagStart
         ) {
             consolidatedNodes.push({
@@ -406,10 +424,17 @@ function identifyElementsFromParsedValue(
             attributes: parsedValueItem.attributes
                 ? Object.entries(parsedValueItem.attributes).map(
                       ([name, value]: [string, string]) => {
-                          return {
-                              name,
-                              value: JSON.parse(value),
-                          };
+                          try {
+                              return {
+                                  name,
+                                  value: JSON.parse(value),
+                              };
+                          } catch (e) {
+                              return {
+                                  name,
+                                  value: "",
+                              };
+                          }
                       }
                   )
                 : [],
@@ -456,6 +481,26 @@ function resolveDataDictionaryFromElement(
     ];
 }
 
+function findSchemaId(
+    node: Node,
+    textSchemaId: string,
+    schemaDictionary: SchemaDictionary
+): string {
+    return node.tag === null
+        ? textSchemaId
+        : Object.keys(schemaDictionary).find((key: string) => {
+              if (
+                  schemaDictionary[key] &&
+                  node &&
+                  schemaDictionary[key].mapsToTagName === node.tag
+              ) {
+                  return schemaDictionary[key].$id;
+              }
+
+              return false;
+          }) || "div";
+}
+
 function mapElementToDataDictionary(
     node: Node,
     textSchemaId: string,
@@ -463,18 +508,7 @@ function mapElementToDataDictionary(
     parent: Parent
 ): DataDictionary<unknown> {
     const linkedDataId = uniqueId("fast");
-    const schemaId: string =
-        Object.keys(schemaDictionary).find((key: string) => {
-            if (
-                schemaDictionary[key] &&
-                node &&
-                schemaDictionary[key].mapsToTagName === node.tag
-            ) {
-                return schemaDictionary[key].$id;
-            }
-
-            return false;
-        }) || textSchemaId;
+    const schemaId: string = findSchemaId(node, textSchemaId, schemaDictionary);
 
     return resolveDataDictionaryFromElement(
         linkedDataId,
@@ -486,15 +520,28 @@ function mapElementToDataDictionary(
     );
 }
 
+interface ElementChildren {
+    /**
+     * A list of linked data that represents element children
+     */
+    0: { [key: string]: LinkedData[] };
+
+    /**
+     * The new data dictionary keys
+     */
+    1: { [key: string]: Data<unknown> };
+}
+
 function mapElementChildren(
     element: Node,
     textSchemaId: string,
     schemaDictionary: SchemaDictionary,
     currentDictionaryId: string,
-    dataDictionary: DataDictionary<unknown>
-): [{ [key: string]: LinkedData[] }, { [key: string]: Data<unknown> }] {
+    previousDataDictionary: DataDictionary<unknown>
+): ElementChildren {
     const elementChildren: { [key: string]: LinkedData[] } = {};
-    const dataDictionaryChildItems: { [key: string]: Data<unknown> } = {};
+    const previouslyMatchedChildren: string[] = [];
+    let dataDictionaryChildItems: { [key: string]: Data<unknown> } = {};
 
     element.children.forEach(child => {
         const slotAttribute: Attribute | undefined = child.attributes.find(
@@ -507,16 +554,23 @@ function mapElementChildren(
         const schemaSlotName = `Slot${pascalCase(slotName)}`;
 
         // Find current dictionary item slots
-        if (Array.isArray(dataDictionary[0][currentDictionaryId].data[schemaSlotName])) {
-            const matchingChild: LinkedData = dataDictionary[0][currentDictionaryId].data[
-                schemaSlotName
-            ].find((item: LinkedData) => {
+        if (
+            Array.isArray(
+                previousDataDictionary[0][currentDictionaryId].data[schemaSlotName]
+            )
+        ) {
+            const matchingChild: LinkedData = previousDataDictionary[0][
+                currentDictionaryId
+            ].data[schemaSlotName].find((item: LinkedData) => {
                 return (
-                    schemaDictionary[dataDictionary[0][item.id].schemaId]
+                    !previouslyMatchedChildren.find(
+                        previouslyMatchedChild => previouslyMatchedChild === item.id
+                    ) &&
+                    (schemaDictionary[previousDataDictionary[0][item.id].schemaId]
                         .mapsToTagName === child.tag ||
-                    (schemaDictionary[dataDictionary[0][item.id].schemaId].id ===
-                        textSchemaId &&
-                        typeof child.content === "string")
+                        (schemaDictionary[previousDataDictionary[0][item.id].schemaId]
+                            .$id === textSchemaId &&
+                            typeof child.content === "string"))
                 );
             });
 
@@ -525,6 +579,7 @@ function mapElementChildren(
             }
 
             if (matchingChild) {
+                previouslyMatchedChildren.push(matchingChild.id); // ensure there are no duplicates
                 elementChildren[schemaSlotName].push(matchingChild);
 
                 /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -532,12 +587,14 @@ function mapElementChildren(
                     child,
                     textSchemaId,
                     matchingChild.id,
-                    dataDictionary,
+                    previousDataDictionary,
                     schemaDictionary
                 );
 
-                dataDictionaryChildItems[mappedDataDictionaryChildItem[1]] =
-                    mappedDataDictionaryChildItem[0][mappedDataDictionaryChildItem[1]];
+                dataDictionaryChildItems = {
+                    ...dataDictionaryChildItems,
+                    ...mappedDataDictionaryChildItem[0],
+                };
             } else {
                 // children are present but do not match
                 const newNode = mapElementToDataDictionary(
@@ -596,9 +653,9 @@ function mapUpdatesFromMonacoEditor(
     dataDictionaryId: string,
     previousDataDictionary: DataDictionary<unknown>,
     schemaDictionary: SchemaDictionary
-): XOR<DataDictionary<unknown>, null> {
-    const schema = schemaDictionary[previousDataDictionary[0][dataDictionaryId].schemaId];
-    const isTextNode = schema.id === textSchemaId;
+): DataDictionary<unknown> {
+    const schemaId = findSchemaId(element, textSchemaId, schemaDictionary);
+    const isTextNode = schemaId === textSchemaId;
     const children = mapElementChildren(
         element,
         textSchemaId,
@@ -611,6 +668,7 @@ function mapUpdatesFromMonacoEditor(
         {
             [dataDictionaryId]: {
                 ...previousDataDictionary[0][dataDictionaryId],
+                schemaId,
                 data: isTextNode
                     ? element.content
                     : {
@@ -647,5 +705,13 @@ export function mapVSCodeHTMLAndDataDictionaryToDataDictionary(
         );
     }
 
-    return null;
+    return mapElementToDataDictionary(
+        {
+            tag: null,
+            content: value,
+        },
+        textSchemaId,
+        schemaDictionary,
+        undefined
+    );
 }
