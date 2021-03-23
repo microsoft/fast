@@ -424,7 +424,7 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
             }
 
             this.last = null;
-            this.needsRefresh = true;
+            this.needsRefresh = this.needsQueue = true;
         }
     }
 

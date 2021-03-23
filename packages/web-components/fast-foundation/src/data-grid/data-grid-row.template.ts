@@ -18,7 +18,7 @@ function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
         :columnDefinition="${x => x}"
-    ></${prefix}-data-grid-header-cell>
+    ></${prefix}-data-grid-cell>
 `;
 }
 

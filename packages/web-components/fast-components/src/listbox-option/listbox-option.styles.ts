@@ -25,6 +25,7 @@ import { heightNumber } from "../styles/size";
 
 export const OptionStyles = css`
     ${display("inline-flex")} :host {
+        align-items: center;
         font-family: var(--body-font);
         border-radius: calc(var(--corner-radius) * 1px);
         border: calc(var(--focus-outline-width) * 1px) solid transparent;
@@ -38,7 +39,7 @@ export const OptionStyles = css`
         margin: 0 calc(var(--design-unit) * 1px);
         outline: none;
         overflow: hidden;
-        padding: calc(var(--design-unit) * 2.25px);
+        padding: 0 calc(var(--design-unit) * 2.25px);
         user-select: none;
         white-space: nowrap;
     }

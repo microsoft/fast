@@ -373,6 +373,10 @@ export class DesignSystemProvider extends FASTElement
             );
         }
 
+        if (this.designSystemProperties === undefined) {
+            this.designSystemProperties = {};
+        }
+
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);
     }
 
