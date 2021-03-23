@@ -6,11 +6,13 @@ import {
     OutlineButtonStyles,
     StealthButtonStyles,
 } from "../styles/index";
+import { appearanceBehavior } from "../utilities/behaviors";
 
 export const ButtonStyles = css`
     ${BaseButtonStyles}
-    ${AccentButtonStyles}
-    ${LightweightButtonStyles}
-    ${OutlineButtonStyles}
-    ${StealthButtonStyles}
-`;
+`.withBehaviors(
+    appearanceBehavior("accent", AccentButtonStyles),
+    appearanceBehavior("lightweight", LightweightButtonStyles),
+    appearanceBehavior("outline", OutlineButtonStyles),
+    appearanceBehavior("stealth", StealthButtonStyles)
+);
