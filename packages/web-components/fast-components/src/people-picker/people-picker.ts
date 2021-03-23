@@ -175,6 +175,7 @@ export class PeoplePicker extends Picker {
     }
 
     private _debouncedSearch: { (): void; (): void };
+    private defaultSelectedUsers: IDynamicPerson[];
 
     /**
      * @internal
@@ -254,12 +255,19 @@ export class PeoplePicker extends Picker {
                 }
             }
             this.showLoading = false;
-            //   if (this.defaultSelectedUserIds && !this.selectedPeople.length && !this.defaultSelectedUsers) {
-            //     this.defaultSelectedUsers = await getUsersForUserIds(graph, this.defaultSelectedUserIds);
-            //     this.selectedPeople = [...this.defaultSelectedUsers];
-            //     this.requestUpdate();
-            //     this.fireCustomEvent('selectionChanged', this.selectedPeople);
-            //   }
+            if (
+                this.defaultSelection &&
+                !this.selectedPeople.length &&
+                !this.defaultSelectedUsers
+            ) {
+                this.defaultSelectedUsers = await getUsersForUserIds(
+                    graph,
+                    this.defaultSelection.split(",")
+                );
+                // this.selectedPeople = [...this.defaultSelectedUsers];
+                // this.requestUpdate();
+                // this.fireCustomEvent('selectionChanged', this.selectedPeople);
+            }
             if (input) {
                 people = [];
                 if (this.groupId) {

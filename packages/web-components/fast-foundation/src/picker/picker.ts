@@ -439,7 +439,9 @@ export class Picker extends FASTElement {
                     this.inputElement.value.length === 0 &&
                     this.selectedOptions.length > 0
                 ) {
-                    this.selectedOptions.splice(this.selectedOptions.length - 1, 1);
+                    this.selection = this.selectedOptions
+                        .slice(0, this.selectedOptions.length - 1)
+                        .toString();
                     this.toggleMenu(false);
                     return false;
                 } else {
