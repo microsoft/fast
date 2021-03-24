@@ -2,7 +2,7 @@ name: CI - FAST Publish
 
 on:
   schedule:
-   - cron: 0 12 * * 7
+    - cron: 0 12 * * 7
 
 jobs:
   build_linux:
