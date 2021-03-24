@@ -1,7 +1,7 @@
 import { PointerTarget } from "../pointer-target";
-import { IPointerInfo } from "./pointer-info";
+import { PointerInfo } from "./pointer-info";
 
-export interface IPointerGestureInfo {
-  pointerInfo: IPointerInfo;
+export interface PointerGestureInfo {
+  pointerInfo: PointerInfo;
   target?: PointerTarget;
 }

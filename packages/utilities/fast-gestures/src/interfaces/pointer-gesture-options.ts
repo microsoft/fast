@@ -1,7 +1,7 @@
 import { PointerCoordinateType } from "../pointer-coordinate-type";
 import { PointerTranslationDirection } from "../pointer-translation-direction";
 
-export interface IPointerGestureOptions {
+export interface PointerGestureOptions {
   swipeThresholdX?: number;
   swipeThresholdY?: number;
   swipeVelocityThreshold?: number;

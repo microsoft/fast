@@ -1,6 +1,6 @@
-import { IPointerInfo } from "./pointer-info";
+import { PointerInfo } from "./pointer-info";
 
-export interface IPointerInfoInternal extends IPointerInfo {
+export interface PointerInfoInternal extends PointerInfo {
   /**
    * _previousPinchDistance: Internal, indicates the value of the previous distance between a primary and secondary pointer
    */

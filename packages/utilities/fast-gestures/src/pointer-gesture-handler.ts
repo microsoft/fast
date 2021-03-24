@@ -6,10 +6,10 @@ import { getCoordinateType } from "./utilities/get-coordinate-type";
 import { getPinchDistance } from "./utilities/get-pinch-distance";
 import { getRotationAngle } from "./utilities/get-rotation-angle";
 import { getSwipeDirection } from "./utilities/get-swipe-direction";
-import { IPointerGestureInfo } from "./interfaces/pointer-gesture-info";
-import { IPointerGestureOptions } from "./interfaces/pointer-gesture-options";
-import { IPointerInfo } from "./interfaces/pointer-info";
-import { IPointerInfoInternal } from "./interfaces/pointer-info-internal";
+import { PointerGestureInfo } from "./interfaces/pointer-gesture-info";
+import { PointerGestureOptions } from "./interfaces/pointer-gesture-options";
+import { PointerInfo } from "./interfaces/pointer-info";
+import { PointerInfoInternal } from "./interfaces/pointer-info-internal";
 import { PointerGesture } from "./pointer-gesture";
 import { PointerTarget } from "./pointer-target";
 import { PointerGestureFeature } from "./pointer-gesture-feature";
@@ -27,14 +27,14 @@ export type IPointerGestureConfig = Partial<Record<PointerGestureFeature, boolea
 /**
  * @public
  */
-export type PointerGestureCallback = (pointerGestureInfo: IPointerGestureInfo) => void | null;
+export type PointerGestureCallback = (pointerGestureInfo: PointerGestureInfo) => void | null;
 
 /**
  * @public
  */
-export interface IPointer {
+export interface Pointer {
   pointerId: number;
-  pointerInfo: IPointerInfo;
+  pointerInfo: PointerInfo;
 }
 
 const DOUBLE_TAP_TIMEOUT: number = 300;
@@ -49,7 +49,7 @@ const SWIPE_DELTA_THRESHOLD: number = 60;
 const SWIPE_VELOCITY_THRESHOLD: number = 20;
 const TOUCH_MOVE_THRESHOLD: number = 5;
 
-const DEFAULT_OPTIONS: IPointerGestureOptions = {
+const DEFAULT_OPTIONS: PointerGestureOptions = {
   coordinateType: PointerCoordinateType.Page,
   isHoverEnabled: false,
   isMultiTouchEnabled: true,
@@ -73,9 +73,9 @@ const DEFAULT_OPTIONS: IPointerGestureOptions = {
  * @public
  */
 export class PointerGestureHandler extends Disposable implements IDisposable {
-  private options: IPointerGestureOptions = DEFAULT_OPTIONS;
+  private options: PointerGestureOptions = DEFAULT_OPTIONS;
   private target: PointerTarget;
-  private activePointer: IPointerInfoInternal;
+  private activePointer: PointerInfoInternal;
   private previousPosition: IPoint = { x: 0, y: 0 };
   private previousPointerType: string | undefined = undefined;
   private previousPanDirection: PointerGesture;
@@ -83,42 +83,42 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
   private doubleTapTimerId: number = 0;
   private doubleTapIsWaiting: boolean = false;
 
-  private handlers: Record<PointerGesture, Emitter<IPointerGestureInfo>> = {
-    [PointerGesture.General]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Start]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.End]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.MouseEnter]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.MouseLeave]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.MouseMove]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Drag]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Pan]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanUp]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanDown]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanUpRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanUpLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanDownLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PanDownRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Swipe]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeUp]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeDown]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeUpRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeUpLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeDownRight]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.SwipeDownLeft]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Tap]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.DoubleTap]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.LongPressProgress]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.LongPressComplete]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Pinch]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PinchIn]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.PinchOut]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.Rotate]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.RotateCounterClockwise]: new Emitter<IPointerGestureInfo>(),
-    [PointerGesture.RotateClockwise]: new Emitter<IPointerGestureInfo>(),
+  private handlers: Record<PointerGesture, Emitter<PointerGestureInfo>> = {
+    [PointerGesture.General]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Start]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.End]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.MouseEnter]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.MouseLeave]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.MouseMove]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Drag]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Pan]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanUp]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanDown]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanUpRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanUpLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanDownLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PanDownRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Swipe]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeUp]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeDown]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeUpRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeUpLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeDownRight]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.SwipeDownLeft]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Tap]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.DoubleTap]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.LongPressProgress]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.LongPressComplete]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Pinch]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PinchIn]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.PinchOut]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.Rotate]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.RotateCounterClockwise]: new Emitter<PointerGestureInfo>(),
+    [PointerGesture.RotateClockwise]: new Emitter<PointerGestureInfo>(),
   };
 
   private shouldDetectGesture: IPointerGestureConfig = {
@@ -130,17 +130,17 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     [PointerGestureFeature.Rotate]: false,
   };
 
-  private _pointers: Map<number, IPointerInfoInternal> = new Map();
+  private _pointers: Map<number, PointerInfoInternal> = new Map();
 
-  public get pointers(): Map<number, IPointerInfoInternal> {
+  public get pointers(): Map<number, PointerInfoInternal> {
     return this._pointers;
   }
 
-  public get pointersArray(): IPointer[] {
+  public get pointersArray(): Pointer[] {
     return Array.from(this._pointers, ([pointerId, pointerInfo]) => ({ pointerId, pointerInfo }));
   }
 
-  constructor(_target: Window | HTMLElement | null = window, options?: IPointerGestureOptions) {
+  constructor(_target: Window | HTMLElement | null = window, options?: PointerGestureOptions) {
     super();
 
     this.target = _target;
@@ -156,7 +156,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     }
   }
 
-  private emit(type: PointerGesture, pointerInfo: IPointerInfoInternal, shouldFireGeneralEvent: boolean = false): void {
+  private emit(type: PointerGesture, pointerInfo: PointerInfoInternal, shouldFireGeneralEvent: boolean = false): void {
     if (shouldFireGeneralEvent) {
       this.handlers[PointerGesture.General].fire({ pointerInfo, target: this.target });
     }
@@ -171,9 +171,9 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     return (e.buttons & 1) > 0;
   }
 
-  private addPointerInfo(e: PointerEvent): IPointerInfoInternal {
+  private addPointerInfo(e: PointerEvent): PointerInfoInternal {
     const { x, y }: IPoint = getCoordinateType(e, this.options.coordinateType!);
-    const pointerInfo: IPointerInfoInternal = {
+    const pointerInfo: PointerInfoInternal = {
       pointerType: e.pointerType,
       eventType: e.type,
       id: e.pointerId,
@@ -233,9 +233,9 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
       this.options.isMultiTouchEnabled &&
       this._pointers.size > 1
     ) {
-      const values: IterableIterator<IPointerInfoInternal> = this._pointers.values();
-      const pointer1: IPointerInfoInternal = values.next().value;
-      const pointer2: IPointerInfoInternal = values.next().value;
+      const values: IterableIterator<PointerInfoInternal> = this._pointers.values();
+      const pointer1: PointerInfoInternal = values.next().value;
+      const pointer2: PointerInfoInternal = values.next().value;
 
       const pointersDistance: number = getPinchDistance(
         pointer1.x,
@@ -259,8 +259,8 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     return pointerInfo;
   }
 
-  private updatePointerInfo(e: PointerEvent): IPointerInfoInternal {
-    let pointer: IPointerInfoInternal;
+  private updatePointerInfo(e: PointerEvent): PointerInfoInternal {
+    let pointer: PointerInfoInternal;
 
     if (this.options.isMultiTouchEnabled && this._pointers.has(e.pointerId)) {
       pointer = this._pointers.get(e.pointerId)!;
@@ -305,11 +305,11 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     return pointer;
   }
 
-  private updateMultiPointerGesture(multiPointer: IPointerInfoInternal): IPointerInfoInternal {
-    const values: IterableIterator<IPointerInfoInternal> = this._pointers.values();
-    const pointer1: IPointerInfoInternal = values.next().value;
-    const pointer2: IPointerInfoInternal = values.next().value;
-    const { rotationAngleThreshold, pinchDistanceThreshold }: IPointerGestureOptions = this.options;
+  private updateMultiPointerGesture(multiPointer: PointerInfoInternal): PointerInfoInternal {
+    const values: IterableIterator<PointerInfoInternal> = this._pointers.values();
+    const pointer1: PointerInfoInternal = values.next().value;
+    const pointer2: PointerInfoInternal = values.next().value;
+    const { rotationAngleThreshold, pinchDistanceThreshold }: PointerGestureOptions = this.options;
 
     if (this.shouldDetectGesture[PointerGestureFeature.Rotate]) {
       const rotationAngle: number = getRotationAngle(pointer1.x, pointer1.y, pointer2.x, pointer2.y);
@@ -388,7 +388,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
       if (this._pointers.size > 0 && !this.activePointer.isPrimary) {
         this.activePointer =
           Array.from(this._pointers.values()).find(
-            (pointer: IPointerInfoInternal): boolean | undefined => pointer.isPrimary
+            (pointer: PointerInfoInternal): boolean | undefined => pointer.isPrimary
           ) || this._pointers.values().next().value;
       }
 
@@ -457,7 +457,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
 
           this.activePointer =
             Array.from(this._pointers.values()).find(
-              (pointer: IPointerInfoInternal): boolean | undefined => pointer.isPrimary
+              (pointer: PointerInfoInternal): boolean | undefined => pointer.isPrimary
             ) || this._pointers.values().next().value;
         }
 
@@ -637,7 +637,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
    * @param gesture - The gesture type to listen for.
    * @param listener - The callback function that receives a notification when the specified gesture occurs.
    */
-  public onGesture(gesture: PointerGesture, listener: (args: IPointerGestureInfo) => any): IDisposable {
+  public onGesture(gesture: PointerGesture, listener: (args: PointerGestureInfo) => any): IDisposable {
     if (gesture === PointerGesture.General) {
       // Activate detection of every available gesture event
       Object.keys(this.shouldDetectGesture).every(

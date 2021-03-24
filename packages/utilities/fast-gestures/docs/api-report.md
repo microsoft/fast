@@ -25,14 +25,6 @@ export interface IDisposable {
 }
 
 // @public (undocumented)
-export interface IPointer {
-    // (undocumented)
-    pointerId: number;
-    // (undocumented)
-    pointerInfo: IPointerInfo;
-}
-
-// @public (undocumented)
 export type IPointerGestureConfig = Partial<Record<PointerGestureFeature, boolean>>;
 
 // @public (undocumented)
@@ -122,6 +114,14 @@ export interface IPointerInfo extends Partial<PointerEvent> {
 export interface IPointerInfoInternal extends IPointerInfo {
     _previousPinchDistance: number;
     _previousRotationAngle: number;
+}
+
+// @public (undocumented)
+export interface Pointer {
+    // (undocumented)
+    pointerId: number;
+    // (undocumented)
+    pointerInfo: IPointerInfo;
 }
 
 // @public (undocumented)
@@ -240,7 +240,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     // (undocumented)
     get pointers(): Map<number, IPointerInfoInternal>;
     // (undocumented)
-    get pointersArray(): IPointer[];
+    get pointersArray(): Pointer[];
     }
 
 // @public (undocumented)

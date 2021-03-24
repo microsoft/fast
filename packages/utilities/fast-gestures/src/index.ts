@@ -1,8 +1,8 @@
 export { IDisposable, Disposable } from "./base/lifecycle";
-export { IPointerGestureInfo } from "./interfaces/pointer-gesture-info";
-export { IPointerGestureOptions } from "./interfaces/pointer-gesture-options";
-export { IPointerInfo } from "./interfaces/pointer-info";
-export { IPointerInfoInternal } from "./interfaces/pointer-info-internal";
+export { PointerGestureInfo as IPointerGestureInfo } from "./interfaces/pointer-gesture-info";
+export { PointerGestureOptions as IPointerGestureOptions } from "./interfaces/pointer-gesture-options";
+export { PointerInfo as IPointerInfo } from "./interfaces/pointer-info";
+export { PointerInfoInternal as IPointerInfoInternal } from "./interfaces/pointer-info-internal";
 export { PointerGesture } from "./pointer-gesture";
 export { PointerGestureFeature } from "./pointer-gesture-feature";
 export { PointerTarget } from "./pointer-target";

@@ -1,7 +1,7 @@
 import { PointerGesture } from "../pointer-gesture";
 import { PointerRotationDirection } from "../pointer-rotation-direction";
 
-export interface IPointerInfo extends Partial<PointerEvent> {
+export interface PointerInfo extends Partial<PointerEvent> {
   /**
    *  isDown: Indicates whether the finger or mouse button is currently down.
    */
