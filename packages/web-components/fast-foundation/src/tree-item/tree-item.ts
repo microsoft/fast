@@ -197,7 +197,6 @@ export class TreeItem extends FASTElement {
             default:
                 return true;
         }
-        return false;
     };
 
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
