@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "none",
   "comment": "add 4th option for template tittle",
   "packageName": "@microsoft/fast-components",
   "email": "imaga75@hotmail.com",
