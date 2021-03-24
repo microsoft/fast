@@ -160,14 +160,6 @@ export class PeoplePicker extends Picker {
      * @internal
      */
     @observable
-    public showLoading: boolean;
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
     public foundPeople: IDynamicPerson[];
     private foundPeopleChanged(): void {
         const newOptions: string[] = this.foundPeople.map(p => p.id);
@@ -182,7 +174,6 @@ export class PeoplePicker extends Picker {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.loadState();
     }
 
     /**
@@ -199,11 +190,20 @@ export class PeoplePicker extends Picker {
     protected handleTextInput = (e: InputEvent): void => {
         super.handleTextInput(e);
 
+        this.startSearch();
+    };
+
+    protected toggleMenu(open: boolean): void {
+        this.startSearch();
+        super.toggleMenu(open);
+    }
+
+    private startSearch = (): void => {
         if (!this._debouncedSearch) {
             this._debouncedSearch = debounce(async () => {
-                this.showOptions = false;
+                this.showLoading = true;
                 await this.loadState();
-                this.showOptions = true;
+                this.showLoading = false;
             }, 400);
         }
 

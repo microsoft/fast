@@ -35,17 +35,42 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                     People suggestions available
                 </div>
             </div>
-            <div class="no-options-display" part="no-options-display">
-                <slot name="no-options-region"></slot>
-                <div
-                    role="alert"
-                    aria-live="polite"
-                    part="no-suggestions-available-alert"
-                    class="no-suggestions-available-alert"
-                >
-                    No suggestions available
-                </div>
-            </div>
+            ${when(
+                x => x.showNoOptions && !x.showLoading,
+                html<PickerMenu>`
+                    <div class="no-options-display" part="no-options-display">
+                        <slot name="no-options-region">
+                            No suggestions available
+                        </slot>
+                        <div
+                            role="alert"
+                            aria-live="polite"
+                            part="no-suggestions-available-alert"
+                            class="no-suggestions-available-alert"
+                        >
+                            No suggestions available
+                        </div>
+                    </div>
+                `
+            )}
+            ${when(
+                x => x.showLoading,
+                html<PickerMenu>`
+                    <div class="loading-display" part="loading-display">
+                        <slot name="loading-region">
+                            Loading...
+                        </slot>
+                        <div
+                            role="alert"
+                            aria-live="polite"
+                            part="loading-alert"
+                            class="loading-alert"
+                        >
+                            Loading
+                        </div>
+                    </div>
+                `
+            )}
         </template>
     `;
 }

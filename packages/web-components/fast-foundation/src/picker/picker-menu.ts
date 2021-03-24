@@ -12,10 +12,20 @@ export class PickerMenu extends FASTElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: show-options
+     * HTML Attribute: show-loading
      */
-    @attr({ attribute: "show-options" })
-    public showOptions: boolean = true;
+    @attr({ attribute: "show-loading" })
+    public showLoading: boolean = false;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: show-no-options
+     */
+    @attr({ attribute: "show-no-options" })
+    public showNoOptions: boolean = false;
 
     /**
      * Children that are list items

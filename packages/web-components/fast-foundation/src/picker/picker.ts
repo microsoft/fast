@@ -124,7 +124,9 @@ export class Picker extends FASTElement {
      */
     @observable
     public optionsList: string[] = [];
-    private optionsListChanged(): void {}
+    private optionsListChanged(): void {
+        this.showNoOptions = this.optionsList.length === 0 ? true : false;
+    }
 
     /**
      *
@@ -217,7 +219,25 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public showOptions: boolean = true;
+    public showLoading: boolean = false;
+    private showLoadingChanged(): void {
+        if (this.menuElement) {
+            this.menuElement.showLoading = this.showLoading;
+        }
+    }
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public showNoOptions: boolean = false;
+    private showNoOptionsChanged(): void {
+        if (this.menuElement) {
+            this.menuElement.showNoOptions = this.showNoOptions;
+        }
+    }
 
     /**
      * reference to the edit box
@@ -254,6 +274,8 @@ export class Picker extends FASTElement {
      */
     @observable
     public selectedOptions: string[] = [];
+
+    protected hasFocus = false;
 
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node | null = null;
@@ -356,8 +378,7 @@ export class Picker extends FASTElement {
         // e.preventDefault();
     }
 
-    public handleInputClick = (e: MouseEvent): void => {
-        this.toggleMenu(true);
+    protected handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
 
@@ -453,7 +474,15 @@ export class Picker extends FASTElement {
         return true;
     };
 
-    public handleFocusOut = (e: FocusEvent): void => {
+    public handleFocusIn = (e: FocusEvent): boolean => {
+        if (!this.hasFocus) {
+            this.toggleMenu(true);
+            this.hasFocus = true;
+        }
+        return false;
+    };
+
+    public handleFocusOut = (e: FocusEvent): boolean => {
         if (
             this.menuElement === undefined ||
             !this.menuElement.contains(e.relatedTarget as Element)
@@ -461,7 +490,11 @@ export class Picker extends FASTElement {
             this.toggleMenu(false);
         }
 
-        return;
+        if (!this.contains(document.activeElement)) {
+            this.hasFocus = false;
+        }
+
+        return false;
     };
 
     public handleOptionClick = (e: MouseEvent, value: string): boolean => {
@@ -602,7 +635,7 @@ export class Picker extends FASTElement {
         this.menuElement.scrollTo(0, focusedOption.offsetTop);
     };
 
-    private toggleMenu = (open: boolean): void => {
+    protected toggleMenu(open: boolean): void {
         if (this.menuOpen === open) {
             return;
         }
@@ -611,11 +644,10 @@ export class Picker extends FASTElement {
             this.menuOpen = open;
             this.inputElement.setAttribute("aria-owns", this.menuId);
             this.inputElement.setAttribute("aria-expanded", "true");
-            if (
-                this.menuElement !== undefined &&
-                this.menuElement.optionElements.length > 0
-            ) {
+            if (this.menuElement !== undefined) {
                 this.setFocusedOption(0);
+                this.menuElement.showLoading = this.showLoading;
+                this.menuElement.showNoOptions = this.showNoOptions;
                 this.inputElement.setAttribute(
                     "aria-activedescendant",
                     this.menuElement.optionElements[0].id
@@ -633,5 +665,5 @@ export class Picker extends FASTElement {
         this.inputElement.setAttribute("aria-activedescendant", "unset");
         this.inputElement.setAttribute("aria-expanded", "false");
         return;
-    };
+    }
 }
