@@ -183,12 +183,10 @@ export class TreeItem extends FASTElement {
                 break;
             case keyCodeArrowDown:
                 // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
                 this.focusNextNode(1);
                 break;
             case keyCodeArrowUp:
                 // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
                 this.focusNextNode(-1);
                 break;
             case keyCodeEnter:
@@ -196,9 +194,10 @@ export class TreeItem extends FASTElement {
                 // the default action is typically to select the focused node.
                 this.handleSelected(e);
                 break;
+            default:
+                return true;
         }
-
-        return true;
+        return false;
     };
 
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
