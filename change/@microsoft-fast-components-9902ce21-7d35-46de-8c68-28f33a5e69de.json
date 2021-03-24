@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "add 4th option for template title",
-  "packageName": "@microsoft/fast-components",
-  "email": "imaga75@hotmail.com",
-  "dependentChangeType": "patch"
-}
