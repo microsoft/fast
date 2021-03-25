@@ -22,7 +22,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
             this.validate();
         }
@@ -37,7 +37,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.autofocus = this.autofocus;
             this.validate();
         }
@@ -53,7 +53,7 @@ export class TextField extends FormAssociatedTextField {
     @attr
     public placeholder: string;
     private placeholderChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.placeholder = this.placeholder;
         }
     }
@@ -67,7 +67,7 @@ export class TextField extends FormAssociatedTextField {
     @attr
     public type: TextFieldType = TextFieldType.text;
     private typeChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
             this.validate();
         }
@@ -82,7 +82,7 @@ export class TextField extends FormAssociatedTextField {
     @attr
     public list: string;
     private listChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.setAttribute("list", this.list);
             this.validate();
         }
@@ -97,7 +97,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.maxLength = this.maxlength;
             this.validate();
         }
@@ -112,7 +112,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.minLength = this.minlength;
             this.validate();
         }
@@ -127,7 +127,7 @@ export class TextField extends FormAssociatedTextField {
     @attr
     public pattern: string;
     private patternChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.pattern = this.pattern;
             this.validate();
         }
@@ -142,7 +142,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ converter: nullableNumberConverter })
     public size: number;
     private sizeChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.size = this.size;
         }
     }
@@ -156,7 +156,7 @@ export class TextField extends FormAssociatedTextField {
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
     }
