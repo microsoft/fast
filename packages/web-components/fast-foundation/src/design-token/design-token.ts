@@ -271,11 +271,7 @@ class DesignTokenNode<T> {
             current = childToParent.get(current);
         }
 
-        throw this.tokenNotFound;
-    }
-
-    private get tokenNotFound() {
-        return new Error(
+        throw new Error(
             `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}.`
         );
     }
