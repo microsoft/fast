@@ -123,7 +123,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         element: DesignTokenTarget,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
-        DesignTokenNode.for(this, element).set(value);
+        DesignTokenNode.for<T>(this, element).set(value);
         return this;
     }
 
@@ -232,33 +232,61 @@ class DesignTokenNode<T> {
         }
     }
 
-    @observable
-    private _value: T | undefined;
-    private _valueChanged() {
-        Observable.getNotifier(this).notify("value");
-    }
-
+    /**
+     * Retrieves the value for the node.
+     */
     public get value(): T {
-        if (this._value !== void 0) {
-            return this._value;
-        } else if (childToParent.has(this)) {
-            return childToParent.get(this)!.value;
+        /* eslint-disable-next-line */
+        let current: DesignTokenNode<T> | undefined = this;
+
+        // Try to locate parent if there is no associated parent element
+        // TODO clean this up so we only look for a parent just prior to throwing,
+        // otherwise we would spend a lot of time trying to resolve parent elements at the root.
+        if (!childToParent.has(this)) {
+            const foundParent = this.findParentNode();
+
+            if (foundParent) {
+                foundParent?.appendChild(this);
+            }
         }
 
-        // Try to find the parent before throwing. This can happen
-        // when a token is used in a CSS directive and the directive's
-        // behavior accesses a token prior to *this* class's behavior
-        // finds the parent node.
-        const parent = this.findParentNode();
+        while (current !== undefined) {
+            if (current.rawValue) {
+                if (DesignTokenNode.isDerivedTokenValue(current.rawValue)) {
+                    if (!this.bindingObserver) {
+                        this.setupBindingObserver(current.rawValue);
+                    }
+                    return current.rawValue(this.target);
+                } else if (current.rawValue instanceof DesignTokenImpl) {
+                    return DesignTokenNode.for(current.rawValue, this.target).value;
+                } else {
+                    return current.rawValue;
+                }
+            }
 
-        if (parent) {
-            parent.appendChild(this);
-            return parent.value;
+            current = childToParent.get(current);
         }
 
         throw new Error(
             `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}.`
         );
+    }
+
+    /**
+     * The raw, unresolved value that was set for a token.
+     */
+    @observable
+    private _rawValue:
+        | DerivedDesignTokenValue<T>
+        | StaticDesignTokenValue<T>
+        | DesignTokenImpl<T>
+        | undefined;
+    private _rawValueChanged() {
+        Observable.getNotifier(this).notify("value");
+    }
+
+    public get rawValue() {
+        return this._rawValue;
     }
 
     public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
@@ -281,7 +309,7 @@ class DesignTokenNode<T> {
     }
 
     private static isDerivedTokenValue<T>(
-        value: DesignTokenValue<T>
+        value: DesignTokenValue<T> | DesignTokenImpl<T>
     ): value is DerivedDesignTokenValue<T> {
         return typeof value === "function";
     }
@@ -293,7 +321,7 @@ class DesignTokenNode<T> {
 
     public valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
         // If no local value has been set, pass along notification to subscribers
-        if (this._value === void 0) {
+        if (this.rawValue === void 0) {
             Observable.getNotifier(this).notify("value");
         }
     }
@@ -334,36 +362,46 @@ class DesignTokenNode<T> {
         }
     }
 
+    private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
+        const handler = {
+            handleChange: (source: Binding<HTMLElement>) => {
+                Observable.getNotifier(this).notify("value");
+            },
+        };
+
+        this.bindingObserver = Observable.binding(value, handler);
+        this.bindingObserver.observe(this.target, defaultExecutionContext);
+    }
+
     public set(value: DesignTokenValue<T>) {
+        if (value === this.rawValue) {
+            return;
+        }
+
+        if (this.rawValue instanceof DesignTokenImpl) {
+            childToParent.get(this)?.removeChild(this);
+        }
+
         if (this.bindingObserver) {
             this.bindingObserver = this.bindingObserver.disconnect();
         }
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
             this.handleChange = noop as () => void;
-            const handler = {
-                handleChange: (source: Binding<HTMLElement>) => {
-                    this._value = source(this.target, defaultExecutionContext);
-                },
-            };
-
-            this.bindingObserver = Observable.binding(value, handler);
-            this.bindingObserver.observe(this.target, defaultExecutionContext);
-
-            this._value = value(this.target);
+            this.setupBindingObserver(value);
         } else if (value instanceof DesignTokenImpl) {
             childToParent.get(this)?.removeChild(this);
             const node = DesignTokenNode.for(value, this.target);
             node.appendChild(this);
-            this._value = void 0;
-        } else if (this._value !== value) {
+        } else if (this.rawValue !== value) {
             this.handleChange = noop as () => void;
-            this._value = value;
         }
+
+        this._rawValue = value;
     }
 
     public delete() {
-        this._value = void 0;
+        this._rawValue = void 0;
         this.handleChange = this.valueChangeHandler;
 
         if (this.bindingObserver) {
