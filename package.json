@@ -87,7 +87,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest" 
+      "^.+\\.js?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
@@ -147,5 +147,8 @@
   "dependencies": {
     "saucelabs": "^1.5.0",
     "selenium-webdriver": "^3.6.0"
+  },
+  "engines": {
+    "yarn": ">=1.13 <2"
   }
 }
