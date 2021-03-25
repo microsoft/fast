@@ -65,24 +65,32 @@ describe("FASTCarousel", function () {
 
     it("should render to the page", async function () {
         const element = await this.page.waitForSelector("fast-carousel");
-
         expect(element).to.exist;
     })
 
-    it("should should the next tab/slide when left arrow key is pressed", async function() {
+    it("should show the next tab/slide when right arrow key is pressed", async function() {
         const element = (await this.page.waitForSelector(
             "fast-carousel"
         )) as ElementHandle<FASTCarousel>;
-
-        const firstTab = await this.page.waitForSelector("#tab-1");
-
-        // await firstTab.focus();
-
-        await firstTab.press("ArrowLeft");
         
+        const firstTab = await this.page.waitForSelector("#tab-1");
+        
+        await firstTab.press("ArrowRight");
 
-        expect(await element.evaluateHandle(node => node.tabIndex)).to.be.equal("2");
+        expect(await element?.evaluate(node => (node as FASTCarousel).activeTabIndex)).to.equal(1);
+        
     })
 
-    //TEST HERE
+    it("should show the previous tab/slide when left arrow key is pressed", async function() {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel"
+        )) as ElementHandle<FASTCarousel>;
+        
+        const firstTab = await this.page.waitForSelector("#tab-1");
+        
+        await firstTab.press("ArrowLeft");
+
+        expect(await element?.evaluate(node => (node as FASTCarousel).activeTabIndex)).to.equal(6 - 1);
+        
+    })
 })
