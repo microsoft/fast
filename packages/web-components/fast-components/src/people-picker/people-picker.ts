@@ -126,14 +126,6 @@ export class PeoplePicker extends Picker {
     @observable
     public people: IDynamicPerson[];
 
-    // /**
-    //  *
-    //  *
-    //  * @internal
-    //  */
-    // @observable
-    // public selectedPeople: IDynamicPerson[] = [];
-
     /**
      *
      *
@@ -174,6 +166,7 @@ export class PeoplePicker extends Picker {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.showLoading = true;
     }
 
     /**
@@ -201,12 +194,12 @@ export class PeoplePicker extends Picker {
     private startSearch = (): void => {
         if (!this._debouncedSearch) {
             this._debouncedSearch = debounce(async () => {
+                this.foundPeople = [];
                 this.showLoading = true;
                 await this.loadState();
                 this.showLoading = false;
             }, 400);
         }
-
         this._debouncedSearch();
     };
 
@@ -255,7 +248,7 @@ export class PeoplePicker extends Picker {
                     this.defaultPeople = people;
                 }
             }
-            this.showLoading = false;
+
             if (
                 this.defaultSelection &&
                 !this.selectedOptions.length &&
@@ -269,6 +262,7 @@ export class PeoplePicker extends Picker {
                 // this.requestUpdate();
                 // this.fireCustomEvent('selectionChanged', this.selectedPeople);
             }
+
             if (input) {
                 people = [];
                 if (this.groupId) {
@@ -327,6 +321,7 @@ export class PeoplePicker extends Picker {
                 }
             }
         }
+
         this.foundPeople = this.filterPeople(people);
     }
 

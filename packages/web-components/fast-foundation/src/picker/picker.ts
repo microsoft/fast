@@ -373,10 +373,7 @@ export class Picker extends FASTElement {
         this.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
-    protected handleTextInput(e: InputEvent): void {
-        // e.stopPropagation();
-        // e.preventDefault();
-    }
+    protected handleTextInput(e: InputEvent): void {}
 
     protected handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
