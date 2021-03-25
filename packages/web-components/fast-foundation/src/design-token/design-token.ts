@@ -236,19 +236,23 @@ class DesignTokenNode<T> {
      * Retrieves the value for the node.
      */
     public get value(): T {
-        /* eslint-disable-next-line */
-        let current: DesignTokenNode<T> | undefined = this;
-
-        // Try to locate parent if there is no associated parent element
-        // TODO clean this up so we only look for a parent just prior to throwing,
-        // otherwise we would spend a lot of time trying to resolve parent elements at the root.
-        if (!childToParent.has(this)) {
-            const foundParent = this.findParentNode();
-
-            if (foundParent) {
-                foundParent?.appendChild(this);
+        try {
+            return this.resolveRealValueForNode(this);
+        } catch (e) {
+            if (!childToParent.has(this)) {
+                const parent = this.findParentNode();
+                if (parent) {
+                    parent.appendChild(this);
+                    return this.resolveRealValueForNode(this);
+                }
             }
+
+            throw e;
         }
+    }
+
+    private resolveRealValueForNode(node: DesignTokenNode<T>): T {
+        let current: DesignTokenNode<T> | undefined = node;
 
         while (current !== undefined) {
             if (current.rawValue) {
@@ -267,7 +271,11 @@ class DesignTokenNode<T> {
             current = childToParent.get(current);
         }
 
-        throw new Error(
+        throw this.tokenNotFound;
+    }
+
+    private get tokenNotFound() {
+        return new Error(
             `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}.`
         );
     }
