@@ -40,8 +40,9 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                             aria-live="polite"
                             part="suggestions-available-alert"
                             class="suggestions-available-alert"
+                            tabindex="0"
                         >
-                            People suggestions available
+                            ${x => x.suggestionsAvailableText}
                         </div>
                     </div>
                 `
@@ -51,15 +52,16 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                 html<PickerMenu>`
                     <div class="no-options-display" part="no-options-display">
                         <slot name="no-options-region">
-                            No suggestions available
+                            ${x => x.noSuggestionsText}
                         </slot>
                         <div
                             role="alert"
                             aria-live="polite"
                             part="no-suggestions-available-alert"
                             class="no-suggestions-available-alert"
+                            tabindex="0"
                         >
-                            No suggestions available
+                            ${x => x.noSuggestionsText}
                         </div>
                     </div>
                 `
@@ -69,15 +71,19 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                 html<PickerMenu>`
                     <div class="loading-display" part="loading-display">
                         <slot name="loading-region">
-                            Loading...
+                            <${prefix}-progress-ring
+                                part="loading-progress"
+                                class="loading-progress
+                            ><${prefix}-progress-ring>
                         </slot>
                         <div
                             role="alert"
                             aria-live="polite"
                             part="loading-alert"
                             class="loading-alert"
+                            tabindex=0
                         >
-                            Loading
+                            ${x => x.loadingText}
                         </div>
                     </div>
                 `

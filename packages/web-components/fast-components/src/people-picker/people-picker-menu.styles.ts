@@ -1,33 +1,28 @@
 import { css } from "@microsoft/fast-element";
-import {
-    disabledCursor,
-    display,
-    focusVisible,
-    forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
+import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralLayerFloatingBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
 export const PeoplePickerMenuStyles = css`
     :host {
+        background: ${neutralLayerFloatingBehavior.var};
         z-index: 1000;
         display: flex;
         width: 308px;
         max-height: 100%;
-        min-height: 70px;
-        background: purple;
+        min-height: 58px;
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
@@ -35,14 +30,27 @@ export const PeoplePickerMenuStyles = css`
     }
 
     .suggestions-available-alert,
-    .no-suggestions-available-alert {
+    .no-suggestions-available-alert,
+    .loading-alert {
         height: 0;
         opacity: 0;
         overflow: hidden;
     }
 
+    .loading-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .loading-progress {
+        width: 28px;
+        height: 28px;
+    }
+
     ::slotted([role="listitem"]) {
         width: 100%;
+        height: 58px;
     }
 
     ::slotted([aria-selected="true"][role="listitem"]) {
@@ -69,6 +77,7 @@ export const PeoplePickerMenuStyles = css`
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralLayerFloatingBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(css``)
 );

@@ -27,6 +27,36 @@ export class Picker extends FASTElement {
      *
      * @public
      * @remarks
+     * HTML Attribute: no-suggestions-text
+     */
+    @attr({ attribute: "no-suggestions-text" })
+    public noSuggestionsText: string;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: suggestions-available-text
+     */
+    @attr({ attribute: "suggestions-available-text" })
+    public suggestionsAvailableText: string;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: loading-text
+     */
+    @attr({ attribute: "loading-text" })
+    public loadingText: string;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
      * HTML Attribute: menu-position
      */
     @attr({ attribute: "menu-position" })
@@ -351,8 +381,11 @@ export class Picker extends FASTElement {
             this.menuElement.id = uniqueId("listbox-");
         }
 
-        this.menuElement.slot = "menu-region";
         this.menuId = this.menuElement.id;
+
+        this.menuElement.loadingText = this.loadingText;
+        this.menuElement.noSuggestionsText = this.noSuggestionsText;
+        this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
 
         this.optionsPlaceholder = document.createComment("");
         this.menuElement.append(this.optionsPlaceholder);

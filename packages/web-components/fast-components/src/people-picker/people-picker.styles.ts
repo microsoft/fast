@@ -22,6 +22,7 @@ import {
 
 export const PeoplePickerStyles = css`
     :host {
+        width: auto;
         border: calc(var(--outline-width) * 1px) solid transparent;
         margin: 0;
         border-radius: calc(var(--corner-radius) * 1px);

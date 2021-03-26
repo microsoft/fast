@@ -71,6 +71,28 @@ export class PickerMenu extends FASTElement {
     }
 
     /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public noSuggestionsText: string;
+
+    /**
+     *
+     * @public
+     */
+    @observable
+    public suggestionsAvailableText: string;
+
+    /**
+     *
+     * @public
+     */
+    @observable
+    public loadingText: string;
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
