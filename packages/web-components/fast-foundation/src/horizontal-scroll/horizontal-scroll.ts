@@ -206,10 +206,31 @@ export class HorizontalScroll extends FASTElement {
     };
 
     /**
+     * Looks for slots and uses child nodes instead
+     * @internal
+     */
+    private updateScrollStops(): void {
+        const updatedItems: HTMLElement[] = [];
+
+        this.scrollItems.map(item => {
+            if (item instanceof HTMLSlotElement) {
+                item.assignedElements().forEach(child => {
+                    updatedItems.push(child as HTMLElement);
+                });
+            } else {
+                updatedItems.push(item);
+            }
+        });
+
+        this.scrollItems = updatedItems;
+    }
+
+    /**
      * Finds all of the scroll stops between elements
      * @internal
      */
     private setStops(): void {
+        this.updateScrollStops();
         this.width = this.offsetWidth;
         let lastStop: number = 0;
         let stops: number[] = this.scrollItems
