@@ -1,14 +1,14 @@
-import {
-    ExecutionContext,
-    Binding,
-    setCurrentEvent,
-    BindingObserver,
-} from "../observation/observable";
-import { Observable } from "../observation/observable";
-import { Behavior } from "../observation/behavior";
 import { DOM } from "../dom";
-import { SyntheticView } from "./view";
+import type { Behavior } from "../observation/behavior";
+import {
+    Binding,
+    BindingObserver,
+    ExecutionContext,
+    Observable,
+    setCurrentEvent,
+} from "../observation/observable";
 import { TargetedHTMLDirective } from "./html-directive";
+import type { SyntheticView } from "./view";
 
 function normalBind(
     this: BindingBehavior,

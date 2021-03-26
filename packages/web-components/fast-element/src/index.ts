@@ -31,4 +31,8 @@ export * from "./templating/when";
 export * from "./templating/repeat";
 export * from "./templating/slotted";
 export * from "./templating/children";
-export { elements, NodeBehaviorOptions } from "./templating/node-observation";
+export {
+    elements,
+    ElementsFilter,
+    NodeBehaviorOptions,
+} from "./templating/node-observation";

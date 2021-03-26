@@ -1,13 +1,13 @@
 import { expect } from "chai";
-import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
-import { Controller } from "./controller";
-import { FASTElement } from "./fast-element";
-import { uniqueElementName, toHTML } from "../__test__/helpers";
-import { html } from "../templating/template";
 import { DOM } from "../dom";
-import { css } from "../styles/css";
+import type { Behavior } from "../observation/behavior";
 import { Observable } from "../observation/observable";
-import { Behavior } from "../observation/behavior";
+import { css } from "../styles/css";
+import { html } from "../templating/template";
+import { toHTML, uniqueElementName } from "../__test__/helpers";
+import { Controller } from "./controller";
+import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions";
+import { FASTElement } from "./fast-element";
 
 describe("The Controller", () => {
     const templateA = html`a`;

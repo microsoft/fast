@@ -1,4 +1,4 @@
-import { ExecutionContext } from "./observable";
+import type { ExecutionContext } from "./observable";
 
 /**
  * Represents and object that can contribute behavior to a view or

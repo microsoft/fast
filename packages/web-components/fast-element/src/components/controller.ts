@@ -1,16 +1,16 @@
-import { FASTElementDefinition } from "./fast-definitions";
-import { ElementView } from "../templating/view";
+import { DOM } from "../dom";
+import type { Mutable } from "../interfaces";
+import type { Behavior } from "../observation/behavior";
 import { PropertyChangeNotifier } from "../observation/notifier";
 import {
     defaultExecutionContext,
     Observable,
     observable,
 } from "../observation/observable";
-import { Behavior } from "../observation/behavior";
-import { ElementStyles, StyleTarget } from "../styles/element-styles";
-import { Mutable } from "../interfaces";
-import { ElementViewTemplate } from "../templating/template";
-import { DOM } from "../dom";
+import type { ElementStyles, StyleTarget } from "../styles/element-styles";
+import type { ElementViewTemplate } from "../templating/template";
+import type { ElementView } from "../templating/view";
+import { FASTElementDefinition } from "./fast-definitions";
 
 const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
@@ -29,7 +29,7 @@ function getShadowRoot(element: HTMLElement): ShadowRoot | null {
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Map<Behavior, number> | null = null;
-    private needsInitialization = true;
+    private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
 
@@ -63,7 +63,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get template() {
+    get template(): ElementViewTemplate | null {
         return this._template;
     }
 
@@ -84,7 +84,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get styles() {
+    get styles(): ElementStyles | null {
         return this._styles;
     }
 
@@ -224,7 +224,10 @@ export class Controller extends PropertyChangeNotifier {
      * @param behaviors - The behaviors to remove.
      * @param force - Forces unbinding of behaviors.
      */
-    public removeBehaviors(behaviors: ReadonlyArray<Behavior>, force = false): void {
+    public removeBehaviors(
+        behaviors: ReadonlyArray<Behavior>,
+        force: boolean = false
+    ): void {
         const targetBehaviors = this.behaviors;
 
         if (targetBehaviors === null) {
@@ -274,7 +277,7 @@ export class Controller extends PropertyChangeNotifier {
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
-            for (let [behavior] of behaviors) {
+            for (const [behavior] of behaviors) {
                 behavior.bind(element, defaultExecutionContext);
             }
         }
@@ -302,7 +305,7 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
-            for (let [behavior] of behaviors) {
+            for (const [behavior] of behaviors) {
                 behavior.unbind(element);
             }
         }
@@ -348,7 +351,7 @@ export class Controller extends PropertyChangeNotifier {
         return false;
     }
 
-    private finishInitialization() {
+    private finishInitialization(): void {
         const element = this.element;
         const boundObservables = this.boundObservables;
 
@@ -403,7 +406,7 @@ export class Controller extends PropertyChangeNotifier {
         this.needsInitialization = false;
     }
 
-    private renderTemplate(template: ElementViewTemplate | null | undefined) {
+    private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         const element = this.element;
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
