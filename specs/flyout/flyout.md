@@ -1,4 +1,4 @@
-# Flyout (aka Popover)
+# Flyout
 ## Overview
 Flyout is a focusable floating container that shows over a pages content and displays UI related to what the user is doing. It is typically triggered by a clickable element. Similar to a Dialog, but with positioning controls, no overlay option, and no specific action being required, a Flyout can be used to reveal a secondary control or show more detail about an item.
 
@@ -21,6 +21,10 @@ This includes:
 - Trap focus - optional, defaults to enabled - Focus is contained within the Flyout while it is visible.
 - First element focus - Focusing on the first focusable element when trap focus is enabled, but not overriding an element that is set to be focused by the author.
 - Returning focus to the target - after Flyout is closed the focus would return to the target element per the expectations of the Dialog design pattern.
+
+### Risks and Challenges
+Trap focus in the shadowDom has risk as it can be problematic and the FAST teams is currently re-evaluating how this is accomplished.
+For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/2021/02/13/managing-focus-in-the-shadow-dom/)
 
 
 ### Prior Art/Examples
@@ -122,8 +126,8 @@ Parts:
 *Template:*
 **ASK (2)**
 ```html
-export function createPopoverTemplate(prefix: string): ViewTemplate {
-    return html<Popover>`
+export function createFlyoutTemplate(prefix: string): ViewTemplate {
+    return html<Flyout>`
         ${when(
             x => x.visible,
             html<Flyout>`
