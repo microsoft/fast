@@ -220,7 +220,10 @@ export const DOM: Readonly<{
 }>;
 
 // @public
-export function elements(selector?: string): (value: Node, index: number, array: Node[]) => boolean;
+export function elements(selector?: string): ElementsFilter;
+
+// @public
+export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
 export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
@@ -368,7 +371,7 @@ export interface NodeBehaviorFactory {
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
-    filter?(value: Node, index: number, array: Node[]): boolean;
+    filter?: ElementsFilter;
     property: T;
 }
 
@@ -566,7 +569,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     }
 
 // @public
-export function volatile(target: {}, name: any, descriptor: any): any;
+export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;

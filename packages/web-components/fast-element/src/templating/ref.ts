@@ -1,5 +1,5 @@
-import { CaptureType } from "./template";
-import { Behavior } from "../observation/behavior";
+import type { Behavior } from "../observation/behavior";
+import type { CaptureType } from "./template";
 import { AttachedBehaviorHTMLDirective } from "./html-directive";
 
 /**
@@ -23,11 +23,11 @@ export class RefBehavior implements Behavior {
         source[this.propertyName] = this.target;
     }
 
-    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     /**
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
      */
+    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     public unbind(): void {}
 }
 

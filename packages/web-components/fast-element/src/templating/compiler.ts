@@ -1,13 +1,15 @@
-import { DOM, _interpolationEnd, _interpolationStart } from "../dom";
+import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
+import type { Binding, ExecutionContext } from "../observation/observable";
 import { HTMLBindingDirective } from "./binding";
-import { HTMLDirective, NodeBehaviorFactory } from "./html-directive";
-import { ExecutionContext, Binding } from "../observation/observable";
+import type { HTMLDirective, NodeBehaviorFactory } from "./html-directive";
 
 type InlineDirective = HTMLDirective & {
     targetName?: string;
     binding: Binding;
     targetAtContent(): void;
 };
+
+let sharedContext: CompilationContext | null = null;
 
 class CompilationContext {
     public targetIndex!: number;
@@ -41,8 +43,6 @@ class CompilationContext {
         return shareable;
     }
 }
-
-let sharedContext: CompilationContext | null = null;
 
 function createAggregateBinding(
     parts: (string | InlineDirective)[]
