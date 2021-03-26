@@ -15,10 +15,7 @@ import { ARIAGlobalStatesAndProperties } from "../patterns";
  * @public
  * See {@link https://w3c.github.io/aria-practices/#wai-aria-roles-states-and-properties-4 | ARIA Carousel Patterns}.
  */
-export enum CarouselPattern {
-    basic = "basic",
-    tabbed = "tabbed",
-}
+export type CarouselPattern = "basic" | "tabbed";
 
 /**
  * An Carousel Custom HTML Element.
@@ -239,7 +236,7 @@ export class Carousel extends Tabs {
     @observable
     public items: HTMLElement[];
     private itemsChanged(): void {
-        if (this.items.length && this.pattern === CarouselPattern.basic) {
+        if (this.items.length && this.pattern === "basic") {
             this.generateSlideIds();
 
             // if activeSlideId attribute was set by implementation then we need to sync the activeSlideIndex for incrementing to work
@@ -370,15 +367,13 @@ export class Carousel extends Tabs {
 
     private incrementSlide = (direction: 1 | -1): void => {
         const tempLength: number =
-            this.pattern === CarouselPattern.basic ? this.items.length : this.tabs.length;
+            this.pattern === "basic" ? this.items.length : this.tabs.length;
         const tempIndex: number =
-            this.pattern === CarouselPattern.basic
-                ? this.activeSlideIndex
-                : this.activeTabIndex;
+            this.pattern === "basic" ? this.activeSlideIndex : this.activeTabIndex;
         this.focused = false;
         let adjustment: number = 0;
 
-        if (this.pattern === CarouselPattern.basic) {
+        if (this.pattern === "basic") {
             if (this.loop) {
                 adjustment = wrapInBounds(0, tempLength - 1, tempIndex + direction);
             } else {
@@ -512,9 +507,9 @@ export class Carousel extends Tabs {
         // we need to check the pattern type _before_ the super (tabs class) is run so we don't try to get tabs setup for the basic pattern which does _not_ use tabs logic.
         // TODO: ASK should we separate out the Basic Carousel into  its own class and component?
         if (!this.pattern) {
-            this.pattern = CarouselPattern.tabbed;
+            this.pattern = "tabbed";
         }
-        if (this.pattern === CarouselPattern.basic) {
+        if (this.pattern === "basic") {
             this.tabs = [];
             this.tabpanels = [];
         }
@@ -567,7 +562,7 @@ export class Carousel extends Tabs {
             this.handleRotationMouseDown
         );
 
-        if (this.pattern === CarouselPattern.tabbed) {
+        if (this.pattern === "tabbed") {
             this.tablistRef.addEventListener("focusin", this.handleTabsFocusIn);
             this.tablistRef.addEventListener("focusout", this.handleTabsFocusOut);
             this.tablistRef.addEventListener("keydown", this.handleTabsKeyDown);

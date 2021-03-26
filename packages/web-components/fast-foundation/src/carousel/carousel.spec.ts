@@ -4,9 +4,7 @@ import { Tab, TabTemplate } from "../tab";
 import { TabPanel, TabPanelTemplate } from "../tab-panel";
 import { Flipper, FlipperTemplate } from "../flipper";
 import { fixture } from "../fixture";
-import { DOM, customElement, ElementStyles } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { CarouselPattern } from "./carousel";
+import { DOM, customElement } from "@microsoft/fast-element";
 import { Button, ButtonTemplate } from "../button";
 
 @customElement({
@@ -90,7 +88,7 @@ async function basicSetup() {
         "fast-carousel"
     );
 
-    element.pattern = CarouselPattern.basic;
+    element.pattern = "basic";
     const slide1 = document.createElement("img") as HTMLImageElement;
     slide1.src = "https://placehold.it/300";
     const slide2 = document.createElement("img") as HTMLImageElement;
@@ -249,7 +247,7 @@ describe.only("Carousel", () => {
     describe("Basic", () => {
         it("should NOT have a tablist", async () => {
             const { element, connect, disconnect } = await basicSetup();
-            element.pattern = CarouselPattern.basic;
+            element.pattern = "basic";
 
             await connect();
 
