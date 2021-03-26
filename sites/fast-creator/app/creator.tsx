@@ -110,6 +110,7 @@ class Creator extends Editor<{}, CreatorState> {
         }
 
         window.onresize = rafThrottle(this.handleWindowResize);
+        window.addEventListener("message", this.handleWindowMessage);
 
         this.setupMonacoEditor(monaco);
 
@@ -352,6 +353,24 @@ class Creator extends Editor<{}, CreatorState> {
     private handleDesignSystemMessageSystem = (e: MessageEvent): void => {
         if (e.data.type === MessageSystemType.data) {
             this.updateDesignSystemDataDictionaryState(e.data.data);
+        }
+    };
+
+    private handleWindowMessage = (e: MessageEvent): void => {
+        if (e.data) {
+            try {
+                const messageData = JSON.parse(e.data);
+
+                if (messageData.type === "dataDictionary" && messageData.data) {
+                    this.fastMessageSystem.postMessage({
+                        type: MessageSystemType.initialize,
+                        data: messageData.data,
+                        schemaDictionary,
+                    });
+                }
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
 
