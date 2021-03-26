@@ -37,5 +37,5 @@ jobs:
    
     - name: Publish NPM changed packages
       run: |
-        yarn publish-ci -y -n $NPM_PAT -t pre-release
+        yarn publish-ci -y -n $NPM_PAT -t canary
      
