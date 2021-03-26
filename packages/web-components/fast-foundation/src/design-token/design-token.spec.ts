@@ -445,8 +445,7 @@ describe("A DesignToken", () => {
                 token.setValueFor(target, () => 14);
                 await DOM.nextUpdate()
 
-                const value = window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)
-                expect(value).to.equal("14");
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
                 removeElement(target);
             });
 
@@ -485,7 +484,7 @@ describe("A DesignToken", () => {
             });
         });
 
-        xdescribe("to DesignToken values", () => {
+        describe("to DesignToken values", () => {
             it("should emit the CSS custom property with a value of the token's value", () => {
                 const tokenA = DesignToken.create<number>("token-a");
                 const tokenB = DesignToken.create<number>("token-b");
@@ -499,7 +498,7 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("12");
                 removeElement(target);
             });
-            it("should update the CSS custom property when the value of the token changes", () => {
+            it("should update the CSS custom property when the value of the token changes", async () => {
                 const tokenA = DesignToken.create<number>("token-a");
                 const tokenB = DesignToken.create<number>("token-b");
                 const target = addElement()
@@ -512,13 +511,14 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("12");
 
                 tokenA.setValueFor(target, 14);
+                await DOM.nextUpdate()
 
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("14");
 
                 removeElement(target);
             });
 
-            it("should update the CSS custom property of a downstream element when the token changes", () => {
+            it("should update the CSS custom property of a downstream element when the token changes", async () => {
                 const tokenA = DesignToken.create<number>("token-a");
                 const tokenB = DesignToken.create<number>("token-b");
                 const parent = addElement()
@@ -533,6 +533,7 @@ describe("A DesignToken", () => {
 
                 tokenA.setValueFor(parent, 14);
 
+                await DOM.nextUpdate();
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal("14");
 
                 removeElement(parent);
