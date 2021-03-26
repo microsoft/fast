@@ -126,12 +126,12 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
         if (value instanceof DesignTokenImpl) {
-            DesignTokenNode.for<T>(this, element).set((_element: DesignTokenTarget) => {
-                return DesignTokenNode.for<T>(value, _element).value;
-            });
-        } else {
-            DesignTokenNode.for<T>(this, element).set(value);
+            const _value = value;
+            value = ((_element: DesignTokenTarget) =>
+                DesignTokenNode.for<T>(_value, _element)
+                    .value) as DerivedDesignTokenValue<T>;
         }
+        DesignTokenNode.for<T>(this, element).set(value);
         return this;
     }
 
@@ -208,8 +208,18 @@ const noop = Function.prototype;
  * inheritance structures.
  */
 class DesignTokenNode<T> {
+    /** Track downstream nodes */
     private children: Set<DesignTokenNode<any>> = new Set();
     private bindingObserver: BindingObserver | undefined;
+
+    /**
+     * The raw, unresolved value that was set for a token.
+     */
+    @observable
+    private _rawValue: DesignTokenValue<T> | undefined;
+    private _rawValueChanged() {
+        Observable.getNotifier(this).notify("value");
+    }
 
     constructor(
         public readonly token: DesignToken<T>,
@@ -234,27 +244,6 @@ class DesignTokenNode<T> {
             ]);
         } else {
             this.findParentNode()?.appendChild(this);
-        }
-    }
-
-    /**
-     * Retrieves the value for the node.
-     * Observable
-     */
-    public get value(): T {
-        try {
-            return this.resolveRealValueForNode(this);
-        } catch (e) {
-            if (!childToParent.has(this)) {
-                const parent = this.findParentNode();
-
-                if (parent) {
-                    parent.appendChild(this);
-                    return this.resolveRealValueForNode(this);
-                }
-            }
-
-            throw e;
         }
     }
 
@@ -284,29 +273,6 @@ class DesignTokenNode<T> {
         );
     }
 
-    /**
-     * The raw, unresolved value that was set for a token.
-     */
-    @observable
-    private _rawValue: DerivedDesignTokenValue<T> | StaticDesignTokenValue<T> | undefined;
-    private _rawValueChanged() {
-        Observable.getNotifier(this).notify("value");
-    }
-
-    public get rawValue() {
-        return this._rawValue;
-    }
-
-    public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
-        const targetCache = nodeCache.has(target)
-            ? nodeCache.get(target)!
-            : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
-        return targetCache.has(token)
-            ? targetCache.get(token)!
-            : targetCache.set(token, new DesignTokenNode(token, target)) &&
-                  targetCache.get(token)!;
-    }
-
     private static channel<T>(
         token: DesignToken<T>
     ): InterfaceSymbol<DesignTokenNode<T>> {
@@ -327,10 +293,39 @@ class DesignTokenNode<T> {
      */
     public handleChange = this.valueChangeHandler;
 
-    public valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
+    private valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
         if (this._rawValue === void 0) {
             Observable.getNotifier(this).notify("value");
         }
+    }
+
+    private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
+        this.tearDownBindingObserver();
+
+        const handler = {
+            handleChange: (source: Binding<HTMLElement>) => {
+                Observable.getNotifier(this).notify("value");
+            },
+        };
+
+        this.bindingObserver = Observable.binding(value, handler);
+    }
+
+    private tearDownBindingObserver() {
+        if (this.bindingObserver) {
+            this.bindingObserver.disconnect();
+            this.bindingObserver = undefined;
+        }
+    }
+
+    public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
+        const targetCache = nodeCache.has(target)
+            ? nodeCache.get(target)!
+            : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
+        return targetCache.has(token)
+            ? targetCache.get(token)!
+            : targetCache.set(token, new DesignTokenNode(token, target)) &&
+                  targetCache.get(token)!;
     }
 
     public appendChild<T>(child: DesignTokenNode<T>) {
@@ -373,26 +368,40 @@ class DesignTokenNode<T> {
         }
     }
 
-    private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
-        this.tearDownBindingObserver();
+    /**
+     * The resolved value for a node.
+     */
+    public get value(): T {
+        try {
+            return this.resolveRealValueForNode(this);
+        } catch (e) {
+            if (!childToParent.has(this)) {
+                const parent = this.findParentNode();
 
-        const handler = {
-            handleChange: (source: Binding<HTMLElement>) => {
-                Observable.getNotifier(this).notify("value");
-            },
-        };
+                if (parent) {
+                    parent.appendChild(this);
+                    return this.resolveRealValueForNode(this);
+                }
+            }
 
-        this.bindingObserver = Observable.binding(value, handler);
-    }
-
-    private tearDownBindingObserver() {
-        if (this.bindingObserver) {
-            this.bindingObserver.disconnect();
-            this.bindingObserver = undefined;
+            throw e;
         }
     }
 
-    public set(value: DesignTokenValue<T>) {
+    /**
+     * The actual value set for the node, or undefined.
+     * This will be a reference to the original object for all data types
+     * passed by reference.
+     */
+    public get rawValue(): DesignTokenValue<T> | undefined {
+        return this._rawValue;
+    }
+
+    /**
+     * Sets a value for the node
+     * @param value The value to set
+     */
+    public set(value: DesignTokenValue<T>): void {
         if (value === this._rawValue) {
             return;
         }
@@ -407,6 +416,9 @@ class DesignTokenNode<T> {
         this._rawValue = value;
     }
 
+    /**
+     * Deletes any value set for the node.
+     */
     public delete() {
         this._rawValue = void 0;
         this.handleChange = this.valueChangeHandler;
