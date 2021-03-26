@@ -92,6 +92,18 @@ describe("FASTCarousel Tabbed Pattern", function () {
         expect(await element?.evaluate(node => node.activeTabIndex)).to.equal(6 - 1);
         
     })
+
+    it("should pause the rotation when rotation control is clicked and start the rotation when it is clicked again", async function () {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel",
+        )) as ElementHandle<FASTCarousel>;
+
+        expect(await element?.evaluate(node => node.paused)).to.be.false;
+        
+        await this.page.click('.rotation-control-container');
+
+        expect(await element?.evaluate(node => node.paused)).to.be.true;
+    })
 })
 
 describe("FASTCarousel Basic Pattern", function () {
@@ -145,7 +157,7 @@ describe("FASTCarousel Basic Pattern", function () {
         expect(await element?.evaluate(node => node.pattern)).to.equal("basic");
     })
 
-    it("should show the next tab/slide when next flipper is clicked", async function() {
+    it("should show the next slide when next flipper is clicked", async function() {
         const element = (await this.page.waitForSelector(
             "fast-carousel"
         )) as ElementHandle<FASTCarousel>;
@@ -155,7 +167,7 @@ describe("FASTCarousel Basic Pattern", function () {
         expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(1);
     })
 
-    it("should show the previous tab/slide when previous flipper is clicked", async function() {
+    it("should show the previous slide when previous flipper is clicked", async function() {
         const element = (await this.page.waitForSelector(
             "fast-carousel"
         )) as ElementHandle<FASTCarousel>;
@@ -163,5 +175,35 @@ describe("FASTCarousel Basic Pattern", function () {
         await this.page.click('.previous-flipper-container')
         
         expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(6 - 1);
+    })
+
+    it("should pause the rotation, show the next slide when next flipper is activated with enter and space key", async function () {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel",
+        )) as ElementHandle<FASTCarousel>;
+
+        await this.page.press("fast-flipper[direction='next']", 'Enter');
+
+        expect(await element?.evaluate(node => node.paused)).to.be.true;
+        expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(1);
+        
+        await this.page.press("fast-flipper[direction='next']", ' ');
+        
+        expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(2);
+    })
+
+    it("should pause the rotation, show the previous slide when previous flipper is activated with enter and space key", async function () {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel",
+        )) as ElementHandle<FASTCarousel>;
+
+        await this.page.press("fast-flipper[direction='previous']", 'Enter');
+
+        expect(await element?.evaluate(node => node.paused)).to.be.true;
+        expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(6 - 1);
+        
+        await this.page.press("fast-flipper[direction='previous']", ' ');
+        
+        expect(await element?.evaluate(node => node.activeSlideIndex)).to.equal(6 - 2);
     })
 })

@@ -70,11 +70,12 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @keypress=${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}
     >
         <slot name="previous-button">
-            <${prefix}-flipper aria-label="${x =>
-        x.previousButtonAriaLabel}" aria-hidden="${x =>
-        x.pattern === "tabbed" ? "true" : "false"}" direction=${FlipperDirection.previous}
+            <${prefix}-flipper
+                aria-label="${x => x.previousButtonAriaLabel}" aria-hidden="${x =>
+        x.pattern === "tabbed" ? "true" : "false"}"
+                direction=${FlipperDirection.previous}
                 ${ref("previousFlipperDefault")}
->
+            >
         </slot>
     </div>
     <div
@@ -84,9 +85,10 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
     >
         <slot name="next-button">
-            <${prefix}-flipper aria-label="${x =>
-        x.nextButtonAriaLabel}" aria-hidden="${x =>
-        x.pattern === "tabbed" ? "true" : "false"}" direction=${FlipperDirection.next}
+            <${prefix}-flipper
+                aria-label="${x => x.nextButtonAriaLabel}" aria-hidden="${x =>
+        x.pattern === "tabbed" ? "true" : "false"}"
+                direction=${FlipperDirection.next}
                 ${ref("nextFlipperDefault")}
             >
         </slot>
