@@ -110,6 +110,21 @@ export function quantize(
         config.pixelSkipping,
         config.isHistogramPixelValid
     );
+    return quantizeHistogram(histogram, config);
+}
+
+/**
+ * The data in the color histogram is reduced down to a small set of colors.
+ * It can be useful to create the Histogram manually in cases where one wants to remove or alter the colors in it
+ * or to re-use it in order to quantize multiple times with different config settings.
+ * Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c
+ *
+ * @public
+ */
+export function quantizeHistogram(
+    histogram: Histogram,
+    config: QuantizeConfig = defaultQuantizeConfig
+): QuantizedColor[] {
     const initialBox: PixelBox = new PixelBox(
         histogram,
         histogram.minRed,
