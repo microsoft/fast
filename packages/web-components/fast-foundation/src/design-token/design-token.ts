@@ -209,7 +209,7 @@ const noop = Function.prototype;
  */
 class DesignTokenNode<T> {
     private children: Set<DesignTokenNode<any>> = new Set();
-    private bindingObserver: BindingObserver | void;
+    private bindingObserver: BindingObserver | undefined;
 
     constructor(
         public readonly token: DesignToken<T>,
@@ -247,6 +247,7 @@ class DesignTokenNode<T> {
         } catch (e) {
             if (!childToParent.has(this)) {
                 const parent = this.findParentNode();
+
                 if (parent) {
                     parent.appendChild(this);
                     return this.resolveRealValueForNode(this);
@@ -264,13 +265,9 @@ class DesignTokenNode<T> {
             if (current.rawValue) {
                 const { rawValue } = current;
                 if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
-                    if (this.bindingObserver) {
-                        this.bindingObserver = this.bindingObserver.disconnect();
-                    }
-
                     this.setupBindingObserver(rawValue);
 
-                    return ((this.bindingObserver as unknown) as BindingObserver).observe(
+                    return this.bindingObserver!.observe(
                         this.target,
                         defaultExecutionContext
                     );
@@ -377,6 +374,8 @@ class DesignTokenNode<T> {
     }
 
     private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
+        this.tearDownBindingObserver();
+
         const handler = {
             handleChange: (source: Binding<HTMLElement>) => {
                 Observable.getNotifier(this).notify("value");
@@ -386,13 +385,16 @@ class DesignTokenNode<T> {
         this.bindingObserver = Observable.binding(value, handler);
     }
 
+    private tearDownBindingObserver() {
+        if (this.bindingObserver) {
+            this.bindingObserver.disconnect();
+            this.bindingObserver = undefined;
+        }
+    }
+
     public set(value: DesignTokenValue<T>) {
         if (value === this._rawValue) {
             return;
-        }
-
-        if (this.bindingObserver) {
-            this.bindingObserver = this.bindingObserver.disconnect();
         }
 
         if (DesignTokenNode.isDerivedTokenValue(value)) {
@@ -408,10 +410,7 @@ class DesignTokenNode<T> {
     public delete() {
         this._rawValue = void 0;
         this.handleChange = this.valueChangeHandler;
-
-        if (this.bindingObserver) {
-            this.bindingObserver = this.bindingObserver.disconnect();
-        }
+        this.tearDownBindingObserver();
     }
 }
 
