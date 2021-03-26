@@ -445,7 +445,8 @@ describe("A DesignToken", () => {
                 token.setValueFor(target, () => 14);
                 await DOM.nextUpdate()
 
-                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("14");
+                const value = window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)
+                expect(value).to.equal("14");
                 removeElement(target);
             });
 

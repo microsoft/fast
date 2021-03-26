@@ -116,6 +116,8 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     public readonly cssCustomProperty: string;
 
     public getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T> {
+        const node = DesignTokenNode.for(this, element);
+        Observable.track(node, "value");
         return DesignTokenNode.for(this, element).value;
     }
 
@@ -133,9 +135,6 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     }
 
     public addCustomPropertyFor(element: DesignTokenTarget): this {
-        // TODO: Can we do this in a way where we don't hold strong
-        // references to elements and create a memory leak if custom
-        // properties are not removed?
         if (!this.customPropertyChangeHandlers.has(element)) {
             const node = DesignTokenNode.for(this, element);
             let value = node.value;
@@ -234,6 +233,7 @@ class DesignTokenNode<T> {
 
     /**
      * Retrieves the value for the node.
+     * Observable
      */
     public get value(): T {
         try {
@@ -256,15 +256,25 @@ class DesignTokenNode<T> {
 
         while (current !== undefined) {
             if (current.rawValue) {
-                if (DesignTokenNode.isDerivedTokenValue(current.rawValue)) {
-                    if (!this.bindingObserver) {
-                        this.setupBindingObserver(current.rawValue);
+                const { rawValue } = current;
+                if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
+                    if (this.bindingObserver) {
+                        this.bindingObserver = this.bindingObserver.disconnect();
                     }
-                    return current.rawValue(this.target);
+
+                    this.setupBindingObserver(rawValue);
+
+                    return ((this.bindingObserver as unknown) as BindingObserver).observe(
+                        this.target,
+                        defaultExecutionContext
+                    );
                 } else if (current.rawValue instanceof DesignTokenImpl) {
-                    return DesignTokenNode.for(current.rawValue, this.target).value;
+                    return DesignTokenNode.for(
+                        rawValue as DesignTokenImpl<T>,
+                        this.target
+                    ).value;
                 } else {
-                    return current.rawValue;
+                    return rawValue as any;
                 }
             }
 
@@ -331,6 +341,10 @@ class DesignTokenNode<T> {
     }
 
     public appendChild<T>(child: DesignTokenNode<T>) {
+        if (this.children.has(child)) {
+            return;
+        }
+
         this.children.forEach(c => {
             if (child.contains(c)) {
                 this.removeChild(c);
@@ -374,7 +388,6 @@ class DesignTokenNode<T> {
         };
 
         this.bindingObserver = Observable.binding(value, handler);
-        this.bindingObserver.observe(this.target, defaultExecutionContext);
     }
 
     public set(value: DesignTokenValue<T>) {
@@ -382,8 +395,8 @@ class DesignTokenNode<T> {
             return;
         }
 
-        if (this.rawValue instanceof DesignTokenImpl) {
-            childToParent.get(this)?.removeChild(this);
+        if (this._rawValue instanceof DesignTokenImpl) {
+            this.removeAlias();
         }
 
         if (this.bindingObserver) {
@@ -394,10 +407,8 @@ class DesignTokenNode<T> {
             this.handleChange = noop as () => void;
             this.setupBindingObserver(value);
         } else if (value instanceof DesignTokenImpl) {
-            childToParent.get(this)?.removeChild(this);
-            const node = DesignTokenNode.for(value, this.target);
-            node.appendChild(this);
-        } else if (this.rawValue !== value) {
+            this.alias(value);
+        } else if (this._rawValue !== value) {
             this.handleChange = noop as () => void;
         }
 
@@ -405,12 +416,35 @@ class DesignTokenNode<T> {
     }
 
     public delete() {
+        const previous = this._rawValue;
+
         this._rawValue = void 0;
         this.handleChange = this.valueChangeHandler;
 
         if (this.bindingObserver) {
             this.bindingObserver = this.bindingObserver.disconnect();
         }
+
+        if (previous instanceof DesignTokenImpl) {
+            this.removeAlias();
+        }
+    }
+
+    /**
+     * Alias the token to a target token
+     * @param target
+     */
+    private alias(target: DesignToken<T>) {
+        childToParent.get(this)?.removeChild(this);
+        DesignTokenNode.for(target, this.target).appendChild(this);
+    }
+
+    /**
+     * Removes
+     */
+    private removeAlias() {
+        childToParent.get(this)?.removeChild(this);
+        this.findParentNode()?.appendChild(this);
     }
 }
 
