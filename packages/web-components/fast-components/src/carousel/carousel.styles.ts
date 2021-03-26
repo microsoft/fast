@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import {
-    CarouselPattern,
     DirectionalStyleSheetBehavior,
     display,
     focusVisible,
@@ -54,7 +53,7 @@ export const CarouselStyles = css`
         display: none;
     }
 
-    :host([pattern="${CarouselPattern.basic}"]) .flipper {
+    :host([pattern="basic"]) .flipper {
         opacity: 1;
     }
 

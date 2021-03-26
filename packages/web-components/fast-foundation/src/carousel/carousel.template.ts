@@ -50,10 +50,7 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @keypress=${(x, c) => x.handleRotationKeyDown(c.event as KeyboardEvent)}
         ${ref("rotationControlContainer")}
     >
-        <slot
-            name="rotation-control"
-            part="rotation-control"
-        >
+        <slot name="rotation-control">
             <${prefix}-button appearance="neutral" ${ref("rotationControlDefault")}>
                 ${x =>
                     x.paused
@@ -63,7 +60,7 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
                         : html`
                               ${pauseIcon}
                           `}
-            <${prefix}/-button>
+            </${prefix}-button>
         </slot>
     </div>
     <div 
@@ -72,9 +69,7 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @click=${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}
         @keypress=${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}
     >
-        <slot name="previous-button" part="previous-button" ${slotted(
-            "previousFlipperSlottedItem"
-        )}>
+        <slot name="previous-button">
             <${prefix}-flipper aria-label="${x =>
         x.previousButtonAriaLabel}" aria-hidden="${x =>
         x.pattern === "tabbed" ? "true" : "false"}" direction=${FlipperDirection.previous}
@@ -88,7 +83,7 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @click=${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}
         @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
     >
-        <slot name="next-button" part="next-button" ${slotted("nextFlipperSlottedItem")}>
+        <slot name="next-button">
             <${prefix}-flipper aria-label="${x =>
         x.nextButtonAriaLabel}" aria-hidden="${x =>
         x.pattern === "tabbed" ? "true" : "false"}" direction=${FlipperDirection.next}

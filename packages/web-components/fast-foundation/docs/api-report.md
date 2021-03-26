@@ -263,8 +263,6 @@ export class Carousel extends Tabs {
     // @internal (undocumented)
     focused: boolean;
     // @internal (undocumented)
-    handleDefaultFlipperKeypress: (direction: 1 | -1, e: KeyboardEvent) => void;
-    // @internal (undocumented)
     handleFlipperClick(direction: 1 | -1, e: Event): void;
     // @internal (undocumented)
     handleFlipperKeypress: (direction: 1 | -1, e: KeyboardEvent) => void;
@@ -276,16 +274,12 @@ export class Carousel extends Tabs {
     nextButtonAriaLabel: string;
     // @internal (undocumented)
     nextFlipperDefault: HTMLElement;
-    // @internal (undocumented)
-    nextFlipperSlottedItem: HTMLElement[];
     notabfocus: boolean;
     pattern: string;
     paused: boolean;
     previousButtonAriaLabel: string;
     // @internal (undocumented)
     previousFlipperDefault: HTMLElement;
-    // @internal (undocumented)
-    previousFlipperSlottedItem: HTMLElement[];
     // @internal (undocumented)
     rotationControlContainer: HTMLElement;
     // @internal (undocumented)
@@ -303,12 +297,7 @@ export interface Carousel extends ARIAGlobalStatesAndProperties {
 }
 
 // @public
-export enum CarouselPattern {
-    // (undocumented)
-    basic = "basic",
-    // (undocumented)
-    tabbed = "tabbed"
-}
+export type CarouselPattern = "basic" | "tabbed";
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
 //

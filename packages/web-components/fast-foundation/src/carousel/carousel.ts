@@ -198,17 +198,7 @@ export class Carousel extends Tabs {
     /**
      * @internal
      */
-    public previousFlipperSlottedItem: HTMLElement[];
-
-    /**
-     * @internal
-     */
     public nextFlipperDefault: HTMLElement;
-
-    /**
-     * @internal
-     */
-    public nextFlipperSlottedItem: HTMLElement[];
 
     /**
      * @internal
@@ -299,18 +289,6 @@ export class Carousel extends Tabs {
                     break;
                 }
             case keyCodeEnter:
-                this.paused = true;
-                this.incrementSlide(direction);
-                break;
-        }
-    };
-
-    /**
-     * @internal
-     */
-    public handleDefaultFlipperKeypress = (direction: 1 | -1, e: KeyboardEvent): void => {
-        switch (e.keyCode) {
-            case keyCodeSpace:
                 this.paused = true;
                 this.incrementSlide(direction);
                 break;
