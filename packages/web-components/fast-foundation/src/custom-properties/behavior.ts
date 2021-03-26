@@ -23,7 +23,7 @@ export interface CSSCustomPropertyDefinition {
 export interface CSSCustomPropertyTarget {
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
-    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
+    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[] | void;
 }
 
 /**

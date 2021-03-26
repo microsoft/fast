@@ -27,7 +27,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -92,7 +92,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked ?? false;
+    public checked: boolean;
     private checkedChanged(): void {
         if (this.$fastController.isConnected) {
             // changing the value via code and from radio-group
@@ -102,7 +102,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
 
             this.updateForm();
 
-            if (this.proxy instanceof HTMLElement) {
+            if (this.proxy instanceof HTMLInputElement) {
                 this.proxy.checked = this.checked;
             }
 
@@ -150,6 +150,11 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
                 }
             }
         }
+    }
+
+    constructor() {
+        super();
+        this.checked = this.defaultChecked ?? false;
     }
 
     /**

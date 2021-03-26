@@ -51,7 +51,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -145,7 +145,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     @attr({ converter: nullableNumberConverter })
     public min: number = 0; // Map to proxy element.
     private minChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.min = `${this.min}`;
         }
 
@@ -163,7 +163,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     @attr({ converter: nullableNumberConverter })
     public max: number = 10; // Map to proxy element.
     private maxChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.max = `${this.max}`;
         }
         this.validate();
@@ -179,7 +179,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     @attr({ converter: nullableNumberConverter })
     public step: number = 1; // Map to proxy element.
     private stepChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.step = `${this.step}`;
         }
 
@@ -456,8 +456,3 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         return constrainedValue + this.min;
     };
 }
-
-/**
- * @internal
- */
-export interface Slider extends FormAssociatedSlider {}
