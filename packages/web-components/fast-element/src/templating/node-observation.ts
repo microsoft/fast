@@ -1,6 +1,6 @@
+import type { Behavior } from "../observation/behavior";
 import { Accessor, Observable } from "../observation/observable";
 import { emptyArray } from "../platform";
-import { Behavior } from "../observation/behavior";
 
 /**
  * Options for configuring node observation behavior.
@@ -19,15 +19,22 @@ export interface NodeBehaviorOptions<T = any> {
      * @param index - The index of the node within the array.
      * @param array - The Node array that is being filtered.
      */
-    filter?(value: Node, index: number, array: Node[]): boolean;
+    filter?: ElementsFilter;
 }
+
+/**
+ * Elements filter function type.
+ *
+ * @public
+ */
+export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
 /**
  * Creates a function that can be used to filter a Node array, selecting only elements.
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(selector?: string) {
+export function elements(selector?: string): ElementsFilter {
     if (selector) {
         return function (value: Node, index: number, array: Node[]): boolean {
             return value.nodeType === 1 && (value as HTMLElement).matches(selector);
@@ -106,7 +113,7 @@ export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
         this.updateTarget(this.computeNodes());
     }
 
-    private computeNodes() {
+    private computeNodes(): Node[] {
         let nodes = this.getNodes();
 
         if (this.options.filter !== void 0) {

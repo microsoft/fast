@@ -6005,10 +6005,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-beachball@^1.36.2:
-  version "1.50.0"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.50.0.tgz#0ed8f6ac8f31681e0f79e5c354ae02cb961dfcfa"
-  integrity sha512-ZBg+vooMIy4NEpbelgyJP+fu+14pzPpzmcsUNw7OKrIonvhAtaOdIqO98jxYVAADeK/05AmHHhlLEYN/Ah0TwQ==
+beachball@^1.53.1:
+  version "1.53.1"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-1.53.1.tgz#51a85099b55a6e413fc69ea004bd8f3e46d1c5f6"
+  integrity sha512-hkptrmsPhZ1vXM2uMJrtT/2EhKvu8zQEc/hKCVdwOmYKEi9jxFDOXEere87955EssgFkkp5WU7rhQE2luueN8w==
   dependencies:
     cosmiconfig "^6.0.0"
     execa "^4.0.3"
@@ -6022,7 +6022,7 @@ beachball@^1.36.2:
     semver "^6.1.1"
     toposort "^2.0.2"
     uuid "^8.3.1"
-    workspace-tools "^0.10.2"
+    workspace-tools "^0.12.3"
     yargs-parser "^20.2.4"
 
 before-after-hook@^2.0.0, before-after-hook@^2.1.0:
@@ -22694,10 +22694,10 @@ workerpool@6.0.2:
   resolved "https://registry.yarnpkg.com/workerpool/-/workerpool-6.0.2.tgz#e241b43d8d033f1beb52c7851069456039d1d438"
   integrity sha512-DSNyvOpFKrNusaaUwk+ej6cBj1bmhLcBfj80elGk+ZIo5JSkq+unB1dLKEOcNfJDZgjGICfhQ0Q5TbP0PvF4+Q==
 
-workspace-tools@^0.10.2:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.10.3.tgz#1517ecd97bc4f34c586be6a160da6d8a3a6c3c87"
-  integrity sha512-5DV0C38UBwDRQ9GDINatw2UELbaK/IeBgEpvERpf7vNIfiG0GHInrNhm0jXfiS8sLOpp340m64+tF4L3UHpVrw==
+workspace-tools@^0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.12.3.tgz#71da0c7acdd65576cb7f666aca132abdbe5c3eb9"
+  integrity sha512-Toq4VI4GJw5naWxgXNU5/mmuu6PeiCRRZDkVOoeJacqQ6r0zRGWVBxE4YXQp2SADTKdC1ATwqsE+6bcJTZUmpA==
   dependencies:
     "@pnpm/lockfile-file" "^3.0.7"
     "@pnpm/logger" "^3.2.2"

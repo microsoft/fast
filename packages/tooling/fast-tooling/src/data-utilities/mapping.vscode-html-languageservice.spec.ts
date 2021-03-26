@@ -396,34 +396,41 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
 
 describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
     test("should map a parsed HTML value to a data dictionary", () => {
-        expect(
-            mapVSCodeHTMLAndDataDictionaryToDataDictionary(
-                "",
-                "text",
-                [
-                    {
-                        root: {
-                            schemaId: "div",
-                            data: {
-                                foo: "bar",
-                            },
+        const html = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            "",
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
                         },
                     },
-                    "root",
-                ],
-                {
-                    div: {
-                        mapsToTagName: "div",
-                    },
-                }
-            )
-        ).toEqual(null);
+                },
+                "root",
+            ],
+            {
+                div: {
+                    mapsToTagName: "div",
+                },
+            }
+        );
+
+        const keys = Object.keys(html[0]);
+
+        expect(keys).toHaveLength(1);
+        expect(html[0][html[1]]).toEqual({
+            data: "",
+            parent: undefined,
+            schemaId: "text",
+        });
     });
     describe("should map an existing data dictionary item with values to a parsed HTML value", () => {
         test("originating from the message system", () => {
             expect(
                 mapVSCodeHTMLAndDataDictionaryToDataDictionary(
-                    '<div id="baz"></div>',
+                    '<ul id="baz"></ul>',
                     "text",
                     [
                         {
@@ -438,14 +445,19 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                     ],
                     {
                         div: {
+                            $id: "div",
                             mapsToTagName: "div",
+                        },
+                        ul: {
+                            $id: "ul",
+                            mapsToTagName: "ul",
                         },
                     }
                 )
             ).toEqual([
                 {
                     root: {
-                        schemaId: "div",
+                        schemaId: "ul",
                         data: {
                             id: "baz",
                         },
@@ -486,6 +498,7 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                 ],
                 {
                     div: {
+                        $id: "div",
                         mapsToTagName: "div",
                         properties: {
                             Slot: {
@@ -494,6 +507,7 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                         },
                     },
                     span: {
+                        $id: "span",
                         mapsToTagName: "span",
                         properties: {
                             Slot: {
@@ -1188,5 +1202,149 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             },
             "root",
         ]);
+    });
+    test("should map an existing data dictionary to an existing parsed HTML value with a partial tag", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><</div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).toHaveLength(2);
+        expect(mappedData[0][keys[1]]).toEqual({
+            schemaId: "text",
+            parent: {
+                id: "root",
+                dataLocation: "Slot",
+            },
+            data: "<",
+        });
+    });
+    test("should map an existing data dictionary to an existing parsed HTML value with a partial tag", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><div><</div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                            Slot: [
+                                {
+                                    id: "foo",
+                                },
+                            ],
+                        },
+                    },
+                    foo: {
+                        schemaId: "div",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {},
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                        SlotTest: {
+                            mapsToSlot: "test",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).toHaveLength(3);
+        expect(mappedData[0][keys[1]].data).toEqual({
+            Slot: [
+                {
+                    id: keys[2],
+                },
+            ],
+        });
+        expect(mappedData[0][keys[2]]).toEqual({
+            schemaId: "text",
+            parent: {
+                id: "foo",
+                dataLocation: "Slot",
+            },
+            data: "<",
+        });
+    });
+    test("should map an un-parsable attribute without throwing an error", () => {
+        let mappedData;
+
+        expect(() => {
+            mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+                '<div id="></div>',
+                "text",
+                [
+                    {
+                        root: {
+                            schemaId: "div",
+                            data: {
+                                foo: "bar",
+                            },
+                        },
+                    },
+                    "root",
+                ],
+                {
+                    div: {
+                        $id: "div",
+                        id: "div",
+                        mapsToTagName: "div",
+                        properties: {
+                            Slot: {
+                                mapsToSlot: "",
+                            },
+                        },
+                    },
+                }
+            );
+        }).not.toThrow();
+        expect(mappedData[0].root).toEqual({
+            schemaId: "div",
+            data: {
+                id: "",
+            },
+        });
     });
 });

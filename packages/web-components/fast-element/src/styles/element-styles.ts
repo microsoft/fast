@@ -1,4 +1,4 @@
-import { Behavior } from "../observation/behavior";
+import type { Behavior } from "../observation/behavior";
 import { DOM } from "../dom";
 
 /**
@@ -102,7 +102,6 @@ export abstract class ElementStyles {
         return styleLookup.get(key) || null;
     }
 
-    /* eslint-disable @typescript-eslint/explicit-function-return-type */
     /**
      * Create ElementStyles from ComposableStyles.
      */
@@ -110,12 +109,13 @@ export abstract class ElementStyles {
         if (DOM.supportsAdoptedStyleSheets) {
             const styleSheetCache = new Map();
             return (styles: ComposableStyles[]) =>
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 new AdoptedStyleSheetsStyles(styles, styleSheetCache);
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         return (styles: ComposableStyles[]) => new StyleElementStyles(styles);
     })();
-    /* eslint-enable @typescript-eslint/explicit-function-return-type */
 }
 
 function reduceStyles(

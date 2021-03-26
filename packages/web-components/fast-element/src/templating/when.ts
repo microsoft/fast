@@ -1,5 +1,5 @@
-import { CaptureType, SyntheticViewTemplate } from "./template";
-import { ExecutionContext, Binding } from "../observation/observable";
+import type { Binding, ExecutionContext } from "../observation/observable";
+import type { CaptureType, SyntheticViewTemplate } from "./template";
 
 /**
  * A directive that enables basic conditional rendering in a template.
