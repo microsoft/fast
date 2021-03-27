@@ -110,7 +110,7 @@ export class MenuItem extends FASTElement {
 
     private focusSubmenuOnLoad: boolean = false;
 
-    private observer: MutationObserver | null = null;
+    private observer: MutationObserver | undefined;
 
     /**
      * @internal
@@ -130,9 +130,9 @@ export class MenuItem extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.submenu = undefined;
-        if (this.observer !== null) {
+        if (this.observer !== undefined) {
             this.observer.disconnect();
-            this.observer = null;
+            this.observer = undefined;
         }
     }
 
