@@ -12,7 +12,7 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
-    "test": "yarn convert:readme && yarn eslint && yarn build:app",
+    "test": "yarn convert:readme && yarn convert:scenarios && yarn eslint && yarn build:app",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix"
   },
