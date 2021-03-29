@@ -5,7 +5,11 @@ sidebar_label: fast-carousel
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/carousel/README.md
 ---
 A web component implementation of a [carousel](https://w3c.github.io/aria-practices/#carousel).
-Note: To implement the *Tabbed* pattern Carousel `<fast-tab>` and `<fast-tab-panel>` must be used for the pattern to work properly.
+
+
+## Notes:
+- To implement the default *Tabbed* pattern Carousel `<fast-tab>` and `<fast-tab-panel>` must be used for the pattern to work properly.
+- When the pattern is `tabbed` (default) any slotted items in the `previous-button` or `next-button` automatically have `aria-hidden="true"` and `tabindex="-1"` set on them.
 
 ## Applying Custom Styles
 

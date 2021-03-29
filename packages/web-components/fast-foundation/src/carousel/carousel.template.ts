@@ -69,7 +69,10 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @click=${(x, c) => x.handleFlipperClick(-1, c.event as MouseEvent)}
         @keypress=${(x, c) => x.handleFlipperKeypress(-1, c.event as KeyboardEvent)}
     >
-        <slot name="previous-button">
+        <slot name="previous-button" ${slotted({
+            property: "previousButton",
+            filter: elements(),
+        })}>
             <${prefix}-flipper
                 aria-label="${x => x.previousButtonAriaLabel}" aria-hidden="${x =>
         x.pattern === "tabbed" ? "true" : "false"}"
@@ -84,7 +87,10 @@ export function createCarouselTemplate(prefix: string): ViewTemplate {
         @click=${(x, c) => x.handleFlipperClick(1, c.event as MouseEvent)}
         @keypress=${(x, c) => x.handleFlipperKeypress(1, c.event as KeyboardEvent)}
     >
-        <slot name="next-button">
+        <slot name="next-button" ${slotted({
+            property: "nextButton",
+            filter: elements(),
+        })}>
             <${prefix}-flipper
                 aria-label="${x => x.nextButtonAriaLabel}" aria-hidden="${x =>
         x.pattern === "tabbed" ? "true" : "false"}"

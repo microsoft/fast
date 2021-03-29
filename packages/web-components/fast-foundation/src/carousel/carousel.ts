@@ -271,7 +271,36 @@ export class Carousel extends Tabs {
     /**
      * @internal
      */
+    @observable
+    public previousButton: HTMLElement[];
+    public previousButtonChanged(): void {
+        console.log("previousButtonChanged: ", this.previousButton);
+        if (this.pattern === "tabbed" && this.previousButton) {
+            this.previousButton.forEach((element: HTMLElement) => {
+                element.setAttribute("aria-hidden", "true");
+                element.setAttribute("tabindex", "-1");
+            });
+        }
+    }
 
+    /**
+     * @internal
+     */
+    @observable
+    public nextButton: HTMLElement[];
+    public nextButtonChanged(): void {
+        console.log("nextButtonChanged: ", this.nextButton);
+        if (this.pattern === "tabbed" && this.nextButton) {
+            this.nextButton.forEach((element: HTMLElement) => {
+                element.setAttribute("aria-hidden", "true");
+                element.setAttribute("tabindex", "-1");
+            });
+        }
+    }
+
+    /**
+     * @internal
+     */
     public handleFlipperClick(direction: 1 | -1, e: Event): void {
         this.incrementSlide(direction);
     }
@@ -522,6 +551,12 @@ export class Carousel extends Tabs {
             this.startAutoPlay();
         } else {
             this.paused = true;
+        }
+
+        if (this.pattern === "tabbed") {
+            this.previousButtonChanged();
+            // console.log(this.querySelector("slot[name='previous-button']"))
+            // console.log(this.previousButton)
         }
 
         // per ARIA autoplay must pause when mouse is hovering over the carousel
