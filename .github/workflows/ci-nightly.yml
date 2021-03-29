@@ -35,7 +35,7 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream   
    
-    #- name: Publish NPM changed packages
-    #  run: |
-     #   yarn publish-ci -y -n $NPM_PAT 
+    - name: Publish NPM changed packages
+      run: |
+        yarn publish-ci -y -n --no-publish $NPM_PAT 
      
