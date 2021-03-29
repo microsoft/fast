@@ -50,13 +50,13 @@ export const FlipperStyles = css`
 
     .next,
     .previous {
-        position: relative;
+        position: absolute;
         ${
-            /* Glyph size and font-size is temporary - 
+            /* Glyph size and display: grid are temporary - 
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
-        font-size: 0;
+        display: grid;
     }
 
     :host([disabled]) {
