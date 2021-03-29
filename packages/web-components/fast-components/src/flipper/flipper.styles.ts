@@ -50,7 +50,7 @@ export const FlipperStyles = css`
 
     .next,
     .previous {
-        position: absolute;
+        position: relative;
         ${
             /* Glyph size and display: grid are temporary - 
             replace when adaptive typography is figured out */ ""
