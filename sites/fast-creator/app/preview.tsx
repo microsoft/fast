@@ -41,8 +41,7 @@ export interface PreviewState {
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
     theme: FASTComponents.StandardLuminance;
-    direction: Direction;
-    accentColor: string;
+    designSystemDataDictionary: DataDictionary<unknown>;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
@@ -51,6 +50,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     constructor(props: {}) {
         super(props);
+        const designSystemLinkedDataId: string = "design-system";
 
         this.ref = React.createRef();
         this.activeDictionaryItemWrapperRef = React.createRef();
@@ -60,8 +60,25 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             dataDictionary: void 0,
             schemaDictionary: {},
             theme: FASTComponents.StandardLuminance.LightMode,
-            direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            designSystemDataDictionary: [
+                {
+                    [designSystemLinkedDataId]: {
+                        schemaId: "fast-design-system-provider",
+                        data: {
+                            "use-defaults": true,
+                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            direction: Direction.ltr,
+                            "background-color": FASTComponents.neutralLayerL1(
+                                Object.assign({}, fastDesignSystemDefaults, {
+                                    baseLayerLuminance:
+                                        FASTComponents.StandardLuminance.LightMode,
+                                })
+                            ),
+                        },
+                    },
+                },
+                designSystemLinkedDataId,
+            ],
         };
 
         window.addEventListener("message", this.handleMessage);
@@ -72,9 +89,13 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
+            const direction: Direction = (this.state.designSystemDataDictionary[0][
+                "design-system"
+            ].data as any)["direction"];
+
             return (
                 <React.Fragment>
-                    <div className="preview" dir={this.state.direction} ref={this.ref}>
+                    <div className="preview" dir={direction} ref={this.ref}>
                         <div />
                     </div>
                     <div ref={this.activeDictionaryItemWrapperRef}>
@@ -114,28 +135,26 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 "fast-design-system-provider"
             );
 
-            designSystemProvider.setAttribute(
-                "accent-base-color",
-                this.state.accentColor
-            );
+            Object.entries(
+                this.state.designSystemDataDictionary[0]["design-system"].data as any
+            ).forEach(([attribute, value]: [string, any]) => {
+                designSystemProvider.setAttribute(attribute, value);
+            });
+
+            const accentColor: string = (this.state.designSystemDataDictionary[0][
+                "design-system"
+            ].data as any)["accent-base-color"];
+
             const generatedAccentPalette = createColorPalette(
-                parseColorHexRGB(this.state.accentColor)
+                parseColorHexRGB(accentColor)
             );
             (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
 
             designSystemProvider.setAttribute(
-                "background-color",
-                FASTComponents.neutralLayerL1(
-                    Object.assign({}, fastDesignSystemDefaults, {
-                        baseLayerLuminance: this.state.theme,
-                    })
-                )
-            );
-            designSystemProvider.setAttribute(
                 "style",
                 "background: var(--background-color); height: 100vh;"
             );
-            designSystemProvider.setAttribute("use-defaults", "");
+
             designSystemProvider.appendChild(
                 mapDataDictionary({
                     dataDictionary: this.state.dataDictionary,
@@ -231,24 +250,23 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.custom:
-                        if ((messageData as any).id === previewDirection) {
+                        if ((messageData as any).originatorId === "design-system") {
                             this.setState(
                                 {
-                                    direction: (messageData as any).value,
-                                },
-                                this.updateDOM(messageData as MessageSystemOutgoing)
-                            );
-                        } else if ((messageData as any).id === previewAccentColor) {
-                            this.setState(
-                                {
-                                    accentColor: (messageData as any).value,
-                                },
-                                this.updateDOM(messageData as MessageSystemOutgoing)
-                            );
-                        } else if ((messageData as any).id === previewTheme) {
-                            this.setState(
-                                {
-                                    theme: (messageData as any).value,
+                                    designSystemDataDictionary: [
+                                        {
+                                            ["design-system"]: {
+                                                schemaId: this.state
+                                                    .designSystemDataDictionary[0][
+                                                    "design-system"
+                                                ].schemaId,
+                                                data: {
+                                                    ...(messageData as any).data,
+                                                },
+                                            },
+                                        },
+                                        "design-system",
+                                    ],
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );

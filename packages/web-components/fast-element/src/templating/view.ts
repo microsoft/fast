@@ -1,5 +1,5 @@
-import { Behavior } from "../observation/behavior";
-import { ExecutionContext } from "../observation/observable";
+import type { Behavior } from "../observation/behavior";
+import type { ExecutionContext } from "../observation/observable";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.

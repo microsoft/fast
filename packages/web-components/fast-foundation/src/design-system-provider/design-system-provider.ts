@@ -283,7 +283,7 @@ export class DesignSystemProvider extends FASTElement
      * @public
      * @deprecated - use disconnectedRegistry
      */
-    public disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
+    public disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[];
 
     /**
      * Allows arbitrary registration to the provider before the constructor runs.
@@ -292,7 +292,7 @@ export class DesignSystemProvider extends FASTElement
      *
      * @public
      */
-    public disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
+    public disconnectedRegistry?: Array<(provider: DesignSystemProvider) => void> | void;
 
     /**
      * Handle changes to design-system-provider IDL and content attributes
@@ -371,6 +371,10 @@ export class DesignSystemProvider extends FASTElement
             this.customPropertyManager = new ConstructableStylesCustomPropertyManager(
                 new CSSStyleSheet()
             );
+        }
+
+        if (this.designSystemProperties === undefined) {
+            this.designSystemProperties = {};
         }
 
         this.$fastController.addBehaviors([designSystemConsumerBehavior]);

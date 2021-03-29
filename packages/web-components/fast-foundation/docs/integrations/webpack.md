@@ -89,7 +89,7 @@ module.exports = function(env, { mode }) {
   const production = mode === 'production';
   return {
     mode: production ? 'production' : 'development',
-    devtool: production ? 'source-maps' : 'inline-source-map',
+    devtool: production ? 'source-map' : 'inline-source-map',
     entry: {
       app: ['./src/main.ts']
     },

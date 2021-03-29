@@ -1,11 +1,5 @@
-import {
-    attr,
-    Constructable,
-    DOM,
-    emptyArray,
-    FASTElement,
-    observable,
-} from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, observable } from "@microsoft/fast-element";
+import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEnter } from "@microsoft/fast-web-utilities";
 
 /**
@@ -129,13 +123,19 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 }
 
 /**
+ * Avaiable types for the `proxy` property.
+ * @alpha
+ */
+export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+
+/**
  * Identifies a class as having a proxy element and optional submethods related
  * to the proxy element.
  *
  * @alpha
  */
 export interface FormAssociatedProxy {
-    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    proxy: ProxyElement;
     disabledChanged?(previous: boolean, next: boolean): void;
     formDisabledCallback?(disabled: boolean): void;
     formResetCallback?(): void;
@@ -159,9 +159,7 @@ export type FormAssociatedElement = FormAssociated &
  *
  * @alpha
  */
-export type ConstructableFormAssociated = Constructable<
-    FASTElement & HTMLElement & FormAssociatedProxy
->;
+export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 /**
  * Base function for providing Custom Element Form Association.
@@ -176,7 +174,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @alpha
          */
-        public proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+        public proxy: ProxyElement;
 
         /**
          * Must evaluate to true to enable elementInternals.

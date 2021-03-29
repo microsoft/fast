@@ -76,7 +76,7 @@ export const $global: Global = (function () {
 
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
-    $global.trustedTypes = { createPolicy: (n, r) => r };
+    $global.trustedTypes = { createPolicy: (n: string, r: TrustedTypesPolicy) => r };
 }
 
 /**

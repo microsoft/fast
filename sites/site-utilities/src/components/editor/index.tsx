@@ -29,6 +29,7 @@ export const previewDirection: string = "PREVIEW::DIRECTION";
 export const previewTheme: string = "PREVIEW::THEME";
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
+const fastDesignMessageSystemWorker = new FASTMessageSystemWorker();
 
 abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public editor: monaco.editor.IStandaloneCodeEditor;
@@ -38,6 +39,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public maxViewerHeight: number = 0;
     public maxViewerWidth: number = 0;
     public fastMessageSystem: MessageSystem;
+    public fastDesignMessageSystem: MessageSystem;
     // This is the current monaco editor models string value
     public monacoValue: string[];
     public paneStartClassNames: string = "pane pane__start";
@@ -61,6 +63,12 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
         if ((window as any).Worker) {
             this.fastMessageSystem = new MessageSystem({
                 webWorker: fastMessageSystemWorker,
+            });
+            this.fastDesignMessageSystem = new MessageSystem({
+                webWorker: fastDesignMessageSystemWorker,
+            });
+            new AjvMapper({
+                messageSystem: this.fastDesignMessageSystem,
             });
             new AjvMapper({
                 messageSystem: this.fastMessageSystem,
