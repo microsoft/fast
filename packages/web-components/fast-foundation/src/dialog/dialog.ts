@@ -1,4 +1,4 @@
-import { attr, DOM } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { tabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
@@ -43,6 +43,42 @@ export class Dialog extends FoundationElement {
     public trapFocus: boolean = true;
 
     /**
+     * The id of the start element of the internal tab queue when trap-focus is true.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: tab-queue-start-id
+     */
+    @attr({ attribute: "tab-queue-start-id" })
+    public tabQueueStartId: string;
+    private tabQueueStartIdChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.tabQueueStartElement =
+                typeof this.tabQueueStartId === "string"
+                    ? document.getElementById(this.tabQueueStartId)
+                    : undefined;
+        }
+    }
+
+    /**
+     * The id of the end element of the internal tab queue when trap-focus is true
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: tab-queue-end-id
+     */
+    @attr({ attribute: "tab-queue-end-id" })
+    public tabQueueEndId: string;
+    private tabQueueEndIdChanged(): void {
+        if ((this as FASTElement).$fastController.isConnected) {
+            this.tabQueueEndElement =
+                typeof this.tabQueueEndId === "string"
+                    ? document.getElementById(this.tabQueueEndId)
+                    : undefined;
+        }
+    }
+
+    /**
      * The id of the element describing the dialog.
      * @public
      * @remarks
@@ -69,6 +105,24 @@ export class Dialog extends FoundationElement {
      */
     @attr({ attribute: "aria-label" })
     public ariaLabel: string;
+
+    /**
+     * The html element at the begginning of the dialog's tab queue.
+     * This can be set directly or through the tab-queue-start-id attribute
+     *
+     * @public
+     */
+    @observable
+    public tabQueueStartElement: HTMLElement | null | undefined;
+
+    /**
+     * The html element at the end of the dialog's tab queue.
+     * This can be set directly or through the tab-queue-start-id attribute
+     *
+     * @public
+     */
+    @observable
+    public tabQueueEndElement: HTMLElement | null | undefined;
 
     /**
      * @internal
@@ -148,7 +202,21 @@ export class Dialog extends FoundationElement {
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
             // store references to tabbable elements
+
+            // NOTE:  tabbable's list of elements in the tab queue is a legacy fallback as it does not
+            // account for web-components unless those are marked with tab index of 0 or greater
+            // authors should get more reliable results by specifying the start/end elements of
+            // the internal tab queue directly through the tab start/end attributes or properties
             this.tabbableElements = tabbable(this as Element);
+
+            this.tabQueueStartElement =
+                typeof this.tabQueueStartId === "string"
+                    ? document.getElementById(this.tabQueueStartId)
+                    : undefined;
+            this.tabQueueEndElement =
+                typeof this.tabQueueEndId === "string"
+                    ? document.getElementById(this.tabQueueEndId)
+                    : undefined;
 
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
@@ -168,6 +236,7 @@ export class Dialog extends FoundationElement {
             switch (e.keyCode) {
                 case keyCodeEscape:
                     this.dismiss();
+                    e.preventDefault();
                     break;
 
                 case keyCodeTab:
@@ -189,6 +258,20 @@ export class Dialog extends FoundationElement {
             return;
         }
 
+        // use start/end elements if available
+        if (this.tabQueueStartElement && this.tabQueueEndElement) {
+            if (e.shiftKey && e.target === this.tabQueueStartElement) {
+                this.tabQueueEndElement.focus();
+                e.preventDefault();
+            } else if (!e.shiftKey && e.target === this.tabQueueEndElement) {
+                this.tabQueueStartElement.focus();
+                e.preventDefault();
+            }
+
+            return;
+        }
+
+        // fall back to tabbable
         const tabbableElementCount: number = this.tabbableElements.length;
 
         if (tabbableElementCount === 0) {
@@ -213,6 +296,12 @@ export class Dialog extends FoundationElement {
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
+        if (this.tabQueueStartElement) {
+            this.tabQueueStartElement.focus();
+            return;
+        }
+
+        // fall back to tabbable if we have no start element specified
         if (this.tabbableElements.length === 0) {
             this.dialog.focus();
         } else {
