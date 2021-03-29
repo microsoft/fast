@@ -1,6 +1,13 @@
-<fast-dialog id="foo" aria-label="Simple dialog" modal="true">
+<fast-dialog
+    id="foo"
+    aria-label="Simple dialog"
+    modal="true"
+    trap-focus="true"
+    tab-queue-start-id="starttabqueue"
+    tab-queue-end-id="endtabqueue"
+>
     <h2>Dialog with text and button. The button should receive focus</h2>
-    <fast-button tabindex="0">Button A</fast-button>
-    <fast-button tabindex="0" id="element" autofocus>Should autofocus</fast-button>
-    <fast-checkbox>A checkbox</fast-checkbox>
+    <fast-button id="starttabqueue">Button A</fast-button>
+    <fast-button id="element" autofocus>Should autofocus</fast-button>
+    <fast-checkbox id="endtabqueue">A checkbox</fast-checkbox>
 </fast-dialog>
