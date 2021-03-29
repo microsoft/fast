@@ -210,13 +210,13 @@ export class HorizontalScroll extends FASTElement {
      * @internal
      */
     private updateScrollStops(): void {
-        const updatedItems: HTMLElement[] = [];
+        let updatedItems: HTMLElement[] = [];
 
-        this.scrollItems.map(item => {
+        this.scrollItems.forEach(item => {
             if (item instanceof HTMLSlotElement) {
-                item.assignedElements().forEach(child => {
-                    updatedItems.push(child as HTMLElement);
-                });
+                updatedItems = updatedItems.concat(
+                    item.assignedElements() as HTMLElement[]
+                );
             } else {
                 updatedItems.push(item);
             }
