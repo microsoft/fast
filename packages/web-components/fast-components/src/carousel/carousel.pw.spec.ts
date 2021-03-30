@@ -104,6 +104,31 @@ describe("FASTCarousel Tabbed Pattern", function () {
 
         expect(await element?.evaluate(node => node.paused)).to.be.true;
     })
+
+    it("should pause the auto play the first time the rotation control is focused", async function () {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel",
+        )) as ElementHandle<FASTCarousel>;
+
+        expect(await element?.evaluate(node => node.paused)).to.be.false;
+        
+        await this.page.focus("slot[name='rotation-control'] > *");
+
+        expect(await element?.evaluate(node => node.paused)).to.be.true;
+    })
+
+    it("should not allow the flippers to be focused", async function ()  {
+        const element = (await this.page.waitForSelector(
+            "fast-carousel",
+        )) as ElementHandle<FASTCarousel>;
+            
+        const flipper = await this.page.waitForSelector("fast-flipper");
+
+        await this.page.focus("fast-flipper");
+
+        expect(await this.page.evaluate(element => element.isSameNode(document.activeElement), flipper)).to.be.false;
+        expect(await this.page.evaluate(element => element.isSameNode(document.activeElement), element)).to.be.true;
+    })
 })
 
 describe("FASTCarousel Basic Pattern", function () {

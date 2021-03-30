@@ -277,7 +277,11 @@ export class Carousel extends Tabs {
     notabfocus: boolean;
     pattern: string;
     paused: boolean;
+    // @internal (undocumented)
+    previousButton: HTMLElement[];
     previousButtonAriaLabel: string;
+    // (undocumented)
+    previousButtonChanged(): void;
     // @internal (undocumented)
     previousFlipperDefault: HTMLElement;
     // @internal (undocumented)
