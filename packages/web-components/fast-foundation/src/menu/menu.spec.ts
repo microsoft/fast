@@ -57,6 +57,23 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should not set any tabindex on non menu items elements", async () => {
+        const { connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <div id="not-an-item">I put a div in my menu</div>
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item id="id2">Bar</fast-menu-item>
+                <fast-menu-item>Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+
+        expect(document.getElementById("not-an-item")?.hasAttribute("tabindex")).to.equal(false);
+
+        await disconnect();
+    });
+
     it("should focus disabled items", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTMenu>`
             <fast-menu>
