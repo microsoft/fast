@@ -62,7 +62,7 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
 - `fast-flyout`
 
 *Attributes*
-- `visible` - boolean, toggle controlled by the author of whether or not the flyout is visible, defaults to undefined
+- `hidden` - boolean, whether or not the flyout is hidden (defaults to false).
 - `trap-focus` - boolean, whether or not to keep focus contained inside the Flyout, defaults to true
 - `target` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic, see *Position Options*
@@ -76,7 +76,7 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
 *Properties*
 - `targetElement` - the reference to the HTMLElement used as target
 - `viewportElement` - the reference to the HTMLElement used as the viewport, required to set up anchored region properly
-- `flyoutVisible` - boolean, whether or not the Flyout is visible, for use inside the controller without changing exposed `visible` attribute
+- `flyoutVisible` - boolean, whether or not the Flyout is visible, for use inside the controller without changing exposed `hidden` attribute
 
 *Slots*
 - default for content
@@ -129,7 +129,7 @@ Parts:
 export function createFlyoutTemplate(prefix: string): ViewTemplate {
     return html<Flyout>`
         ${when(
-            x => x.visible,
+            x => !x.hidden,
             html<Flyout>`
                 <${prefix}-anchored-region
                     anchor="${x => x.targetElement}"
@@ -159,14 +159,14 @@ export function createFlyoutTemplate(prefix: string): ViewTemplate {
 
 ## Implementation
 ```html
-<fast-flyout visible>
+<fast-flyout>
     <p>This is a flyout</p>
     <fast-button>Action</fast-button>
 </fast-flyout>
 ```
 
 ### States
-`visible` - Whether or not Flyout is hidden. This state is managed solely by the app author via the visible attribute.
+`hidden` - The dialog is hidden. This state is managed solely by the app author via the hidden attribute. The default for this is `false`.
 
 ### Accessibility
 *Keyboard Navigation and Focus*
