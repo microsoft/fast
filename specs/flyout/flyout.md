@@ -208,7 +208,7 @@ Keyboard and navigation will follow the same rules as Dialog per the [W3C Specif
 The component visuals should change when in RTL scenarios as the component is positioned relative to its target.
 
 ### Dependencies
-This component should be positioned using [anchored region](../packages/web-components/fast-foundation/src/anchored-region/anchored-region.spec.md).
+This component should be positioned using [anchored region](../packages/web-components/fast-foundation/src/anchored-region/anchored-region.spec.md). The css positioning of Anchored Region will begin as "fixed" for this first version of the Flyout, so that the Flyout will break out of its parent containers more easily and act more like a document level popup/flyout.
 
 ## Resources
 [W3C Specification](https://w3c.github.io/aria-practices/#dialog_modal)
