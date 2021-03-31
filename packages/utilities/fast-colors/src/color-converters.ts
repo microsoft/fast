@@ -285,12 +285,16 @@ export function lchToLAB(lch: ColorLCH): ColorLAB {
  * @remarks
  * The discontinuity in the C parameter at 0 means that floating point errors will often result in values near 0 giving unpredictable results.
  * EG: 0.0000001 gives a very different result than -0.0000001
+ * In cases where both a and b are very near zero this function will return an LCH color with an H of 0
  * More info about the atan2 function: {@link https://en.wikipedia.org/wiki/Atan2}
  * @public
  */
 export function labToLCH(lab: ColorLAB): ColorLCH {
     let h: number = 0;
-    if (lab.b !== 0 || lab.a !== 0) {
+    // Because of the discontuity at 0 if a number is very close to 0 - often due to floating point errors - then
+    // it gives unexpected results. EG: 0.000000000001 gives a different result than 0. So just avoid any number
+    // that has both a and b very close to zero and lump it in with the h = 0 case.
+    if (Math.abs(lab.b) > 0.001 || Math.abs(lab.a) > 0.001) {
         h = radiansToDegrees(Math.atan2(lab.b, lab.a));
     }
     if (h < 0) {

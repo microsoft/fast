@@ -655,6 +655,9 @@ export interface QuantizedColor {
 }
 
 // @public
+export function quantizeHistogram(histogram: Histogram, config?: QuantizeConfig): QuantizedColor[];
+
+// @public
 export function radiansToDegrees(i: number): number;
 
 // @public
