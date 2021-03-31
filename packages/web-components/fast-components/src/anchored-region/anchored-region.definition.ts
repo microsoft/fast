@@ -155,7 +155,7 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                         "Defines whether the component automatically updates its position",
                     type: DataType.string,
                     values: [{ name: "anchor" }, { name: "auto" }],
-                    default: "none",
+                    default: "anchor",
                     required: false,
                 },
             ],
