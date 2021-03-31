@@ -16,6 +16,14 @@ app.use(helmet.ieNoOpen());
 app.use(helmet.noSniff());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
+// Default settings for contentSecurityPolicy currently omitted
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "frame-ancestors": ["self", "http://localhost"],
+        },
+    })
+);
 
 // Set public directory
 var publicDir = path.resolve(__dirname);
