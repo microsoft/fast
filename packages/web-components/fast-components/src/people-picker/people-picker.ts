@@ -322,7 +322,7 @@ export class PeoplePicker extends Picker {
             }
         }
 
-        this.foundPeople = this.filterPeople(people);
+        this.foundPeople = this.filterPeople(people).slice(0, this.showMax);
     }
 
     /**

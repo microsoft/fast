@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-people-picker",
+  "id": "fast-people-picker",
+  "title": "undefined",
+  "description": "The FAST people-picker element",
+  "type": "object",
+  "version": 1,
+  "mapsToTagName": "fast-people-picker",
+  "properties": {
+    "value": {
+      "description": "The value attribute",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "autofocus": {
+      "description": "The autofocus attribute",
+      "mapsToAttribute": "autofocus",
+      "type": "boolean"
+    },
+    "placeholder": {
+      "description": "The placeholder attribute",
+      "mapsToAttribute": "placeholder",
+      "type": "string"
+    },
+    "name": {
+      "description": "The name attribute",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "required": {
+      "description": "The required attribute",
+      "mapsToAttribute": "required",
+      "type": "boolean"
+    },
+    "disabled": {
+      "description": "The disabled attribute",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "description": "The readonly attribute",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "description": "The default slot",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
