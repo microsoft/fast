@@ -185,15 +185,15 @@ export class Menu extends FASTElement {
     };
 
     private setItems = (): void => {
-        const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
+        const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
-        if (focusIndex !== -1) {
-            this.focusIndex = focusIndex;
+        if (menuItems.length) {
+            this.focusIndex = 0;
         }
 
-        this.menuItems.forEach((item: HTMLElement, index: number) => {
-            item.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
+        menuItems.forEach((item: HTMLElement, index: number) => {
+            item.setAttribute("tabindex", index === 0 ? "0" : "-1");
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
         });

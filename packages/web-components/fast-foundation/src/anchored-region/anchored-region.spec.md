@@ -10,14 +10,21 @@ It is envisioned that this component would be used as a building block for other
 
 ### Features
 
-- **Relative positioning:** Users can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additionally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
+- **Relative positioning:** 
+Authors can use it to position an element relative to another another element, like enabling a menu to open above or below a trigger button. Additionally, the same anchored region can change which element it is anchored to dynamically, for example a single tooltip instance in a page could be positioned next to any other element on the page by switching the anchor property of the anchored region that contains it.
 
-- **Responsive positioning:** Users can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.  Authors can call the component's update() function to reevaluate positioning.
+- **Responsive positioning:** 
+Authors can use it to position an element relative to another element based on available space, for example a menu could open upwards if the trigger button is near the bottom of the page, and downwards if it is nearer the top.  Authors can call the component's update() function to reevaluate positioning.
 
-- **Responsive scaling:** Users can use it to create a layout region that dynamically sizes depending on space between the anchor and the viewport elements.
+- **Responsive scaling:** 
+Authors can use it to create a layout region that dynamically sizes depending on space between the anchor and the viewport elements.
 
+- **Auto updating**
+Authors can control when the component updates its position after the initial render.
 
 For a more in-depth understanding of how this component works under the covers please refer to the [intersection observer api](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). 
+
+
 
 ### Risks and Challenges
 - must keep an eye on performance
@@ -190,6 +197,7 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - vertical-inset - Boolean that indicates whether the region should overlap the anchor on the vertical axis. Default is false which places the region adjacent to the anchor element.
 - vertical-threshold - Numeric value that defines how small the region must be to the edge of the viewport to switch to the opposite side of the anchor. The component favors the default position until this value is crossed.  When there is not enough space on either side or the value is unset the side with the most space is chosen.
 - vertical-scaling - Can be 'anchor', 'fill' or 'content'. Default is 'content' 
+- auto-update-mode - Can be 'anchor' or 'auto'. Default is 'anchor'. In 'anchor' mode only anchor resizes and attribute changes will provoke an update.  In 'auto' mode the component also updates because of - any scroll event on the document, window resizes and viewport resizes. Authors can always provoke an update via the 'update()' function.
 
 *Properties:*
 - anchorElement - Holds a reference to the HTMLElement currently being used as the anchor.  Can be set directly or be populated by setting the anchor attribute.
