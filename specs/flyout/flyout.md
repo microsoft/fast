@@ -90,36 +90,64 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
 
 *Positioning Options*
 
-The `responsive` attribute determines if the flyout will move along the same axis of the position depending on available space. If the flyout `position` option was "right" and `responsive` was true (by default) then when there was not enough space on the right of the target the flyout would render on the left of the target.
+- The `responsive` attribute determines if the flyout will move along the same axis of the position depending on available space. If the flyout `position` option was "right" and `responsive` was true (by default) then when there was not enough space on the right of the target the flyout would render on the left of the target.
 
-The position options the author has for placing the flyout relative to it's target:
-- top, bottom
+- The position options the author has for placing the flyout relative to it's target:
+  - top
+  
+    ![X](./images/Top.png)
 
-![X](./images/ab-centered.png)
+  - bottom
+  
+    ![X](./images/Bottom.png)
 
-- right, left
+  - right
 
-![X](./images/rl-centered.png)
+    ![X](./images/Right.png)
 
-- topLeft, topRight, bottomRight, bottomLeft
+  - left
 
-![X](./images/corner-positions.png)
+    ![X](./images/Left.png)
 
-- topLeftAligned, bottomLeftAligned
+  - topLeft
 
-![X](./images/ab-left-aligned.png)
+    ![X](./images/TopLeftCorner.png)
 
-- topRightAligned, bottomRightAligned
 
-![X](./images/ab-right-aligned.png)
+  - topRight
 
-- leftTopAligned, rightTopAligned
+    ![X](./images/TopRightCorner.png)
 
-![X](./images/rl-top-aligned.png)
 
-- leftBottomAligned, rightBottomAligned
+  - bottomRight
 
-![X](./images/rl-bottom-aligned.png)
+    ![X](./images/BottomRightCorner.png)
+
+
+  - bottomLeft
+
+    ![X](./images/BottomLeftCorner.png)
+
+
+  - topLeftAligned
+
+    ![X](./images/TopLeftAlign.png)
+
+
+  - bottomLeftAligned
+
+    ![X](./images/BottomLeftAlign.png)
+
+
+  - topRightAligned
+
+    ![X](./images/TopRightAlign.png)
+
+
+  - bottomRightAligned
+
+    ![X](./images/BottomRightAlign.png)
+
 
 ### Anatomy and Appearance
 Parts:
