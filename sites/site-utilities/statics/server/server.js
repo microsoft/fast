@@ -20,7 +20,7 @@ app.use(helmet.referrerPolicy());
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            "frame-ancestors": ["self", "http://localhost"],
+            "frame-ancestors": ["self", "http://localhost:*"],
         },
     })
 );
