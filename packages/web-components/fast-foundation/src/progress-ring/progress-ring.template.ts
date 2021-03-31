@@ -33,8 +33,7 @@ export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
                     <circle
                         class="determinate"
                         part="determinate"
-                        style="stroke-dasharray: ${x =>
-                            x.value !== null ? 44 * x.value : 0 / 100}px 44px"
+                        style="stroke-dasharray: ${x => (44 * x.value!) / 100}px 44px"
                         cx="8px"
                         cy="8px"
                         r="7px"
