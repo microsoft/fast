@@ -32,7 +32,7 @@ import {
 
 export const category: ExampleComponent = {
     schema: categorySchema,
-}
+};
 
 export const customControl: ExampleComponent = {
     schema: customControlSchema,
