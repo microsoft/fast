@@ -179,6 +179,8 @@ export class NumberField extends FormAssociatedNumberField {
         const nextValue =
             this.max !== undefined && steppedValue > this.max ? this.max : steppedValue;
         this.value = parseFloat(nextValue.toPrecision(12)).toString();
+
+        this.$emit("input");
     }
 
     /**
@@ -189,6 +191,8 @@ export class NumberField extends FormAssociatedNumberField {
         const nextValue =
             this.min !== undefined && steppedValue < this.min ? this.min : steppedValue;
         this.value = parseFloat(nextValue.toPrecision(12)).toString();
+
+        this.$emit("input");
     }
 
     /**
