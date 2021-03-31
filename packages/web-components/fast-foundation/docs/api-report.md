@@ -175,7 +175,7 @@ export class BaseProgress extends FASTElement {
     max: number;
     min: number;
     paused: any;
-    value: number;
+    value: number | null;
 }
 
 // @public
