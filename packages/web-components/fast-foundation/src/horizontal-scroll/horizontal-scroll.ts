@@ -271,19 +271,11 @@ export class HorizontalScroll extends FASTElement {
     }
 
     /**
-     * Returns the current scroll position of the scrollContainer
-     * @internal
-     */
-    private getScrollPosition(): number {
-        return this.scrollContainer.scrollLeft;
-    }
-
-    /**
      * Sets the controls view if enabled
      * @internal
      */
     private setFlippers(): void {
-        const position: number = this.getScrollPosition();
+        const position: number = this.scrollContainer.scrollLeft;
         if (this.previousFlipper) {
             this.previousFlipper.classList.toggle("disabled", position === 0);
         }
@@ -303,7 +295,7 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
-        const scrollPosition: number = this.getScrollPosition();
+        const scrollPosition: number = this.scrollContainer.scrollLeft;
         const current = this.scrollStops.findIndex(
             (stop, index) =>
                 stop <= scrollPosition &&
@@ -328,7 +320,7 @@ export class HorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
-        const scrollPosition: number = this.getScrollPosition();
+        const scrollPosition: number = this.scrollContainer.scrollLeft;
         const current = this.scrollStops.findIndex(
             stop => Math.abs(stop) >= Math.abs(scrollPosition)
         );
