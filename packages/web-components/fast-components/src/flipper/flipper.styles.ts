@@ -52,10 +52,11 @@ export const FlipperStyles = css`
     .previous {
         position: relative;
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and display: grid are temporary - 
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;
+        display: grid;
     }
 
     :host([disabled]) {
