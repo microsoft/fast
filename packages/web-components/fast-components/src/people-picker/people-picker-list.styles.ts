@@ -29,7 +29,13 @@ export const PeoplePickerListStyles = css`
     }
 
     ::slotted(.input-element) {
-        width: 300px;
+        box-sizing: border-box;
+        background: ${neutralFillInputRestBehavior.var};
+        color: ${neutralForegroundRestBehavior.var};
+        border-width: 0;
+        outline: 0;
+        min-width: 260px;
+        width: auto;
         height: 58px;
     }
     

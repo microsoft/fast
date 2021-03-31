@@ -20,7 +20,7 @@ export const PeoplePickerMenuStyles = css`
         background: ${neutralLayerFloatingBehavior.var};
         z-index: 1000;
         display: flex;
-        width: 308px;
+        width: 260px;
         max-height: 100%;
         min-height: 58px;
         flex-direction: column;

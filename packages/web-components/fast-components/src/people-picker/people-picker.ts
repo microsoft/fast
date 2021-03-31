@@ -154,6 +154,10 @@ export class PeoplePicker extends Picker {
     @observable
     public foundPeople: IDynamicPerson[];
     private foundPeopleChanged(): void {
+        if (this.foundPeople === undefined) {
+            this.optionsList = [];
+            return;
+        }
         const newOptions: string[] = this.foundPeople.map(p => p.id);
         this.optionsList = newOptions;
     }
@@ -322,7 +326,7 @@ export class PeoplePicker extends Picker {
             }
         }
 
-        this.foundPeople = this.filterPeople(people).slice(0, this.showMax);
+        this.foundPeople = this.filterPeople(people);
     }
 
     /**
@@ -345,7 +349,7 @@ export class PeoplePicker extends Picker {
                 }
             });
 
-            return filtered;
+            return filtered.slice(0, this.showMax);
         }
     }
 }

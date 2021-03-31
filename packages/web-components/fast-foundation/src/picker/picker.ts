@@ -680,7 +680,9 @@ export class Picker extends FASTElement {
                 this.menuElement.showNoOptions = this.showNoOptions;
                 this.inputElement.setAttribute(
                     "aria-activedescendant",
-                    this.menuElement.optionElements[0].id
+                    this.menuElement.optionElements.length > 0
+                        ? this.menuElement.optionElements[0].id
+                        : "unset"
                 );
             } else {
                 this.setFocusedOption(-1);

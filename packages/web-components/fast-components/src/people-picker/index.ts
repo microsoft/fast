@@ -19,7 +19,7 @@ const itemTemplate: ViewTemplate = html`
         @keydown="${(x, c) =>
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
     >
-        <mgt-person user-id="${x => x}" view="twoLines"></mgt-person>
+        <mgt-person user-id="${x => x}" view="oneLine"></mgt-person>
     </button>
 `;
 
@@ -29,7 +29,11 @@ const optionTemplate: ViewTemplate = html`
         tabindex="-1"
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
     >
-        <mgt-person user-id="${x => x}" view="twoLines"></mgt-person>
+        <mgt-person
+            user-id="${x => x}"
+            view="twoLines"
+            line2-property="jobTitle"
+        ></mgt-person>
     </button>
 `;
 

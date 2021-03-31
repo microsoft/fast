@@ -22,16 +22,17 @@ import {
 
 export const PeoplePickerStyles = css`
     :host {
+        background: ${neutralFillInputRestBehavior.var};
+        display: block;
         width: auto;
-        border: calc(var(--outline-width) * 1px) solid transparent;
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
         margin: 0;
         border-radius: calc(var(--corner-radius) * 1px);
-        padding: calc(var(--design-unit) * 1px) 0;
         position: relative;
     }
 
     .region {
-        z-index: 10000;
+        z-index: 1000;
         overflow: hidden;
         display: flex;
     }
