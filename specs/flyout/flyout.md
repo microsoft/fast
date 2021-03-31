@@ -66,6 +66,7 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
 - `trap-focus` - boolean, whether or not to keep focus contained inside the Flyout, defaults to true
 - `target` - string, the html id of the HTMLElement that the Flyout is attached to, (viewport for anchored region defaults to the parent of the anchor) and triggered by
 - `position` - enum, where the tooltip should appear relative to its target, uses Anchored Region logic, see *Position Options*
+- `responsive` - boolean, whether or not the positioning is responsive based on available space, defaults to true
 - `delay` - number, milliseconds (ms) the time delay before the Flyout is shown once triggered
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**
@@ -74,8 +75,8 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
     ** See the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_roles_states_props) for requirements and details.
 
 *Properties*
-- `targetElement` - the reference to the HTMLElement used as target
-- `viewportElement` - the reference to the HTMLElement used as the viewport, required to set up anchored region properly
+- `targetElement` - the reference to the HTMLElement used as target, required to set up anchored region properly
+- `viewportElement` - the reference to the HTMLElement used as the viewport
 - `flyoutVisible` - boolean, whether or not the Flyout is visible, for use inside the controller without changing exposed `hidden` attribute
 
 *Slots*
@@ -87,33 +88,36 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
 *Functions*
 - `createFlyoutTemplate(string: prefix)` - generates a `ViewTemplate` for the Flyout based on the given provided prefix string. This is required as Flyout uses an `anchored-region` internally and the create function generates a template using the appropriate `anchored-region` tag (ie "fast-anchored-region", "fluent-anchored-region"). Note that the appropriate `anchored-region` component must also be declared.
 
-*Position Options*
+*Positioning Options*
 
-- above-centered, below-centered
+The `responsive` attribute determines if the flyout will move along the same axis of the position depending on available space. If the flyout `position` option was "right" and `responsive` was true (by default) then when there was not enough space on the right of the target the flyout would render on the left of the target.
+
+The position options the author has for placing the flyout relative to it's target:
+- top, bottom
 
 ![X](./images/ab-centered.png)
 
-- right-centered, left-centered
+- right, left
 
 ![X](./images/rl-centered.png)
 
-- top-left-corner, top-right-corner, bottom-right-corner, bottom-left-corner
+- topLeft, topRight, bottomRight, bottomLeft
 
 ![X](./images/corner-positions.png)
 
-- above-left-aligned, below-left-aligned
+- topLeftAligned, bottomLeftAligned
 
 ![X](./images/ab-left-aligned.png)
 
-- above-right-aligned, below-right-aligned
+- topRightAligned, bottomRightAligned
 
 ![X](./images/ab-right-aligned.png)
 
-- left-top-aligned, right-top-aligned
+- leftTopAligned, rightTopAligned
 
 ![X](./images/rl-top-aligned.png)
 
-- left-bottom-aligned, right-bottom-aligned
+- leftBottomAligned, rightBottomAligned
 
 ![X](./images/rl-bottom-aligned.png)
 
