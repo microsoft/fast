@@ -596,21 +596,27 @@ class Navigation extends Foundation<
         navigationConfigId: string
     ): ((event: React.MouseEvent<HTMLElement>) => void) => {
         let timer;
+        let timesClicked = 0;
 
         return (event: React.MouseEvent<HTMLElement>): void => {
             clearTimeout(timer);
+            timesClicked += 1;
 
-            if (event.detail === 1) {
-                timer = setTimeout(
+            setTimeout(() => {
+                if (timesClicked === 1) {
                     this.handleNavigationItemSingleClick(
                         dictionaryId,
                         navigationConfigId
-                    ),
-                    200
-                );
-            } else if (event.detail === 2) {
-                this.handleNavigationItemDoubleClick(dictionaryId, navigationConfigId)();
-            }
+                    );
+                } else if (timesClicked === 2) {
+                    this.handleNavigationItemDoubleClick(
+                        dictionaryId,
+                        navigationConfigId
+                    );
+                }
+
+                timesClicked = 0;
+            }, 200);
         };
     };
 
@@ -620,10 +626,8 @@ class Navigation extends Foundation<
     private handleNavigationItemSingleClick = (
         dictionaryId: string,
         navigationConfigId: string
-    ): (() => void) => {
-        return (): void => {
-            this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
-        };
+    ): void => {
+        this.triggerNavigationUpdate(dictionaryId, navigationConfigId);
     };
 
     /**
@@ -632,12 +636,10 @@ class Navigation extends Foundation<
     private handleNavigationItemDoubleClick = (
         dictionaryId: string,
         navigationConfigId: string
-    ): (() => void) => {
-        return (): void => {
-            if (this.isEditable(dictionaryId, navigationConfigId)) {
-                this.triggerNavigationEdit();
-            }
-        };
+    ): void => {
+        if (this.isEditable(dictionaryId, navigationConfigId)) {
+            this.triggerNavigationEdit();
+        }
     };
 
     /**
