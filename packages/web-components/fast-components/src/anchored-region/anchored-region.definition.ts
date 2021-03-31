@@ -89,7 +89,6 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                     default: "content",
                     required: false,
                 },
-
                 {
                     name: "vertical-positioning-mode",
                     title: "Vertical positioning mode",
@@ -147,6 +146,16 @@ export const fastAnchoredRegionDefinition: WebComponentDefinition = {
                         "Fixed placement allows the region to break out of parent containers",
                     type: DataType.boolean,
                     default: false,
+                    required: false,
+                },
+                {
+                    name: "auto-update-mode",
+                    title: "Auto update mode",
+                    description:
+                        "Defines whether the component automatically updates its position",
+                    type: DataType.string,
+                    values: [{ name: "anchor" }, { name: "auto" }],
+                    default: "anchor",
                     required: false,
                 },
             ],
