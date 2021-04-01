@@ -11,28 +11,17 @@ export class PickerMenu extends FASTElement {
      *
      *
      * @public
-     * @remarks
-     * HTML Attribute: show-loading
      */
-    @attr({ attribute: "show-loading" })
-    public showLoading: boolean = false;
+    @observable
+    public showNoOptions: boolean = false;
 
     /**
      *
      *
      * @public
-     * @remarks
-     * HTML Attribute: show-no-options
      */
-    @attr({ attribute: "show-no-options" })
-    public showNoOptions: boolean = false;
-
-    /**
-     * Children that are list items
-     *
-     * @internal
-     */
-    public optionElements: HTMLElement[] = [];
+    @observable
+    public showLoading: boolean = false;
 
     /**
      *
@@ -91,6 +80,13 @@ export class PickerMenu extends FASTElement {
      */
     @observable
     public loadingText: string;
+
+    /**
+     * Children that are list items
+     *
+     * @internal
+     */
+    public optionElements: HTMLElement[] = [];
 
     /**
      * @internal

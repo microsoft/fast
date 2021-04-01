@@ -29,23 +29,23 @@ export const PeoplePickerMenuStyles = css`
         pointer-events: auto;
     }
 
-    .suggestions-available-alert,
-    .no-suggestions-available-alert,
-    .loading-alert {
+    .suggestions-available-alert {
         height: 0;
         opacity: 0;
         overflow: hidden;
     }
 
     .loading-display {
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-items: center;
     }
 
     .loading-progress {
-        width: 28px;
-        height: 28px;
+        width: 42px;
+        height: 42px;
     }
 
     ::slotted([role="listitem"]) {

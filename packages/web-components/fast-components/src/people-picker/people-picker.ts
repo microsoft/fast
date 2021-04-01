@@ -191,7 +191,10 @@ export class PeoplePicker extends Picker {
     };
 
     protected toggleMenu(open: boolean): void {
-        this.startSearch();
+        if (open && !this.menuOpen) {
+            this.showLoading = true;
+            this.startSearch();
+        }
         super.toggleMenu(open);
     }
 

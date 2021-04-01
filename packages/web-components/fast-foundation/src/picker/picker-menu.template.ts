@@ -54,15 +54,6 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                         <slot name="no-options-region">
                             ${x => x.noSuggestionsText}
                         </slot>
-                        <div
-                            role="alert"
-                            aria-live="polite"
-                            part="no-suggestions-available-alert"
-                            class="no-suggestions-available-alert"
-                            tabindex="0"
-                        >
-                            ${x => x.noSuggestionsText}
-                        </div>
                     </div>
                 `
             )}
@@ -72,19 +63,11 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                     <div class="loading-display" part="loading-display">
                         <slot name="loading-region">
                             <${prefix}-progress-ring
-                                part="loading-progress"
-                                class="loading-progress
-                            ><${prefix}-progress-ring>
+                                   part="loading-progress"
+                                   class="loading-progress
+                                   slot="loading-region"
+                            ></${prefix}-progress-ring>
                         </slot>
-                        <div
-                            role="alert"
-                            aria-live="polite"
-                            part="loading-alert"
-                            class="loading-alert"
-                            tabindex=0
-                        >
-                            ${x => x.loadingText}
-                        </div>
                     </div>
                 `
             )}
