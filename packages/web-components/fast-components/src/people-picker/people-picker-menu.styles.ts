@@ -35,12 +35,14 @@ export const PeoplePickerMenuStyles = css`
         overflow: hidden;
     }
 
-    .loading-display {
+    .loading-display,
+    .no-options-display {
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-items: center;
+        padding: 8px;
     }
 
     .loading-progress {

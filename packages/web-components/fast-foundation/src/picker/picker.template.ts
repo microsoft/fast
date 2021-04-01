@@ -32,11 +32,11 @@ export function createPickerTemplate(
                     class="region"
                     fixed-placement="${x => x.fixedPlacement}"
                     vertical-positioning-mode="${x =>
-                        x.menuPosition === "dynamic" ? x.menuPosition : "locktodefault"}"
-                    vertical-default-position="${x =>
-                        x.menuPosition === "dynamic" ? null : x.menuPosition}"
+                        x.dynamicMenuPositioning ? "dynamic" : "locktodefault"}"
+                    vertical-default-position="${x => x.menuPosition}"
                     vertical-scaling="fill"
                     vertical-inset="false"
+                    vertical-threshold="300"
                     horizontal-positioning-mode="locktodefault"
                     horizontal-default-position="right"
                     horizontal-scaling="content"

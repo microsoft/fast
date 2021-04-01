@@ -67,6 +67,7 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                                    class="loading-progress
                                    slot="loading-region"
                             ></${prefix}-progress-ring>
+                            ${x => x.loadingText}
                         </slot>
                     </div>
                 `

@@ -14,7 +14,7 @@ import type { PickerMenu } from "./picker-menu";
 /**
  *
  */
-export type PickerMenuPosition = "top" | "bottom" | "dynamic";
+export type PickerMenuPosition = "top" | "bottom";
 
 /**
  * A List Picker Custom HTML Element.
@@ -60,7 +60,17 @@ export class Picker extends FASTElement {
      * HTML Attribute: menu-position
      */
     @attr({ attribute: "menu-position" })
-    public menuPosition: PickerMenuPosition = "dynamic";
+    public menuPosition: PickerMenuPosition = "bottom";
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: dynamic-menu-positioning
+     */
+    @attr({ attribute: "dynamic-menu-positioning", mode: "boolean" })
+    public dynamicMenuPositioning: boolean = true;
 
     /**
      * Whether the menu is positioned using css "position: fixed".
