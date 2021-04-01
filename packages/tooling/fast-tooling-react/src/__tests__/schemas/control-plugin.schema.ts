@@ -28,5 +28,10 @@ export default {
             enum: ["light", "dark"],
             formControlId: "custom-controls/theme",
         },
+        css: {
+            title: "CSS",
+            type: "string",
+            formControlId: "custom-controls/css",
+        },
     },
 };
