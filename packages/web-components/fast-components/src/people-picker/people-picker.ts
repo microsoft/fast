@@ -45,7 +45,9 @@ export class PeoplePicker extends Picker {
     @attr({ attribute: "group-id" })
     public groupId: string;
     public groupIdChanged() {
-        // TODO: update
+        if (this.$fastController.isConnected) {
+            this.loadState();
+        }
     }
 
     /**
@@ -58,7 +60,9 @@ export class PeoplePicker extends Picker {
     @attr({ attribute: "type" })
     public type: PersonType = PersonType.any;
     public typeChanged(): void {
-        // TODO: update
+        if (this.$fastController.isConnected) {
+            this.loadState();
+        }
     }
 
     /**
@@ -71,7 +75,9 @@ export class PeoplePicker extends Picker {
     @attr({ attribute: "group-type" })
     public groupType: GroupType;
     public groupTypeChanged(): void {
-        // TODO: update
+        if (this.$fastController.isConnected) {
+            this.loadState();
+        }
     }
 
     /**
@@ -84,7 +90,9 @@ export class PeoplePicker extends Picker {
     @attr({ attribute: "transitive-search", mode: "boolean" })
     public transitiveSearch: boolean;
     public transitiveSearchChanged(): void {
-        // TODO: update
+        if (this.$fastController.isConnected) {
+            this.loadState();
+        }
     }
 
     /**

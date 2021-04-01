@@ -86,14 +86,14 @@ export class Picker extends FASTElement {
     public fixedPlacement: boolean = true;
 
     /**
-     * Auto position update interval in ms.
+     * The theshold in pixels where the menu will move away from its default position
      *
      * @public
      * @remarks
-     * HTML Attribute: auto-update-interval
+     * HTML Attribute: menu-vertical-threshold
      */
-    @attr({ attribute: "auto-update-interval" })
-    public autoUpdateInterval: number = 30;
+    @attr({ attribute: "menu-vertical-threshold" })
+    public menuVerticalThreshold: number = 240;
 
     /**
      *
@@ -558,6 +558,16 @@ export class Picker extends FASTElement {
         }
 
         return true;
+    };
+
+    public handleClick = (e: MouseEvent): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+        if (this.inputElement) {
+            this.inputElement.focus();
+        }
+        return false;
     };
 
     public handleItemClick = (e: MouseEvent, itemIndex: number): boolean => {

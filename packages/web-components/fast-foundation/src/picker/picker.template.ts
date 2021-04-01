@@ -20,6 +20,7 @@ export function createPickerTemplate(
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+            @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         >
             <slot name="list-region"></slot>
 
@@ -28,7 +29,6 @@ export function createPickerTemplate(
                 html<Picker>`
                 <${prefix}-anchored-region
                     auto-update-mode="${x => x.autoUpdateMode}"
-                    auto-update-interval="${x => x.autoUpdateInterval}"
                     class="region"
                     fixed-placement="${x => x.fixedPlacement}"
                     vertical-positioning-mode="${x =>
@@ -36,7 +36,7 @@ export function createPickerTemplate(
                     vertical-default-position="${x => x.menuPosition}"
                     vertical-scaling="fill"
                     vertical-inset="false"
-                    vertical-threshold="300"
+                    vertical-threshold="${x => x.menuVerticalThreshold}"
                     horizontal-positioning-mode="locktodefault"
                     horizontal-default-position="right"
                     horizontal-scaling="content"
