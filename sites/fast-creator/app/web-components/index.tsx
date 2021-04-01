@@ -111,6 +111,7 @@ export function renderFormTabs(
                 <ModularForm
                     key={FormId.designSystem}
                     messageSystem={fastDesignMessageSystem}
+                    categories={componentCategories}
                 />
             </fast-tab-panel>
         </fast-tabs>
