@@ -10,12 +10,8 @@ const { chromium } = require("playwright");
     const page = await context.newPage();
     console.log("navigating to test page");
     await page.goto("localhost:8080/a.html");
-    // console.dir(Object.keys(test.default))
-    const dimensions = await page.evaluate(() => {
-        console.log(benchmark.default);
-        // console.log(foobar.default.run())
-        // return test.default.run()
-        // return test.run();
+    const dimensions = await page.evaluate(async () => {
+        return await bench.default.run();
     });
 
     console.log(dimensions);
