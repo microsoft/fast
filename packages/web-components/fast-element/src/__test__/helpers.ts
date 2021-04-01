@@ -1,4 +1,4 @@
-export function toHTML(node: Node, preserveCommentMarkup = false): string {
+export function toHTML(node: Node, preserveCommentMarkup: boolean = false): string {
     return Array.from(node.childNodes)
         .map((x: any) => {
             if (preserveCommentMarkup && x.nodeType === 8) {
@@ -11,6 +11,6 @@ export function toHTML(node: Node, preserveCommentMarkup = false): string {
 }
 
 let counter = 0;
-export function uniqueElementName() {
+export function uniqueElementName(): string {
     return `test-element-${++counter}`;
 }

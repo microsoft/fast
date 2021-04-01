@@ -8,6 +8,7 @@ import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -87,6 +88,8 @@ export class AnchoredRegion extends FASTElement {
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
+    // (undocumented)
+    autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -147,6 +150,9 @@ export class ARIAGlobalStatesAndProperties {
 }
 
 // @beta
+export type AutoUpdateMode = "anchor" | "auto";
+
+// @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 // @beta
@@ -169,7 +175,7 @@ export class BaseProgress extends FASTElement {
     max: number;
     min: number;
     paused: any;
-    value: number;
+    value: number | null;
 }
 
 // @public
@@ -736,6 +742,9 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// @alpha
+export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: DesignTokenTarget) => T;
+
 // @alpha (undocumented)
 export class DesignSystem {
     // (undocumented)
@@ -808,6 +817,30 @@ export interface DesignSystemRegistrationContext {
 
 // @alpha (undocumented)
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
+
+// @alpha
+export interface DesignToken<T> extends CSSDirective {
+    addCustomPropertyFor(element: DesignTokenTarget): this;
+    readonly cssCustomProperty: string;
+    deleteValueFor(element: DesignTokenTarget): this;
+    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    removeCustomPropertyFor(element: DesignTokenTarget): this;
+    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
+}
+
+// @alpha
+export const DesignToken: Readonly<{
+    create: typeof create;
+}>;
+
+// @alpha
+export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
+
+// @alpha
+export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{
@@ -1828,6 +1861,9 @@ export class StartEnd {
 // @public
 export const startTemplate: ViewTemplate<StartEnd>;
 
+// @alpha
+export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
     constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient);
@@ -2163,6 +2199,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/design-token/design-token.d.ts:49:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
