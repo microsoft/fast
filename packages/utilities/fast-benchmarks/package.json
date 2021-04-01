@@ -1,0 +1,42 @@
+{
+  "name": "@microsoft/fast-benchmarks",
+  "description": "FAST benchmarking suite",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "private": true,
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+    "build-benchmarks": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
+    "@types/benchmark": "^2.1.0",
+    "@types/lodash-es": "^4.17.4",
+    "@types/node": "^14.14.37",
+    "babel-core": "^7.0.0-bridge.0",
+    "benchmark": "^2.1.4",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^4.0.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.1",
+    "jest": "^25.4.0",
+    "lodash-es": "4.17.15",
+    "prettier": "2.0.2",
+    "ts-jest": "^25.4.0",
+    "ts-loader": "^8.1.0",
+    "typescript": "^3.9.0",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
+  }
+}
