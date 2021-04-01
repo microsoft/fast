@@ -1,0 +1,40 @@
+name: CI - FAST Manual Publish
+
+on:
+  workflow_dispatch:
+   
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+
+    env:
+      NPM_PAT: ${{ secrets.NPM_PAT}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
+      GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+      GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add or Update packages
+      run: sudo yarn global add lerna
+
+    - name: Authenticate Git for Pushes
+      run: |
+        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
+   
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream   
+   
+    - name: Publish NPM changed packages
+      run: |
+        yarn publish-ci -y -n  $NPM_PAT 
+     
