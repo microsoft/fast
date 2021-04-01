@@ -58,7 +58,7 @@ describe("Menu", () => {
         await disconnect();
     });
 
-    it("should not throw when focus is  with no items", async () => {
+    it("should not throw when focus is called with no items", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTMenu>`
             <fast-menu id="menu">
             </fast-menu>
