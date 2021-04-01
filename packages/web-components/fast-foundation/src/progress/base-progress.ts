@@ -13,7 +13,7 @@ export class BaseProgress extends FASTElement {
      * HTML Attribute: value
      */
     @attr({ converter: nullableNumberConverter })
-    public value: number;
+    public value: number | null;
 
     /**
      * The minimum value
