@@ -277,7 +277,13 @@ export class Menu extends FASTElement {
 
             if (this.isFocusableElement(child)) {
                 // change the previous index to -1
-                children[this.focusIndex].setAttribute("tabindex", "-1");
+                if (
+                    this.focusIndex > -1 &&
+                    this.children !== undefined &&
+                    this.children.length >= this.focusIndex - 1
+                ) {
+                    children[this.focusIndex].setAttribute("tabindex", "-1");
+                }
 
                 // update the focus index
                 this.focusIndex = focusIndex;
