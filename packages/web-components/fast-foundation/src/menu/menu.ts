@@ -270,19 +270,20 @@ export class Menu extends FASTElement {
     };
 
     private setFocus(focusIndex: number, adjustment: number): void {
-        const children: Element[] = this.menuItems;
+        if (this.menuItems === undefined) {
+            return;
+        }
 
-        while (inRange(focusIndex, children.length)) {
-            const child: Element = children[focusIndex];
+        while (inRange(focusIndex, this.menuItems.length)) {
+            const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {
                 // change the previous index to -1
                 if (
                     this.focusIndex > -1 &&
-                    this.children !== undefined &&
-                    this.children.length >= this.focusIndex - 1
+                    this.menuItems.length >= this.focusIndex - 1
                 ) {
-                    children[this.focusIndex].setAttribute("tabindex", "-1");
+                    this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
                 }
 
                 // update the focus index

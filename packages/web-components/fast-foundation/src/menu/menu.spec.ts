@@ -51,8 +51,7 @@ describe("Menu", () => {
         await connect();
         await DOM.nextUpdate();
 
-        const menu = element.querySelector('[id="menu"]');
-        (menu as HTMLElement).focus();
+        element.focus();
         expect(document.activeElement?.id).to.equal("id1");
 
         await disconnect();
@@ -67,8 +66,8 @@ describe("Menu", () => {
         await connect();
         await DOM.nextUpdate();
 
-        const menu = element.querySelector('[id="menu"]');
-        expect((menu as HTMLElement).focus()).not.to.throw();
+        element.focus();
+        expect(document.activeElement?.id).to.equal("");
 
         await disconnect();
     });
@@ -83,8 +82,8 @@ describe("Menu", () => {
 
         //don't wait for connect...
 
-        const menu = element.querySelector('[id="menu"]');
-        expect((menu as HTMLElement).focus()).not.to.throw();
+        element.focus();
+        expect(document.activeElement?.id).to.equal("");
 
         await disconnect();
     });
