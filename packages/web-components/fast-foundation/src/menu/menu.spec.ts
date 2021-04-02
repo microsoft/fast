@@ -40,6 +40,55 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should focus on first menu item when focus is called", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu id="menu">
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item id="id2">Bar</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        element.focus();
+        expect(document.activeElement?.id).to.equal("id1");
+
+        await disconnect();
+    });
+
+    it("should not throw when focus is called with no items", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu id="menu">
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        element.focus();
+        expect(document.activeElement?.id).to.equal("");
+
+        await disconnect();
+    });
+
+    it("should not throw when focus is called before initialization is complete", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu id="menu">
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item id="id2">Bar</fast-menu-item>
+            </fast-menu>
+        `);
+
+        //don't wait for connect...
+
+        element.focus();
+        expect(document.activeElement?.id).to.equal("");
+
+        await disconnect();
+    });
+
+
     it("should set tabindex of the first focusable menu item to 0", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTMenu>`
             <fast-menu>

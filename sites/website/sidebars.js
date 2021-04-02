@@ -90,7 +90,11 @@ module.exports = {
         {
             type: "category",
             label: "Tools",
-            items: ["tools/component-explorer", "tools/vscode"],
+            items: [
+                "tools/component-explorer",
+                "tools/vscode",
+                "tools/hot-module-reload",
+            ],
         },
         {
             type: "category",
