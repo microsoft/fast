@@ -90,6 +90,17 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
+    it("should set update mode to 'auto' by default", async () => {
+        const { element, connect, disconnect } = await setup();
+        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+
+        await connect();
+
+        expect(tooltip.autoUpdateMode).to.equal("auto");
+
+        await disconnect();
+    });
+
     it("should not set a default position by default", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: Tooltip = element;
