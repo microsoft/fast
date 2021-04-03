@@ -447,12 +447,29 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         if (isNaN(value)) {
             value = this.min;
         }
+
+        /**
+         * The following logic intends to overcome the issue with math in JavaScript with regards to floating point numbers.
+         * This is needed as the `step` may be an integer but could also be a float. To accomplish this the step  is assumed to be a float
+         * and is converted to an integer by determining the number of decimal places it represent, multiplying it until it is an
+         * integer and then dividing it to get back to the correct number.
+         */
         let constrainedValue: number = value - this.min;
-        const remainderVal: number = constrainedValue % Number(this.step);
+        let remainderValue: number = constrainedValue % Number(this.step);
+        const stepString: string = this.step + "";
+        const decimalPlacesOfStep: number = !!(this.step % 1)
+            ? stepString.length - stepString.indexOf(".") - 1
+            : 0;
+        const roundedConstrainedValue: number = Math.round(constrainedValue / this.step);
+        const stepMultiplier: number = Math.pow(10, decimalPlacesOfStep);
+        remainderValue =
+            constrainedValue -
+            (roundedConstrainedValue * (stepMultiplier * this.step)) / stepMultiplier;
+
         constrainedValue =
-            remainderVal >= Number(this.step) / 2
-                ? constrainedValue - remainderVal + Number(this.step)
-                : constrainedValue - remainderVal;
+            remainderValue >= Number(this.step) / 2
+                ? constrainedValue - remainderValue + Number(this.step)
+                : constrainedValue - remainderValue;
         return constrainedValue + this.min;
     };
 }

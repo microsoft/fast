@@ -219,6 +219,19 @@ describe("Slider", () => {
         await disconnect();
     });
 
+    it("should constrain and normalize the value when the `step` attribute has been provided and is a float", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.step = 0.1;
+        element.value = "0.5";
+
+        await connect();
+
+        expect((element as any).calculateNewValue(47)).to.equal(0.6);
+
+        await disconnect();
+    });
+
     it("should set the `aria-valuemax` attribute with the `max` property when provided", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -230,6 +243,7 @@ describe("Slider", () => {
 
         await disconnect();
     });
+
     it("should set an `aria-valuestring` attribute with the result of the valueTextFormatter() method", async () => {
         const { element, connect, disconnect } = await setup();
 
