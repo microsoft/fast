@@ -12,7 +12,7 @@ import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
-import { Button } from '@microsoft/fast-foundation';
+import { Button as Button_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { Combobox } from '@microsoft/fast-foundation';
@@ -238,11 +238,23 @@ export const AnchorStyles: (context: any, definition: any) => import("@microsoft
 // @public
 export const BadgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// Warning: (ae-internal-missing-underscore) The name "Button" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class Button extends Button_2 {
+    // @public
+    appearance: ButtonAppearance;
+    // (undocumented)
+    connectedCallback(): void;
+    // @public
+    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+}
+
 // @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
-export const ButtonStyles: import("@microsoft/fast-element").ElementStyles;
+export const ButtonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const CardStyles: import("@microsoft/fast-element").ElementStyles;
@@ -333,12 +345,14 @@ export const FASTBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-f
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTButton extends Button {
-    appearance: ButtonAppearance;
-    // (undocumented)
-    connectedCallback(): void;
-    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
-}
+export const FASTButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Button_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {

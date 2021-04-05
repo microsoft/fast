@@ -1,16 +1,15 @@
 import { expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { Button, ButtonTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-button",
-    template,
+const FASTButton = Button.compose({
+    baseName: "fast",
+    template
 })
-class FASTButton extends Button {}
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<FASTButton>(
+    const { connect, disconnect, element, parent } = await fixture<Button>(
         "fast-button"
     );
 
@@ -18,6 +17,14 @@ async function setup() {
 }
 
 describe("Button", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-button");
+    })
+
     it("should set the `autofocus` attribute on the internal button when provided", async () => {
         const { element, connect, disconnect } = await setup();
 

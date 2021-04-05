@@ -243,7 +243,7 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
-export const ButtonTemplate: ViewTemplate<Button>;
+export const ButtonTemplate: (context: any, definition: any) => ViewTemplate<Button>;
 
 // @public
 export class Card extends FASTElement {
