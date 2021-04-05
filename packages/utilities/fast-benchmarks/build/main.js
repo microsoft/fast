@@ -37,13 +37,15 @@ if (!options.baseline && !fs.existsSync(baselinePath)) {
     exit(1);
 }
 
+/**
+ * Start webpack-dev-server and hook up build-completion callback
+ */
 const webpack = require("webpack");
 const WebpackDevServer = require("webpack-dev-server");
 const config = require("../webpack.config");
 const port = config.devServer.port;
 const compiler = webpack(config);
 compiler.hooks.done.tap("benchmark", webpackDone);
-
 var server = new WebpackDevServer(compiler);
 console.log("Starting the dev web server...");
 server.listen(port, "localhost", function(err) {
@@ -84,6 +86,10 @@ async function runBenchmarks(htmlPaths) {
     return results;
 }
 
+/**
+ * Invoked from
+ * @param stats
+ */
 async function webpackDone(stats) {
     console.log("Webpack build completed.");
     const { emittedAssets, entries } = stats.compilation;
@@ -93,7 +99,7 @@ async function webpackDone(stats) {
     for (let testPath of testPaths) {
         if (!emittedAssets.has(testPath)) {
             console.error(
-                "\nEntry without .html not found. No such path to run benchmark test.\n"
+                "\nEntry without corresponding .html not found. No such path to run benchmark test.\n"
             );
             exit(1);
         }
@@ -102,9 +108,7 @@ async function webpackDone(stats) {
     const results = await runBenchmarks(testPaths);
 
     if (options.baseline) {
-        require("mkdirp")(path.dirname(baselinePath));
-        fs.writeFileSync(baselinePath, JSON.stringify(results, null, 2));
-        console.log(`Baseline results emitted to "${baselinePath}"`);
+        emitBaseline(results);
     } else {
         // diffing algorithm
     }
@@ -112,10 +116,23 @@ async function webpackDone(stats) {
     exit(0);
 }
 
+/**
+ * Exits the program, shutting down webpack-dev-server if it is listening
+ * @param {number} code
+ */
 function exit(code) {
     if (server) {
         server.close();
     }
 
     process.exit(code);
+}
+
+/**
+ * Emits results to the baseline.json file
+ */
+function emitBaseline(results) {
+    require("mkdirp")(path.dirname(baselinePath));
+    fs.writeFileSync(baselinePath, JSON.stringify(results, null, 2));
+    console.log(`Baseline results emitted to "${baselinePath}"`);
 }

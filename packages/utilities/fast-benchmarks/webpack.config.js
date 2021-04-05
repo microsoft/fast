@@ -20,11 +20,14 @@ function template(config) {
         `;
 }
 
+const benchmarkNames = require("./build/utils/get-benchmark-names")(
+    path.resolve(__dirname, "benchmarks")
+);
+
 module.exports = {
-    entry: {
-        a: path.resolve("./benchmarks/a/index.ts"),
-        b: path.resolve("./benchmarks/b/index.ts"),
-    },
+    entry: benchmarkNames.reduce((prev, current) => {
+        return { ...prev, [current]: path.resolve(`./benchmarks/${current}/index.ts`) };
+    }, {}),
     resolve: {
         extensions: [".ts", ".js"],
     },
@@ -69,7 +72,29 @@ module.exports = {
             inject: "body",
             scriptLoading: "blocking",
         }),
-    ],
+    ].concat(
+        benchmarkNames
+            .map(x => {
+                return {
+                    name: x,
+                    htmlPath: path.resolve(__dirname, `./benchmarks/${x}/index.html`),
+                };
+            })
+            .filter(x => fs.existsSync(x.htmlPath))
+            .map(x => {
+                const { name, htmlPath } = x;
+                return new HtmlWebpackPlugin({
+                    title: `FAST ${name}`,
+                    chunks: [name],
+                    filename: `${name}.html`,
+                    templateContent: template({
+                        path: htmlPath,
+                    }),
+                    inject: "body",
+                    scriptLoading: "blocking",
+                });
+            })
+    ),
     devServer: {
         port: 8080,
     },
