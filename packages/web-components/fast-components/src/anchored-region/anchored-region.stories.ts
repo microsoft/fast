@@ -1,8 +1,8 @@
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
+import { AnchoredRegion as FoundationAnchoredRegion } from "@microsoft/fast-foundation";
 import AnchoredRegionTemplate from "./fixtures/base.html";
-import type { FASTAnchoredRegion } from "./index";
 import "./index";
 
 let scalingViewportPreviousXValue: number = 250;
@@ -67,14 +67,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const regionScalingUpdate = document.getElementById(
             "region-scaling-update"
-        ) as FASTAnchoredRegion;
+        ) as FoundationAnchoredRegion;
         document
             .getElementById("viewport-scaling-update")!
             .addEventListener("scroll", () => regionScalingUpdate.update());
 
         const regionScalingOffset = document.getElementById(
             "region-scaling-offset"
-        ) as FASTAnchoredRegion;
+        ) as FoundationAnchoredRegion;
         document
             .getElementById("viewport-scaling-offset")
             ?.addEventListener("scroll", (e: MouseEvent) => {

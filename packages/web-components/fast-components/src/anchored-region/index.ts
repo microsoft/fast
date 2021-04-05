@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     AnchoredRegion,
     AnchoredRegionTemplate as template,
@@ -14,12 +13,11 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
  * @remarks
  * HTML Element: \<fast-anchored-region\>
  */
-@customElement({
-    name: "fast-anchored-region",
+export const FASTAnchoredRegion = AnchoredRegion.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTAnchoredRegion extends AnchoredRegion {}
+});
 
 /**
  * Styles for AnchoredRegion

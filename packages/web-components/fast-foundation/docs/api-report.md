@@ -86,8 +86,10 @@ export class Anchor extends FoundationElement {
 export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "AnchoredRegion" is marked as @beta, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @beta
-export class AnchoredRegion extends FASTElement {
+export class AnchoredRegion extends FoundationElement {
     // @internal (undocumented)
     adoptedCallback(): void;
     anchor: string;
@@ -122,7 +124,7 @@ export class AnchoredRegion extends FASTElement {
     }
 
 // @beta
-export const AnchoredRegionTemplate: ViewTemplate<AnchoredRegion>;
+export const AnchoredRegionTemplate: (context: any, definition: any) => ViewTemplate<AnchoredRegion>;
 
 // @public
 export const AnchorTemplate: (context: any, definition: any) => ViewTemplate<Anchor>;

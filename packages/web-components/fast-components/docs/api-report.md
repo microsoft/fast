@@ -230,7 +230,7 @@ export class Anchor extends Anchor_2 {
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
-export const AnchoredRegionStyles: import("@microsoft/fast-element").ElementStyles;
+export const AnchoredRegionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const AnchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -302,8 +302,11 @@ export const FASTAnchor: (overrideDefinition?: import("@microsoft/fast-foundatio
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @beta
-export class FASTAnchoredRegion extends AnchoredRegion {
-}
+export const FASTAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTBadge extends Badge {

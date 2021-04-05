@@ -1,13 +1,12 @@
 import { expect } from "chai";
 import { AnchoredRegion, AnchoredRegionTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM, html } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-anchored-region",
-    template,
+const FASTAnchoredRegion = AnchoredRegion.compose({
+    baseName: "fast",
+    template
 })
-class FASTAnchoredRegion extends AnchoredRegion {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture(html<HTMLDivElement>`
@@ -22,11 +21,19 @@ async function setup() {
 }
 
 describe("Anchored Region", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-anchored-region");
+    })
+
     it("should set positioning modes to 'uncontrolled' by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const region: FASTAnchoredRegion = element.querySelector(
+        const region: AnchoredRegion = element.querySelector(
             "fast-anchored-region"
-        ) as FASTAnchoredRegion;
+        ) as AnchoredRegion;
 
         await connect();
 
@@ -38,9 +45,9 @@ describe("Anchored Region", () => {
 
     it("should assign anchor and viewport elements by id", async () => {
         const { element, connect, disconnect } = await setup();
-        const region: FASTAnchoredRegion = element.querySelector(
+        const region: AnchoredRegion = element.querySelector(
             "fast-anchored-region"
-        ) as FASTAnchoredRegion;
+        ) as AnchoredRegion;
 
         await connect();
         await DOM.nextUpdate();
@@ -53,9 +60,9 @@ describe("Anchored Region", () => {
 
     it("should be sized to match content by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const region: FASTAnchoredRegion = element.querySelector(
+        const region: AnchoredRegion = element.querySelector(
             "fast-anchored-region"
-        ) as FASTAnchoredRegion;
+        ) as AnchoredRegion;
         const contents: HTMLElement = element.querySelector("#contents") as HTMLElement;
 
         await connect();
