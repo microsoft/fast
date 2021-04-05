@@ -33,7 +33,6 @@ if (testNamesToRun.length === 0) {
 webpackConfig = webpackConfig(testNamesToRun);
 
 const baselinePath = path.resolve(__dirname, "../temp/baseline.json");
-console.log(baselinePath);
 if (!options.baseline && !fs.existsSync(baselinePath)) {
     console.error(
         "No baseline.json file found. Run program with -b argument to generate a baseline.json"
