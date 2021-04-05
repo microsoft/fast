@@ -111,12 +111,14 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.2",
+    "@microsoft/fast-components": "^1.13.0",
     "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-tooling": "^0.17.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
+    "@skatejs/val": "^0.5.0",
     "exenv-es6": "^1.0.0",
     "raf-throttle": "^2.0.3",
     "react-dnd": "^9.0.0"
