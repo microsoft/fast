@@ -19,13 +19,22 @@ const options = program.opts();
 const testNamesToRun = getBenchmarkPaths(
     path.resolve(__dirname, "../", "benchmarks")
 ).filter(name => {
-    return options.all || options.name === name;
+    return options.all || options.baseline || options.name === name;
 });
 
 if (testNamesToRun.length === 0) {
     throw new Error(
         "No benchmark to run was provided. Run the program with --help for instructions on how to provide benchmarks"
     );
+}
+
+const baselinePath = path.resolve(__dirname, "../temp/baseline.json");
+
+if (!options.baseline && !fs.existsSync(baselinePath)) {
+    console.error(
+        "No baseline.json file found. Run program with -b argument to generate a baseline.json"
+    );
+    exit(1);
 }
 
 const webpack = require("webpack");
@@ -35,7 +44,7 @@ const port = config.devServer.port;
 const compiler = webpack(config);
 compiler.hooks.done.tap("benchmark", webpackDone);
 
-const server = new WebpackDevServer(compiler);
+var server = new WebpackDevServer(compiler);
 console.log("Starting the dev web server...");
 server.listen(port, "localhost", function(err) {
     if (err) {
@@ -46,22 +55,28 @@ server.listen(port, "localhost", function(err) {
     console.log("WebpackDevServer listening at localhost:", port);
 });
 
-async function runBenchmarks(names) {
+/**
+ * Runs through benchmark test pages, runs page's benchmark test,
+ * and returns results.
+ * @param {string[]} htmlPaths
+ * @returns {[htmlPath: string], benchmarkResults}
+ */
+async function runBenchmarks(htmlPaths) {
     const { chromium } = require("playwright");
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-    const results = new Map();
+    const results = {};
 
-    for (var i = 0; i < names.length; i++) {
-        const name = names[i];
+    for (var i = 0; i < htmlPaths.length; i++) {
+        const name = htmlPaths[i];
         console.log(`Starting benchmark for "${name.replace(".html", "")}"`);
         await page.goto(`localhost:${port}/${name}`);
         const result = await page.evaluate(async () => {
             return await bench.default.run();
         });
 
-        results.set(name, result);
+        results[name] = result;
     }
 
     await browser.close();
@@ -78,21 +93,29 @@ async function webpackDone(stats) {
     for (let testPath of testPaths) {
         if (!emittedAssets.has(testPath)) {
             console.error(
-                "Entry without .html not found. No such path to run benchmark test."
+                "\nEntry without .html not found. No such path to run benchmark test.\n"
             );
             exit(1);
         }
     }
 
     const results = await runBenchmarks(testPaths);
-    testPaths.forEach(x => {
-        console.log(results.get(x));
-    });
-    // console.log(results);
+
+    if (options.baseline) {
+        require("mkdirp")(path.dirname(baselinePath));
+        fs.writeFileSync(baselinePath, JSON.stringify(results, null, 2));
+        console.log(`Baseline results emitted to "${baselinePath}"`);
+    } else {
+        // diffing algorithm
+    }
+
     exit(0);
 }
 
 function exit(code) {
-    server.close();
+    if (server) {
+        server.close();
+    }
+
     process.exit(code);
 }
