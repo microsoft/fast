@@ -5,20 +5,18 @@ import { fixture } from "../fixture";
 import { customElement, DOM, elements } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
 
-@customElement({
-    name: "fast-accordion",
-    template,
+const FASTAccordion = Accordion.compose({
+    baseName: 'fast',
+    template
 })
-class FASTAccordion extends Accordion {}
 
-@customElement({
-    name: "fast-accordion-item",
+const FASTAccordionItem = AccordionItem.compose({
+    baseName: "fast",
     template: itemTemplate,
 })
-class FASTAccordionItem extends AccordionItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTAccordion>(
+    const { element, connect, disconnect } = await fixture<Accordion>(
         "fast-accordion"
     );
 
@@ -34,6 +32,14 @@ async function setup() {
 }
 
 describe("Accordion", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-accordion");
+    })
+
     it("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -66,7 +72,7 @@ describe("Accordion", () => {
         await connect();
         await DOM.nextUpdate();
 
-        expect((element as FASTAccordion).expandmode).to.equal(AccordionExpandMode.multi);
+        expect((element as Accordion).expandmode).to.equal(AccordionExpandMode.multi);
         expect(element.getAttribute("expand-mode")).to.equal(AccordionExpandMode.multi);
 
         await disconnect();

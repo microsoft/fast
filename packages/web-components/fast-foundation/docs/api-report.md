@@ -18,8 +18,10 @@ import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
+// Warning: (ae-incompatible-release-tags) The symbol "Accordion" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Accordion extends FASTElement {
+export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];
     // @internal (undocumented)
@@ -34,10 +36,11 @@ export enum AccordionExpandMode {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "AccordionItem" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "AccordionItem" because one of its declarations is marked as @internal
 //
 // @public
-export class AccordionItem extends FASTElement {
+export class AccordionItem extends FoundationElement {
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
@@ -52,10 +55,10 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
-export const AccordionItemTemplate: ViewTemplate<AccordionItem>;
+export const AccordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;
 
 // @public
-export const AccordionTemplate: ViewTemplate<Accordion>;
+export const AccordionTemplate: (context: any, definition: any) => ViewTemplate<Accordion>;
 
 // @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;

@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import {
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -6,6 +6,7 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import { AccordionItem } from "../accordion-item";
 
 /**
@@ -32,7 +33,7 @@ export enum AccordionExpandMode {
  * @remarks
  * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
  */
-export class Accordion extends FASTElement {
+export class Accordion extends FoundationElement {
     /**
      * Controls the expand mode of the Accordion, either allowing
      * single or multiple item expansion.

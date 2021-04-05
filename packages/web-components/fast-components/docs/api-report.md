@@ -265,12 +265,18 @@ export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export class FASTAccordion extends Accordion {
-}
+export const FASTAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTAccordionItem extends AccordionItem {
-}
+export const FASTAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTAnchor extends Anchor {

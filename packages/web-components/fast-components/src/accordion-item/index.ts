@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     AccordionItem,
     AccordionItemTemplate as template,
@@ -14,12 +13,11 @@ import { AccordionItemStyles as styles } from "./accordion-item.styles";
  * @remarks
  * HTML Element: \<fast-accordion-item\>
  */
-@customElement({
-    name: "fast-accordion-item",
+export const FASTAccordionItem = AccordionItem.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTAccordionItem extends AccordionItem {}
+});
 
 /**
  * Styles for AccordionItem

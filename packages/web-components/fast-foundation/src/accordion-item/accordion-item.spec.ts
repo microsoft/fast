@@ -3,14 +3,14 @@ import { AccordionItem, AccordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-accordion-item",
-    template,
+
+const FASTAccordionItem = AccordionItem.compose({
+    baseName: 'fast',
+    template
 })
-class FASTAccordionItem extends AccordionItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
+    const { element, connect, disconnect } = await fixture<AccordionItem>(
         "fast-accordion-item"
     );
 
@@ -18,6 +18,14 @@ async function setup() {
 }
 
 describe("Accordion item", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-accordion-item");
+    })
+
     it("should set an `aria-level` to the heading when provided", async () => {
         const { element, connect, disconnect } = await setup();
 
