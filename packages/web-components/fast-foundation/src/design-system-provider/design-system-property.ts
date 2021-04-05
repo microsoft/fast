@@ -3,7 +3,7 @@ import {
     DecoratorAttributeConfiguration,
     observable,
 } from "@microsoft/fast-element";
-import { DesignSystemProvider } from "./design-system-provider";
+import type { DesignSystemProvider } from "./design-system-provider";
 
 /**
  * Configuration object for defining a {@link @microsoft/fast-foundation#DesignSystemProvider} property

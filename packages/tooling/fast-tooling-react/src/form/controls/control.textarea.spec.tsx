@@ -5,6 +5,7 @@ import { TextareaControl } from "./control.textarea";
 import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
 import { ControlType } from "../templates";
+import defaultStrings from "../form.strings";
 
 /*
  * Configure Enzyme
@@ -33,6 +34,8 @@ const textareaProps: TextareaControlProps = {
     validationErrors: [],
     required: false,
     messageSystem: void 0,
+    strings: defaultStrings,
+    messageSystemOptions: null,
 };
 
 describe("TextareaControl", () => {

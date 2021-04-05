@@ -7,39 +7,11 @@
 import { get } from "lodash-es";
 import { Data, DataDictionary, SchemaDictionary } from "../message-system";
 import { ReservedElementMappingKeyword } from "./types";
+import { Delimiter, voidElements } from "./html-element";
 
 const whiteSpace = " ";
 const newline = "\n";
 const doubleQuote = '"';
-const enum Delimiter {
-    startTagOpen = "<",
-    startTagClose = ">",
-    startTagSelfClose = "/>",
-    endTagOpen = "</",
-    endTagClose = ">",
-    assign = "=",
-}
-/**
- * These elements are self closing because they cannot have content
- */
-const voidElements: string[] = [
-    "area",
-    "base",
-    "br",
-    "col",
-    "embed",
-    "hr",
-    "img",
-    "input",
-    "keygen",
-    "link",
-    "menuitem",
-    "meta",
-    "param",
-    "source",
-    "track",
-    "wbr",
-];
 
 function getLinkedDataDataLocations(
     dictionaryId: string,
@@ -89,6 +61,29 @@ function mapDataDictionaryItemToMonacoEditorHTMLLine(
                               value[1]
                           )}${doubleQuote}`;
                 });
+
+            if (
+                dataDictionary[0][dictionaryId].parent &&
+                schemaDictionary[
+                    dataDictionary[0][dataDictionary[0][dictionaryId].parent.id].schemaId
+                ].properties &&
+                schemaDictionary[
+                    dataDictionary[0][dataDictionary[0][dictionaryId].parent.id].schemaId
+                ].properties[dataDictionary[0][dictionaryId].parent.dataLocation][
+                    ReservedElementMappingKeyword.mapsToSlot
+                ] !== ""
+            ) {
+                attributes.push(
+                    `slot${Delimiter.assign}${doubleQuote}${
+                        schemaDictionary[
+                            dataDictionary[0][dataDictionary[0][dictionaryId].parent.id]
+                                .schemaId
+                        ].properties[dataDictionary[0][dictionaryId].parent.dataLocation][
+                            ReservedElementMappingKeyword.mapsToSlot
+                        ]
+                    }${doubleQuote}`
+                );
+            }
 
             if (
                 voidElements.includes(schema[ReservedElementMappingKeyword.mapsToTagName])

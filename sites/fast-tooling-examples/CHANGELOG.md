@@ -3,6 +3,110 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.18](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.17...@microsoft/fast-tooling-examples@0.4.18) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.17](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.16...@microsoft/fast-tooling-examples@0.4.17) (2021-03-16)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.16](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.15...@microsoft/fast-tooling-examples@0.4.16) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.15](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.14...@microsoft/fast-tooling-examples@0.4.15) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.14](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.12...@microsoft/fast-tooling-examples@0.4.14) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.13](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.12...@microsoft/fast-tooling-examples@0.4.13) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.12](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.11...@microsoft/fast-tooling-examples@0.4.12) (2021-01-30)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.11](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.10...@microsoft/fast-tooling-examples@0.4.11) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.10](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.9...@microsoft/fast-tooling-examples@0.4.10) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.9](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.8...@microsoft/fast-tooling-examples@0.4.9) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.8](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.7...@microsoft/fast-tooling-examples@0.4.8) (2020-11-19)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.6...@microsoft/fast-tooling-examples@0.4.7) (2020-10-14)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
+## [0.4.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.5...@microsoft/fast-tooling-examples@0.4.6) (2020-09-28)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
+
 ## [0.4.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.4...@microsoft/fast-tooling-examples@0.4.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-examples

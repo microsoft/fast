@@ -1,20 +1,27 @@
+import { XOR } from "../data-utilities/type.utilities";
 import { MessageSystemType } from "./types";
+import { defaultHistoryLimit } from "./history";
 import { Initialize, MessageSystemConfig, Register } from "./message-system.props";
 import { MessageSystemIncoming } from "./message-system.utilities.props";
 
 /**
  * The registration used for the message system
  */
-export default class MessageSystem {
+export default class MessageSystem<C = {}> {
     /**
      * The list of items registered to the message system registry
      */
-    private register: Set<Register> = new Set();
+    private register: Set<Register<C>> = new Set();
 
     /**
      * The web worker
      */
     private worker: void | Worker;
+
+    /**
+     * The history limit
+     */
+    private historyLimit: number;
 
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
@@ -23,6 +30,10 @@ export default class MessageSystem {
                     ? new Worker(config.webWorker)
                     : config.webWorker;
             this.worker.onmessage = this.onMessage;
+            this.historyLimit =
+                typeof config.historyLimit === "number"
+                    ? config.historyLimit
+                    : defaultHistoryLimit;
 
             if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
                 this.worker.postMessage({
@@ -37,14 +48,14 @@ export default class MessageSystem {
     /**
      * Add an item to the register
      */
-    public add(config: Register): void {
+    public add(config: Register<C>): void {
         this.register.add(config);
     }
 
     /**
      * Remove an item from the register
      */
-    public remove(config: Register): void {
+    public remove(config: Register<C>): void {
         this.register.delete(config);
     }
 
@@ -53,11 +64,16 @@ export default class MessageSystem {
      */
     public initialize(config: Initialize): void {
         if ((window as any).Worker) {
+            this.historyLimit =
+                typeof config.historyLimit === "number"
+                    ? config.historyLimit
+                    : this.historyLimit;
             (this.worker as Worker).postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: config.dataDictionary,
                 data: config.data,
                 schemaDictionary: config.schemaDictionary,
+                historyLimit: this.historyLimit,
             });
         }
     }
@@ -79,4 +95,19 @@ export default class MessageSystem {
             registeredItem.onMessage(e);
         });
     };
+
+    /**
+     * Get a registered items config
+     */
+    public getConfigById(id: string): XOR<null, C> {
+        let config: XOR<null, C> = null;
+
+        this.register.forEach((value: Register<C>) => {
+            if (value.id === id) {
+                config = value.config as XOR<null, C>;
+            }
+        });
+
+        return config;
+    }
 }

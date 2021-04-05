@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastButtonDefinition: WebComponentDefinition = {
@@ -6,11 +6,13 @@ export const fastButtonDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-button",
+            title: "Button",
             description: "The FAST button element",
             attributes: [
                 {
                     name: "appearance",
-                    description: "The appearance attribute",
+                    title: "Appearance",
+                    description: "The button's visual treatment",
                     type: DataType.string,
                     values: [
                         {
@@ -34,56 +36,66 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "autofocus",
-                    description: "The autofocus attribute",
+                    title: "Autofocus",
+                    description:
+                        "Determines if the element should receive document focus on page load",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the button",
                     type: DataType.boolean,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "form",
-                    description: "The form attribute",
+                    title: "Form ID",
+                    description: "The ID of a form to associate the element to",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "formaction",
-                    description: "The formaction attribute",
+                    title: "Form processing url",
+                    description: "The HTML formaction attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "formenctype",
-                    description: "The formenctype attribute",
+                    title: "Form encoding",
+                    description: "The HTML formenctype attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "formmethod",
-                    description: "The formmethod attribute",
+                    title: "Form submit method",
+                    description: "The HTML formmethod attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
+                    values: [{ name: "post" }, { name: "get" }],
                 },
                 {
                     name: "formnovalidate",
-                    description: "The formnovalidate attribute",
+                    title: "No form validation",
+                    description: "The HTML formnovalidate attribute of the button",
                     type: DataType.boolean,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "formtarget",
-                    description: "The formtarget attribute",
+                    title: "Form Target",
+                    description: "The HTML formtarget attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     values: [
@@ -104,21 +116,35 @@ export const fastButtonDefinition: WebComponentDefinition = {
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description: "The HTML name attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
                 },
                 {
                     name: "type",
-                    description: "The type attribute",
+                    title: "Type",
+                    description: "The HTML type attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
+                    values: [
+                        {
+                            name: "submit",
+                        },
+                        {
+                            name: "reset",
+                        },
+                        {
+                            name: "button",
+                        },
+                    ],
                 },
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description: "The HTML value attribute of the button",
                     type: DataType.string,
                     default: undefined,
                     required: false,
@@ -127,15 +153,20 @@ export const fastButtonDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the anchor",
                 },
                 {
                     name: "start",
-                    description: "The start slot",
+                    title: "Start slot",
+                    description:
+                        "Contents of the start slot are positioned before the button content",
                 },
                 {
                     name: "end",
-                    description: "The end slot",
+                    title: "End slot",
+                    description:
+                        "Contents of the end slot are positioned after the button content",
                 },
             ],
         },

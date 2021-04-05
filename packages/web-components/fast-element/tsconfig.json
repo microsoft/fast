@@ -4,6 +4,7 @@
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "strictNullChecks": true,
+        "importsNotUsedAsValues": "error",
         "experimentalDecorators": true,
         "target": "es2015",
         "module": "ESNext",
@@ -13,7 +14,8 @@
         ],
         "lib": [
             "DOM",
-            "ES2015"
+            "ES2015",
+            "ES2016.Array.Include"
         ]
     },
     "include": ["src"]

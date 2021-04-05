@@ -1,119 +1,52 @@
 import { camelCase, get } from "lodash-es";
-import { Container, Pane, Row, RowResizeDirection } from "@microsoft/fast-layouts-react";
+import rafThrottle from "raf-throttle";
 import {
     ModularForm,
     ModularViewer,
     NavigationMenu,
     ViewerCustomAction,
 } from "@microsoft/fast-tooling-react";
-import manageJss from "@microsoft/fast-jss-manager-react";
-import ReactDOM from "react-dom";
 import React from "react";
-import Foundation, { HandledProps } from "@microsoft/fast-components-foundation-react";
+import { StandardLuminance } from "@microsoft/fast-components";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
-    neutralLayerL1,
-    neutralLayerL2,
-    StandardLuminance,
-} from "@microsoft/fast-components-styles-msft";
-import {
-    ListboxItemProps,
-    TabsItem,
-    TypographySize,
-} from "@microsoft/fast-components-react-base";
-import {
-    ActionToggle,
-    ActionToggleAppearance,
-    ActionToggleProps,
-    Background,
-    Pivot,
-    Select,
-    SelectOption,
-    Typography,
-} from "@microsoft/fast-components-react-msft";
-import { Direction } from "@microsoft/fast-web-utilities";
-import {
-    AjvMapper,
-    CustomMessageIncomingOutgoing,
     DataDictionary,
     MessageSystem,
     MessageSystemType,
 } from "@microsoft/fast-tooling";
-import { mapDataDictionaryToMonacoEditorHTML } from "@microsoft/fast-tooling/dist/data-utilities/monaco";
-import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import {
+    componentCategories,
     DirectionSwitch,
-    downChevron,
+    Editor,
     Logo,
     ThemeSelector,
     TransparencyToggle,
-    upChevron,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
+import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
 import { history, menu, schemaDictionary } from "./config";
-import style, { pivotStyleSheetOverrides } from "./explorer.style";
-import {
-    ExplorerHandledProps,
-    ExplorerProps,
-    ExplorerState,
-    ExplorerUnhandledProps,
-} from "./explorer.props";
+import { ExplorerProps, ExplorerState } from "./explorer.props";
 import { previewReady } from "./preview";
+import { Footer } from "./site-footer";
+import {
+    renderDevToolsTabs,
+    renderDevToolToggle,
+    renderScenarioSelect,
+} from "./web-components";
+
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
-export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
-export const previewDirection: string = "PREVIEW::DIRECTION";
-export const previewTheme: string = "PREVIEW::THEME";
 let componentLinkedDataId: string = "root";
 
-interface ObjectOfComponentViewConfigs {
-    [key: string]: ComponentViewConfig;
-}
-
-// Prepends the custom scenario to each components list fo scenarios
-function setViewConfigsWithCustomConfig(
-    viewConfigs: ObjectOfComponentViewConfigs
-): ObjectOfComponentViewConfigs {
-    const componentViewConfigs: ObjectOfComponentViewConfigs = {};
-
-    Object.keys(viewConfigs).forEach((viewConfigKey: string): void => {
-        componentViewConfigs[viewConfigKey] = Object.assign(
-            {},
-            viewConfigs[viewConfigKey],
-            {
-                scenarios: [
-                    {
-                        displayName: "Custom",
-                        dataDictionary:
-                            viewConfigs[viewConfigKey].scenarios[0].dataDictionary,
-                    },
-                ].concat(viewConfigs[viewConfigKey].scenarios),
-            }
-        );
-    });
-
-    return componentViewConfigs;
-}
-
-const fastMessageSystemWorker = new FASTMessageSystemWorker();
-let fastMessageSystem: MessageSystem;
-
-class Explorer extends Foundation<
-    ExplorerHandledProps,
-    ExplorerUnhandledProps,
-    ExplorerState
-> {
+class Explorer extends Editor<ExplorerProps, ExplorerState> {
     public static displayName: string = "Explorer";
-
-    protected handledProps: HandledProps<ExplorerHandledProps> = {
-        managedClasses: void 0,
-    };
-
-    private viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
-    private viewerContentAreaPadding: number = 20;
-    private editor: monaco.editor.IStandaloneCodeEditor;
-    private editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    public webComponentEditorContainerRef: HTMLElement;
+    public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    private windowResizing: number;
 
     constructor(props: ExplorerProps) {
         super(props);
@@ -123,47 +56,25 @@ class Explorer extends Foundation<
             locationPathname
         );
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
-        const selectedScenarioIndex: number = 1;
+        const selectedScenarioIndex: number = 0;
 
         if ((window as any).Worker) {
-            fastMessageSystem = new MessageSystem({
-                webWorker: fastMessageSystemWorker,
-            });
-            new AjvMapper({
-                messageSystem: fastMessageSystem,
-            });
-            fastMessageSystem.add({
+            this.fastMessageSystem.add({
                 onMessage: this.handleMessageSystem,
             });
         }
 
-        window.onpopstate = this.handlePopState;
+        window.onpopstate = this.handleWindowPopState;
+        window.onresize = rafThrottle(this.handleWindowResize);
 
-        monaco.editor.onDidCreateModel((listener: monaco.editor.ITextModel) => {
-            (monaco.editor.getModel(
-                listener.uri
-            ) as monaco.editor.ITextModel).onDidChangeContent(
-                (event: monaco.editor.IModelContentChangedEvent) => {
-                    this.editor
-                        .getAction("editor.action.formatDocument")
-                        .run()
-                        .then((value: void) => {
-                            if (event.changes.length > 1) {
-                                this.editor.updateOptions({
-                                    readOnly: true,
-                                });
-                            }
-                        });
-                }
-            );
-        });
+        this.setupMonacoEditor(monaco);
 
         this.state = {
-            width: 0,
-            height: 0,
+            viewerWidth: 0,
+            viewerHeight: 0,
             componentName,
             componentConfig,
             selectedScenarioIndex,
@@ -175,6 +86,10 @@ class Explorer extends Foundation<
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
             dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
+            activePivotTab: "code",
+            mobileFormVisible: false,
+            mobileNavigationVisible: false,
+            lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
     }
 
@@ -189,384 +104,217 @@ class Explorer extends Foundation<
         }
 
         return (
-            <Background value={neutralLayerL1}>
-                <Container>
-                    <Row style={{ flex: "1" }}>
-                        <Pane width={260}>
-                            <Logo
-                                backgroundColor={"#181818"}
-                                logo={FASTInlineLogo}
-                                title={"Component Explorer"}
-                            />
-                            <NavigationMenu
-                                menu={menu}
-                                expanded={true}
-                                activeLocation={this.state.locationPathname}
-                                onLocationUpdate={this.handleUpdateRoute}
-                            />
-                        </Pane>
+            <div className={this.getContainerClassNames()}>
+                <div className={this.paneStartClassNames}>
+                    <Logo
+                        className={this.logoClassNames}
+                        logo={FASTInlineLogo}
+                        title={"Component Explorer"}
+                    />
+                    <NavigationMenu
+                        className={this.navigationClassNames}
+                        menu={menu}
+                        expanded={true}
+                        activeLocation={this.state.locationPathname}
+                        onLocationUpdate={this.handleUpdateRoute}
+                    />
+                </div>
+                <div className={this.canvasClassNames}>
+                    {this.renderCanvasOverlay()}
+                    <div className={this.menuBarClassNames}>
+                        <div className={this.mobileMenuBarClassNames}>
+                            {this.renderMobileNavigationTrigger()}
+                            <Logo logo={FASTInlineLogo} />
+                            {this.renderMobileFormTrigger()}
+                        </div>
+                        <div className={this.canvasMenuBarClassNames}>
+                            <div className={this.menuItemRegionClassNames}>
+                                {this.renderScenarioSelect()}
+                            </div>
+                            <div className={this.menuItemRegionClassNames}>
+                                <TransparencyToggle
+                                    id={"transparency-toggle"}
+                                    transparency={this.state.transparentBackground}
+                                    onUpdateTransparency={this.handleUpdateTransparency}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <DirectionSwitch
+                                    id={"direction-switch"}
+                                    direction={this.state.direction}
+                                    onUpdateDirection={this.handleUpdateDirection}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <ThemeSelector
+                                    id={"theme-selector"}
+                                    theme={this.state.theme}
+                                    onUpdateTheme={this.handleUpdateTheme}
+                                    disabled={!this.state.previewReady}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        className={classNames(this.canvasContentClassNames, [
+                            "canvas-content__dev-tools-hidden",
+                            !this.state.devToolsVisible,
+                        ])}
+                    >
                         <div
+                            ref={this.viewerContainerRef}
+                            className={this.viewerClassNames}
                             style={{
-                                display: "flex",
-                                flex: 1,
-                                flexDirection: "column",
+                                padding: `${this.viewerContentAreaPadding}px`,
                             }}
                         >
-                            <Row style={{ overflow: "visible", zIndex: 1 }} height={46}>
-                                <Background
-                                    value={neutralLayerL2}
-                                    drawBackground={true}
-                                    style={{
-                                        width: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
-                                        padding: "0 8px",
-                                    }}
-                                >
-                                    {this.renderScenarioSelect()}
-                                    <div style={{ display: "flex" }}>
-                                        <TransparencyToggle
-                                            id={"transparency-toggle"}
-                                            transparency={
-                                                this.state.transparentBackground
-                                            }
-                                            onUpdateTransparency={
-                                                this.handleUpdateTransparency
-                                            }
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <DirectionSwitch
-                                            id={"direction-switch"}
-                                            direction={this.state.direction}
-                                            onUpdateDirection={this.handleUpdateDirection}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                        <ThemeSelector
-                                            id={"theme-selector"}
-                                            theme={this.state.theme}
-                                            onUpdateTheme={this.handleUpdateTheme}
-                                            disabled={!this.state.previewReady}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
-                            <Row fill={true}>
-                                <div
-                                    ref={this.viewerContainerRef}
-                                    style={{
-                                        padding: `${this.viewerContentAreaPadding}px`,
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <ModularViewer
-                                        iframeSrc={"/preview"}
-                                        width={this.state.width}
-                                        height={this.state.height}
-                                        onUpdateHeight={this.handleUpdateHeight}
-                                        onUpdateWidth={this.handleUpdateWidth}
-                                        responsive={true}
-                                        messageSystem={fastMessageSystem as MessageSystem}
-                                    />
-                                </div>
-                            </Row>
-                            <Row
-                                resizable={true}
-                                resizeFrom={RowResizeDirection.north}
-                                initialHeight={400}
-                                collapsedHeight={36}
-                                collapsed={!this.state.devToolsVisible}
-                            >
-                                <Background
-                                    value={neutralLayerL1}
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            marginTop: "12px",
-                                            position: "relative",
-                                            height: "100%",
-                                        }}
-                                    >
-                                        <Pivot
-                                            label={"documentation"}
-                                            items={this.renderPivotItems()}
-                                            jssStyleSheet={pivotStyleSheetOverrides}
-                                        />
-                                        <ActionToggle
-                                            appearance={ActionToggleAppearance.stealth}
-                                            selectedLabel={"Development tools expanded"}
-                                            selectedGlyph={downChevron}
-                                            unselectedLabel={
-                                                "Development tools collapsed"
-                                            }
-                                            unselectedGlyph={upChevron}
-                                            selected={this.state.devToolsVisible}
-                                            onToggle={this.handleDevToolsToggle}
-                                            style={{
-                                                position: "absolute",
-                                                top: 0,
-                                                right: 0,
-                                            }}
-                                        />
-                                    </div>
-                                </Background>
-                            </Row>
+                            <ModularViewer
+                                iframeSrc={"/preview"}
+                                width={this.state.viewerWidth}
+                                height={this.state.viewerHeight}
+                                onUpdateHeight={this.handleUpdateHeight}
+                                onUpdateWidth={this.handleUpdateWidth}
+                                responsive={true}
+                                messageSystem={this.fastMessageSystem as MessageSystem}
+                            />
+                            {renderDevToolToggle(
+                                this.state.devToolsVisible,
+                                this.handleDevToolsToggle
+                            )}
                         </div>
-                        <Pane>
-                            <ModularForm messageSystem={fastMessageSystem} />
-                        </Pane>
-                    </Row>
-                </Container>
-            </Background>
+                        <div className={"dev-tools"}>
+                            {renderDevToolsTabs({
+                                codeRenderCallback: (e: HTMLElement) => {
+                                    this.webComponentEditorContainerRef = e;
+                                },
+                                tabUpdateCallback: (
+                                    e: React.ChangeEvent<HTMLElement>
+                                ) => {
+                                    this.handlePivotUpdate((e as any).detail.id);
+                                },
+                                guidanceTabPanelContent: this.state.componentConfig
+                                    .guidance,
+                                definitionTabPanelContent: JSON.stringify(
+                                    this.state.componentConfig.definition,
+                                    null,
+                                    2
+                                ),
+                                schemaTabPanelContent: JSON.stringify(
+                                    this.state.componentConfig.schema,
+                                    null,
+                                    2
+                                ),
+                            })}
+                        </div>
+                    </div>
+                </div>
+                <div className={this.paneEndClassNames}>
+                    <ModularForm
+                        messageSystem={this.fastMessageSystem}
+                        categories={componentCategories}
+                    />
+                </div>
+                <Footer />
+            </div>
         );
     }
 
     public componentDidMount(): void {
-        this.setViewerToFullSize();
-
-        if (this.editorContainerRef.current) {
-            this.editor = monaco.editor.create(this.editorContainerRef.current, {
-                value: "",
-                language: "html",
-                formatOnType: true,
-                formatOnPaste: true,
-                lineNumbers: "off",
-                theme: "vs-dark",
-                wordWrap: "on",
-                wordWrapColumn: 80,
-                wordWrapMinified: true,
-                automaticLayout: true,
-                wrappingIndent: "same",
-                minimap: {
-                    showSlider: "mouseover",
-                },
-                readOnly: true,
-            });
-        }
+        this.handleWindowResize();
     }
 
-    private updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
-        if (this.editor) {
-            this.editor.updateOptions({
-                readOnly: false,
-            });
-            this.editor.setValue(
-                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
-            );
-        }
-    }
-
-    private handlePopState = (): void => {
+    private handleWindowPopState = (): void => {
         if (window.location.pathname !== this.state.locationPathname) {
             this.handleUpdateRoute(window.location.pathname);
         }
     };
 
-    private handleMessageSystem = (e: MessageEvent): void => {
-        const updatedState: Partial<ExplorerState> = {};
+    private handleWindowResize = (): void => {
+        if (this.webComponentEditorContainerRef) {
+            if (this.windowResizing) {
+                clearTimeout(this.windowResizing);
+            }
 
+            this.windowResizing = window.setTimeout(() => {
+                this.setState({
+                    viewerWidth: 0,
+                    viewerHeight: 0,
+                });
+
+                this.setViewerToFullSize();
+
+                if (this.state.activePivotTab === "code") {
+                    this.updateMonacoEditor();
+                }
+            });
+        }
+    };
+
+    private updateMonacoEditor = (): void => {
+        this.createMonacoEditor(monaco, this.webComponentEditorContainerRef);
+
+        if (
+            this.webComponentEditorContainerRef &&
+            this.editor &&
+            this.state.activePivotTab === "code"
+        ) {
+            this.editor.layout();
+        }
+    };
+
+    private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data.type === MessageSystemType.navigation) {
             componentLinkedDataId = e.data.activeDictionaryId;
         }
 
         if (
             e.data.type === MessageSystemType.custom &&
-            e.data.action === ViewerCustomAction.response
+            e.data.action === ViewerCustomAction.response &&
+            e.data.value === previewReady
         ) {
-            if (e.data.value === previewReady) {
-                fastMessageSystem.postMessage({
-                    type: MessageSystemType.initialize,
-                    dataDictionary: this.state.dataDictionary,
-                    schemaDictionary,
-                });
-                updatedState.previewReady = true;
-                this.updateEditorContent(this.state.dataDictionary);
-            }
-        }
+            const dataDictionary = this.getScenarioData(this.state.componentConfig);
 
-        if (
-            e.data.type === MessageSystemType.data ||
-            e.data.type === MessageSystemType.initialize
-        ) {
-            updatedState.dataDictionary = e.data.dataDictionary;
-            this.updateEditorContent(e.data.dataDictionary);
-        }
+            this.fastMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary,
+                schemaDictionary,
+            });
 
-        this.setState(updatedState as ExplorerState);
-    };
-
-    private setViewerToFullSize(): void {
-        const viewerContainer: HTMLDivElement | null = this.viewerContainerRef.current;
-
-        if (viewerContainer) {
-            /* eslint-disable-next-line react/no-find-dom-node */
-            const viewerNode: Element | Text | null = ReactDOM.findDOMNode(
-                viewerContainer
+            this.setState(
+                {
+                    previewReady: true,
+                },
+                () => {
+                    this.updateEditorContent(dataDictionary);
+                }
             );
-
-            if (viewerNode instanceof Element) {
-                const height: number =
-                    viewerNode.clientHeight - this.viewerContentAreaPadding * 2;
-                const width: number =
-                    viewerNode.clientWidth - this.viewerContentAreaPadding * 2;
-                this.setState({
-                    width,
-                    height: height - 24, // 24 is height of view label
-                });
-            }
+        } else if (
+            (e.data.type === MessageSystemType.data ||
+                e.data.type === MessageSystemType.initialize) &&
+            (!e.data.options || e.data.options.originatorId !== monacoAdapterId)
+        ) {
+            this.setState(
+                {
+                    dataDictionary: e.data.dataDictionary,
+                },
+                () => {
+                    this.updateEditorContent(e.data.dataDictionary);
+                }
+            );
         }
-    }
-
-    private renderPivotItems(): TabsItem[] {
-        return [
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Code
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div
-                            ref={this.editorContainerRef}
-                            className={className}
-                            style={{ height: "340px" }}
-                        />
-                    );
-                },
-                id: "code",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Guidance
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    return (
-                        <div className={className}>
-                            <this.state.componentConfig.guidance />
-                        </div>
-                    );
-                },
-                id: "guidance",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Definition
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    if (typeof this.state.componentConfig.definition !== "undefined") {
-                        return (
-                            <div className={className}>
-                                <pre>
-                                    {JSON.stringify(
-                                        this.state.componentConfig.definition,
-                                        null,
-                                        2
-                                    )}
-                                </pre>
-                            </div>
-                        );
-                    }
-
-                    return null;
-                },
-                id: "definition",
-            },
-            {
-                tab: (className: string): React.ReactNode => {
-                    return (
-                        <Typography
-                            className={className}
-                            size={TypographySize._8}
-                            onClick={this.handleDevToolsTabTriggerClick}
-                        >
-                            Schema
-                        </Typography>
-                    );
-                },
-                content: (className: string): React.ReactNode => {
-                    if (typeof this.state.componentConfig.schema !== "undefined") {
-                        return (
-                            <div className={className}>
-                                <pre>
-                                    {JSON.stringify(
-                                        this.state.componentConfig.schema,
-                                        null,
-                                        2
-                                    )}
-                                </pre>
-                            </div>
-                        );
-                    }
-
-                    return null;
-                },
-                id: "schema",
-            },
-        ];
-    }
+    };
 
     private renderScenarioSelect(): React.ReactNode {
         const scenarioOptions: Array<Scenario> = get(
-            setViewConfigsWithCustomConfig(componentConfigs)[
-                `${camelCase(this.state.componentName)}Config`
-            ],
+            componentConfigs[`${camelCase(this.state.componentName)}Config`],
             "scenarios"
         );
 
         if (Array.isArray(scenarioOptions)) {
-            return (
-                <Select
-                    onValueChange={this.handleUpdateScenario}
-                    defaultSelection={[scenarioOptions[1].displayName]}
-                    selectedItems={[
-                        scenarioOptions[this.state.selectedScenarioIndex].displayName,
-                    ]}
-                >
-                    {this.renderScenarioOptions(scenarioOptions)}
-                </Select>
+            return renderScenarioSelect(
+                this.state.selectedScenarioIndex,
+                scenarioOptions,
+                this.handleUpdateScenario
             );
         }
-    }
-
-    private renderScenarioOptions(scenarioOptions: Array<Scenario>): React.ReactNode {
-        return scenarioOptions.map((scenarioOption: Scenario, index: number) => {
-            return (
-                <SelectOption
-                    key={index}
-                    id={scenarioOption.displayName}
-                    displayString={scenarioOption.displayName}
-                    value={`${index}`}
-                />
-            );
-        });
     }
 
     private getComponentNameSpinalCaseByPath(path: string): string {
@@ -588,42 +336,9 @@ class Explorer extends Foundation<
         return dataDictionary;
     }
 
-    private handleUpdateTheme = (): void => {
-        const updatedTheme: StandardLuminance =
-            this.state.theme === StandardLuminance.DarkMode
-                ? StandardLuminance.LightMode
-                : StandardLuminance.DarkMode;
-
-        this.setState({
-            theme: updatedTheme,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.custom,
-            action: ViewerCustomAction.response,
-            id: previewTheme,
-            value: updatedTheme,
-        } as CustomMessageIncomingOutgoing);
-    };
-
-    private handleUpdateDirection = (): void => {
-        const updatedDirection: Direction =
-            this.state.direction === Direction.ltr ? Direction.rtl : Direction.ltr;
-        this.setState({
-            direction: updatedDirection,
-        });
-
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.custom,
-            action: ViewerCustomAction.response,
-            id: previewDirection,
-            value: updatedDirection,
-        } as CustomMessageIncomingOutgoing);
-    };
-
     private handleUpdateScenario = (
         newValue: string | string[],
-        selectedItems: ListboxItemProps[]
+        selectedItems: ListboxOption[]
     ): void => {
         const selectedScenarioIndex: number = parseInt(selectedItems[0].value, 10);
 
@@ -632,10 +347,10 @@ class Explorer extends Foundation<
                 selectedScenarioIndex,
             },
             () => {
-                if ((window as any).Worker && fastMessageSystem) {
-                    fastMessageSystem.postMessage({
+                if ((window as any).Worker && this.fastMessageSystem) {
+                    this.fastMessageSystem.postMessage({
                         type: MessageSystemType.initialize,
-                        data: this.getScenarioData(
+                        dataDictionary: this.getScenarioData(
                             this.state.componentConfig,
                             selectedScenarioIndex
                         ),
@@ -646,29 +361,17 @@ class Explorer extends Foundation<
         );
     };
 
-    private handleUpdateHeight = (updatedHeight: number): void => {
-        this.setState({
-            height: updatedHeight,
-        });
-    };
-
-    private handleUpdateWidth = (updatedWidth: number): void => {
-        this.setState({
-            width: updatedWidth,
-        });
-    };
-
     private handleUpdateRoute = (route: string): void => {
         const componentName: string = this.getComponentNameSpinalCaseByPath(route);
         const componentConfig: any = get(
-            setViewConfigsWithCustomConfig(componentConfigs),
+            componentConfigs,
             `${camelCase(componentName)}Config`
         );
 
-        if ((window as any).Worker && fastMessageSystem) {
-            fastMessageSystem.postMessage({
+        if ((window as any).Worker && this.fastMessageSystem) {
+            this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
-                dataDictionary: this.getScenarioData(componentConfig, 1),
+                dataDictionary: this.getScenarioData(componentConfig, 0),
                 schemaDictionary,
             });
         }
@@ -678,7 +381,7 @@ class Explorer extends Foundation<
                 locationPathname: route,
                 componentName,
                 componentConfig,
-                selectedScenarioIndex: 1,
+                selectedScenarioIndex: 0,
             },
             () => {
                 history.push(route);
@@ -686,36 +389,31 @@ class Explorer extends Foundation<
         );
     };
 
-    private handleUpdateTransparency = (): void => {
-        this.setState({
-            transparentBackground: !this.state.transparentBackground,
-        });
+    private handleDevToolsToggle = (): void => {
+        const selected: boolean = !this.state.devToolsVisible;
+        this.maxViewerHeight = selected
+            ? this.maxViewerHeight / 2
+            : this.maxViewerHeight * 2;
 
-        fastMessageSystem.postMessage({
-            type: MessageSystemType.custom,
-            action: ViewerCustomAction.response,
-            id: previewBackgroundTransparency,
-            value: !this.state.transparentBackground,
-        } as CustomMessageIncomingOutgoing);
+        this.setState(
+            {
+                devToolsVisible: selected,
+            },
+            this.setViewerToFullSize
+        );
     };
 
-    private handleDevToolsToggle = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        props: ActionToggleProps
-    ): void => {
+    private handlePivotUpdate = (activeTab: string): void => {
         this.setState({
-            devToolsVisible: !props.selected,
+            activePivotTab: activeTab,
         });
-    };
 
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    private handleDevToolsTabTriggerClick = (e: React.MouseEvent<unknown>): void => {
-        if (!this.state.devToolsVisible) {
-            this.setState({
-                devToolsVisible: true,
+        if (activeTab === "code") {
+            window.setTimeout(() => {
+                this.updateMonacoEditor();
             });
         }
     };
 }
 
-export default manageJss(style)(Explorer);
+export default Explorer;

@@ -1,8 +1,8 @@
 export interface LogoProps {
     /**
-     * The background color
+     * The class name to add
      */
-    backgroundColor: string;
+    className?: string;
 
     /**
      * The version
@@ -17,5 +17,5 @@ export interface LogoProps {
     /**
      * The title
      */
-    title: string;
+    title?: string;
 }

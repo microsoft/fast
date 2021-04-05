@@ -1,12 +1,14 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { TextField } from "./text-field";
+import { whitespaceFilter } from "../utilities";
+import type { TextField } from "./text-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
  */
-export const TextFieldTemplate = html<TextField>`
+export const TextFieldTemplate: ViewTemplate<TextField> = html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}
@@ -20,7 +22,9 @@ export const TextFieldTemplate = html<TextField>`
                     ? "label"
                     : "label label__hidden"}"
         >
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+            <slot
+                ${slotted({ property: "defaultSlottedNodes", filter: whitespaceFilter })}
+            ></slot>
         </label>
         <div class="root" part="root">
             ${startTemplate}
@@ -28,13 +32,19 @@ export const TextFieldTemplate = html<TextField>`
                 class="control"
                 part="control"
                 id="control"
-                @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
-                placeholder="${x => x.placeholder}"
-                ?required="${x => x.required}"
+                ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
+                list="${x => x.list}"
+                maxlength="${x => x.maxlength}"
+                minlength="${x => x.minlength}"
+                pattern="${x => x.pattern}"
+                placeholder="${x => x.placeholder}"
                 ?readonly="${x => x.readOnly}"
+                ?required="${x => x.required}"
+                size="${x => x.size}"
+                ?spellcheck="${x => x.spellcheck}"
                 :value="${x => x.value}"
                 type="${x => x.type}"
                 aria-atomic="${x => x.ariaAtomic}"

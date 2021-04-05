@@ -3,13 +3,11 @@ import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
     keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
     keyCodeArrowUp,
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItemRole } from "../menu-item/index";
+import { MenuItem, MenuItemRole } from "../menu-item/index";
 
 /**
  * A Menu Custom HTML Element.
@@ -33,6 +31,8 @@ export class Menu extends FASTElement {
 
     private menuItems: Element[];
 
+    private expandedItem: MenuItem | null = null;
+
     /**
      * The index of the focusable element in the items array
      * defaults to -1
@@ -49,6 +49,8 @@ export class Menu extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.menuItems = this.domChildren();
+
+        this.addEventListener("change", this.changeHandler);
     }
 
     /**
@@ -57,7 +59,19 @@ export class Menu extends FASTElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.menuItems = [];
+        this.removeEventListener("change", this.changeHandler);
     }
+
+    /**
+     * @internal
+     */
+    public readonly isNestedMenu = (): boolean => {
+        return (
+            this.parentElement !== null &&
+            isHTMLElement(this.parentElement) &&
+            this.parentElement.getAttribute("role") === "menuitem"
+        );
+    };
 
     /**
      * Focuses the first item in the menu.
@@ -69,6 +83,18 @@ export class Menu extends FASTElement {
     }
 
     /**
+     * Collapses any expanded menu items.
+     *
+     * @public
+     */
+    public collapseExpandedItem(): void {
+        if (this.expandedItem !== null) {
+            this.expandedItem.expanded = false;
+            this.expandedItem = null;
+        }
+    }
+
+    /**
      * @internal
      */
     public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
@@ -77,18 +103,16 @@ export class Menu extends FASTElement {
         }
         switch (e.keyCode) {
             case keyCodeArrowDown:
-            case keyCodeArrowRight:
                 // go forward one index
                 this.setFocus(this.focusIndex + 1, 1);
                 return;
             case keyCodeArrowUp:
-            case keyCodeArrowLeft:
                 // go back one index
                 this.setFocus(this.focusIndex - 1, -1);
                 return;
             case keyCodeEnd:
                 // set focus on last item
-                this.setFocus(this.domChildren().length - 1, -1);
+                this.setFocus(this.menuItems.length - 1, -1);
                 return;
             case keyCodeHome:
                 // set focus on first item
@@ -106,43 +130,118 @@ export class Menu extends FASTElement {
      * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
-        const isNestedEl = this.contains(e.relatedTarget as Element);
-
-        if (!isNestedEl) {
+        if (!this.contains(e.relatedTarget as Element)) {
+            this.collapseExpandedItem();
             // find our first focusable element
             const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
-
             // set the current focus index's tabindex to -1
-            this.menuItems[this.focusIndex].setAttribute("tabindex", "");
-
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
             // set the first focusable element tabindex to 0
             this.menuItems[focusIndex].setAttribute("tabindex", "0");
-
             // set the focus index
             this.focusIndex = focusIndex;
         }
     };
 
-    private setItems = (): void => {
-        const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
+    private handleItemFocus = (e: FocusEvent) => {
+        this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
 
-        // if our focus index is not -1 we have items
-        if (focusIndex !== -1) {
-            this.focusIndex = focusIndex;
+        const targetItem = e.target as MenuItem;
+        this.focusIndex = this.menuItems.indexOf(targetItem);
+        targetItem.setAttribute("tabindex", "0");
+    };
+
+    private handleExpandedChanged = (e: Event): void => {
+        if (
+            e.defaultPrevented ||
+            e.target === null ||
+            this.menuItems.indexOf(e.target as Element) < 0
+        ) {
+            return;
         }
 
-        for (let item: number = 0; item < this.menuItems.length; item++) {
-            if (item === focusIndex) {
-                this.menuItems[item].setAttribute("tabindex", "0");
-            }
+        e.preventDefault();
+        const changedItem: MenuItem = (e.target as any) as MenuItem;
 
-            this.menuItems[item].addEventListener("blur", this.handleMenuItemFocus);
+        // closing an expanded item without opening another
+        if (
+            this.expandedItem !== null &&
+            changedItem === this.expandedItem &&
+            changedItem.expanded === false
+        ) {
+            this.expandedItem = null;
+            return;
+        }
+
+        if (changedItem.expanded) {
+            if (this.expandedItem !== null && this.expandedItem !== changedItem) {
+                this.expandedItem.expanded = false;
+            }
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            this.expandedItem = changedItem;
+            this.focusIndex = this.menuItems.indexOf(changedItem);
+            changedItem.setAttribute("tabindex", "0");
         }
     };
 
-    private resetItems = (oldValue: any): void => {
-        for (let item: number = 0; item < oldValue.length; item++) {
-            oldValue[item].removeEventListener("blur", this.handleMenuItemFocus);
+    private setItems = (): void => {
+        const menuItems = this.menuItems.filter(this.isMenuItemElement);
+
+        // if our focus index is not -1 we have items
+        if (menuItems.length) {
+            this.focusIndex = 0;
+        }
+
+        menuItems.forEach((item: HTMLElement, index: number) => {
+            item.setAttribute("tabindex", index === 0 ? "0" : "-1");
+            item.addEventListener("expanded-change", this.handleExpandedChanged);
+            item.addEventListener("focus", this.handleItemFocus);
+        });
+    };
+
+    private resetItems = (oldValue: HTMLElement[]): void => {
+        oldValue.forEach((item: HTMLElement) => {
+            item.removeEventListener("expanded-change", this.handleExpandedChanged);
+            item.removeEventListener("focus", this.handleItemFocus);
+        });
+    };
+
+    /**
+     * handle change from child element
+     */
+    private changeHandler = (e: CustomEvent): void => {
+        const changedMenuItem: MenuItem = e.target as MenuItem;
+        const changeItemIndex: number = this.menuItems.indexOf(changedMenuItem);
+
+        if (changeItemIndex === -1) {
+            return;
+        }
+
+        if (
+            changedMenuItem.role === "menuitemradio" &&
+            changedMenuItem.checked === true
+        ) {
+            for (let i = changeItemIndex - 1; i >= 0; --i) {
+                const item: Element = this.menuItems[i];
+                const role: string | null = item.getAttribute("role");
+                if (role === MenuItemRole.menuitemradio) {
+                    (item as MenuItem).checked = false;
+                }
+                if (role === "separator") {
+                    break;
+                }
+            }
+            const maxIndex: number = this.menuItems.length - 1;
+            for (let i = changeItemIndex + 1; i <= maxIndex; ++i) {
+                const item: Element = this.menuItems[i];
+                const role: string | null = item.getAttribute("role");
+                if (role === MenuItemRole.menuitemradio) {
+                    (item as MenuItem).checked = false;
+                }
+                if (role === "separator") {
+                    break;
+                }
+            }
         }
     };
 
@@ -164,51 +263,37 @@ export class Menu extends FASTElement {
     };
 
     /**
-     * check if the item is disabled
-     */
-    private isDisabledElement = (el: Element): el is HTMLElement => {
-        return this.isMenuItemElement(el) && el.getAttribute("aria-disabled") === "true";
-    };
-
-    /**
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return this.isMenuItemElement(el) && !this.isDisabledElement(el);
-    };
-
-    private handleMenuItemFocus = (e: KeyboardEvent): void => {
-        const target = e.currentTarget as Element;
-        const focusIndex: number = this.menuItems.indexOf(target);
-
-        if (this.isDisabledElement(target)) {
-            target.blur();
-            return;
-        }
-
-        if (focusIndex !== this.focusIndex && focusIndex !== -1) {
-            this.setFocus(focusIndex, focusIndex > this.focusIndex ? 1 : -1);
-        }
+        return this.isMenuItemElement(el);
     };
 
     private setFocus(focusIndex: number, adjustment: number): void {
-        const children: Element[] = this.menuItems;
+        if (this.menuItems === undefined) {
+            return;
+        }
 
-        while (inRange(focusIndex, children.length)) {
-            const child: Element = children[focusIndex];
+        while (inRange(focusIndex, this.menuItems.length)) {
+            const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {
+                // change the previous index to -1
+                if (
+                    this.focusIndex > -1 &&
+                    this.menuItems.length >= this.focusIndex - 1
+                ) {
+                    this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+                }
+
+                // update the focus index
+                this.focusIndex = focusIndex;
+
                 // update the tabindex of next focusable element
                 child.setAttribute("tabindex", "0");
 
                 // focus the element
                 child.focus();
-
-                // change the previous index to -1
-                children[this.focusIndex].setAttribute("tabindex", "");
-
-                // update the focus index
-                this.focusIndex = focusIndex;
 
                 break;
             }

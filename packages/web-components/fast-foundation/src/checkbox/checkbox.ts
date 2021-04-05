@@ -1,14 +1,14 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedCheckbox } from "./checkbox.form-associated";
 
 /**
- * A Switch Custom HTML Element.
+ * A Checkbox Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#checkbox | ARIA checkbox }.
  *
  * @public
  */
-export class Checkbox extends FormAssociated<HTMLInputElement> {
+export class Checkbox extends FormAssociatedCheckbox {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -18,7 +18,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -29,7 +29,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on"; // Map to proxy element.
+    public initialValue: string = "on";
 
     /**
      * Provides the default checkedness of the input element
@@ -58,7 +58,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * @public
      */
     @observable
-    public defaultChecked: boolean = !!this.checkedAttribute;
+    public defaultChecked: boolean;
     private defaultCheckedChanged(): void {
         if (!this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
@@ -75,7 +75,7 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean;
     private checkedChanged(): void {
         if (!this.dirtyChecked) {
             this.dirtyChecked = true;
@@ -83,16 +83,16 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
 
         this.updateForm();
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.checked = this.checked;
         }
 
         if (this.constructed) {
             this.$emit("change");
         }
-    }
 
-    protected proxy: HTMLInputElement = document.createElement("input");
+        this.validate();
+    }
 
     /**
      * The indeterminate state of the control
@@ -115,6 +115,9 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
     constructor() {
         super();
 
+        this.defaultChecked = !!this.checkedAttribute;
+        this.checked = this.defaultChecked;
+
         this.constructed = true;
     }
 
@@ -129,6 +132,14 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
+    /**
+     * @internal
+     */
+    public formResetCallback = (): void => {
+        this.checked = this.checkedAttribute;
+        this.dirtyChecked = false;
+    };
+
     private updateForm(): void {
         const value = this.checked ? this.value : null;
         this.setFormValue(value, value);
@@ -138,8 +149,6 @@ export class Checkbox extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;

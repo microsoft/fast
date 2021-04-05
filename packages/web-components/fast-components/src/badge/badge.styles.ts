@@ -7,7 +7,7 @@ export const BadgeStyles = css`
         box-sizing: border-box;
         font-family: var(--body-font);
         font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-height);
+        line-height: var(--type-ramp-minus-1-line-height);
     }
 
     .control {
@@ -21,7 +21,7 @@ export const BadgeStyles = css`
         font-weight: 400;
     }
 
-    :host(.circular) .control {
+    :host([circular]) .control {
         border-radius: 100px;
         padding: 0 calc(var(--design-unit) * 1px);
         ${

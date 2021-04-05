@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastCheckboxDefinition: WebComponentDefinition = {
@@ -6,39 +6,48 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-checkbox",
+            title: "Checkbox",
             description: "The FAST checkbox element",
             attributes: [
                 {
                     name: "checked",
-                    description: "The checked attribute",
+                    title: "Checked",
+                    description: "Whether or not this checkbox is checked by default",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "name",
-                    description: "The name attribute",
+                    title: "Name",
+                    description:
+                        "This element's value will be surfaced during form submission under the provided name",
                     type: DataType.string,
                     default: "",
                     required: false,
                 },
                 {
                     name: "required",
-                    description: "The required attribute",
+                    title: "Required",
+                    description:
+                        "Require the field to be completed prior to form submission",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the checkbox",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "readonly",
-                    description: "The readonly attribute",
+                    title: "Readonly",
+                    description:
+                        "When true, the control will be immutable by user interaction",
                     type: DataType.boolean,
                     default: false,
                     required: false,
@@ -47,15 +56,21 @@ export const fastCheckboxDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description:
+                        "The content of the checkbox represents its visual label",
                 },
                 {
                     name: "indeterminate-indicator",
-                    description: "The indeterminate indicator slot",
+                    title: "Indeterminate indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the inditerminate state",
                 },
                 {
                     name: "checked-indicator",
-                    description: "The checked indicator slot",
+                    title: "Checked indicator slot",
+                    description:
+                        "Slot to provide a custom icon to represent the checked state",
                 },
             ],
         },

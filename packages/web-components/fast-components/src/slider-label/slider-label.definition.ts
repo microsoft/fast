@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastSliderLabelDefinition: WebComponentDefinition = {
@@ -6,32 +6,30 @@ export const fastSliderLabelDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-slider-label",
+            title: "Slider label",
             description: "The FAST slider-label element",
             attributes: [
                 {
-                    name: "name",
-                    description: "The name attribute",
-                    type: DataType.string,
-                    default: "",
-                    required: false,
-                },
-                {
                     name: "hide-mark",
-                    description: "The hide-mark attribute",
+                    title: "Hide mark",
+                    description: "Hides the tick mark",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "disabled",
-                    description: "The disabled attribute",
+                    title: "Disabled",
+                    description: "Sets the disabled state of the label",
                     type: DataType.boolean,
                     default: false,
                     required: false,
                 },
                 {
                     name: "position",
-                    description: "The position value attribute",
+                    title: "Position",
+                    description:
+                        "The position of the label relative to the min and max value of the parent",
                     type: DataType.string,
                     default: false,
                     required: false,
@@ -40,7 +38,8 @@ export const fastSliderLabelDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "",
-                    description: "The default slot",
+                    title: "Default slot",
+                    description: "The content of the slider label",
                 },
             ],
         },

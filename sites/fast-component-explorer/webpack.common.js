@@ -82,7 +82,7 @@ module.exports = {
             template: path.resolve(appDir, "index.html"),
         }),
         new WebpackShellPlugin({
-            onBuildStart: [`yarn convert:readme`],
+            onBuildStart: [`yarn convert:readme`, `yarn convert:scenarios`],
         }),
         new CopyPlugin({
             patterns: [
@@ -98,7 +98,7 @@ module.exports = {
         new MonacoWebpackPlugin({
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
-            features: ["format", "coreCommands", "codeAction"]
-        })
+            features: ["format", "coreCommands", "codeAction"],
+        }),
     ],
 };

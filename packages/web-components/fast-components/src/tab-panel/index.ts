@@ -17,7 +17,6 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
     styles,
 })
 export class FASTTabPanel extends TabPanel {}
-export * from "../tab-panel";
 
 /**
  * Styles for TabPanel

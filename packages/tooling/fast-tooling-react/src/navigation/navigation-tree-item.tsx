@@ -13,18 +13,91 @@ import {
 } from "react-dnd";
 import { HoverLocation } from "./navigation.props";
 
+function editableOverlay(
+    className: string,
+    value: string,
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleInputBlur: (e: React.FocusEvent<HTMLInputElement>) => void,
+    handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
+): React.ReactNode {
+    return (
+        <input
+            className={className}
+            key={"overlay"}
+            value={value}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+            onKeyDown={handleInputKeyDown}
+        />
+    );
+}
+
+function treeItem(
+    handleClick: React.MouseEventHandler<HTMLElement>,
+    handleInputChange: React.ChangeEventHandler<HTMLInputElement>,
+    handleInputBlur: React.FocusEventHandler<HTMLInputElement>,
+    handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement>,
+    handleExpandClick: React.MouseEventHandler<HTMLElement>,
+    handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
+    isEditable: boolean,
+    isCollapsible: boolean,
+    className: string,
+    expandTriggerClassName: string,
+    contentClassName: string,
+    displayTextInputClassName: string,
+    text: string,
+    dictionaryId: string,
+    navigationConfigId: string,
+    ref?: (node: HTMLAnchorElement) => React.ReactElement<any>
+): React.ReactElement {
+    const displayText: React.ReactNode = isEditable
+        ? editableOverlay(
+              displayTextInputClassName,
+              text,
+              handleInputChange,
+              handleInputBlur,
+              handleInputKeyDown
+          )
+        : isCollapsible
+        ? treeItemCollapsible(
+              handleClick,
+              handleKeyDown,
+              contentClassName,
+              text,
+              dictionaryId,
+              navigationConfigId,
+              ref
+          )
+        : treeItemEndLeaf(
+              handleClick,
+              handleKeyDown,
+              contentClassName,
+              text,
+              dictionaryId,
+              navigationConfigId,
+              ref
+          );
+
+    return (
+        <span className={className}>
+            <span className={expandTriggerClassName} onClick={handleExpandClick} />
+            {displayText}
+        </span>
+    );
+}
+
 function treeItemEndLeaf(
     handleClick: React.MouseEventHandler<HTMLElement>,
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
-    className: string,
-    children: React.ReactNode,
+    contentClassName: string,
+    text: string,
     dictionaryId: string,
     navigationConfigId: string,
     ref?: (node: HTMLAnchorElement) => React.ReactElement<any>
 ): React.ReactElement {
     return (
         <a
-            className={className}
+            className={contentClassName}
             onClick={handleClick}
             ref={ref}
             tabIndex={0}
@@ -32,7 +105,7 @@ function treeItemEndLeaf(
             data-dictionaryid={dictionaryId}
             data-navigationconfigid={navigationConfigId}
         >
-            {children}
+            {text}
         </a>
     );
 }
@@ -40,15 +113,15 @@ function treeItemEndLeaf(
 function treeItemCollapsible(
     handleClick: React.MouseEventHandler<HTMLElement>,
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
-    className: string,
-    children: React.ReactNode,
+    contentClassName: string,
+    text: string,
     dictionaryId: string,
     navigationConfigId: string,
     ref?: (node: HTMLSpanElement) => React.ReactElement<any>
 ): React.ReactElement {
     return (
         <span
-            className={className}
+            className={contentClassName}
             onClick={handleClick}
             ref={ref}
             tabIndex={0}
@@ -56,46 +129,62 @@ function treeItemCollapsible(
             data-dictionaryid={dictionaryId}
             data-navigationconfigid={navigationConfigId}
         >
-            {children}
+            {text}
         </span>
     );
 }
 
 export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
-    children,
+    text,
     className,
+    expandTriggerClassName,
+    contentClassName,
+    displayTextInputClassName,
+    isEditable,
     isCollapsible,
     handleClick,
+    handleInputChange,
+    handleInputBlur,
+    handleInputKeyDown,
+    handleExpandClick,
     handleKeyDown,
     dictionaryId,
     navigationConfigId,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
-    return isCollapsible
-        ? treeItemCollapsible(
-              handleClick,
-              handleKeyDown,
-              className,
-              children,
-              dictionaryId,
-              navigationConfigId
-          )
-        : treeItemEndLeaf(
-              handleClick,
-              handleKeyDown,
-              className,
-              children,
-              dictionaryId,
-              navigationConfigId
-          );
+    return treeItem(
+        handleClick,
+        handleInputChange,
+        handleInputBlur,
+        handleInputKeyDown,
+        handleExpandClick,
+        handleKeyDown,
+        isEditable,
+        isCollapsible,
+        className,
+        expandTriggerClassName,
+        contentClassName,
+        displayTextInputClassName,
+        text,
+        dictionaryId,
+        navigationConfigId
+    );
 };
 
 export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     type,
-    children,
+    text,
     handleClick,
+    handleInputChange,
+    handleInputBlur,
+    handleInputKeyDown,
+    handleExpandClick,
     handleKeyDown,
     className,
+    expandTriggerClassName,
+    contentClassName,
+    displayTextInputClassName,
     isCollapsible,
+    isEditable,
     dragStart,
     dragEnd,
     dragHover,
@@ -152,29 +241,25 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         }
     }
 
-    return isCollapsible
-        ? treeItemCollapsible(
-              handleClick,
-              handleKeyDown,
-              className,
-              children,
-              dictionaryId,
-              navigationConfigId,
-              (node: HTMLSpanElement): React.ReactElement => {
-                  ref = node;
-                  return refNode(node);
-              }
-          )
-        : treeItemEndLeaf(
-              handleClick,
-              handleKeyDown,
-              className,
-              children,
-              dictionaryId,
-              navigationConfigId,
-              (node: HTMLAnchorElement): React.ReactElement => {
-                  ref = node;
-                  return refNode(node);
-              }
-          );
+    return treeItem(
+        handleClick,
+        handleInputChange,
+        handleInputBlur,
+        handleInputKeyDown,
+        handleExpandClick,
+        handleKeyDown,
+        isEditable,
+        isCollapsible,
+        className,
+        expandTriggerClassName,
+        contentClassName,
+        displayTextInputClassName,
+        text,
+        dictionaryId,
+        navigationConfigId,
+        (node: HTMLSpanElement): React.ReactElement => {
+            ref = node;
+            return refNode(node);
+        }
+    );
 };

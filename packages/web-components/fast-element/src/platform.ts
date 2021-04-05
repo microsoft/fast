@@ -76,5 +76,14 @@ export const $global: Global = (function () {
 
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
-    $global.trustedTypes = { createPolicy: (n, r) => r };
+    $global.trustedTypes = { createPolicy: (n: string, r: TrustedTypesPolicy) => r };
 }
+
+/**
+ * A readonly, empty array.
+ * @remarks
+ * Typically returned by APIs that return arrays when there are
+ * no actual items to return.
+ * @internal
+ */
+export const emptyArray = Object.freeze([]);

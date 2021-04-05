@@ -3,6 +3,131 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.0...@microsoft/fast-tooling-react@2.7.1) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+# [2.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.6.0...@microsoft/fast-tooling-react@2.7.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* update the navigation display text to use a custom property in the data ([#4426](https://github.com/Microsoft/fast/issues/4426)) ([0e4308e](https://github.com/Microsoft/fast/commit/0e4308eca1dd482413d32051a448cc35015ddb3b))
+
+
+### Features
+
+* add categories for the form ([#4436](https://github.com/Microsoft/fast/issues/4436)) ([ad4480a](https://github.com/Microsoft/fast/commit/ad4480ae1157e9a4ac8fd8baa9dfe47346740409)), closes [#2530](https://github.com/Microsoft/fast/issues/2530) [#2575](https://github.com/Microsoft/fast/issues/2575)
+
+
+
+
+
+# [2.6.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.5...@microsoft/fast-tooling-react@2.6.0) (2021-03-06)
+
+
+### Bug Fixes
+
+* improve UI interactions for triggering expand/collapse in the navigation component and selecting an item ([#4339](https://github.com/Microsoft/fast/issues/4339)) ([482348c](https://github.com/Microsoft/fast/commit/482348c4ec86f14d0f746045d2e654f8a7be5320))
+* remove the line showing the folder structure in Navigation ([#4384](https://github.com/Microsoft/fast/issues/4384)) ([efde4e9](https://github.com/Microsoft/fast/commit/efde4e921bee59f4e2ca8c65f55e1f423b79b237))
+
+
+### Features
+
+* add editing behavior for dictionary items display text represented in the Navigation component ([#4375](https://github.com/Microsoft/fast/issues/4375)) ([ed2bc82](https://github.com/Microsoft/fast/commit/ed2bc8200fa226feca74d1ffeb907931494447fb))
+* allow the specification of types to display in the Navigation ([#4392](https://github.com/Microsoft/fast/issues/4392)) ([fd0dd78](https://github.com/Microsoft/fast/commit/fd0dd78086ce4f6f295dfa38ec5309ea4b3d83b6)), closes [#4351](https://github.com/Microsoft/fast/issues/4351)
+
+
+
+
+
+## [2.5.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.3...@microsoft/fast-tooling-react@2.5.5) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+## [2.5.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.3...@microsoft/fast-tooling-react@2.5.4) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+## [2.5.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.2...@microsoft/fast-tooling-react@2.5.3) (2021-01-30)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+## [2.5.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.1...@microsoft/fast-tooling-react@2.5.2) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+## [2.5.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.5.0...@microsoft/fast-tooling-react@2.5.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-react
+
+
+
+
+
+# [2.5.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.4.1...@microsoft/fast-tooling-react@2.5.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+* number field interactions ([#4124](https://github.com/Microsoft/fast/issues/4124)) ([16f677c](https://github.com/Microsoft/fast/commit/16f677c1690c6442f2d3152a4c7790002d54c4c5))
+* tabbing disabled for when linkedDataControl used in form ([#4023](https://github.com/Microsoft/fast/issues/4023)) ([d28fe24](https://github.com/Microsoft/fast/commit/d28fe24595712a6533271c1dd31b9b3a33d64157))
+* updated the background on attribute dropdown in fast tooling used in component explorer ([#4098](https://github.com/Microsoft/fast/issues/4098)) ([e6bd341](https://github.com/Microsoft/fast/commit/e6bd3416cc9f181156c66027b90ee2a517a309bc)), closes [#3979](https://github.com/Microsoft/fast/issues/3979)
+
+
+### Features
+
+* add a utility to map MDN data to a format that will be usable by generated UI ([#4066](https://github.com/Microsoft/fast/issues/4066)) ([faad57e](https://github.com/Microsoft/fast/commit/faad57ee3982832c67d01f1c00047665727e2c6f))
+* add justify text align option ([#4116](https://github.com/Microsoft/fast/issues/4116)) ([17f47c1](https://github.com/Microsoft/fast/commit/17f47c1e623e901a4d63e3b3a01aa29c14716646))
+* adding localization for hard coded strings ([#4104](https://github.com/Microsoft/fast/issues/4104)) ([a37b204](https://github.com/Microsoft/fast/commit/a37b2048d967d54be7781d27693e7495e1027b7f))
+
+
+
+
+
+## [2.4.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.4.0...@microsoft/fast-tooling-react@2.4.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* updates the background of the Navigation component to match the other FAST tooling components ([#4011](https://github.com/Microsoft/fast/issues/4011)) ([0154e6b](https://github.com/Microsoft/fast/commit/0154e6b33bca6ca0d3e394b8c9a6df769ec17f46))
+
+
+
+
+
+# [2.4.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.5...@microsoft/fast-tooling-react@2.4.0) (2020-09-28)
+
+
+### Features
+
+* add history and a way to retrieve history from the message system ([#3834](https://github.com/Microsoft/fast/issues/3834)) ([76dee0d](https://github.com/Microsoft/fast/commit/76dee0d0c9b885435ab094c59cd0d3c931a11d0f))
+
+
+
+
+
 ## [2.3.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.3.4...@microsoft/fast-tooling-react@2.3.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react

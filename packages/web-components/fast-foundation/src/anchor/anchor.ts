@@ -1,4 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -80,6 +80,20 @@ export class Anchor extends FASTElement {
      */
     @attr
     public type: string;
+
+    /**
+     *
+     * Default slotted content
+     *
+     * @internal
+     */
+    @observable
+    public defaultSlottedContent: HTMLElement[];
+
+    /**
+     * References the root element
+     */
+    public control: HTMLAnchorElement;
 }
 
 /**
@@ -87,7 +101,7 @@ export class Anchor extends FASTElement {
  *
  * @public
  */
-export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
+export class DelegatesARIALink {
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#link} for more information
      * @public
@@ -97,6 +111,16 @@ export class DelegatesARIALink extends ARIAGlobalStatesAndProperties {
     @attr({ attribute: "aria-expanded", mode: "fromView" })
     public ariaExpanded: "true" | "false" | undefined;
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+/* eslint-disable-next-line */
+export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
 
 /**
  * Mark internal because exporting class and interface of the same name

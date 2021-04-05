@@ -1,16 +1,20 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { RadioGroup } from "./radio-group";
+import type { RadioGroup } from "./radio-group";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#RadioGroup} component.
  * @public
  */
-export const RadioGroupTemplate = html<RadioGroup>`
+export const RadioGroupTemplate: ViewTemplate<RadioGroup> = html`
     <template
         role="radiogroup"
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
+        @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+        @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+        @focusout="${(x, c) => x.focusOutHandler(c.event as FocusEvent)}"
     >
         <slot name="label"></slot>
         <div

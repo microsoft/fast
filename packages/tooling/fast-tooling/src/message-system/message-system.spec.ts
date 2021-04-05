@@ -1,4 +1,5 @@
 import MessageSystem from "./message-system";
+import { Register } from "./message-system.props";
 
 describe("MessageSystem", () => {
     test("should not throw when Workers are not available", () => {
@@ -243,5 +244,96 @@ describe("MessageSystem", () => {
         messageSystem["onMessage"]({ data: "foo" } as any);
 
         expect(registeredCallback).toHaveBeenCalledTimes(1);
+    });
+    test("should set the limit on history items if the historyLimit is set", () => {
+        class Worker {}
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            historyLimit: 10,
+        });
+
+        expect(messageSystem["historyLimit"]).toEqual(10);
+    });
+    test("should update the limit on history items if the historyLimit is set again", () => {
+        const postMessageCallback: any = jest.fn();
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            historyLimit: 10,
+        });
+        messageSystem.initialize({
+            schemaDictionary: {},
+            historyLimit: 5,
+        });
+
+        expect(messageSystem["historyLimit"]).toEqual(5);
+    });
+    test("should get a config if a registered item with a corresponding id is present", () => {
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: undefined,
+                    },
+                },
+                "foo",
+            ],
+            schemaDictionary: {
+                foo: {},
+            },
+        });
+        const id: string = "foo";
+        const data: any = {
+            data: "bar",
+        };
+        const config: Register = {
+            id,
+            onMessage: jest.fn(),
+            config: data,
+        };
+
+        messageSystem.add(config);
+
+        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem.getConfigById(id)).toEqual(data);
+    });
+    test("should return null if no registered item with a corresponding id is present", () => {
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: "foo",
+                        data: undefined,
+                    },
+                },
+                "foo",
+            ],
+            schemaDictionary: {
+                foo: {},
+            },
+        });
+        const id: string = "foo";
+        const data: any = {
+            data: "bar",
+        };
+        const config: Register = {
+            id,
+            onMessage: jest.fn(),
+            config: data,
+        };
+
+        messageSystem.add(config);
+
+        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem.getConfigById("qux")).toEqual(null);
     });
 });

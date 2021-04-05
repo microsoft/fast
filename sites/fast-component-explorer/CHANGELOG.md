@@ -3,6 +3,157 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.17.0...@microsoft/fast-component-explorer@0.17.1) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.4...@microsoft/fast-component-explorer@0.17.0) (2021-03-16)
+
+
+### Features
+
+* add categories for the form ([#4436](https://github.com/Microsoft/fast/issues/4436)) ([ad4480a](https://github.com/Microsoft/fast/commit/ad4480ae1157e9a4ac8fd8baa9dfe47346740409)), closes [#2530](https://github.com/Microsoft/fast/issues/2530) [#2575](https://github.com/Microsoft/fast/issues/2575)
+* add combobox scenario for component explorer ([#4460](https://github.com/Microsoft/fast/issues/4460)) ([dedd0e7](https://github.com/Microsoft/fast/commit/dedd0e789ef5dce6a4fce20321c58569a831f1d1))
+
+
+
+
+
+## [0.16.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.3...@microsoft/fast-component-explorer@0.16.4) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+## [0.16.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.2...@microsoft/fast-component-explorer@0.16.3) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+## [0.16.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.0...@microsoft/fast-component-explorer@0.16.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.16.0...@microsoft/fast-component-explorer@0.16.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.16.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.1...@microsoft/fast-component-explorer@0.16.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* add missing fast-number-field config ([#4282](https://github.com/Microsoft/fast/issues/4282)) ([c0551f4](https://github.com/Microsoft/fast/commit/c0551f48bcc778270e2f27d47062c1d138674cba))
+* address monaco editor incorrect background in high contrast white on Windows in the component explorer ([#4259](https://github.com/Microsoft/fast/issues/4259)) ([8b6db10](https://github.com/Microsoft/fast/commit/8b6db103ea83e1133e815f99a101652a11ebbe1c)), closes [#3980](https://github.com/Microsoft/fast/issues/3980)
+* update the component explorer site tab panel padding to include the desktop screen sizes ([#4278](https://github.com/Microsoft/fast/issues/4278)) ([1f5fc2e](https://github.com/Microsoft/fast/commit/1f5fc2e938f4140d9f9329e916640185f712f081))
+
+
+### Features
+
+* add disclosure component ([#3921](https://github.com/Microsoft/fast/issues/3921)) ([dec77c9](https://github.com/Microsoft/fast/commit/dec77c99742e5aaddc5a2f3da2e340efc56ef00a))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
+## [0.15.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.15.0...@microsoft/fast-component-explorer@0.15.1) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.15.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.1...@microsoft/fast-component-explorer@0.15.0) (2020-12-16)
+
+
+### Features
+
+* add a data grid web component ([#4029](https://github.com/Microsoft/fast/issues/4029)) ([7239edc](https://github.com/Microsoft/fast/commit/7239edc775c26e003fd0c8cf11c0ba2bb62b76c6))
+* add beta anchored region component ([#4183](https://github.com/Microsoft/fast/issues/4183)) ([5d9f0ac](https://github.com/Microsoft/fast/commit/5d9f0acc4b8783d939bff389195fb92501d1a9ab))
+
+
+
+
+
+## [0.14.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.14.0...@microsoft/fast-component-explorer@0.14.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-component-explorer
+
+
+
+
+
+# [0.14.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.13.1...@microsoft/fast-component-explorer@0.14.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+
+
+### Features
+
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/Microsoft/fast/issues/3627)) ([e2e142c](https://github.com/Microsoft/fast/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* add select component ([#4074](https://github.com/Microsoft/fast/issues/4074)) ([6984027](https://github.com/Microsoft/fast/commit/698402773e77b2766e995770b0d34c6d129e2ec3))
+
+
+
+
+
+## [0.13.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.13.0...@microsoft/fast-component-explorer@0.13.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* clean up and rename registered utilities to registered services ([#3984](https://github.com/Microsoft/fast/issues/3984)) ([22f6426](https://github.com/Microsoft/fast/commit/22f6426c89cedefeaf26adee56b428e9a9b69515))
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+
+
+
+
+
+# [0.13.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.2...@microsoft/fast-component-explorer@0.13.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* add skeleton, its definition, and its example to component explorer ([#3982](https://github.com/Microsoft/fast/issues/3982)) ([28c1021](https://github.com/Microsoft/fast/commit/28c10215148b457f64383e19543c57f0775925f7))
+* address wrong state being used to set a class ([#3943](https://github.com/Microsoft/fast/issues/3943)) ([4cf1344](https://github.com/Microsoft/fast/commit/4cf1344621dfa386f96ac71acaa5010391ab65fb))
+* badge example in component explorer ([#3901](https://github.com/Microsoft/fast/issues/3901)) ([8c34aa5](https://github.com/Microsoft/fast/commit/8c34aa50e2af0848c84147e24e0d55fc5f68ee64))
+* update formatting to resolve an issue where the dev tools panel would resize ([#3959](https://github.com/Microsoft/fast/issues/3959)) ([63f6fa8](https://github.com/Microsoft/fast/commit/63f6fa85c87fec763d7e0c417345b44dcd0bc97b)), closes [#3958](https://github.com/Microsoft/fast/issues/3958) [#3962](https://github.com/Microsoft/fast/issues/3962)
+* update high contrast light theme foreground color on pivot [#3967](https://github.com/Microsoft/fast/issues/3967) ([4ef46c0](https://github.com/Microsoft/fast/commit/4ef46c0f828d4172ec9351e90f7f67c027928b98))
+
+
+### Features
+
+* add mobile view to the component explore site ([#3937](https://github.com/Microsoft/fast/issues/3937)) ([deb455b](https://github.com/Microsoft/fast/commit/deb455b8c313d368596e83c9f8e855c865fa3829))
+* add monaco adapter to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+* allow a dictionary id to be set during initialization ([#3955](https://github.com/Microsoft/fast/issues/3955)) ([70f3d00](https://github.com/Microsoft/fast/commit/70f3d0076a88fb42f26e610fa25204981aa2678e))
+
+
+
+
+
 ## [0.12.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.12.1...@microsoft/fast-component-explorer@0.12.2) (2020-09-10)
 
 

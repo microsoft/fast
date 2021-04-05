@@ -3,6 +3,117 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.15](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.14...@microsoft/fast-website@1.3.15) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.14](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.13...@microsoft/fast-website@1.3.14) (2021-03-16)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.13](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.12...@microsoft/fast-website@1.3.13) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.12](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.11...@microsoft/fast-website@1.3.12) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.11](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.9...@microsoft/fast-website@1.3.11) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.10](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.9...@microsoft/fast-website@1.3.10) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.9](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.8...@microsoft/fast-website@1.3.9) (2021-01-30)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.8](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.7...@microsoft/fast-website@1.3.8) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.7](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.6...@microsoft/fast-website@1.3.7) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.6](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.5...@microsoft/fast-website@1.3.6) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.5](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.4...@microsoft/fast-website@1.3.5) (2020-11-19)
+
+
+### Bug Fixes
+
+* add high contrast color for adaptive UI tab, on hover ([#4069](https://github.com/Microsoft/fast/issues/4069)) ([07f2c89](https://github.com/Microsoft/fast/commit/07f2c894d4a6b87dd6d7c5e72694f44d15bf2a5e))
+* colorswatch change handler was checking for the wrong type on the event target ([#4064](https://github.com/Microsoft/fast/issues/4064)) ([749a1c0](https://github.com/Microsoft/fast/commit/749a1c0c5f81386e5c52065fd68cfae25fcacdca))
+
+
+
+
+
+## [1.3.4](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.3...@microsoft/fast-website@1.3.4) (2020-10-14)
+
+**Note:** Version bump only for package @microsoft/fast-website
+
+
+
+
+
+## [1.3.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.2...@microsoft/fast-website@1.3.3) (2020-09-28)
+
+
+### Bug Fixes
+
+* update text on adaptive fast frame component to use high contrast foreground color ([#3970](https://github.com/Microsoft/fast/issues/3970)) ([4ce5a84](https://github.com/Microsoft/fast/commit/4ce5a8412b8964e03a8fdc8347c9e9b7294977cd))
+
+
+
+
+
 ## [1.3.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.1...@microsoft/fast-website@1.3.2) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/fast-website

@@ -21,6 +21,11 @@ export interface WebComponentAttribute {
     type: DataType;
 
     /**
+     * The title of this attribute
+     */
+    title: string;
+
+    /**
      * The description of this attribute
      */
     description: string;
@@ -49,6 +54,11 @@ export interface WebComponentSlot {
     name: string;
 
     /**
+     * The title of this slot
+     */
+    title: string;
+
+    /**
      * The description of use of this slot
      */
     description: string;
@@ -59,6 +69,11 @@ export interface WebComponentDefinitionTag {
      * The name of the tag
      */
     name: string;
+
+    /**
+     * The title of this tag
+     */
+    title: string;
 
     /**
      * The description of this web component tag

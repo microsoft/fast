@@ -1,4 +1,4 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/data-utilities/web-component";
+import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
 
 export const fastProgressDefinition: WebComponentDefinition = {
@@ -6,32 +6,38 @@ export const fastProgressDefinition: WebComponentDefinition = {
     tags: [
         {
             name: "fast-progress",
+            title: "Progress",
             description: "The FAST progress element",
             attributes: [
                 {
                     name: "value",
-                    description: "The value attribute",
+                    title: "Value",
+                    description:
+                        "Value between 1 and 100 to represent the progress visually and to assistive technologies",
                     default: "",
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "min",
-                    description: "The min attribute",
+                    title: "Minimum",
+                    description: "The minimum value",
                     default: 0,
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "max",
-                    description: "The max attribute",
+                    title: "Maximum",
+                    description: "The maximum value",
                     default: 100,
                     required: false,
                     type: DataType.number,
                 },
                 {
                     name: "paused",
-                    description: "The paused attribute",
+                    title: "Paused",
+                    description: "Sets the paused state of the progress component",
                     default: false,
                     required: false,
                     type: DataType.boolean,
@@ -40,11 +46,15 @@ export const fastProgressDefinition: WebComponentDefinition = {
             slots: [
                 {
                     name: "determinate",
-                    description: "The determinate slot",
+                    title: "Determinate slot",
+                    description:
+                        "Slot to provide custom visual representations of the determinate progress bar",
                 },
                 {
                     name: "indeterminate",
-                    description: "The indeterminate slot",
+                    title: "Indeterminate slot",
+                    description:
+                        "Slot to provide custom visual representations of the indeterminate progress bar",
                 },
             ],
         },

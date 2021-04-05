@@ -2,7 +2,7 @@
     "name": "@microsoft/fast-tooling",
     "description": "A set of utilities to assist in creating web UI",
     "sideEffects": false,
-    "version": "0.10.0",
+    "version": "0.17.0",
     "author": {
         "name": "Microsoft",
         "url": "https://discord.gg/FcSNfg4"
@@ -15,18 +15,22 @@
     "bugs": {
         "url": "https://github.com/Microsoft/fast/issues/new/choose"
     },
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "dist/esm/index.js",
+    "types": "dist/dts/index.d.ts",
     "scripts": {
-        "build": "tsc -p ./tsconfig.build.json",
+        "build": "yarn build:esm && yarn build:cjs && yarn build:message-system",
+        "build:esm": "tsc -p ./tsconfig.esm.json",
+        "build:cjs": "tsc -p ./tsconfig.cjs.json",
         "build:message-system": "webpack --config webpack.message-system.config.js",
-        "clean:dist": "node ../../../build/clean.js dist",
+        "clean:dist": "node ../../../build/clean.js dist && node ../../../build/clean.js .tmp",
+        "convert:mdn-data": "node -r esm ./build/generate-mdn-data-files.js",
+        "test:mdn-data": "node -r esm ./build/generate-mdn-data-files.js --test",
         "coverage": "jest --coverage",
-        "prepare": "yarn clean:dist && yarn build && yarn build:message-system",
+        "prepare": "yarn clean:dist && yarn build && yarn test:mdn-data",
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-        "start": "webpack-dev-server --history-api-fallback --progress",
-        "test": "yarn eslint && yarn run unit-tests && yarn build",
+        "start": "yarn build:message-system && webpack-dev-server --history-api-fallback --progress",
+        "test": "yarn eslint && yarn unit-tests && yarn build",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
         "unit-tests": "jest --runInBand",
@@ -72,7 +76,7 @@
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
-        "@types/lodash-es": "^4.17.0",
+        "@types/lodash-es": "^4.17.4",
         "@types/node": "^9.6.7",
         "ajv": "^6.10.0",
         "clean-webpack-plugin": "^3.0.0",
@@ -81,9 +85,10 @@
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^3.2.0",
         "jest": "^25.4.0",
-        "lodash-es": "^4.0.0",
+        "lodash-es": "4.17.15",
+        "mdn-data": "^2.0.11",
         "mini-css-extract-plugin": "^0.9.0",
-        "monaco-editor": "^0.20.0",
+        "monaco-editor": "^0.21.2",
         "monaco-editor-webpack-plugin": "^1.9.0",
         "prettier": "2.0.2",
         "style-loader": "^1.2.1",
@@ -98,5 +103,9 @@
     },
     "peerDependencies": {
         "lodash-es": "^4.0.0"
+    },
+    "dependencies": {
+        "@microsoft/fast-web-utilities": "^4.7.3",
+        "vscode-html-languageservice": "^3.1.3"
     }
 }

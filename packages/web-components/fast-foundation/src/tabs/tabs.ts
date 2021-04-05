@@ -1,6 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import {
-    Direction,
     keyCodeArrowDown,
     keyCodeArrowLeft,
     keyCodeArrowRight,
@@ -11,7 +10,6 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { getDirection } from "../utilities";
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
@@ -23,7 +21,7 @@ export enum TabsOrientation {
 }
 
 /**
- * An Tabs Custom HTML Element.
+ * A Tabs Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#tablist | ARIA tablist }.
  *
  * @public
@@ -47,6 +45,19 @@ export class Tabs extends FASTElement {
      */
     @attr
     public activeid: string;
+    /**
+     * @internal
+     */
+    public activeidChanged(): void {
+        if (
+            this.$fastController.isConnected &&
+            this.tabs.length <= this.tabpanels.length
+        ) {
+            this.setTabs();
+            this.setTabPanels();
+            this.handleActiveIndicatorPosition();
+        }
+    }
 
     /**
      * @internal
@@ -102,6 +113,12 @@ export class Tabs extends FASTElement {
     public activeIndicatorRef: HTMLElement;
 
     /**
+     * @internal
+     */
+    @observable
+    public showActiveIndicator: boolean = true;
+
+    /**
      * A reference to the active tab
      * @public
      */
@@ -112,10 +129,17 @@ export class Tabs extends FASTElement {
     private ticking: boolean = false;
     private tabIds: Array<string | null>;
     private tabpanelIds: Array<string | null>;
-    private direction: Direction;
 
     private change = (): void => {
         this.$emit("change", this.activetab);
+    };
+
+    private isDisabledElement = (el: Element): el is HTMLElement => {
+        return el.getAttribute("aria-disabled") === "true";
+    };
+
+    private isFocusableElement = (el: Element): el is HTMLElement => {
+        return !this.isDisabledElement(el);
     };
 
     private getActiveIndex(): number {
@@ -130,11 +154,16 @@ export class Tabs extends FASTElement {
     }
 
     private setTabs = (): void => {
+        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
+        this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab") {
+            if (tab.slot === "tab" && this.isFocusableElement(tab)) {
+                if (this.activeindicator) {
+                    this.showActiveIndicator = true;
+                }
                 const tabId: string | null = this.tabIds[index];
                 const tabpanelId: string | null = this.tabpanelIds[index];
                 tab.setAttribute(
@@ -149,22 +178,17 @@ export class Tabs extends FASTElement {
                     "aria-controls",
                     typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
                 );
-                tab.setAttribute(
-                    "style",
-                    this.isHorizontal()
-                        ? `grid-column: ${index + 1};`
-                        : `grid-row: ${index + 1};`
-                );
                 tab.addEventListener("click", this.handleTabClick);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
                 tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
                 if (this.activeTabIndex === index) {
                     this.activetab = tab;
                 }
-                !this.isHorizontal()
-                    ? tab.classList.add("vertical")
-                    : tab.classList.remove("vertical");
             }
+            tab.style[gridProperty] = `${index + 1}`;
+            !this.isHorizontal()
+                ? tab.classList.add("vertical")
+                : tab.classList.remove("vertical");
         });
     };
 
@@ -201,20 +225,22 @@ export class Tabs extends FASTElement {
     }
 
     private setComponent(): void {
-        this.activeid = this.tabIds[this.activeTabIndex] as string;
-        this.change();
-        this.setTabs();
-        this.handleActiveIndicatorPosition();
-        this.setTabPanels();
-        this.focusTab();
-        this.change();
+        if (this.activeTabIndex !== this.prevActiveTabIndex) {
+            this.activeid = this.tabIds[this.activeTabIndex] as string;
+            this.change();
+            this.setTabs();
+            this.handleActiveIndicatorPosition();
+            this.setTabPanels();
+            this.focusTab();
+            this.change();
+        }
     }
 
     private handleTabClick = (event: MouseEvent): void => {
         const selectedTab = event.currentTarget as HTMLElement;
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = Array.from(this.tabs).indexOf(selectedTab);
         if (selectedTab.nodeType === 1) {
+            this.prevActiveTabIndex = this.activeTabIndex;
+            this.activeTabIndex = this.tabs.indexOf(selectedTab);
             this.setComponent();
         }
     };
@@ -229,22 +255,22 @@ export class Tabs extends FASTElement {
             switch (keyCode) {
                 case keyCodeArrowLeft:
                     event.preventDefault();
-                    this.adjust(this.direction === Direction.rtl ? 1 : -1);
+                    this.adjustBackward(event);
                     break;
                 case keyCodeArrowRight:
                     event.preventDefault();
-                    this.adjust(this.direction === Direction.rtl ? -1 : 1);
+                    this.adjustForward(event);
                     break;
             }
         } else {
             switch (keyCode) {
                 case keyCodeArrowUp:
                     event.preventDefault();
-                    this.adjust(-1);
+                    this.adjustBackward(event);
                     break;
                 case keyCodeArrowDown:
                     event.preventDefault();
-                    this.adjust(1);
+                    this.adjustForward(event);
                     break;
             }
         }
@@ -261,27 +287,23 @@ export class Tabs extends FASTElement {
     };
 
     private handleActiveIndicatorPosition() {
-        if (this.activeindicator) {
+        // Ignore if we click twice on the same tab
+        if (
+            this.showActiveIndicator &&
+            this.activeindicator &&
+            this.activeTabIndex !== this.prevActiveTabIndex
+        ) {
             if (this.ticking) {
-                this.activeIndicatorRef.style.transform = "translateX(0px)";
-                this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
-                if (this.isHorizontal()) {
-                    this.activeIndicatorRef.style.gridColumn = `${
-                        this.activeTabIndex + 1
-                    }`;
-                } else {
-                    this.activeIndicatorRef.style.gridRow = `${this.activeTabIndex + 1}`;
-                }
                 this.ticking = false;
             } else {
                 this.ticking = true;
-
                 this.animateActiveIndicator();
             }
         }
     }
 
     private animateActiveIndicator(): void {
+        this.ticking = true;
         const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
         const translateProperty: string = this.isHorizontal()
             ? "translateX"
@@ -318,18 +340,59 @@ export class Tabs extends FASTElement {
         this.setComponent();
     }
 
+    private adjustForward = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) + 1 : 1;
+        if (index === group.length) {
+            index = 0;
+        }
+
+        while (index < group.length && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (this.activetab && index === group.indexOf(this.activetab)) {
+                break;
+            } else if (index + 1 >= group.length) {
+                index = 0;
+            } else {
+                index += 1;
+            }
+        }
+    };
+
+    private adjustBackward = (e: KeyboardEvent): void => {
+        const group: HTMLElement[] = this.tabs;
+        let index: number = 0;
+
+        index = this.activetab ? group.indexOf(this.activetab) - 1 : 0;
+        index = index < 0 ? group.length - 1 : index;
+
+        while (index >= 0 && group.length > 1) {
+            if (this.isFocusableElement(group[index])) {
+                this.moveToTabByIndex(group, index);
+                break;
+            } else if (index - 1 < 0) {
+                index = group.length - 1;
+            } else {
+                index -= 1;
+            }
+        }
+    };
+
+    private moveToTabByIndex = (group: HTMLElement[], index: number) => {
+        const tab: HTMLElement = group[index] as HTMLElement;
+        this.activetab = tab;
+        this.prevActiveTabIndex = this.activeTabIndex;
+        this.activeTabIndex = index;
+        tab.focus();
+        this.setComponent();
+    };
+
     private focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
-    }
-
-    constructor() {
-        super();
-
-        if (this.$fastController.isConnected) {
-            this.tabIds = this.getTabIds();
-            this.tabpanelIds = this.getTabPanelIds();
-            this.activeTabIndex = this.getActiveIndex();
-        }
     }
 
     /**
@@ -337,7 +400,10 @@ export class Tabs extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.direction = getDirection(this);
+
+        this.tabIds = this.getTabIds();
+        this.tabpanelIds = this.getTabPanelIds();
+        this.activeTabIndex = this.getActiveIndex();
     }
 }
 

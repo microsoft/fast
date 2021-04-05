@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociated } from "../form-associated/form-associated";
+import { FormAssociatedSwitch } from "./switch.form-associated";
 
 /**
  * A Switch Custom HTML Element.
@@ -8,7 +8,7 @@ import { FormAssociated } from "../form-associated/form-associated";
  *
  * @public
  */
-export class Switch extends FormAssociated<HTMLInputElement> {
+export class Switch extends FormAssociatedSwitch {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -18,7 +18,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean; // Map to proxy element
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
 
@@ -33,7 +33,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      *
      * @internal
      */
-    protected initialValue: string = "on";
+    public initialValue: string = "on";
 
     /**
      * The checked attribute value. This sets the initial checked value.
@@ -60,7 +60,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * @public
      */
     @observable
-    public defaultChecked: boolean = !!this.checkedAttribute;
+    public defaultChecked: boolean;
     private defaultCheckedChanged(): void {
         if (!this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
@@ -77,7 +77,7 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * @public
      */
     @observable
-    public checked: boolean = this.defaultChecked;
+    public checked: boolean;
     private checkedChanged(): void {
         if (!this.dirtyChecked) {
             this.dirtyChecked = true;
@@ -85,16 +85,16 @@ export class Switch extends FormAssociated<HTMLInputElement> {
 
         this.updateForm();
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.checked = this.checked;
         }
 
         this.$emit("change");
 
         this.checked ? this.classList.add("checked") : this.classList.remove("checked");
-    }
 
-    protected proxy = document.createElement("input");
+        this.validate();
+    }
 
     /**
      * Tracks whether the "checked" property has been changed.
@@ -114,6 +114,21 @@ export class Switch extends FormAssociated<HTMLInputElement> {
         this.updateForm();
     }
 
+    public constructor() {
+        super();
+
+        this.defaultChecked = !!this.checkedAttribute;
+        this.checked = this.defaultChecked;
+    }
+
+    /**
+     * @internal
+     */
+    public formResetCallback = (): void => {
+        this.checked = this.checkedAttribute;
+        this.dirtyChecked = false;
+    };
+
     private updateForm(): void {
         const value = this.checked ? this.value : null;
         this.setFormValue(value, value);
@@ -123,8 +138,6 @@ export class Switch extends FormAssociated<HTMLInputElement> {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent) => {
-        super.keypressHandler(e);
-
         switch (e.keyCode) {
             case keyCodeSpace:
                 this.checked = !this.checked;

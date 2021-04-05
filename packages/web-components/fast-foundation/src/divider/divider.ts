@@ -1,19 +1,7 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-/**
- * Divider roles
- * @public
- */
-export enum DividerRole {
-    /**
-     * The divider semantically separates content
-     */
-    separator = "separator",
+import { DividerRole } from "./divider.options";
 
-    /**
-     * The divider has no semantic value and is for visual presentation only.
-     */
-    presentation = "presentation",
-}
+export { DividerRole };
 
 /**
  * A Divider Custom HTML Element.

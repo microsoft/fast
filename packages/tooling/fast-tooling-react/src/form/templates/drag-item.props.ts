@@ -1,3 +1,4 @@
+import { FormStrings } from "../form.props";
 import { ArrayAction } from "./types";
 
 export interface DragItemProps {
@@ -65,6 +66,11 @@ export interface DragItemProps {
      * Callback for ending the drag
      */
     dragEnd: () => void;
+
+    /**
+     * Localized strings
+     */
+    strings: FormStrings;
 }
 
 export enum ItemType {

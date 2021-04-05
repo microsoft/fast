@@ -42,21 +42,28 @@ export class FASTButton extends Button {
      */
     @attr
     public appearance: ButtonAppearance;
-    public appearanceChanged(
-        oldValue: ButtonAppearance,
-        newValue: ButtonAppearance
-    ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
-            this.classList.remove(oldValue);
-        }
-    }
 
     public connectedCallback() {
         super.connectedCallback();
-
         if (!this.appearance) {
             this.appearance = "neutral";
+        }
+    }
+
+    /**
+     * Applies 'icon-only' class when there is only an SVG in the default slot
+     *
+     * @public
+     * @remarks
+     */
+    public defaultSlottedContentChanged(oldValue, newValue): void {
+        const slottedElements = this.defaultSlottedContent.filter(
+            x => x.nodeType === Node.ELEMENT_NODE
+        );
+        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
+            this.control.classList.add("icon-only");
+        } else {
+            this.control.classList.remove("icon-only");
         }
     }
 }

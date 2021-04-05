@@ -3,6 +3,150 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.8.0...@microsoft/site-utilities@0.8.1) (2021-03-18)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+# [0.8.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.4...@microsoft/site-utilities@0.8.0) (2021-03-16)
+
+
+### Features
+
+* add categories for the form ([#4436](https://github.com/Microsoft/fast/issues/4436)) ([ad4480a](https://github.com/Microsoft/fast/commit/ad4480ae1157e9a4ac8fd8baa9dfe47346740409)), closes [#2530](https://github.com/Microsoft/fast/issues/2530) [#2575](https://github.com/Microsoft/fast/issues/2575)
+
+
+
+
+
+## [0.7.4](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.3...@microsoft/site-utilities@0.7.4) (2021-03-06)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.7.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.2...@microsoft/site-utilities@0.7.3) (2021-03-06)
+
+
+### Bug Fixes
+
+* adjust automapping of native html element definitions ([#4385](https://github.com/Microsoft/fast/issues/4385)) ([df0e21c](https://github.com/Microsoft/fast/commit/df0e21c0609620bafb1ee15e111ea8bd4ee65c7f))
+* tooltip doc sample ([#4341](https://github.com/Microsoft/fast/issues/4341)) ([20e1b66](https://github.com/Microsoft/fast/commit/20e1b667abbe39058d5c4c358ccd8b8a93cee316))
+
+
+
+
+
+## [0.7.2](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.0...@microsoft/site-utilities@0.7.2) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.7.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.7.0...@microsoft/site-utilities@0.7.1) (2021-02-08)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+# [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.3...@microsoft/site-utilities@0.7.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* address monaco editor incorrect background in high contrast white on Windows in the component explorer ([#4259](https://github.com/Microsoft/fast/issues/4259)) ([8b6db10](https://github.com/Microsoft/fast/commit/8b6db103ea83e1133e815f99a101652a11ebbe1c)), closes [#3980](https://github.com/Microsoft/fast/issues/3980)
+* addressed missing images in the high contrast document ([#4216](https://github.com/Microsoft/fast/issues/4216)) ([24f83d2](https://github.com/Microsoft/fast/commit/24f83d243576c484fcf5a543b2483553857539d8))
+* update the component explorer site tab panel padding to include the desktop screen sizes ([#4278](https://github.com/Microsoft/fast/issues/4278)) ([1f5fc2e](https://github.com/Microsoft/fast/commit/1f5fc2e938f4140d9f9329e916640185f712f081))
+
+
+### Features
+
+* adding high contrast document to the FAST documentation website ([#4178](https://github.com/Microsoft/fast/issues/4178)) ([d6b5d8e](https://github.com/Microsoft/fast/commit/d6b5d8e062478bd5910e9f8afa232c89b1c5a722))
+* separate out cjs modules from ejs so that utilities may be used in a node environment ([#4277](https://github.com/Microsoft/fast/issues/4277)) ([adffd1e](https://github.com/Microsoft/fast/commit/adffd1e4b275648019a98e14555bbce535053d1e))
+
+
+
+
+
+## [0.6.3](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.2...@microsoft/site-utilities@0.6.3) (2020-12-17)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.6.2](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.1...@microsoft/site-utilities@0.6.2) (2020-12-16)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.6.0...@microsoft/site-utilities@0.6.1) (2020-12-02)
+
+**Note:** Version bump only for package @microsoft/site-utilities
+
+
+
+
+
+# [0.6.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.5.1...@microsoft/site-utilities@0.6.0) (2020-11-19)
+
+
+### Bug Fixes
+
+* assign all react components an originatorId to determine re-rendering of form elements ([#4088](https://github.com/Microsoft/fast/issues/4088)) ([6858ff2](https://github.com/Microsoft/fast/commit/6858ff266dbf1f7957bd08d13645ca0fad31552c)), closes [#3628](https://github.com/Microsoft/fast/issues/3628)
+
+
+### Features
+
+* pull in and convert vscode native html component definitions ([#4070](https://github.com/Microsoft/fast/issues/4070)) ([dfa12c8](https://github.com/Microsoft/fast/commit/dfa12c811f576f0016000d08c63ab197a02215b5))
+
+
+
+
+
+## [0.5.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.5.0...@microsoft/site-utilities@0.5.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* rename instances of adaptor to adapter ([#3983](https://github.com/Microsoft/fast/issues/3983)) ([3aa532e](https://github.com/Microsoft/fast/commit/3aa532e214a9300ae8b4cf305f7d1baab279b7be))
+
+
+
+
+
+# [0.5.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.5...@microsoft/site-utilities@0.5.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* badge example in component explorer ([#3901](https://github.com/Microsoft/fast/issues/3901)) ([8c34aa5](https://github.com/Microsoft/fast/commit/8c34aa50e2af0848c84147e24e0d55fc5f68ee64))
+
+
+### Features
+
+* add mobile view to the component explore site ([#3937](https://github.com/Microsoft/fast/issues/3937)) ([deb455b](https://github.com/Microsoft/fast/commit/deb455b8c313d368596e83c9f8e855c865fa3829))
+* add monaco adapter to component explorer site ([#3949](https://github.com/Microsoft/fast/issues/3949)) ([1aa994e](https://github.com/Microsoft/fast/commit/1aa994e986e52e8b1fab93e65665a1d4e56ae496))
+* add skeleton component ([#3877](https://github.com/Microsoft/fast/issues/3877)) ([aff7d30](https://github.com/Microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/Microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/Microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 ## [0.4.5](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.4.4...@microsoft/site-utilities@0.4.5) (2020-09-10)
 
 **Note:** Version bump only for package @microsoft/site-utilities

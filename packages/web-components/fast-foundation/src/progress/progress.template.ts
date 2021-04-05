@@ -1,11 +1,12 @@
 import { html, when } from "@microsoft/fast-element";
-import { BaseProgress } from "./base-progress";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { BaseProgress } from "./base-progress";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressTemplate = html<BaseProgress>`
+export const ProgressTemplate: ViewTemplate<BaseProgress> = html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -14,7 +15,7 @@ export const ProgressTemplate = html<BaseProgress>`
         class="${x => (x.paused ? "paused" : "")}"
     >
         ${when(
-            x => x.value,
+            x => typeof x.value === "number",
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="determinate">
                     <div
@@ -26,7 +27,7 @@ export const ProgressTemplate = html<BaseProgress>`
             `
         )}
         ${when(
-            x => !x.value,
+            x => typeof x.value !== "number",
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="indeterminate">
                     <slot class="indeterminate" name="indeterminate">

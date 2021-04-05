@@ -1,4 +1,4 @@
-import { CustomMessageIncomingOutgoing } from "./message-system.utilities.props";
+import { CustomMessage } from "./message-system.utilities.props";
 
 export interface Validation {
     [dictionaryId: string]: ValidationError[];
@@ -17,7 +17,7 @@ export enum SchemaSetValidationAction {
 /**
  * Custom message requesting validation against a set of schemas
  */
-export interface SchemaSetValidationMessageRequest extends CustomMessageIncomingOutgoing {
+export interface SchemaSetValidationMessageRequest extends CustomMessage<{}, {}> {
     action: SchemaSetValidationAction.request;
     /**
      * The unique ID for the validation request
@@ -39,8 +39,7 @@ export interface SchemaSetValidationMessageRequest extends CustomMessageIncoming
  * Custom message with requested validation against a set of schemas
  * with the index of the first schema to be valid against the data
  */
-export interface SchemaSetValidationMessageResponse
-    extends CustomMessageIncomingOutgoing {
+export interface SchemaSetValidationMessageResponse extends CustomMessage<{}, {}> {
     action: SchemaSetValidationAction.response;
     /**
      * The unique ID for the validation request

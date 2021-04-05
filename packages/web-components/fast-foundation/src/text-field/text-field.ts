@@ -1,46 +1,18 @@
 import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+import { FormAssociatedTextField } from "./text-field.form-associated";
+import { TextFieldType } from "./text-field.options";
+
+export { TextFieldType };
 
 /**
- * Text field sub-types
- * @public
- */
-export enum TextFieldType {
-    /**
-     * An email TextField
-     */
-    email = "email",
-
-    /**
-     * A password TextField
-     */
-    password = "password",
-
-    /**
-     * A telephone TextField
-     */
-    tel = "tel",
-
-    /**
-     * A text TextField
-     */
-    text = "text",
-
-    /**
-     * A URL TextField
-     */
-    url = "url",
-}
-
-/**
- * An Text Field Custom HTML Element.
+ * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
  *
  * @public
  */
-export class TextField extends FormAssociated<HTMLInputElement> {
+export class TextField extends FormAssociatedTextField {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -50,8 +22,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
+            this.validate();
         }
     }
 
@@ -64,8 +37,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.autofocus = this.autofocus;
+            this.validate();
         }
     }
 
@@ -79,7 +53,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public placeholder: string;
     private placeholderChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.placeholder = this.placeholder;
         }
     }
@@ -93,8 +67,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public type: TextFieldType = TextFieldType.text;
     private typeChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
+            this.validate();
         }
     }
 
@@ -107,8 +82,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public list: string;
     private listChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.setAttribute("list", this.list);
+            this.validate();
         }
     }
 
@@ -121,8 +97,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.maxLength = this.maxlength;
+            this.validate();
         }
     }
 
@@ -135,8 +112,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.minLength = this.minlength;
+            this.validate();
         }
     }
 
@@ -149,8 +127,9 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr
     public pattern: string;
     private patternChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.pattern = this.pattern;
+            this.validate();
         }
     }
 
@@ -163,13 +142,13 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ converter: nullableNumberConverter })
     public size: number;
     private sizeChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.size = this.size;
         }
     }
 
     /**
-     * Sets the width of the element to a specified number of characters.
+     * Controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used.
      * @public
      * @remarks
      * HTMLAttribute: size
@@ -177,7 +156,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
     }
@@ -194,8 +173,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
      */
     public control: HTMLInputElement;
 
-    protected proxy = document.createElement("input");
-
     /**
      * @internal
      */
@@ -203,6 +180,7 @@ export class TextField extends FormAssociated<HTMLInputElement> {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
+        this.validate();
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -210,14 +188,6 @@ export class TextField extends FormAssociated<HTMLInputElement> {
             });
         }
     }
-
-    /**
-     * @internal
-     */
-    public keypressHandler = (e: KeyboardEvent): boolean => {
-        super.keypressHandler(e);
-        return true;
-    };
 
     /**
      * Handles the internal control's `input` event
@@ -242,12 +212,11 @@ export class TextField extends FormAssociated<HTMLInputElement> {
 }
 
 /**
- * Includes ARIA states and properties relating to the ARIA link role
+ * Includes ARIA states and properties relating to the ARIA textbox role
  *
  * @public
  */
-/* eslint-disable-next-line */
-export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+export class DelegatesARIATextbox {}
 
 /**
  * Mark internal because exporting class and interface of the same name
@@ -256,5 +225,14 @@ export class DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
  * @internal
  */
 /* eslint-disable-next-line */
+export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIATextbox, ARIAGlobalStatesAndProperties);
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
 export interface TextField extends StartEnd, DelegatesARIATextbox {}
 applyMixins(TextField, StartEnd, DelegatesARIATextbox);

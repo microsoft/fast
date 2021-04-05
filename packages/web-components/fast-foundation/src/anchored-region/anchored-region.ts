@@ -1,15 +1,17 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { Direction, eventScroll, eventResize } from "@microsoft/fast-web-utilities";
+import { getDirection } from "../utilities";
+import { IntersectionService } from "./intersection-service";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
 // https://github.com/microsoft/TypeScript/issues/37861
-import {
+import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "./resize-observer";
-import { ResizeObserverEntry } from "./resize-observer-entry";
+import type { ResizeObserverEntry } from "./resize-observer-entry";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -17,13 +19,52 @@ declare global {
     }
 }
 
+/**
+ * Defines the base behavior of an anchored region on a particular axis
+ *
+ * @beta
+ */
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
+
+/**
+ * Defines the scaling behavior of an anchored region on a particular axis
+ *
+ * @beta
+ */
 export type AxisScalingMode = "anchor" | "fill" | "content";
-export type GbcrUsage = "always" | "never" | "default";
+
+/**
+ * Defines the horizontal positioning options for an anchored region
+ *
+ * @beta
+ */
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
+
+/**
+ * Defines the vertical positioning options for an anchored region
+ *
+ * @beta
+ */
 export type VerticalPosition = "top" | "bottom" | "unset";
 
-export interface Dimension {
+/**
+ * Defines if the component updates its position automatically. Calling update() always provokes an update.
+ * anchor - the component only updates its position when the anchor resizes (default)
+ * auto - the component updates its position when:
+ * - update() is called
+ * - the anchor resizes
+ * - the window resizes
+ * - the viewport resizes
+ * - any scroll event in the document
+ *
+ * @beta
+ */
+export type AutoUpdateMode = "anchor" | "auto";
+
+/**
+ * @internal
+ */
+interface Dimension {
     height: number;
     width: number;
 }
@@ -31,44 +72,46 @@ export interface Dimension {
 /**
  * describes the possible horizontal positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
-enum AnchoredRegionHorizontalPositionLabel {
-    left = "left",
-    insetLeft = "insetLeft",
-    insetRight = "insetRight",
-    right = "right",
-    undefined = "undefined",
-}
+type AnchoredRegionHorizontalPositionLabel =
+    | "left"
+    | "insetLeft"
+    | "insetRight"
+    | "right"
+    | "undefined";
 
 /**
  * describes the possible vertical positions of the region relative
  * to its anchor
+ *
+ * @internal
  */
-enum AnchoredRegionVerticalPositionLabel {
-    top = "top",
-    insetTop = "insetTop",
-    insetBottom = "insetBottom",
-    bottom = "bottom",
-    undefined = "undefined",
-}
+type AnchoredRegionVerticalPositionLabel =
+    | "top"
+    | "insetTop"
+    | "insetBottom"
+    | "bottom"
+    | "undefined";
 
 /**
- * location enum for transform origin settings
+ * describes possible transform origin settings
+ *
+ * @internal
  */
-enum Location {
-    top = "top",
-    left = "left",
-    right = "right",
-    bottom = "bottom",
-}
+type Location = "top" | "left" | "right" | "bottom";
 
+/**
+ * An anchored region Custom HTML Element.
+ *
+ * @beta
+ */
 export class AnchoredRegion extends FASTElement {
-    private static DirectionAttributeName: string = "dir";
-
     /**
-     * The HTML id of the anchor element this region is positioned relative to
+     * The HTML ID of the anchor element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -81,9 +124,9 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * The HTML id of the viewport element this region is positioned relative to
+     * The HTML ID of the viewport element this region is positioned relative to
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: anchor
      */
@@ -101,7 +144,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-positioning-mode
      */
@@ -114,7 +157,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default horizontal position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-default-position
      */
@@ -127,7 +170,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-inset
      */
@@ -141,12 +184,12 @@ export class AnchoredRegion extends FASTElement {
      * How narrow the space allocated to the default position has to be before the widest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-threshold
      */
     @attr({ attribute: "horizontal-threshold" })
-    public horizontalThreshold: string = "";
+    public horizontalThreshold: number;
     private horizontalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -154,7 +197,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the width of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: horizontal-scaling
      */
@@ -170,7 +213,7 @@ export class AnchoredRegion extends FASTElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-positioning-mode
      */
@@ -183,7 +226,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The default vertical position of the region relative to the anchor element
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-default-position
      */
@@ -196,7 +239,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-inset
      */
@@ -210,12 +253,12 @@ export class AnchoredRegion extends FASTElement {
      * How short the space allocated to the default position has to be before the tallest area
      * is selected for layout
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-threshold
      */
     @attr({ attribute: "vertical-threshold" })
-    public verticalThreshold: string = "";
+    public verticalThreshold: number;
     private verticalThresholdChanged(): void {
         this.updateForAttributeChange();
     }
@@ -223,7 +266,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * Defines how the height of the region is calculated
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: vertical-scaling
      */
@@ -238,7 +281,7 @@ export class AnchoredRegion extends FASTElement {
      * Otherwise the region uses "position: absolute".
      * Fixed placement allows the region to break out of parent containers,
      *
-     * @public
+     * @beta
      * @remarks
      * HTML Attribute: fixed-placement
      */
@@ -254,9 +297,36 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: auto-update-mode
+     */
+    @attr({ attribute: "auto-update-mode" })
+    public autoUpdateMode: AutoUpdateMode = "anchor";
+    private autoUpdateModeChanged(
+        prevMode: AutoUpdateMode,
+        newMode: AutoUpdateMode
+    ): void {
+        if (
+            (this as FASTElement).$fastController.isConnected &&
+            this.initialLayoutComplete
+        ) {
+            if (prevMode === "auto") {
+                this.stopAutoUpdateEventListeners();
+            }
+
+            if (newMode === "auto") {
+                this.startAutoUpdateEventListeners();
+            }
+        }
+    }
+
+    /**
      * The HTML element being used as the anchor
      *
-     * @public
+     * @beta
      */
     @observable
     public anchorElement: HTMLElement | null = null;
@@ -267,7 +337,7 @@ export class AnchoredRegion extends FASTElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @public
+     * @beta
      */
     @observable
     public viewportElement: HTMLElement | null = null;
@@ -312,13 +382,18 @@ export class AnchoredRegion extends FASTElement {
     private regionWidth: string;
     private regionHeight: string;
 
+    private containingBlockWidth: number;
+    private containingBlockHeight: number;
+
     private xTransformOrigin: string;
     private yTransformOrigin: string;
 
-    private intersectionDetector: IntersectionObserver | null = null;
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private viewportRect: ClientRect | DOMRect | null;
+    private anchorRect: ClientRect | DOMRect | null;
+    private regionRect: ClientRect | DOMRect | null;
+
     private regionDimension: Dimension;
 
     private anchorTop: number;
@@ -339,11 +414,20 @@ export class AnchoredRegion extends FASTElement {
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
 
+    // defines how big a difference in pixels there must be between states to
+    // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
+    private updateThreshold: number = 0.5;
+
+    private static intersectionService: IntersectionService = new IntersectionService();
+
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
+        if (this.autoUpdateMode === "auto") {
+            this.startAutoUpdateEventListeners();
+        }
         this.initialize();
     }
 
@@ -352,9 +436,11 @@ export class AnchoredRegion extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-
+        if (this.autoUpdateMode === "auto") {
+            this.stopAutoUpdateEventListeners();
+        }
+        this.stopObservers();
         this.disconnectResizeDetector();
-        this.disconnectIntersectionDetector();
     }
 
     /**
@@ -373,7 +459,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
     };
 
     /**
@@ -430,8 +516,6 @@ export class AnchoredRegion extends FASTElement {
      */
     private initialize(): void {
         this.initializeResizeDetector();
-        this.initializeIntersectionDetector();
-        // this.setInitialState();
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
@@ -469,16 +553,18 @@ export class AnchoredRegion extends FASTElement {
     private setInitialState(): void {
         this.initialLayoutComplete = false;
         this.regionTop = "0";
-        this.regionRight = "unset";
-        this.regionBottom = "unset";
+        this.regionRight = "0";
+        this.regionBottom = "0";
         this.regionLeft = "0";
-        this.regionWidth = "fit-content";
-        this.regionHeight = "fit-content";
+        this.regionWidth = "100%";
+        this.regionHeight = "100%";
 
-        this.xTransformOrigin = Location.left;
-        this.yTransformOrigin = Location.top;
+        this.xTransformOrigin = "left";
+        this.yTransformOrigin = "top";
 
         this.viewportRect = null;
+        this.regionRect = null;
+        this.anchorRect = null;
         this.regionDimension = { height: 0, width: 0 };
 
         this.anchorTop = 0;
@@ -488,26 +574,17 @@ export class AnchoredRegion extends FASTElement {
         this.anchorHeight = 0;
         this.anchorWidth = 0;
 
-        this.verticalPosition = AnchoredRegionVerticalPositionLabel.undefined;
-        this.horizontalPosition = AnchoredRegionHorizontalPositionLabel.undefined;
+        this.verticalPosition = "undefined";
+        this.horizontalPosition = "undefined";
 
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
+        this.style.opacity = "0";
+        this.style.pointerEvents = "none";
+
         this.updateRegionStyle();
     }
-
-    /**
-     * initialize intersection detector
-     */
-    private initializeIntersectionDetector = (): void => {
-        this.disconnectIntersectionDetector();
-        this.intersectionDetector = new IntersectionObserver(this.handleIntersection, {
-            root: null,
-            rootMargin: "0px",
-            threshold: [0, 1],
-        });
-    };
 
     /**
      * starts observers
@@ -515,68 +592,64 @@ export class AnchoredRegion extends FASTElement {
     private startObservers = (): void => {
         this.stopObservers();
 
-        if (
-            this.anchorElement === null ||
-            (this.viewportElement !== null &&
-                !this.viewportElement.contains(this.anchorElement))
-        ) {
+        if (this.anchorElement === null) {
             return;
         }
 
-        this.startIntersectionObserver();
+        this.requestPositionUpdates();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
-            this.resizeDetector.observe(this);
         }
     };
 
     /**
-     * starts intersection observer
+     * get position updates
      */
-    private startIntersectionObserver = (): void => {
+    private requestPositionUpdates = (): void => {
         if (this.anchorElement === null || this.pendingPositioningUpdate) {
             return;
         }
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.observe(this);
-            this.intersectionDetector.observe(this.anchorElement);
-            if (this.viewportElement !== null) {
-                this.intersectionDetector.observe(this.viewportElement);
-            }
+        AnchoredRegion.intersectionService.requestPosition(this, this.handleIntersection);
+        AnchoredRegion.intersectionService.requestPosition(
+            this.anchorElement,
+            this.handleIntersection
+        );
+        if (this.viewportElement !== null) {
+            AnchoredRegion.intersectionService.requestPosition(
+                this.viewportElement,
+                this.handleIntersection
+            );
         }
-    };
-
-    /**
-     * stops intersection observer
-     */
-    private stopIntersectionObserver = (): void => {
-        if (this.intersectionDetector !== null) {
-            this.intersectionDetector.disconnect();
-            this.pendingPositioningUpdate = false;
-        }
+        this.pendingPositioningUpdate = true;
     };
 
     /**
      * stops observers
      */
     private stopObservers = (): void => {
-        this.stopIntersectionObserver();
+        if (this.pendingPositioningUpdate) {
+            this.pendingPositioningUpdate = false;
+            AnchoredRegion.intersectionService.cancelRequestPosition(
+                this,
+                this.handleIntersection
+            );
+            if (this.anchorElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.anchorElement,
+                    this.handleIntersection
+                );
+            }
+            if (this.viewportElement !== null) {
+                AnchoredRegion.intersectionService.cancelRequestPosition(
+                    this.viewportElement,
+                    this.handleIntersection
+                );
+            }
+        }
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
-    };
-
-    /**
-     * disconnect intersection observer
-     */
-    private disconnectIntersectionDetector = (): void => {
-        if (this.intersectionDetector === null) {
-            return;
-        }
-
-        this.intersectionDetector.disconnect();
-        this.intersectionDetector = null;
     };
 
     /**
@@ -584,7 +657,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private getViewport = (): HTMLElement | null => {
         if (typeof this.viewport !== "string" || this.viewport === "") {
-            return null;
+            return document.documentElement;
         }
 
         return document.getElementById(this.viewport);
@@ -601,20 +674,23 @@ export class AnchoredRegion extends FASTElement {
      *  Handle intersections
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-        this.stopIntersectionObserver();
+        if (!this.pendingPositioningUpdate) {
+            return;
+        }
 
-        let regionRect: DOMRect | ClientRect | null = null;
+        this.pendingPositioningUpdate = false;
+
+        if (!this.applyIntersectionEntries(entries) || this.regionRect === null) {
+            return;
+        }
 
         if (!this.initialLayoutComplete) {
-            regionRect = this.applyIntersectionEntries(entries);
-            if (regionRect !== null) {
-                this.updateRegionOffset(regionRect);
-            }
-            this.requestLayoutUpdate();
-        } else {
-            this.applyIntersectionEntries(entries);
-            this.requestLayoutUpdate();
+            this.containingBlockHeight = this.regionRect.height;
+            this.containingBlockWidth = this.regionRect.width;
         }
+
+        this.updateRegionOffset(this.regionRect);
+        this.requestLayoutUpdate();
     };
 
     /**
@@ -622,20 +698,63 @@ export class AnchoredRegion extends FASTElement {
      */
     private applyIntersectionEntries = (
         entries: IntersectionObserverEntry[]
-    ): DOMRect | ClientRect | null => {
-        let regionRect: DOMRect | ClientRect | null = null;
-        entries.forEach((entry: IntersectionObserverEntry) => {
-            if (entry.target === this) {
-                this.handleRegionIntersection(entry);
-                regionRect = entry.boundingClientRect;
-            } else if (entry.target === this.anchorElement) {
-                this.handleAnchorIntersection(entry);
-            } else {
-                // its the viewport
-                this.viewportRect = entry.boundingClientRect;
-            }
-        });
-        return regionRect;
+    ): boolean => {
+        let regionEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this
+        );
+        let anchorEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this.anchorElement
+        );
+        let viewportEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this.viewportElement
+        );
+
+        if (
+            regionEntry === undefined ||
+            viewportEntry === undefined ||
+            anchorEntry === undefined
+        ) {
+            return false;
+        }
+
+        // don't update the dom unless there is a significant difference in rect positions
+        if (
+            this.regionRect === null ||
+            this.anchorRect === null ||
+            this.viewportRect === null ||
+            this.isRectDifferent(this.anchorRect, anchorEntry.boundingClientRect) ||
+            this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect) ||
+            this.isRectDifferent(this.regionRect, regionEntry.boundingClientRect)
+        ) {
+            this.regionRect = regionEntry.boundingClientRect;
+            this.anchorRect = anchorEntry.boundingClientRect;
+            this.viewportRect = viewportEntry.boundingClientRect;
+
+            this.handleRegionIntersection(regionEntry);
+            this.handleAnchorIntersection(anchorEntry);
+
+            return true;
+        }
+
+        return false;
+    };
+
+    /**
+     *  compare rects to see if there is enough change to justify a DOM update
+     */
+    private isRectDifferent = (
+        rectA: DOMRect | ClientRect,
+        rectB: DOMRect | ClientRect
+    ): boolean => {
+        if (
+            Math.abs(rectA.top - rectB.top) > this.updateThreshold ||
+            Math.abs(rectA.right - rectB.right) > this.updateThreshold ||
+            Math.abs(rectA.bottom - rectB.bottom) > this.updateThreshold ||
+            Math.abs(rectA.left - rectB.left) > this.updateThreshold
+        ) {
+            return true;
+        }
+        return false;
     };
 
     /**
@@ -659,50 +778,17 @@ export class AnchoredRegion extends FASTElement {
             height: regionRect.height,
             width: regionRect.width,
         };
-
-        if (this.viewportElement === null) {
-            this.viewportRect = regionEntry.rootBounds;
-        }
     };
 
     /**
      *  Handle resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
-        entries.forEach((entry: ResizeObserverEntry) => {
-            if (entry.target === this) {
-                this.handleRegionResize(entry);
-            } else {
-                this.update();
-            }
-        });
-    };
-
-    /**
-     *  Handle region resize events
-     */
-    private handleRegionResize = (entry: ResizeObserverEntry): void => {
-        switch (this.horizontalScaling) {
-            case "content":
-                this.regionDimension.width = entry.contentRect.width;
-                break;
-
-            case "anchor":
-                this.regionDimension.width = this.anchorWidth;
-                break;
+        if (!this.initialLayoutComplete) {
+            return;
         }
 
-        switch (this.verticalScaling) {
-            case "content":
-                this.regionDimension.height = entry.contentRect.height;
-                break;
-
-            case "anchor":
-                this.regionDimension.height = this.anchorHeight;
-                break;
-        }
-
-        this.requestLayoutUpdate();
+        this.update();
     };
 
     /**
@@ -722,7 +808,7 @@ export class AnchoredRegion extends FASTElement {
             this.viewportElement = this.getViewport();
         }
 
-        this.currentDirection = this.getDirection();
+        this.currentDirection = getDirection(this);
         this.startObservers();
     };
 
@@ -736,10 +822,9 @@ export class AnchoredRegion extends FASTElement {
 
         this.pendingLayoutUpdate = false;
 
-        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel =
-            AnchoredRegionVerticalPositionLabel.undefined;
+        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel = "undefined";
         let desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
-            AnchoredRegionHorizontalPositionLabel.undefined;
+            "undefined";
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
             const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
@@ -753,7 +838,7 @@ export class AnchoredRegion extends FASTElement {
                     dirCorrectedHorizontalDefaultPosition === "end"
                 ) {
                     // if direction changes we reset the layout
-                    const newDirection: Direction = this.getDirection();
+                    const newDirection: Direction = getDirection(this);
                     if (newDirection !== this.currentDirection) {
                         this.currentDirection = newDirection;
                         this.initialize();
@@ -776,26 +861,25 @@ export class AnchoredRegion extends FASTElement {
                 switch (dirCorrectedHorizontalDefaultPosition) {
                     case "left":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? AnchoredRegionHorizontalPositionLabel.insetLeft
-                            : AnchoredRegionHorizontalPositionLabel.left;
+                            ? "insetLeft"
+                            : "left";
                         break;
 
                     case "right":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? AnchoredRegionHorizontalPositionLabel.insetRight
-                            : AnchoredRegionHorizontalPositionLabel.right;
+                            ? "insetRight"
+                            : "right";
                         break;
                 }
             }
 
             const horizontalThreshold: number =
                 this.horizontalThreshold !== undefined
-                    ? Number(this.horizontalThreshold)
+                    ? this.horizontalThreshold
                     : this.regionDimension.width;
 
             if (
-                desiredHorizontalPosition ===
-                    AnchoredRegionHorizontalPositionLabel.undefined ||
+                desiredHorizontalPosition === "undefined" ||
                 (!(this.horizontalPositioningMode === "locktodefault") &&
                     this.getAvailableWidth(desiredHorizontalPosition) <
                         horizontalThreshold)
@@ -813,27 +897,24 @@ export class AnchoredRegion extends FASTElement {
             if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
-                        desiredVerticalPosition = this.verticalInset
-                            ? AnchoredRegionVerticalPositionLabel.insetTop
-                            : AnchoredRegionVerticalPositionLabel.top;
+                        desiredVerticalPosition = this.verticalInset ? "insetTop" : "top";
                         break;
 
                     case "bottom":
                         desiredVerticalPosition = this.verticalInset
-                            ? AnchoredRegionVerticalPositionLabel.insetBottom
-                            : AnchoredRegionVerticalPositionLabel.bottom;
+                            ? "insetBottom"
+                            : "bottom";
                         break;
                 }
             }
 
             const verticalThreshold: number =
                 this.verticalThreshold !== undefined
-                    ? Number(this.verticalThreshold)
+                    ? this.verticalThreshold
                     : this.regionDimension.height;
 
             if (
-                desiredVerticalPosition ===
-                    AnchoredRegionVerticalPositionLabel.undefined ||
+                desiredVerticalPosition === "undefined" ||
                 (!(this.verticalPositioningMode === "locktodefault") &&
                     this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
             ) {
@@ -859,10 +940,16 @@ export class AnchoredRegion extends FASTElement {
 
         this.updateRegionStyle();
 
-        this.initialLayoutComplete = true;
+        if (!this.initialLayoutComplete) {
+            this.initialLayoutComplete = true;
+            this.style.removeProperty("pointer-events");
+            this.style.removeProperty("opacity");
+            this.classList.toggle("loaded", true);
+            DOM.queueUpdate(() => this.$emit("loaded", this, { bubbles: false }));
+        }
 
         if (positionChanged) {
-            this.$emit("change");
+            this.$emit("positionchange", this, { bubbles: false });
         }
     };
 
@@ -871,43 +958,18 @@ export class AnchoredRegion extends FASTElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
-        this.classList.toggle(
-            "top",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.top
-        );
-        this.classList.toggle(
-            "bottom",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.bottom
-        );
-        this.classList.toggle(
-            "inset-top",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetTop
-        );
-        this.classList.toggle(
-            "inset-bottom",
-            this.verticalPosition === AnchoredRegionVerticalPositionLabel.insetBottom
-        );
+        this.classList.toggle("top", this.verticalPosition === "top");
+        this.classList.toggle("bottom", this.verticalPosition === "bottom");
+        this.classList.toggle("inset-top", this.verticalPosition === "insetTop");
+        this.classList.toggle("inset-bottom", this.verticalPosition === "insetBottom");
 
-        this.classList.toggle(
-            "left",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.left
-        );
-        this.classList.toggle(
-            "right",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.right
-        );
-        this.classList.toggle(
-            "inset-left",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetLeft
-        );
-        this.classList.toggle(
-            "inset-right",
-            this.horizontalPosition === AnchoredRegionHorizontalPositionLabel.insetRight
-        );
+        this.classList.toggle("left", this.horizontalPosition === "left");
+        this.classList.toggle("right", this.horizontalPosition === "right");
+        this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
+        this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
-        this.style.opacity = this.initialLayoutComplete ? "1" : "0";
 
         if (this.horizontalPositioningMode === "uncontrolled") {
             this.style.width = "unset";
@@ -937,33 +999,31 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentWidth =
-            this.offsetParent !== null
-                ? this.offsetParent.clientWidth
-                : document.body.clientWidth;
-
         let right: number | null = null;
         let left: number | null = null;
-        let xTransformOrigin: string = Location.left;
+        let xTransformOrigin: string = "left";
 
         switch (desiredHorizontalPosition) {
-            case AnchoredRegionHorizontalPositionLabel.left:
-                xTransformOrigin = Location.right;
-                right = layoutParentWidth - this.baseHorizontalOffset;
+            case "left":
+                xTransformOrigin = "right";
+                right = this.containingBlockWidth - this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.insetLeft:
-                xTransformOrigin = Location.right;
-                right = layoutParentWidth - this.anchorWidth - this.baseHorizontalOffset;
+            case "insetLeft":
+                xTransformOrigin = "right";
+                right =
+                    this.containingBlockWidth -
+                    this.anchorWidth -
+                    this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.insetRight:
-                xTransformOrigin = Location.left;
+            case "insetRight":
+                xTransformOrigin = "left";
                 left = this.baseHorizontalOffset;
                 break;
 
-            case AnchoredRegionHorizontalPositionLabel.right:
-                xTransformOrigin = Location.left;
+            case "right":
+                xTransformOrigin = "left";
                 left = this.anchorWidth + this.baseHorizontalOffset;
                 break;
         }
@@ -983,7 +1043,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionWidth = "fit-content";
+                this.regionWidth = "unset";
                 break;
         }
     };
@@ -995,33 +1055,31 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
         nextPositionerDimension: Dimension
     ): void => {
-        const layoutParentHeight =
-            this.offsetParent !== null
-                ? this.offsetParent.clientHeight
-                : document.body.clientHeight;
-
         let top: number | null = null;
         let bottom: number | null = null;
-        let yTransformOrigin: string = Location.top;
+        let yTransformOrigin: string = "top";
 
         switch (desiredVerticalPosition) {
-            case AnchoredRegionVerticalPositionLabel.top:
-                yTransformOrigin = Location.bottom;
-                bottom = layoutParentHeight - this.baseVerticalOffset;
+            case "top":
+                yTransformOrigin = "bottom";
+                bottom = this.containingBlockHeight - this.baseVerticalOffset;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.insetTop:
-                yTransformOrigin = Location.bottom;
-                bottom = layoutParentHeight - this.baseVerticalOffset - this.anchorHeight;
+            case "insetTop":
+                yTransformOrigin = "bottom";
+                bottom =
+                    this.containingBlockHeight -
+                    this.baseVerticalOffset -
+                    this.anchorHeight;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.insetBottom:
-                yTransformOrigin = Location.top;
+            case "insetBottom":
+                yTransformOrigin = "top";
                 top = this.baseVerticalOffset;
                 break;
 
-            case AnchoredRegionVerticalPositionLabel.bottom:
-                yTransformOrigin = Location.top;
+            case "bottom":
+                yTransformOrigin = "top";
                 top = this.baseVerticalOffset + this.anchorHeight;
                 break;
         }
@@ -1041,7 +1099,7 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "content":
-                this.regionHeight = "fit-content";
+                this.regionHeight = "unset";
                 break;
         }
     };
@@ -1054,22 +1112,22 @@ export class AnchoredRegion extends FASTElement {
             this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
         } else {
             switch (this.horizontalPosition) {
-                case AnchoredRegionHorizontalPositionLabel.undefined:
+                case "undefined":
                     this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
                     break;
-                case AnchoredRegionHorizontalPositionLabel.left:
+                case "left":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorLeft - regionRect.right);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.insetLeft:
+                case "insetLeft":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorRight - regionRect.right);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.insetRight:
+                case "insetRight":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorLeft - regionRect.left);
                     break;
-                case AnchoredRegionHorizontalPositionLabel.right:
+                case "right":
                     this.baseHorizontalOffset =
                         this.baseHorizontalOffset + (this.anchorRight - regionRect.left);
                     break;
@@ -1080,22 +1138,22 @@ export class AnchoredRegion extends FASTElement {
             this.baseVerticalOffset = this.anchorTop - regionRect.top;
         } else {
             switch (this.verticalPosition) {
-                case AnchoredRegionVerticalPositionLabel.undefined:
+                case "undefined":
                     this.baseVerticalOffset = this.anchorTop - regionRect.top;
                     break;
-                case AnchoredRegionVerticalPositionLabel.top:
+                case "top":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorTop - regionRect.bottom);
                     break;
-                case AnchoredRegionVerticalPositionLabel.insetTop:
+                case "insetTop":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorBottom - regionRect.bottom);
                     break;
-                case AnchoredRegionVerticalPositionLabel.insetBottom:
+                case "insetBottom":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorTop - regionRect.top);
                     break;
-                case AnchoredRegionVerticalPositionLabel.bottom:
+                case "bottom":
                     this.baseVerticalOffset =
                         this.baseVerticalOffset + (this.anchorBottom - regionRect.top);
                     break;
@@ -1108,16 +1166,10 @@ export class AnchoredRegion extends FASTElement {
      */
     private getHorizontalPositioningOptions = (): AnchoredRegionHorizontalPositionLabel[] => {
         if (this.horizontalInset) {
-            return [
-                AnchoredRegionHorizontalPositionLabel.insetLeft,
-                AnchoredRegionHorizontalPositionLabel.insetRight,
-            ];
+            return ["insetLeft", "insetRight"];
         }
 
-        return [
-            AnchoredRegionHorizontalPositionLabel.left,
-            AnchoredRegionHorizontalPositionLabel.right,
-        ];
+        return ["left", "right"];
     };
 
     /**
@@ -1125,16 +1177,10 @@ export class AnchoredRegion extends FASTElement {
      */
     private getVerticalPositioningOptions = (): AnchoredRegionVerticalPositionLabel[] => {
         if (this.verticalInset) {
-            return [
-                AnchoredRegionVerticalPositionLabel.insetTop,
-                AnchoredRegionVerticalPositionLabel.insetBottom,
-            ];
+            return ["insetTop", "insetBottom"];
         }
 
-        return [
-            AnchoredRegionVerticalPositionLabel.top,
-            AnchoredRegionVerticalPositionLabel.bottom,
-        ];
+        return ["top", "bottom"];
     };
 
     /**
@@ -1149,13 +1195,13 @@ export class AnchoredRegion extends FASTElement {
                 this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
 
             switch (positionOption) {
-                case AnchoredRegionHorizontalPositionLabel.left:
+                case "left":
                     return spaceLeft;
-                case AnchoredRegionHorizontalPositionLabel.insetLeft:
+                case "insetLeft":
                     return spaceLeft + this.anchorWidth;
-                case AnchoredRegionHorizontalPositionLabel.insetRight:
+                case "insetRight":
                     return spaceRight + this.anchorWidth;
-                case AnchoredRegionHorizontalPositionLabel.right:
+                case "right":
                     return spaceRight;
             }
         }
@@ -1175,13 +1221,13 @@ export class AnchoredRegion extends FASTElement {
                 this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
 
             switch (positionOption) {
-                case AnchoredRegionVerticalPositionLabel.top:
+                case "top":
                     return spaceAbove;
-                case AnchoredRegionVerticalPositionLabel.insetTop:
+                case "insetTop":
                     return spaceAbove + this.anchorHeight;
-                case AnchoredRegionVerticalPositionLabel.insetBottom:
+                case "insetBottom":
                     return spaceBelow + this.anchorHeight;
-                case AnchoredRegionVerticalPositionLabel.bottom:
+                case "bottom":
                     return spaceBelow;
             }
         }
@@ -1212,16 +1258,24 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *  gets the current direction
+     * starts event listeners that can trigger auto updating
      */
-    private getDirection = (): Direction => {
-        const closest: Element | null = this.closest(
-            `[${AnchoredRegion.DirectionAttributeName}]`
-        );
+    private startAutoUpdateEventListeners = (): void => {
+        window.addEventListener(eventResize, this.update);
+        window.addEventListener(eventScroll, this.update, true);
+        if (this.resizeDetector !== null && this.viewportElement !== null) {
+            this.resizeDetector.observe(this.viewportElement);
+        }
+    };
 
-        return closest === null ||
-            closest.getAttribute(AnchoredRegion.DirectionAttributeName) === Direction.ltr
-            ? Direction.ltr
-            : Direction.rtl;
+    /**
+     * stops event listeners that can trigger auto updating
+     */
+    private stopAutoUpdateEventListeners = (): void => {
+        window.removeEventListener(eventResize, this.update);
+        window.removeEventListener(eventScroll, this.update);
+        if (this.resizeDetector !== null && this.viewportElement !== null) {
+            this.resizeDetector.unobserve(this.viewportElement);
+        }
     };
 }

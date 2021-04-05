@@ -1,5 +1,5 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
-import { CustomMessageIncomingOutgoing, MessageSystem } from "@microsoft/fast-tooling";
+import { CustomMessage, MessageSystem } from "@microsoft/fast-tooling";
 import { ViewerClassNameContract } from "./viewer.class-name-contract";
 
 export enum ResizeHandleLocation {
@@ -57,14 +57,14 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
 
 export type ViewerProps = ViewerUnhandledProps & ViewerHandledProps;
 
-export interface CustomViewerCallMessage extends CustomMessageIncomingOutgoing {
+export interface CustomViewerCallMessage extends CustomMessage<{}, {}> {
     /**
      * A message send from the Viewer iframe window
      */
     action: ViewerCustomAction.call;
 }
 
-export interface CustomViewerResponseMessage extends CustomMessageIncomingOutgoing {
+export interface CustomViewerResponseMessage extends CustomMessage<{}, {}> {
     /**
      * A message responding that the viewer iframe message is responding to
      */

@@ -1,24 +1,24 @@
-import { html } from "@microsoft/fast-element";
-import { ref } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { Slider } from "./slider";
+import type { Slider } from "./slider";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Slider} component.
+ * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
-export const SliderTemplate = html<Slider>`
+export const SliderTemplate: ViewTemplate<Slider> = html`
     <template
         role="slider"
-        class="${x => (x.readOnly ? "readonly" : "")} 
+        class="${x => (x.readOnly ? "readonly" : "")}
         ${x => x.orientation || Orientation.horizontal}"
         tabindex="${x => (x.disabled ? null : 0)}"
         aria-valuetext="${x => x.valueTextFormatter(x.value)}"
         aria-valuenow="${x => x.value}"
         aria-valuemin="${x => x.min}"
         aria-valuemax="${x => x.max}"
-        ?aria-disabled="${x => x.disabled}"
-        ?aria-readonly="${x => x.readOnly}"
+        aria-disabled="${x => (x.disabled ? true : void 0)}"
+        aria-readonly="${x => (x.readOnly ? true : void 0)}"
         aria-orientation="${x => x.orientation}"
         class="${x => x.orientation}"
     >

@@ -1,41 +1,18 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { FormAssociated } from "../form-associated/form-associated";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { applyMixins } from "../utilities";
+import { FormAssociatedTextArea } from "./text-area.form-associated";
+import { TextAreaResize } from "./text-area.options";
+
+export { TextAreaResize };
 
 /**
- * Resize mode for a TextArea
- * @public
- */
-export enum TextAreaResize {
-    /**
-     * No resize.
-     */
-    none = "none",
-
-    /**
-     * Resize vertically and horizontally.
-     */
-    both = "both",
-
-    /**
-     * Resize horizontally.
-     */
-    horizontal = "horizontal",
-
-    /**
-     * Resize vertically.
-     */
-    vertical = "vertical",
-}
-
-/**
- * An Text Area Custom HTML Element.
+ * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
  * @public
  */
-export class TextArea extends FormAssociated<HTMLTextAreaElement> {
+export class TextArea extends FormAssociatedTextArea {
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -45,7 +22,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ mode: "boolean" })
     public readOnly: boolean;
     private readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.readOnly = this.readOnly;
         }
     }
@@ -74,7 +51,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ mode: "boolean" })
     public autofocus: boolean;
     private autofocusChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.autofocus = this.autofocus;
         }
     }
@@ -95,7 +72,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr
     public list: string;
     private listChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.setAttribute("list", this.list);
         }
     }
@@ -109,7 +86,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ converter: nullableNumberConverter })
     public maxlength: number;
     private maxlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.maxLength = this.maxlength;
         }
     }
@@ -123,7 +100,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ converter: nullableNumberConverter })
     public minlength: number;
     private minlengthChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.minLength = this.minlength;
         }
     }
@@ -158,7 +135,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     public cols: number = 20;
 
     /**
-     * Sizes the element vertically by a number of character columns.
+     * Sizes the element vertically by a number of character rows.
      *
      * @public
      * @remarks
@@ -177,7 +154,7 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
     @attr({ mode: "boolean" })
     public spellcheck: boolean;
     private spellcheckChanged(): void {
-        if (this.proxy instanceof HTMLElement) {
+        if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.spellcheck = this.spellcheck;
         }
     }
@@ -187,8 +164,6 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
      */
     @observable
     public defaultSlottedNodes: Node[];
-
-    protected proxy: HTMLTextAreaElement = document.createElement("textarea");
 
     /**
      * @internal
@@ -217,6 +192,5 @@ export class TextArea extends FormAssociated<HTMLTextAreaElement> {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface TextArea extends DelegatesARIATextbox {}
 applyMixins(TextArea, DelegatesARIATextbox);

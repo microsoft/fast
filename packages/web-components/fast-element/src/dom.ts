@@ -1,5 +1,5 @@
-import { Callable } from "./interfaces";
-import { TrustedTypesPolicy, $global } from "./platform";
+import type { Callable } from "./interfaces";
+import { $global, TrustedTypesPolicy } from "./platform";
 
 const updateQueue = [] as Callable[];
 
@@ -102,7 +102,7 @@ export const DOM = Object.freeze({
     },
 
     /**
-     * Given a marker node, extract the {@link Directive} index from the placeholder.
+     * Given a marker node, extract the {@link HTMLDirective} index from the placeholder.
      * @param node - The marker node to extract the index from.
      */
     extractDirectiveIndexFromMarker(node: Comment): number {

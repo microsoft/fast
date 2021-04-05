@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/microsoft/fast-dna/compare/fast-site@0.6.0...fast-site@0.6.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* broken formatting and link when generating docs site ([#4459](https://github.com/microsoft/fast-dna/issues/4459)) ([e817863](https://github.com/microsoft/fast-dna/commit/e81786349e7c65cfb888a151f0400c736c421912))
+
+
+
+
+
+# [0.6.0](https://github.com/microsoft/fast/compare/fast-site@0.5.2...fast-site@0.6.0) (2021-03-06)
+
+
+### Features
+
+* add playwright ([#4337](https://github.com/microsoft/fast/issues/4337)) ([be996ee](https://github.com/microsoft/fast/commit/be996eea6c2a19dbf7b1f8afac51cba22bbc8045)), closes [#4229](https://github.com/microsoft/fast/issues/4229)
+
+
+
+
+
+## [0.5.2](https://github.com/microsoft/fast/compare/fast-site@0.5.0...fast-site@0.5.2) (2021-02-08)
+
+**Note:** Version bump only for package fast-site
+
+
+
+
+
+## [0.5.1](https://github.com/microsoft/fast-dna/compare/fast-site@0.5.0...fast-site@0.5.1) (2021-02-08)
+
+**Note:** Version bump only for package fast-site
+
+
+
+
+
+# [0.5.0](https://github.com/microsoft/fast-dna/compare/fast-site@0.4.0...fast-site@0.5.0) (2021-01-30)
+
+
+### Bug Fixes
+
+* addressed missing images in the high contrast document ([#4216](https://github.com/microsoft/fast-dna/issues/4216)) ([24f83d2](https://github.com/microsoft/fast-dna/commit/24f83d243576c484fcf5a543b2483553857539d8))
+
+
+### Features
+
+* add fast-number-field component for data applications ([#4204](https://github.com/microsoft/fast-dna/issues/4204)) ([7196215](https://github.com/microsoft/fast-dna/commit/7196215344e0f6141dbc7dff69fc4c0bde8b586a))
+* add select spec ([#4194](https://github.com/microsoft/fast-dna/issues/4194)) ([7af127a](https://github.com/microsoft/fast-dna/commit/7af127aa1e41d4a379cc8b5ce15798d9423b3726))
+* adding high contrast document to the FAST documentation website ([#4178](https://github.com/microsoft/fast-dna/issues/4178)) ([d6b5d8e](https://github.com/microsoft/fast-dna/commit/d6b5d8e062478bd5910e9f8afa232c89b1c5a722))
+
+
+
+
+
+# [0.4.0](https://github.com/microsoft/fast-dna/compare/fast-site@0.3.0...fast-site@0.4.0) (2020-11-19)
+
+
+### Features
+
+* add fast-breadcrumb and fast-breadcrumb-item web components ([#3627](https://github.com/microsoft/fast-dna/issues/3627)) ([e2e142c](https://github.com/microsoft/fast-dna/commit/e2e142c8ab91eb10906e74853f34afd5081ca12b))
+* enable shared CSSStyleSheets in DesignSystemProvider ([#4065](https://github.com/microsoft/fast-dna/issues/4065)) ([5579c2e](https://github.com/microsoft/fast-dna/commit/5579c2ef424f8f63e00c8e29b5c4d43acb32c6db))
+
+
+
+
+
+# [0.3.0](https://github.com/microsoft/fast/compare/fast-site@0.2.1...fast-site@0.3.0) (2020-09-28)
+
+
+### Features
+
+* add skeleton component ([#3877](https://github.com/microsoft/fast/issues/3877)) ([aff7d30](https://github.com/microsoft/fast/commit/aff7d3010574183744cf7105ae51a275c2c70a12))
+* add tooltip component ([#3549](https://github.com/microsoft/fast/issues/3549)) ([cb7aa98](https://github.com/microsoft/fast/commit/cb7aa98ccaaad00e9e86b4575ef011986c054d08))
+
+
+
+
+
 ## [0.2.1](https://github.com/microsoft/fast/compare/fast-site@0.2.0...fast-site@0.2.1) (2020-09-10)
 
 **Note:** Version bump only for package fast-site

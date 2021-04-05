@@ -1062,11 +1062,14 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map attributes and slots to the JSON schema", () => {
         const name: string = "foo";
+        const title: string = "FooBar";
         const description: string = "foo tag";
         const attrName: string = "attr";
+        const attrTitle: string = "attr title";
         const attrDescription: string = "An attribute";
         const slotName: string = "";
-        const slotDescription: string = "Default slot";
+        const slotTitle: string = "Default slot";
+        const slotDescription: string = "The default slot";
 
         expect(
             mapWebComponentDefinitionToJSONSchema({
@@ -1074,10 +1077,12 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
+                        title,
                         description: "foo tag",
                         attributes: [
                             {
                                 name: attrName,
+                                title: attrTitle,
                                 description: attrDescription,
                                 type: DataType.string,
                                 required: false,
@@ -1087,6 +1092,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                         slots: [
                             {
                                 name: slotName,
+                                title: slotTitle,
                                 description: slotDescription,
                             },
                         ],
@@ -1098,20 +1104,22 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     [attrName]: {
                         [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
-                        title: attrDescription,
+                        title: attrTitle,
+                        description: attrDescription,
                         type: DataType.string,
                     },
                     [`Slot${slotName}`]: {
                         [ReservedElementMappingKeyword.mapsToSlot]: slotName,
-                        title: slotDescription,
+                        title: slotTitle,
+                        description: slotDescription,
                         ...linkedDataSchema,
                     },
                 },
@@ -1120,9 +1128,11 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map named slots to the JSON schema", () => {
         const name: string = "foo";
+        const title: string = "foo title";
         const description: string = "foo tag";
         const slotName: string = "test";
-        const slotDescription: string = "Default slot";
+        const slotTitle: string = "Default slot";
+        const slotDescription: string = "Default slot description";
 
         expect(
             mapWebComponentDefinitionToJSONSchema({
@@ -1130,11 +1140,13 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
+                        title,
                         description: "foo tag",
                         attributes: [],
                         slots: [
                             {
                                 name: slotName,
+                                title: slotTitle,
                                 description: slotDescription,
                             },
                         ],
@@ -1146,15 +1158,16 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     SlotTest: {
                         [ReservedElementMappingKeyword.mapsToSlot]: slotName,
-                        title: slotDescription,
+                        title: slotTitle,
+                        description: slotDescription,
                         ...linkedDataSchema,
                     },
                 },
@@ -1163,9 +1176,11 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map named slots with only one character to the JSON schema", () => {
         const name: string = "foo";
+        const title: string = "Foo";
         const description: string = "foo tag";
         const slotName: string = "t";
-        const slotDescription: string = "Default slot";
+        const slotTitle: string = "Default slot";
+        const slotDescription: string = "Default slot description";
 
         expect(
             mapWebComponentDefinitionToJSONSchema({
@@ -1173,11 +1188,13 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
-                        description: "foo tag",
+                        title,
+                        description,
                         attributes: [],
                         slots: [
                             {
                                 name: slotName,
+                                title: slotTitle,
                                 description: slotDescription,
                             },
                         ],
@@ -1189,15 +1206,16 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     SlotT: {
                         [ReservedElementMappingKeyword.mapsToSlot]: slotName,
-                        title: slotDescription,
+                        title: slotTitle,
+                        description: slotDescription,
                         ...linkedDataSchema,
                     },
                 },
@@ -1206,9 +1224,11 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map named slots with dasjes  to the JSON schema", () => {
         const name: string = "foo";
+        const title: string = "FooBar";
         const description: string = "foo tag";
         const slotName: string = "test-name";
-        const slotDescription: string = "Default slot";
+        const slotTitle: string = "Default slot";
+        const slotDescription: string = "Default slot description";
 
         expect(
             mapWebComponentDefinitionToJSONSchema({
@@ -1216,11 +1236,13 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
-                        description: "foo tag",
+                        title,
+                        description,
                         attributes: [],
                         slots: [
                             {
                                 name: slotName,
+                                title: slotTitle,
                                 description: slotDescription,
                             },
                         ],
@@ -1232,15 +1254,16 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     SlotTestName: {
                         [ReservedElementMappingKeyword.mapsToSlot]: slotName,
-                        title: slotDescription,
+                        title: slotTitle,
+                        description: slotDescription,
                         ...linkedDataSchema,
                     },
                 },
@@ -1249,8 +1272,10 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map an optional enum in attributes to the enum in a JSON schema", () => {
         const name: string = "foo";
+        const title: string = "FooBar";
         const description: string = "foo tag";
         const attrName: string = "attr";
+        const attrTitle: string = "Attr title";
         const attrDescription: string = "An attribute";
         const attrEnum: string[] = ["foo", "bar"];
 
@@ -1260,10 +1285,12 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
-                        description: "foo tag",
+                        title,
+                        description,
                         attributes: [
                             {
                                 name: attrName,
+                                title: attrTitle,
                                 description: attrDescription,
                                 type: DataType.string,
                                 default: "foobar",
@@ -1287,15 +1314,16 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     [attrName]: {
                         [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
-                        title: attrDescription,
+                        title: attrTitle,
+                        description: attrDescription,
                         enum: attrEnum,
                         type: DataType.string,
                         default: "foobar",
@@ -1306,8 +1334,10 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
     });
     test("should map an optional number enum in attributes to the enum in a JSON schema", () => {
         const name: string = "foo";
+        const title: string = "Foo title";
         const description: string = "foo tag";
         const attrName: string = "attr";
+        const attrTitle: string = "Attr title";
         const attrDescription: string = "An attribute";
         const attrEnum: number[] = [1, 2];
 
@@ -1317,10 +1347,12 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 tags: [
                     {
                         name,
-                        description: "foo tag",
+                        title,
+                        description,
                         attributes: [
                             {
                                 name: attrName,
+                                title: attrTitle,
                                 description: attrDescription,
                                 type: DataType.number,
                                 default: "foobar",
@@ -1344,15 +1376,16 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
                 id: name,
-                title: `<${name}>`,
-                description: `${description}`,
+                title,
+                description,
                 type: "object",
                 version: 1,
                 [ReservedElementMappingKeyword.mapsToTagName]: name,
                 properties: {
                     [attrName]: {
                         [ReservedElementMappingKeyword.mapsToAttribute]: attrName,
-                        title: attrDescription,
+                        title: attrTitle,
+                        description: attrDescription,
                         enum: attrEnum,
                         type: DataType.number,
                         default: "foobar",

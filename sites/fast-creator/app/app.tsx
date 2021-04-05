@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
-import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import Creator from "./creator";
-import { creatorDesignSystem } from "./creator.design-system";
 import Preview from "./preview";
 
 /**
@@ -13,12 +11,10 @@ export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
             <BrowserRouter>
-                <div>
-                    <DesignSystemProvider designSystem={creatorDesignSystem}>
-                        <Route component={Creator} exact={true} path="/" />
-                    </DesignSystemProvider>
+                <fast-design-system-provider use-defaults density="-2">
+                    <Route component={Creator} exact={true} path="/" />
                     <Route component={Preview} exact={true} path="/preview" />
-                </div>
+                </fast-design-system-provider>
             </BrowserRouter>
         );
     }

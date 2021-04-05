@@ -1,12 +1,13 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Anchor } from "./anchor";
+import type { Anchor } from "./anchor";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.
  * @public
  */
-export const AnchorTemplate = html<Anchor>`
+export const AnchorTemplate: ViewTemplate<Anchor> = html`
     <a
         class="control"
         part="control"
@@ -38,10 +39,11 @@ export const AnchorTemplate = html<Anchor>`
         aria-owns="${x => x.ariaOwns}"
         aria-relevant="${x => x.ariaRelevant}"
         aria-roledescription="${x => x.ariaRoledescription}"
+        ${ref("control")}
     >
         ${startTemplate}
         <span class="content" part="content">
-            <slot></slot>
+            <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
         ${endTemplate}
     </a>

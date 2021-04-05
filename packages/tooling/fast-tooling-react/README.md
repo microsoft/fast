@@ -22,11 +22,14 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
         - [Dictionaries](#dictionaries)
+    - [Categories](#categories)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
         - [allOf & $ref](#allof-&-ref)
+    - [Categories](#categories)
 - [Navigation](#navigation)
+    - [Include data types](#include-data-types)
 - [Navigation Menu](#navigation-menu)
     - [Menu structure](#menu-structure)
     - [Expanding and Collapsing](#expanding-and-collapsing)
@@ -481,6 +484,41 @@ Example:
 }
 ```
 
+### Categories
+
+For improved UI when there become too many properties in an object, categories can be specified on a per-schema basis.
+
+Example:
+
+```jsx
+<Form
+    messageSystem={fastMessageSystem}
+    categories={{
+        "category-schema-id": {
+            "": [
+                {
+                    title: "Style",
+                    dataLocations: ["color", "outline", "font"],
+                },
+                {
+                    title: "Content",
+                    dataLocations: ["title", "body", "footer"],
+                },
+                {
+                    title: "Advanced",
+                    dataLocations: ["tracking", "accessibility"],
+                    expandByDefault: false // default true
+                },
+            ],
+        },
+    }}
+/>
+```
+
+This shows the root object of a schema with `$id` of `category-schema-id` that has the properties `color`, `outline`, `font`, `title`, `body`, `footer`, `tracking` and `accessibility` and splits them into categories with the appropriate titles.
+
+The "Advanced" category has its expand default set to `false`, this means that initially it will be collapsed.
+
 ### JSON schema keywords
 
 Certain JSON schema keywords are interpreted to provide a better UI.
@@ -553,6 +591,32 @@ Any enums will be converted to a select dropdown.
 
 The `allOf` and `$ref` keywords cannot be interpreted by the schema form generator.
 
+#### Categories
+
+Any `object` in the `<Form />` may have categories with which to contain its properties. This can be achieved by passing the `categories` prop which is a dictionary of keys that match to a schemas `id`, and which contain a `dataLocation` key to indicate which object a form category belongs to. Each category can then specify the properties as a set of `dataLocation` strings and a `title`.
+
+Example:
+
+```tsx
+<Form
+    messageSystem={fastMessageSystem}
+    categories={{
+        "https://my.schema.id": {
+            "": [ // The root level dataLocation
+                {
+                    title: "Style",
+                    dataLocations: ["border", "font"]
+                },
+                {
+                    title: "Content",
+                    dataLocations: ["text", "title"]
+                }
+            ]
+        }
+    }}
+/>
+```
+
 ## Navigation
 
 The required property is the `messageSystem`, see `@microsoft/fast-tooling` for details on setting this up.
@@ -562,6 +626,19 @@ Example:
 ```jsx
 <Navigation
     messageSystem={fastMessageSystem}
+/>
+```
+
+### Include data types
+
+By default all JSON schema data types are visible. If the optional `types` prop is included, the data types that are in the array will become the data types that are rendered. If a data type that is specified is contained inside a data type that is not, that will directly nest the visible data type with the parent of the unspecified data type.
+
+Example:
+
+```jsx
+<Navigation
+    messageSystem={fastMessageSystem}
+    types={["object", "string"]} // only "object" and "string" data types are rendered
 />
 ```
 

@@ -1,6 +1,8 @@
 import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+import CSSControl from "../../src/form/custom-controls/control.css";
+import { properties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -21,7 +23,9 @@ import {
     textColorName,
     L3FillColorName,
     errorColorName,
+    FloatingColorName,
 } from "../../src/style";
+import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -84,6 +88,7 @@ const CSSpropertyOverrides = {
     [textColorName]: "black",
     [L3FillColorName]: "white",
     [errorColorName]: "green",
+    [FloatingColorName]: "purple",
 };
 
 let fastMessageSystem: MessageSystem;
@@ -118,9 +123,20 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     return <AlignControl {...config} />;
                 },
             }),
+            new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.css.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return (
+                        <CSSControl
+                            css={(properties as unknown) as CSSPropertiesDictionary}
+                            {...config}
+                        />
+                    );
+                },
+            }),
         ];
 
-        const exampleData: any = getDataFromSchema(testConfigs.textField.schema);
+        const exampleData: any = getDataFromSchema(testConfigs.customControl.schema);
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -128,7 +144,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 dataDictionary: [
                     {
                         foo: {
-                            schemaId: testConfigs.textField.schema.id,
+                            schemaId: testConfigs.customControl.schema.id,
                             data: exampleData,
                         },
                     },
@@ -143,7 +159,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         this.state = {
-            schema: testConfigs.textField.schema,
+            schema: testConfigs.customControl.schema,
             data: exampleData,
             navigation: void 0,
             showExtendedControls: false,
@@ -299,6 +315,35 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         const formProps: FormProps = {
             messageSystem: fastMessageSystem,
             controls: this.controlPlugins,
+            categories: {
+                category: {
+                    "": [
+                        {
+                            title: "String & Boolean",
+                            dataLocations: ["string", "boolean"],
+                        },
+                        {
+                            title: "Empty",
+                            dataLocations: [],
+                        },
+                        {
+                            title: "No match",
+                            dataLocations: ["foo", "bar"],
+                        },
+                        {
+                            title: "Advanced",
+                            dataLocations: ["array", "object"],
+                            expandByDefault: false,
+                        },
+                    ],
+                    object: [
+                        {
+                            title: "Test",
+                            dataLocations: ["object.string"],
+                        },
+                    ],
+                },
+            },
         };
 
         if (typeof this.state.defaultBrowserErrors === "boolean") {

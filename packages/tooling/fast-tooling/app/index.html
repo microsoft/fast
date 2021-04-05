@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><%= htmlWebpackPlugin.options.title %></title>
         <style>
-            body, html {
+            body,
+            html {
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
@@ -41,9 +42,16 @@
         <div id="grid">
             <ul id="menu">
                 <li>
-                    <button onClick="updateIframeSrc('monaco')">
+                    <button onclick="updateIframeSrc('monaco')">
                         <code>
-                            MonacoEditorDataDictionaryAdaptor
+                            MonacoAdapter
+                        </code>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="updateIframeSrc('shortcuts')">
+                        <code>
+                            Shortcuts
                         </code>
                     </button>
                 </li>

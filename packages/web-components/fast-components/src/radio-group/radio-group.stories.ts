@@ -1,13 +1,9 @@
-import { FASTDesignSystemProvider } from "../design-system-provider";
 import Examples from "./fixtures/base.html";
-import { FASTRadioGroup } from "./";
 
-// Prevent tree-shaking
-FASTRadioGroup;
-FASTDesignSystemProvider;
+import "./index";
 
 export default {
-    title: "RadioGroup",
+    title: "Radio Group",
 };
 
 export const RadioGroup = () => Examples;

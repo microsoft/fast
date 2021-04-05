@@ -8,7 +8,7 @@ export default {
         textAlign: {
             title: "Text align",
             type: "string",
-            enum: ["left", "center", "right"],
+            enum: ["left", "center", "right", "justify"],
             formControlId: "custom-controls/textAlign",
         },
         align: {
@@ -27,6 +27,11 @@ export default {
             type: "string",
             enum: ["light", "dark"],
             formControlId: "custom-controls/theme",
+        },
+        css: {
+            title: "CSS",
+            type: "string",
+            formControlId: "custom-controls/css",
         },
     },
 };

@@ -27,7 +27,7 @@ typings/
 # dotenv environment variables file
 .env
 
-# Ignore distribution directory 
+# Ignore distribution directory
 dist/
 
 # Ignore build www directories
@@ -37,12 +37,13 @@ storybook-static
 #Ignore Mac .DS_Store
 .DS_Store
 
-#Ignore VSCode
-.vscode/
-.vs/
+#Ignore VSCode in Root
+/.vscode/
+/.vs/
 
 # tmp directories
 .tmp/
+temp/
 
 # npm package-locks
 package-lock.json
@@ -58,8 +59,9 @@ sites/website/i18n/
 # Docusaurus package readme's
 docs/en/packages/*/README.md
 
-# TypeDoc generated subsites
-docs/en/packages/*/api/
-
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json
+
+# Ignore Build Artefacts
+bin/
+obj/

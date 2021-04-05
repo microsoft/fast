@@ -4,6 +4,7 @@ import {
     getErrorFromDataLocation,
     getLabel,
     getOneOfAnyOfSelectOptions,
+    getUpdatedCategories,
     updateControlSectionState,
 } from "./utilities/form";
 import React from "react";
@@ -12,6 +13,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import styles from "./control.section.style";
 import { get, uniqueId } from "lodash-es";
 import {
+    CategoryState,
     SectionControlClassNameContract,
     SectionControlProps,
     SectionControlState,
@@ -50,7 +52,7 @@ class SectionControl extends React.Component<
         state: SectionControlState
     ): Partial<SectionControlState> {
         if (props.schema !== state.schema) {
-            return updateControlSectionState(props);
+            return updateControlSectionState(props, state);
         }
 
         return null;
@@ -109,7 +111,8 @@ class SectionControl extends React.Component<
     public componentDidUpdate(prevProps: SectionControlProps): void {
         if (checkIsDifferentSchema(prevProps.schema, this.props.schema)) {
             const updatedState: SectionControlState = updateControlSectionState(
-                this.props
+                this.props,
+                this.state
             );
 
             if (updatedState.oneOfAnyOf !== null) {
@@ -222,6 +225,8 @@ class SectionControl extends React.Component<
                 }
                 displayValidationInline={this.props.displayValidationInline}
                 messageSystem={this.props.messageSystem}
+                strings={this.props.strings}
+                messageSystemOptions={this.props.messageSystemOptions}
             />
         );
     };
@@ -256,6 +261,103 @@ class SectionControl extends React.Component<
     private getFormControls(): React.ReactNode {
         const navigationItem: TreeNavigationItem = this.getActiveTreeNavigationItem();
 
+        if (
+            this.state.categories &&
+            this.props.categories &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ] &&
+            this.props.categories[
+                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+            ][this.props.dataLocation]
+        ) {
+            const formControls: React.ReactNode[] = [];
+            const categorizedControls: string[] = [];
+
+            this.state.categories.forEach(
+                (categoryItem: CategoryState, index: number) => {
+                    const category = this.props.categories[
+                        this.props.dataDictionary[0][this.props.dataDictionary[1]]
+                            .schemaId
+                    ][this.props.dataLocation][index];
+                    formControls.push(
+                        <fieldset
+                            key={index}
+                            className={classNames(
+                                this.props.managedClasses.sectionControl_category,
+                                [
+                                    this.props.managedClasses
+                                        .sectionControl_category__expanded,
+                                    categoryItem.expanded,
+                                ]
+                            )}
+                        >
+                            <div
+                                className={
+                                    this.props.managedClasses
+                                        .sectionControl_categoryTitleRegion
+                                }
+                            >
+                                <legend
+                                    className={
+                                        this.props.managedClasses
+                                            .sectionControl_categoryTitle
+                                    }
+                                >
+                                    {category.title}
+                                </legend>
+                                <button
+                                    className={
+                                        this.props.managedClasses
+                                            .sectionControl_categoryExpandTrigger
+                                    }
+                                    onClick={this.handleCategoryExpandTriggerClick(index)}
+                                />
+                            </div>
+                            <div
+                                className={
+                                    this.props.managedClasses
+                                        .sectionControl_categoryContentRegion
+                                }
+                            >
+                                {category.dataLocations.map((dataLocation: string) => {
+                                    if (
+                                        navigationItem.items.findIndex(
+                                            item => item === dataLocation
+                                        ) !== -1
+                                    ) {
+                                        categorizedControls.push(dataLocation);
+                                        return this.getFormControl(dataLocation);
+                                    }
+
+                                    return null;
+                                })}
+                            </div>
+                        </fieldset>
+                    );
+                }
+            );
+
+            return [
+                ...navigationItem.items
+                    .reduce((accumulation: string[], item: string) => {
+                        if (
+                            categorizedControls.findIndex(
+                                categorizedControl => categorizedControl === item
+                            ) === -1
+                        ) {
+                            accumulation.push(item);
+                        }
+
+                        return accumulation;
+                    }, [])
+                    .map(uncategorizedControl => {
+                        return this.getFormControl(uncategorizedControl);
+                    }),
+                ...formControls,
+            ];
+        }
+
         return navigationItem.items.map(
             (item: string): React.ReactNode => {
                 return this.getFormControl(item);
@@ -272,7 +374,7 @@ class SectionControl extends React.Component<
             this.props.schema[this.state.oneOfAnyOf.type]
         ) {
             const unselectedOption: React.ReactNode = (
-                <option value={-1}>{"Select an option"}</option>
+                <option value={-1}>{this.props.strings.sectionSelectDefault}</option>
             );
             const options: React.ReactNode = getOneOfAnyOfSelectOptions(
                 this.props.schema,
@@ -281,7 +383,11 @@ class SectionControl extends React.Component<
 
             return (
                 <FormOneOfAnyOf
-                    label={get(this.props, "schema.title", "Configuration")}
+                    label={get(
+                        this.props,
+                        "schema.title",
+                        this.props.strings.sectionSelectLabel
+                    )}
                     activeIndex={this.state.oneOfAnyOf.activeIndex}
                     onUpdate={this.handleAnyOfOneOfClick}
                 >
@@ -318,11 +424,14 @@ class SectionControl extends React.Component<
                     dataDictionary={this.props.dataDictionary}
                     navigation={this.props.navigation}
                     schemaLocation={navigationItem.schemaLocation}
-                    examples={get(navigationItem.schema, "examples")}
+                    examples={get(
+                        navigationItem.schema,
+                        this.props.strings.sectionAdditionalPropExample
+                    )}
                     propertyLabel={get(
                         navigationItem.schema,
                         `propertyTitle`,
-                        "Property key"
+                        this.props.strings.sectionAdditionalPropLabel
                     )}
                     additionalProperties={navigationItem.schema.additionalProperties}
                     enumeratedProperties={this.getEnumeratedProperties(
@@ -341,6 +450,9 @@ class SectionControl extends React.Component<
                     }
                     displayValidationInline={this.props.displayValidationInline}
                     messageSystem={this.props.messageSystem}
+                    strings={this.props.strings}
+                    messageSystemOptions={this.props.messageSystemOptions}
+                    categories={this.props.categories}
                 />
             );
         }
@@ -383,6 +495,16 @@ class SectionControl extends React.Component<
             </div>
         );
     }
+
+    private handleCategoryExpandTriggerClick = (index: number): (() => void) => {
+        return () => {
+            const updatedCategories = getUpdatedCategories(this.state.categories, index);
+
+            this.setState({
+                categories: updatedCategories,
+            });
+        };
+    };
 
     private getActiveTreeNavigationItem(): TreeNavigationItem {
         return this.state.oneOfAnyOf === null

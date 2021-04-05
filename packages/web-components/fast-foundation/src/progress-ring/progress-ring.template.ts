@@ -1,10 +1,12 @@
 import { html, when } from "@microsoft/fast-element";
-import { BaseProgress } from "../progress/base-progress";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { BaseProgress } from "../progress/base-progress";
+
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressRingTemplate = html<BaseProgress>`
+export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -13,7 +15,7 @@ export const ProgressRingTemplate = html<BaseProgress>`
         class="${x => (x.paused ? "paused" : "")}"
     >
         ${when(
-            x => x.value,
+            x => typeof x.value === "number",
             html<BaseProgress>`
                 <svg
                     class="progress"
@@ -31,7 +33,7 @@ export const ProgressRingTemplate = html<BaseProgress>`
                     <circle
                         class="determinate"
                         part="determinate"
-                        style="stroke-dasharray: ${x => (44 * x.value) / 100}px 44px"
+                        style="stroke-dasharray: ${x => (44 * x.value!) / 100}px 44px"
                         cx="8px"
                         cy="8px"
                         r="7px"
@@ -40,7 +42,7 @@ export const ProgressRingTemplate = html<BaseProgress>`
             `
         )}
         ${when(
-            x => !x.value,
+            x => typeof x.value !== "number",
             html<BaseProgress>`
                 <slot name="indeterminate" slot="indeterminate">
                     <svg class="progress" part="progress" viewBox="0 0 16 16">

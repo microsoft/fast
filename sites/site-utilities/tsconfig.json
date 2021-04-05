@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "declaration": true,
         "outDir": "./dist",
         "moduleResolution": "node",
         "module": "ES6",
@@ -9,7 +10,7 @@
         "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
     },
     "include": [
         "src/**/*"

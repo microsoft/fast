@@ -187,6 +187,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -286,6 +287,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -385,6 +387,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -484,6 +487,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -583,6 +587,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -683,6 +688,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -782,6 +788,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -885,6 +892,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -1018,6 +1026,7 @@ describe("Form", () => {
                         "",
                     ],
                     schemaDictionary,
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -1151,6 +1160,7 @@ describe("Form", () => {
                         "",
                     ],
                     schemaDictionary,
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -1263,6 +1273,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -1373,6 +1384,7 @@ describe("Form", () => {
                     schemaDictionary: {
                         foo: schema,
                     },
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });
@@ -1505,6 +1517,7 @@ describe("Form", () => {
                         "",
                     ],
                     schemaDictionary,
+                    historyLimit: 30,
                 } as InitializeMessageOutgoing,
             } as any);
         });

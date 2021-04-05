@@ -25,7 +25,8 @@
       "**/@types/jest",
       "**/@types/karma",
       "**/@types/mocha",
-      "**/monaco-editor"
+      "**/@types/node",
+      "**/chai"
     ]
   },
   "repository": {
@@ -36,14 +37,26 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
+    "bump": "beachball bump",
+    "change": "beachball change",
+    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+    "check": "beachball check ",
+    "publish": "beachball publish",
+    "publish-ci": "beachball publish -b origin/master",
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
-    "test": "yarn eslint && yarn unit-tests",
+    "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
+    "test:validation": "yarn test:diff",
+    "test": "yarn eslint \"/**/*.{ts}\" ",
     "unit-tests": "jest --maxWorkers=4",
+    "coverage": "yarn jest --coverage",
     "unit-tests:watch": "jest --watch",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput"
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
+    "format:check": "lerna run prettier:diff",
+    "format": "lerna run prettier"
   },
   "husky": {
     "hooks": {
@@ -51,14 +64,17 @@
     }
   },
   "jest": {
-    "collectCoverage": false,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "build/helpers/*.ts"
     ],
     "coverageReporters": [
       "json",
       [
-        "lcov", {"projectRoot": "."}
+        "lcov",
+        {
+          "projectRoot": "."
+        }
       ]
     ],
     "coverageThreshold": {
@@ -72,7 +88,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest"
+      "^.+\\.js?$": "babel-jest" 
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
@@ -84,7 +100,7 @@
       "build/helpers/__tests__/*",
       "build/helpers/"
     ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "testRegex": "/__tests__/.*\\.(test|spec)\\.(js|ts|tsx)$",
     "moduleFileExtensions": [
       "ts",
       "js"
@@ -96,15 +112,23 @@
     ]
   },
   "resolutions": {
-    "@types/react": "*"
+    "typescript": "^3.9.0",
+    "@types/react": "*",
+    "immer": "^8.0.1",
+    "jimp": "^0.16.1",
+    "jpeg-js": "^0.4.3",
+    "node-notifier": "^9.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@octokit/rest": "^18.0.6",
     "@types/jest": "^25.2.1",
-    "@types/lodash-es": "^4.17.0",
+    "@types/lodash-es": "^4.17.4",
     "@types/node": "^9.4.7",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-preset-env": "^1.6.1",
+    "beachball": "^1.53.1",
     "chalk": "^2.4.2",
+    "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eyes.selenium": "3.6.2",
@@ -118,10 +142,8 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "^3.9.0",
-    "yargs": "^11.0.0"
+    "yargs": "^16.2.0"
   },
   "dependencies": {
     "saucelabs": "^1.5.0",

@@ -36,7 +36,7 @@ FASTButton;
 ```
 
 :::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../integrations/introduction).
+Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](/docs/integrations/introduction).
 :::
 
 ### From CDN

@@ -14,12 +14,18 @@ export class TreeView extends FASTElement {
     @attr({ attribute: "render-collapsed-nodes" })
     public renderCollapsedNodes: boolean;
 
+    /**
+     * @deprecated - the tree itself is no longer a focusable area.
+     */
     @observable
     public focusable: boolean = true;
 
     @observable
     public currentSelected: HTMLElement | TreeItem | null;
 
+    /**
+     * @deprecated - this property is no longer needed.
+     */
     @observable
     private lastFocused: HTMLElement;
 
@@ -55,58 +61,25 @@ export class TreeView extends FASTElement {
     private treeItems: HTMLElement[];
 
     public handleBlur = (e: FocusEvent): void => {
-        const root: HTMLElement | null = this.treeView;
+        const { relatedTarget, target } = e;
 
         /**
-         * If we focus outside of the tree
+         * Clean up previously focused item's tabindex if we've moved to another item in the tree
          */
-        if (isHTMLElement(root) && !root.contains(e.relatedTarget as HTMLElement)) {
-            this.focusable = true;
+        if (
+            relatedTarget instanceof HTMLElement &&
+            target instanceof HTMLElement &&
+            this.contains(relatedTarget)
+        ) {
+            target.removeAttribute("tabindex");
         }
-        this.ensureFocusability();
     };
 
-    public handleFocus = (e: FocusEvent): void => {
-        if (!isHTMLElement(this.treeView)) {
-            return;
-        }
-
-        const root: HTMLElement | null = this.treeView;
-        const lastFocused: HTMLElement | null = this.lastFocused;
-
-        /**
-         * If the tree view is receiving focus
-         */
-        if (isHTMLElement(root) && root === e.target) {
-            // If we have a last focused item, focus it - otherwise check for an initially selected item or focus the first "[role='treeitem']"
-            // If there is no "[role='treeitem']" to be focused AND no last-focused, then there are likely no children
-            // or children are malformed so keep the tree in the tab-order in the hopes that the author cleans up
-            // the children
-            const selectedChild: HTMLElement | null = root.querySelector(
-                "[aria-selected='true']"
-            );
-
-            const toBeFocused: HTMLElement | null = !!lastFocused
-                ? lastFocused
-                : !!selectedChild
-                ? selectedChild
-                : root.querySelector("[role='treeitem']");
-
-            if (toBeFocused && isHTMLElement(toBeFocused)) {
-                toBeFocused.focus();
-
-                if (this.focusable) {
-                    this.focusable = false;
-                }
-            }
-        } else {
-            // A child is receiving focus. While focus is within the tree, we simply need to ensure
-            // that the tree is not focusable.
-            if (this.focusable) {
-                this.focusable = false;
-            }
-        }
-    };
+    /**
+     * @deprecated - no longer needed
+     */
+    /* eslint-disable-next-line */
+    public handleFocus = (e: FocusEvent): void => {};
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -121,7 +94,6 @@ export class TreeView extends FASTElement {
                 this.currentSelected = node;
             }
         });
-        this.ensureFocusability();
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
@@ -132,12 +104,12 @@ export class TreeView extends FASTElement {
         switch (e.keyCode) {
             case keyCodeHome:
                 if (this.treeItems && this.treeItems.length) {
-                    this.treeItems[0].focus();
+                    TreeItem.focusItem(this.treeItems[0]);
                 }
                 break;
             case keyCodeEnd:
                 if (this.treeItems && this.treeItems.length) {
-                    this.treeItems[this.treeItems.length - 1].focus();
+                    TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
                 }
                 break;
             default:
@@ -204,21 +176,5 @@ export class TreeView extends FASTElement {
             });
         }
         return treeItems;
-    }
-
-    /**
-     * Verifies that the tree has a focusable child.
-     * If it does not, the tree will begin to accept focus
-     */
-    private ensureFocusability(): void {
-        if (!this.focusable && isHTMLElement(this.treeView)) {
-            const focusableChild: HTMLElement | null = this.querySelector(
-                "[role='treeitem'][tabindex='0']"
-            );
-
-            if (!isHTMLElement(focusableChild)) {
-                this.focusable = true;
-            }
-        }
     }
 }
