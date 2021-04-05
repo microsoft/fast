@@ -10,10 +10,7 @@ const resultEmitter = require("./loggers/console");
 const diff = require("./diff");
 const { chromium } = require("playwright");
 const mkdirp = require("mkdirp");
-
-program.version(
-    JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"))).version
-);
+process.env.BENCHMARK_SRC = path.resolve(__dirname, "../benchmarks");
 
 program
     .option("-b, --baseline", "save benchmark results as new comparative baseline")
@@ -23,9 +20,7 @@ program
 program.parse(process.argv);
 
 const options = program.opts();
-const testNamesToRun = getBenchmarkPaths(
-    path.resolve(__dirname, "../", "benchmarks")
-).filter(name => {
+const testNamesToRun = getBenchmarkPaths(process.env.BENCHMARK_SRC).filter(name => {
     return options.all || options.baseline || options.name === name;
 });
 
@@ -38,7 +33,6 @@ if (testNamesToRun.length === 0) {
 webpackConfig = webpackConfig(testNamesToRun);
 
 const baselinePath = path.resolve(__dirname, "../temp/baseline.json");
-
 if (!options.baseline && !fs.existsSync(baselinePath)) {
     console.error(
         "No baseline.json file found. Run program with -b argument to generate a baseline.json"

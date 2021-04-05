@@ -25,7 +25,10 @@ module.exports = benchmarkNames => {
         entry: benchmarkNames.reduce((prev, current) => {
             return {
                 ...prev,
-                [current]: path.resolve(`./benchmarks/${current}/index.ts`),
+                [current]: path.resolve(
+                    process.env.BENCHMARK_SRC,
+                    `./${current}/index.ts`
+                ),
             };
         }, {}),
         resolve: {
@@ -53,8 +56,8 @@ module.exports = benchmarkNames => {
         plugins: [new CleanWebpackPlugin()].concat(
             benchmarkNames.map(name => {
                 const templatePath = path.resolve(
-                    __dirname,
-                    `./benchmarks/${name}/index.html`
+                    process.env.BENCHMARK_SRC,
+                    `./${name}/index.html`
                 );
                 return new HtmlWebpackPlugin({
                     title: `FAST ${name}`,
