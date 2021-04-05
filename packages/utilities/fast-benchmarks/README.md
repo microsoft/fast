@@ -6,7 +6,7 @@ This is small utility library for creating and running benchmark tests for FAST 
 To add a benchmark, create a new directory in `/benchmarks/` to hold your benchmark, eg `/benchmark/my-benchmark/`. Next, create an `index.ts` file and optionally an `index.html` file.
 
 ### index.ts
-This file sets up the benchmark scenario and should export on instance of `Benchmark` as the **default export**:
+This file sets up the benchmark scenario and should export an instance of `Benchmark` as the **default export**:
 
 ```ts
 export default new Benchmark(() => /* do something */);
