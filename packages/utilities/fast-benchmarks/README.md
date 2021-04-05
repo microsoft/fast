@@ -7,11 +7,12 @@ To add a benchmark, create a new directory in `/benchmarks/` to hold your benchm
 
 ### index.ts
 This file sets up the benchmark scenario and should export on instance of `Benchmark` as the **default export**:
-```ts
-import Benchmark from "benchamrk";
 
+```ts
 export default new Benchmark(() => /* do something */);
 ```
+
+> Benchmark is in the global scope, so there is no need to import it.
 
 ### index.html
 Optionally, an index.html file can be used to inject HTML into the benchmark scenario. This should contain only the desired HTML for the scenario; the `html`, `body`, `head`, and `doctype` will be added automatically.
