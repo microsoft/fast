@@ -164,8 +164,10 @@ export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 // @beta
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
+// Warning: (ae-incompatible-release-tags) The symbol "Badge" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Badge extends FASTElement {
+export class Badge extends FoundationElement {
     circular: boolean;
     color: string;
     fill: string;
@@ -174,7 +176,7 @@ export class Badge extends FASTElement {
 }
 
 // @public
-export const BadgeTemplate: ViewTemplate<Badge>;
+export const BadgeTemplate: (context: any, definition: any) => ViewTemplate<Badge>;
 
 // @public
 export class BaseProgress extends FASTElement {

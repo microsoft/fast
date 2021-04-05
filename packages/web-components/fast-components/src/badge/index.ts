@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
 import { BadgeStyles as styles } from "./badge.styles";
 
@@ -11,12 +10,11 @@ import { BadgeStyles as styles } from "./badge.styles";
  * @remarks
  * HTML Element: \<fast-badge\>
  */
-@customElement({
-    name: "fast-badge",
+export const FASTBadge = Badge.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTBadge extends Badge {}
+});
 
 /**
  * Styles for Badge

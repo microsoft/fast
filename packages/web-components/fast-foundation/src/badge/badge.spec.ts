@@ -1,16 +1,14 @@
 import { expect } from "chai";
 import { Badge, BadgeTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-badge",
-    template,
+const FASTBadge = Badge.compose({
+    baseName: "fast",
+    template
 })
-class FASTBadge extends Badge {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+    const { element, connect, disconnect } = await fixture<Badge>("fast-badge");
 
     return { element, connect, disconnect };
 }
@@ -20,6 +18,14 @@ let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill
 let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
 
 describe("Badge", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-badge");
+    })
+
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {
         const { element, connect, disconnect } = await setup();
         const fill: string = "foo";

@@ -309,8 +309,11 @@ export const FASTAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-f
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTBadge extends Badge {
-}
+export const FASTBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Badge, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTBreadcrumb extends Breadcrumb {
