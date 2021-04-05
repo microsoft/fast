@@ -78,7 +78,30 @@ Packages are located within the `packages` folder of the repository. Each packag
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master. Do not use ``git merge`` or the *merge* button provided by GitHub.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master or use the *merge* button provided by GitHub.
+
+#### Change Files
+Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `yarn change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
+
+**Example: Generated change file:**
+```json
+{
+  "type": "minor",
+  "comment": "add fancy new feature for components",
+  "packageName": "@microsoft/fast-components",
+  "email": "name@example.com",
+  "dependentChangeType": "minor",
+  "date": "2021-03-01T19:10:06.323Z"
+}
+```
+
+Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utiliity looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
+
+More information on the change process and change types can be found on the [beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
+
+:::note
+If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generate separate change files to ensure accurate generation of changelogs and versioning of packages.
+:::
 
 ### Merging a pull request
 
@@ -86,7 +109,7 @@ If you are merging a pull request, be sure to use the pull request title as the 
 
 ### Documenting breaking changes
 
-Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/fast-components-styles-msft/MIGRATION.md`.
+Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/web-components/fast-foundation/MIGRATION.md`.
 
 Example of how to format `MIGRATION.md`:
 
