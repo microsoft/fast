@@ -70,4 +70,7 @@ module.exports = {
             scriptLoading: "blocking",
         }),
     ],
+    devServer: {
+        port: 8080,
+    },
 };

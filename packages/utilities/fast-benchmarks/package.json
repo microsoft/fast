@@ -17,10 +17,10 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
-    "build-benchmarks": "tsc -p tsconfig.json"
+    "build-benchmarks": "tsc -p tsconfig.json",
+    "start": "node build/main.js"
   },
   "devDependencies": {
-    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/benchmark": "^2.1.0",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^14.14.37",
@@ -33,11 +33,15 @@
     "jest": "^25.4.0",
     "lodash-es": "4.17.15",
     "prettier": "2.0.2",
+    "prompt": "^1.1.0",
     "ts-jest": "^25.4.0",
     "ts-loader": "^8.1.0",
     "typescript": "^3.9.0",
     "webpack": "^5.30.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^4.0.0-beta.1"
+  },
+  "dependencies": {
+    "commander": "^7.2.0"
   }
 }
