@@ -6,7 +6,7 @@
 
 import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItem } from '@microsoft/fast-foundation';
-import { Anchor } from '@microsoft/fast-foundation';
+import { Anchor as Anchor_2 } from '@microsoft/fast-foundation';
 import { AnchoredRegion } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
@@ -208,10 +208,23 @@ export const accentForegroundRest: SwatchRecipe;
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
-export const AccordionItemStyles: import("@microsoft/fast-element").ElementStyles;
+export const AccordionItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const AccordionStyles: import("@microsoft/fast-element").ElementStyles;
+export const AccordionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "Anchor" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export class Anchor extends Anchor_2 {
+    // @public
+    appearance: AnchorAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
+    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+}
 
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
@@ -220,7 +233,7 @@ export type AnchorAppearance = ButtonAppearance | "hypertext";
 export const AnchoredRegionStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const AnchorStyles: import("@microsoft/fast-element").ElementStyles;
+export const AnchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const BadgeStyles: import("@microsoft/fast-element").ElementStyles;
@@ -268,26 +281,25 @@ export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
 export const FASTAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
-    styles: import("@microsoft/fast-element").ElementStyles;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export const FASTAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
-    styles: import("@microsoft/fast-element").ElementStyles;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTAnchor extends Anchor {
-    appearance: AnchorAppearance;
-    // (undocumented)
-    appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
-    // (undocumented)
-    connectedCallback(): void;
-    // @internal
-    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
-}
+export const FASTAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Anchor_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @beta
 export class FASTAnchoredRegion extends AnchoredRegion {

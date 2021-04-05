@@ -64,10 +64,11 @@ export const AccordionTemplate: (context: any, definition: any) => ViewTemplate<
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "Anchor" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Anchor" because one of its declarations is marked as @internal
 //
 // @public
-export class Anchor extends FASTElement {
+export class Anchor extends FoundationElement {
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
@@ -124,7 +125,7 @@ export class AnchoredRegion extends FASTElement {
 export const AnchoredRegionTemplate: ViewTemplate<AnchoredRegion>;
 
 // @public
-export const AnchorTemplate: ViewTemplate<Anchor>;
+export const AnchorTemplate: (context: any, definition: any) => ViewTemplate<Anchor>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;

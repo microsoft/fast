@@ -3,19 +3,26 @@ import { Anchor, AnchorTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-anchor",
-    template,
+const FASTAnchor = Anchor.compose({
+    baseName: "fast",
+    template
 })
-class FASTAnchor extends Anchor {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTAnchor>("fast-anchor");
+    const { element, connect, disconnect } = await fixture<Anchor>("fast-anchor");
 
     return { element, connect, disconnect };
 }
 
 describe("Anchor", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-anchor");
+    })
+
     it("should set the `download` attribute on the internal anchor equal to the value provided", async () => {
         const { element, connect, disconnect } = await setup();
         const download: string = "foo";
