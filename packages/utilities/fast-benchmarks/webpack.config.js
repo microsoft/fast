@@ -14,15 +14,11 @@ function template(config) {
                 <script src="https://unpkg.com/benchmark@2.1.4/benchmark.js"></script>
             </head>
             <body>
-            ${fs.readFileSync(config.path).toString()}
+            ${config.path ? fs.readFileSync(config.path).toString() : ""}
             </body>
         </html>
         `;
 }
-
-// const benchmarkNames = require("./build/utils/get-benchmark-names")(
-//     path.resolve(__dirname, "benchmarks")
-// );
 
 module.exports = benchmarkNames => {
     return {
@@ -54,50 +50,23 @@ module.exports = benchmarkNames => {
                 },
             ],
         },
-        plugins: [
-            new CleanWebpackPlugin(),
-            new HtmlWebpackPlugin({
-                title: "FAST a",
-                chunks: ["a"],
-                filename: "a.html",
-                templateContent: template({
-                    path: path.resolve(__dirname, "./benchmarks/a/index.html"),
-                }),
-                inject: "body",
-                scriptLoading: "blocking",
-            }),
-            new HtmlWebpackPlugin({
-                title: "FAST b",
-                chunks: ["b"],
-                filename: "b.html",
-                templateContent: template({
-                    path: path.resolve(__dirname, "./benchmarks/b/index.html"),
-                }),
-                inject: "body",
-                scriptLoading: "blocking",
-            }),
-        ].concat(
-            benchmarkNames
-                .map(x => {
-                    return {
-                        name: x,
-                        htmlPath: path.resolve(__dirname, `./benchmarks/${x}/index.html`),
-                    };
-                })
-                .filter(x => fs.existsSync(x.htmlPath))
-                .map(x => {
-                    const { name, htmlPath } = x;
-                    return new HtmlWebpackPlugin({
-                        title: `FAST ${name}`,
-                        chunks: [name],
-                        filename: `${name}.html`,
-                        templateContent: template({
-                            path: htmlPath,
-                        }),
-                        inject: "body",
-                        scriptLoading: "blocking",
-                    });
-                })
+        plugins: [new CleanWebpackPlugin()].concat(
+            benchmarkNames.map(name => {
+                const templatePath = path.resolve(
+                    __dirname,
+                    `./benchmarks/${name}/index.html`
+                );
+                return new HtmlWebpackPlugin({
+                    title: `FAST ${name}`,
+                    chunks: [name],
+                    filename: `${name}.html`,
+                    templateContent: template({
+                        path: fs.existsSync(templatePath) ? templatePath : undefined,
+                    }),
+                    inject: "body",
+                    scriptLoading: "blocking",
+                });
+            })
         ),
         devServer: {
             port: 8080,
