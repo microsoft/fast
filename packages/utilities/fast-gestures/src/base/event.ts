@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { onUnexpectedError } from "./errors";
-import { combinedDisposable, IDisposable } from "./lifecycle";
+import { combinedDisposable, Disposable } from "./lifecycle";
 import { LinkedList } from "./linked-list";
 
 /**
@@ -12,7 +12,7 @@ import { LinkedList } from "./linked-list";
  * can be subscribed. The event is the subscriber function itself.
  */
 export interface Event<T> {
-  (listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]): IDisposable;
+  (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
 }
 
 export namespace Event {
@@ -28,7 +28,7 @@ export namespace Event {
     return (listener, thisArgs = null, disposables?) => {
       // we need this, in case the event fires during the listener call
       let didFire = false;
-      let result: IDisposable;
+      let result: Disposable;
       result = event(
         e => {
           if (didFire) {
@@ -127,7 +127,7 @@ export namespace Event {
    * chain allows each function to be invoked just once per event.
    */
   export function snapshot<T>(event: Event<T>): Event<T> {
-    let listener: IDisposable;
+    let listener: Disposable;
     const emitter = new Emitter<T>({
       onFirstListenerAdd() {
         listener = event(emitter.fire, emitter);
@@ -170,7 +170,7 @@ export namespace Event {
     leading = false,
     leakWarningThreshold?: number
   ): Event<O> {
-    let subscription: IDisposable;
+    let subscription: Disposable;
     let output: O | undefined = undefined;
     let handle: any = undefined;
     let numDebouncedCalls = 0;
@@ -258,7 +258,7 @@ export namespace Event {
   export function buffer<T>(event: Event<T>, nextTick = false, _buffer: T[] = []): Event<T> {
     let buffer: T[] | null = _buffer.slice();
 
-    let listener: IDisposable | null = event(e => {
+    let listener: Disposable | null = event(e => {
       if (buffer) {
         buffer.push(e);
       } else {
@@ -301,51 +301,51 @@ export namespace Event {
     return emitter.event;
   }
 
-  export interface IChainableEvent<T> {
+  export interface ChainableEvent<T> {
     event: Event<T>;
-    map<O>(fn: (i: T) => O): IChainableEvent<O>;
-    forEach(fn: (i: T) => void): IChainableEvent<T>;
-    filter(fn: (e: T) => boolean): IChainableEvent<T>;
-    reduce<R>(merge: (last: R | undefined, event: T) => R, initial?: R): IChainableEvent<R>;
-    latch(): IChainableEvent<T>;
-    on(listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]): IDisposable;
-    once(listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]): IDisposable;
+    map<O>(fn: (i: T) => O): ChainableEvent<O>;
+    forEach(fn: (i: T) => void): ChainableEvent<T>;
+    filter(fn: (e: T) => boolean): ChainableEvent<T>;
+    reduce<R>(merge: (last: R | undefined, event: T) => R, initial?: R): ChainableEvent<R>;
+    latch(): ChainableEvent<T>;
+    on(listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
+    once(listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]): Disposable;
   }
 
-  class ChainableEvent<T> implements IChainableEvent<T> {
+  class DefaultChainableEvent<T> implements ChainableEvent<T> {
     constructor(readonly event: Event<T>) {}
 
-    map<O>(fn: (i: T) => O): IChainableEvent<O> {
-      return new ChainableEvent(map(this.event, fn));
+    map<O>(fn: (i: T) => O): ChainableEvent<O> {
+      return new DefaultChainableEvent(map(this.event, fn));
     }
 
-    forEach(fn: (i: T) => void): IChainableEvent<T> {
-      return new ChainableEvent(forEach(this.event, fn));
+    forEach(fn: (i: T) => void): ChainableEvent<T> {
+      return new DefaultChainableEvent(forEach(this.event, fn));
     }
 
-    filter(fn: (e: T) => boolean): IChainableEvent<T> {
-      return new ChainableEvent(filter(this.event, fn));
+    filter(fn: (e: T) => boolean): ChainableEvent<T> {
+      return new DefaultChainableEvent(filter(this.event, fn));
     }
 
-    reduce<R>(merge: (last: R | undefined, event: T) => R, initial?: R): IChainableEvent<R> {
-      return new ChainableEvent(reduce(this.event, merge, initial));
+    reduce<R>(merge: (last: R | undefined, event: T) => R, initial?: R): ChainableEvent<R> {
+      return new DefaultChainableEvent(reduce(this.event, merge, initial));
     }
 
-    latch(): IChainableEvent<T> {
-      return new ChainableEvent(latch(this.event));
+    latch(): ChainableEvent<T> {
+      return new DefaultChainableEvent(latch(this.event));
     }
 
-    on(listener: (e: T) => any, thisArgs: any, disposables: IDisposable[]) {
+    on(listener: (e: T) => any, thisArgs: any, disposables: Disposable[]) {
       return this.event(listener, thisArgs, disposables);
     }
 
-    once(listener: (e: T) => any, thisArgs: any, disposables: IDisposable[]) {
+    once(listener: (e: T) => any, thisArgs: any, disposables: Disposable[]) {
       return once(this.event)(listener, thisArgs, disposables);
     }
   }
 
-  export function chain<T>(event: Event<T>): IChainableEvent<T> {
-    return new ChainableEvent(event);
+  export function chain<T>(event: Event<T>): ChainableEvent<T> {
+    return new DefaultChainableEvent(event);
   }
 
   export interface NodeEventEmitter {
@@ -512,7 +512,7 @@ export class Emitter<T> {
    */
   get event(): Event<T> {
     if (!this._event) {
-      this._event = (listener: (e: T) => any, thisArgs?: any, disposables?: IDisposable[]) => {
+      this._event = (listener: (e: T) => any, thisArgs?: any, disposables?: Disposable[]) => {
         if (!this._listeners) {
           this._listeners = new LinkedList();
         }
@@ -539,7 +539,7 @@ export class Emitter<T> {
           removeMonitor = this._leakageMon.check(this._listeners.size);
         }
 
-        let result: IDisposable;
+        let result: Disposable;
         result = {
           dispose: () => {
             if (removeMonitor) {

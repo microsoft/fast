@@ -1,4 +1,4 @@
-export { IDisposable, Disposable } from "./base/lifecycle";
+export { Disposable as IDisposable, DefaultDisposable as Disposable } from "./base/lifecycle";
 export { PointerGestureInfo as IPointerGestureInfo } from "./interfaces/pointer-gesture-info";
 export { PointerGestureOptions as IPointerGestureOptions } from "./interfaces/pointer-gesture-options";
 export { PointerInfo as IPointerInfo } from "./interfaces/pointer-info";

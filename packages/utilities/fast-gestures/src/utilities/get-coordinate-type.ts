@@ -1,7 +1,7 @@
-import { IPoint } from "../base/point";
+import { Point } from "../base/point";
 import { PointerCoordinateType } from "../pointer-coordinate-type";
 
-export function getCoordinateType(e: PointerEvent, coordinateType: PointerCoordinateType): IPoint {
+export function getCoordinateType(e: PointerEvent, coordinateType: PointerCoordinateType): Point {
   switch (coordinateType) {
     case PointerCoordinateType.Client:
       return { x: e.clientX, y: e.clientY };

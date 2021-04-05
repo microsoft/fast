@@ -1,6 +1,6 @@
 import { Emitter } from "./base/event";
-import { IDisposable, Disposable } from "./base/lifecycle";
-import { IPoint } from "./base/point";
+import { Disposable, DefaultDisposable } from "./base/lifecycle";
+import { Point } from "./base/point";
 import { detectPointerGesture } from "./utilities/detect-pointer-gesture";
 import { getCoordinateType } from "./utilities/get-coordinate-type";
 import { getPinchDistance } from "./utilities/get-pinch-distance";
@@ -72,11 +72,11 @@ const DEFAULT_OPTIONS: PointerGestureOptions = {
  * 
  * @public
  */
-export class PointerGestureHandler extends Disposable implements IDisposable {
+export class PointerGestureHandler extends DefaultDisposable implements Disposable {
   private options: PointerGestureOptions = DEFAULT_OPTIONS;
   private target: PointerTarget;
   private activePointer: PointerInfoInternal;
-  private previousPosition: IPoint = { x: 0, y: 0 };
+  private previousPosition: Point = { x: 0, y: 0 };
   private previousPointerType: string | undefined = undefined;
   private previousPanDirection: PointerGesture;
   private longPressRAFId: number = 0;
@@ -172,7 +172,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
   }
 
   private addPointerInfo(e: PointerEvent): PointerInfoInternal {
-    const { x, y }: IPoint = getCoordinateType(e, this.options.coordinateType!);
+    const { x, y }: Point = getCoordinateType(e, this.options.coordinateType!);
     const pointerInfo: PointerInfoInternal = {
       pointerType: e.pointerType,
       eventType: e.type,
@@ -266,7 +266,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
       pointer = this._pointers.get(e.pointerId)!;
 
       const deltaT: number = e.timeStamp - pointer.lastUpdateTime;
-      const { x, y }: IPoint = getCoordinateType(e, this.options.coordinateType!);
+      const { x, y }: Point = getCoordinateType(e, this.options.coordinateType!);
 
       pointer.x = x;
       pointer.y = y;
@@ -637,7 +637,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
    * @param gesture - The gesture type to listen for.
    * @param listener - The callback function that receives a notification when the specified gesture occurs.
    */
-  public onGesture(gesture: PointerGesture, listener: (args: PointerGestureInfo) => any): IDisposable {
+  public onGesture(gesture: PointerGesture, listener: (args: PointerGestureInfo) => any): Disposable {
     if (gesture === PointerGesture.General) {
       // Activate detection of every available gesture event
       Object.keys(this.shouldDetectGesture).every(

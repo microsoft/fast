@@ -5,18 +5,18 @@
 
 import { once } from "./once";
 
-export interface IDisposable {
+export interface Disposable {
   dispose(): void;
 }
 
-export function isDisposable<E extends object>(thing: E): thing is E & IDisposable {
-  return typeof (<IDisposable>(<any>thing)).dispose === "function" && (<IDisposable>(<any>thing)).dispose.length === 0;
+export function isDisposable<E extends object>(thing: E): thing is E & Disposable {
+  return typeof (<Disposable>(<any>thing)).dispose === "function" && (<Disposable>(<any>thing)).dispose.length === 0;
 }
 
-export function dispose<T extends IDisposable>(disposable: T): T;
-export function dispose<T extends IDisposable>(...disposables: Array<T | undefined>): T[];
-export function dispose<T extends IDisposable>(disposables: T[]): T[];
-export function dispose<T extends IDisposable>(first: T | T[], ...rest: T[]): T | T[] | undefined {
+export function dispose<T extends Disposable>(disposable: T): T;
+export function dispose<T extends Disposable>(...disposables: Array<T | undefined>): T[];
+export function dispose<T extends Disposable>(disposables: T[]): T[];
+export function dispose<T extends Disposable>(first: T | T[], ...rest: T[]): T | T[] | undefined {
   if (Array.isArray(first)) {
     first.forEach(d => d && d.dispose());
     return [];
@@ -33,11 +33,11 @@ export function dispose<T extends IDisposable>(first: T | T[], ...rest: T[]): T 
   }
 }
 
-export function combinedDisposable(disposables: IDisposable[]): IDisposable {
+export function combinedDisposable(disposables: Disposable[]): Disposable {
   return { dispose: () => dispose(disposables) };
 }
 
-export function toDisposable(fn: () => void): IDisposable {
+export function toDisposable(fn: () => void): Disposable {
   return {
     dispose() {
       fn();
@@ -45,11 +45,11 @@ export function toDisposable(fn: () => void): IDisposable {
   };
 }
 
-export abstract class Disposable implements IDisposable {
-  static None = Object.freeze<IDisposable>({ dispose() {} });
+export abstract class DefaultDisposable implements Disposable {
+  static None = Object.freeze<Disposable>({ dispose() {} });
 
-  protected _toDispose: IDisposable[] = [];
-  protected get toDispose(): IDisposable[] {
+  protected _toDispose: Disposable[] = [];
+  protected get toDispose(): Disposable[] {
     return this._toDispose;
   }
 
@@ -60,7 +60,7 @@ export abstract class Disposable implements IDisposable {
     this._toDispose = dispose(this._toDispose);
   }
 
-  protected _register<T extends IDisposable>(t: T): T {
+  protected _register<T extends Disposable>(t: T): T {
     if (this._lifecycle_disposable_isDisposed) {
       console.warn("Registering disposable on object that has already been disposed.");
       t.dispose();
@@ -72,7 +72,7 @@ export abstract class Disposable implements IDisposable {
   }
 }
 
-export interface IReference<T> extends IDisposable {
+export interface Reference<T> extends Disposable {
   readonly object: T;
 }
 
@@ -81,7 +81,7 @@ export abstract class ReferenceCollection<T> {
 
   constructor() {}
 
-  acquire(key: string): IReference<T> {
+  acquire(key: string): Reference<T> {
     let reference = this.references[key];
 
     if (!reference) {
@@ -105,7 +105,7 @@ export abstract class ReferenceCollection<T> {
   protected abstract destroyReferencedObject(key: string, object: T): void;
 }
 
-export class ImmortalReference<T> implements IReference<T> {
+export class ImmortalReference<T> implements Reference<T> {
   constructor(public object: T) {}
   dispose(): void {
     /* noop */
