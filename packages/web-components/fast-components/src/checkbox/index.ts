@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Checkbox, CheckboxTemplate as template } from "@microsoft/fast-foundation";
 import { CheckboxStyles as styles } from "./checkbox.styles";
 
@@ -11,12 +10,11 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
  * @remarks
  * HTML Element: \<fast-checkbox\>
  */
-@customElement({
-    name: "fast-checkbox",
+export const FASTCheckbox = Checkbox.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTCheckbox extends Checkbox {}
+});
 
 /**
  * Styles for Checkbox

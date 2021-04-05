@@ -260,7 +260,7 @@ export const ButtonStyles: (context: any, definition: any) => import("@microsoft
 export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const CheckboxStyles: import("@microsoft/fast-element").ElementStyles;
+export const CheckboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const ComboboxStyles: import("@microsoft/fast-element").ElementStyles;
@@ -368,8 +368,11 @@ export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSys
 }
 
 // @public
-export class FASTCheckbox extends Checkbox {
-}
+export const FASTCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTCombobox extends Combobox {

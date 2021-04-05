@@ -277,7 +277,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     }
 
 // @public
-export const CheckboxTemplate: ViewTemplate<Checkbox>;
+export const CheckboxTemplate: (context: any, definition: any) => ViewTemplate<Checkbox>;
 
 // @public
 export interface ColumnDefinition {

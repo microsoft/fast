@@ -1,13 +1,16 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Checkbox } from "./checkbox";
+import { Checkbox } from "./checkbox";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Checkbox:class)} component.
  * @public
  */
-export const CheckboxTemplate: ViewTemplate<Checkbox> = html`
-    <template
+export const CheckboxTemplate: (context, definition) => ViewTemplate<Checkbox> = (
+    context,
+    definition
+) => html`
+    <${context.tagFor(Checkbox)}
         role="checkbox"
         aria-checked="${x => x.checked}"
         aria-required="${x => x.required}"
@@ -17,7 +20,7 @@ export const CheckboxTemplate: ViewTemplate<Checkbox> = html`
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         class="${x => (x.readOnly ? "readonly" : "")} ${x =>
-            x.checked ? "checked" : ""} ${x => (x.indeterminate ? "indeterminate" : "")}"
+    x.checked ? "checked" : ""} ${x => (x.indeterminate ? "indeterminate" : "")}"
     >
         <div part="control" class="control">
             <slot name="checked-indicator">
@@ -48,5 +51,5 @@ export const CheckboxTemplate: ViewTemplate<Checkbox> = html`
         >
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
-    </template>
+    </${context.tagFor(Checkbox)}>
 `;

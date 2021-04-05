@@ -4,14 +4,13 @@ import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-checkbox",
+const FASTCheckbox = Checkbox.compose({
+    baseName: "fast",
     template,
 })
-class FASTCheckbox extends Checkbox {}
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<FASTCheckbox>(
+    const { connect, disconnect, element, parent } = await fixture<Checkbox>(
         "fast-checkbox"
     );
 
@@ -19,6 +18,14 @@ async function setup() {
 }
 
 describe("Checkbox", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-checkbox");
+    })
+
     it("should have a role of `checkbox`", async () => {
         const { element, connect, disconnect } = await setup();
 
