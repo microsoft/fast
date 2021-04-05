@@ -3,6 +3,13 @@ const getBenchmarkPaths = require("./utils/get-benchmark-names");
 const path = require("path");
 const { program } = require("commander");
 const fs = require("fs");
+const webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
+let webpackConfig = require("../webpack.config");
+const resultEmitter = require("./loggers/console");
+const diff = require("./diff");
+const { chromium } = require("playwright");
+const mkdirp = require("mkdirp");
 
 program.version(
     JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"))).version
@@ -28,6 +35,8 @@ if (testNamesToRun.length === 0) {
     );
 }
 
+webpackConfig = webpackConfig(testNamesToRun);
+
 const baselinePath = path.resolve(__dirname, "../temp/baseline.json");
 
 if (!options.baseline && !fs.existsSync(baselinePath)) {
@@ -38,17 +47,12 @@ if (!options.baseline && !fs.existsSync(baselinePath)) {
 }
 
 const baselines = JSON.parse(fs.readFileSync(baselinePath).toString());
-const loggers = [require("./analyzers/ops")];
 
 /**
  * Start webpack-dev-server and hook up build-completion callback
  */
-const webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
-const config = require("../webpack.config");
-const opsLogger = require("./analyzers/ops");
-const port = config.devServer.port;
-const compiler = webpack(config);
+const port = webpackConfig.devServer.port;
+const compiler = webpack(webpackConfig);
 compiler.hooks.done.tap("benchmark", webpackDone);
 var server = new WebpackDevServer(compiler);
 console.log("Starting the dev web server...");
@@ -68,7 +72,6 @@ server.listen(port, "localhost", function(err) {
  * @returns {[htmlPath: string], benchmarkResults}
  */
 async function runBenchmarks(htmlPaths) {
-    const { chromium } = require("playwright");
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -91,7 +94,7 @@ async function runBenchmarks(htmlPaths) {
 }
 
 /**
- * Invoked from
+ * Invoked from webpack 'done' hook
  * @param stats
  */
 async function webpackDone(stats) {
@@ -114,27 +117,23 @@ async function webpackDone(stats) {
     if (options.baseline) {
         emitBaseline(results);
     } else {
-        let compare = Object.keys(results)
-            .map(x => {
-                const result = results[x];
-                const baseline = baselines[x];
+        Object.keys(results)
+            .map(name => {
+                const benchmark = results[name];
+                const baseline = baselines[name];
 
                 if (!baseline) {
                     console.error(
-                        `No baseline found for ${x}. Run program with -b argument to generate baseline.`
+                        `No baseline found for ${name}. Run program with -b argument to generate baseline.`
                     );
                     exit(1);
                 }
 
-                return [x, baseline, result];
+                return { name, baseline, benchmark };
             })
             .forEach(x => {
-                console.log(`Emitting results for ${x[0]}:`);
-                opsLogger(x[1], x[2]);
-                console.log("\n\n");
+                resultEmitter(x.name, diff(x.baseline, x.benchmark));
             });
-
-        // diffing algorithm
     }
 
     exit(0);
@@ -156,7 +155,7 @@ function exit(code) {
  * Emits results to the baseline.json file
  */
 function emitBaseline(results) {
-    require("mkdirp")(path.dirname(baselinePath));
+    mkdirp(path.dirname(baselinePath));
     fs.writeFileSync(baselinePath, JSON.stringify(results, null, 2));
     console.log(`Baseline results emitted to "${baselinePath}"`);
 }
