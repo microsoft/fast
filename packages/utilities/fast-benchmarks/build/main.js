@@ -33,6 +33,7 @@ if (testNamesToRun.length === 0) {
 webpackConfig = webpackConfig(testNamesToRun);
 
 const baselinePath = path.resolve(__dirname, "../temp/baseline.json");
+console.log(baselinePath);
 if (!options.baseline && !fs.existsSync(baselinePath)) {
     console.error(
         "No baseline.json file found. Run program with -b argument to generate a baseline.json"
@@ -40,17 +41,15 @@ if (!options.baseline && !fs.existsSync(baselinePath)) {
     exit(1);
 }
 
-const baselines = JSON.parse(fs.readFileSync(baselinePath).toString());
-
 /**
  * Start webpack-dev-server and hook up build-completion callback
  */
 const port = webpackConfig.devServer.port;
 const compiler = webpack(webpackConfig);
 compiler.hooks.done.tap("benchmark", webpackDone);
-var server = new WebpackDevServer(compiler);
+var server = new WebpackDevServer(compiler, webpackConfig.devServer);
 console.log("Starting the dev web server...");
-server.listen(port, "localhost", function(err) {
+server.listen(port, "localhost", function (err) {
     if (err) {
         console.error(err);
         exit(1);
@@ -111,6 +110,7 @@ async function webpackDone(stats) {
     if (options.baseline) {
         emitBaseline(results);
     } else {
+        const baselines = JSON.parse(fs.readFileSync(baselinePath).toString());
         Object.keys(results)
             .map(name => {
                 const benchmark = results[name];
