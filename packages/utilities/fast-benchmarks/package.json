@@ -26,6 +26,8 @@
     "@types/node": "^14.14.37",
     "babel-core": "^7.0.0-bridge.0",
     "benchmark": "^2.1.4",
+    "chalk": "^2.4.2",
+    "commander": "^7.2.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^4.0.0",
     "html-loader": "^2.1.2",
@@ -40,8 +42,5 @@
     "webpack": "^5.30.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^4.0.0-beta.1"
-  },
-  "dependencies": {
-    "commander": "^7.2.0"
   }
 }
