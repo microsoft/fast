@@ -37,12 +37,16 @@ if (!options.baseline && !fs.existsSync(baselinePath)) {
     exit(1);
 }
 
+const baselines = JSON.parse(fs.readFileSync(baselinePath).toString());
+const loggers = [require("./analyzers/ops")];
+
 /**
  * Start webpack-dev-server and hook up build-completion callback
  */
 const webpack = require("webpack");
 const WebpackDevServer = require("webpack-dev-server");
 const config = require("../webpack.config");
+const opsLogger = require("./analyzers/ops");
 const port = config.devServer.port;
 const compiler = webpack(config);
 compiler.hooks.done.tap("benchmark", webpackDone);
@@ -92,10 +96,10 @@ async function runBenchmarks(htmlPaths) {
  */
 async function webpackDone(stats) {
     console.log("Webpack build completed.");
-    const { emittedAssets, entries } = stats.compilation;
-    const testPaths = Array.from(entries.keys()).map(x => `${x}.html`);
+    const { emittedAssets } = stats.compilation;
+    const testPaths = testNamesToRun.map(x => `${x}.html`);
 
-    // There should be an emitted .html file for each entry, but just to make sure
+    // There should be an emitted .html file for each benchmark, but just to make sure
     for (let testPath of testPaths) {
         if (!emittedAssets.has(testPath)) {
             console.error(
@@ -110,6 +114,26 @@ async function webpackDone(stats) {
     if (options.baseline) {
         emitBaseline(results);
     } else {
+        let compare = Object.keys(results)
+            .map(x => {
+                const result = results[x];
+                const baseline = baselines[x];
+
+                if (!baseline) {
+                    console.error(
+                        `No baseline found for ${x}. Run program with -b argument to generate baseline.`
+                    );
+                    exit(1);
+                }
+
+                return [x, baseline, result];
+            })
+            .forEach(x => {
+                console.log(`Emitting results for ${x[0]}:`);
+                opsLogger(x[1], x[2]);
+                console.log("\n\n");
+            });
+
         // diffing algorithm
     }
 
