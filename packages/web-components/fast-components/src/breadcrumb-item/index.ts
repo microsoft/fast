@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     BreadcrumbItem,
     BreadcrumbItemTemplate as template,
@@ -14,12 +13,11 @@ import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
  * @remarks
  * HTML Element: \<fast-breadcrumb-item\>
  */
-@customElement({
-    name: "fast-breadcrumb-item",
+export const FASTBreadcrumbItem = BreadcrumbItem.compose({
+    baseName: "fast",
     template,
     styles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTBreadcrumbItem extends BreadcrumbItem {}
+});

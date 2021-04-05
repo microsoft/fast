@@ -1,17 +1,16 @@
 import { expect } from "chai";
 import { Breadcrumb, BreadcrumbTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement, html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { BreadcrumbItem } from "../breadcrumb-item";
 
-@customElement({
-    name: "fast-breadcrumb",
-    template,
+const FASTBreadcrumb = Breadcrumb.compose({
+    baseName: "fast",
+    template
 })
-class FASTBreadcrumb extends Breadcrumb {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBreadcrumb>(
+    const { element, connect, disconnect } = await fixture<Breadcrumb>(
         "fast-breadcrumb"
     );
 
@@ -19,6 +18,14 @@ async function setup() {
 }
 
 describe("Breadcrumb", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-breadcrumb");
+    })
+
     it("should include a `role` of `navigation`", async () => {
         const { element, connect, disconnect } = await fixture<Breadcrumb>(
             "fast-breadcrumb"
@@ -42,7 +49,7 @@ describe("Breadcrumb", () => {
     });
 
     it("should not render a separator on last item", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTBreadcrumb>`
+        const { element, connect, disconnect } = await fixture(html<Breadcrumb>`
             <fast-breadcrumb>
                 <fast-breadcrumb-item>Item 1</fast-breadcrumb-item>
                 <fast-breadcrumb-item>Item 2</fast-breadcrumb-item>
@@ -62,7 +69,7 @@ describe("Breadcrumb", () => {
     });
 
     it("should set the `aria-current` on the internal, last node, anchor when `href` is passed", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTBreadcrumb>`
+        const { element, connect, disconnect } = await fixture(html<Breadcrumb>`
             <fast-breadcrumb>
                 <fast-breadcrumb-item>
                     <a href="#">Item1</a>

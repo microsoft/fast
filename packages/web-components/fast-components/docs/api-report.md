@@ -236,7 +236,7 @@ export const AnchoredRegionStyles: (context: any, definition: any) => import("@m
 export const AnchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const BadgeStyles: import("@microsoft/fast-element").ElementStyles;
+export const BadgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
@@ -312,16 +312,25 @@ export const FASTAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-f
 export const FASTBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Badge, any>;
-    styles: import("@microsoft/fast-element").ElementStyles;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTBreadcrumb extends Breadcrumb {
-}
+export const FASTBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTBreadcrumbItem extends BreadcrumbItem {
-}
+export const FASTBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTButton extends Button {

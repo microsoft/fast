@@ -186,8 +186,10 @@ export class BaseProgress extends FASTElement {
     value: number | null;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "Breadcrumb" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Breadcrumb extends FASTElement {
+export class Breadcrumb extends FoundationElement {
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
@@ -208,10 +210,10 @@ export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
-export const BreadcrumbItemTemplate: ViewTemplate<BreadcrumbItem>;
+export const BreadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;
 
 // @public
-export const BreadcrumbTemplate: ViewTemplate<Breadcrumb>;
+export const BreadcrumbTemplate: (context: any, definition: any) => ViewTemplate<Breadcrumb>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts

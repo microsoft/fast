@@ -3,14 +3,13 @@ import { BreadcrumbItem, BreadcrumbItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { customElement, DOM } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-breadcrumb-item",
-    template,
+const FASTBreadcrumbItem = BreadcrumbItem.compose({
+    baseName: "fast",
+    template
 })
-class FASTBreadcrumbItem extends BreadcrumbItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBreadcrumbItem>(
+    const { element, connect, disconnect } = await fixture<BreadcrumbItem>(
         "fast-breadcrumb-item"
     );
 
@@ -18,6 +17,14 @@ async function setup() {
 }
 
 describe("Breadcrumb item", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-breadcrumb-item");
+    })
+
     it("should include a `role` of `listitem`", async () => {
         const { element, connect, disconnect } = await setup();
 
