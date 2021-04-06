@@ -263,7 +263,7 @@ export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 export const CheckboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const ComboboxStyles: import("@microsoft/fast-element").ElementStyles;
+export const ComboboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export function createColorPalette(baseColor: any): string[];
@@ -391,8 +391,11 @@ export const FASTCheckbox: (overrideDefinition?: import("@microsoft/fast-foundat
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTCombobox extends Combobox {
-}
+export const FASTCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTDataGrid extends DataGrid {
@@ -646,8 +649,11 @@ export const FASTHorizontalScroll: (overrideDefinition?: import("@microsoft/fast
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTListbox extends Listbox {
-}
+export const FASTListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTMenu extends Menu {
@@ -665,8 +671,11 @@ export class FASTNumberField extends NumberField {
 }
 
 // @public
-export class FASTOption extends ListboxOption {
-}
+export const FASTOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<ListboxOption, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTProgress extends BaseProgress {
@@ -685,8 +694,11 @@ export class FASTRadioGroup extends RadioGroup {
 }
 
 // @public
-export class FASTSelect extends Select {
-}
+export const FASTSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Select, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTSkeleton extends Skeleton {
@@ -765,7 +777,7 @@ export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustom
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
-export const ListboxStyles: import("@microsoft/fast-element").ElementStyles;
+export const ListboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
@@ -1168,7 +1180,7 @@ export type NumberFieldAppearance = "filled" | "outline";
 export const NumberFieldStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const OptionStyles: import("@microsoft/fast-element").ElementStyles;
+export const OptionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export type Palette = Swatch[];
@@ -1202,7 +1214,7 @@ export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
 export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SelectStyles: import("@microsoft/fast-element").ElementStyles;
+export const SelectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;

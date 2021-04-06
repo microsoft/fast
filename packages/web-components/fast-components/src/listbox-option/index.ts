@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     ListboxOption,
     ListboxOptionTemplate as template,
@@ -15,12 +14,11 @@ import { OptionStyles as styles } from "./listbox-option.styles";
  * HTML Element: \<fast-option\>
  *
  */
-@customElement({
-    name: "fast-option",
+export const FASTOption = ListboxOption.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTOption extends ListboxOption {}
+});
 
 /**
  * Styles for Option

@@ -23,7 +23,8 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const OptionStyles = css`
+export const OptionStyles = (context, definition) =>
+    css`
     ${display("inline-flex")} :host {
         align-items: center;
         font-family: var(--body-font);
@@ -112,41 +113,41 @@ export const OptionStyles = css`
     }
 
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillSelectedBehavior,
-    accentForegroundCutRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host {
-                border-color: transparent;
-                forced-color-adjust: none;
-                color: ${SystemColors.ButtonText};
-                fill: currentcolor;
-            }
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillSelectedBehavior,
+        accentForegroundCutRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
+                :host {
+                    border-color: transparent;
+                    forced-color-adjust: none;
+                    color: ${SystemColors.ButtonText};
+                    fill: currentcolor;
+                }
 
-            :host(:not([aria-selected="true"]):hover),
-            :host([aria-selected="true"]) {
-                background: ${SystemColors.Highlight};
-                color: ${SystemColors.HighlightText};
-            }
+                :host(:not([aria-selected="true"]):hover),
+                :host([aria-selected="true"]) {
+                    background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                }
 
-            :host([disabled]),
-            :host([disabled]:not([aria-selected="true"]):hover) {
-                background: ${SystemColors.Canvas};
-                color: ${SystemColors.GrayText};
-                fill: currentcolor;
-                opacity: 1;
-            }
-        `
-    ),
-    neutralFillHoverBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFillStealthSelectedBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL1Behavior
-);
+                :host([disabled]),
+                :host([disabled]:not([aria-selected="true"]):hover) {
+                    background: ${SystemColors.Canvas};
+                    color: ${SystemColors.GrayText};
+                    fill: currentcolor;
+                    opacity: 1;
+                }
+            `
+        ),
+        neutralFillHoverBehavior,
+        neutralFillStealthHoverBehavior,
+        neutralFillStealthRestBehavior,
+        neutralFillStealthSelectedBehavior,
+        neutralFocusBehavior,
+        neutralFocusInnerAccentBehavior,
+        neutralForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        neutralLayerL1Behavior
+    );
