@@ -9,12 +9,11 @@ env:
   GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
   GITHUB_SERVICE_USER: "Microsoft FAST Builds"
   GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
-  AUTHORIZED_PUBLISHERS: ${{ secrets.AUTHORIZED_PUBLISHERS }}
       
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-    if: contains("${{ env.AUTHORIZED_PUBLISHERS }}", github.actor)
+    if: contains('chrisdholt,janechu,nicholasrice', github.actor)
 
     steps:
     - uses: actions/checkout@v2
