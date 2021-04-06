@@ -485,9 +485,6 @@ export function createDataGridRowTemplate(prefix: string): ViewTemplate;
 export function createDataGridTemplate(prefix: string): ViewTemplate;
 
 // @public
-export function createMenuItemTemplate(prefix: string): ViewTemplate;
-
-// @public
 export function createTooltipTemplate(prefix: string): ViewTemplate;
 
 // @public
@@ -1355,8 +1352,10 @@ export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (sty
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Menu" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Menu extends FASTElement {
+export class Menu extends FoundationElement {
     collapseExpandedItem(): void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1374,10 +1373,11 @@ export class Menu extends FASTElement {
     }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "MenuItem" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "MenuItem" because one of its declarations is marked as @internal
 //
 // @public
-export class MenuItem extends FASTElement {
+export class MenuItem extends FoundationElement {
     checked: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1417,11 +1417,11 @@ export enum MenuItemRole {
     menuitemradio = "menuitemradio"
 }
 
-// @public @deprecated
-export const MenuItemTemplate: ViewTemplate<MenuItem>;
+// @public
+export const MenuItemTemplate: (context: any, definition: any) => ViewTemplate<MenuItem>;
 
 // @public
-export const MenuTemplate: ViewTemplate<Menu>;
+export const MenuTemplate: (context: any, definition: any) => ViewTemplate<Menu>;
 
 // @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;

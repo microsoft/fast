@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Menu, MenuTemplate as template } from "@microsoft/fast-foundation";
 import { MenuStyles as styles } from "./menu.styles";
 
@@ -11,12 +10,11 @@ import { MenuStyles as styles } from "./menu.styles";
  * @remarks
  * HTML Element: \<fast-menu\>
  */
-@customElement({
-    name: "fast-menu",
+export const FASTMenu = Menu.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTMenu extends Menu {}
+});
 
 /**
  * Styles for Menu

@@ -656,12 +656,18 @@ export const FASTListbox: (overrideDefinition?: import("@microsoft/fast-foundati
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTMenu extends Menu {
-}
+export const FASTMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Menu, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTMenuItem extends MenuItem {
-}
+export const FASTMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTNumberField extends NumberField {
@@ -780,10 +786,10 @@ export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 export const ListboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const MenuItemStyles: import("@microsoft/fast-element").ElementStyles;
+export const MenuItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const MenuStyles: import("@microsoft/fast-element").ElementStyles;
+export const MenuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFill" should be prefixed with an underscore because the declaration is marked as @internal
 //

@@ -1,18 +1,17 @@
 import { expect } from "chai";
 import { MenuItem, MenuItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-menu-item",
-    template,
+const FASTMenuItem = MenuItem.compose({
+    baseName: "fast",
+    template
 })
-class FASTMenuItem extends MenuItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTMenuItem>(
+    const { element, connect, disconnect } = await fixture<MenuItem>(
         "fast-menu-item"
     );
 

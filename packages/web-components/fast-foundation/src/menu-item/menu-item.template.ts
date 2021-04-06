@@ -1,14 +1,8 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import { AnchoredRegion } from "../anchored-region";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItem, MenuItemRole } from "./menu-item";
-
-/**
- * The template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component.
- * @deprecated  use {@link @microsoft/fast-foundation#(createMenuItemTemplate:function)|createMenuItemTemplate} instead.
- * @public
- */
-export const MenuItemTemplate: ViewTemplate<MenuItem> = createMenuItemTemplate("fast");
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
@@ -16,9 +10,11 @@ export const MenuItemTemplate: ViewTemplate<MenuItem> = createMenuItemTemplate("
  *
  * @public
  */
-export function createMenuItemTemplate(prefix: string): ViewTemplate {
-    return html<MenuItem>`
-    <template
+export const MenuItemTemplate: (context, definition) => ViewTemplate<MenuItem> = (
+    context,
+    definition
+) => html<MenuItem>`
+    <${context.tagFor(MenuItem)}
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
@@ -29,7 +25,7 @@ export function createMenuItemTemplate(prefix: string): ViewTemplate {
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
         class="${x => (x.disabled ? "disabled" : "")} ${x =>
-        x.expanded ? "expanded" : ""}"
+    x.expanded ? "expanded" : ""}"
     >
 
             ${when(
@@ -104,7 +100,7 @@ export function createMenuItemTemplate(prefix: string): ViewTemplate {
         ${when(
             x => x.expanded,
             html<MenuItem>`
-                <${prefix}-anchored-region
+                <${context.tagFor(AnchoredRegion)}
                     :anchorElement="${x => x}"
                     vertical-positioning-mode="dynamic"
                     vertical-default-position="bottom"
@@ -118,9 +114,8 @@ export function createMenuItemTemplate(prefix: string): ViewTemplate {
                     part="submenu-region"
                 >
                     <slot name="submenu"></slot>
-                </${prefix}-anchored-region>
+                </${context.tagFor(AnchoredRegion)}>
             `
         )}
-    </template>
+    </${context.tagFor(MenuItem)}>
 `;
-}

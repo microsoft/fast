@@ -5,17 +5,15 @@ import { fixture } from "../fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-menu",
+const FASTMenu = Menu.compose({
+    baseName: "fast",
     template,
 })
-class FASTMenu extends Menu {}
 
-@customElement({
-    name: "fast-menu-item",
+const FASTMenuItem = MenuItem.compose({
+    baseName: "fast",
     template: itemTemplate,
 })
-class FASTMenuItem extends MenuItem {}
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
     key: "ArrowUp",
@@ -90,7 +88,7 @@ describe("Menu", () => {
 
 
     it("should set tabindex of the first focusable menu item to 0", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div>I put a div in my menu</div>
                 <fast-menu-item id="id1">Foo</fast-menu-item>
@@ -107,7 +105,7 @@ describe("Menu", () => {
     });
 
     it("should not set any tabindex on non menu items elements", async () => {
-        const { connect, disconnect } = await fixture(html<FASTMenu>`
+        const { connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div id="not-an-item">I put a div in my menu</div>
                 <fast-menu-item id="id1">Foo</fast-menu-item>
@@ -124,7 +122,7 @@ describe("Menu", () => {
     });
 
     it("should focus disabled items", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div>I put a div in my menu</div>
                 <fast-menu-item disabled id="id1">Foo</fast-menu-item>
@@ -141,7 +139,7 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitem` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div role="menuitem" id="id1">Foo</div>
                 <div role="menuitem">Bar</div>
@@ -159,7 +157,7 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemcheckbox` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div role="menuitemcheckbox" id="id1">Foo</div>
                 <div role="menuitemcheckbox">Bar</div>
@@ -177,7 +175,7 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemradio` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <div role="menuitemradio" id="id1">Foo</div>
                 <div role="menuitemradio">Bar</div>
@@ -195,7 +193,7 @@ describe("Menu", () => {
     });
 
     it("should navigate the menu on arrow up/down keys", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <fast-menu-item id="id1">One</fast-menu-item>
                 <fast-menu-item role="menuitem" id="id2">Two</fast-menu-item>
@@ -241,7 +239,7 @@ describe("Menu", () => {
     });
 
     it("should treat all checkbox menu items as individually selectable items", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <fast-menu-item role="menuitemcheckbox" id="id1">One</fast-menu-item>
                 <fast-menu-item role="menuitemcheckbox" id="id2">Two</fast-menu-item>
@@ -288,7 +286,7 @@ describe("Menu", () => {
     });
 
     it("should treat all radio menu items as a 'radio group' and limit selection to one item within the group by default", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <fast-menu-item role="menuitemradio" id="id1">One</fast-menu-item>
                 <fast-menu-item role="menuitemradio" id="id2">Two</fast-menu-item>
@@ -329,7 +327,7 @@ describe("Menu", () => {
     });
 
     it("should use elements with role='separator' to divide radio menu items into different radio groups ", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+        const { element, connect, disconnect } = await fixture(html<Menu>`
             <fast-menu>
                 <fast-menu-item role="menuitemradio" id="id1">One</fast-menu-item>
                 <fast-menu-item role="menuitemradio" id="id2">Two</fast-menu-item>
