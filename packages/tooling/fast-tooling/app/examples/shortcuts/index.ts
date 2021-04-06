@@ -17,6 +17,7 @@ const dataElement = document.getElementById("data");
 const inputElement = document.getElementById("input");
 document.body.setAttribute("style", "margin: 0");
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 let fastShortcuts: Shortcuts;
