@@ -3,7 +3,6 @@ name: CI - FAST Manual Publish
 trigger: none
   
 jobs:
-  build_linux:
     runs-on: ubuntu-latest
 
     env:
