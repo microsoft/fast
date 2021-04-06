@@ -906,8 +906,10 @@ export class DirectionalStyleSheetBehavior implements Behavior {
 // @public
 export const disabledCursor = "not-allowed";
 
+// Warning: (ae-incompatible-release-tags) The symbol "Disclosure" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Disclosure extends FASTElement {
+export class Disclosure extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -924,7 +926,7 @@ export class Disclosure extends FASTElement {
 }
 
 // @public
-export const DisclosureTemplate: ViewTemplate<Disclosure>;
+export const DisclosureTemplate: (context: any, definition: any) => ViewTemplate<Disclosure>;
 
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;

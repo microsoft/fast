@@ -22,7 +22,7 @@ import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
-import { Disclosure } from '@microsoft/fast-foundation';
+import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
 import { HorizontalScroll } from '@microsoft/fast-foundation';
@@ -279,6 +279,22 @@ export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const DialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "Disclosure" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class Disclosure extends Disclosure_2 {
+    // @public
+    appearance: DisclosureAppearance;
+    // (undocumented)
+    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    get disclosureHeight(): number;
+    // @override
+    protected onToggle(): void;
+    // @override
+    protected setup(): void;
+    }
 
 // @public
 export type DisclosureAppearance = "accent" | "lightweight";
@@ -602,17 +618,11 @@ export const FASTDialog: (overrideDefinition?: import("@microsoft/fast-foundatio
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTDisclosure extends Disclosure {
-    appearance: DisclosureAppearance;
-    // (undocumented)
-    appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
-    // (undocumented)
-    get disclosureHeight(): number;
-    // @override
-    protected onToggle(): void;
-    // @override
-    protected setup(): void;
-    }
+export const FASTDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Disclosure_2, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTDivider extends Divider {

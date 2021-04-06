@@ -1,16 +1,15 @@
 import { expect } from "chai";
 import { fixture } from "../fixture";
-import { customElement, DOM, html, ref } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { Disclosure, DisclosureTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-disclosure",
-    template,
+const FastDisclosure = Disclosure.compose({
+    baseName: "fast",
+    template
 })
-class FastDisclosure extends Disclosure {}
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture<FastDisclosure>(
+    const { element, connect, disconnect } = await fixture<Disclosure>(
         "fast-disclosure"
     );
 
@@ -18,6 +17,14 @@ async function createDisclosure() {
 }
 
 describe("Disclosure", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await createDisclosure();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-disclosure");
+    })
+
     describe("User interaction", () => {
         it("should toggle the content using `toggle()`", async () => {
             const { element, connect, disconnect } = await createDisclosure();

@@ -1,5 +1,8 @@
-import { attr, customElement } from "@microsoft/fast-element";
-import { Disclosure, DisclosureTemplate as template } from "@microsoft/fast-foundation";
+import { attr } from "@microsoft/fast-element";
+import {
+    Disclosure as FoundationDisclosure,
+    DisclosureTemplate as template,
+} from "@microsoft/fast-foundation";
 import { DisclosureStyles as styles } from "./disclosure.styles";
 /**
  * Types of anchor appearance.
@@ -8,21 +11,9 @@ import { DisclosureStyles as styles } from "./disclosure.styles";
 export type DisclosureAppearance = "accent" | "lightweight";
 
 /**
- * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},
- * {@link @microsoft/fast-foundation#DisclosureTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-Disclosure\>
- *
+ * @internal
  */
-@customElement({
-    name: "fast-disclosure",
-    template,
-    styles,
-})
-export class FASTDisclosure extends Disclosure {
+export class Disclosure extends FoundationDisclosure {
     /**
      * Disclosure default height
      */
@@ -91,3 +82,19 @@ export class FASTDisclosure extends Disclosure {
  * @public
  */
 export const DisclosureStyles = styles;
+
+/**
+ * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},
+ * {@link @microsoft/fast-foundation#DisclosureTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-Disclosure\>
+ *
+ */
+export const FASTDisclosure = Disclosure.compose({
+    baseName: "fast",
+    template,
+    styles,
+});
