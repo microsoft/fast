@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Add or Update packages
       run: sudo yarn global add lerna
@@ -28,6 +30,9 @@ jobs:
    
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
+
+    - name: Check for the presence of changed files inside ./change
+      run: yarn checkchange
 
     - name: Testing Prettier format
       run: lerna run prettier:diff
