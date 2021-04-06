@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Combobox, ComboboxTemplate as template } from "@microsoft/fast-foundation";
 import { ComboboxStyles as styles } from "./combobox.styles";
 
@@ -11,12 +10,11 @@ import { ComboboxStyles as styles } from "./combobox.styles";
  * HTML Element: \<fast-combobox\>
  *
  */
-@customElement({
-    name: "fast-combobox",
+export const FASTCombobox = Combobox.compose({
+    baseName: "fast",
     template,
     styles,
 })
-export class FASTCombobox extends Combobox {}
 
 /**
  * Styles for combobox
