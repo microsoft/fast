@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.19.1...@microsoft/fast-components@1.20.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* add display:grid to flipper slots to prevent container from changing glyph position ([#4498](https://github.com/Microsoft/fast/issues/4498)) ([34cc9dd](https://github.com/Microsoft/fast/commit/34cc9ddd8c0b33b19d74b409a7416c707bfcedf4))
+
+
+### Features
+
+* add appearance stylesheet behavior ([#4483](https://github.com/Microsoft/fast/issues/4483)) ([84614c1](https://github.com/Microsoft/fast/commit/84614c15ba4e4305b74fb3311af800589f233459))
+* add auto-update attribute for anchored region ([#4433](https://github.com/Microsoft/fast/issues/4433)) ([8db8523](https://github.com/Microsoft/fast/commit/8db852379e45c487d1233865a9e02ed1af3dc70e))
+* add design system ui to creator ([#4474](https://github.com/Microsoft/fast/issues/4474)) ([c486489](https://github.com/Microsoft/fast/commit/c486489562a9f90a05fb331ee3658cc99ae575d2))
+* add DesignTokens type for managing app Design Tokens ([#4411](https://github.com/Microsoft/fast/issues/4411)) ([f609c9a](https://github.com/Microsoft/fast/commit/f609c9a1fdc7abee877d095efe55b710bd46f0e3))
+
+
+
+
+
 ## [1.19.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.19.0...@microsoft/fast-components@1.19.1) (2021-03-18)
 
 **Note:** Version bump only for package @microsoft/fast-components

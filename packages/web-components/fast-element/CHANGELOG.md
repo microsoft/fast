@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@1.0.1...@microsoft/fast-element@1.0.2) (2021-04-06)
+
+
+### Bug Fixes
+
+* ensures proper re-observation and notification of a disconnected BindingObserver ([#4477](https://github.com/Microsoft/fast/issues/4477)) ([e315a69](https://github.com/Microsoft/fast/commit/e315a69ac7cf22bd9e0c50eb0458f5b23dae2aee))
+
+
+
+
+
 ## [1.0.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@1.0.0...@microsoft/fast-element@1.0.1) (2021-03-16)
 
 

@@ -1,5 +1,5 @@
 import { BeachballConfig } from "beachball";
-import { renderHeader, renderEntry } from "./customRenderers";
+import { renderEntry, renderHeader } from "./customRenderers";
 
 export const config: BeachballConfig = {
     disallowedChangeTypes: ["major"],
@@ -7,9 +7,9 @@ export const config: BeachballConfig = {
         {
             name: "Microsoft FAST",
             include: [
-                "packages/tooling",
-                "packages/utilities",
-                "packages/web-components",
+                "packages/tooling/*",
+                "packages/utilities/*",
+                "packages/web-components/*",
             ],
             disallowedChangeTypes: ["major"],
         },

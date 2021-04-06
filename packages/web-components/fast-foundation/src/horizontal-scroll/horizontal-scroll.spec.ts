@@ -59,15 +59,6 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
 describe("HorinzontalScroll", () => {
-    it("should include a role of horizontal-scroll", async () => {
-        const { element, connect, disconnect } = await fixture<FASTHorizontalScroll>("fast-horizontal-scroll");
-
-        await connect();
-
-        expect(element.getAttribute("role")).to.equal("horizontal-scroll");
-
-        await disconnect();
-    });
 
     describe("Flippers", () => {
         it("should enable the next flipper when content exceeds horizontal-scroll width", async () => {
