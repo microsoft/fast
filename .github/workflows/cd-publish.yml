@@ -1,8 +1,7 @@
 name: CI - FAST Manual Publish
 
-on:
-  workflow_dispatch:
-   
+trigger: none
+  
 jobs:
   build_linux:
     runs-on: ubuntu-latest
