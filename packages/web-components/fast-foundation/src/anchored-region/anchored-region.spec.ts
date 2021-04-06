@@ -26,7 +26,7 @@ describe("Anchored Region", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-anchored-region");
+        expect(element.tagName.toLowerCase()).to.equal("fast-anchored-region");
     })
 
     it("should set positioning modes to 'uncontrolled' by default", async () => {

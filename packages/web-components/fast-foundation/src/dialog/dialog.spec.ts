@@ -23,8 +23,8 @@ describe("Dialog", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-
-        expect(element.tagName).to.equal("fast-dialog");
+        console.log(element, "element");
+        expect(element.tagName.toLowerCase()).to.equal("fast-dialog");
     })
 
     it("should include a role of `dialog` on the control", async () => {
@@ -32,6 +32,8 @@ describe("Dialog", () => {
 
         await connect();
 
+        console.log(element.shadowRoot?.toString(), "element shadow root");
+        
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("role")
         ).to.equal("dialog");

@@ -22,7 +22,7 @@ describe("Disclosure", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-disclosure");
+        expect(element.tagName.toLowerCase()).to.equal("fast-disclosure");
     })
 
     describe("User interaction", () => {

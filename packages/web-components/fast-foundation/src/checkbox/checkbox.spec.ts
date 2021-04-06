@@ -23,7 +23,7 @@ describe("Checkbox", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-checkbox");
+        expect(element.tagName.toLowerCase()).to.equal("fast-checkbox");
     })
 
     it("should have a role of `checkbox`", async () => {

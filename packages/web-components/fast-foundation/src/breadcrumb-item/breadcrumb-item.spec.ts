@@ -22,7 +22,7 @@ describe("Breadcrumb item", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-breadcrumb-item");
+        expect(element.tagName.toLowerCase()).to.equal("fast-breadcrumb-item");
     })
 
     it("should include a `role` of `listitem`", async () => {

@@ -22,7 +22,7 @@ describe("Button", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-button");
+        expect(element.tagName.toLowerCase()).to.equal("fast-button");
     })
 
     it("should set the `autofocus` attribute on the internal button when provided", async () => {

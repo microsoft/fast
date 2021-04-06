@@ -43,7 +43,7 @@ describe("Combobox", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-combobox");
+        expect(element.tagName.toLowerCase()).to.equal("fast-combobox");
     })
 
     it("should include a control with a role of `combobox`", async () => {

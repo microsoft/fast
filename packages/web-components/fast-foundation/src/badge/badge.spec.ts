@@ -23,7 +23,7 @@ describe("Badge", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-badge");
+        expect(element.tagName.toLowerCase()).to.equal("fast-badge");
     })
 
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {

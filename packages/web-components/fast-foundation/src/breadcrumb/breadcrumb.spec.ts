@@ -23,7 +23,7 @@ describe("Breadcrumb", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-breadcrumb");
+        expect(element.tagName.toLowerCase()).to.equal("fast-breadcrumb");
     })
 
     it("should include a `role` of `navigation`", async () => {

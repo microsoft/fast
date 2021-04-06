@@ -21,7 +21,7 @@ describe("Flipper", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-flipper");
+        expect(element.tagName.toLowerCase()).to.equal("fast-flipper");
     })
 
     it("should include a role of button", async () => {

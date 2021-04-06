@@ -43,7 +43,7 @@ describe("Listbox", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-listbox");
+        expect(element.tagName.toLowerCase()).to.equal("fast-listbox");
     })
 
     it("should have a role of `listbox`", async () => {

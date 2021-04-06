@@ -23,7 +23,7 @@ describe("Accordion item", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-accordion-item");
+        expect(element.tagName.toLowerCase()).to.equal("fast-accordion-item");
     })
 
     it("should set an `aria-level` to the heading when provided", async () => {

@@ -37,7 +37,7 @@ describe("Accordion", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-accordion");
+        expect(element.tagName.toLowerCase()).to.equal("fast-accordion");
     })
 
     it("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {

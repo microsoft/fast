@@ -21,7 +21,7 @@ describe("Divider", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-divider");
+        expect(element.tagName.toLowerCase()).to.equal("fast-divider");
     })
 
     it("should include a role attribute equal to the role provided", async () => {

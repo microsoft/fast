@@ -20,7 +20,7 @@ describe("Anchor", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-anchor");
+        expect(element.tagName.toLowerCase()).to.equal("fast-anchor");
     })
 
     it("should set the `download` attribute on the internal anchor equal to the value provided", async () => {

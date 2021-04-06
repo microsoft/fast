@@ -21,7 +21,7 @@ describe("ListboxOption", () => {
 
         await connect();
 
-        expect(element.tagName).to.equal("fast-option");
+        expect(element.tagName.toLowerCase()).to.equal("fast-option");
     })
 
     it("should set the `aria-selected` attribute equal to the `selected` value", async () => {
