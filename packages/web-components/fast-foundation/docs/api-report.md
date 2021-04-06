@@ -366,7 +366,7 @@ export enum ComboboxAutocomplete {
 }
 
 // @public
-export const ComboboxTemplate: ViewTemplate<Combobox>;
+export const ComboboxTemplate: (context: any, definition: any) => ViewTemplate<Combobox>;
 
 // @alpha
 export interface ComponentPresentation {
@@ -1215,10 +1215,11 @@ export const lazy: (key: any) => any;
 export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "Listbox" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
 //
 // @public
-export class Listbox extends FASTElement {
+export class Listbox extends FoundationElement {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     disabled: boolean;
@@ -1276,10 +1277,11 @@ export interface Listbox extends DelegatesARIAListbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "ListboxOption" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
 //
 // @public
-export class ListboxOption extends FASTElement {
+export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
     defaultSelected: boolean;
     // (undocumented)
@@ -1315,7 +1317,7 @@ export interface ListboxOption extends StartEnd {
 }
 
 // @public
-export const ListboxOptionTemplate: ViewTemplate<ListboxOption>;
+export const ListboxOptionTemplate: (context: any, definition: any) => ViewTemplate<ListboxOption>;
 
 // @public
 export enum ListboxRole {
@@ -1324,7 +1326,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const ListboxTemplate: ViewTemplate<Listbox>;
+export const ListboxTemplate: (context: any, definition: any) => ViewTemplate<Listbox>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -1716,7 +1718,7 @@ export enum SelectRole {
 }
 
 // @public
-export const SelectTemplate: ViewTemplate<Select>;
+export const SelectTemplate: (context: any, definition: any) => ViewTemplate<Select>;
 
 // @alpha (undocumented)
 export interface ServiceLocator {

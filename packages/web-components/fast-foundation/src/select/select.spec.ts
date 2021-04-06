@@ -1,34 +1,32 @@
 import { assert, expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../fixture";
-import { Select, SelectTemplate } from "./index";
+import { Select, SelectTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-select",
-    template: SelectTemplate,
+const FASTSelect = Select.compose({
+    baseName: "fast",
+    template
 })
-class FASTSelect extends Select {}
 
-@customElement({
-    name: "fast-option",
+const FASTOption = ListboxOption.compose({
+    baseName: "fast",
     template: ListboxOptionTemplate,
 })
-class FASTOption extends ListboxOption {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTSelect>(
+    const { element, connect, disconnect, parent } = await fixture<Select>(
         "fast-select"
     );
 
-    const option1 = document.createElement("fast-option") as FASTOption;
+    const option1 = document.createElement("fast-option") as ListboxOption;
     option1.value = "one";
 
-    const option2 = document.createElement("fast-option") as FASTOption;
+    const option2 = document.createElement("fast-option") as ListboxOption;
     option2.value = "two";
 
-    const option3 = document.createElement("fast-option") as FASTOption;
+    const option3 = document.createElement("fast-option") as ListboxOption;
     option3.value = "three";
 
     element.appendChild(option1);
@@ -40,6 +38,14 @@ async function setup() {
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Select", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-select");
+    })
+
     it("should include a role of `combobox`", async () => {
         const { element, connect, disconnect } = await setup();
 

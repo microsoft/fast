@@ -38,6 +38,14 @@ async function setup() {
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Combobox", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-combobox");
+    })
+
     it("should include a control with a role of `combobox`", async () => {
         const { element, connect, disconnect } = await setup();
 

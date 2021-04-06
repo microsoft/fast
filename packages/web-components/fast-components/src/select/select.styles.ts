@@ -25,7 +25,8 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const SelectStyles = css`
+export const SelectStyles = (context, definition) =>
+    css`
     ${display("inline-flex")} :host {
         --elevation: 14;
         background: ${neutralFillInputRestBehavior.var};
@@ -188,13 +189,13 @@ export const SelectStyles = css`
     }
 
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundFocusBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        accentForegroundCutRestBehavior,
+        accentForegroundFocusBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             :host(:not([disabled]):hover),
             :host(:not([disabled]):active) {
                 border-color: ${SystemColors.Highlight};
@@ -253,13 +254,13 @@ export const SelectStyles = css`
                 fill: currentcolor;
             }
         `
-    ),
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior
-);
+        ),
+        neutralFillInputActiveBehavior,
+        neutralFillInputHoverBehavior,
+        neutralFillInputRestBehavior,
+        neutralFocusBehavior,
+        neutralFocusInnerAccentBehavior,
+        neutralForegroundRestBehavior,
+        neutralLayerFloatingBehavior,
+        neutralOutlineRestBehavior
+    );

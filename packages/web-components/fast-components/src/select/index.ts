@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Select, SelectTemplate as template } from "@microsoft/fast-foundation";
 import { SelectStyles as styles } from "./select.styles";
 
@@ -12,12 +11,11 @@ import { SelectStyles as styles } from "./select.styles";
  * HTML Element: \<fast-select\>
  *
  */
-@customElement({
-    name: "fast-select",
+export const FASTSelect = Select.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTSelect extends Select {}
+});
 
 /**
  * Styles for Select
