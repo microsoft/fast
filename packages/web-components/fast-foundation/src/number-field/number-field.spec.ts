@@ -3,14 +3,13 @@ import { expect, assert } from "chai";
 import { fixture } from "../fixture";
 import { NumberField, NumberFieldTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-number-field",
+const FASTNumberField = NumberField.compose({
+    baseName: "fast",
     template,
 })
-class FASTNumberField extends NumberField {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTNumberField>(
+    const { element, connect, disconnect, parent } = await fixture<NumberField>(
         "fast-number-field"
     );
 

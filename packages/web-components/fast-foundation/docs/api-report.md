@@ -1471,7 +1471,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const NumberFieldTemplate: ViewTemplate<NumberField>;
+export const NumberFieldTemplate: (context: any, definition: any) => ViewTemplate<NumberField>;
 
 // @alpha
 export const optional: (key: any) => any;

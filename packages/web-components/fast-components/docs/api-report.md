@@ -30,7 +30,7 @@ import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
-import { NumberField } from '@microsoft/fast-foundation';
+import { NumberField as NumberField_2 } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
@@ -670,11 +670,14 @@ export const FASTMenuItem: (overrideDefinition?: import("@microsoft/fast-foundat
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTNumberField extends NumberField {
-    appearance: NumberFieldAppearance;
-    // @internal (undocumented)
-    connectedCallback(): void;
-}
+export const FASTNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<NumberField_2, any>;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export const FASTOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -1179,11 +1182,21 @@ export const neutralOutlineRest: SwatchRecipe;
 // @public
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
+// Warning: (ae-internal-missing-underscore) The name "NumberField" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class NumberField extends NumberField_2 {
+    // @public
+    appearance: NumberFieldAppearance;
+    // (undocumented)
+    connectedCallback(): void;
+}
+
 // @public
 export type NumberFieldAppearance = "filled" | "outline";
 
 // @public
-export const NumberFieldStyles: import("@microsoft/fast-element").ElementStyles;
+export const NumberFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const OptionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
