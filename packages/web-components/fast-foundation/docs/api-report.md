@@ -931,8 +931,10 @@ export const DisclosureTemplate: (context: any, definition: any) => ViewTemplate
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Divider" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Divider extends FASTElement {
+export class Divider extends FoundationElement {
     role: DividerRole;
 }
 
@@ -943,7 +945,7 @@ export enum DividerRole {
 }
 
 // @public
-export const DividerTemplate: ViewTemplate<Divider>;
+export const DividerTemplate: (context: any, definition: any) => ViewTemplate<Divider>;
 
 // @alpha (undocumented)
 export interface DOMParentLocatorEventDetail {

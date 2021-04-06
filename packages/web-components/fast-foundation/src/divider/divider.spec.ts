@@ -4,11 +4,10 @@ import { fixture } from "../fixture";
 import { DividerRole } from "./divider.options";
 import { Divider, DividerTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-divider",
-    template,
+const FASTDivider = Divider.compose({
+    baseName: "fast",
+    template
 })
-class FASTDivider extends Divider {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
@@ -17,6 +16,14 @@ async function setup() {
 }
 
 describe("Divider", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-divider");
+    })
+
     it("should include a role attribute equal to the role provided", async () => {
         const { element, connect, disconnect } = await setup();
 

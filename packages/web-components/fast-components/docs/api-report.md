@@ -303,7 +303,7 @@ export type DisclosureAppearance = "accent" | "lightweight";
 export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DividerStyles: import("@microsoft/fast-element").ElementStyles;
+export const DividerStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const FASTAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -625,8 +625,11 @@ export const FASTDisclosure: (overrideDefinition?: import("@microsoft/fast-found
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTDivider extends Divider {
-}
+export const FASTDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Divider, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTFlipper extends Flipper {
