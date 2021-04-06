@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.1...@microsoft/fast-tooling-react@2.8.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* remove the use of detail as this is a synthetic event value and will not be compatible with React 17 ([#4515](https://github.com/Microsoft/fast/issues/4515)) ([2e272a6](https://github.com/Microsoft/fast/commit/2e272a63d25a5225e2c253cf2b5b8cecefaa6d80))
+
+
+### Features
+
+* add custom control for CSS editing ([#4519](https://github.com/Microsoft/fast/issues/4519)) ([2f4e12c](https://github.com/Microsoft/fast/commit/2f4e12c697f04fba550f68271301759a2204b827)), closes [#4173](https://github.com/Microsoft/fast/issues/4173) [#4187](https://github.com/Microsoft/fast/issues/4187) [#4192](https://github.com/Microsoft/fast/issues/4192) [#4202](https://github.com/Microsoft/fast/issues/4202) [#4285](https://github.com/Microsoft/fast/issues/4285) [#4284](https://github.com/Microsoft/fast/issues/4284) [#4283](https://github.com/Microsoft/fast/issues/4283)
+
+
+
+
+
 ## [2.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.0...@microsoft/fast-tooling-react@2.7.1) (2021-03-18)
 
 **Note:** Version bump only for package @microsoft/fast-tooling-react
