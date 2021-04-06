@@ -1,8 +1,8 @@
-import { ElementViewTemplate } from "../templating/template";
-import { ElementStyles, ComposableStyles } from "../styles/element-styles";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes";
+import type { Mutable } from "../interfaces";
 import { Observable } from "../observation/observable";
-import { Mutable } from "../interfaces";
+import { ComposableStyles, ElementStyles } from "../styles/element-styles";
+import type { ElementViewTemplate } from "../templating/template";
+import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};

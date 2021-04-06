@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-tooltip",
+  "id": "fast-tooltip",
+  "title": "Tooltip",
+  "description": "The FAST tooltip element",
+  "type": "object",
+  "version": 1,
+  "mapsToTagName": "fast-tooltip",
+  "properties": {
+    "visible": {
+      "title": "Visible",
+      "description": "Sets whether the tooltip is visible or not",
+      "mapsToAttribute": "visible",
+      "type": "boolean"
+    },
+    "anchor": {
+      "title": "Anchor ID",
+      "description": "The HTML ID of the element the tooltip is positioned relative to",
+      "mapsToAttribute": "anchor",
+      "type": "string"
+    },
+    "delay": {
+      "default": 300,
+      "title": "Delay",
+      "description": "The delay in milliseconds before a tooltip is shown after a hover event",
+      "mapsToAttribute": "delay",
+      "type": "number"
+    },
+    "position": {
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "start",
+        "end"
+      ],
+      "title": "Position",
+      "description": "Controls the placement of the tooltip relative to the configured 'Anchor ID'",
+      "mapsToAttribute": "position",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The tooltip content",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

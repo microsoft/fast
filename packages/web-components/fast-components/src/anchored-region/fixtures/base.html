@@ -5,7 +5,6 @@
     vertical-inset="true"
     horizontal-positioning-mode="locktodefault"
     horizontal-default-position="right"
-    horizontal-scaling="fit-content"
     style="z-index: 11;"
 >
     <div style="height: 100%; width: 100%; background: blue;">
@@ -494,6 +493,39 @@
                 horizontal-default-position="end"
             >
                 <div style="height: 100px; width: 100px; background: green;"></div>
+            </fast-anchored-region>
+        </div>
+    </div>
+
+    <h2>Auto update auto</h2>
+    <div
+        id="viewport-auto-update-auto"
+        style="
+            height: 400px;
+            width: 400px;
+            background: lightgray;
+            overflow: scroll;
+            position: relative;
+        "
+    >
+        <div style="height: 1000px; width: 1000px; overflow: hidden;">
+            <button
+                id="anchor-auto-update-auto"
+                style="margin-left: 500px; margin-top: 500px;"
+            >
+                anchor
+            </button>
+            <fast-anchored-region
+                auto-update-mode="auto"
+                id="region-auto-update-auto"
+                anchor="anchor-auto-update-auto"
+                viewport="viewport-auto-update-auto"
+                vertical-positioning-mode="dynamic"
+                vertical-scaling="fill"
+                horizontal-positioning-mode="dynamic"
+                horizontal-scaling="fill"
+            >
+                <div style="height: 100%; width: 100%; background: yellow;"></div>
             </fast-anchored-region>
         </div>
     </div>

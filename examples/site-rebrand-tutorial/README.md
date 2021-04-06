@@ -8,7 +8,7 @@ This tutorial will introduce you to FAST web components. You'll add the componen
 
 ## Prerequisites
 
-In this tutorial, you'll be editing an existing HTML static website. If you'd like to follow the step-by-step guide, you'll need some tools. Start with a code editor like [Visual Studio Code](https://code.visualstudio.com/). You'll also need a local development server. A simple way to set one up is to use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VS Code.
+In this tutorial, you'll be editing an existing HTML static website. If you'd like to follow the step-by-step guide, you'll need some tools. Start with a code editor like [Visual Studio Code](https://code.visualstudio.com/). You'll also need a local development server. A simple way to set one up is to use the [Five Server](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server) extension for VS Code.
 
 You should have some understanding of web design and experience with HTML, CSS, and JavaScript. Experience with web components is not required.
 
@@ -55,9 +55,9 @@ Later in this tutorial, we'll discuss some features of the design system provide
 
 ### Setting up your development environment
 
-This guide is assuming you are using Visual Studio Code and have already installed the Live Server extension. On your computer open a terminal and navigate to where you'd like to download the tutorial files. Download the zipped source code from [here](https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/start.zip), or view the source in our [GitHub repository](https://github.com/microsoft/fast/tree/master/examples/site-rebrand-tutorial).
+This guide is assuming you are using Visual Studio Code and have already installed the Five Server extension. On your computer open a terminal and navigate to where you'd like to download the tutorial files. Download the zipped source code from [here](https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/start.zip), or view the source in our [GitHub repository](https://github.com/microsoft/fast/tree/master/examples/site-rebrand-tutorial).
 
-In VS Code, open the CompanyPage folder. Right-click on the index.html file and select `Open with Live Server`. You should see a new browser window open on localhost. Have a look at the current webpage.
+In VS Code, open the CompanyPage folder. Right-click on the index.html file and select `Open with Five Server`. You should see a new browser window open on localhost. Have a look at the current webpage.
 
 ### Add the Web Component and color modules
 

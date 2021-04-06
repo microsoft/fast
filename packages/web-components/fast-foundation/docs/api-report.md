@@ -8,6 +8,7 @@ import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -87,6 +88,8 @@ export class AnchoredRegion extends FASTElement {
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
+    // (undocumented)
+    autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -147,6 +150,9 @@ export class ARIAGlobalStatesAndProperties {
 }
 
 // @beta
+export type AutoUpdateMode = "anchor" | "auto";
+
+// @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 // @beta
@@ -169,7 +175,7 @@ export class BaseProgress extends FASTElement {
     max: number;
     min: number;
     paused: any;
-    value: number;
+    value: number | null;
 }
 
 // @public
@@ -367,7 +373,7 @@ export const ComponentPresentation: Readonly<{
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @alpha
-export type ConstructableFormAssociated = Constructable<FASTElement & HTMLElement & FormAssociatedProxy>;
+export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
 // Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
 //
@@ -499,7 +505,7 @@ export interface CSSCustomPropertyDefinition {
 // @public
 export interface CSSCustomPropertyTarget {
     // (undocumented)
-    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[] | void;
+    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[] | void;
     // (undocumented)
     registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
     // (undocumented)
@@ -736,6 +742,9 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// @alpha
+export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: DesignTokenTarget) => T;
+
 // @alpha (undocumented)
 export class DesignSystem {
     // (undocumented)
@@ -776,8 +785,8 @@ export class DesignSystemProvider extends FASTElement implements CSSCustomProper
     // (undocumented)
     disconnectedCallback(): void;
     // @deprecated
-    disconnectedCSSCustomPropertyRegistry: CSSCustomPropertyDefinition[];
-    disconnectedRegistry: Array<(provider: DesignSystemProvider) => void> | void;
+    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[];
+    disconnectedRegistry?: Array<(provider: DesignSystemProvider) => void> | void;
     evaluate(definition: CSSCustomPropertyDefinition): string;
     static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
     static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
@@ -808,6 +817,30 @@ export interface DesignSystemRegistrationContext {
 
 // @alpha (undocumented)
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
+
+// @alpha
+export interface DesignToken<T> extends CSSDirective {
+    addCustomPropertyFor(element: DesignTokenTarget): this;
+    readonly cssCustomProperty: string;
+    deleteValueFor(element: DesignTokenTarget): this;
+    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    // (undocumented)
+    readonly name: string;
+    // (undocumented)
+    removeCustomPropertyFor(element: DesignTokenTarget): this;
+    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
+}
+
+// @alpha
+export const DesignToken: Readonly<{
+    create: typeof create;
+}>;
+
+// @alpha
+export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
+
+// @alpha
+export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
 export const DI: Readonly<{
@@ -1041,7 +1074,7 @@ export interface FormAssociatedProxy {
     // (undocumented)
     nameChanged?(previous: any, next: any): void;
     // (undocumented)
-    proxy: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+    proxy: ProxyElement;
     // (undocumented)
     valueChanged?(previous: any, next: any): void;
 }
@@ -1445,10 +1478,14 @@ export class PropertyStyleSheetBehavior implements Behavior {
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
 
+// @alpha
+export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
+
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedRadio" needs to be exported by the entry point index.d.ts
 //
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
+    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -1707,9 +1744,7 @@ export type SkeletonShape = "rect" | "circle";
 // @public
 export const SkeletonTemplate: ViewTemplate<Skeleton>;
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Slider" because one of its declarations is marked as @internal
 //
 // @public
 export class Slider extends FormAssociatedSlider implements SliderConfiguration {
@@ -1752,10 +1787,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     // @internal (undocumented)
     valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
-}
-
-// @internal (undocumented)
-export interface Slider extends FormAssociatedSlider {
 }
 
 // @public
@@ -1830,6 +1861,9 @@ export class StartEnd {
 // @public
 export const startTemplate: ViewTemplate<StartEnd>;
 
+// @alpha
+export type StaticDesignTokenValue<T> = T extends Function ? never : T;
+
 // @public
 export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
     constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient);
@@ -1848,6 +1882,7 @@ export const supportsElementInternals: boolean;
 //
 // @public
 export class Switch extends FormAssociatedSwitch {
+    constructor();
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
@@ -2164,6 +2199,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/design-token/design-token.d.ts:49:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
