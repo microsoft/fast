@@ -278,7 +278,7 @@ export const DataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
 export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DialogStyles: import("@microsoft/fast-element").ElementStyles;
+export const DialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export type DisclosureAppearance = "accent" | "lightweight";
@@ -595,8 +595,11 @@ export class FASTDesignSystemProvider extends DesignSystemProvider implements FA
 }
 
 // @public
-export class FASTDialog extends Dialog {
-}
+export const FASTDialog: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTDisclosure extends Disclosure {

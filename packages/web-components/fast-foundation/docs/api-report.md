@@ -869,8 +869,10 @@ export const DI: Readonly<{
     singleton<T_1 extends Constructable<{}>>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
 }>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Dialog" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Dialog extends FASTElement {
+export class Dialog extends FoundationElement {
     ariaDescribedby: string;
     ariaLabel: string;
     ariaLabelledby: string;
@@ -890,7 +892,7 @@ export class Dialog extends FASTElement {
     }
 
 // @public
-export const DialogTemplate: ViewTemplate<Dialog>;
+export const DialogTemplate: (context: any, definition: any) => ViewTemplate<Dialog>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {

@@ -1,14 +1,13 @@
 import { expect } from "chai";
 import { Dialog, DialogTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-dialog",
-    template,
+const FASTDialog = Dialog.compose({
+    baseName: "fast",
+    template,  
 })
-class FASTDialog extends Dialog {}
 
 async function setup() {
     const { connect, disconnect, document, element } = await fixture<Dialog>(
@@ -20,6 +19,14 @@ async function setup() {
 
 // TODO: Add tests for focus management
 describe("Dialog", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-dialog");
+    })
+
     it("should include a role of `dialog` on the control", async () => {
         const { element, connect, disconnect } = await setup();
 

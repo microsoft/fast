@@ -1,13 +1,16 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Dialog } from "./dialog";
+import { Dialog } from "./dialog";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Dialog} component.
  * @public
  */
-export const DialogTemplate: ViewTemplate<Dialog> = html`
-    <div class="positioning-region" part="positioning-region">
+export const DialogTemplate: (context, definition) => ViewTemplate<Dialog> = (
+    context,
+    definition
+) => html`
+    <${context.tagFor(Dialog)} class="positioning-region" part="positioning-region">
         ${when(
             x => x.modal,
             html<Dialog>`
@@ -32,5 +35,5 @@ export const DialogTemplate: ViewTemplate<Dialog> = html`
         >
             <slot></slot>
         </div>
-    </div>
+    </${context.tagFor(Dialog)}>
 `;
