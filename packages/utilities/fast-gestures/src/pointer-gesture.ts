@@ -34,5 +34,4 @@ export enum PointerGesture {
     Rotate = "rotate",
     RotateClockwise = "rotateclockwise",
     RotateCounterClockwise = "rotatecounterclockwise",
-  }
-  
+}

@@ -6,5 +6,4 @@ export enum PointerGestureFeature {
     Rotate = "rotate",
     Swipe = "swipe",
     Tap = "tap",
-  }
-  
+}

@@ -3,5 +3,4 @@ export enum PointerCoordinateType {
     Client = "client",
     Offset = "offset",
     Page = "page",
-  }
-  
+}

@@ -3,5 +3,4 @@ export enum PointerTranslationDirection {
     Ordinal = "ordinal",
     Vertical = "vertical",
     Horizontal = "horizontal",
-  }
-  
+}

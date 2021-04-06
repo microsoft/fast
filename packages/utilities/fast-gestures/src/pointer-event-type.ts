@@ -5,5 +5,4 @@ export enum PointerEventType {
     Enter = "pointerenter",
     Cancel = "pointercancel",
     Leave = "pointerleave",
-  }
-  
+}
