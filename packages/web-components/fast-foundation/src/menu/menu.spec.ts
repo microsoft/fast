@@ -6,12 +6,12 @@ import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTMenu = Menu.compose({
-    baseName: "fast",
+    baseName: "menu",
     template,
 })
 
 const FASTMenuItem = MenuItem.compose({
-    baseName: "fast",
+    baseName: "menu-item",
     template: itemTemplate,
 })
 

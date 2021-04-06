@@ -6,12 +6,12 @@ import { Combobox, ComboboxTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTCombobox = Combobox.compose({
-    baseName: "fast",
+    baseName: "combobox",
     template
 })
 
 const FASTOption = ListboxOption.compose({
-    baseName: "fast",
+    baseName: "option",
     template: ListboxOptionTemplate
 })
 

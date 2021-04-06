@@ -11,7 +11,7 @@ import { BadgeStyles as styles } from "./badge.styles";
  * HTML Element: \<fast-badge\>
  */
 export const FASTBadge = Badge.compose({
-    baseName: "fast",
+    baseName: "badge",
     template,
     styles,
 });

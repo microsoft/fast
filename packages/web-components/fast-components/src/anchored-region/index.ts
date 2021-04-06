@@ -14,7 +14,7 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
  * HTML Element: \<fast-anchored-region\>
  */
 export const FASTAnchoredRegion = AnchoredRegion.compose({
-    baseName: "fast",
+    baseName: "anchored-region",
     template,
     styles,
 });

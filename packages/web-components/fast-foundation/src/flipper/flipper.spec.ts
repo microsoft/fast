@@ -5,7 +5,7 @@ import { FlipperDirection } from "./flipper.options";
 import { Flipper, FlipperTemplate as template } from "./index";
 
 const FASTFlipper = Flipper.compose({
-    baseName: "fast",
+    baseName: "flipper",
     template
 })
 

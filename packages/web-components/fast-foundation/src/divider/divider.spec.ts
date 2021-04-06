@@ -5,7 +5,7 @@ import { DividerRole } from "./divider.options";
 import { Divider, DividerTemplate as template } from "./index";
 
 const FASTDivider = Divider.compose({
-    baseName: "fast",
+    baseName: "divider",
     template
 })
 

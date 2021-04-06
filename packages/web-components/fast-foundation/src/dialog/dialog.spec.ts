@@ -5,7 +5,7 @@ import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTDialog = Dialog.compose({
-    baseName: "fast",
+    baseName: "dialog",
     template,  
 })
 

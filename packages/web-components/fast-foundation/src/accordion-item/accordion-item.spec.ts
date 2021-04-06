@@ -5,7 +5,7 @@ import { customElement } from "@microsoft/fast-element";
 
 
 const FASTAccordionItem = AccordionItem.compose({
-    baseName: 'fast',
+    baseName: "accordion-item",
     template
 })
 

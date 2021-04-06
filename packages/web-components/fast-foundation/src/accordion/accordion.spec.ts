@@ -6,12 +6,12 @@ import { customElement, DOM, elements } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
 
 const FASTAccordion = Accordion.compose({
-    baseName: 'fast',
+    baseName: "accordion",
     template
 })
 
 const FASTAccordionItem = AccordionItem.compose({
-    baseName: "fast",
+    baseName: "accordion-item",
     template: itemTemplate,
 })
 

@@ -80,7 +80,7 @@ export const AnchorStyles = styles;
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 export const FASTAnchor = Anchor.compose({
-    baseName: "fast",
+    baseName: "anchor",
     template,
     styles,
     shadowOptions: {

@@ -94,7 +94,7 @@ export const DisclosureStyles = styles;
  *
  */
 export const FASTDisclosure = Disclosure.compose({
-    baseName: "fast",
+    baseName: "disclosure",
     template,
     styles,
 });

@@ -4,7 +4,7 @@ import { fixture } from "../fixture";
 import { customElement, DOM } from "@microsoft/fast-element";
 
 const FASTBreadcrumbItem = BreadcrumbItem.compose({
-    baseName: "fast",
+    baseName: "breadcrumb-item",
     template
 })
 

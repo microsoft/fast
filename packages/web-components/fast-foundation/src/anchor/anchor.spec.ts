@@ -4,7 +4,7 @@ import { fixture } from "../fixture";
 import { customElement } from "@microsoft/fast-element";
 
 const FASTAnchor = Anchor.compose({
-    baseName: "fast",
+    baseName: "anchor",
     template
 })
 

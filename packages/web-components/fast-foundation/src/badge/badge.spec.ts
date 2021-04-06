@@ -3,7 +3,7 @@ import { Badge, BadgeTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 const FASTBadge = Badge.compose({
-    baseName: "fast",
+    baseName: "badge",
     template
 })
 

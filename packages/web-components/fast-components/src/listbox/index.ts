@@ -12,7 +12,7 @@ import { ListboxStyles as styles } from "./listbox.styles";
  *
  */
 export const FASTListbox = Listbox.compose({
-    baseName: "fast",
+    baseName: "listbox",
     template,
     styles,
 });

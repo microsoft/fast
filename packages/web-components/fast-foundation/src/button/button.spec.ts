@@ -4,7 +4,7 @@ import { fixture } from "../fixture";
 import { Button, ButtonTemplate as template } from "./index";
 
 const FASTButton = Button.compose({
-    baseName: "fast",
+    baseName: "button",
     template
 })
 

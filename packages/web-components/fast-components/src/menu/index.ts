@@ -11,7 +11,7 @@ import { MenuStyles as styles } from "./menu.styles";
  * HTML Element: \<fast-menu\>
  */
 export const FASTMenu = Menu.compose({
-    baseName: "fast",
+    baseName: "menu",
     template,
     styles,
 });

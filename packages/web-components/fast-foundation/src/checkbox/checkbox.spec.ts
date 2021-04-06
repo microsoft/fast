@@ -5,7 +5,7 @@ import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTCheckbox = Checkbox.compose({
-    baseName: "fast",
+    baseName: "checkbox",
     template,
 })
 

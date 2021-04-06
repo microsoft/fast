@@ -4,7 +4,7 @@ import { DOM } from "@microsoft/fast-element";
 import { Disclosure, DisclosureTemplate as template } from "./index";
 
 const FastDisclosure = Disclosure.compose({
-    baseName: "fast",
+    baseName: "disclosure",
     template
 })
 

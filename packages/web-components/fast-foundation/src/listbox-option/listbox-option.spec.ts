@@ -5,7 +5,7 @@ import { ListboxOption } from "./listbox-option";
 import { ListboxOptionTemplate } from "../listbox-option/listbox-option.template";
 
 const FASTOption = ListboxOption.compose({
-    baseName: "fast",
+    baseName: "option",
     template: ListboxOptionTemplate,
 })
 

@@ -5,7 +5,7 @@ import { html } from "@microsoft/fast-element";
 import type { BreadcrumbItem } from "../breadcrumb-item";
 
 const FASTBreadcrumb = Breadcrumb.compose({
-    baseName: "fast",
+    baseName: "breadcrumb",
     template
 })
 

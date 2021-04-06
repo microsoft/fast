@@ -6,7 +6,7 @@ import { MenuItemRole } from "./menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTMenuItem = MenuItem.compose({
-    baseName: "fast",
+    baseName: "menu-item",
     template
 })
 

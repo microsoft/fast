@@ -4,7 +4,7 @@ import { fixture } from "../fixture";
 import { DOM, html } from "@microsoft/fast-element";
 
 const FASTAnchoredRegion = AnchoredRegion.compose({
-    baseName: "fast",
+    baseName: "anchored-region",
     template
 })
 

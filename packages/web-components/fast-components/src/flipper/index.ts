@@ -11,7 +11,7 @@ import { FlipperStyles as styles } from "./flipper.styles";
  * HTML Element: \<fast-flipper\>
  */
 export const FASTFlipper = Flipper.compose({
-    baseName: "fast",
+    baseName: "flipper",
     template,
     styles,
 });

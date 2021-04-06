@@ -34,7 +34,7 @@ export class HorizontalScroll extends FoundationHorizontalScroll {
  * HTML Element: \<fast-horizontal-scroll\>
  */
 export const FASTHorizontalScroll = HorizontalScroll.compose({
-    baseName: "fast",
+    baseName: "horizontal-scroll",
     template,
     styles,
 });

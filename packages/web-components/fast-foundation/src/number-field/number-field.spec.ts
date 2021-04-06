@@ -4,7 +4,7 @@ import { fixture } from "../fixture";
 import { NumberField, NumberFieldTemplate as template } from "./index";
 
 const FASTNumberField = NumberField.compose({
-    baseName: "fast",
+    baseName: "number-field",
     template,
 })
 

@@ -6,7 +6,7 @@ import { ListboxOptionTemplate as itemTemplate } from "../listbox-option/listbox
 import { Listbox, ListboxTemplate as template } from "./index";
 
 const FASTListbox = Listbox.compose({
-    baseName: "fast",
+    baseName: "listbox",
     template
 })
 

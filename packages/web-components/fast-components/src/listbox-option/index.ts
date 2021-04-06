@@ -15,7 +15,7 @@ import { OptionStyles as styles } from "./listbox-option.styles";
  *
  */
 export const FASTOption = ListboxOption.compose({
-    baseName: "fast",
+    baseName: "option",
     template,
     styles,
 });
