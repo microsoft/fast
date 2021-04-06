@@ -25,7 +25,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { Flipper } from '@microsoft/fast-foundation';
-import { HorizontalScroll } from '@microsoft/fast-foundation';
+import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -639,10 +639,11 @@ export const FASTFlipper: (overrideDefinition?: import("@microsoft/fast-foundati
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTHorizontalScroll extends HorizontalScroll {
-    // (undocumented)
-    connectedCallback(): void;
-}
+export const FASTHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<HorizontalScroll_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTListbox extends Listbox {
@@ -745,6 +746,14 @@ export class FASTTreeView extends TreeView {
 
 // @public
 export const FlipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class HorizontalScroll extends HorizontalScroll_2 {
+    // @public (undocumented)
+    connectedCallback(): void;
+}
 
 // @public
 export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;

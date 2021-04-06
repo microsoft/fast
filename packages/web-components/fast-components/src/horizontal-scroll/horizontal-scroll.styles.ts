@@ -98,7 +98,7 @@ export const ActionsStyles = css`
  * Styles handling the scroll container and content
  * @public
  */
-export const HorizontalScrollStyles = css`
+export const HorizontalScrollStyles = (context, definition) => css`
     ${display("block")} :host {
         --scroll-align: center;
         --scroll-item-spacing: 5px;

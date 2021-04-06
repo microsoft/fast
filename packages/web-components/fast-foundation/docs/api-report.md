@@ -1140,8 +1140,10 @@ export const hidden = ":host([hidden]){display:none}";
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 
+// Warning: (ae-incompatible-release-tags) The symbol "HorizontalScroll" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class HorizontalScroll extends FASTElement {
+export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
@@ -1161,7 +1163,7 @@ export class HorizontalScroll extends FASTElement {
     }
 
 // @public (undocumented)
-export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll>;
+export const HorizontalScrollTemplate: (context: any, definition: any) => ViewTemplate<HorizontalScroll>;
 
 // @public
 export type HorizontalScrollView = "default" | "mobile";

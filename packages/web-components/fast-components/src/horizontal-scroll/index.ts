@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import {
-    HorizontalScroll,
+    HorizontalScroll as FoundationHorizontalScroll,
     HorizontalScrollTemplate as template,
 } from "@microsoft/fast-foundation";
 import {
@@ -9,20 +9,9 @@ import {
 } from "./horizontal-scroll.styles";
 
 /**
- * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
- * {@link @microsoft/fast-foundation#HorizontalScrollTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-horizontal-scroll\>
+ * @internal
  */
-@customElement({
-    name: "fast-horizontal-scroll",
-    template,
-    styles,
-})
-export class FASTHorizontalScroll extends HorizontalScroll {
+export class HorizontalScroll extends FoundationHorizontalScroll {
     /**
      * @public
      */
@@ -34,3 +23,18 @@ export class FASTHorizontalScroll extends HorizontalScroll {
         }
     }
 }
+
+/**
+ * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
+ * {@link @microsoft/fast-foundation#HorizontalScrollTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-horizontal-scroll\>
+ */
+export const FASTHorizontalScroll = HorizontalScroll.compose({
+    baseName: "fast",
+    template,
+    styles,
+});
