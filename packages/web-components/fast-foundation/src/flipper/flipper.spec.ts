@@ -1,14 +1,13 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { FlipperDirection } from "./flipper.options";
 import { Flipper, FlipperTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-flipper",
-    template,
+const FASTFlipper = Flipper.compose({
+    baseName: "fast",
+    template
 })
-class FASTFlipper extends Flipper {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
@@ -17,6 +16,14 @@ async function setup() {
 }
 
 describe("Flipper", () => {
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-flipper");
+    })
+
     it("should include a role of button", async () => {
         const { element, connect, disconnect } = await setup();
 

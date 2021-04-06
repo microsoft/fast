@@ -1,14 +1,17 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Flipper } from "./flipper";
+import { Flipper } from "./flipper";
 import { FlipperDirection } from "./flipper.options";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.
  * @public
  */
-export const FlipperTemplate: ViewTemplate<Flipper> = html`
-    <template
+export const FlipperTemplate: (context, definition) => ViewTemplate<Flipper> = (
+    context,
+    definition
+) => html`
+    <${context.tagFor(Flipper)}
         role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"
         tabindex="${x => (x.hiddenFromAT ? -1 : 0)}"
@@ -42,5 +45,5 @@ export const FlipperTemplate: ViewTemplate<Flipper> = html`
                 </span>
             `
         )}
-    </template>
+    </${context.tagFor(Flipper)}>
 `;

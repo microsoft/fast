@@ -1001,8 +1001,10 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     Type: T;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "Flipper" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Flipper extends FASTElement {
+export class Flipper extends FoundationElement {
     direction: FlipperDirection;
     disabled: boolean;
     hiddenFromAT: boolean;
@@ -1017,7 +1019,7 @@ export enum FlipperDirection {
 }
 
 // @public
-export const FlipperTemplate: ViewTemplate<Flipper>;
+export const FlipperTemplate: (context: any, definition: any) => ViewTemplate<Flipper>;
 
 // @public
 export const focusVisible: string;

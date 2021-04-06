@@ -632,8 +632,11 @@ export const FASTDivider: (overrideDefinition?: import("@microsoft/fast-foundati
 }> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
-export class FASTFlipper extends Flipper {
-}
+export const FASTFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").Registry;
 
 // @public
 export class FASTHorizontalScroll extends HorizontalScroll {
@@ -741,7 +744,7 @@ export class FASTTreeView extends TreeView {
 }
 
 // @public
-export const FlipperStyles: import("@microsoft/fast-element").ElementStyles;
+export const FlipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;

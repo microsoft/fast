@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Flipper, FlipperTemplate as template } from "@microsoft/fast-foundation";
 import { FlipperStyles as styles } from "./flipper.styles";
 
@@ -11,12 +10,11 @@ import { FlipperStyles as styles } from "./flipper.styles";
  * @remarks
  * HTML Element: \<fast-flipper\>
  */
-@customElement({
-    name: "fast-flipper",
+export const FASTFlipper = Flipper.compose({
+    baseName: "fast",
     template,
     styles,
-})
-export class FASTFlipper extends Flipper {}
+});
 
 /**
  * Styles for Flipper
