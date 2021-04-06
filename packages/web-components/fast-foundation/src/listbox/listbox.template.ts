@@ -6,8 +6,11 @@ import { Listbox } from "./listbox";
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.
  * @public
  */
-export const ListboxTemplate: ViewTemplate<Listbox> = html`
-    <template
+export const ListboxTemplate: (context, definition) => ViewTemplate<Listbox> = (
+    context,
+    definition
+) => html`
+    <${context.tagFor(Listbox)}
         aria-activedescendant="${x => x.ariaActiveDescendant}"
         class="listbox"
         role="${x => x.role}"
@@ -23,5 +26,5 @@ export const ListboxTemplate: ViewTemplate<Listbox> = html`
                 property: "slottedOptions",
             })}
         ></slot>
-    </template>
+    </${context.tagFor(Listbox)}>
 `;

@@ -5,33 +5,31 @@ import { ListboxOption } from "../listbox-option/listbox-option";
 import { ListboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
 import { Listbox, ListboxTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-listbox",
-    template,
+const FASTListbox = Listbox.compose({
+    baseName: "fast",
+    template
 })
-class FASTListbox extends Listbox {}
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Listbox", () => {
-    @customElement({
-        name: "fast-option",
-        template: itemTemplate,
+    const FASTOption = ListboxOption.compose({
+        baseName: "fast",
+        template: itemTemplate
     })
-    class FASTOption extends ListboxOption {}
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture<FASTListbox>(
+        const { element, connect, disconnect } = await fixture<Listbox>(
             "fast-listbox"
         );
 
         const option1 = document.createElement("fast-option");
-        (option1 as FASTOption).textContent = "option 1";
+        (option1 as ListboxOption).textContent = "option 1";
 
         const option2 = document.createElement("fast-option");
-        (option2 as FASTOption).textContent = "option 2";
+        (option2 as ListboxOption).textContent = "option 2";
 
         const option3 = document.createElement("fast-option");
-        (option3 as FASTOption).textContent = "option 3";
+        (option3 as ListboxOption).textContent = "option 3";
 
         element.appendChild(option1);
         element.appendChild(option2);

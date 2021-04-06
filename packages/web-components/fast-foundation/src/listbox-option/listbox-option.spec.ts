@@ -4,18 +4,25 @@ import { customElement, DOM } from "@microsoft/fast-element";
 import { ListboxOption } from "./listbox-option";
 import { ListboxOptionTemplate } from "../listbox-option/listbox-option.template";
 
-@customElement({
-    name: "fast-option",
+const FASTOption = ListboxOption.compose({
+    baseName: "fast",
     template: ListboxOptionTemplate,
 })
-class FASTOption extends ListboxOption {}
 
 describe("ListboxOption", () => {
     async function setup() {
-        const { element, connect, disconnect } = await fixture<FASTOption>("fast-option");
+        const { element, connect, disconnect } = await fixture<ListboxOption>("fast-option");
 
         return { element, connect, disconnect };
     }
+
+    it("should include the correct element prefix", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.tagName).to.equal("fast-option");
+    })
 
     it("should set the `aria-selected` attribute equal to the `selected` value", async () => {
         const { element, connect, disconnect } = await setup();
