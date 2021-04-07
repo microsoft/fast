@@ -69,6 +69,43 @@ describe("HorinzontalScroll", () => {
         await disconnect();
     });
 
+    it("should disable next flipper when resize bigger", async () => {
+        const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
+            <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px">
+                ${getCards(5)}
+            </fast-horizontal-scroll>
+        `);
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+        
+        element.style.width = "1000px";
+        await DOM.nextUpdate();
+
+        expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should enable next flipper once dynamic content is loaded", async () => {
+        const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
+            <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px"></fast-horizontal-scroll>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+        element.innerHTML = getCards(8);
+
+        await DOM.nextUpdate();
+
+        expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+        await disconnect();
+    });
+
     describe("Flippers", () => {
         it("should enable the next flipper when content exceeds horizontal-scroll width", async () => {
             const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
