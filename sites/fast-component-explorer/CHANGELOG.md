@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-component-explorer
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Wed, 07 Apr 2021 00:26:42 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.17.2
+
+Wed, 07 Apr 2021 00:26:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.1 (chhol@microsoft.com)
 
 ## [0.17.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.17.1...@microsoft/fast-component-explorer@0.17.2) (2021-04-06)
 

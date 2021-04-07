@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-website
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Wed, 07 Apr 2021 00:26:42 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 1.3.16
+
+Wed, 07 Apr 2021 00:26:42 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (chhol@microsoft.com)
 
 ## [1.3.16](https://github.com/Microsoft/fast/compare/@microsoft/fast-website@1.3.15...@microsoft/fast-website@1.3.16) (2021-04-06)
 
