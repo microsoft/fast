@@ -306,9 +306,9 @@ describe("resolveReferenceType", () => {
         ).to.equal("property");
     });
     it("should resolve a reference of type value", () => {
-        expect(resolveReferenceType("<line-style>", CombinatorType.none, [], [])).to.equal(
-            "value"
-        );
+        expect(
+            resolveReferenceType("<line-style>", CombinatorType.none, [], [])
+        ).to.equal("value");
         expect(resolveReferenceType("<length>", CombinatorType.none, [], [])).to.equal(
             "value"
         );
@@ -349,9 +349,9 @@ describe("resolveCSSPropertySyntaxSplit", () => {
         ).to.deep.equal(["foo", "bar"]);
     });
     it("should split by mandatory in any order", () => {
-        expect(resolveCSSPropertySyntaxSplit("foobar", CombinatorType.none)).to.deep.equal([
-            "foobar",
-        ]);
+        expect(
+            resolveCSSPropertySyntaxSplit("foobar", CombinatorType.none)
+        ).to.deep.equal(["foobar"]);
     });
 });
 
@@ -624,7 +624,9 @@ describe("mapCSSProperties", () => {
                 types: mdnCSS.types,
             } as any;
 
-            expect(mapCSSProperties(subsetOfMDNCSS, { status: "standard" })).to.deep.equal({
+            expect(
+                mapCSSProperties(subsetOfMDNCSS, { status: "standard" })
+            ).to.deep.equal({
                 border: {
                     name: "border",
                     appliesTo: "allElements",
@@ -974,9 +976,13 @@ describe("mapMixedCombinatorTypes", () => {
         const syntax2: string = "[ foo bar ] | bat && baz";
         expect(mapMixedCombinatorTypes(syntax2)).to.equal("[ foo bar ] | [ bat && baz ]");
         const syntax3: string = "foo && baz [ bar || bat ]";
-        expect(mapMixedCombinatorTypes(syntax3)).to.equal("[ foo && baz ] [ bar || bat ]");
+        expect(mapMixedCombinatorTypes(syntax3)).to.equal(
+            "[ foo && baz ] [ bar || bat ]"
+        );
         const syntax4: string = "foo || [ bar && bat ] baz";
-        expect(mapMixedCombinatorTypes(syntax4)).to.equal("[ foo || [ bar && bat ] ] baz");
+        expect(mapMixedCombinatorTypes(syntax4)).to.equal(
+            "[ foo || [ bar && bat ] ] baz"
+        );
     });
     it("should not add brackets if brackets already exist and all combinator types match", () => {
         const syntax1: string = "[ [ foo | bar ] bat ] && baz";

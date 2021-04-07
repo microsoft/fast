@@ -513,7 +513,8 @@ describe("MonacoAdapter", () => {
         monacoAdapter.action("foo").run();
 
         const root = resolvedDataDictionary[1];
-        const textId = resolvedDataDictionary[0][resolvedDataDictionary[1]].data.Slot[0].id;
+        const textId =
+            resolvedDataDictionary[0][resolvedDataDictionary[1]].data.Slot[0].id;
 
         expect(resolvedDataDictionary).to.deep.equal([
             {

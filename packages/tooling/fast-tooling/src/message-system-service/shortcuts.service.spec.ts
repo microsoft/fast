@@ -166,9 +166,7 @@ describe("Shortcuts", () => {
         });
 
         expect(postMessageCallback).to.have.been.called.exactly(1);
-        expect(callbackArgs.type).to.equal(
-            MessageSystemType.custom
-        );
+        expect(callbackArgs.type).to.equal(MessageSystemType.custom);
         expect(callbackArgs.id).to.equal(shortcutsId);
         expect(callbackArgs.action).to.equal("initialize");
     });

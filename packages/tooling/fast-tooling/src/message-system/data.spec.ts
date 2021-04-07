@@ -21,7 +21,9 @@ describe("getLinkedDataDictionary", () => {
             dictionaryId,
             dataLocation: "root-location",
         });
-        const linkedDataDictionaryKeys = Object.keys(linkedDataDictionary.dataDictionary[0]);
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
 
         expect(linkedDataDictionaryKeys).to.have.length(1);
         expect(linkedDataDictionary.dictionaryId).to.equal(dictionaryId);
@@ -72,7 +74,9 @@ describe("getLinkedDataDictionary", () => {
             dictionaryId,
             dataLocation: "root-location",
         });
-        const linkedDataDictionaryKeys = Object.keys(linkedDataDictionary.dataDictionary[0]);
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
 
         expect(linkedDataDictionaryKeys).to.have.length(4);
         expect(linkedDataDictionary.dictionaryId).to.equal(dictionaryId);
@@ -112,7 +116,9 @@ describe("getLinkedDataDictionary", () => {
             dictionaryId,
             dataLocation: "root-location",
         });
-        const linkedDataDictionaryKeys = Object.keys(linkedDataDictionary.dataDictionary[0]);
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
 
         expect(linkedDataDictionaryKeys).to.have.length(3);
     });

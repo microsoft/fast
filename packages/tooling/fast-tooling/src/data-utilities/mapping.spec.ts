@@ -40,7 +40,6 @@ describe("mapDataDictionary", () => {
             resolver,
         });
 
-        
         expect(mapper).to.have.been.called.exactly(1);
         expect(resolver).to.have.been.called.exactly(1);
     });
@@ -251,7 +250,9 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data.outerHTML).to.equal(document.createElement("div").outerHTML);
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(
+            document.createElement("div").outerHTML
+        );
     });
     it("should map an element to boolean data", () => {
         const dataDictionary: DataDictionary<any> = [
@@ -1064,7 +1065,9 @@ describe("htmlMapper", () => {
 
 describe("mapWebComponentDefinitionToJSONSchema", () => {
     it("should not throw", () => {
-        expect(() => mapWebComponentDefinitionToJSONSchema({ version: 1 })).not.to.throw();
+        expect(() =>
+            mapWebComponentDefinitionToJSONSchema({ version: 1 })
+        ).not.to.throw();
     });
     it("should map attributes and slots to the JSON schema", () => {
         const name: string = "foo";

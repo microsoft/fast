@@ -275,7 +275,9 @@ describe("getNavigation", () => {
         );
 
         expect(navigation[0]["[0].hello"].data).to.equal("world");
-        expect(navigation[0]["[0].hello"].schemaLocation).to.equal("items.properties.hello");
+        expect(navigation[0]["[0].hello"].schemaLocation).to.equal(
+            "items.properties.hello"
+        );
         expect(navigation[0]["[0].hello"].schema).to.deep.equal({
             title: "Hello world",
             type: DataType.string,

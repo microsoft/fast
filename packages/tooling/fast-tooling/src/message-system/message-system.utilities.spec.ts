@@ -427,7 +427,9 @@ describe("getMessage", () => {
                     }
                 )
             ).not.to.equal(-1);
-            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(linkedData[0].data);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
             expect(message.linkedDataIds).to.deep.equal([{ id }]);
         });
         it("should add linkedData to the data and the data dictionary when specifying a dictionary ID", () => {
@@ -470,9 +472,9 @@ describe("getMessage", () => {
             expect(
                 Array.isArray((message.dataDictionary[0].abc.data as any).linkedData)
             ).to.equal(true);
-            expect((message.dataDictionary[0].abc.data as any).linkedData.length).to.equal(
-                1
-            );
+            expect(
+                (message.dataDictionary[0].abc.data as any).linkedData.length
+            ).to.equal(1);
 
             const id: string = (message.dataDictionary[0].abc.data as any).linkedData[0]
                 .id;
@@ -488,10 +490,12 @@ describe("getMessage", () => {
                     }
                 )
             ).not.to.equal(-1);
-            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(linkedData[0].data);
-            expect((dictionary.dataDictionary[0].abc.data as any).linkedData).to.deep.equal([
-                { id },
-            ]);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
+            expect(
+                (dictionary.dataDictionary[0].abc.data as any).linkedData
+            ).to.deep.equal([{ id }]);
         });
         it("should add linkedData to an existing array of linkedData items", () => {
             getMessage({
@@ -553,7 +557,9 @@ describe("getMessage", () => {
                     }
                 )
             ).not.to.equal(-1);
-            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(linkedData[0].data);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
         });
         it("should add linkedData to a specific index of an existing array of linkedData items", () => {
             getMessage({
@@ -615,7 +621,9 @@ describe("getMessage", () => {
                     }
                 )
             ).not.to.equal(-1);
-            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(linkedData[0].data);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
         });
         it("should add nested linked data to the data dictionary", () => {
             getMessage({
@@ -766,7 +774,9 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect((message.dataDictionary[0].data.data as any).linkedData).to.deep.equal([]);
+            expect((message.dataDictionary[0].data.data as any).linkedData).to.deep.equal(
+                []
+            );
         });
         it("should remove linkedData and linked data items from the data and the data dictionary", () => {
             getMessage({
@@ -1121,7 +1131,9 @@ describe("getMessage", () => {
             expect(updateNavigationDictionaryActiveId.action).to.equal(
                 MessageSystemNavigationDictionaryTypeAction.updateActiveId
             );
-            expect(updateNavigationDictionaryActiveId.activeDictionaryId).to.equal("nav2");
+            expect(updateNavigationDictionaryActiveId.activeDictionaryId).to.equal(
+                "nav2"
+            );
         });
     });
     describe("validation", () => {
@@ -1141,7 +1153,9 @@ describe("getMessage", () => {
 
             expect(message.type).to.equal(validationUpdate.type);
             expect(message.action).to.equal(validationUpdate.action);
-            expect(message.validationErrors).to.deep.equal(validationUpdate.validationErrors);
+            expect(message.validationErrors).to.deep.equal(
+                validationUpdate.validationErrors
+            );
             expect(message.dictionaryId).to.equal(validationUpdate.dictionaryId);
         });
         it("should return messages sent to get the validation", () => {
@@ -1163,13 +1177,15 @@ describe("getMessage", () => {
                 dictionaryId: "bar",
             };
 
-            getMessage(getValidation)
+            getMessage(getValidation);
 
             const message = getMessage(validationUpdate) as ValidationMessageOutgoing;
 
             expect(message.type).to.equal(getValidation.type);
             expect(message.action).to.equal(validationUpdate.action);
-            expect(message.validationErrors).to.deep.equal(validationUpdate.validationErrors);
+            expect(message.validationErrors).to.deep.equal(
+                validationUpdate.validationErrors
+            );
             expect(message.dictionaryId).to.equal(getValidation.dictionaryId);
         });
         it("should return custom messages sent", () => {
