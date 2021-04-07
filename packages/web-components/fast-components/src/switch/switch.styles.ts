@@ -23,7 +23,8 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SwitchStyles = css`
+export const SwitchStyles = (context, definition) =>
+    css`
     :host([hidden]) {
         display: none;
     }
@@ -173,20 +174,20 @@ export const SwitchStyles = css`
         display: block;
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        accentForegroundCutRestBehavior,
+        neutralFillInputActiveBehavior,
+        neutralFillInputHoverBehavior,
+        neutralFillInputRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundRestBehavior,
+        neutralOutlineActiveBehavior,
+        neutralOutlineHoverBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             .checked-indicator,
             :host(:not([disabled])) .switch:active .checked-indicator {
                 forced-color-adjust: none;
@@ -234,29 +235,29 @@ export const SwitchStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
         `
-    ),
-    new DirectionalStyleSheetBehavior(
-        css`
-            .checked-indicator {
-                left: 5px;
-                right: calc(((${heightNumber} / 2) + 1) * 1px);
-            }
+        ),
+        new DirectionalStyleSheetBehavior(
+            css`
+                .checked-indicator {
+                    left: 5px;
+                    right: calc(((${heightNumber} / 2) + 1) * 1px);
+                }
 
-            :host([aria-checked="true"]) .checked-indicator {
-                left: calc(((${heightNumber} / 2) + 1) * 1px);
-                right: 5px;
-            }
-        `,
-        css`
-            .checked-indicator {
-                right: 5px;
-                left: calc(((${heightNumber} / 2) + 1) * 1px);
-            }
+                :host([aria-checked="true"]) .checked-indicator {
+                    left: calc(((${heightNumber} / 2) + 1) * 1px);
+                    right: 5px;
+                }
+            `,
+            css`
+                .checked-indicator {
+                    right: 5px;
+                    left: calc(((${heightNumber} / 2) + 1) * 1px);
+                }
 
-            :host([aria-checked="true"]) .checked-indicator {
-                right: calc(((${heightNumber} / 2) + 1) * 1px);
-                left: 5px;
-            }
-        `
-    )
-);
+                :host([aria-checked="true"]) .checked-indicator {
+                    right: calc(((${heightNumber} / 2) + 1) * 1px);
+                    left: 5px;
+                }
+            `
+        )
+    );

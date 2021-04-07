@@ -6,7 +6,10 @@ import type { Switch } from "./switch";
  * The template for the {@link @microsoft/fast-foundation#(Switch:class)} component.
  * @public
  */
-export const SwitchTemplate: ViewTemplate<Switch> = html`
+export const SwitchTemplate: (context, definition) => ViewTemplate<Switch> = (
+    context,
+    definition
+) => html`
     <template
         role="switch"
         aria-checked="${x => x.checked}"

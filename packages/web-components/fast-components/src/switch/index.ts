@@ -11,12 +11,11 @@ import { SwitchStyles as styles } from "./switch.styles";
  * @remarks
  * HTML Element: \<fast-switch\>
  */
-@customElement({
-    name: "fast-switch",
+export const FASTSwitch = Switch.compose({
+    baseName: "switch",
     template,
     styles,
-})
-export class FASTSwitch extends Switch {}
+});
 
 /**
  * Styles for Switch
