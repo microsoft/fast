@@ -1,15 +1,14 @@
 import { expect } from "chai";
 import { Anchor, AnchorTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
 
 const FASTAnchor = Anchor.compose({
     baseName: "anchor",
     template
-})
+});
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Anchor>("fast-anchor");
+    const { element, connect, disconnect } = await fixture(FASTAnchor());
 
     return { element, connect, disconnect };
 }
@@ -21,6 +20,8 @@ describe("Anchor", () => {
         await connect();
 
         expect(element.tagName.toLowerCase()).to.equal("fast-anchor");
+
+        await disconnect();
     })
 
     it("should set the `download` attribute on the internal anchor equal to the value provided", async () => {
@@ -30,6 +31,7 @@ describe("Anchor", () => {
         element.download = download;
 
         await connect();
+
         expect(element.shadowRoot?.querySelector("a")?.getAttribute("download")).to.equal(
             download
         );

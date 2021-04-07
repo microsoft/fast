@@ -310,15 +310,25 @@ export const FASTAccordion: (overrideDefinition?: import("@microsoft/fast-founda
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Accordion, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Accordion>;
 
 // @public
 export const FASTAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof AccordionItem>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
+//
 // @public
 export const FASTAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -327,28 +337,47 @@ export const FASTAnchor: (overrideDefinition?: import("@microsoft/fast-foundatio
     shadowOptions: {
         delegatesFocus: true;
     };
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Anchor_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof Anchor>;
 
 // @beta
 export const FASTAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof AnchoredRegion>;
 
 // @public
 export const FASTBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Badge, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Badge, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Badge>;
 
 // @public
 export const FASTBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Breadcrumb, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Breadcrumb>;
 
 // @public
 export const FASTBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -358,8 +387,17 @@ export const FASTBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-f
     shadowOptions: {
         delegatesFocus: true;
     };
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof BreadcrumbItem>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTButton" is marked as @public, but its signature references "Button" which is marked as @internal
+//
 // @public
 export const FASTButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -368,7 +406,14 @@ export const FASTButton: (overrideDefinition?: import("@microsoft/fast-foundatio
     shadowOptions: {
         delegatesFocus: true;
     };
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Button_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof Button>;
 
 // @public
 export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {
@@ -388,14 +433,22 @@ export const FASTCheckbox: (overrideDefinition?: import("@microsoft/fast-foundat
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Checkbox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Checkbox>;
 
 // @public
 export const FASTCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Combobox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Combobox>;
 
 // @public
 export class FASTDataGrid extends DataGrid {
@@ -618,57 +671,95 @@ export const FASTDialog: (overrideDefinition?: import("@microsoft/fast-foundatio
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Dialog, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Dialog>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+//
 // @public
 export const FASTDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Disclosure_2, any>;
     styles: import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Disclosure_2, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof Disclosure>;
 
 // @public
 export const FASTDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Divider, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Divider, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Divider>;
 
 // @public
 export const FASTFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Flipper, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Flipper>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTHorizontalScroll" is marked as @public, but its signature references "HorizontalScroll" which is marked as @internal
+//
 // @public
 export const FASTHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<HorizontalScroll_2, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<HorizontalScroll_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof HorizontalScroll>;
 
 // @public
 export const FASTListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Listbox, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Listbox>;
 
 // @public
 export const FASTMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Menu, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Menu, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Menu>;
 
 // @public
 export const FASTMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<MenuItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof MenuItem>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "FASTNumberField" is marked as @public, but its signature references "NumberField" which is marked as @internal
+//
 // @public
 export const FASTNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -677,14 +768,25 @@ export const FASTNumberField: (overrideDefinition?: import("@microsoft/fast-foun
     shadowOptions: {
         delegatesFocus: true;
     };
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<NumberField_2, any>;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof NumberField>;
 
 // @public
 export const FASTOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<ListboxOption, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<ListboxOption, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof ListboxOption>;
 
 // @public
 export class FASTProgress extends BaseProgress {
@@ -707,7 +809,11 @@ export const FASTSelect: (overrideDefinition?: import("@microsoft/fast-foundatio
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Select, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").Registry;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Select, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Select>;
 
 // @public
 export class FASTSkeleton extends Skeleton {
