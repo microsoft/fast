@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.17.0...@microsoft/fast-tooling@0.18.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* add error catching for unparsable attributes and checks for other edge cases which may occur when typing in the monaco editor ([#4485](https://github.com/Microsoft/fast/issues/4485)) ([4fe5f6b](https://github.com/Microsoft/fast/commit/4fe5f6b27cdea11af2fc49f7b54f5aa796af4431))
+
+
+### Features
+
+* add custom control for CSS editing ([#4519](https://github.com/Microsoft/fast/issues/4519)) ([2f4e12c](https://github.com/Microsoft/fast/commit/2f4e12c697f04fba550f68271301759a2204b827)), closes [#4173](https://github.com/Microsoft/fast/issues/4173) [#4187](https://github.com/Microsoft/fast/issues/4187) [#4192](https://github.com/Microsoft/fast/issues/4192) [#4202](https://github.com/Microsoft/fast/issues/4202) [#4285](https://github.com/Microsoft/fast/issues/4285) [#4284](https://github.com/Microsoft/fast/issues/4284) [#4283](https://github.com/Microsoft/fast/issues/4283)
+
+
+
+
+
 # [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.1...@microsoft/fast-tooling@0.17.0) (2021-03-18)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-component-explorer",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "Component exploration",
   "sideEffects": false,
   "private": true,
@@ -38,7 +38,7 @@
     "@microsoft/fast-components-class-name-contracts-msft": "^4.9.0",
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
-    "@microsoft/site-utilities": "^0.8.1",
+    "@microsoft/site-utilities": "^0.9.0",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -81,13 +81,13 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.2",
+    "@microsoft/fast-colors": "^5.1.3",
     "@microsoft/fast-components-react-base": "^4.27.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
-    "@microsoft/fast-tooling": "^0.17.0",
-    "@microsoft/fast-tooling-react": "^2.7.1",
+    "@microsoft/fast-tooling": "^0.18.0",
+    "@microsoft/fast-tooling-react": "^2.8.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "@skatejs/val": "^0.5.0",
     "monaco-editor": "^0.21.2",
