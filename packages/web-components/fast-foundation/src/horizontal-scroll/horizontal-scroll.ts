@@ -163,8 +163,8 @@ export class HorizontalScroll extends FASTElement {
 
     /**
      * Updates scroll stops and flippers when scroll items change
-     * @param previous current scroll items
-     * @param next new updated scroll items
+     * @param previous - current scroll items
+     * @param next - new updated scroll items
      * @public
      */
     public scrollItemsChanged(previous, next) {
