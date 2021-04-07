@@ -12,7 +12,7 @@ import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-breadcrumb-item\>
+ * HTML Element: `<fast-breadcrumb-item>`
  */
 @customElement({
     name: "fast-breadcrumb-item",
@@ -23,3 +23,5 @@ import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
     },
 })
 export class FASTBreadcrumbItem extends BreadcrumbItem {}
+
+export { BreadcrumbItemStyles } from "./breadcrumb-item.styles";

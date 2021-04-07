@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { MenuItem, createMenuItemTemplate } from "@microsoft/fast-foundation";
+import { createMenuItemTemplate, MenuItem } from "@microsoft/fast-foundation";
 import { MenuItemStyles as styles } from "./menu-item.styles";
 
 const template = createMenuItemTemplate("fast");
@@ -11,7 +11,7 @@ const template = createMenuItemTemplate("fast");
  *
  * @public
  * @remarks
- * HTML Element: \<fast-menu-item\>
+ * HTML Element: `<fast-menu-item>`
  */
 @customElement({
     name: "fast-menu-item",
@@ -20,8 +20,4 @@ const template = createMenuItemTemplate("fast");
 })
 export class FASTMenuItem extends MenuItem {}
 
-/**
- * Styles for MenuItem
- * @public
- */
-export const MenuItemStyles = styles;
+export { MenuItemStyles } from "./menu-item.styles";

@@ -1,13 +1,16 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import {
-    accentFillRestBehavior,
-    heightNumber,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { accentFillRestBehavior, neutralForegroundRestBehavior } from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const TabsStyles = css`
+/**
+ * Styles for the {@link FASTTabs|FASTTabs component}.
+ *
+ * @public
+ */
+export const TabsStyles: ElementStyles = css`
     ${display("grid")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);

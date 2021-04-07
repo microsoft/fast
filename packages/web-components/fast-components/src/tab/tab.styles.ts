@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -13,7 +14,6 @@ import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
-    heightNumber,
     neutralFillActiveBehavior,
     neutralFillHoverBehavior,
     neutralFillRestBehavior,
@@ -23,9 +23,15 @@ import {
     neutralForegroundHintBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-} from "../styles";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const TabStyles = css`
+/**
+ * Styles for the {@link FASTTab|FASTTab component}.
+ *
+ * @public
+ */
+export const TabStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);

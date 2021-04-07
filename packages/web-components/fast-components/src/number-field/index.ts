@@ -15,7 +15,7 @@ export type NumberFieldAppearance = "filled" | "outline";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-number-field\>
+ * HTML Element: `<fast-number-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -50,8 +50,4 @@ export class FASTNumberField extends NumberField {
     }
 }
 
-/**
- * Styles for NumberField
- * @public
- */
-export const NumberFieldStyles = styles;
+export { NumberFieldStyles } from "./number-field.styles";

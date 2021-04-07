@@ -9,7 +9,7 @@ import { ProgressStyles as styles } from "./progress.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-progress\>
+ * HTML Element: `<fast-progress>`
  */
 @customElement({
     name: "fast-progress",
@@ -18,8 +18,4 @@ import { ProgressStyles as styles } from "./progress.styles";
 })
 export class FASTProgress extends BaseProgress {}
 
-/**
- * Styles for Progress
- * @public
- */
-export const ProgressStyles = styles;
+export { ProgressStyles } from "./progress.styles";

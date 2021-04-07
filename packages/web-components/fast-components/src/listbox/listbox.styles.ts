@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     focusVisible,
@@ -12,7 +13,12 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
-export const ListboxStyles = css`
+/**
+ * Styles for the {@link FASTListbox|FASTListbox component}.
+ *
+ * @public
+ */
+export const ListboxStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         background: ${neutralLayerFloatingBehavior.var};
         border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};

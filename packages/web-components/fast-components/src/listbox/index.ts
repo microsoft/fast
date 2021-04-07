@@ -9,7 +9,7 @@ import { ListboxStyles as styles } from "./listbox.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-listbox\>
+ * HTML Element: `<fast-listbox>`
  *
  */
 @customElement({
@@ -19,8 +19,4 @@ import { ListboxStyles as styles } from "./listbox.styles";
 })
 export class FASTListbox extends Listbox {}
 
-/**
- * Styles for Listbox
- * @public
- */
-export const ListboxStyles = styles;
+export { ListboxStyles } from "./listbox.styles";

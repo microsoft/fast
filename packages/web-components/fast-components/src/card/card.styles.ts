@@ -1,9 +1,15 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { elevation } from "../styles/index";
 
-export const CardStyles = css`
+/**
+ * Styles for the {@link FASTCard|FASTCard component}.
+ *
+ * @public
+ */
+export const CardStyles: ElementStyles = css`
     ${display("block")} :host {
         --elevation: 4;
         display: block;

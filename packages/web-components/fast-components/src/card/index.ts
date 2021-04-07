@@ -5,7 +5,7 @@ import {
     DesignSystemProvider,
     CardTemplate as template,
 } from "@microsoft/fast-foundation";
-import { FASTDesignSystem } from "../fast-design-system";
+import type { FASTDesignSystem } from "../fast-design-system";
 import { createColorPalette, neutralFillCard } from "../color";
 import { CardStyles as styles } from "./card.styles";
 
@@ -18,7 +18,7 @@ const paletteCache = new Map();
  *
  * @public
  * @remarks
- * HTML Element: \<fast-card\>
+ * HTML Element: `<fast-card>`
  */
 @customElement({
     name: "fast-card",
@@ -105,8 +105,4 @@ export class FASTCard extends DesignSystemProvider
     }
 }
 
-/**
- * Styles for Card
- * @public
- */
-export const CardStyles = styles;
+export { CardStyles } from "./card.styles";

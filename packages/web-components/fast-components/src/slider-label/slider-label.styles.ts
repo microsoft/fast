@@ -1,13 +1,19 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    heightNumber,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const horizontalSliderStyles = css`
+/**
+ * Styles for the {@link FASTSliderLabel|FASTSliderLabel component} with a horizontal orientation.
+ *
+ * @public
+ */
+export const horizontalSliderStyles: ElementStyles = css`
     :host {
         align-self: start;
         grid-row: 2;
@@ -24,7 +30,12 @@ export const horizontalSliderStyles = css`
     }
 `;
 
-export const verticalSliderStyles = css`
+/**
+ * Styles for the {@link FASTSliderLabel|FASTSliderLabel component} with a vertical orientation.
+ *
+ * @public
+ */
+export const verticalSliderStyles: ElementStyles = css`
     :host {
         justify-self: start;
         grid-column: 2;
@@ -48,7 +59,12 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const SliderLabelStyles = css`
+/**
+ * Base styles for the {@link FASTSliderLabel|FASTSliderLabel component}.
+ *
+ * @public
+ */
+export const SliderLabelStyles: ElementStyles = css`
     ${display("block")} :host {
         font-family: var(--body-font);
         color: ${neutralForegroundRestBehavior.var};

@@ -9,7 +9,7 @@ import { MenuStyles as styles } from "./menu.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-menu\>
+ * HTML Element: `<fast-menu>`
  */
 @customElement({
     name: "fast-menu",
@@ -18,8 +18,4 @@ import { MenuStyles as styles } from "./menu.styles";
 })
 export class FASTMenu extends Menu {}
 
-/**
- * Styles for Menu
- * @public
- */
-export const MenuStyles = styles;
+export { MenuStyles } from "./menu.styles";

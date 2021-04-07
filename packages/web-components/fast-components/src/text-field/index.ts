@@ -15,7 +15,7 @@ export type TextFieldAppearance = "filled" | "outline";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-text-field\>
+ * HTML Element: `<fast-text-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -50,8 +50,4 @@ export class FASTTextField extends TextField {
     }
 }
 
-/**
- * Styles for TextField
- * @public
- */
-export const TextFieldStyles = styles;
+export { TextFieldStyles } from "./text-field.styles";

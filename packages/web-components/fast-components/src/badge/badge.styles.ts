@@ -1,8 +1,15 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { accentForegroundRestBehavior, heightNumber } from "../styles/index";
+import { accentForegroundRestBehavior } from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const BadgeStyles = css`
+/**
+ * Styles for the {@link FASTBadge|FASTBadge component}.
+ *
+ * @public
+ */
+export const BadgeStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);

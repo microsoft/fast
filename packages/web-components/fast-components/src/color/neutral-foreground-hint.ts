@@ -1,4 +1,4 @@
-import { DesignSystemResolver } from "../fast-design-system";
+import type { DesignSystemResolver } from "../fast-design-system";
 import { neutralPalette } from "../fast-design-system";
 import {
     colorRecipeFactory,

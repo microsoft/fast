@@ -1,11 +1,5 @@
 import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import { DataType } from "@microsoft/fast-tooling";
-import {
-    AxisPositioningMode,
-    AxisScalingMode,
-    HorizontalPosition,
-    VerticalPosition,
-} from "@microsoft/fast-foundation";
 
 export const fastAnchoredRegionDefinition: WebComponentDefinition = {
     version: 1,

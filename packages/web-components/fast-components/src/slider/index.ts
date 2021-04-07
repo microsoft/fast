@@ -9,7 +9,7 @@ import { SliderStyles as styles } from "./slider.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-slider\>
+ * HTML Element: `<fast-slider>`
  */
 @customElement({
     name: "fast-slider",
@@ -18,8 +18,4 @@ import { SliderStyles as styles } from "./slider.styles";
 })
 export class FASTSlider extends Slider {}
 
-/**
- * Styles for Slider
- * @public
- */
-export const SliderStyles = styles;
+export { SliderStyles } from "./slider.styles";

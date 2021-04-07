@@ -12,8 +12,8 @@ import {
     neutralFillRest,
     neutralFillSelected,
 } from "./neutral-fill";
-import { Palette } from "./palette";
-import { FillSwatchFamily, Swatch } from "./common";
+import type { Palette } from "./palette";
+import type { FillSwatchFamily, Swatch } from "./common";
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

@@ -1,8 +1,14 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { disabledCursor, focusVisible } from "@microsoft/fast-foundation";
 import { SelectStyles } from "../select/select.styles";
 
-export const ComboboxStyles = css`
+/**
+ * Styles for the {@link FASTCombobox|FASTCombobox component}.
+ *
+ * @public
+ */
+export const ComboboxStyles: ElementStyles = css`
     ${SelectStyles}
 
     :host(:empty) .listbox {

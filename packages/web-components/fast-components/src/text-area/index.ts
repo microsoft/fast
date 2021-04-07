@@ -15,7 +15,7 @@ export type TextAreaAppearance = "filled" | "outline";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-text-area\>
+ * HTML Element: `<fast-text-area>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -50,8 +50,4 @@ export class FASTTextArea extends TextArea {
     }
 }
 
-/**
- * Styles for TextArea
- * @public
- */
-export const TextAreaStyles = styles;
+export { TextAreaStyles } from "./text-area.styles";

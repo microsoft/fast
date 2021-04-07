@@ -14,7 +14,7 @@ export type DisclosureAppearance = "accent" | "lightweight";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-Disclosure\>
+ * HTML Element: `<fast-disclosure>`
  *
  */
 @customElement({
@@ -86,8 +86,4 @@ export class FASTDisclosure extends Disclosure {
     }
 }
 
-/**
- * Styles for Disclosure
- * @public
- */
-export const DisclosureStyles = styles;
+export { DisclosureStyles } from "./disclosure.styles";

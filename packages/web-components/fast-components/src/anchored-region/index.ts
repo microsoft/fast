@@ -12,7 +12,7 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
  *
  * @beta
  * @remarks
- * HTML Element: \<fast-anchored-region\>
+ * HTML Element: `<fast-anchored-region>`
  */
 @customElement({
     name: "fast-anchored-region",
@@ -21,8 +21,4 @@ import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
 })
 export class FASTAnchoredRegion extends AnchoredRegion {}
 
-/**
- * Styles for AnchoredRegion
- * @public
- */
-export const AnchoredRegionStyles = styles;
+export { AnchoredRegionStyles } from "./anchored-region.styles";

@@ -1,15 +1,15 @@
 import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
-    DataGrid,
-    createDataGridTemplate,
-    DataGridRow,
-    createDataGridRowTemplate,
-    DataGridCell,
     createDataGridCellTemplate,
+    createDataGridRowTemplate,
+    createDataGridTemplate,
+    DataGrid,
+    DataGridCell,
+    DataGridRow,
 } from "@microsoft/fast-foundation";
-import { DataGridStyles as gridStyles } from "./data-grid.styles";
-import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
+import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
+import { DataGridStyles as gridStyles } from "./data-grid.styles";
 
 const gridTemplate: ViewTemplate = createDataGridTemplate("fast");
 const rowTemplate: ViewTemplate = createDataGridRowTemplate("fast");
@@ -20,7 +20,7 @@ const cellTemplate: ViewTemplate = createDataGridCellTemplate("fast");
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid\>
+ * HTML Element: `<fast-data-grid>`
  */
 @customElement({
     name: "fast-data-grid",
@@ -30,17 +30,11 @@ const cellTemplate: ViewTemplate = createDataGridCellTemplate("fast");
 export class FASTDataGrid extends DataGrid {}
 
 /**
- * Styles for DataGrid
- * @public
- */
-export const DataGridStyles = gridStyles;
-
-/**
  * The FAST Data Grid Row Element.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid-row\>
+ * HTML Element: `<fast-data-grid-row>`
  */
 @customElement({
     name: "fast-data-grid-row",
@@ -50,17 +44,11 @@ export const DataGridStyles = gridStyles;
 export class FASTDataGridRow extends DataGridRow {}
 
 /**
- * Styles for DataGrid row
- * @public
- */
-export const DataGridRowStyles = rowStyles;
-
-/**
  * The FAST Data Grid Cell Element.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid-cell\>
+ * HTML Element: `<fast-data-grid-cell>`
  */
 @customElement({
     name: "fast-data-grid-cell",
@@ -69,8 +57,6 @@ export const DataGridRowStyles = rowStyles;
 })
 export class FASTDataGridCell extends DataGridCell {}
 
-/**
- * Styles for DataGrid cell
- * @public
- */
-export const DataGridCellStyles = cellStyles;
+export { DataGridCellStyles } from "./data-grid-cell.styles";
+export { DataGridRowStyles } from "./data-grid-row.styles";
+export { DataGridStyles } from "./data-grid.styles";

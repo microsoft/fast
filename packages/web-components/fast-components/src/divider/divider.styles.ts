@@ -1,8 +1,14 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior } from "../styles/index";
 
-export const DividerStyles = css`
+/**
+ * Styles for the {@link FASTDivider|FASTDivider component}.
+ *
+ * @public
+ */
+export const DividerStyles: ElementStyles = css`
     ${display("block")} :host {
         box-sizing: content-box;
         height: 0;

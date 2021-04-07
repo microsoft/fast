@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add types and docs to style exports",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}

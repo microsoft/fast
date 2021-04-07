@@ -1,10 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { createTooltipTemplate, Tooltip } from "@microsoft/fast-foundation";
 import { TooltipStyles as styles } from "./tooltip.styles";
-import { FASTAnchoredRegion } from "../anchored-region";
-
-// prevent tree shaking
-FASTAnchoredRegion;
 
 /**
  * The FAST Tooltip Custom Element. Implements {@link @microsoft/fast-foundation#Tooltip},
@@ -13,7 +9,7 @@ FASTAnchoredRegion;
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tooltip\>
+ * HTML Element: `<fast-tooltip>`
  */
 @customElement({
     name: "fast-tooltip",
@@ -21,3 +17,6 @@ FASTAnchoredRegion;
     styles,
 })
 export class FASTTooltip extends Tooltip {}
+
+export * from "../anchored-region";
+export { TooltipStyles } from "./tooltip.styles";

@@ -8,7 +8,7 @@ import { ComboboxStyles as styles } from "./combobox.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-combobox\>
+ * HTML Element: `<fast-combobox>`
  *
  */
 @customElement({
@@ -18,8 +18,4 @@ import { ComboboxStyles as styles } from "./combobox.styles";
 })
 export class FASTCombobox extends Combobox {}
 
-/**
- * Styles for combobox
- * @public
- */
-export const ComboboxStyles = styles;
+export { ComboboxStyles } from "./combobox.styles";

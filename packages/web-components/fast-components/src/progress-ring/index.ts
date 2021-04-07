@@ -12,7 +12,7 @@ import { ProgressRingStyles as styles } from "./progress-ring.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-progress-ring\>
+ * HTML Element: `<fast-progress-ring>`
  */
 @customElement({
     name: "fast-progress-ring",
@@ -21,8 +21,4 @@ import { ProgressRingStyles as styles } from "./progress-ring.styles";
 })
 export class FASTProgressRing extends BaseProgress {}
 
-/**
- * Styles for ProgressRing
- * @public
- */
-export const ProgressRingStyles = styles;
+export { ProgressRingStyles } from "./progress-ring.styles";

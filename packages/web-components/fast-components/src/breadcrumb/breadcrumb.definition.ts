@@ -1,5 +1,4 @@
 import type { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { DataType } from "@microsoft/fast-tooling";
 
 export const fastBreadcrumbDefinition: WebComponentDefinition = {
     version: 1,

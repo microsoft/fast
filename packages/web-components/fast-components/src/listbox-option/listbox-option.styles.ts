@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -23,7 +24,12 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const OptionStyles = css`
+/**
+ * Styles for the {@link FASTOption|FASTOption component}.
+ *
+ * @public
+ */
+export const OptionStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         font-family: var(--body-font);

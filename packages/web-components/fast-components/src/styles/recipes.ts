@@ -1,12 +1,16 @@
-import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
+import {
+    CSSCustomPropertyBehavior,
+    cssCustomPropertyBehaviorFactory,
+} from "@microsoft/fast-foundation";
 import {
     accentFill,
     accentFillLarge,
     accentForeground,
     accentForegroundCut,
     accentForegroundLarge,
-    neutralDividerRest,
     neutralContrastFill,
+    neutralContrastFillRest,
+    neutralDividerRest,
     neutralFill,
     neutralFillCard,
     neutralFillInput,
@@ -17,6 +21,7 @@ import {
     neutralForeground,
     neutralForegroundHint,
     neutralForegroundHintLarge,
+    neutralForegroundRest,
     neutralForegroundToggle,
     neutralForegroundToggleLarge,
     neutralLayerCard,
@@ -28,17 +33,15 @@ import {
     neutralLayerL3,
     neutralLayerL4,
     neutralOutline,
-    neutralForegroundRest,
-    neutralContrastFillRest,
 } from "../color/index";
-import { accentBaseColor } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
+import { accentBaseColor } from "../fast-design-system";
 
 /**
  * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.
  * @public
  */
-export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-rest",
     x => neutralForeground(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -47,7 +50,7 @@ export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-hover CSS custom property.
  * @public
  */
-export const neutralForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hover",
     x => neutralForeground(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -56,7 +59,7 @@ export const neutralForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-active CSS custom property.
  * @public
  */
-export const neutralForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-active",
     x => neutralForeground(x).active,
     FASTDesignSystemProvider.findProvider
@@ -65,7 +68,7 @@ export const neutralForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-focus CSS custom property.
  * @public
  */
-export const neutralForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-focus",
     x => neutralForeground(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -74,7 +77,7 @@ export const neutralForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-toggle CSS custom property.
  * @public
  */
-export const neutralForegroundToggleBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundToggleBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle",
     neutralForegroundToggle,
     FASTDesignSystemProvider.findProvider
@@ -83,7 +86,7 @@ export const neutralForegroundToggleBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-toggle-large CSS custom property.
  * @public
  */
-export const neutralForegroundToggleLargeBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundToggleLargeBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-toggle-large",
     neutralForegroundToggleLarge,
     FASTDesignSystemProvider.findProvider
@@ -92,7 +95,7 @@ export const neutralForegroundToggleLargeBehavior = cssCustomPropertyBehaviorFac
  * Behavior to resolve and make available the neutral-foreground-hint CSS custom property.
  * @public
  */
-export const neutralForegroundHintBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHintBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint",
     neutralForegroundHint,
     FASTDesignSystemProvider.findProvider
@@ -101,7 +104,7 @@ export const neutralForegroundHintBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-foreground-hint-large CSS custom property.
  * @public
  */
-export const neutralForegroundHintLargeBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralForegroundHintLargeBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-foreground-hint-large",
     neutralForegroundHintLarge,
     FASTDesignSystemProvider.findProvider
@@ -110,7 +113,7 @@ export const neutralForegroundHintLargeBehavior = cssCustomPropertyBehaviorFacto
  * Behavior to resolve and make available the accent-foreground-rest CSS custom property.
  * @public
  */
-export const accentForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-rest",
     x => accentForeground(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -119,7 +122,7 @@ export const accentForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-foreground-hover CSS custom property.
  * @public
  */
-export const accentForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-hover",
     x => accentForeground(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -128,7 +131,7 @@ export const accentForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-foreground-active CSS custom property.
  * @public
  */
-export const accentForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-active",
     x => accentForeground(x).active,
     FASTDesignSystemProvider.findProvider
@@ -137,7 +140,7 @@ export const accentForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-foreground-focus CSS custom property.
  * @public
  */
-export const accentForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-focus",
     x => accentForeground(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -146,7 +149,7 @@ export const accentForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-foreground-cut-rest CSS custom property.
  * @public
  */
-export const accentForegroundCutRestBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundCutRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-cut-rest",
     x => accentForegroundCut(x),
     FASTDesignSystemProvider.findProvider
@@ -155,7 +158,7 @@ export const accentForegroundCutRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.
  * @public
  */
-export const accentForegroundLargeRestBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-rest",
     x => accentForegroundLarge(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -164,7 +167,7 @@ export const accentForegroundLargeRestBehavior = cssCustomPropertyBehaviorFactor
  * Behavior to resolve and make available the accent-foreground-large-hover CSS custom property.
  * @public
  */
-export const accentForegroundLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-hover",
     x => accentForegroundLarge(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -173,7 +176,7 @@ export const accentForegroundLargeHoverBehavior = cssCustomPropertyBehaviorFacto
  * Behavior to resolve and make available the accent-foreground-large-active CSS custom property.
  * @public
  */
-export const accentForegroundLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-active",
     x => accentForegroundLarge(x).active,
     FASTDesignSystemProvider.findProvider
@@ -182,7 +185,7 @@ export const accentForegroundLargeActiveBehavior = cssCustomPropertyBehaviorFact
  * Behavior to resolve and make available the accent-foreground-large-focus CSS custom property.
  * @public
  */
-export const accentForegroundLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const accentForegroundLargeFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-foreground-large-focus",
     x => accentForegroundLarge(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -191,7 +194,7 @@ export const accentForegroundLargeFocusBehavior = cssCustomPropertyBehaviorFacto
  * Behavior to resolve and make available the neutral-fill-rest CSS custom property.
  * @public
  */
-export const neutralFillRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-rest",
     x => neutralFill(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -200,7 +203,7 @@ export const neutralFillRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-hover CSS custom property.
  * @public
  */
-export const neutralFillHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-hover",
     x => neutralFill(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -209,7 +212,7 @@ export const neutralFillHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-active CSS custom property.
  * @public
  */
-export const neutralFillActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-active",
     x => neutralFill(x).active,
     FASTDesignSystemProvider.findProvider
@@ -218,7 +221,7 @@ export const neutralFillActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-focus CSS custom property.
  * @public
  */
-export const neutralFillFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-focus",
     x => neutralFill(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -227,7 +230,7 @@ export const neutralFillFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-selected CSS custom property.
  * @public
  */
-export const neutralFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillSelectedBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-selected",
     x => neutralFill(x).selected,
     FASTDesignSystemProvider.findProvider
@@ -236,7 +239,7 @@ export const neutralFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-stealth-rest CSS custom property.
  * @public
  */
-export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-rest",
     x => neutralFillStealth(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -246,7 +249,7 @@ export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.
  * @public
  */
-export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-hover",
     x => neutralFillStealth(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -256,7 +259,7 @@ export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.
  * @public
  */
-export const neutralFillStealthActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-active",
     x => neutralFillStealth(x).active,
     FASTDesignSystemProvider.findProvider
@@ -265,7 +268,7 @@ export const neutralFillStealthActiveBehavior = cssCustomPropertyBehaviorFactory
  * Behavior to resolve and make available the neutral-fill-stealth-focus CSS custom property.
  * @public
  */
-export const neutralFillStealthFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-focus",
     x => neutralFillStealth(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -274,7 +277,7 @@ export const neutralFillStealthFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-stealth-selected CSS custom property.
  * @public
  */
-export const neutralFillStealthSelectedBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillStealthSelectedBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-stealth-selected",
     x => neutralFillStealth(x).selected,
     FASTDesignSystemProvider.findProvider
@@ -283,7 +286,7 @@ export const neutralFillStealthSelectedBehavior = cssCustomPropertyBehaviorFacto
  * Behavior to resolve and make available the neutral-fill-toggle-rest CSS custom property.
  * @public
  */
-export const neutralFillToggleRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-rest",
     x => neutralFillToggle(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -292,7 +295,7 @@ export const neutralFillToggleRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-toggle-hover CSS custom property.
  * @public
  */
-export const neutralFillToggleHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-hover",
     x => neutralFillToggle(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -301,7 +304,7 @@ export const neutralFillToggleHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-toggle-active CSS custom property.
  * @public
  */
-export const neutralFillToggleActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-active",
     x => neutralFillToggle(x).active,
     FASTDesignSystemProvider.findProvider
@@ -310,7 +313,7 @@ export const neutralFillToggleActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-toggle-focus CSS custom property.
  * @public
  */
-export const neutralFillToggleFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillToggleFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-focus",
     x => neutralFillToggle(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -319,7 +322,7 @@ export const neutralFillToggleFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-input-rest CSS custom property.
  * @public
  */
-export const neutralFillInputRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-rest",
     x => neutralFillInput(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -328,7 +331,7 @@ export const neutralFillInputRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-input-hover CSS custom property.
  * @public
  */
-export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-hover",
     x => neutralFillInput(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -338,7 +341,7 @@ export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.
  * @public
  */
-export const neutralFillInputActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-active",
     x => neutralFillInput(x).active,
     FASTDesignSystemProvider.findProvider
@@ -347,7 +350,7 @@ export const neutralFillInputActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-input-selected CSS custom property.
  * @public
  */
-export const neutralFillInputSelectedBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputSelectedBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-selected",
     x => neutralFillInput(x).selected,
     FASTDesignSystemProvider.findProvider
@@ -356,7 +359,7 @@ export const neutralFillInputSelectedBehavior = cssCustomPropertyBehaviorFactory
  * Behavior to resolve and make available the neutral-fill-input-focus CSS custom property.
  * @public
  */
-export const neutralFillInputFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillInputFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-input-focus",
     x => neutralFillInput(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -365,7 +368,7 @@ export const neutralFillInputFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-rest CSS custom property.
  * @public
  */
-export const accentFillRestBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-rest",
     x => accentFill(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -374,7 +377,7 @@ export const accentFillRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-hover CSS custom property.
  * @public
  */
-export const accentFillHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-hover",
     x => accentFill(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -383,7 +386,7 @@ export const accentFillHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-active CSS custom property.
  * @public
  */
-export const accentFillActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-active",
     x => accentFill(x).active,
     FASTDesignSystemProvider.findProvider
@@ -392,7 +395,7 @@ export const accentFillActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-focus CSS custom property.
  * @public
  */
-export const accentFillFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-focus",
     x => accentFill(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -401,7 +404,7 @@ export const accentFillFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-selected CSS custom property.
  * @public
  */
-export const accentFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillSelectedBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-selected",
     x => accentFill(x).selected,
     FASTDesignSystemProvider.findProvider
@@ -410,7 +413,7 @@ export const accentFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-large-rest CSS custom property.
  * @public
  */
-export const accentFillLargeRestBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-rest",
     x => accentFillLarge(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -419,7 +422,7 @@ export const accentFillLargeRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-large-hover CSS custom property.
  * @public
  */
-export const accentFillLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-hover",
     x => accentFillLarge(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -428,7 +431,7 @@ export const accentFillLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-large-active CSS custom property.
  * @public
  */
-export const accentFillLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-active",
     x => accentFillLarge(x).active,
     FASTDesignSystemProvider.findProvider
@@ -437,7 +440,7 @@ export const accentFillLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-large-focus CSS custom property.
  * @public
  */
-export const accentFillLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-focus",
     x => accentFillLarge(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -446,7 +449,7 @@ export const accentFillLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the accent-fill-large-selected CSS custom property.
  * @public
  */
-export const accentFillLargeSelectedBehavior = cssCustomPropertyBehaviorFactory(
+export const accentFillLargeSelectedBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "accent-fill-large-selected",
     x => accentFillLarge(x).selected,
     FASTDesignSystemProvider.findProvider
@@ -455,7 +458,7 @@ export const accentFillLargeSelectedBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-fill-card-rest CSS custom property.
  * @public
  */
-export const neutralFillCardRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFillCardRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-card-rest",
     x => neutralFillCard(x),
     FASTDesignSystemProvider.findProvider
@@ -464,7 +467,7 @@ export const neutralFillCardRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-outline-rest CSS custom property.
  * @public
  */
-export const neutralOutlineRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-rest",
     x => neutralOutline(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -473,7 +476,7 @@ export const neutralOutlineRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-outline-hover CSS custom property.
  * @public
  */
-export const neutralOutlineHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-hover",
     x => neutralOutline(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -482,7 +485,7 @@ export const neutralOutlineHoverBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-outline-active CSS custom property.
  * @public
  */
-export const neutralOutlineActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-active",
     x => neutralOutline(x).active,
     FASTDesignSystemProvider.findProvider
@@ -491,7 +494,7 @@ export const neutralOutlineActiveBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-outline-focus CSS custom property.
  * @public
  */
-export const neutralOutlineFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralOutlineFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-outline-focus",
     x => neutralOutline(x).focus,
     FASTDesignSystemProvider.findProvider
@@ -500,7 +503,7 @@ export const neutralOutlineFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-divider-rest CSS custom property.
  * @public
  */
-export const neutralDividerRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralDividerRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-divider-rest",
     neutralDividerRest,
     FASTDesignSystemProvider.findProvider
@@ -509,7 +512,7 @@ export const neutralDividerRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-floating CSS custom property.
  * @public
  */
-export const neutralLayerFloatingBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerFloatingBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-floating",
     neutralLayerFloating,
     FASTDesignSystemProvider.findProvider
@@ -518,7 +521,7 @@ export const neutralLayerFloatingBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-card CSS custom property.
  * @public
  */
-export const neutralLayerCardBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerCardBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card",
     neutralLayerCard,
     FASTDesignSystemProvider.findProvider
@@ -527,7 +530,7 @@ export const neutralLayerCardBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-card-container CSS custom property.
  * @public
  */
-export const neutralLayerCardContainerBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerCardContainerBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-card-container",
     neutralLayerCardContainer,
     FASTDesignSystemProvider.findProvider
@@ -536,7 +539,7 @@ export const neutralLayerCardContainerBehavior = cssCustomPropertyBehaviorFactor
  * Behavior to resolve and make available the neutral-layer-l1 CSS custom property.
  * @public
  */
-export const neutralLayerL1Behavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL1Behavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1",
     neutralLayerL1,
     FASTDesignSystemProvider.findProvider
@@ -545,7 +548,7 @@ export const neutralLayerL1Behavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-l1-alt CSS custom property.
  * @public
  */
-export const neutralLayerL1AltBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL1AltBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l1-alt",
     neutralLayerL1Alt,
     FASTDesignSystemProvider.findProvider
@@ -554,7 +557,7 @@ export const neutralLayerL1AltBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-l2 CSS custom property.
  * @public
  */
-export const neutralLayerL2Behavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL2Behavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l2",
     neutralLayerL2,
     FASTDesignSystemProvider.findProvider
@@ -563,7 +566,7 @@ export const neutralLayerL2Behavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-l3 CSS custom property.
  * @public
  */
-export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL3Behavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l3",
     neutralLayerL3,
     FASTDesignSystemProvider.findProvider
@@ -572,7 +575,7 @@ export const neutralLayerL3Behavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-layer-l4 CSS custom property.
  * @public
  */
-export const neutralLayerL4Behavior = cssCustomPropertyBehaviorFactory(
+export const neutralLayerL4Behavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-layer-l4",
     neutralLayerL4,
     FASTDesignSystemProvider.findProvider
@@ -581,7 +584,7 @@ export const neutralLayerL4Behavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-focus CSS custom property.
  * @public
  */
-export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus",
     neutralFocus,
     FASTDesignSystemProvider.findProvider
@@ -590,7 +593,7 @@ export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-focus-inner-accent CSS custom property.
  * @public
  */
-export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralFocusInnerAccentBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus-inner-accent",
     neutralFocusInnerAccent(accentBaseColor),
     FASTDesignSystemProvider.findProvider
@@ -599,7 +602,7 @@ export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-contrast-foreground-rest CSS custom property.
  * @public
  */
-export const neutralContrastForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralContrastForegroundRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-contrast-foreground-rest",
     x => neutralForegroundRest(neutralContrastFillRest)(x),
     FASTDesignSystemProvider.findProvider
@@ -608,7 +611,7 @@ export const neutralContrastForegroundRestBehavior = cssCustomPropertyBehaviorFa
  * Behavior to resolve and make available the neutral-contrast-fill-rest CSS custom property.
  * @public
  */
-export const neutralContrastFillRestBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralContrastFillRestBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-contrast-fill-rest",
     x => neutralContrastFill(x).rest,
     FASTDesignSystemProvider.findProvider
@@ -617,7 +620,7 @@ export const neutralContrastFillRestBehavior = cssCustomPropertyBehaviorFactory(
  * Behavior to resolve and make available the neutral-contrast-fill-hover CSS custom property.
  * @public
  */
-export const neutralContrastFillHoverBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralContrastFillHoverBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-contrast-fill-hover",
     x => neutralContrastFill(x).hover,
     FASTDesignSystemProvider.findProvider
@@ -626,7 +629,7 @@ export const neutralContrastFillHoverBehavior = cssCustomPropertyBehaviorFactory
  * Behavior to resolve and make available the neutral-contrast-fill-active CSS custom property.
  * @public
  */
-export const neutralContrastFillActiveBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralContrastFillActiveBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-contrast-fill-active",
     x => neutralContrastFill(x).active,
     FASTDesignSystemProvider.findProvider
@@ -635,7 +638,7 @@ export const neutralContrastFillActiveBehavior = cssCustomPropertyBehaviorFactor
  * Behavior to resolve and make available the neutral-contrast-fill-focus CSS custom property.
  * @public
  */
-export const neutralContrastFillFocusBehavior = cssCustomPropertyBehaviorFactory(
+export const neutralContrastFillFocusBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-contrast-fill-focus",
     x => neutralContrastFill(x).focus,
     FASTDesignSystemProvider.findProvider

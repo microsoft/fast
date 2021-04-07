@@ -8,7 +8,7 @@ import {
     neutralForegroundHint,
     neutralForegroundHintLarge,
 } from "./neutral-foreground-hint";
-import { Palette } from "./palette";
+import type { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
 
 describe("neutralForegroundHint", (): void => {

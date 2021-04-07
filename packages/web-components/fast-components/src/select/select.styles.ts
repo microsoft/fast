@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -25,7 +26,12 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const SelectStyles = css`
+/**
+ * Styles for the {@link FASTSelect|FASTSelect component}.
+ *
+ * @public
+ */
+export const SelectStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --elevation: 14;
         background: ${neutralFillInputRestBehavior.var};

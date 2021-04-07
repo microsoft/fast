@@ -1,7 +1,13 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { elevation } from "../styles/elevation";
 
-export const DialogStyles = css`
+/**
+ * Styles for the {@link FASTDialog|FASTDialog component}.
+ *
+ * @public
+ */
+export const DialogStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;
     }

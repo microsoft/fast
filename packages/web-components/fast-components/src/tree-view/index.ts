@@ -9,7 +9,7 @@ import { TreeViewStyles as styles } from "./tree-view.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tree-view\>
+ * HTML Element: `<fast-tree-view>`
  *
  */
 @customElement({
@@ -19,8 +19,4 @@ import { TreeViewStyles as styles } from "./tree-view.styles";
 })
 export class FASTTreeView extends TreeView {}
 
-/**
- * Styles for TreeView
- * @public
- */
-export const TreeViewStyles = styles;
+export { TreeViewStyles } from "./tree-view.styles";

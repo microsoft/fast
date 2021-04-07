@@ -9,7 +9,7 @@ import { BadgeStyles as styles } from "./badge.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-badge\>
+ * HTML Element: `<fast-badge>`
  */
 @customElement({
     name: "fast-badge",
@@ -17,9 +17,4 @@ import { BadgeStyles as styles } from "./badge.styles";
     styles,
 })
 export class FASTBadge extends Badge {}
-
-/**
- * Styles for Badge
- * @public
- */
-export const BadgeStyles = styles;
+export { BadgeStyles } from "./badge.styles";

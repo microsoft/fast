@@ -13,7 +13,7 @@ import {
     swatchByContrast,
     swatchByMode,
 } from "./palette";
-import { Swatch } from "./common";
+import type { Swatch } from "./common";
 
 chai.use(spies);
 

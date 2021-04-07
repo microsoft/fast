@@ -9,7 +9,7 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-checkbox\>
+ * HTML Element: `<fast-checkbox>`
  */
 @customElement({
     name: "fast-checkbox",
@@ -18,8 +18,4 @@ import { CheckboxStyles as styles } from "./checkbox.styles";
 })
 export class FASTCheckbox extends Checkbox {}
 
-/**
- * Styles for Checkbox
- * @public
- */
-export const CheckboxStyles = styles;
+export { CheckboxStyles } from "./checkbox.styles";

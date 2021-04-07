@@ -1,13 +1,19 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundRestBehavior,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
-} from "../styles";
+} from "../styles/recipes";
 
-export const ProgressStyles = css`
+/**
+ * Styles for the {@link FASTProgress|FASTProgress component}.
+ *
+ * @public
+ */
+export const ProgressStyles: ElementStyles = css`
     ${display("flex")} :host {
         align-items: center;
         outline: none;

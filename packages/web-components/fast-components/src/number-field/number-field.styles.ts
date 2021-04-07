@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -10,7 +11,6 @@ import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -18,9 +18,15 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const NumberFieldStyles = css`
+/**
+ * Styles for the {@link FASTNumberField|FASTNumberField component}.
+ *
+ * @public
+ */
+export const NumberFieldStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -109,7 +115,7 @@ export const NumberFieldStyles = css`
 
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

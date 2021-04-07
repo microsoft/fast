@@ -1,14 +1,20 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundRestBehavior,
-    heightNumber,
     neutralFillRestBehavior,
     neutralForegroundHintBehavior,
-} from "../styles";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const ProgressRingStyles = css`
+/**
+ * Styles for the {@link FASTProgressRing|FASTProgressRing component}.
+ *
+ * @public
+ */
+export const ProgressRingStyles: ElementStyles = css`
     ${display("flex")} :host {
         align-items: center;
         outline: none;

@@ -1,4 +1,4 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import type { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
     accentPalette,
     backgroundColor,

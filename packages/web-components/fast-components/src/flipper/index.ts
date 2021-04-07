@@ -9,7 +9,7 @@ import { FlipperStyles as styles } from "./flipper.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-flipper\>
+ * HTML Element: `<fast-flipper>`
  */
 @customElement({
     name: "fast-flipper",
@@ -18,8 +18,4 @@ import { FlipperStyles as styles } from "./flipper.styles";
 })
 export class FASTFlipper extends Flipper {}
 
-/**
- * Styles for Flipper
- * @public
- */
-export const FlipperStyles = styles;
+export { FlipperStyles } from "./flipper.styles";

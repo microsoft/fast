@@ -1,4 +1,4 @@
-import { ElementStyles } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { PropertyStyleSheetBehavior } from "@microsoft/fast-foundation";
 
 /**

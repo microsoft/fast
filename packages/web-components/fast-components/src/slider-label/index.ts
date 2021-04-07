@@ -14,7 +14,7 @@ import {
  *
  * @public
  * @remarks
- * HTML Element: \<fast-slider-label\>
+ * HTML Element: `<fast-slider-label>`
  */
 @customElement({
     name: "fast-slider-label",
@@ -33,8 +33,8 @@ export class FASTSliderLabel extends SliderLabel {
     }
 }
 
-/**
- * Styles for SliderLabel
- * @public
- */
-export const SliderLabelStyles = styles;
+export {
+    horizontalSliderStyles,
+    SliderLabelStyles,
+    verticalSliderStyles,
+} from "./slider-label.styles";

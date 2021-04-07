@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     DirectionalStyleSheetBehavior,
     disabledCursor,
@@ -9,16 +10,21 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRestBehavior,
-    heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
     neutralLayerL2Behavior,
     neutralLayerL3Behavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const MenuItemStyles = css`
+/**
+ * Styles for the {@link FASTMenuItem|FASTMenuItem component}.
+ *
+ * @public
+ */
+export const MenuItemStyles: ElementStyles = css`
     ${display("grid")} :host {
         contain: layout;
         overflow: visible;
@@ -79,7 +85,7 @@ export const MenuItemStyles = css`
 
     .expand-collapse-glyph {
         ${
-            /* Glyph size is temporary - 
+            /* Glyph size is temporary -
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
@@ -99,10 +105,10 @@ export const MenuItemStyles = css`
         display: flex;
         justify-content: center;
     }
-    
+
     ::slotted(svg) {
         ${
-            /* Glyph size and margin-left is temporary - 
+            /* Glyph size and margin-left is temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

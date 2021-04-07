@@ -1,5 +1,4 @@
-import { FASTDesignSystem } from "../fast-design-system";
-import { accentBaseColor } from "../fast-design-system";
+import { accentBaseColor, FASTDesignSystem } from "../fast-design-system";
 import { black, white } from "./color-constants";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
 

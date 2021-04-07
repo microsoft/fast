@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -7,16 +8,21 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    heightNumber,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const SliderStyles = css`
+/**
+ * Styles for the {@link FASTSlider|FASTSlider component}.
+ *
+ * @public
+ */
+export const SliderStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;
     }
@@ -53,7 +59,7 @@ export const SliderStyles = css`
     :host(:${focusVisible}) .thumb-cursor {
         box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
     }
-    
+
     .thumb-container {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
@@ -152,7 +158,7 @@ export const SliderStyles = css`
             :host(:${focusVisible}) .thumb-cursor {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
         `
     )

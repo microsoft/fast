@@ -9,7 +9,7 @@ import { DividerStyles as styles } from "./divider.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-divider\>
+ * HTML Element: `<fast-divider>`
  */
 @customElement({
     name: "fast-divider",
@@ -18,8 +18,4 @@ import { DividerStyles as styles } from "./divider.styles";
 })
 export class FASTDivider extends Divider {}
 
-/**
- * Styles for Divider
- * @public
- */
-export const DividerStyles = styles;
+export { DividerStyles } from "./divider.styles";

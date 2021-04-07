@@ -1,5 +1,6 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
+    DesignSystemResolver,
+    FASTDesignSystem,
     neutralFillInputActiveDelta,
     neutralFillInputFocusDelta,
     neutralFillInputHoverDelta,
@@ -7,8 +8,8 @@ import {
     neutralFillInputSelectedDelta,
     neutralPalette,
 } from "../fast-design-system";
-import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 import { ColorRecipe, colorRecipeFactory, FillSwatchFamily, Swatch } from "./common";
+import { findClosestBackgroundIndex, getSwatch, isDarkMode } from "./palette";
 
 /**
  * Algorithm for determining neutral backplate colors

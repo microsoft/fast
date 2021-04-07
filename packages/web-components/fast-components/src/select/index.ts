@@ -9,7 +9,7 @@ import { SelectStyles as styles } from "./select.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-select\>
+ * HTML Element: `<fast-select>`
  *
  */
 @customElement({
@@ -19,8 +19,4 @@ import { SelectStyles as styles } from "./select.styles";
 })
 export class FASTSelect extends Select {}
 
-/**
- * Styles for Select
- * @public
- */
-export const SelectStyles = styles;
+export { SelectStyles } from "./select.styles";

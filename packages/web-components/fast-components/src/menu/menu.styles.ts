@@ -1,13 +1,19 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    elevation,
     neutralDividerRestBehavior,
     neutralLayerFloatingBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { elevation } from "../styles/elevation";
 
-export const MenuStyles = css`
+/**
+ * Styles for the {@link FASTMenu|FASTMenu component}.
+ *
+ * @public
+ */
+export const MenuStyles: ElementStyles = css`
     ${display("block")} :host {
         --elevation: 11;
         background: ${neutralLayerFloatingBehavior.var};

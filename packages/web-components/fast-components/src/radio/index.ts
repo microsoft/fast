@@ -9,7 +9,7 @@ import { RadioStyles as styles } from "./radio.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-radio\>
+ * HTML Element: `<fast-radio>`
  */
 @customElement({
     name: "fast-radio",
@@ -18,8 +18,4 @@ import { RadioStyles as styles } from "./radio.styles";
 })
 export class FASTRadio extends Radio {}
 
-/**
- * Styles for Radio
- * @public
- */
-export const RadioStyles = styles;
+export { RadioStyles } from "./radio.styles";

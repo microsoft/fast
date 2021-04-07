@@ -9,7 +9,7 @@ import { BreadcrumbStyles as styles } from "./breadcrumb.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-breadcrumb\>
+ * HTML Element: `<fast-breadcrumb>`
  */
 @customElement({
     name: "fast-breadcrumb",
@@ -17,3 +17,5 @@ import { BreadcrumbStyles as styles } from "./breadcrumb.styles";
     styles,
 })
 export class FASTBreadcrumb extends Breadcrumb {}
+
+export { BreadcrumbStyles } from "./breadcrumb.styles";

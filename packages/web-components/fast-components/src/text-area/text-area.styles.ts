@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -9,7 +10,6 @@ import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
@@ -18,9 +18,15 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const TextAreaStyles = css`
+/**
+ * Styles for the {@link FASTTextArea|FASTTextArea component}.
+ *
+ * @public
+ */
+export const TextAreaStyles: ElementStyles = css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;

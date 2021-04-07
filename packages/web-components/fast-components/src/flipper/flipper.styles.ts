@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -11,15 +12,20 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const FlipperStyles = css`
+/**
+ * Styles for the {@link FASTFlipper|FASTFlipper component}.
+ *
+ * @public
+ */
+export const FlipperStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);
         height: calc(${heightNumber} * 1px);
@@ -52,7 +58,7 @@ export const FlipperStyles = css`
     .previous {
         position: relative;
         ${
-            /* Glyph size and display: grid are temporary - 
+            /* Glyph size and display: grid are temporary -
             replace when adaptive typography is figured out */ ""
         } width: 16px;
         height: 16px;

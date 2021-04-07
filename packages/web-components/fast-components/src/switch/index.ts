@@ -9,7 +9,7 @@ import { SwitchStyles as styles } from "./switch.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-switch\>
+ * HTML Element: `<fast-switch>`
  */
 @customElement({
     name: "fast-switch",
@@ -18,8 +18,4 @@ import { SwitchStyles as styles } from "./switch.styles";
 })
 export class FASTSwitch extends Switch {}
 
-/**
- * Styles for Switch
- * @public
- */
-export const SwitchStyles = styles;
+export { SwitchStyles } from "./switch.styles";

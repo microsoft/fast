@@ -12,7 +12,7 @@ import { AccordionItemStyles as styles } from "./accordion-item.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-accordion-item\>
+ * HTML Element: `<fast-accordion-item>`
  */
 @customElement({
     name: "fast-accordion-item",
@@ -21,8 +21,4 @@ import { AccordionItemStyles as styles } from "./accordion-item.styles";
 })
 export class FASTAccordionItem extends AccordionItem {}
 
-/**
- * Styles for AccordionItem
- * @public
- */
-export const AccordionItemStyles = styles;
+export { AccordionItemStyles } from "./accordion-item.styles";

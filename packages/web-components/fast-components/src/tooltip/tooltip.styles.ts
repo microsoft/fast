@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     accentFillActiveBehavior,
@@ -12,9 +13,14 @@ import {
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
 
-export const TooltipStyles = css`
+/**
+ * Styles for the {@link FASTTooltip|FASTTooltip component}.
+ *
+ * @public
+ */
+export const TooltipStyles: ElementStyles = css`
     :host {
         contain: layout;
         overflow: visible;

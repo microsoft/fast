@@ -8,7 +8,7 @@ import {
     rgbToRelativeLuminance,
 } from "@microsoft/fast-colors";
 import { memoize } from "lodash-es";
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
+import type { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 
 /**
  * Describes the format of a single color in a palette

@@ -1,5 +1,6 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
+    DesignSystemResolver,
+    FASTDesignSystem,
     neutralFillActiveDelta,
     neutralFillFocusDelta,
     neutralFillHoverDelta,

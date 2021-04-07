@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     cssCustomPropertyBehaviorFactory,
     DirectionalStyleSheetBehavior,
@@ -8,9 +8,10 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
+import { FASTDesignSystemProvider } from "../design-system-provider/index";
 import {
     accentForegroundRestBehavior,
-    heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
     neutralFillStealthRestBehavior,
@@ -19,9 +20,8 @@ import {
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
-} from "../styles/index";
-import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
-import { FASTDesignSystemProvider } from "../design-system-provider/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
 const ltr = css`
     .expand-collapse-glyph {
@@ -53,6 +53,11 @@ const rtl = css`
     }
 `;
 
+/**
+ * CSS Formula for the tree item's expand/collapse button size.
+ *
+ * @internal
+ */
 export const expandCollapseButtonSize =
     "((var(--base-height-multiplier) / 2) * var(--design-unit)) + ((var(--design-unit) * var(--density)) / 2)";
 
@@ -68,7 +73,12 @@ const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     FASTDesignSystemProvider.findProvider
 );
 
-export const TreeItemStyles = css`
+/**
+ * Styles for the {@link FASTTreeItem|FASTTreeItem component}.
+ *
+ * @public
+ */
+export const TreeItemStyles: ElementStyles = css`
     ${display("block")} :host {
         contain: content;
         position: relative;
@@ -133,7 +143,7 @@ export const TreeItemStyles = css`
     .items {
         display: none;
         ${
-            /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
+            /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) -
             update when density story is figured out */ ""
         } font-size: calc(1em + (var(--design-unit) + 16) * 1px);
     }
@@ -143,7 +153,7 @@ export const TreeItemStyles = css`
         border: none;
         outline: none;
         ${
-            /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
+            /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) -
             update when density story is figured out */ ""
         } width: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
         height: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
@@ -158,7 +168,7 @@ export const TreeItemStyles = css`
 
     .expand-collapse-glyph {
         ${
-            /* Glyph size is temporary - 
+            /* Glyph size is temporary -
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
@@ -176,7 +186,7 @@ export const TreeItemStyles = css`
 
      ::slotted(svg) {
         ${
-            /* Glyph size is temporary - 
+            /* Glyph size is temporary -
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
@@ -215,7 +225,7 @@ export const TreeItemStyles = css`
     :host(.nested) .expand-collapse-button:hover {
         background: ${expandCollapseHoverBehavior.var};
     }
-    
+
     :host([selected]) .positioning-region {
         background: ${neutralFillStealthSelectedBehavior.var};
     }

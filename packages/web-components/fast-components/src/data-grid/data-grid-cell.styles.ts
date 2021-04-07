@@ -1,13 +1,19 @@
 import { css } from "@microsoft/fast-element";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { focusVisible, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const DataGridCellStyles = css`
+/**
+ * Styles for the {@link FASTDataGridCell|FASTDataGridCell component}.
+ *
+ * @public
+ */
+export const DataGridCellStyles: ElementStyles = css`
     :host {
         padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 3px);
         color: ${neutralForegroundRestBehavior.var};

@@ -1,7 +1,10 @@
-import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
+import {
+    CSSCustomPropertyBehavior,
+    cssCustomPropertyBehaviorFactory,
+} from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { direction, FASTDesignSystem } from "../fast-design-system";
 import { FASTDesignSystemProvider } from "../design-system-provider";
+import { direction, FASTDesignSystem } from "../fast-design-system";
 /**
  * Behavior to resolve and make available the inline-start CSS custom property.
  *
@@ -22,7 +25,7 @@ import { FASTDesignSystemProvider } from "../design-system-provider";
  * `.withBehaviors(inlineStartBehavior)
  * ```
  */
-export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
+export const inlineStartBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "inline-start",
     (designSystem: FASTDesignSystem) =>
         direction(designSystem) === Direction.ltr ? "left" : "right",
@@ -49,7 +52,7 @@ export const inlineStartBehavior = cssCustomPropertyBehaviorFactory(
  * `.withBehaviors(inlineEndBehavior)
  * ```
  */
-export const inlineEndBehavior = cssCustomPropertyBehaviorFactory(
+export const inlineEndBehavior: CSSCustomPropertyBehavior = cssCustomPropertyBehaviorFactory(
     "inline-end",
     (designSystem: FASTDesignSystem) =>
         direction(designSystem) === Direction.ltr ? "right" : "left",

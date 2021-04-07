@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
@@ -8,7 +9,12 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
-export const ButtonStyles = css`
+/**
+ * Styles for the {@link FASTButton|FASTButton component}.
+ *
+ * @public
+ */
+export const ButtonStyles: ElementStyles = css`
     ${BaseButtonStyles}
 `.withBehaviors(
     appearanceBehavior("accent", AccentButtonStyles),

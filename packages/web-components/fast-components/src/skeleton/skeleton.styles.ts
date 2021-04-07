@@ -1,10 +1,15 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import type { ElementStyles } from "@microsoft/fast-element";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { display } from "@microsoft/fast-foundation";
-import { neutralFillRestBehavior } from "../styles";
+import { neutralFillRestBehavior } from "../styles/recipes";
 
-export const SkeletonStyles = css`
+/**
+ * Styles for the {@link FASTSkeleton|FASTSkeleton component}.
+ *
+ * @public
+ */
+export const SkeletonStyles: ElementStyles = css`
     ${display("block")} :host {
         --skeleton-fill-default: #e1dfdd;
         overflow: hidden;

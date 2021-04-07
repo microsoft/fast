@@ -9,7 +9,7 @@ import { TreeItemStyles as styles } from "./tree-item.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tree-item\>
+ * HTML Element: `<fast-tree-item>`
  *
  */
 @customElement({
@@ -19,8 +19,4 @@ import { TreeItemStyles as styles } from "./tree-item.styles";
 })
 export class FASTTreeItem extends TreeItem {}
 
-/**
- * Styles for TreeItem
- * @public
- */
-export const TreeItemStyles = styles;
+export { TreeItemStyles } from "./tree-item.styles";

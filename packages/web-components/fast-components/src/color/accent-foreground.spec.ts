@@ -1,9 +1,10 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
-import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
-    neutralPalette as getNeutralPalette,
+    FASTDesignSystem,
+    fastDesignSystemDefaults,
+    neutralPalette as getNeutralPalette
 } from "../fast-design-system";
 import {
     accentForegroundActive,
@@ -11,10 +12,10 @@ import {
     accentForegroundLargeActive,
     accentForegroundLargeHover,
     accentForegroundLargeRest,
-    accentForegroundRest,
+    accentForegroundRest
 } from "./accent-foreground";
-import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
+import type { Palette } from "./palette";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);

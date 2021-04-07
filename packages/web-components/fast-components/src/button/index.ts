@@ -20,7 +20,7 @@ export type ButtonAppearance =
  *
  * @public
  * @remarks
- * HTML Element: \<fast-button\>
+ * HTML Element: `<fast-button>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -68,8 +68,4 @@ export class FASTButton extends Button {
     }
 }
 
-/**
- * Styles for Button
- * @public
- */
-export const ButtonStyles = styles;
+export { ButtonStyles } from "./button.styles";

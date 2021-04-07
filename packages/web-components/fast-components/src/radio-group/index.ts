@@ -9,7 +9,7 @@ import { RadioGroupStyles as styles } from "./radio-group.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-radio-group\>
+ * HTML Element: `<fast-radio-group>`
  */
 @customElement({
     name: "fast-radio-group",
@@ -18,8 +18,4 @@ import { RadioGroupStyles as styles } from "./radio-group.styles";
 })
 export class FASTRadioGroup extends RadioGroup {}
 
-/**
- * Styles for RadioGroup
- * @public
- */
-export const RadioGroupStyles = styles;
+export { RadioGroupStyles } from "./radio-group.styles";

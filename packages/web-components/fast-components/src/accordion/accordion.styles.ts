@@ -1,11 +1,17 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
     neutralDividerRestBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const AccordionStyles = css`
+/**
+ * Styles for the {@link FASTAccordion|FASTAccordion component}.
+ *
+ * @public
+ */
+export const AccordionStyles: ElementStyles = css`
     ${display("flex")} :host {
         box-sizing: border-box;
         flex-direction: column;

@@ -9,7 +9,7 @@ import { DialogStyles as styles } from "./dialog.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-dialog\>
+ * HTML Element: `<fast-dialog>`
  */
 @customElement({
     name: "fast-dialog",
@@ -18,8 +18,4 @@ import { DialogStyles as styles } from "./dialog.styles";
 })
 export class FASTDialog extends Dialog {}
 
-/**
- * Styles for Dialog
- * @public
- */
-export const DialogStyles = styles;
+export { DialogStyles } from "./dialog.styles";

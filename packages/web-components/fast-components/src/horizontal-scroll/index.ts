@@ -15,7 +15,7 @@ import {
  *
  * @public
  * @remarks
- * HTML Element: \<fast-horizontal-scroll\>
+ * HTML Element: `<fast-horizontal-scroll>`
  */
 @customElement({
     name: "fast-horizontal-scroll",
@@ -34,3 +34,5 @@ export class FASTHorizontalScroll extends HorizontalScroll {
         }
     }
 }
+
+export { ActionsStyles, HorizontalScrollStyles } from "./horizontal-scroll.styles";

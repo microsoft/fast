@@ -12,7 +12,7 @@ import { OptionStyles as styles } from "./listbox-option.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-option\>
+ * HTML Element: `<fast-option>`
  *
  */
 @customElement({
@@ -22,8 +22,4 @@ import { OptionStyles as styles } from "./listbox-option.styles";
 })
 export class FASTOption extends ListboxOption {}
 
-/**
- * Styles for Option
- * @public
- */
-export const OptionStyles = styles;
+export { OptionStyles } from "./listbox-option.styles";

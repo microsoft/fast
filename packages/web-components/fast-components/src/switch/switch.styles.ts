@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     DirectionalStyleSheetBehavior,
     disabledCursor,
@@ -12,7 +13,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -21,9 +21,15 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const SwitchStyles = css`
+/**
+ * Styles for the {@link FASTSwitch|FASTSwitch component}.
+ *
+ * @public
+ */
+export const SwitchStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;
     }

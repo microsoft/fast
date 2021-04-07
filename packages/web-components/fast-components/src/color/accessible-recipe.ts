@@ -1,7 +1,10 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
-import { evaluateDesignSystemResolver } from "../fast-design-system";
-import { backgroundColor } from "../fast-design-system";
-import { Swatch, SwatchFamily } from "./common";
+import {
+    backgroundColor,
+    DesignSystemResolver,
+    evaluateDesignSystemResolver,
+    FASTDesignSystem,
+} from "../fast-design-system";
+import type { Swatch, SwatchFamily } from "./common";
 import {
     findSwatchIndex,
     getSwatch,

@@ -1,4 +1,3 @@
-import { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
     neutralFillActiveDelta,
     neutralFillFocusDelta,
@@ -11,6 +10,7 @@ import {
     neutralFillStealthSelectedDelta,
     neutralPalette,
 } from "../fast-design-system";
+import type { DesignSystemResolver, FASTDesignSystem } from "../fast-design-system";
 import {
     ColorRecipe,
     colorRecipeFactory,

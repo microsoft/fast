@@ -1,8 +1,14 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior, neutralFillRestBehavior } from "../styles/recipes";
 
-export const DataGridRowStyles = css`
+/**
+ * Styles for the {@link FASTDataGridRow|FASTDataGridRow component}.
+ *
+ * @public
+ */
+export const DataGridRowStyles: ElementStyles = css`
     :host {
         display: grid;
         padding: 1px 0;

@@ -43,7 +43,7 @@ const backgroundStyles = css`
  *
  * @public
  * @remarks
- * HTML Element: \<fast-design-system-provider\>
+ * HTML Element: `<fast-design-system-provider>`
  */
 @designSystemProvider({
     name: "fast-design-system-provider",

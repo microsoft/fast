@@ -1,7 +1,13 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
-export const TreeViewStyles = css`
+/**
+ * Styles for the {@link FASTTreeView|FASTTreeView component}.
+ *
+ * @public
+ */
+export const TreeViewStyles: ElementStyles = css`
     :host([hidden]) {
         display: none;
     }

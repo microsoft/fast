@@ -9,7 +9,7 @@ import { TabsStyles as styles } from "./tabs.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tabs\>
+ * HTML Element: `<fast-tabs>`
  */
 @customElement({
     name: "fast-tabs",
@@ -17,10 +17,7 @@ import { TabsStyles as styles } from "./tabs.styles";
     styles,
 })
 export class FASTTabs extends Tabs {}
+
 export * from "../tab";
 export * from "../tab-panel";
-/**
- * Styles for Tabs
- * @public
- */
-export const TabsStyles = styles;
+export { TabsStyles } from "./tabs.styles";

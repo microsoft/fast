@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
-import { Swatch } from "./common";
+import type { Swatch } from "./common";
 
 describe("Cut text", (): void => {
     it("should return white by by default", (): void => {

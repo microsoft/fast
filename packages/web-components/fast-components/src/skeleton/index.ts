@@ -9,7 +9,7 @@ import { SkeletonStyles as styles } from "./skeleton.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-skeleton\>
+ * HTML Element: `<fast-skeleton>`
  */
 @customElement({
     name: "fast-skeleton",
@@ -18,8 +18,4 @@ import { SkeletonStyles as styles } from "./skeleton.styles";
 })
 export class FASTSkeleton extends Skeleton {}
 
-/**
- * Styles for Skeleton
- * @public
- */
-export const SkeletonStyles = styles;
+export { SkeletonStyles } from "./skeleton.styles";

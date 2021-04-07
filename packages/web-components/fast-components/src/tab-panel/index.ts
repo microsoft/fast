@@ -9,7 +9,7 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tab-panel\>
+ * HTML Element: `<fast-tab-panel>`
  */
 @customElement({
     name: "fast-tab-panel",
@@ -18,8 +18,4 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
 })
 export class FASTTabPanel extends TabPanel {}
 
-/**
- * Styles for TabPanel
- * @public
- */
-export const TabPanelStyles = styles;
+export { TabPanelStyles } from "./tab-panel.styles";

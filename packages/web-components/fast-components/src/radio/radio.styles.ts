@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -11,7 +12,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundCutRestBehavior,
-    heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
     neutralFillInputRestBehavior,
@@ -20,9 +20,15 @@ import {
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
     neutralOutlineRestBehavior,
-} from "../styles/index";
+} from "../styles/recipes";
+import { heightNumber } from "../styles/size";
 
-export const RadioStyles = css`
+/**
+ * Styles for the {@link FASTRadio|FASTRadio component}.
+ *
+ * @public
+ */
+export const RadioStyles: ElementStyles = css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + var(--design-unit));
         align-items: center;

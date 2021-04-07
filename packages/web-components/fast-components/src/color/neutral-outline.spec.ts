@@ -12,8 +12,8 @@ import {
     neutralOutlineHover,
     neutralOutlineRest,
 } from "./neutral-outline";
-import { Palette } from "./palette";
-import { Swatch, SwatchFamily } from "./common";
+import type { Palette } from "./palette";
+import type { Swatch, SwatchFamily } from "./common";
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
