@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
 import { RadioStyles as styles } from "./radio.styles";
 
@@ -11,12 +10,11 @@ import { RadioStyles as styles } from "./radio.styles";
  * @remarks
  * HTML Element: \<fast-radio\>
  */
-@customElement({
-    name: "fast-radio",
+export const FASTRadio = Radio.compose({
+    baseName: "radio",
     template,
-    styles,
+    styles
 })
-export class FASTRadio extends Radio {}
 
 /**
  * Styles for Radio
