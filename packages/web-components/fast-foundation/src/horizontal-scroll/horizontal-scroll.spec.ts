@@ -85,9 +85,6 @@ describe("HorinzontalScroll", () => {
         `);
 
         await connect();
-        await DOM.nextUpdate();
-
-        expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
         element.innerHTML = getCards(8);
 
