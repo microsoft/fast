@@ -1097,7 +1097,7 @@ export interface FormAssociatedProxy {
 // @alpha
 export class FoundationElement extends FASTElement {
     protected get $presentation(): ComponentPresentation;
-    static compose<T extends FoundationElementDefinition = FoundationElementDefinition>(elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => Registry;
+    static compose<T extends FoundationElementDefinition = FoundationElementDefinition, K extends Constructable<FoundationElement> = Constructable<FoundationElement>>(this: K, elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => FoundationElementRegistry<T, K>;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
     // (undocumented)
@@ -1116,6 +1116,17 @@ export interface FoundationElementDefinition {
     readonly styles?: EagerOrLazyFoundationOption<ComposableStyles | ComposableStyles[], this>;
     // Warning: (ae-forgotten-export) The symbol "EagerOrLazyFoundationOption" needs to be exported by the entry point index.d.ts
     readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
+}
+
+// @alpha
+export class FoundationElementRegistry<TDefinition extends FoundationElementDefinition, TType> implements Registry {
+    constructor(type: Constructable<FoundationElement>, elementDefinition: TDefinition, overrideDefinition: OverrideFoundationElementDefinition<TDefinition>);
+    // (undocumented)
+    readonly definition: OverrideFoundationElementDefinition<TDefinition>;
+    // (undocumented)
+    register(container: Container): void;
+    // (undocumented)
+    readonly type: Constructable<FoundationElement>;
 }
 
 // @public
