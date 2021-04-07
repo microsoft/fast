@@ -1,19 +1,15 @@
 import { expect } from "chai";
 import { TreeItem, TreeItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { Button } from "../button";
+import { DOM } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-tree-item",
-    template,
+const FASTTreeItem = TreeItem.compose({
+    baseName: "tree-item",
+    template
 })
-class FASTTreeItem extends TreeItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTreeItem>(
-        "fast-tree-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTTreeItem());
 
     return { element, connect, disconnect };
 }

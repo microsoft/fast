@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { TreeItemTemplate as template, TreeItem } from "@microsoft/fast-foundation";
 import { TreeItemStyles as styles } from "./tree-item.styles";
 
@@ -12,12 +11,11 @@ import { TreeItemStyles as styles } from "./tree-item.styles";
  * HTML Element: \<fast-tree-item\>
  *
  */
-@customElement({
-    name: "fast-tree-item",
+export const FASTTreeItem = TreeItem.compose({
+    baseName: "tree-item",
     template,
     styles,
-})
-export class FASTTreeItem extends TreeItem {}
+});
 
 /**
  * Styles for TreeItem

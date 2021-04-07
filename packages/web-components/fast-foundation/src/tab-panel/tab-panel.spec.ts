@@ -1,18 +1,14 @@
 import { expect } from "chai";
 import { TabPanel, TabPanelTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-tab-panel",
+const FASTTabPanel = TabPanel.compose({
+    baseName: "tab-panel",
     template,
 })
-class FASTTabPanel extends TabPanel {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTabPanel>(
-        "fast-tab-panel"
-    );
+    const { element, connect, disconnect } = await fixture(FASTTabPanel());
 
     return { element, connect, disconnect };
 }

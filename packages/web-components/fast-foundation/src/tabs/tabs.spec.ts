@@ -5,20 +5,19 @@ import { Tab, TabTemplate } from "../tab";
 import { TabPanel, TabPanelTemplate } from "../tab-panel";
 import { TabsOrientation, Tabs, TabsTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-tab",
+const FASTTab = Tab.compose({
+    baseName: "tab",
     template: TabTemplate,
 })
-class FASTTab extends Tab {}
 
-@customElement({
-    name: "fast-tab-panel",
+const FASTTabPanel = TabPanel.compose({
+    baseName: "tab-panel",
     template: TabPanelTemplate,
 })
-class FASTTabPanel extends TabPanel {}
 
-@customElement({
-    name: "fast-tabs",
+
+const FASTTabs = Tabs.compose({
+    baseName: "tabs",
     template,
     styles: css`
         .activeIndicatorTransition {
@@ -26,16 +25,15 @@ class FASTTabPanel extends TabPanel {}
         }
     `,
 })
-class FASTTabs extends Tabs {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTTabs>("fast-tabs");
+    const { element, connect, disconnect } = await fixture(FASTTabs())
 
     for (let i = 1; i < 4; i++) {
-        const tab = document.createElement("fast-tab") as FASTTab;
+        const tab = document.createElement("fast-tab") as Tab;
         tab.id = `tab${i}`;
 
-        const panel = document.createElement("fast-tab-panel") as FASTTabPanel;
+        const panel = document.createElement("fast-tab-panel") as TabPanel;
         panel.id = `panel${i}`;
         element.appendChild(panel);
         element.insertBefore(tab, element.querySelector("fast-tab-panel"));
@@ -118,7 +116,7 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute on the active tab when an `id` is provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+        const { element, connect, disconnect } = await fixture(html<Tabs>`
             <fast-tabs>
                 <fast-tab id="01">Tab one</fast-tab>
                 <fast-tab id="02">Tab two</fast-tab>
@@ -146,7 +144,7 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute tab items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+        const { element, connect, disconnect } = await fixture(html<Tabs>`
             <fast-tabs>
                 <fast-tab>Tab one</fast-tab>
                 <fast-tab>Tab two</fast-tab>
@@ -174,7 +172,7 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute on the tabpanel when an `id is provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+        const { element, connect, disconnect } = await fixture(html<Tabs>`
             <fast-tabs>
                 <fast-tab id="01">Tab one</fast-tab>
                 <fast-tab id="02">Tab two</fast-tab>
@@ -204,7 +202,7 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute on tabpanel items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTTabs>`
+        const { element, connect, disconnect } = await fixture(html<Tabs>`
             <fast-tabs>
                 <fast-tab>Tab one</fast-tab>
                 <fast-tab>Tab two</fast-tab>
@@ -357,8 +355,8 @@ describe("Tabs", () => {
 
     describe("disabled tab", () => {
         it("should not display an active indicator if all tabs are disabled", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTabs>(html<
-                FASTTabs
+            const { element, connect, disconnect } = await fixture<Tabs>(html<
+                Tabs
             >`
                 <fast-tabs>
                     <fast-tab disabled>Tab one</fast-tab>
@@ -384,8 +382,8 @@ describe("Tabs", () => {
         });
 
         it("should display an active indicator if the last tab is disabled", async () => {
-            const { element, connect, disconnect } = await fixture<FASTTabs>(html<
-                FASTTabs
+            const { element, connect, disconnect } = await fixture<Tabs>(html<
+                Tabs
             >`
                 <fast-tabs>
                     <fast-tab>Tab one</fast-tab>

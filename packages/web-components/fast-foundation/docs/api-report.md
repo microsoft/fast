@@ -485,9 +485,6 @@ export function createDataGridRowTemplate(prefix: string): ViewTemplate;
 export function createDataGridTemplate(prefix: string): ViewTemplate;
 
 // @public
-export function createTooltipTemplate(prefix: string): ViewTemplate;
-
-// @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     // @internal
@@ -1541,8 +1538,10 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
 // @public
 export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
 
+// Warning: (ae-incompatible-release-tags) The symbol "RadioGroup" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class RadioGroup extends FASTElement {
+export class RadioGroup extends FoundationElement {
     // (undocumented)
     childItems: HTMLElement[];
     // @internal (undocumented)
@@ -1569,10 +1568,10 @@ export class RadioGroup extends FASTElement {
 }
 
 // @public
-export const RadioGroupTemplate: ViewTemplate<RadioGroup>;
+export const RadioGroupTemplate: (context: any, definition: any) => ViewTemplate<RadioGroup>;
 
 // @public
-export const RadioTemplate: ViewTemplate<Radio>;
+export const RadioTemplate: (context: any, definition: any) => ViewTemplate<Radio>;
 
 // @alpha (undocumented)
 export type RegisterSelf<T extends Constructable> = {
@@ -1763,8 +1762,10 @@ export function singleton<T extends Constructable>(options?: SingletonOptions): 
 // @alpha
 export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Skeleton" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Skeleton extends FASTElement {
+export class Skeleton extends FoundationElement {
     fill: string;
     pattern: string;
     shape: SkeletonShape;
@@ -1775,7 +1776,7 @@ export class Skeleton extends FASTElement {
 export type SkeletonShape = "rect" | "circle";
 
 // @public
-export const SkeletonTemplate: ViewTemplate<Skeleton>;
+export const SkeletonTemplate: (context: any, definition: any) => ViewTemplate<Skeleton>;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
 //
@@ -1836,8 +1837,10 @@ export interface SliderConfiguration {
     orientation?: Orientation;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SliderLabel" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class SliderLabel extends FASTElement {
+export class SliderLabel extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
@@ -1864,7 +1867,7 @@ export class SliderLabel extends FASTElement {
 }
 
 // @public
-export const SliderLabelTemplate: ViewTemplate<SliderLabel>;
+export const SliderLabelTemplate: (context: any, definition: any) => ViewTemplate<SliderLabel>;
 
 // @public
 export enum SliderMode {
@@ -1873,7 +1876,7 @@ export enum SliderMode {
 }
 
 // @public
-export const SliderTemplate: ViewTemplate<Slider>;
+export const SliderTemplate: (context: any, definition: any) => ViewTemplate<Slider>;
 
 // @public
 export class StartEnd {
@@ -1935,25 +1938,30 @@ export class Switch extends FormAssociatedSwitch {
     }
 
 // @public
-export const SwitchTemplate: ViewTemplate<Switch>;
+export const SwitchTemplate: (context: any, definition: any) => ViewTemplate<Switch>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Tab" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Tab extends FASTElement {
+export class Tab extends FoundationElement {
     disabled: boolean;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "TabPanel" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class TabPanel extends FASTElement {
+export class TabPanel extends FoundationElement {
 }
 
 // @public
-export const TabPanelTemplate: ViewTemplate<TabPanel>;
+export const TabPanelTemplate: (context: any, definition: any) => ViewTemplate<TabPanel>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "Tabs" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Tabs" because one of its declarations is marked as @internal
 //
 // @public
-export class Tabs extends FASTElement {
+export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(): void;
@@ -1990,10 +1998,10 @@ export enum TabsOrientation {
 }
 
 // @public
-export const TabsTemplate: ViewTemplate<Tabs>;
+export const TabsTemplate: (context: any, definition: any) => ViewTemplate<Tabs>;
 
 // @public
-export const TabTemplate: ViewTemplate<Tab>;
+export const TabTemplate: (context: any, definition: any) => ViewTemplate<Tab>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
@@ -2036,7 +2044,7 @@ export enum TextAreaResize {
 }
 
 // @public
-export const TextAreaTemplate: ViewTemplate<TextArea>;
+export const TextAreaTemplate: (context: any, definition: any) => ViewTemplate<TextArea>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
@@ -2071,7 +2079,7 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const TextFieldTemplate: ViewTemplate<TextField>;
+export const TextFieldTemplate: (context: any, definition: any) => ViewTemplate<TextField>;
 
 // @public
 export enum TextFieldType {
@@ -2082,8 +2090,10 @@ export enum TextFieldType {
     url = "url"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "Tooltip" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Tooltip extends FASTElement {
+export class Tooltip extends FoundationElement {
     anchor: string;
     anchorElement: HTMLElement | null;
     // (undocumented)
@@ -2131,6 +2141,9 @@ export enum TooltipPosition {
     top = "top"
 }
 
+// @public
+export const TooltipTemplate: (context: any, definition: any) => ViewTemplate;
+
 // @alpha (undocumented)
 type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
 
@@ -2145,10 +2158,11 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
 export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "TreeItem" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TreeItem" because one of its declarations is marked as @internal
 //
 // @public
-export class TreeItem extends FASTElement {
+export class TreeItem extends FoundationElement {
     // (undocumented)
     childItemLength(): number;
     // (undocumented)
@@ -2191,10 +2205,12 @@ export interface TreeItem extends StartEnd {
 }
 
 // @public
-export const TreeItemTemplate: ViewTemplate<TreeItem>;
+export const TreeItemTemplate: (context: any, definition: any) => ViewTemplate<TreeItem>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "TreeView" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class TreeView extends FASTElement {
+export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
@@ -2216,7 +2232,7 @@ export class TreeView extends FASTElement {
 }
 
 // @public
-export const TreeViewTemplate: ViewTemplate<TreeView>;
+export const TreeViewTemplate: (context: any, definition: any) => ViewTemplate<TreeView>;
 
 // Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
 //

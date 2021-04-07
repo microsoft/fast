@@ -7,7 +7,10 @@ import type { TreeItem } from "./tree-item";
  * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
  * @public
  */
-export const TreeItemTemplate: ViewTemplate<TreeItem> = html`
+export const TreeItemTemplate: (context, definition) => ViewTemplate<TreeItem> = (
+    context,
+    definition
+) => html`
     <template
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"

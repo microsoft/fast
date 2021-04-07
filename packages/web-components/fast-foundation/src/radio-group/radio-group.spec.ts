@@ -2,31 +2,27 @@ import { assert, expect } from "chai";
 import { RadioGroup, RadioGroupTemplate as template } from "./index";
 import { Radio, RadioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
-import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
+import { DOM, html } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-radio-group",
+const FASTRadioGroup = RadioGroup.compose({
+    baseName: "radio-group",
     template,
 })
-class FASTRadioGroup extends RadioGroup {}
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Radio Group", () => {
-    @customElement({
-        name: "fast-radio",
-        template: itemTemplate,
+    const FASTRadio = Radio.compose({
+        baseName: "radio",
+        template,
     })
-    class FASTRadio extends Radio {}
 
     async function setup() {
-        const { element, connect, disconnect, parent } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect, parent } = await fixture(FASTRadioGroup());
 
-        const radio1 = document.createElement("fast-radio") as FASTRadio;
-        const radio2 = document.createElement("fast-radio") as FASTRadio;
-        const radio3 = document.createElement("fast-radio") as FASTRadio;
+        const radio1 = document.createElement("fast-radio") as Radio;
+        const radio2 = document.createElement("fast-radio") as Radio;
+        const radio3 = document.createElement("fast-radio") as Radio;
 
         radio1.className = "one";
         radio2.className = "two";
@@ -130,9 +126,9 @@ describe("Radio Group", () => {
         await connect();
         await DOM.nextUpdate();
 
-        expect((element.querySelector(".one") as FASTRadio).disabled).to.equal(true);
-        expect((element.querySelector(".two") as FASTRadio).disabled).to.equal(true);
-        expect((element.querySelector(".three") as FASTRadio).disabled).to.equal(true);
+        expect((element.querySelector(".one") as Radio).disabled).to.equal(true);
+        expect((element.querySelector(".two") as Radio).disabled).to.equal(true);
+        expect((element.querySelector(".three") as Radio).disabled).to.equal(true);
 
         expect(element.querySelector(".one")?.getAttribute("aria-disabled")).to.equal(
             "true"
@@ -148,9 +144,7 @@ describe("Radio Group", () => {
     });
 
     it("should set the `aria-readonly` attribute equal to the `readonly` value", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         element.readOnly = true;
 
@@ -168,9 +162,7 @@ describe("Radio Group", () => {
     });
 
     it("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
-        const { element, connect, disconnect } = await fixture<FASTRadioGroup>(
-            "fast-radio-group"
-        );
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         await connect();
 
@@ -186,9 +178,9 @@ describe("Radio Group", () => {
         await connect();
         await DOM.nextUpdate();
 
-        expect((element.querySelector(".one") as FASTRadio).readOnly).to.equal(true);
-        expect((element.querySelector(".two") as FASTRadio).readOnly).to.equal(true);
-        expect((element.querySelector(".three") as FASTRadio).readOnly).to.equal(true);
+        expect((element.querySelector(".one") as Radio).readOnly).to.equal(true);
+        expect((element.querySelector(".two") as Radio).readOnly).to.equal(true);
+        expect((element.querySelector(".three") as Radio).readOnly).to.equal(true);
 
         expect(element.querySelector(".one")?.getAttribute("aria-readonly")).to.equal(
             "true"
@@ -204,13 +196,7 @@ describe("Radio Group", () => {
     });
 
     it("should set tabindex of 0 to a child radio with a matching `value`", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group value="baz">
-                <fast-radio value="foo">Foo</fast-radio>
-                <fast-radio value="bar">Bar</fast-radio>
-                <fast-radio value="baz">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         await connect();
         await DOM.nextUpdate();
@@ -223,13 +209,7 @@ describe("Radio Group", () => {
     });
 
     it("should NOT set tabindex of 0 to a child radio if its value does not match the radiogroup `value`", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group value="baz">
-                <fast-radio value="foo">Foo</fast-radio>
-                <fast-radio value="bar">Bar</fast-radio>
-                <fast-radio value="baz">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         await connect();
         await DOM.nextUpdate();
@@ -245,18 +225,12 @@ describe("Radio Group", () => {
     });
 
     it("should set a child radio with a matching `value` to `checked`", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group value="baz">
-                <fast-radio value="foo">Foo</fast-radio>
-                <fast-radio value="bar">Bar</fast-radio>
-                <fast-radio value="baz">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         await connect();
         await DOM.nextUpdate();
 
-        expect((element.querySelectorAll("fast-radio")[2] as FASTRadio).checked).to.equal(
+        expect((element.querySelectorAll("fast-radio")[2] as Radio).checked).to.equal(
             true
         );
         expect(
@@ -309,25 +283,19 @@ describe("Radio Group", () => {
     });
 
     it("should NOT set a child radio to `checked` if its value does not match the radiogroup `value`", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTRadioGroup>`
-            <fast-radio-group value="baz">
-                <fast-radio value="foo">Foo</fast-radio>
-                <fast-radio value="bar">Bar</fast-radio>
-                <fast-radio value="baz">Baz</fast-radio>
-            </fast-radio-group>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTRadioGroup());
 
         await connect();
         await DOM.nextUpdate();
 
-        expect((element.querySelectorAll("fast-radio")[0] as FASTRadio).checked).to.equal(
+        expect((element.querySelectorAll("fast-radio")[0] as Radio).checked).to.equal(
             false
         );
         expect(
             element.querySelectorAll("fast-radio")[0].getAttribute("aria-checked")
         ).to.equal("false");
 
-        expect((element.querySelectorAll("fast-radio")[1] as FASTRadio).checked).to.equal(
+        expect((element.querySelectorAll("fast-radio")[1] as Radio).checked).to.equal(
             false
         );
         expect(

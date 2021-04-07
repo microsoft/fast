@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { TreeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
 import { TreeViewStyles as styles } from "./tree-view.styles";
 
@@ -12,12 +11,11 @@ import { TreeViewStyles as styles } from "./tree-view.styles";
  * HTML Element: \<fast-tree-view\>
  *
  */
-@customElement({
-    name: "fast-tree-view",
+export const FASTTreeView = TreeView.compose({
+    baseName: "tree-view",
     template,
     styles,
 })
-export class FASTTreeView extends TreeView {}
 
 /**
  * Styles for TreeView

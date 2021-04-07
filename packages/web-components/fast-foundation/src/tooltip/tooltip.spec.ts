@@ -1,14 +1,13 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { DOM, html } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { createTooltipTemplate, Tooltip } from "./index";
+import { TooltipTemplate as template, Tooltip } from "./index";
 import { TooltipPosition } from "./tooltip";
 
-@customElement({
-    name: "fast-tooltip",
-    template: createTooltipTemplate("fast"),
+const FASTTooltip = Tooltip.compose({
+    baseName: "tooltip",
+    template
 })
-class FASTTooltip extends Tooltip {}
 
 async function setup() {
     const { element, connect, disconnect } = await fixture(html<HTMLDivElement>`
@@ -25,7 +24,7 @@ async function setup() {
 describe("Tooltip", () => {
     it("should not render the toolip by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
         tooltip.delay = 0;
 
         await connect();
@@ -39,7 +38,7 @@ describe("Tooltip", () => {
 
     it("should render the toolip when visible is true", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.visible = true;
         tooltip.delay = 0;
@@ -57,7 +56,7 @@ describe("Tooltip", () => {
 
     it("should not render the toolip when visible is false", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.visible = false;
         tooltip.delay = 0;
@@ -73,7 +72,7 @@ describe("Tooltip", () => {
 
     it("should set positioning mode to dynamic by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         await connect();
 
@@ -85,7 +84,7 @@ describe("Tooltip", () => {
 
     it("should not set a default position by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         await connect();
 
@@ -97,7 +96,7 @@ describe("Tooltip", () => {
 
     it("should set horizontal scaling to match anchor and vertical scaling to match content by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         await connect();
 
@@ -111,7 +110,7 @@ describe("Tooltip", () => {
 
     it("should set vertical positioning mode to locked and horizontal to dynamic when position is set to top", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.top;
 
@@ -125,7 +124,7 @@ describe("Tooltip", () => {
 
     it("should set default vertical position to top when position is set to top", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.top;
 
@@ -139,7 +138,7 @@ describe("Tooltip", () => {
 
     it("should set horizontal scaling to match anchor and vertical scaling to match content when position is set to top", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.top;
 
@@ -155,7 +154,7 @@ describe("Tooltip", () => {
 
     it("should set vertical positioning mode to locked and horizontal to dynamic when position is set to bottom", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.bottom;
 
@@ -169,7 +168,7 @@ describe("Tooltip", () => {
 
     it("should set default vertical position to top when position is set to top", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.bottom;
 
@@ -183,7 +182,7 @@ describe("Tooltip", () => {
 
     it("should set horizontal scaling to match anchor and vertical scaling to match content when position is set to bottom", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.bottom;
 
@@ -199,7 +198,7 @@ describe("Tooltip", () => {
 
     it("should set horizontal positioning mode to locked and vertical to dynamic when position is set to left", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.left;
 
@@ -213,7 +212,7 @@ describe("Tooltip", () => {
 
     it("should set default horizontal position to left when position is set to left", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.left;
 
@@ -227,7 +226,7 @@ describe("Tooltip", () => {
 
     it("should set vertical scaling to match anchor and horizontal scaling to match content when position is set to bottom", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.left;
 
@@ -243,7 +242,7 @@ describe("Tooltip", () => {
 
     it("should set horizontal positioning mode to locked and vertical to dynamic when position is set to right", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.right;
 
@@ -257,7 +256,7 @@ describe("Tooltip", () => {
 
     it("should set default horizontal position to right when position is set to right", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.right;
 
@@ -271,7 +270,7 @@ describe("Tooltip", () => {
 
     it("should set vertical scaling to match anchor and horizontal scaling to match content when position is set to rig", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element.querySelector("fast-tooltip") as Tooltip;
 
         tooltip.position = TooltipPosition.right;
 

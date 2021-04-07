@@ -36,13 +36,13 @@ import { RadioGroup } from '@microsoft/fast-foundation';
 import { Select } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
-import { SliderLabel } from '@microsoft/fast-foundation';
+import { SliderLabel as SliderLabel_2 } from '@microsoft/fast-foundation';
 import { Switch } from '@microsoft/fast-foundation';
 import { Tab } from '@microsoft/fast-foundation';
 import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
-import { TextArea } from '@microsoft/fast-foundation';
-import { TextField } from '@microsoft/fast-foundation';
+import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
+import { TextField as TextField_2 } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
@@ -797,12 +797,26 @@ export class FASTProgressRing extends BaseProgress {
 }
 
 // @public
-export class FASTRadio extends Radio {
-}
+export const FASTRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Radio, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Radio>;
 
 // @public
-export class FASTRadioGroup extends RadioGroup {
-}
+export const FASTRadioGroup: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<RadioGroup, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof RadioGroup>;
 
 // @public
 export const FASTSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -816,60 +830,154 @@ export const FASTSelect: (overrideDefinition?: import("@microsoft/fast-foundatio
 }, typeof Select>;
 
 // @public
-export class FASTSkeleton extends Skeleton {
-}
+export const FASTSkeleton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Skeleton, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Skeleton>;
 
 // @public
-export class FASTSlider extends Slider {
-}
+export const FASTSlider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Slider, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Slider, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Slider>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "FASTSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+//
+// @public
+export const FASTSliderLabel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<SliderLabel_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<SliderLabel_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof SliderLabel>;
 
 // @public
-export class FASTSliderLabel extends SliderLabel {
-    // (undocumented)
-    protected sliderOrientationChanged(): void;
-}
+export const FASTSwitch: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Switch, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Switch, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Switch>;
 
 // @public
-export class FASTSwitch extends Switch {
-}
+export const FASTTab: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Tab, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Tab, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Tab>;
 
 // @public
-export class FASTTab extends Tab {
-}
+export const FASTTabPanel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TabPanel, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof TabPanel>;
 
 // @public
-export class FASTTabPanel extends TabPanel {
-}
+export const FASTTabs: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Tabs, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Tabs, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Tabs>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "FASTTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+//
+// @public
+export const FASTTextArea: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TextArea_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TextArea_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof TextArea>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "FASTTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+//
+// @public
+export const FASTTextField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TextField_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TextField_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof TextField>;
 
 // @public
-export class FASTTabs extends Tabs {
-}
+export const FASTTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<any, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<any, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof Tooltip>;
 
 // @public
-export class FASTTextArea extends TextArea {
-    appearance: TextAreaAppearance;
-    // @internal (undocumented)
-    connectedCallback(): void;
-}
+export const FASTTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TreeItem, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof TreeItem>;
 
 // @public
-export class FASTTextField extends TextField {
-    appearance: TextFieldAppearance;
-    // @internal (undocumented)
-    connectedCallback(): void;
-}
-
-// @public
-export class FASTTooltip extends Tooltip {
-}
-
-// @public
-export class FASTTreeItem extends TreeItem {
-}
-
-// @public
-export class FASTTreeView extends TreeView {
-}
+export const FASTTreeView: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<TreeView, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof TreeView>;
 
 // @public
 export const FlipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -1333,22 +1441,30 @@ export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles
 export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const RadioGroupStyles: import("@microsoft/fast-element").ElementStyles;
+export const RadioGroupStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const RadioStyles: import("@microsoft/fast-element").ElementStyles;
+export const RadioStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const SelectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SkeletonStyles: import("@microsoft/fast-element").ElementStyles;
+export const SkeletonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "SliderLabel" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class SliderLabel extends SliderLabel_2 {
+    // (undocumented)
+    protected sliderOrientationChanged(): void;
+}
 
 // @public
-export const SliderLabelStyles: import("@microsoft/fast-element").ElementStyles;
+export const SliderLabelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SliderStyles: import("@microsoft/fast-element").ElementStyles;
+export const SliderStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export enum StandardLuminance {
@@ -1359,34 +1475,54 @@ export enum StandardLuminance {
 }
 
 // @public
-export const SwitchStyles: import("@microsoft/fast-element").ElementStyles;
+export const SwitchStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabPanelStyles: import("@microsoft/fast-element").ElementStyles;
+export const TabPanelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabsStyles: import("@microsoft/fast-element").ElementStyles;
+export const TabsStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabStyles: import("@microsoft/fast-element").ElementStyles;
+export const TabStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "TextArea" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class TextArea extends TextArea_2 {
+    // @public
+    appearance: TextAreaAppearance;
+    // (undocumented)
+    connectedCallback(): void;
+}
 
 // @public
 export type TextAreaAppearance = "filled" | "outline";
 
 // @public
-export const TextAreaStyles: import("@microsoft/fast-element").ElementStyles;
+export const TextAreaStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class TextField extends TextField_2 {
+    // @public
+    appearance: TextFieldAppearance;
+    // (undocumented)
+    connectedCallback(): void;
+}
 
 // @public
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const TextFieldStyles: import("@microsoft/fast-element").ElementStyles;
+export const TextFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TreeItemStyles: import("@microsoft/fast-element").ElementStyles;
+export const TreeItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TreeViewStyles: import("@microsoft/fast-element").ElementStyles;
+export const TreeViewStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 
 // (No @packageDocumentation comment for this package)
