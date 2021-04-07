@@ -11,12 +11,11 @@ import { SkeletonStyles as styles } from "./skeleton.styles";
  * @remarks
  * HTML Element: \<fast-skeleton\>
  */
-@customElement({
-    name: "fast-skeleton",
+export const FASTSkeleton = Skeleton.compose({
+    baseName: "skeleton",
     template,
     styles,
-})
-export class FASTSkeleton extends Skeleton {}
+});
 
 /**
  * Styles for Skeleton

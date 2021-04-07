@@ -2,7 +2,7 @@ import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { Select } from "./select";
+import type { Select } from "./select";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
@@ -12,9 +12,9 @@ export const SelectTemplate: (context, definition) => ViewTemplate<Select> = (
     context,
     definition
 ) => html`
-    <${context.tagFor(Select)}
+    <template
         class="${x => (x.open ? "open" : "")} ${x =>
-    x.disabled ? "disabled" : ""} ${x => x.position}"
+            x.disabled ? "disabled" : ""} ${x => x.position}"
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
@@ -72,5 +72,5 @@ export const SelectTemplate: (context, definition) => ViewTemplate<Select> = (
                 })}
             ></slot>
         </div>
-    </${context.tagFor(Select)}>
+    </template>
 `;
