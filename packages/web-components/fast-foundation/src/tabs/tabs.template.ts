@@ -7,7 +7,10 @@ import type { Tabs } from "./tabs";
  * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.
  * @public
  */
-export const TabsTemplate: ViewTemplate<Tabs> = html`
+export const TabsTemplate: (context, definition) => ViewTemplate<Tabs> = (
+    context,
+    definition
+) => html`
     <template class="${x => x.orientation}">
         ${startTemplate}
         <div class="tablist" part="tablist" role="tablist">
