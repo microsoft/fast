@@ -789,12 +789,26 @@ export const FASTOption: (overrideDefinition?: import("@microsoft/fast-foundatio
 }, typeof ListboxOption>;
 
 // @public
-export class FASTProgress extends BaseProgress {
-}
+export const FASTProgress: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, defintion: any) => import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, defintion: any) => import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof BaseProgress>;
 
 // @public
-export class FASTProgressRing extends BaseProgress {
-}
+export const FASTProgressRing: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+    styles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BaseProgress, any>;
+    styles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
+}, typeof BaseProgress>;
 
 // @public
 export const FASTRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -1435,10 +1449,10 @@ export enum PaletteType {
 export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
-export const ProgressRingStyles: import("@microsoft/fast-element").ElementStyles;
+export const ProgressRingStyles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const ProgressStyles: import("@microsoft/fast-element").ElementStyles;
+export const ProgressStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const RadioGroupStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;

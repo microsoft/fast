@@ -178,8 +178,10 @@ export class Badge extends FoundationElement {
 // @public
 export const BadgeTemplate: (context: any, definition: any) => ViewTemplate<Badge>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "BaseProgress" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class BaseProgress extends FASTElement {
+export class BaseProgress extends FoundationElement {
     max: number;
     min: number;
     paused: any;
@@ -1493,10 +1495,10 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 export type ParentLocator = (owner: any) => Container | null;
 
 // @public
-export const ProgressRingTemplate: ViewTemplate<BaseProgress>;
+export const ProgressRingTemplate: (context: any, definition: any) => ViewTemplate<BaseProgress>;
 
 // @public
-export const ProgressTemplate: ViewTemplate<BaseProgress>;
+export const ProgressTemplate: (context: any, defintion: any) => ViewTemplate<BaseProgress>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {

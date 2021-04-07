@@ -1,5 +1,7 @@
-import { customElement } from "@microsoft/fast-element";
-import { BaseProgress, ProgressTemplate as template } from "@microsoft/fast-foundation";
+import {
+    BaseProgress as Progress,
+    ProgressTemplate as template,
+} from "@microsoft/fast-foundation";
 import { ProgressStyles as styles } from "./progress.styles";
 
 /**
@@ -11,12 +13,11 @@ import { ProgressStyles as styles } from "./progress.styles";
  * @remarks
  * HTML Element: \<fast-progress\>
  */
-@customElement({
-    name: "fast-progress",
+export const FASTProgress = Progress.compose({
+    baseName: "progress",
     template,
     styles,
-})
-export class FASTProgress extends BaseProgress {}
+});
 
 /**
  * Styles for Progress

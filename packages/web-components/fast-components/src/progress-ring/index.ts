@@ -1,6 +1,5 @@
-import { customElement } from "@microsoft/fast-element";
 import {
-    BaseProgress,
+    BaseProgress as Progress,
     ProgressRingTemplate as template,
 } from "@microsoft/fast-foundation";
 import { ProgressRingStyles as styles } from "./progress-ring.styles";
@@ -14,12 +13,11 @@ import { ProgressRingStyles as styles } from "./progress-ring.styles";
  * @remarks
  * HTML Element: \<fast-progress-ring\>
  */
-@customElement({
-    name: "fast-progress-ring",
+export const FASTProgressRing = Progress.compose({
+    baseName: "progress-ring",
     template,
     styles,
-})
-export class FASTProgressRing extends BaseProgress {}
+});
 
 /**
  * Styles for ProgressRing

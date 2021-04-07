@@ -6,7 +6,10 @@ import type { BaseProgress } from "../progress/base-progress";
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
+export const ProgressRingTemplate: (context, definition) => ViewTemplate<BaseProgress> = (
+    context,
+    definition
+) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
