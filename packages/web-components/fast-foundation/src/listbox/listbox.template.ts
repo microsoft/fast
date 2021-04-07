@@ -10,7 +10,7 @@ export const ListboxTemplate: (context, definition) => ViewTemplate<Listbox> = (
     context,
     definition
 ) => html`
-    <${context.tagFor(Listbox)}
+    <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
         class="listbox"
         role="${x => x.role}"
@@ -26,5 +26,5 @@ export const ListboxTemplate: (context, definition) => ViewTemplate<Listbox> = (
                 property: "slottedOptions",
             })}
         ></slot>
-    </${context.tagFor(Listbox)}>
+    </template>
 `;

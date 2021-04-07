@@ -2,7 +2,8 @@ import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { MenuItem, MenuItemRole } from "./menu-item";
+import { MenuItemRole } from "./menu-item";
+import type { MenuItem } from "./menu-item";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
@@ -14,7 +15,7 @@ export const MenuItemTemplate: (context, definition) => ViewTemplate<MenuItem> =
     context,
     definition
 ) => html<MenuItem>`
-    <${context.tagFor(MenuItem)}
+    <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"
         aria-checked="${x => (x.role !== MenuItemRole.menuitem ? x.checked : void 0)}"
@@ -117,5 +118,5 @@ export const MenuItemTemplate: (context, definition) => ViewTemplate<MenuItem> =
                 </${context.tagFor(AnchoredRegion)}>
             `
         )}
-    </${context.tagFor(MenuItem)}>
+    </template>
 `;

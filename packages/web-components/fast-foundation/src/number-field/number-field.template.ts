@@ -1,7 +1,7 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { NumberField } from "./number-field";
+import type { NumberField } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
@@ -11,7 +11,7 @@ export const NumberFieldTemplate: (context, definition) => ViewTemplate<NumberFi
     context,
     definition
 ) => html`
-    <${context.tagFor(NumberField)} class="${x => (x.readOnly ? "readonly" : "")}">
+    <template class="${x => (x.readOnly ? "readonly" : "")}">
         <label
             part="label"
             for="control"
@@ -85,5 +85,5 @@ export const NumberFieldTemplate: (context, definition) => ViewTemplate<NumberFi
             )}
             ${endTemplate}
         </div>
-    </${context.tagFor(NumberField)}>
+    </template>
 `;

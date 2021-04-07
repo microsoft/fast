@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { ListboxOption } from "./listbox-option";
+import type { ListboxOption } from "./listbox-option";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
@@ -11,10 +11,10 @@ export const ListboxOptionTemplate: (
     context,
     definition
 ) => ViewTemplate<ListboxOption> = (context, definition) => html`
-    <${context.tagFor(ListboxOption)}
+    <template
         aria-selected="${x => x.selected}"
         class="${x => (x.selected ? "selected" : "")} ${x =>
-    x.disabled ? "disabled" : ""}"
+            x.disabled ? "disabled" : ""}"
         role="option"
     >
         ${startTemplate}
@@ -22,5 +22,5 @@ export const ListboxOptionTemplate: (
             <slot></slot>
         </span>
         ${endTemplate}
-    </${context.tagFor(ListboxOption)}>
+    </template>
 `;

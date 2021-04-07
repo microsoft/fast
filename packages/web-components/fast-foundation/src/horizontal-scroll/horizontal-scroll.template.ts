@@ -1,7 +1,7 @@
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import { HorizontalScroll } from "./horizontal-scroll";
+import type { HorizontalScroll } from "./horizontal-scroll";
 
 /**
  * @public
@@ -10,9 +10,7 @@ export const HorizontalScrollTemplate: (
     context,
     definition
 ) => ViewTemplate<HorizontalScroll> = (context, definition) => html`
-    <${context.tagFor(
-        HorizontalScroll
-    )} class="horizontal-scroll">
+    <template class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">
             <div
@@ -54,5 +52,5 @@ export const HorizontalScrollTemplate: (
             )}
         </div>
         ${endTemplate}
-    </${context.tagFor(HorizontalScroll)}>
+    </template>
 `;

@@ -1,7 +1,7 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { AccordionItem } from "./accordion-item";
+import type { AccordionItem } from "./accordion-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
@@ -11,7 +11,7 @@ export const AccordionItemTemplate: (
     context,
     definition
 ) => ViewTemplate<AccordionItem> = (context, definition) => html`
-    <${context.tagFor(AccordionItem)}
+    <template
         class="${x => (x.expanded ? "expanded" : "")}"
         slot="item"
     >
@@ -66,5 +66,5 @@ export const AccordionItemTemplate: (
         >
             <slot></slot>
         </div>
-    </${context.tagFor(AccordionItem)}>
+    </template>
 `;
