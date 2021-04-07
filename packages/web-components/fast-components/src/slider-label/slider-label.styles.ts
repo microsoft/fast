@@ -48,54 +48,55 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const SliderLabelStyles = css`
-    ${display("block")} :host {
-        font-family: var(--body-font);
-        color: ${neutralForegroundRestBehavior.var};
-        fill: currentcolor;
-    }
-    .root {
-        position: absolute;
-        display: grid;
-    }
-    .container {
-        display: grid;
-        justify-self: center;
-    }
-    .label {
-        justify-self: center;
-        align-self: center;
-        white-space: nowrap;
-        max-width: 30px;
-    }
-    .mark {
-        width: calc((var(--design-unit) / 4) * 1px);
-        height: calc(${heightNumber} * 0.25 * 1px);
-        background: ${neutralOutlineRestBehavior.var};
-        justify-self: center;
-    }
-    :host(.disabled) {
-        opacity: var(--disabled-opacity);
-    }
-`.withBehaviors(
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            .mark {
-                forced-color-adjust: none;
-                background: ${SystemColors.FieldText};
-            }
-            :host(.disabled) {
-                forced-color-adjust: none;
-                opacity: 1;
-            }
-            :host(.disabled) .label {
-                color: ${SystemColors.GrayText};
-            }
-            :host(.disabled) .mark {
-                background: ${SystemColors.GrayText};
-            }
-        `
-    )
-);
+export const SliderLabelStyles = (context, definition) =>
+    css`
+        ${display("block")} :host {
+            font-family: var(--body-font);
+            color: ${neutralForegroundRestBehavior.var};
+            fill: currentcolor;
+        }
+        .root {
+            position: absolute;
+            display: grid;
+        }
+        .container {
+            display: grid;
+            justify-self: center;
+        }
+        .label {
+            justify-self: center;
+            align-self: center;
+            white-space: nowrap;
+            max-width: 30px;
+        }
+        .mark {
+            width: calc((var(--design-unit) / 4) * 1px);
+            height: calc(${heightNumber} * 0.25 * 1px);
+            background: ${neutralOutlineRestBehavior.var};
+            justify-self: center;
+        }
+        :host(.disabled) {
+            opacity: var(--disabled-opacity);
+        }
+    `.withBehaviors(
+        neutralForegroundRestBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
+                .mark {
+                    forced-color-adjust: none;
+                    background: ${SystemColors.FieldText};
+                }
+                :host(.disabled) {
+                    forced-color-adjust: none;
+                    opacity: 1;
+                }
+                :host(.disabled) .label {
+                    color: ${SystemColors.GrayText};
+                }
+                :host(.disabled) .mark {
+                    background: ${SystemColors.GrayText};
+                }
+            `
+        )
+    );

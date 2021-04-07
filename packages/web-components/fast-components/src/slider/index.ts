@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Slider, SliderTemplate as template } from "@microsoft/fast-foundation";
 import { SliderStyles as styles } from "./slider.styles";
 
@@ -11,12 +10,11 @@ import { SliderStyles as styles } from "./slider.styles";
  * @remarks
  * HTML Element: \<fast-slider\>
  */
-@customElement({
-    name: "fast-slider",
+export const FASTSlider = Slider.compose({
+    baseName: "slider",
     template,
     styles,
-})
-export class FASTSlider extends Slider {}
+});
 
 /**
  * Styles for Slider
