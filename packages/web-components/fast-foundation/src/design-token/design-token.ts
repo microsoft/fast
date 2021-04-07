@@ -406,7 +406,7 @@ class DesignTokenNode<T> {
 }
 
 function create<T extends Function>(name: string): never;
-function create<T extends undefined>(name: string): never;
+function create<T extends undefined | void>(name: string): never;
 function create<T>(name: string): DesignToken<T>;
 function create<T>(name: string): any {
     return new DesignTokenImpl<T>(name);
@@ -419,5 +419,3 @@ function create<T>(name: string): any {
 export const DesignToken = Object.freeze({
     create,
 });
-
-const test = create<undefined>("foo");
