@@ -175,22 +175,32 @@ export class NumberField extends FormAssociatedNumberField {
      * Increments the value using the step value
      */
     public stepUp(): void {
-        const stepUpValue = parseFloat(this.value) + this.step;
-        const nextValue =
-            this.max !== undefined && stepUpValue > this.max ? this.max : stepUpValue;
-        this.value = parseFloat(nextValue.toPrecision(12)).toString();
-
-        this.$emit("input");
+        this.changeValue();
     }
 
     /**
      * Decrements the value using the step value
      */
     public stepDown(): void {
-        const stepDownValue = parseFloat(this.value) - this.step;
-        const previousValue =
-            this.min !== undefined && stepDownValue < this.min ? this.min : stepDownValue;
-        this.value = parseFloat(previousValue.toPrecision(12)).toString();
+        this.changeValue("down");
+    }
+
+    /**
+     * Increments or decrements the current value by the step value
+     *
+     * @param direction - direction to step the current value up or down
+     *
+     * @internal
+     */
+    private changeValue(direction: "up" | "down" = "up"): void {
+        let nextValue =
+            parseFloat(this.value) + this.step * (direction === "down" ? -1 : 1);
+        if (this.min !== undefined && nextValue < this.min) {
+            nextValue = this.min;
+        } else if (this.max !== undefined && nextValue > this.max) {
+            nextValue = this.max;
+        }
+        this.value = parseFloat(nextValue.toPrecision(12)).toString();
 
         this.$emit("input");
     }
