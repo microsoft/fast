@@ -9,22 +9,12 @@ const FASTButton = Button.compose({
 })
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<Button>(
-        "fast-button"
-    );
+    const { connect, disconnect, element, parent } = await fixture(FASTButton());
 
     return { connect, disconnect, element, parent };
 }
 
 describe("Button", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-button");
-    })
-
     it("should set the `autofocus` attribute on the internal button when provided", async () => {
         const { element, connect, disconnect } = await setup();
 

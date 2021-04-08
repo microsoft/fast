@@ -10,23 +10,13 @@ const FASTDialog = Dialog.compose({
 })
 
 async function setup() {
-    const { connect, disconnect, document, element } = await fixture<Dialog>(
-        "fast-dialog"
-    );
+    const { connect, disconnect, document, element } = await fixture(FASTDialog());
 
     return { connect, disconnect, document, element };
 }
 
 // TODO: Add tests for focus management
 describe("Dialog", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-        console.log(element, "element");
-        expect(element.tagName.toLowerCase()).to.equal("fast-dialog");
-    })
-
     it("should include a role of `dialog` on the control", async () => {
         const { element, connect, disconnect } = await setup();
 

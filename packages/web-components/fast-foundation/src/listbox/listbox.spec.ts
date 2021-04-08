@@ -18,9 +18,7 @@ describe("Listbox", () => {
     })
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture<Listbox>(
-            "fast-listbox"
-        );
+        const { element, connect, disconnect } = await fixture(FASTListbox());
 
         const option1 = document.createElement("fast-option");
         (option1 as ListboxOption).textContent = "option 1";
@@ -37,14 +35,6 @@ describe("Listbox", () => {
 
         return { element, connect, disconnect, option1, option2, option3 };
     }
-
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-listbox");
-    })
 
     it("should have a role of `listbox`", async () => {
         const { element, connect, disconnect } = await setup();

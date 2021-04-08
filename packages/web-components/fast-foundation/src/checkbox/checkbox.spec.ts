@@ -10,22 +10,12 @@ const FASTCheckbox = Checkbox.compose({
 })
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<Checkbox>(
-        "fast-checkbox"
-    );
+    const { connect, disconnect, element, parent } = await fixture(FASTCheckbox());
 
     return { connect, disconnect, element, parent };
 }
 
 describe("Checkbox", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-checkbox");
-    })
-
     it("should have a role of `checkbox`", async () => {
         const { element, connect, disconnect } = await setup();
 

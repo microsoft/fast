@@ -10,22 +10,12 @@ const FASTAccordionItem = AccordionItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<AccordionItem>(
-        "fast-accordion-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTAccordionItem());
 
     return { element, connect, disconnect };
 }
 
 describe("Accordion item", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-accordion-item");
-    })
-
     it("should set an `aria-level` to the heading when provided", async () => {
         const { element, connect, disconnect } = await setup();
 

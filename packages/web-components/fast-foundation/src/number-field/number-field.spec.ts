@@ -9,9 +9,7 @@ const FASTNumberField = NumberField.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<NumberField>(
-        "fast-number-field"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
 
     return { element, connect, disconnect, parent };
 }

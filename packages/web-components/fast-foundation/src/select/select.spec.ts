@@ -16,9 +16,7 @@ const FASTOption = ListboxOption.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<Select>(
-        "fast-select"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTSelect());
 
     const option1 = document.createElement("fast-option") as ListboxOption;
     option1.value = "one";
@@ -38,14 +36,6 @@ async function setup() {
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Select", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName).to.equal("fast-select");
-    })
-
     it("should include a role of `combobox`", async () => {
         const { element, connect, disconnect } = await setup();
 

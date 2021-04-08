@@ -11,9 +11,7 @@ const FASTMenuItem = MenuItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<MenuItem>(
-        "fast-menu-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTMenuItem());
 
     return { element, connect, disconnect };
 }

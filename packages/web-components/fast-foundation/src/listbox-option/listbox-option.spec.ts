@@ -11,18 +11,10 @@ const FASTOption = ListboxOption.compose({
 
 describe("ListboxOption", () => {
     async function setup() {
-        const { element, connect, disconnect } = await fixture<ListboxOption>("fast-option");
+        const { element, connect, disconnect } = await fixture(FASTOption());
 
         return { element, connect, disconnect };
     }
-
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-option");
-    })
 
     it("should set the `aria-selected` attribute equal to the `selected` value", async () => {
         const { element, connect, disconnect } = await setup();

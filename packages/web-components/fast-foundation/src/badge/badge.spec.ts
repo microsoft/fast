@@ -8,7 +8,7 @@ const FASTBadge = Badge.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Badge>("fast-badge");
+    const { element, connect, disconnect } = await fixture(FASTBadge());
 
     return { element, connect, disconnect };
 }
@@ -18,14 +18,6 @@ let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill
 let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
 
 describe("Badge", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-badge");
-    })
-
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {
         const { element, connect, disconnect } = await setup();
         const fill: string = "foo";

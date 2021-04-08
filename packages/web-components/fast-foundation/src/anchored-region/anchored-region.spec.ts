@@ -21,14 +21,6 @@ async function setup() {
 }
 
 describe("Anchored Region", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-anchored-region");
-    })
-
     it("should set positioning modes to 'uncontrolled' by default", async () => {
         const { element, connect, disconnect } = await setup();
         const region: AnchoredRegion = element.querySelector(

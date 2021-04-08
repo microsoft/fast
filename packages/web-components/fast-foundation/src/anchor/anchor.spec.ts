@@ -14,16 +14,6 @@ async function setup() {
 }
 
 describe("Anchor", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-anchor");
-
-        await disconnect();
-    })
-
     it("should set the `download` attribute on the internal anchor equal to the value provided", async () => {
         const { element, connect, disconnect } = await setup();
         const download: string = "foo";

@@ -14,7 +14,7 @@ const FASTRadioGroup = RadioGroup.compose({
 describe("Radio Group", () => {
     const FASTRadio = Radio.compose({
         baseName: "radio",
-        template,
+        template: itemTemplate
     })
 
     async function setup() {

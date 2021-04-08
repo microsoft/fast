@@ -16,9 +16,7 @@ const FASTAccordionItem = AccordionItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Accordion>(
-        "fast-accordion"
-    );
+    const { element, connect, disconnect } = await fixture(FASTAccordion());
 
     const item1 = document.createElement("fast-accordion-item");
     const item2 = document.createElement("fast-accordion-item");
@@ -32,14 +30,6 @@ async function setup() {
 }
 
 describe("Accordion", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-accordion");
-    })
-
     it("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
         const { element, connect, disconnect } = await setup();
 

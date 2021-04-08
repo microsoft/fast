@@ -10,20 +10,12 @@ const FASTDivider = Divider.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
+    const { element, connect, disconnect } = await fixture(FASTDivider());
 
     return { element, connect, disconnect };
 }
 
 describe("Divider", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-divider");
-    })
-
     it("should include a role attribute equal to the role provided", async () => {
         const { element, connect, disconnect } = await setup();
 

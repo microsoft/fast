@@ -9,22 +9,12 @@ const FastDisclosure = Disclosure.compose({
 })
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture<Disclosure>(
-        "fast-disclosure"
-    );
+    const { element, connect, disconnect } = await fixture(FastDisclosure());
 
     return { element, connect, disconnect };
 }
 
 describe("Disclosure", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await createDisclosure();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-disclosure");
-    })
-
     describe("User interaction", () => {
         it("should toggle the content using `toggle()`", async () => {
             const { element, connect, disconnect } = await createDisclosure();

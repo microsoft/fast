@@ -729,7 +729,7 @@ describe("TextField", () => {
                             element.required = true;
                             element.pattern = value;
                             element.value = value;
-
+                            console.log(element, "element");
                             expect(element.validity.patternMismatch).to.equal(false);
                             await disconnect();
                         });

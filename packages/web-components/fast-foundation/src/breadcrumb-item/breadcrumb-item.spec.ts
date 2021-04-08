@@ -9,22 +9,12 @@ const FASTBreadcrumbItem = BreadcrumbItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<BreadcrumbItem>(
-        "fast-breadcrumb-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTBreadcrumbItem());
 
     return { element, connect, disconnect };
 }
 
 describe("Breadcrumb item", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-breadcrumb-item");
-    })
-
     it("should include a `role` of `listitem`", async () => {
         const { element, connect, disconnect } = await setup();
 

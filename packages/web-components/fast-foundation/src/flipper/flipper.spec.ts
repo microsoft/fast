@@ -10,20 +10,12 @@ const FASTFlipper = Flipper.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+    const { element, connect, disconnect } = await fixture(FASTFlipper());
 
     return { element, connect, disconnect };
 }
 
 describe("Flipper", () => {
-    it("should include the correct element prefix", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.tagName.toLowerCase()).to.equal("fast-flipper");
-    })
-
     it("should include a role of button", async () => {
         const { element, connect, disconnect } = await setup();
 
