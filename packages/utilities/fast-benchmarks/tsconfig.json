@@ -1,0 +1,16 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./",
+        "declarationDir": "dist/",
+        "outDir": "dist/",
+        "strictNullChecks": true,
+        "experimentalDecorators": true,
+        "importsNotUsedAsValues": "error",
+        "target": "es2015",
+        "module": "es6",
+        "importHelpers": true,
+        "types": ["node", "benchmark"]
+    },
+    "include": ["benchmarks"]
+}
