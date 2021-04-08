@@ -29,7 +29,9 @@ describe("isHTMLElement", () => {
         expect(isHTMLElement(document.getElementById("element"))).to.equal(true);
     });
     it("should return false if all arguments are NOT HTML elements", () => {
-        expect(isHTMLElement(document.getElementById("element").childNodes)).to.equal(false);
+        expect(isHTMLElement(document.getElementById("element").childNodes)).to.equal(
+            false
+        );
     });
 });
 
@@ -105,49 +107,49 @@ describe("getKeyCode", () => {
             getKeyCode({
                 which: 39,
                 keyCode: 39,
-                charCode: 39
+                charCode: 39,
             } as any)
         ).to.equal(KeyCodes.arrowRight);
         expect(
             getKeyCode({
                 which: 37,
                 keyCode: 37,
-                charCode: 37
+                charCode: 37,
             } as any)
         ).to.equal(KeyCodes.arrowLeft);
         expect(
             getKeyCode({
                 which: 38,
                 keyCode: 38,
-                charCode: 38
+                charCode: 38,
             } as any)
         ).to.equal(KeyCodes.arrowUp);
         expect(
             getKeyCode({
                 which: 40,
                 keyCode: 40,
-                charCode: 40
+                charCode: 40,
             } as any)
         ).to.equal(KeyCodes.arrowDown);
         expect(
             getKeyCode({
                 which: 13,
                 keyCode: 13,
-                charCode: 13
+                charCode: 13,
             } as any)
         ).to.equal(KeyCodes.enter);
         expect(
             getKeyCode({
                 which: 32,
                 keyCode: 32,
-                charCode: 32
+                charCode: 32,
             } as any)
         ).to.equal(KeyCodes.space);
         expect(
             getKeyCode({
                 which: 9,
                 keyCode: 9,
-                charCode: 9
+                charCode: 9,
             } as any)
         ).to.equal(KeyCodes.tab);
     });
@@ -235,7 +237,9 @@ describe("canUseFocusVisible", () => {
             expect(mutationsList).to.have.length.greaterThan(0);
             expect(mutationsList[0].addedNodes).to.have.length.greaterThan(0);
             expect(mutationsList[0].addedNodes.item(0)).not.to.equal(undefined);
-            expect((mutationsList[0].addedNodes.item(0) as HTMLStyleElement).nonce).to.equal(nonce);
+            expect(
+                (mutationsList[0].addedNodes.item(0) as HTMLStyleElement).nonce
+            ).to.equal(nonce);
         };
         const mutationObserver = new MutationObserver(mutationObserverCallback);
         mutationObserver.observe(document.head, { childList: true, subtree: true });

@@ -52,7 +52,9 @@ describe("classNames", (): void => {
     });
 
     it("should omit first indexes of an array argument when the second index is falsey", (): void => {
-        expect(classNames(["foo", true], ["bar", false], ["bat", true])).to.equal("foo bat");
+        expect(classNames(["foo", true], ["bar", false], ["bat", true])).to.equal(
+            "foo bat"
+        );
     });
 
     it("should join string, function, and object arguments", (): void => {
