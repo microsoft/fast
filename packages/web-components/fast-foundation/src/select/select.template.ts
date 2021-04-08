@@ -15,6 +15,7 @@ export const SelectTemplate: ViewTemplate<Select> = html`
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
+        aria-expanded="${x => x.ariaExpanded}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
