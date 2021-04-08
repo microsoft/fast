@@ -15,6 +15,8 @@ export const RadioTemplate: ViewTemplate<Radio> = html`
         aria-required="${x => x.required}"
         aria-disabled="${x => x.disabled}"
         aria-readonly="${x => x.readOnly}"
+        aria-labelledy=${x =>
+            x.defaultSlottedNodes && x.defaultSlottedNodes.length ? "foobar" : null}
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
@@ -23,7 +25,8 @@ export const RadioTemplate: ViewTemplate<Radio> = html`
                 <div part="checked-indicator" class="checked-indicator"></div>
             </slot>
         </div>
-        <label
+        <span
+            id="foobar"
             part="label"
             class="${x =>
                 x.defaultSlottedNodes && x.defaultSlottedNodes.length
@@ -31,6 +34,6 @@ export const RadioTemplate: ViewTemplate<Radio> = html`
                     : "label label__hidden"}"
         >
             <slot ${slotted("defaultSlottedNodes")}></slot>
-        </label>
+        </span>
     </template>
 `;
