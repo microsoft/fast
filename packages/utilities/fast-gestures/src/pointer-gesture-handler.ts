@@ -1,5 +1,5 @@
 import { Emitter } from "./base/event";
-import { Disposable, DefaultDisposable } from "./base/lifecycle";
+import { DefaultDisposable, Disposable } from "./base/lifecycle";
 import { Point } from "./base/point";
 import { detectPointerGesture } from "./utilities/detect-pointer-gesture";
 import { getCoordinateType } from "./utilities/get-coordinate-type";
@@ -139,7 +139,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     public get pointersArray(): Pointer[] {
-        return Array.from(this._pointers, ([pointerId, pointerInfo]) => ({
+        return Array.from(this._pointers, ([pointerId, pointerInfo]: [number, PointerInfoInternal]) => ({
             pointerId,
             pointerInfo,
         }));

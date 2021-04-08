@@ -8,7 +8,7 @@
         "target": "es2015",
         "module": "ESNext",
         "types": [
-            "mocha",
+            "jest",
             "webpack-env"
         ],
         "lib": [

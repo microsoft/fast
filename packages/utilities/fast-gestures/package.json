@@ -30,42 +30,27 @@
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test": "yarn test-chrome:verbose && yarn doc:ci",
-    "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
-    "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
-    "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
-    "test-chrome:verbose": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
-    "test-chrome:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
-    "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
-    "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
-    "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
-    "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+    "test": "yarn eslint && yarn unit-tests && yarn doc",
+    "unit-tests": "jest --runInBand",
+    "unit-tests:watch": "jest --watch"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-transform-typescript": "^7.13.0",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-typescript": "^7.12.13",
     "@microsoft/api-extractor": "^7.7.13",
     "@types/chai": "^4.2.11",
-    "@types/karma": "^5.0.0",
-    "@types/mocha": "^7.0.2",
+    "@types/jest": "^26.0.22",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
+    "jest": "^25.4.0",
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
-    "karma": "^5.0.4",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-coverage": "^2.0.2",
-    "karma-coverage-istanbul-reporter": "^3.0.0",
-    "karma-firefox-launcher": "^1.3.0",
-    "karma-mocha": "^2.0.1",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-source-map-support": "^1.4.0",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^4.0.2",
-    "mocha": "^7.1.2",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-filesize": "^8.0.2",
@@ -80,5 +65,38 @@
     "tslib": "^1.11.1",
     "typescript": "^3.9.0",
     "webpack": "^4.44.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../"
+        }
+      ]
+    ],
+    "coveragePathIgnorePatterns": [
+      "pixel-blob.ts"
+    ],
+    "modulePathIgnorePatterns": ["<rootDir>/dist/"],
+    "testURL": "http://localhost",
+    "coverageThreshold": {
+      "global": {
+        "statements": 70,
+        "branches": 33,
+        "functions": 69,
+        "lines": 70
+      }
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ]
   }
 }

@@ -42,17 +42,13 @@ function getOrdinalPanDirection(directionIndex: number): PointerGesture {
 function getVerticalPanDirection(directionIndex: number): PointerGesture {
     switch (directionIndex) {
         case 0:
-            return PointerGesture.PanDown;
         case 1:
-            return PointerGesture.PanDown;
         case 2:
             return PointerGesture.PanDown;
         case 3:
             return PointerGesture.Pan;
         case 4:
-            return PointerGesture.PanUp;
         case 5:
-            return PointerGesture.PanUp;
         case 6:
             return PointerGesture.PanUp;
         case 7:
@@ -69,15 +65,12 @@ function getHorizontalPanDirection(directionIndex: number): PointerGesture {
         case 1:
             return PointerGesture.Pan;
         case 2:
-            return PointerGesture.PanLeft;
         case 3:
-            return PointerGesture.PanLeft;
         case 4:
             return PointerGesture.PanLeft;
         case 5:
             return PointerGesture.Pan;
         case 6:
-            return PointerGesture.PanRight;
         case 7:
             return PointerGesture.PanRight;
         default:
