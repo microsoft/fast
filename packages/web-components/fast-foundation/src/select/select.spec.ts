@@ -162,6 +162,8 @@ describe("Select", () => {
 
         element.click();
 
+        await DOM.nextUpdate();
+
         expect(element.getAttribute("aria-expanded")).to.equal("true");
 
         await disconnect();
