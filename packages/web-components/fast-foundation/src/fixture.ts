@@ -41,6 +41,11 @@ export interface FixtureOptions {
      * @defaultValue {@link @microsoft/fast-element#defaultExecutionContext}
      */
     context?: ExecutionContext;
+
+    /**
+     * A pre-configured design system instance used in setting up the fixture.
+     */
+    designSystem?: DesignSystem;
 }
 
 export interface Fixture<TElement = HTMLElement> {
@@ -126,7 +131,14 @@ export async function fixture<TElement = HTMLElement>(
     templateNameOrRegistry:
         | ViewTemplate
         | string
-        | FoundationElementRegistry<FoundationElementDefinition, Constructable<TElement>>,
+        | FoundationElementRegistry<FoundationElementDefinition, Constructable<TElement>>
+        | [
+              FoundationElementRegistry<
+                  FoundationElementDefinition,
+                  Constructable<TElement>
+              >,
+              ...FoundationElementRegistry<FoundationElementDefinition, Constructable>[]
+          ],
     options: FixtureOptions = {}
 ): Promise<Fixture<TElement>> {
     const document = options.document || globalThis.document;
@@ -138,14 +150,21 @@ export async function fixture<TElement = HTMLElement>(
         const html = `<${templateNameOrRegistry}></${templateNameOrRegistry}>`;
         templateNameOrRegistry = new ViewTemplate(html, []);
     } else if (isElementRegistry(templateNameOrRegistry)) {
-        const container = new DesignSystem()
+        templateNameOrRegistry = [templateNameOrRegistry];
+    }
+
+    if (Array.isArray(templateNameOrRegistry)) {
+        const first = templateNameOrRegistry[0];
+        const container = (options.designSystem || new DesignSystem())
             .register(templateNameOrRegistry)
             .applyTo(parent);
 
         const context = container.get(DesignSystemRegistrationContext);
-        const elementName = `${context.elementPrefix}-${templateNameOrRegistry.definition.baseName}`;
+        const elementName = `${context.elementPrefix}-${first.definition.baseName}`;
         const html = `<${elementName}></${elementName}>`;
         templateNameOrRegistry = new ViewTemplate(html, []);
+    } else if (options.designSystem) {
+        options.designSystem.applyTo(parent);
     }
 
     const view = templateNameOrRegistry.create();

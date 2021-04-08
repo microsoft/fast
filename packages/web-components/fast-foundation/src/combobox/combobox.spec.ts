@@ -16,7 +16,9 @@ const FASTOption = ListboxOption.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTCombobox());
+    const { element, connect, disconnect, parent } = await fixture(
+        [FASTCombobox(), FASTOption()]
+    );
 
     const option1 = document.createElement("fast-option") as ListboxOption;
     option1.textContent = "one";
