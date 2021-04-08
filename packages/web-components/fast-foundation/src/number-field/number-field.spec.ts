@@ -520,7 +520,7 @@ describe("NumberField", () => {
             await disconnect();
         });
 
-        it("should fire an input event when incramenting or decramenting", async () => {
+        it("should fire an input event when incrementing or decrementing", async () => {
             const { element, connect, disconnect } = await setup();
             let wasInput: boolean = false;
 
