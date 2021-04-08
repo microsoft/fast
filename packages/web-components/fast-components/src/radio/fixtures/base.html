@@ -21,10 +21,19 @@
 
 <h2>Visual vs audio label</h2>
 <fast-radio>
-    <span aria-label="Audio label">Visible label</span>
+    Labeled by content
 </fast-radio>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
-    <label id="label1">Outside label</label>
-    <fast-radio aria-labelledby="label1"></fast-radio>
+    <label id="label1">External label</label>
+    <fast-radio aria-labeledby="external label">
+        Content not used as aria label
+    </fast-radio>
+</div>
+
+<div style="display: flex; flex-direction: column; margin-top: 12px;">
+    <label id="label1">Aria label attribute specified</label>
+    <fast-radio aria-label="label specified by attribute">
+        Content not used as aria label
+    </fast-radio>
 </div>

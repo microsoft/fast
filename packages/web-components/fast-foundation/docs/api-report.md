@@ -1483,6 +1483,7 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
+    ariaLabel: string;
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)

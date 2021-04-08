@@ -61,10 +61,34 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     }
 
     /**
+     * Maps to aria-label attribute
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: aria-label
+     */
+    @attr({ attribute: "aria-label" })
+    public ariaLabel: string;
+    private ariaLabelChanged(): void {
+        this.labelDerivedFromContent = false;
+    }
+
+    /**
      * @internal
      */
     @observable
     public defaultSlottedNodes: Node[];
+    private defaultSlottedNodesChanged(): void {
+        if (
+            (this.getAttribute("aria-label") === null || this.labelDerivedFromContent) &&
+            this.defaultSlottedNodes.length > 0 &&
+            this.defaultSlottedNodes[0].nodeType === Node.TEXT_NODE &&
+            this.defaultSlottedNodes[0].nodeValue !== null
+        ) {
+            this.setAttribute("aria-label", this.defaultSlottedNodes[0].nodeValue);
+            this.labelDerivedFromContent = true;
+        }
+    }
 
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
@@ -118,6 +142,12 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      * normal input radios
      */
     private dirtyChecked: boolean = false;
+
+    /**
+     * Tracks whether the "aria-label" property is being defined by
+     * the component's contents or has been set externally
+     */
+    private labelDerivedFromContent: boolean = false;
 
     /**
      * @internal
