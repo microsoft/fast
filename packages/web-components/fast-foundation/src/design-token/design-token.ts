@@ -230,7 +230,7 @@ class DesignTokenNode<T> {
         let current: DesignTokenNode<T> | undefined = node;
 
         while (current !== undefined) {
-            if (current.rawValue) {
+            if (current.rawValue !== undefined) {
                 const { rawValue } = current;
                 if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
                     this.setupBindingObserver(rawValue);
@@ -406,6 +406,7 @@ class DesignTokenNode<T> {
 }
 
 function create<T extends Function>(name: string): never;
+function create<T extends undefined | void>(name: string): never;
 function create<T>(name: string): DesignToken<T>;
 function create<T>(name: string): any {
     return new DesignTokenImpl<T>(name);
