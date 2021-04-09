@@ -7,6 +7,7 @@ var path = require("path");
 // Create application
 var app = express();
 
+// Configure application security with Helmet
 app.use(helmet.dnsPrefetchControl());
 app.use(helmet.expectCt());
 app.use(helmet.frameguard());
@@ -16,6 +17,22 @@ app.use(helmet.ieNoOpen());
 app.use(helmet.noSniff());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
+
+// Manage CSP Policy for Creator Application only
+if (process.env.WEBSITE_HOSTNAME.indexOf("create") > -1) {
+    app.use(
+        helmet.contentSecurityPolicy({
+            directives: {
+                defaultSrc: ["'self'"],
+                fontSrc: ["'self' use.typekit.net static.fast.design c.s-microsoft.com"],
+                frameAncestors: [`'self' ${process.env.FRAME_ANCESTOR_PARTNER}`],
+                imgSrc: ["'self' data: *.fast.design"],
+                scriptSrc: ["'self' 'unsafe-eval'"],
+                styleSrc: ["'self' https: 'unsafe-inline'"],
+            },
+        })
+    );
+}
 
 // Set public directory
 var publicDir = path.resolve(__dirname);
