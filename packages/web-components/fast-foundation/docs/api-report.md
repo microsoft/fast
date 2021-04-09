@@ -743,7 +743,7 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
 // @alpha
-export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: DesignTokenTarget) => T;
+export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @alpha (undocumented)
 export class DesignSystem {
@@ -820,24 +820,21 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T> extends CSSDirective {
-    addCustomPropertyFor(element: DesignTokenTarget): this;
+    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
     readonly cssCustomProperty: string;
-    deleteValueFor(element: DesignTokenTarget): this;
-    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    deleteValueFor(element: HTMLElement): this;
+    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     // (undocumented)
     readonly name: string;
     // (undocumented)
-    removeCustomPropertyFor(element: DesignTokenTarget): this;
-    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
+    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
+    setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
 }
 
 // @alpha
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
-
-// @alpha
-export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
 
 // @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
@@ -2199,7 +2196,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:49:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:50:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

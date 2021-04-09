@@ -17,7 +17,7 @@ const styles: ComponentStyles<SectionValidationClassNameContract, {}> = {
         ...invalidMessageStyle,
         border: `1px solid ${errorColorCSSProperty}`,
         padding: "10px",
-        margin: "10px 30px 10px 0",
+        margin: "10px 0",
         "margin-right": undefined,
         "border-radius": borderRadiusCSSProperty,
         background: L1CSSProperty,

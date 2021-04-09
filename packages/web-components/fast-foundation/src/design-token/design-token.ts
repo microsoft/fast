@@ -13,7 +13,6 @@ import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
-    DesignTokenTarget,
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
@@ -35,36 +34,33 @@ export interface DesignToken<T> extends CSSDirective {
      * Adds the token as a CSS Custom Property to an element
      * @param element - The element to add the CSS Custom Property to
      */
-    addCustomPropertyFor(element: DesignTokenTarget): this;
+    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
 
     /**
      *
      * @param element - The element to remove the CSS Custom Property from
      */
-    removeCustomPropertyFor(element: DesignTokenTarget): this;
+    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
 
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
      */
-    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
 
     /**
      * Sets the token to a value for an element.
      * @param element - The element to set the value for.
      * @param value - The value.
      */
-    setValueFor(
-        element: DesignTokenTarget,
-        value: DesignTokenValue<T> | DesignToken<T>
-    ): void;
+    setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
 
     /**
      * Removes a value set for an element.
      * @param element - The element to remove the value from
      */
-    deleteValueFor(element: DesignTokenTarget): this;
+    deleteValueFor(element: HTMLElement): this;
 }
 
 interface Disposable {
@@ -77,7 +73,7 @@ interface Disposable {
 class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
     private cssVar: string;
     private customPropertyChangeHandlers: WeakMap<
-        DesignTokenTarget,
+        HTMLElement & FASTElement,
         Subscriber & Disposable
     > = new Map();
 
@@ -94,19 +90,19 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public readonly cssCustomProperty: string;
 
-    public getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T> {
+    public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
         const node = DesignTokenNode.for(this, element);
         Observable.track(node, "value");
         return DesignTokenNode.for(this, element).value;
     }
 
     public setValueFor(
-        element: DesignTokenTarget,
+        element: HTMLElement,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
         if (value instanceof DesignTokenImpl) {
             const _value = value;
-            value = ((_element: DesignTokenTarget) =>
+            value = ((_element: HTMLElement) =>
                 DesignTokenNode.for<T>(_value, _element)
                     .value) as DerivedDesignTokenValue<T>;
         }
@@ -114,12 +110,12 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         return this;
     }
 
-    public deleteValueFor(element: DesignTokenTarget): this {
+    public deleteValueFor(element: HTMLElement): this {
         DesignTokenNode.for(this, element).delete();
         return this;
     }
 
-    public addCustomPropertyFor(element: DesignTokenTarget): this {
+    public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
         if (!this.customPropertyChangeHandlers.has(element)) {
             const node = DesignTokenNode.for(this, element);
             let value = node.value;
@@ -149,7 +145,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         return this;
     }
 
-    public removeCustomPropertyFor(element: DesignTokenTarget): this {
+    public removeCustomPropertyFor(element: HTMLElement & FASTElement): this {
         if (this.customPropertyChangeHandlers.has(element)) {
             this.customPropertyChangeHandlers.get(element)!.dispose();
         }
@@ -168,10 +164,10 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 class DesignTokenBehavior<T> implements Behavior {
     constructor(public token: DesignToken<T>) {}
 
-    bind(target: DesignTokenTarget) {
+    bind(target: HTMLElement & FASTElement) {
         this.token.addCustomPropertyFor(target);
     }
-    unbind(target: DesignTokenTarget) {
+    unbind(target: HTMLElement & FASTElement) {
         this.token.removeCustomPropertyFor(target);
     }
 }
@@ -202,7 +198,7 @@ class DesignTokenNode<T> {
 
     constructor(
         public readonly token: DesignToken<T>,
-        public readonly target: DesignTokenTarget
+        public readonly target: HTMLElement | (HTMLElement & FASTElement)
     ) {
         if (nodeCache.has(target) && nodeCache.get(target)!.has(token)) {
             throw new Error(
@@ -230,7 +226,7 @@ class DesignTokenNode<T> {
         let current: DesignTokenNode<T> | undefined = node;
 
         while (current !== undefined) {
-            if (current.rawValue) {
+            if (current.rawValue !== undefined) {
                 const { rawValue } = current;
                 if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
                     this.setupBindingObserver(rawValue);
@@ -297,7 +293,7 @@ class DesignTokenNode<T> {
         }
     }
 
-    public static for<T>(token: DesignToken<T>, target: DesignTokenTarget) {
+    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
         const targetCache = nodeCache.has(target)
             ? nodeCache.get(target)!
             : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
@@ -406,6 +402,7 @@ class DesignTokenNode<T> {
 }
 
 function create<T extends Function>(name: string): never;
+function create<T extends undefined | void>(name: string): never;
 function create<T>(name: string): DesignToken<T>;
 function create<T>(name: string): any {
     return new DesignTokenImpl<T>(name);

@@ -25,74 +25,62 @@
         "clean:dist": "node ../../../build/clean.js dist && node ../../../build/clean.js .tmp",
         "convert:mdn-data": "node -r esm ./build/generate-mdn-data-files.js",
         "test:mdn-data": "node -r esm ./build/generate-mdn-data-files.js --test",
-        "coverage": "jest --coverage",
         "prepare": "yarn clean:dist && yarn build && yarn test:mdn-data",
         "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
         "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
         "start": "yarn build:message-system && webpack-dev-server --history-api-fallback --progress",
-        "test": "yarn eslint && yarn unit-tests && yarn build",
+        "test": "yarn eslint && yarn build && yarn test-chrome:verbose",
+        "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+        "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+        "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
+        "test-chrome:verbose": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
+        "test-chrome:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
+        "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
+        "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
+        "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
+        "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
+        "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+        "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
-        "unit-tests": "jest --runInBand",
         "watch": "yarn build -- -w --preserveWatchOutput"
     },
-    "jest": {
-        "collectCoverage": true,
-        "coverageReporters": [
-            "json",
-            "text",
-            [
-                "lcov",
-                {
-                    "projectRoot": "../../../"
-                }
-            ]
-        ],
-        "coverageThreshold": {
-            "global": {
-                "statements": 100,
-                "branches": 100,
-                "functions": 100,
-                "lines": 100
-            }
-        },
-        "coveragePathIgnorePatterns": [
-            "/(.tmp|__tests__)/*"
-        ],
-        "testURL": "http://localhost",
-        "transform": {
-            "^.+\\.ts$": "ts-jest",
-            "^.+\\.js$": "babel-jest"
-        },
-        "transformIgnorePatterns": [
-            "!<rootDir>/node_modules/lodash-es"
-        ],
-        "testRegex": "(\\.|/)(test|spec)\\.(js|ts)$",
-        "moduleFileExtensions": [
-            "ts",
-            "js",
-            "json"
-        ]
-    },
     "devDependencies": {
-        "@types/jest": "^25.2.1",
+        "@types/chai": "^4.2.11",
+        "@types/karma": "^5.0.0",
+        "@types/mocha": "^7.0.2",
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^9.6.7",
         "ajv": "^6.10.0",
+        "chai": "^4.2.0",
+        "chai-spies": "^1.0.0",
         "clean-webpack-plugin": "^3.0.0",
         "css-loader": "^4.2.0",
         "eslint-config-prettier": "^6.10.1",
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^3.2.0",
-        "jest": "^25.4.0",
+        "istanbul": "^0.4.5",
+        "istanbul-instrumenter-loader": "^3.0.1",
+        "karma": "^5.0.4",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-coverage": "^2.0.2",
+        "karma-coverage-istanbul-reporter": "^3.0.0",
+        "karma-firefox-launcher": "^2.1.0",
+        "karma-mocha": "^2.0.1",
+        "karma-mocha-reporter": "^2.2.5",
+        "karma-source-map-support": "^1.4.0",
+        "karma-sourcemap-loader": "^0.3.7",
+        "karma-webpack": "^4.0.2",
         "lodash-es": "4.17.15",
+        "jsdom": "^16.2.2",
+        "jsdom-global": "3.0.2",
         "mdn-data": "^2.0.11",
         "mini-css-extract-plugin": "^0.9.0",
+        "mocha": "^7.1.2",
         "monaco-editor": "^0.21.2",
         "monaco-editor-webpack-plugin": "^1.9.0",
         "prettier": "2.0.2",
         "style-loader": "^1.2.1",
-        "ts-jest": "^25.4.0",
         "ts-loader": "^4.0.1",
         "typescript": "^3.9.0",
         "webpack": "^4.44.0",
