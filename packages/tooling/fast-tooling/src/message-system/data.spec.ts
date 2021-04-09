@@ -1,45 +1,44 @@
+import { expect } from "chai";
 import { getLinkedData, getLinkedDataDictionary, getLinkedDataList } from "./data";
-import { LinkedDataDictionaryUpdate, LinkedDataPromise } from "./data.props";
+import { Data, LinkedDataPromise } from "./data.props";
 
 describe("getLinkedDataDictionary", () => {
-    test("should get a linked data dictionary", () => {
+    it("should get a linked data dictionary", () => {
         const dictionaryId: string = "root";
         const dataLocation: string = "foo";
         const schemaId: string = "foobar";
         const data: any = {
             hello: "world",
         };
-
-        expect(
-            getLinkedDataDictionary({
-                linkedData: [
-                    {
-                        schemaId,
-                        data,
-                        dataLocation,
-                    },
-                ],
-                dictionaryId,
-                dataLocation: "root-location",
-            })
-        ).toEqual({
-            dataDictionary: [
+        const linkedDataDictionary = getLinkedDataDictionary({
+            linkedData: [
                 {
-                    fast1: {
-                        schemaId,
-                        data,
-                        parent: {
-                            id: dictionaryId,
-                            dataLocation,
-                        },
-                    },
+                    schemaId,
+                    data,
+                    dataLocation,
                 },
-                "fast1",
             ],
             dictionaryId,
-        } as LinkedDataDictionaryUpdate);
+            dataLocation: "root-location",
+        });
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
+
+        expect(linkedDataDictionaryKeys).to.have.length(1);
+        expect(linkedDataDictionary.dictionaryId).to.equal(dictionaryId);
+        expect(
+            linkedDataDictionary.dataDictionary[0][linkedDataDictionary.dataDictionary[1]]
+        ).to.deep.equal({
+            schemaId,
+            data,
+            parent: {
+                id: dictionaryId,
+                dataLocation,
+            },
+        } as Data<unknown>);
     });
-    test("should get a linked data dictionary with nested linked data", () => {
+    it("should get a linked data dictionary with nested linked data", () => {
         const dictionaryId: string = "root";
         const dataLocation: string = "foo";
         const schemaId: string = "foobar";
@@ -63,79 +62,26 @@ describe("getLinkedDataDictionary", () => {
             linkedData: [nestedNestedLinkedData, nestedNestedLinkedData],
             dataLocation: linkedDataLocation,
         };
-
-        expect(
-            getLinkedDataDictionary({
-                linkedData: [
-                    {
-                        schemaId,
-                        data,
-                        dataLocation,
-                        linkedData: [nestedLinkedData],
-                    },
-                ],
-                dictionaryId,
-                dataLocation: "root-location",
-            })
-        ).toEqual({
-            dataDictionary: [
+        const linkedDataDictionary = getLinkedDataDictionary({
+            linkedData: [
                 {
-                    fast2: {
-                        schemaId,
-                        data: {
-                            ...data,
-                            [linkedDataLocation]: [
-                                {
-                                    id: "fast3",
-                                },
-                            ],
-                        },
-                        parent: {
-                            id: dictionaryId,
-                            dataLocation,
-                        },
-                    },
-                    fast3: {
-                        schemaId: nestedLinkedData.schemaId,
-                        data: {
-                            ...(nestedLinkedData.data as any),
-                            [nestedLinkedDataLocation]: [
-                                {
-                                    id: "fast4",
-                                },
-                                {
-                                    id: "fast5",
-                                },
-                            ],
-                        },
-                        parent: {
-                            id: "fast2",
-                            dataLocation: linkedDataLocation,
-                        },
-                    },
-                    fast4: {
-                        schemaId: nestedNestedLinkedData.schemaId,
-                        data: nestedNestedLinkedData.data,
-                        parent: {
-                            id: "fast3",
-                            dataLocation: nestedLinkedDataLocation,
-                        },
-                    },
-                    fast5: {
-                        schemaId: nestedNestedLinkedData.schemaId,
-                        data: nestedNestedLinkedData.data,
-                        parent: {
-                            id: "fast3",
-                            dataLocation: nestedLinkedDataLocation,
-                        },
-                    },
+                    schemaId,
+                    data,
+                    dataLocation,
+                    linkedData: [nestedLinkedData],
                 },
-                "fast2",
             ],
             dictionaryId,
-        } as LinkedDataDictionaryUpdate);
+            dataLocation: "root-location",
+        });
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
+
+        expect(linkedDataDictionaryKeys).to.have.length(4);
+        expect(linkedDataDictionary.dictionaryId).to.equal(dictionaryId);
     });
-    test("should get a linked data dictionary with multiple nested linked data", () => {
+    it("should get a linked data dictionary with multiple nested linked data", () => {
         const dictionaryId: string = "root";
         const dataLocation: string = "foo";
         const schemaId: string = "foobar";
@@ -158,71 +104,28 @@ describe("getLinkedDataDictionary", () => {
             },
             dataLocation: linkedDataLocation2,
         };
-
-        expect(
-            getLinkedDataDictionary({
-                linkedData: [
-                    {
-                        schemaId,
-                        data,
-                        dataLocation,
-                        linkedData: [nestedNestedLinkedData1, nestedNestedLinkedData2],
-                    },
-                ],
-                dictionaryId,
-                dataLocation: "root-location",
-            })
-        ).toEqual({
-            dataDictionary: [
+        const linkedDataDictionary = getLinkedDataDictionary({
+            linkedData: [
                 {
-                    fast6: {
-                        schemaId,
-                        data: {
-                            ...data,
-                            [linkedDataLocation1]: [
-                                {
-                                    id: "fast7",
-                                },
-                            ],
-                            [linkedDataLocation2]: [
-                                {
-                                    id: "fast8",
-                                },
-                            ],
-                        },
-                        parent: {
-                            id: dictionaryId,
-                            dataLocation,
-                        },
-                    },
-                    fast7: {
-                        schemaId: nestedNestedLinkedData1.schemaId,
-                        data: {
-                            ...(nestedNestedLinkedData1.data as any),
-                        },
-                        parent: {
-                            id: "fast6",
-                            dataLocation: linkedDataLocation1,
-                        },
-                    },
-                    fast8: {
-                        schemaId: nestedNestedLinkedData2.schemaId,
-                        data: nestedNestedLinkedData2.data,
-                        parent: {
-                            id: "fast6",
-                            dataLocation: linkedDataLocation2,
-                        },
-                    },
+                    schemaId,
+                    data,
+                    dataLocation,
+                    linkedData: [nestedNestedLinkedData1, nestedNestedLinkedData2],
                 },
-                "fast6",
             ],
             dictionaryId,
-        } as LinkedDataDictionaryUpdate);
+            dataLocation: "root-location",
+        });
+        const linkedDataDictionaryKeys = Object.keys(
+            linkedDataDictionary.dataDictionary[0]
+        );
+
+        expect(linkedDataDictionaryKeys).to.have.length(3);
     });
 });
 
 describe("getLinkedData", () => {
-    test("should get a linked data set", () => {
+    it("should get a linked data set", () => {
         expect(
             getLinkedData(
                 [
@@ -236,7 +139,7 @@ describe("getLinkedData", () => {
                 ],
                 ["root"]
             )
-        ).toEqual([
+        ).to.deep.equal([
             {
                 data: {},
                 linkedData: [],
@@ -244,7 +147,7 @@ describe("getLinkedData", () => {
             },
         ]);
     });
-    test("should get a nested linked data set", () => {
+    it("should get a nested linked data set", () => {
         expect(
             getLinkedData(
                 [
@@ -275,7 +178,7 @@ describe("getLinkedData", () => {
                 ],
                 ["root"]
             )
-        ).toEqual([
+        ).to.deep.equal([
             {
                 schemaId: "foo",
                 data: {
@@ -296,7 +199,7 @@ describe("getLinkedData", () => {
 });
 
 describe("getLinkedDataList", () => {
-    test("should get an empty list if an item does not contain linked data", () => {
+    it("should get an empty list if an item does not contain linked data", () => {
         expect(
             getLinkedDataList(
                 [
@@ -324,9 +227,9 @@ describe("getLinkedDataList", () => {
                 ],
                 "bar"
             )
-        ).toEqual([]);
+        ).to.deep.equal([]);
     });
-    test("should get a single key if the provided dictionary item contains a single linked data item", () => {
+    it("should get a single key if the provided dictionary item contains a single linked data item", () => {
         expect(
             getLinkedDataList(
                 [
@@ -362,9 +265,9 @@ describe("getLinkedDataList", () => {
                 ],
                 "bar"
             )
-        ).toEqual(["bat"]);
+        ).to.deep.equal(["bat"]);
     });
-    test("should get multiple keys if the provided dictionary item contains multiple linked data items", () => {
+    it("should get multiple keys if the provided dictionary item contains multiple linked data items", () => {
         expect(
             getLinkedDataList(
                 [
@@ -408,9 +311,9 @@ describe("getLinkedDataList", () => {
                 ],
                 "bar"
             )
-        ).toEqual(["bat", "baz"]);
+        ).to.deep.equal(["bat", "baz"]);
     });
-    test("should get multiple keys if the provided dictionary item contains a single linked data item that contains another linked data item", () => {
+    it("should get multiple keys if the provided dictionary item contains a single linked data item that contains another linked data item", () => {
         expect(
             getLinkedDataList(
                 [
@@ -454,6 +357,6 @@ describe("getLinkedDataList", () => {
                 ],
                 "bar"
             )
-        ).toEqual(["bat", "baz"]);
+        ).to.deep.equal(["bat", "baz"]);
     });
 });

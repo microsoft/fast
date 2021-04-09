@@ -1,3 +1,5 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import {
     DataDictionary,
     MessageSystem,
@@ -13,8 +15,11 @@ import {
 } from "./monaco-adapter.service";
 import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
+chai.use(spies);
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 describe("MonacoAdapter", () => {
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
@@ -35,16 +40,16 @@ describe("MonacoAdapter", () => {
             new MonacoAdapter({
                 messageSystem,
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should not throw if the message system is undefined", () => {
+    it("should not throw if the message system is undefined", () => {
         expect(() => {
             new MonacoAdapter({
                 messageSystem: undefined,
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should register to the message system", () => {
+    it("should register to the message system", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -61,15 +66,15 @@ describe("MonacoAdapter", () => {
             },
         });
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
 
         new MonacoAdapter({
             messageSystem,
         });
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
     });
-    test("should deregister from the message system", () => {
+    it("should deregister from the message system", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -86,19 +91,19 @@ describe("MonacoAdapter", () => {
             },
         });
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
 
         const shortcuts: MonacoAdapter = new MonacoAdapter({
             messageSystem,
         });
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
 
         shortcuts.destroy();
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
     });
-    test("should fire an action when a matching MessageSystemType is included", () => {
+    it("should fire an action when a matching MessageSystemType is included", () => {
         let expectedValue = [];
         const dataDictionary: DataDictionary<unknown> = [
             {
@@ -143,11 +148,11 @@ describe("MonacoAdapter", () => {
             } as any);
         });
 
-        expect(expectedValue).toEqual([
+        expect(expectedValue).to.deep.equal([
             mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary),
         ]);
     });
-    test("should change the dictionary id when a navigation event is fired", () => {
+    it("should change the dictionary id when a navigation event is fired", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -200,9 +205,9 @@ describe("MonacoAdapter", () => {
             } as any);
         });
 
-        expect(monacoAdapter["dictionaryId"]).toEqual("text");
+        expect(monacoAdapter["dictionaryId"]).to.equal("text");
     });
-    test("should fire an action when the corresponding id is used", () => {
+    it("should fire an action when the corresponding id is used", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -223,7 +228,7 @@ describe("MonacoAdapter", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const runAction = jest.fn();
+        const runAction = chai.spy(() => {});
         const monacoAdapter = new MonacoAdapter({
             messageSystem,
             actions: [
@@ -246,9 +251,9 @@ describe("MonacoAdapter", () => {
 
         monacoAdapter.action("foo").run();
 
-        expect(runAction).toHaveBeenCalledTimes(1);
+        expect(runAction).to.have.been.called.exactly(1);
     });
-    test("should update the monaco value", () => {
+    it("should update the monaco value", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -269,7 +274,7 @@ describe("MonacoAdapter", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const callback = jest.fn();
+        const callback = chai.spy(() => {});
         messageSystem.postMessage = callback;
         const monacoAdapter = new MonacoAdapter({
             messageSystem,
@@ -296,10 +301,10 @@ describe("MonacoAdapter", () => {
 
         monacoAdapter.action("foo").run();
 
-        expect(monacoAdapter["monacoModelValue"]).toEqual(["bar"]);
-        expect(callback).toHaveBeenCalled();
+        expect(monacoAdapter["monacoModelValue"]).to.deep.equal(["bar"]);
+        expect(callback).to.have.been.called();
     });
-    test("should update the monaco value but not send a post message if the source is external", () => {
+    it("should update the monaco value but not send a post message if the source is external", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -320,7 +325,7 @@ describe("MonacoAdapter", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const callback = jest.fn();
+        const callback = chai.spy(() => {});
         messageSystem.postMessage = callback;
 
         const monacoAdapter = new MonacoAdapter({
@@ -348,10 +353,10 @@ describe("MonacoAdapter", () => {
 
         monacoAdapter.action("foo").run();
 
-        expect(monacoAdapter["monacoModelValue"]).toEqual(["bar"]);
-        expect(callback).not.toHaveBeenCalled();
+        expect(monacoAdapter["monacoModelValue"]).to.deep.equal(["bar"]);
+        expect(callback).not.to.have.been.called();
     });
-    test("should remove newlines and leading spaces from the monaco model value", () => {
+    it("should remove newlines and leading spaces from the monaco model value", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -396,9 +401,9 @@ describe("MonacoAdapter", () => {
 
         monacoAdapter.action("foo").run();
 
-        expect(monacoAdapter["monacoModelValue"]).toEqual(["foo", "bar"]);
+        expect(monacoAdapter["monacoModelValue"]).to.deep.equal(["foo", "bar"]);
     });
-    test("should not update the monaco value if the message is from the adapter", () => {
+    it("should not update the monaco value if the message is from the adapter", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -419,7 +424,7 @@ describe("MonacoAdapter", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
         });
-        const callback = jest.fn();
+        const callback = chai.spy(() => {});
         new MonacoAdapter({
             messageSystem,
             actions: [
@@ -444,10 +449,13 @@ describe("MonacoAdapter", () => {
             } as any);
         });
 
-        expect(callback).not.toHaveBeenCalled();
+        expect(callback).not.to.have.been.called();
     });
-    test("should update the dataDictionary to correct values when the monaco value has been updated", () => {
-        const callback = jest.fn();
+    it("should update the dataDictionary to correct values when the monaco value has been updated", () => {
+        let resolvedDataDictionary: any = null;
+        const callback = chai.spy((config: any) => {
+            resolvedDataDictionary = config.dataDictionary;
+        });
         const dataDictionary: DataDictionary<unknown> = [
             {
                 div: {
@@ -504,11 +512,11 @@ describe("MonacoAdapter", () => {
 
         monacoAdapter.action("foo").run();
 
-        const updatedDataDictionary = callback.mock.calls[0][0].dataDictionary;
-        const root = updatedDataDictionary[1];
-        const textId = updatedDataDictionary[0][updatedDataDictionary[1]].data.Slot[0].id;
+        const root = resolvedDataDictionary[1];
+        const textId =
+            resolvedDataDictionary[0][resolvedDataDictionary[1]].data.Slot[0].id;
 
-        expect(updatedDataDictionary).toEqual([
+        expect(resolvedDataDictionary).to.deep.equal([
             {
                 [root]: {
                     schemaId: "ul",
@@ -535,7 +543,7 @@ describe("MonacoAdapter", () => {
 });
 
 describe("findDictionaryIdParents", () => {
-    test("should not return any parents if this is the root dictionary item", () => {
+    it("should not return any parents if this is the root dictionary item", () => {
         expect(
             findDictionaryIdParents("root", [
                 {
@@ -546,9 +554,9 @@ describe("findDictionaryIdParents", () => {
                 },
                 "root",
             ])
-        ).toEqual([]);
+        ).to.deep.equal([]);
     });
-    test("should return parents if the dictionary item is nested", () => {
+    it("should return parents if the dictionary item is nested", () => {
         expect(
             findDictionaryIdParents("a", [
                 {
@@ -573,7 +581,7 @@ describe("findDictionaryIdParents", () => {
                 },
                 "root",
             ])
-        ).toEqual([
+        ).to.deep.equal([
             {
                 id: "root",
                 dataLocation: "Slot",
@@ -582,7 +590,7 @@ describe("findDictionaryIdParents", () => {
             },
         ]);
     });
-    test("should return a deeply nested id with multiple items in a slot", () => {
+    it("should return a deeply nested id with multiple items in a slot", () => {
         expect(
             findDictionaryIdParents("c", [
                 {
@@ -632,7 +640,7 @@ describe("findDictionaryIdParents", () => {
                 },
                 "root",
             ])
-        ).toEqual([
+        ).to.deep.equal([
             {
                 id: "root",
                 dataLocation: "Slot",
@@ -650,7 +658,7 @@ describe("findDictionaryIdParents", () => {
 });
 
 describe("findUpdatedDictionaryId", () => {
-    test("should return the root dictionary id if there is no parent items", () => {
+    it("should return the root dictionary id if there is no parent items", () => {
         expect(
             findUpdatedDictionaryId(
                 [],
@@ -664,9 +672,9 @@ describe("findUpdatedDictionaryId", () => {
                     "foo",
                 ]
             )
-        ).toEqual("foo");
+        ).to.equal("foo");
     });
-    test("should return a nested dictionary id if there is a parent item", () => {
+    it("should return a nested dictionary id if there is a parent item", () => {
         expect(
             findUpdatedDictionaryId(
                 [
@@ -697,9 +705,9 @@ describe("findUpdatedDictionaryId", () => {
                     "foo",
                 ]
             )
-        ).toEqual("bar");
+        ).to.equal("bar");
     });
-    test("should find the nearest dictionary id if the data structure has changed", () => {
+    it("should find the nearest dictionary id if the data structure has changed", () => {
         expect(
             findUpdatedDictionaryId(
                 [
@@ -720,6 +728,6 @@ describe("findUpdatedDictionaryId", () => {
                     "foo",
                 ]
             )
-        ).toEqual("foo");
+        ).to.equal("foo");
     });
 });
