@@ -72,12 +72,10 @@ describe("Flipper", () => {
     });
 
     it("should set a tabindex of 0 when aria-hidden attribute is false", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>(
-            html`
-                <fast-flipper aria-hidden="false"></fast-flipper>
-            `
-        );
+        const { element, connect, disconnect } = await setup();
 
+        element.setAttribute("aria-hidden", "false");
+        
         await connect();
         await DOM.nextUpdate();
 

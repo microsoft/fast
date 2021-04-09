@@ -1,25 +1,35 @@
 import { expect } from "chai";
 import { Breadcrumb, BreadcrumbTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { html } from "@microsoft/fast-element";
-import type { BreadcrumbItem } from "../breadcrumb-item";
+import { BreadcrumbItem } from "../breadcrumb-item";
 
 const FASTBreadcrumb = Breadcrumb.compose({
     baseName: "breadcrumb",
     template
 })
 
-async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTBreadcrumb());
+const FASTBreadcrumbItem = BreadcrumbItem.compose({
+    baseName: "breadcrumb-item",
+    template
+})
 
-    return { element, connect, disconnect };
+async function setup() {
+    const { element, connect, disconnect } = await fixture([FASTBreadcrumb(), FASTBreadcrumbItem()]);
+
+    const item1 = document.createElement("fast-breadcrumb-item");
+    const item2 = document.createElement("fast-breadcrumb-item");
+    const item3 = document.createElement("fast-breadcrumb-item");
+
+    element.appendChild(item1);
+    element.appendChild(item2);
+    element.appendChild(item3);
+
+    return { element, connect, disconnect, item1, item2, item3 };
 }
 
 describe("Breadcrumb", () => {
     it("should include a `role` of `navigation`", async () => {
-        const { element, connect, disconnect } = await fixture<Breadcrumb>(
-            "fast-breadcrumb"
-        );
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -33,19 +43,13 @@ describe("Breadcrumb", () => {
 
         await connect();
 
-        expect(element?.shadowRoot?.querySelector("[role='list']")).to.not.equal(null);
+        expect(element.shadowRoot?.querySelector("[role='list']")).to.not.equal(null);
 
         await disconnect();
     });
 
     it("should not render a separator on last item", async () => {
-        const { element, connect, disconnect } = await fixture(html<Breadcrumb>`
-            <fast-breadcrumb>
-                <fast-breadcrumb-item>Item 1</fast-breadcrumb-item>
-                <fast-breadcrumb-item>Item 2</fast-breadcrumb-item>
-                <fast-breadcrumb-item>Item 3</fast-breadcrumb-item>
-            </fast-breadcrumb>
-        `);
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -59,19 +63,20 @@ describe("Breadcrumb", () => {
     });
 
     it("should set the `aria-current` on the internal, last node, anchor when `href` is passed", async () => {
-        const { element, connect, disconnect } = await fixture(html<Breadcrumb>`
-            <fast-breadcrumb>
-                <fast-breadcrumb-item>
-                    <a href="#">Item1</a>
-                </fast-breadcrumb-item>
-                <fast-breadcrumb-item>
-                    <a href="#">Item2</a>
-                </fast-breadcrumb-item>
-                <fast-breadcrumb-item>
-                    <a href="#" aria-current="page">Item3</a>
-                </fast-breadcrumb-item>
-            </fast-breadcrumb>
-        `);
+        const { element, connect, disconnect, item1, item2, item3 } = await setup();
+
+        const anchor1 = document.createElement("a");
+        anchor1.href = "#";
+
+        const anchor2 = document.createElement("a");
+        anchor2.href = "#";
+
+        const anchor3 = document.createElement("a");
+        anchor3.href = "#";
+
+        item1.appendChild(anchor1);
+        item2.appendChild(anchor2);
+        item3.appendChild(anchor3);
 
         await connect();
 

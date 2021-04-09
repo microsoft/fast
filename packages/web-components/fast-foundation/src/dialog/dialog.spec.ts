@@ -22,8 +22,6 @@ describe("Dialog", () => {
 
         await connect();
 
-        console.log(element.shadowRoot?.toString(), "element shadow root");
-        
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("role")
         ).to.equal("dialog");

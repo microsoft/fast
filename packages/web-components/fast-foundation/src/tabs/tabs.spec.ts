@@ -27,7 +27,7 @@ const FASTTabs = Tabs.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTTabs())
+    const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
     for (let i = 1; i < 4; i++) {
         const tab = document.createElement("fast-tab") as Tab;
@@ -116,22 +116,11 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute on the active tab when an `id` is provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<Tabs>`
-            <fast-tabs>
-                <fast-tab id="01">Tab one</fast-tab>
-                <fast-tab id="02">Tab two</fast-tab>
-                <fast-tab id="03">Tab three</fast-tab>
-                <fast-tab-panel>
-                    Tab one content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab two content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab three content. This is for testing.
-                </fast-tab-panel>
-            </fast-tabs>
-        `);
+        const { element, connect, disconnect, tab1, tab2, tab3 } = await setup();
+
+        tab1.id = "01";
+        tab2.id = "02";
+        tab3.id = "03";
 
         await connect();
 
@@ -144,22 +133,15 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute tab items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<Tabs>`
-            <fast-tabs>
-                <fast-tab>Tab one</fast-tab>
-                <fast-tab>Tab two</fast-tab>
-                <fast-tab>Tab three</fast-tab>
-                <fast-tab-panel>
-                    Tab one content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab two content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab three content. This is for testing.
-                </fast-tab-panel>
-            </fast-tabs>
-        `);
+        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+
+        for (let i = 1; i < 4; i++) {
+            const tab = document.createElement("fast-tab") as Tab;    
+            const panel = document.createElement("fast-tab-panel") as TabPanel;
+
+            element.appendChild(panel);
+            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+        }
 
         await connect();
 
@@ -172,52 +154,30 @@ describe("Tabs", () => {
     });
 
     it("should set an `id` attribute on the tabpanel when an `id is provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<Tabs>`
-            <fast-tabs>
-                <fast-tab id="01">Tab one</fast-tab>
-                <fast-tab id="02">Tab two</fast-tab>
-                <fast-tab id="03">Tab three</fast-tab>
-                <fast-tab-panel id="panel01">
-                    Tab one content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel id="panel02">
-                    Tab two content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel id="panel03">
-                    Tab three content. This is for testing.
-                </fast-tab-panel>
-            </fast-tabs>
-        `);
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
         expect(element.querySelector("fast-tab-panel")?.getAttribute("id")).to.equal(
-            "panel01"
+            "panel1"
         );
         expect(
             element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id")
-        ).to.equal("panel02");
+        ).to.equal("panel2");
 
         await disconnect();
     });
 
     it("should set an `id` attribute on tabpanel items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture(html<Tabs>`
-            <fast-tabs>
-                <fast-tab>Tab one</fast-tab>
-                <fast-tab>Tab two</fast-tab>
-                <fast-tab>Tab three</fast-tab>
-                <fast-tab-panel>
-                    Tab one content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab two content. This is for testing.
-                </fast-tab-panel>
-                <fast-tab-panel>
-                    Tab three content. This is for testing.
-                </fast-tab-panel>
-            </fast-tabs>
-        `);
+        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
+
+        for (let i = 1; i < 4; i++) {
+            const tab = document.createElement("fast-tab") as Tab;    
+            const panel = document.createElement("fast-tab-panel") as TabPanel;
+
+            element.appendChild(panel);
+            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+        }
 
         await connect();
 
@@ -355,25 +315,18 @@ describe("Tabs", () => {
 
     describe("disabled tab", () => {
         it("should not display an active indicator if all tabs are disabled", async () => {
-            const { element, connect, disconnect } = await fixture<Tabs>(html<
-                Tabs
-            >`
-                <fast-tabs>
-                    <fast-tab disabled>Tab one</fast-tab>
-                    <fast-tab disabled>Tab two</fast-tab>
-                    <fast-tab disabled>Tab three</fast-tab>
-                    <fast-tab-panel>
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
 
+            for (let i = 1; i < 4; i++) {
+                const tab = document.createElement("fast-tab") as Tab;
+                tab.disabled = true;
+        
+                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                panel.id = `panel${i}`;
+                element.appendChild(panel);
+                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            }
+            
             await connect();
 
             expect(element.showActiveIndicator).to.be.false;
@@ -382,27 +335,24 @@ describe("Tabs", () => {
         });
 
         it("should display an active indicator if the last tab is disabled", async () => {
-            const { element, connect, disconnect } = await fixture<Tabs>(html<
-                Tabs
-            >`
-                <fast-tabs>
-                    <fast-tab>Tab one</fast-tab>
-                    <fast-tab>Tab two</fast-tab>
-                    <fast-tab disabled>Tab three</fast-tab>
-                    <fast-tab-panel>
-                        Tab one content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab two content. This is for testing.
-                    </fast-tab-panel>
-                    <fast-tab-panel>
-                        Tab three content. This is for testing.
-                    </fast-tab-panel>
-                </fast-tabs>
-            `);
+            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+
+            for (let i = 1; i < 4; i++) {
+                const tab = document.createElement("fast-tab") as Tab;
+                tab.id = `tab${i}`;
+
+                if (i === 3) {
+                    tab.disabled = true;
+                }
+        
+                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                panel.id = `panel${i}`;
+                element.appendChild(panel);
+                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            }
 
             await connect();
-
+            
             expect(element.showActiveIndicator).to.be.true;
 
             await disconnect();

@@ -15,7 +15,7 @@ const FASTTreeItem = TreeItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTTreeView());
+    const { element, connect, disconnect } = await fixture([FASTTreeView(), FASTTreeItem()]);
 
     return { element, connect, disconnect };
 }

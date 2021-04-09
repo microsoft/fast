@@ -4,14 +4,20 @@ import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { AnchoredRegion, AnchoredRegionTemplate } from "../anchored-region";
 
 const FASTMenuItem = MenuItem.compose({
     baseName: "menu-item",
     template
 })
 
+const FASTAnchoredRegion = AnchoredRegion.compose({
+    baseName: "anchored-region",
+    template: AnchoredRegionTemplate
+})
+
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTMenuItem());
+    const { element, connect, disconnect } = await fixture([FASTMenuItem(), FASTAnchoredRegion()]);
 
     return { element, connect, disconnect };
 }

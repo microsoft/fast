@@ -11,12 +11,12 @@ const FASTSelect = Select.compose({
 })
 
 const FASTOption = ListboxOption.compose({
-    baseName: "fast",
+    baseName: "option",
     template: ListboxOptionTemplate,
 })
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSelect());
+    const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
 
     const option1 = document.createElement("fast-option") as ListboxOption;
     option1.value = "one";

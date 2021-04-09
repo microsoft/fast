@@ -13,12 +13,12 @@ const FASTListbox = Listbox.compose({
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Listbox", () => {
     const FASTOption = ListboxOption.compose({
-        baseName: "fast",
+        baseName: "option",
         template: itemTemplate
     })
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture(FASTListbox());
+        const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
 
         const option1 = document.createElement("fast-option");
         (option1 as ListboxOption).textContent = "option 1";

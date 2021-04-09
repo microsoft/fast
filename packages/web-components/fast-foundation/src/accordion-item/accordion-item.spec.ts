@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { AccordionItem, AccordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
 
 
 const FASTAccordionItem = AccordionItem.compose({

@@ -11,7 +11,7 @@ import {
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities";
-import { FoundationElement } from '../foundation-element';
+import { FoundationElement } from "../foundation-element";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -176,7 +176,7 @@ export class RadioGroup extends FoundationElement {
                 radio.readOnly = true;
             }
 
-            if (this.value && this.value === radio.getAttribute("value")) {
+            if (this.value && this.value === radio.value) {
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
                 radio.checked = true;

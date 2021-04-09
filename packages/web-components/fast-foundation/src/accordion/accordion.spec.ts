@@ -16,7 +16,7 @@ const FASTAccordionItem = AccordionItem.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(FASTAccordion());
+    const { element, connect, disconnect } = await fixture([FASTAccordion(), FASTAccordionItem()]);
 
     const item1 = document.createElement("fast-accordion-item");
     const item2 = document.createElement("fast-accordion-item");

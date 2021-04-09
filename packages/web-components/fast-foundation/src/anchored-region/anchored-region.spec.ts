@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { AnchoredRegion, AnchoredRegionTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, html } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 
 const FASTAnchoredRegion = AnchoredRegion.compose({
     baseName: "anchored-region",
@@ -9,59 +9,61 @@ const FASTAnchoredRegion = AnchoredRegion.compose({
 })
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture(html<HTMLDivElement>`
-        <div id="viewport" style="width: 1000px; height: 1000px;">
-            <button id="anchor" style="width: 100px; height: 100px;">anchor</button>
-            <fast-anchored-region viewport="viewport" anchor="anchor" id="region">
-                <div id="contents" style="width: 100px; height: 100px;"></div>
-            </fast-anchored-region>
-        </div>
-    `);
-    return { element, connect, disconnect };
+    const { element, connect, disconnect, parent } = await fixture(FASTAnchoredRegion());
+
+    const button = document.createElement("button");
+    const content = document.createElement("div");
+
+    button.id = "anchor";
+    button.setAttribute("style", "width: 100px; height: 100px;");
+
+    content.id = "content";
+    content.setAttribute("style", "width: 100px; height: 100px;");
+
+    parent.id = "viewport";
+    parent.setAttribute("style", "width: 1000px; height: 1000px;");
+    parent.insertBefore(button, element);
+
+    element.appendChild(content);
+    element.setAttribute("viewport", "viewport");
+    element.setAttribute("anchor", "anchor");
+    element.id = "region";
+
+    return { element, connect, disconnect, content };
 }
 
 describe("Anchored Region", () => {
     it("should set positioning modes to 'uncontrolled' by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const region: AnchoredRegion = element.querySelector(
-            "fast-anchored-region"
-        ) as AnchoredRegion;
 
         await connect();
 
-        expect(region.verticalPositioningMode).to.equal("uncontrolled");
-        expect(region.horizontalPositioningMode).to.equal("uncontrolled");
+        expect(element.verticalPositioningMode).to.equal("uncontrolled");
+        expect(element.horizontalPositioningMode).to.equal("uncontrolled");
 
         await disconnect();
     });
 
     it("should assign anchor and viewport elements by id", async () => {
         const { element, connect, disconnect } = await setup();
-        const region: AnchoredRegion = element.querySelector(
-            "fast-anchored-region"
-        ) as AnchoredRegion;
 
         await connect();
         await DOM.nextUpdate();
 
-        expect(region.anchorElement?.id).to.equal("anchor");
-        expect(region.viewportElement?.id).to.equal("viewport");
+        expect(element.anchorElement?.id).to.equal("anchor");
+        expect(element.viewportElement?.id).to.equal("viewport");
 
         await disconnect();
     });
 
     it("should be sized to match content by default", async () => {
-        const { element, connect, disconnect } = await setup();
-        const region: AnchoredRegion = element.querySelector(
-            "fast-anchored-region"
-        ) as AnchoredRegion;
-        const contents: HTMLElement = element.querySelector("#contents") as HTMLElement;
+        const { element, connect, disconnect, content } = await setup();
 
         await connect();
         await DOM.nextUpdate();
-
-        expect(region.clientHeight).to.equal(contents.clientHeight);
-        expect(region.clientWidth).to.equal(contents.clientWidth);
+        
+        expect(element.clientHeight).to.equal(content.clientHeight);
+        expect(element.clientWidth).to.equal(content.clientWidth);
 
         await disconnect();
     });
