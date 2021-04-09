@@ -158,13 +158,11 @@ export class NumberField extends FormAssociatedNumberField {
 
         if (nextValue === "" || isNaN(numb)) {
             out = "";
-        } else if (this.min !== undefined && numb < this.min) {
-            out = this.min;
-        } else if (this.max !== undefined && numb > this.max) {
-            out = this.max;
+        } else {
+            out = this.getValidValue(numb);
         }
 
-        this.value = out.toString();
+        this.value = out;
 
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;
@@ -172,35 +170,43 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
+     * Ensures that the value is between the min and max values
+     *
+     * @param value - number to evaluate
+     * @returns - a string repesentation
+     *
+     * @internal
+     */
+    private getValidValue(value: number): string {
+        if (this.min !== undefined && value < this.min) {
+            value = this.min;
+        } else if (this.max !== undefined && value > this.max) {
+            value = this.max;
+        }
+
+        return parseFloat(value.toPrecision(12)).toString();
+    }
+
+    /**
      * Increments the value using the step value
+     *
+     * @public
      */
     public stepUp(): void {
-        this.changeValue();
+        const stepUpValue = this.step + parseFloat(this.value);
+        this.value = this.getValidValue(stepUpValue);
+
+        this.$emit("input");
     }
 
     /**
      * Decrements the value using the step value
+     *
+     * @public
      */
     public stepDown(): void {
-        this.changeValue("down");
-    }
-
-    /**
-     * Increments or decrements the current value by the step value
-     *
-     * @param direction - direction to step the current value up or down
-     *
-     * @internal
-     */
-    private changeValue(direction: "up" | "down" = "up"): void {
-        let nextValue =
-            parseFloat(this.value) + this.step * (direction === "down" ? -1 : 1);
-        if (this.min !== undefined && nextValue < this.min) {
-            nextValue = this.min;
-        } else if (this.max !== undefined && nextValue > this.max) {
-            nextValue = this.max;
-        }
-        this.value = parseFloat(nextValue.toPrecision(12)).toString();
+        const stepDownValue = parseFloat(this.value) - this.step;
+        this.value = this.getValidValue(stepDownValue);
 
         this.$emit("input");
     }
