@@ -1,0 +1,6 @@
+{
+  "type": "minor",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "v-dlesac@microsoft.com",
+  "dependentChangeType": "patch"
+}
