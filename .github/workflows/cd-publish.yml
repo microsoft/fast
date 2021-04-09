@@ -13,7 +13,7 @@ env:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-    if: contains('chrisdholt,janechu,nicholasrice', github.actor)
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel', github.actor)
 
     steps:
     - uses: actions/checkout@v2
