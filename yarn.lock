@@ -4436,7 +4436,7 @@
   integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
   dependencies:
     "@types/prop-types" "*"
-    csstype "^2.2.0"
+    "csstype" "^2.2.0"
 
 "@types/reactcss@*":
   version "1.2.3"
