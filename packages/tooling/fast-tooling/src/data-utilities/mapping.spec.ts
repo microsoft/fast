@@ -1,4 +1,6 @@
 import { set } from "lodash-es";
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import { DataDictionary } from "../message-system";
 import { linkedDataSchema } from "../schemas";
 import {
@@ -11,10 +13,13 @@ import {
 } from "./mapping";
 import { DataType, ReservedElementMappingKeyword } from "./types";
 
+chai.use(spies);
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 describe("mapDataDictionary", () => {
-    test("should call a passed mapper and resolver function on a single data dictionary item", () => {
-        const mapper: any = jest.fn();
-        const resolver: any = jest.fn();
+    it("should call a passed mapper and resolver function on a single data dictionary item", () => {
+        const mapper: any = chai.spy(() => {});
+        const resolver: any = chai.spy(() => {});
 
         mapDataDictionary({
             dataDictionary: [
@@ -35,12 +40,12 @@ describe("mapDataDictionary", () => {
             resolver,
         });
 
-        expect(mapper).toHaveBeenCalledTimes(1);
-        expect(resolver).toHaveBeenCalledTimes(1);
+        expect(mapper).to.have.been.called.exactly(1);
+        expect(resolver).to.have.been.called.exactly(1);
     });
-    test("should call a passed mapper and resolver function on multiple dictionary items", () => {
-        const mapper: any = jest.fn();
-        const resolver: any = jest.fn();
+    it("should call a passed mapper and resolver function on multiple dictionary items", () => {
+        const mapper: any = chai.spy(() => {});
+        const resolver: any = chai.spy(() => {});
 
         mapDataDictionary({
             dataDictionary: [
@@ -78,10 +83,10 @@ describe("mapDataDictionary", () => {
             resolver,
         });
 
-        expect(mapper).toHaveBeenCalledTimes(2);
-        expect(resolver).toHaveBeenCalledTimes(2);
+        expect(mapper).to.have.been.called.exactly(2);
+        expect(resolver).to.have.been.called.exactly(2);
     });
-    test("should map a single dictionary entry", () => {
+    it("should map a single dictionary entry", () => {
         const mapper: any = function (config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
@@ -122,11 +127,11 @@ describe("mapDataDictionary", () => {
             resolver,
         });
 
-        expect(result).toEqual({
+        expect(result).to.deep.equal({
             a: "b",
         });
     });
-    test("should map multiple dictionary entries", () => {
+    it("should map multiple dictionary entries", () => {
         const mapper: any = function (config: MapperConfig<any>): any {
             config.dataDictionary[0][config.dictionaryId].data =
                 config.dataDictionary[0][config.dictionaryId].data;
@@ -180,7 +185,7 @@ describe("mapDataDictionary", () => {
             resolver,
         });
 
-        expect(result).toEqual({
+        expect(result).to.deep.equal({
             a: "b",
             children: {
                 c: "d",
@@ -190,7 +195,7 @@ describe("mapDataDictionary", () => {
 });
 
 describe("htmlMapper", () => {
-    test("should map a string to data", () => {
+    it("should map a string to data", () => {
         const textString = "Hello world";
         const text = document.createTextNode(textString);
         const dataDictionary: DataDictionary<any> = [
@@ -213,9 +218,9 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data).toEqual(text);
+        expect(dataDictionary[0][""].data).to.deep.equal(text);
     });
-    test("should map an element to data", () => {
+    it("should map an element to data", () => {
         const dataDictionary: DataDictionary<any> = [
             {
                 "": {
@@ -245,9 +250,11 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data).toEqual(document.createElement("div"));
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(
+            document.createElement("div").outerHTML
+        );
     });
-    test("should map an element to boolean data", () => {
+    it("should map an element to boolean data", () => {
         const dataDictionary: DataDictionary<any> = [
             {
                 "": {
@@ -297,9 +304,9 @@ describe("htmlMapper", () => {
         });
         const element = document.createElement("div");
         element.setAttribute("foo", "");
-        expect(dataDictionary[0][""].data).toEqual(element);
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(element.outerHTML);
     });
-    test("should not map an element when that element is not an object", () => {
+    it("should not map an element when that element is not an object", () => {
         expect(
             htmlMapper({
                 version: 1,
@@ -329,9 +336,9 @@ describe("htmlMapper", () => {
                 },
                 mapperPlugins: [],
             })
-        ).toEqual(undefined);
+        ).to.equal(undefined);
     });
-    test("should not map an element when that element is not available", () => {
+    it("should not map an element when that element is not available", () => {
         expect(
             htmlMapper({
                 version: 1,
@@ -354,9 +361,9 @@ describe("htmlMapper", () => {
                 },
                 mapperPlugins: [],
             })
-        ).toEqual(undefined);
+        ).to.equal(undefined);
     });
-    test("should map an element with an attribute", () => {
+    it("should map an element with an attribute", () => {
         const element = {
             id: "foo",
         };
@@ -393,9 +400,9 @@ describe("htmlMapper", () => {
             mapperPlugins: [],
         });
 
-        expect(dataDictionary[0][""].data).toEqual(mappedElement);
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element with an attribute and ignore any slots", () => {
+    it("should map an element with an attribute and ignore any slots", () => {
         const element = {
             id: "foo",
             Slot: "Hello world",
@@ -442,10 +449,10 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data).toEqual(mappedElement);
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element nested within another element with a default slot", () => {
-        const mapper = htmlMapper({
+    it("should map an element nested within another element with a default slot", () => {
+        const mapper: any = htmlMapper({
             version: 1,
             tags: [
                 {
@@ -546,10 +553,10 @@ describe("htmlMapper", () => {
         buttonElement.textContent = "Hello world";
         mappedElement.append(buttonElement);
 
-        expect(result).toEqual(mappedElement);
+        expect(result.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element nested within another element with a named slot", () => {
-        const mapper = htmlMapper({
+    it("should map an element nested within another element with a named slot", () => {
+        const mapper: any = htmlMapper({
             version: 1,
             tags: [
                 {
@@ -658,10 +665,10 @@ describe("htmlMapper", () => {
         buttonElement.textContent = "Hello world";
         mappedElement.append(buttonElement);
 
-        expect(result).toEqual(mappedElement);
+        expect(result.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element with multiple text strings into a slot", () => {
-        const mapper = htmlMapper({
+    it("should map an element with multiple text strings into a slot", () => {
+        const mapper: any = htmlMapper({
             version: 1,
             tags: [
                 {
@@ -739,10 +746,10 @@ describe("htmlMapper", () => {
         mappedElement.append(text1);
         mappedElement.append(text2);
 
-        expect(result).toEqual(mappedElement);
+        expect(result.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element with mixed text string and element into a slot", () => {
-        const mapper = htmlMapper({
+    it("should map an element with mixed text string and element into a slot", () => {
+        const mapper: any = htmlMapper({
             version: 1,
             tags: [
                 {
@@ -855,10 +862,10 @@ describe("htmlMapper", () => {
         buttonElement.textContent = "Button";
         mappedElement.append(buttonElement);
 
-        expect(result).toEqual(mappedElement);
+        expect(result.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an element with mixed text string and element into a slot", () => {
-        const mapper = htmlMapper({
+    it("should map an element with mixed text string and element into a slot", () => {
+        const mapper: any = htmlMapper({
             version: 1,
             tags: [
                 {
@@ -970,9 +977,9 @@ describe("htmlMapper", () => {
         mappedElement.append(buttonElement);
         mappedElement.append(text2);
 
-        expect(result).toEqual(mappedElement);
+        expect(result.outerHTML).to.equal(mappedElement.outerHTML);
     });
-    test("should map an svg element to data", () => {
+    it("should map an svg element to data", () => {
         const dataDictionary: DataDictionary<any> = [
             {
                 "": {
@@ -1002,11 +1009,11 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data).toEqual(
-            document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(
+            document.createElementNS("http://www.w3.org/2000/svg", "svg").outerHTML
         );
     });
-    test("should map an svg element with an attribute specifying a URI to data", () => {
+    it("should map an svg element with an attribute specifying a URI to data", () => {
         const dataDictionary: DataDictionary<any> = [
             {
                 "": {
@@ -1050,17 +1057,19 @@ describe("htmlMapper", () => {
             },
             mapperPlugins: [],
         });
-        expect(dataDictionary[0][""].data).toEqual(
-            document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        expect(dataDictionary[0][""].data.outerHTML).to.equal(
+            document.createElementNS("http://www.w3.org/2000/svg", "svg").outerHTML
         );
     });
 });
 
 describe("mapWebComponentDefinitionToJSONSchema", () => {
-    test("should not throw", () => {
-        expect(() => mapWebComponentDefinitionToJSONSchema({ version: 1 })).not.toThrow();
+    it("should not throw", () => {
+        expect(() =>
+            mapWebComponentDefinitionToJSONSchema({ version: 1 })
+        ).not.to.throw();
     });
-    test("should map attributes and slots to the JSON schema", () => {
+    it("should map attributes and slots to the JSON schema", () => {
         const name: string = "foo";
         const title: string = "FooBar";
         const description: string = "foo tag";
@@ -1099,7 +1108,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
@@ -1126,7 +1135,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             },
         ]);
     });
-    test("should map named slots to the JSON schema", () => {
+    it("should map named slots to the JSON schema", () => {
         const name: string = "foo";
         const title: string = "foo title";
         const description: string = "foo tag";
@@ -1153,7 +1162,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
@@ -1174,7 +1183,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             },
         ]);
     });
-    test("should map named slots with only one character to the JSON schema", () => {
+    it("should map named slots with only one character to the JSON schema", () => {
         const name: string = "foo";
         const title: string = "Foo";
         const description: string = "foo tag";
@@ -1201,7 +1210,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
@@ -1222,7 +1231,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             },
         ]);
     });
-    test("should map named slots with dasjes  to the JSON schema", () => {
+    it("should map named slots with a dashed name to the JSON schema", () => {
         const name: string = "foo";
         const title: string = "FooBar";
         const description: string = "foo tag";
@@ -1249,7 +1258,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
@@ -1270,7 +1279,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             },
         ]);
     });
-    test("should map an optional enum in attributes to the enum in a JSON schema", () => {
+    it("should map an optional enum in attributes to the enum in a JSON schema", () => {
         const name: string = "foo";
         const title: string = "FooBar";
         const description: string = "foo tag";
@@ -1309,7 +1318,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
@@ -1332,7 +1341,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
             },
         ]);
     });
-    test("should map an optional number enum in attributes to the enum in a JSON schema", () => {
+    it("should map an optional number enum in attributes to the enum in a JSON schema", () => {
         const name: string = "foo";
         const title: string = "Foo title";
         const description: string = "foo tag";
@@ -1371,7 +1380,7 @@ describe("mapWebComponentDefinitionToJSONSchema", () => {
                     },
                 ],
             })
-        ).toEqual([
+        ).to.deep.equal([
             {
                 $schema: "http://json-schema.org/schema#",
                 $id: name,
