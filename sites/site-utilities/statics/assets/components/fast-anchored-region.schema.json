@@ -124,6 +124,17 @@
       "mapsToAttribute": "fixed-placement",
       "type": "boolean"
     },
+    "auto-update-mode": {
+      "enum": [
+        "anchor",
+        "auto"
+      ],
+      "default": "anchor",
+      "title": "Auto update mode",
+      "description": "Defines whether the component automatically updates its position",
+      "mapsToAttribute": "auto-update-mode",
+      "type": "string"
+    },
     "Slot": {
       "title": "Default slot",
       "description": "The content of the anchored region",

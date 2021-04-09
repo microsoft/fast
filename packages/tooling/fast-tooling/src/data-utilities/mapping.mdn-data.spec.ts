@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { css as mdnCSS } from "mdn-data";
 import {
     CombinatorType,
@@ -17,16 +18,16 @@ import {
 } from "./mapping.mdn-data";
 
 describe("mapStringLiterals,", () => {
-    test("should keep track of '/' and ',' as literals", () => {
-        expect(mapStringLiterals("/ <length-percentage>")).toEqual("/");
-        expect(mapStringLiterals("<length-percentage>")).toEqual(null);
-        expect(mapStringLiterals(", <length-percentage>")).toEqual(",");
+    it("should keep track of '/' and ',' as literals", () => {
+        expect(mapStringLiterals("/ <length-percentage>")).to.equal("/");
+        expect(mapStringLiterals("<length-percentage>")).to.equal(null);
+        expect(mapStringLiterals(", <length-percentage>")).to.equal(",");
     });
 });
 
 describe("mapCSSGroups", () => {
-    test("should map a single group", () => {
-        expect(mapCSSGroups("foo [ bar ]+ baz")).toEqual([
+    it("should map a single group", () => {
+        expect(mapCSSGroups("foo [ bar ]+ baz")).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 11],
@@ -38,8 +39,8 @@ describe("mapCSSGroups", () => {
             },
         ]);
     });
-    test("should map multiple groups", () => {
-        expect(mapCSSGroups("foo [ bar ]! baz [ quux ]")).toEqual([
+    it("should map multiple groups", () => {
+        expect(mapCSSGroups("foo [ bar ]! baz [ quux ]")).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 11],
@@ -58,8 +59,8 @@ describe("mapCSSGroups", () => {
             },
         ]);
     });
-    test("should map a single nesting group", () => {
-        expect(mapCSSGroups("foo [ bar [ bat ]? ]* baz")).toEqual([
+    it("should map a single nesting group", () => {
+        expect(mapCSSGroups("foo [ bar [ bat ]? ]* baz")).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 20],
@@ -82,8 +83,8 @@ describe("mapCSSGroups", () => {
             },
         ]);
     });
-    test("should map multiple nestings groups with multipliers", () => {
-        expect(mapCSSGroups("foo [ bar [ bat [ baz ]{1,2} ]+ ]! quux")).toEqual([
+    it("should map multiple nestings groups with multipliers", () => {
+        expect(mapCSSGroups("foo [ bar [ bat [ baz ]{1,2} ]+ ]! quux")).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 33],
@@ -118,8 +119,8 @@ describe("mapCSSGroups", () => {
             },
         ]);
     });
-    test("should map multiple groups with nesting", () => {
-        expect(mapCSSGroups("foo [ bar [ bat ] ] baz [ quux ]")).toEqual([
+    it("should map multiple groups with nesting", () => {
+        expect(mapCSSGroups("foo [ bar [ bat ] ] baz [ quux ]")).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 18],
@@ -145,12 +146,12 @@ describe("mapCSSGroups", () => {
             },
         ]);
     });
-    test("should map groups with multipliers", () => {
+    it("should map groups with multipliers", () => {
         expect(
             mapCSSGroups(
                 "foo [ bar ]# baz [ quux ]{1,4} bat [ fuzz ]? [ fazz ]* [ buzz ]! [ corge ]+ [ quz ]{1,6}"
             )
-        ).toEqual([
+        ).to.deep.equal([
             {
                 id: "uuid4",
                 range: [4, 11],
@@ -221,142 +222,142 @@ describe("mapCSSGroups", () => {
 });
 
 describe("mapMultiplierType", () => {
-    test("should find a zero or more multiplier type", () => {
-        expect(mapMultiplierType("foo*")).toEqual({
+    it("should find a zero or more multiplier type", () => {
+        expect(mapMultiplierType("foo*")).to.deep.equal({
             type: MultiplierType.zeroOrMore,
         });
     });
-    test("should find a one or more multiplier type", () => {
-        expect(mapMultiplierType("foo+")).toEqual({
+    it("should find a one or more multiplier type", () => {
+        expect(mapMultiplierType("foo+")).to.deep.equal({
             type: MultiplierType.oneOrMore,
         });
     });
-    test("should find a zero or one multiplier type", () => {
-        expect(mapMultiplierType("foo?")).toEqual({
+    it("should find a zero or one multiplier type", () => {
+        expect(mapMultiplierType("foo?")).to.deep.equal({
             type: MultiplierType.zeroOrOne,
         });
     });
-    test("should find an at least A times at most B times multiplier type", () => {
-        expect(mapMultiplierType("foo{1,3}")).toEqual({
+    it("should find an at least A times at most B times multiplier type", () => {
+        expect(mapMultiplierType("foo{1,3}")).to.deep.equal({
             type: MultiplierType.atLeastATimesAtMostBTimes,
             range: [1, 3],
         });
     });
-    test("should find a one ore more separated by comma multiplier type", () => {
-        expect(mapMultiplierType("foo#")).toEqual({
+    it("should find a one ore more separated by comma multiplier type", () => {
+        expect(mapMultiplierType("foo#")).to.deep.equal({
             type: MultiplierType.oneOrMoreSeparatedByComma,
         });
     });
-    test("should find an  at least one value multiplier type", () => {
-        expect(mapMultiplierType("foo!")).toEqual({
+    it("should find an  at least one value multiplier type", () => {
+        expect(mapMultiplierType("foo!")).to.deep.equal({
             type: MultiplierType.atLeastOne,
         });
     });
 });
 
 describe("mapCombinatorType", () => {
-    test("should find a juxtaposition combination type", () => {
-        expect(mapCombinatorType("foo bar bat")).toEqual(CombinatorType.juxtaposition);
+    it("should find a juxtaposition combination type", () => {
+        expect(mapCombinatorType("foo bar bat")).to.equal(CombinatorType.juxtaposition);
         expect(
             mapCombinatorType("/ <length-percentage>! [ / <length-percentage>{1,4} ]?")
-        ).toEqual(CombinatorType.juxtaposition);
+        ).to.equal(CombinatorType.juxtaposition);
         expect(
             mapCombinatorType("<'mask-border-width'>? [ / <'mask-border-outset'> ]")
-        ).toEqual(CombinatorType.juxtaposition);
+        ).to.equal(CombinatorType.juxtaposition);
     });
-    test("should find mandatory items in any order combination type", () => {
-        expect(mapCombinatorType("foo && bar && bat")).toEqual(
+    it("should find mandatory items in any order combination type", () => {
+        expect(mapCombinatorType("foo && bar && bat")).to.equal(
             CombinatorType.mandatoryInAnyOrder
         );
     });
-    test("should find at least one in any order combination type", () => {
-        expect(mapCombinatorType("foo || bar || bat")).toEqual(
+    it("should find at least one in any order combination type", () => {
+        expect(mapCombinatorType("foo || bar || bat")).to.equal(
             CombinatorType.atLeastOneInAnyOrder
         );
     });
-    test("should find exactly one combination type", () => {
-        expect(mapCombinatorType("foo | bar | bat")).toEqual(CombinatorType.exactlyOne);
-        expect(mapCombinatorType("[ <custom-ident> <integer>? ]+ | none")).toEqual(
+    it("should find exactly one combination type", () => {
+        expect(mapCombinatorType("foo | bar | bat")).to.equal(CombinatorType.exactlyOne);
+        expect(mapCombinatorType("[ <custom-ident> <integer>? ]+ | none")).to.equal(
             CombinatorType.exactlyOne
         );
     });
-    test("should find group combination type", () => {
-        expect(mapCombinatorType("[foo bar bat]{1,4}")).toEqual(CombinatorType.brackets);
+    it("should find group combination type", () => {
+        expect(mapCombinatorType("[foo bar bat]{1,4}")).to.equal(CombinatorType.brackets);
     });
-    test("should find none if no combination types are found", () => {
-        expect(mapCombinatorType("foo")).toEqual(CombinatorType.none);
+    it("should find none if no combination types are found", () => {
+        expect(mapCombinatorType("foo")).to.equal(CombinatorType.none);
     });
 });
 
 describe("resolveReferenceType", () => {
-    test("should resolve a reference of type syntax", () => {
+    it("should resolve a reference of type syntax", () => {
         expect(
             resolveReferenceType("<line-style>", CombinatorType.none, ["line-style"], [])
-        ).toEqual("syntax");
+        ).to.equal("syntax");
     });
-    test("should resolve a reference of type types", () => {
+    it("should resolve a reference of type types", () => {
         expect(
             resolveReferenceType("<length>", CombinatorType.none, [], ["length"])
-        ).toEqual("type");
+        ).to.equal("type");
     });
-    test("should resolve a reference of type property", () => {
+    it("should resolve a reference of type property", () => {
         expect(
             resolveReferenceType("<'margin-left'>", CombinatorType.none, [], [])
-        ).toEqual("property");
+        ).to.equal("property");
     });
-    test("should resolve a reference of type value", () => {
-        expect(resolveReferenceType("<line-style>", CombinatorType.none, [], [])).toEqual(
+    it("should resolve a reference of type value", () => {
+        expect(
+            resolveReferenceType("<line-style>", CombinatorType.none, [], [])
+        ).to.equal("value");
+        expect(resolveReferenceType("<length>", CombinatorType.none, [], [])).to.equal(
             "value"
         );
-        expect(resolveReferenceType("<length>", CombinatorType.none, [], [])).toEqual(
-            "value"
-        );
-        expect(resolveReferenceType("auto", CombinatorType.none, [], [])).toEqual(
+        expect(resolveReferenceType("auto", CombinatorType.none, [], [])).to.equal(
             "value"
         );
     });
 });
 
 describe("resolveCSSPropertySyntaxSplit", () => {
-    test("should split by at least one in any order", () => {
+    it("should split by at least one in any order", () => {
         expect(
             resolveCSSPropertySyntaxSplit(
                 "foo || bar",
                 CombinatorType.atLeastOneInAnyOrder
             )
-        ).toEqual(["foo", "bar"]);
+        ).to.deep.equal(["foo", "bar"]);
     });
-    test("should split by exactly one", () => {
+    it("should split by exactly one", () => {
         expect(
             resolveCSSPropertySyntaxSplit("foo | bar", CombinatorType.juxtaposition)
-        ).toEqual(["foo", "bar"]);
+        ).to.deep.equal(["foo", "bar"]);
         expect(
             resolveCSSPropertySyntaxSplit(
                 "[ <custom-ident> <integer>? ]+ | none",
                 CombinatorType.juxtaposition
             )
-        ).toEqual(["[ <custom-ident> <integer>? ]+", "none"]);
+        ).to.deep.equal(["[ <custom-ident> <integer>? ]+", "none"]);
     });
-    test("should split by juxtaposition", () => {
+    it("should split by juxtaposition", () => {
         expect(
             resolveCSSPropertySyntaxSplit("foo bar", CombinatorType.juxtaposition)
-        ).toEqual(["foo", "bar"]);
+        ).to.deep.equal(["foo", "bar"]);
     });
-    test("should split by mandatory in any order", () => {
+    it("should split by mandatory in any order", () => {
         expect(
             resolveCSSPropertySyntaxSplit("foo && bar", CombinatorType.juxtaposition)
-        ).toEqual(["foo", "bar"]);
+        ).to.deep.equal(["foo", "bar"]);
     });
-    test("should split by mandatory in any order", () => {
-        expect(resolveCSSPropertySyntaxSplit("foobar", CombinatorType.none)).toEqual([
-            "foobar",
-        ]);
+    it("should split by mandatory in any order", () => {
+        expect(
+            resolveCSSPropertySyntaxSplit("foobar", CombinatorType.none)
+        ).to.deep.equal(["foobar"]);
     });
 });
 
 describe("resolveCSSGroups", () => {
-    test("should resolve a simple string referece", () => {
-        expect(resolveCSSGroups("<length>", [], [])).toEqual([
+    it("should resolve a simple string referece", () => {
+        expect(resolveCSSGroups("<length>", [], [])).to.deep.equal([
             {
                 multiplier: null,
                 prepend: null,
@@ -366,8 +367,8 @@ describe("resolveCSSGroups", () => {
             },
         ]);
     });
-    test("should resolve a reference with multipliers and prepended string literals", () => {
-        expect(resolveCSSGroups("/ <length>?", [], ["length"])).toEqual([
+    it("should resolve a reference with multipliers and prepended string literals", () => {
+        expect(resolveCSSGroups("/ <length>?", [], ["length"])).to.deep.equal([
             {
                 multiplier: {
                     type: MultiplierType.zeroOrOne,
@@ -379,7 +380,7 @@ describe("resolveCSSGroups", () => {
             },
         ]);
     });
-    test("should resolve a nested reference", () => {
+    it("should resolve a nested reference", () => {
         resolveCSSGroups(
             "<color>{1,4} [ / <length-percentage>{1,4} ]?",
             [],
@@ -391,7 +392,7 @@ describe("resolveCSSGroups", () => {
                 [],
                 ["color", "length-percentage"]
             )
-        ).toEqual([
+        ).to.deep.equal([
             {
                 multiplier: {
                     range: [1, 4],
@@ -430,7 +431,7 @@ describe("resolveCSSGroups", () => {
                 [],
                 []
             )
-        ).toEqual([
+        ).to.deep.equal([
             {
                 multiplier: {
                     type: "zeroOrOne",
@@ -472,7 +473,7 @@ describe("resolveCSSGroups", () => {
 });
 
 describe("resolveCSSPropertySyntax", () => {
-    test("should resolve a CSS properties syntax without shorthand properties", () => {
+    it("should resolve a CSS properties syntax without shorthand properties", () => {
         expect(
             resolveCSSPropertySyntax(
                 {
@@ -484,7 +485,7 @@ describe("resolveCSSPropertySyntax", () => {
                 [],
                 ["color"]
             )
-        ).toEqual({
+        ).to.deep.equal({
             mapsToProperty: "background-color",
             percentages: "no",
             ref: "<color>",
@@ -494,7 +495,7 @@ describe("resolveCSSPropertySyntax", () => {
             refCombinatorType: CombinatorType.none,
         });
     });
-    test("should resolve a CSS properties syntax with shorthand properties", () => {
+    it("should resolve a CSS properties syntax with shorthand properties", () => {
         expect(
             resolveCSSPropertySyntax(
                 {
@@ -511,7 +512,7 @@ describe("resolveCSSPropertySyntax", () => {
                 [],
                 ["length", "percentage"]
             )
-        ).toEqual({
+        ).to.deep.equal({
             mapsToProperty: "padding",
             percentages: "referToWidthOfContainingBlock",
             refCombinatorType: CombinatorType.exactlyOne,
@@ -539,7 +540,7 @@ describe("resolveCSSPropertySyntax", () => {
             prepend: null,
         });
     });
-    test("should resolve a CSS properties syntax with a single syntax", () => {
+    it("should resolve a CSS properties syntax with a single syntax", () => {
         expect(
             resolveCSSPropertySyntax(
                 {
@@ -550,7 +551,7 @@ describe("resolveCSSPropertySyntax", () => {
                 [],
                 ["foo"]
             )
-        ).toEqual({
+        ).to.deep.equal({
             mapsToProperty: "bar",
             multiplier: {
                 type: "oneOrMoreSeparatedByComma",
@@ -565,7 +566,7 @@ describe("resolveCSSPropertySyntax", () => {
 });
 
 describe("mapCSSProperties", () => {
-    test("should return a subset of MDN data into a subset of CSS properties ", () => {
+    it("should return a subset of MDN data into a subset of CSS properties ", () => {
         const subsetOfMDNCSS = {
             properties: {
                 border: mdnCSS.properties.border,
@@ -574,7 +575,7 @@ describe("mapCSSProperties", () => {
             types: mdnCSS.types,
         } as any;
 
-        expect(mapCSSProperties(subsetOfMDNCSS)).toEqual({
+        expect(mapCSSProperties(subsetOfMDNCSS)).to.deep.equal({
             border: {
                 name: "border",
                 appliesTo: "allElements",
@@ -613,7 +614,7 @@ describe("mapCSSProperties", () => {
         });
     });
     describe("options", () => {
-        test("should check for status", () => {
+        it("should check for status", () => {
             const subsetOfMDNCSS = {
                 properties: {
                     "--*": mdnCSS.properties["--*"],
@@ -623,7 +624,9 @@ describe("mapCSSProperties", () => {
                 types: mdnCSS.types,
             } as any;
 
-            expect(mapCSSProperties(subsetOfMDNCSS, { status: "standard" })).toEqual({
+            expect(
+                mapCSSProperties(subsetOfMDNCSS, { status: "standard" })
+            ).to.deep.equal({
                 border: {
                     name: "border",
                     appliesTo: "allElements",
@@ -665,8 +668,8 @@ describe("mapCSSProperties", () => {
 });
 
 describe("resolveCSSSyntax", () => {
-    test("should resolve a CSS syntax without grouped items", () => {
-        expect(resolveCSSSyntax("xx-small | x-small | small", [], [])).toEqual({
+    it("should resolve a CSS syntax without grouped items", () => {
+        expect(resolveCSSSyntax("xx-small | x-small | small", [], [])).to.deep.equal({
             ref: [
                 {
                     multiplier: null,
@@ -693,8 +696,8 @@ describe("resolveCSSSyntax", () => {
             refCombinatorType: "exactlyOne",
         });
     });
-    test("should resolve a CSS syntax with grouped items", () => {
-        expect(resolveCSSSyntax("foo [ bar | bat ]", [], [])).toEqual({
+    it("should resolve a CSS syntax with grouped items", () => {
+        expect(resolveCSSSyntax("foo [ bar | bat ]", [], [])).to.deep.equal({
             ref: [
                 {
                     multiplier: null,
@@ -732,7 +735,7 @@ describe("resolveCSSSyntax", () => {
 });
 
 describe("mapCSSSyntaxes", () => {
-    test("should return a subset of MDN data into a subset of CSS syntaxes", () => {
+    it("should return a subset of MDN data into a subset of CSS syntaxes", () => {
         const subsetOfMDNCSS = {
             properties: {},
             syntaxes: {
@@ -742,7 +745,7 @@ describe("mapCSSSyntaxes", () => {
             },
             types: mdnCSS.types,
         } as any;
-        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).to.deep.equal({
             "absolute-size": {
                 name: "absolute-size",
                 value: {
@@ -774,7 +777,7 @@ describe("mapCSSSyntaxes", () => {
             },
         });
     });
-    test("should return a subset of MDN data into a subset of CSS syntaxes with parenthesis", () => {
+    it("should return a subset of MDN data into a subset of CSS syntaxes with parenthesis", () => {
         const subsetOfMDNCSS = {
             properties: {},
             syntaxes: {
@@ -801,7 +804,7 @@ describe("mapCSSSyntaxes", () => {
             types: mdnCSS.types,
         } as any;
 
-        expect(mapCSSSyntaxes(subsetOfMDNCSS).color).toEqual({
+        expect(mapCSSSyntaxes(subsetOfMDNCSS).color).to.deep.equal({
             name: "color",
             value: {
                 ref: [
@@ -866,7 +869,7 @@ describe("mapCSSSyntaxes", () => {
             },
         });
     });
-    test("should return a subset of MDN data into a subset of CSS syntaxes with numerals", () => {
+    it("should return a subset of MDN data into a subset of CSS syntaxes with numerals", () => {
         const subsetOfMDNCSS = {
             properties: {},
             syntaxes: {
@@ -876,7 +879,7 @@ describe("mapCSSSyntaxes", () => {
             },
             types: mdnCSS.types,
         } as any;
-        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).to.deep.equal({
             foo: {
                 name: "foo",
                 value: {
@@ -908,7 +911,7 @@ describe("mapCSSSyntaxes", () => {
             },
         });
     });
-    test("should return a subset of MDN data into a subset of CSS syntaxes with capital letters", () => {
+    it("should return a subset of MDN data into a subset of CSS syntaxes with capital letters", () => {
         const subsetOfMDNCSS = {
             properties: {},
             syntaxes: {
@@ -918,7 +921,7 @@ describe("mapCSSSyntaxes", () => {
             },
             types: mdnCSS.types,
         } as any;
-        expect(mapCSSSyntaxes(subsetOfMDNCSS)).toEqual({
+        expect(mapCSSSyntaxes(subsetOfMDNCSS)).to.deep.equal({
             foo: {
                 name: "foo",
                 value: {
@@ -953,43 +956,47 @@ describe("mapCSSSyntaxes", () => {
 });
 
 describe("mapMixedCombinatorTypes", () => {
-    test("should add brackets if there are multiple combinator types", () => {
+    it("should add brackets if there are multiple combinator types", () => {
         const syntax1: string = "foo | bar bat";
-        expect(mapMixedCombinatorTypes(syntax1)).toEqual("foo | [ bar bat ]");
+        expect(mapMixedCombinatorTypes(syntax1)).to.equal("foo | [ bar bat ]");
         const syntax2: string = "foo bar | bat";
-        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | bat");
+        expect(mapMixedCombinatorTypes(syntax2)).to.equal("[ foo bar ] | bat");
         const syntax3: string = "foo && bar || bat";
-        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && bar ] || bat");
+        expect(mapMixedCombinatorTypes(syntax3)).to.equal("[ foo && bar ] || bat");
         const syntax4: string = "foo || bar && bat";
-        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || bar ] && bat");
+        expect(mapMixedCombinatorTypes(syntax4)).to.equal("[ foo || bar ] && bat");
     });
-    test("should not add brackets if all combinator types match", () => {
+    it("should not add brackets if all combinator types match", () => {
         const syntax: string = "foo | bar | bat";
-        expect(mapMixedCombinatorTypes(syntax)).toEqual(syntax);
+        expect(mapMixedCombinatorTypes(syntax)).to.equal(syntax);
     });
-    test("should add brackets if brackets already exist and there are multiple combinator types", () => {
+    it("should add brackets if brackets already exist and there are multiple combinator types", () => {
         const syntax1: string = "[ foo | bar ] bat && baz";
-        expect(mapMixedCombinatorTypes(syntax1)).toEqual("[ [ foo | bar ] bat ] && baz");
+        expect(mapMixedCombinatorTypes(syntax1)).to.equal("[ [ foo | bar ] bat ] && baz");
         const syntax2: string = "[ foo bar ] | bat && baz";
-        expect(mapMixedCombinatorTypes(syntax2)).toEqual("[ foo bar ] | [ bat && baz ]");
+        expect(mapMixedCombinatorTypes(syntax2)).to.equal("[ foo bar ] | [ bat && baz ]");
         const syntax3: string = "foo && baz [ bar || bat ]";
-        expect(mapMixedCombinatorTypes(syntax3)).toEqual("[ foo && baz ] [ bar || bat ]");
+        expect(mapMixedCombinatorTypes(syntax3)).to.equal(
+            "[ foo && baz ] [ bar || bat ]"
+        );
         const syntax4: string = "foo || [ bar && bat ] baz";
-        expect(mapMixedCombinatorTypes(syntax4)).toEqual("[ foo || [ bar && bat ] ] baz");
+        expect(mapMixedCombinatorTypes(syntax4)).to.equal(
+            "[ foo || [ bar && bat ] ] baz"
+        );
     });
-    test("should not add brackets if brackets already exist and all combinator types match", () => {
+    it("should not add brackets if brackets already exist and all combinator types match", () => {
         const syntax1: string = "[ [ foo | bar ] bat ] && baz";
-        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
+        expect(mapMixedCombinatorTypes(syntax1)).to.equal(syntax1);
         const syntax2: string = "[ [ foo bar ] | bat ] && baz";
-        expect(mapMixedCombinatorTypes(syntax2)).toEqual(syntax2);
+        expect(mapMixedCombinatorTypes(syntax2)).to.equal(syntax2);
         const syntax3: string = "[ foo && baz ] [ bar || bat ]";
-        expect(mapMixedCombinatorTypes(syntax3)).toEqual(syntax3);
+        expect(mapMixedCombinatorTypes(syntax3)).to.equal(syntax3);
         const syntax4: string = "[ foo || [ bar && bat ] ] baz";
-        expect(mapMixedCombinatorTypes(syntax4)).toEqual(syntax4);
+        expect(mapMixedCombinatorTypes(syntax4)).to.equal(syntax4);
     });
-    test("should not add brackets if multiple brackets exist and all combinator types match", () => {
+    it("should not add brackets if multiple brackets exist and all combinator types match", () => {
         const syntax1: string =
             "foo | [ [ bar | baz ] || [ qux | quux | quuz | corge | grault ] ] | garply";
-        expect(mapMixedCombinatorTypes(syntax1)).toEqual(syntax1);
+        expect(mapMixedCombinatorTypes(syntax1)).to.equal(syntax1);
     });
 });

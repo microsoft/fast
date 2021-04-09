@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.16.1...@microsoft/fast-foundation@1.17.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* add null check before disposing of menu item mutation observer ([#4507](https://github.com/Microsoft/fast/issues/4507)) ([e32ef8d](https://github.com/Microsoft/fast/commit/e32ef8d63a46ec16612c44d9a46b2f09735c6c7d))
+* add support for slots in horizontal-scroll content ([#4502](https://github.com/Microsoft/fast/issues/4502)) ([54101d3](https://github.com/Microsoft/fast/commit/54101d3a20376e59f489d40dc095ac494c20dafe))
+* do not add tabindex on non menu items ([#4512](https://github.com/Microsoft/fast/issues/4512)) ([e26e712](https://github.com/Microsoft/fast/commit/e26e712797976b835fe8d3a8485d9916d9e21f53))
+* menu doesn't throw on early focus call ([#4530](https://github.com/Microsoft/fast/issues/4530)) ([085235c](https://github.com/Microsoft/fast/commit/085235c2aff257695e51bb9d1ae39bdc99921ac0))
+* reduce surface area for form-associated component types ([#4479](https://github.com/Microsoft/fast/issues/4479)) ([853355c](https://github.com/Microsoft/fast/commit/853355c7bd25aa2a6ab12ecba8d2b3fd7f6eb43c))
+* value of 0 for progress is indeterminate ([#4523](https://github.com/Microsoft/fast/issues/4523)) ([c71e32e](https://github.com/Microsoft/fast/commit/c71e32e60317ee8777a9289a60b8553ae650f734))
+
+
+### Features
+
+* add auto-update attribute for anchored region ([#4433](https://github.com/Microsoft/fast/issues/4433)) ([8db8523](https://github.com/Microsoft/fast/commit/8db852379e45c487d1233865a9e02ed1af3dc70e))
+* add DesignTokens type for managing app Design Tokens ([#4411](https://github.com/Microsoft/fast/issues/4411)) ([f609c9a](https://github.com/Microsoft/fast/commit/f609c9a1fdc7abee877d095efe55b710bd46f0e3))
+
+
+
+
+
 ## [1.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.16.0...@microsoft/fast-foundation@1.16.1) (2021-03-18)
 
 
