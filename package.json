@@ -15,7 +15,9 @@
       "sites/fast-component-explorer",
       "sites/fast-creator",
       "sites/site-utilities",
-      "sites/fast-tooling-examples"
+      "sites/fast-tooling-examples",
+      "sites/fast-website",
+      "sites/website"
     ],
     "nohoist": [
       "**/react-syntax-highlighter",
