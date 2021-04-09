@@ -1,21 +1,24 @@
 name: CI - FAST Manual Publish
 
 on:
-  workflow_dispatch:
-   
+  workflow_dispatch
+
+env:
+  NPM_PAT: ${{ secrets.NPM_PAT}}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
+  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+  GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
+      
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-
-    env:
-      NPM_PAT: ${{ secrets.NPM_PAT}}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
-      GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-      GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
+    if: contains('chrisdholt,janechu,nicholasrice', github.actor)
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Add or Update packages
       run: sudo yarn global add lerna
@@ -28,6 +31,9 @@ jobs:
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
+    - name: Check for the presence of changed files inside ./change
+      run: yarn checkchange
+
     - name: Testing Prettier format
       run: lerna run prettier:diff
 
@@ -36,5 +42,5 @@ jobs:
    
     - name: Publish NPM changed packages
       run: |
-        yarn publish-ci -y -n  $NPM_PAT 
+        yarn publish-ci -y  --access public $NPM_PAT 
      

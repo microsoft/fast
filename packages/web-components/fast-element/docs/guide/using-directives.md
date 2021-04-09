@@ -320,7 +320,7 @@ const template = html<MyElement>`
         ${(x, c) = c.parent.selectTemplate(x)}
       </li>
     `)}
-  <ul>
+  </ul>
 `;
 
 @customElement({

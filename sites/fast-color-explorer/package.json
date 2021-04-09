@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-color-explorer",
-  "version": "1.6.18",
+  "version": "1.6.19",
   "description": "Color explorations",
   "sideEffects": false,
   "private": true,
@@ -30,7 +30,7 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
-    "@microsoft/site-utilities": "^0.8.1",
+    "@microsoft/site-utilities": "^0.9.0",
     "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.12",
     "@types/react": "^16.7.17",
@@ -69,7 +69,7 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.2",
+    "@microsoft/fast-colors": "^5.1.3",
     "@microsoft/fast-components-react-base": "^4.27.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",

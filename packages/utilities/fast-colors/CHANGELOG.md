@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-colors@5.1.2...@microsoft/fast-colors@5.1.3) (2021-04-06)
+
+
+### Bug Fixes
+
+* labToLCH problem for colors where a and b are near zero ([#4505](https://github.com/Microsoft/fast/issues/4505)) ([2db4ae1](https://github.com/Microsoft/fast/commit/2db4ae13b1f2d72ba43de145eefc4a0b419ea3e1))
+
+
+
+
+
 ## [5.1.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-colors@5.1.0...@microsoft/fast-colors@5.1.2) (2021-02-08)
 
 **Note:** Version bump only for package @microsoft/fast-colors
