@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { DataType } from "../data-utilities/types";
 import { linkedDataSchema } from "../schemas";
 import {
@@ -26,6 +27,7 @@ import {
     UpdateActiveIdNavigationDictionaryMessageOutgoing,
     UpdateDataMessageOutgoing,
     ValidationMessageIncoming,
+    ValidationMessageOutgoing,
 } from "./message-system.utilities.props";
 import { MessageSystemType } from "./types";
 import { getMessage } from "./message-system.utilities";
@@ -35,12 +37,12 @@ import { getNavigationDictionary } from "./navigation";
 
 describe("getMessage", () => {
     describe("history", () => {
-        test("should return messages sent to get the history", () => {
+        it("should return messages sent to get the history", () => {
             const getHistory: GetHistoryMessageIncoming = {
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
             };
-            expect(getMessage(getHistory)).toEqual({
+            expect(getMessage(getHistory)).to.deep.equal({
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
                 history: {
@@ -49,7 +51,7 @@ describe("getMessage", () => {
                 },
             } as GetHistoryMessageOutgoing);
         });
-        test("should update the history when a new message has been sent", () => {
+        it("should update the history when a new message has been sent", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -77,9 +79,9 @@ describe("getMessage", () => {
 
             expect(
                 (getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length
-            ).toEqual(1);
+            ).to.equal(1);
         });
-        test("should remove the first item in the array if another item is added that would be higher than the limit", () => {
+        it("should remove the first item in the array if another item is added that would be higher than the limit", () => {
             const schemaDictionary: SchemaDictionary = {
                 foo: { id: "foo" },
             };
@@ -111,15 +113,15 @@ describe("getMessage", () => {
 
             expect(
                 (getMessage(getHistory) as GetHistoryMessageOutgoing).history.items.length
-            ).toEqual(30);
+            ).to.equal(30);
             expect(
                 ((getMessage(getHistory) as GetHistoryMessageOutgoing).history
                     .items[29] as any).data.foo
-            ).toEqual("bar49");
+            ).to.equal("bar49");
         });
     });
     describe("initialize", () => {
-        test("should return messages sent with initial values provided", () => {
+        it("should return messages sent with initial values provided", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -140,12 +142,12 @@ describe("getMessage", () => {
                 schemaDictionary,
             }) as InitializeMessageOutgoing;
 
-            expect(message.type).toEqual(MessageSystemType.initialize);
-            expect(message.data).toEqual(dataBlob[0][dataBlob[1]].data);
-            expect(message.schema).toEqual(schemaDictionary["foo"]);
-            expect(typeof message.navigation).toEqual("object");
+            expect(message.type).to.equal(MessageSystemType.initialize);
+            expect(message.data).to.equal(dataBlob[0][dataBlob[1]].data);
+            expect(message.schema).to.equal(schemaDictionary["foo"]);
+            expect(typeof message.navigation).to.equal("object");
         });
-        test("should return messages sent with initial values provided using the deprecated data property", () => {
+        it("should return messages sent with initial values provided using the deprecated data property", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -166,12 +168,12 @@ describe("getMessage", () => {
                 schemaDictionary,
             }) as InitializeMessageOutgoing;
 
-            expect(message.type).toEqual(MessageSystemType.initialize);
-            expect(message.data).toEqual(dataBlob[0][dataBlob[1]].data);
-            expect(message.schema).toEqual(schemaDictionary["foo"]);
-            expect(typeof message.navigation).toEqual("object");
+            expect(message.type).to.equal(MessageSystemType.initialize);
+            expect(message.data).to.equal(dataBlob[0][dataBlob[1]].data);
+            expect(message.schema).to.equal(schemaDictionary["foo"]);
+            expect(typeof message.navigation).to.equal("object");
         });
-        test("should return messages sent with a dictionary id provided", () => {
+        it("should return messages sent with a dictionary id provided", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -199,12 +201,12 @@ describe("getMessage", () => {
                 dictionaryId: "data2",
             }) as InitializeMessageOutgoing;
 
-            expect(message.type).toEqual(MessageSystemType.initialize);
-            expect(message.activeDictionaryId).toEqual("data2");
+            expect(message.type).to.equal(MessageSystemType.initialize);
+            expect(message.activeDictionaryId).to.equal("data2");
         });
     });
     describe("data", () => {
-        test("should return a data blob with duplicated values", () => {
+        it("should return a data blob with duplicated values", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -228,9 +230,9 @@ describe("getMessage", () => {
                 sourceDataLocation: "foo",
             }) as DuplicateDataMessageOutgoing;
 
-            expect(message.data).toEqual({ foo: ["bar", "bar"] });
+            expect(message.data).to.deep.equal({ foo: ["bar", "bar"] });
         });
-        test("should return a data blob without removed values", () => {
+        it("should return a data blob without removed values", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -254,9 +256,9 @@ describe("getMessage", () => {
                 dataLocation: "foo",
             }) as RemoveDataMessageOutgoing;
 
-            expect(message.data).toEqual({});
+            expect(message.data).to.deep.equal({});
         });
-        test("should return a data blob with added values", () => {
+        it("should return a data blob with added values", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -280,9 +282,9 @@ describe("getMessage", () => {
                 dataType: DataType.object,
             }) as AddDataMessageOutgoing;
 
-            expect(message.data).toEqual({ hello: "world" });
+            expect(message.data).to.deep.equal({ hello: "world" });
         });
-        test("should return a data blob with updated values", () => {
+        it("should return a data blob with updated values", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -305,9 +307,9 @@ describe("getMessage", () => {
                 data: "venus",
             }) as UpdateDataMessageOutgoing;
 
-            expect(message.data).toEqual({ hello: "venus" });
+            expect(message.data).to.deep.equal({ hello: "venus" });
         });
-        test("should return a data blob with updated values when the data is at the root", () => {
+        it("should return a data blob with updated values when the data is at the root", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -330,9 +332,9 @@ describe("getMessage", () => {
                 data: { hello: "venus" },
             }) as UpdateDataMessageOutgoing;
 
-            expect(message.data).toEqual({ hello: "venus" });
+            expect(message.data).to.deep.equal({ hello: "venus" });
         });
-        test("should return a data blob with updated values when a dictionaryId has been specified", () => {
+        it("should return a data blob with updated values when a dictionaryId has been specified", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -360,8 +362,8 @@ describe("getMessage", () => {
                 data: { hello: "venus" },
             }) as UpdateDataMessageOutgoing;
 
-            expect(message.data).toEqual({ hello: "venus" });
-            expect(message.dataDictionary).toEqual([
+            expect(message.data).to.deep.equal({ hello: "venus" });
+            expect(message.dataDictionary).to.deep.equal([
                 {
                     foo: {
                         schemaId: "foo",
@@ -377,7 +379,7 @@ describe("getMessage", () => {
                 "foo",
             ]);
         });
-        test("should add linkedData to the data and the data dictionary", () => {
+        it("should add linkedData to the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -409,8 +411,8 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
-            expect((message.data as any).linkedData.length).toEqual(1);
+            expect(Array.isArray((message.data as any).linkedData)).to.equal(true);
+            expect((message.data as any).linkedData.length).to.equal(1);
 
             const id: string = (message.data as any).linkedData[0].id;
             const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
@@ -424,11 +426,13 @@ describe("getMessage", () => {
                         return dictionaryKey === id;
                     }
                 )
-            ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
-            expect(message.linkedDataIds).toEqual([{ id }]);
+            ).not.to.equal(-1);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
+            expect(message.linkedDataIds).to.deep.equal([{ id }]);
         });
-        test("should add linkedData to the data and the data dictionary when specifying a dictionary ID", () => {
+        it("should add linkedData to the data and the data dictionary when specifying a dictionary ID", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -467,10 +471,10 @@ describe("getMessage", () => {
 
             expect(
                 Array.isArray((message.dataDictionary[0].abc.data as any).linkedData)
-            ).toEqual(true);
-            expect((message.dataDictionary[0].abc.data as any).linkedData.length).toEqual(
-                1
-            );
+            ).to.equal(true);
+            expect(
+                (message.dataDictionary[0].abc.data as any).linkedData.length
+            ).to.equal(1);
 
             const id: string = (message.dataDictionary[0].abc.data as any).linkedData[0]
                 .id;
@@ -485,13 +489,15 @@ describe("getMessage", () => {
                         return dictionaryKey === id;
                     }
                 )
-            ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
-            expect((dictionary.dataDictionary[0].abc.data as any).linkedData).toEqual([
-                { id },
-            ]);
+            ).not.to.equal(-1);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
+            expect(
+                (dictionary.dataDictionary[0].abc.data as any).linkedData
+            ).to.deep.equal([{ id }]);
         });
-        test("should add linkedData to an existing array of linkedData items", () => {
+        it("should add linkedData to an existing array of linkedData items", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -535,8 +541,8 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
-            expect((message.data as any).linkedData.length).toEqual(2);
+            expect(Array.isArray((message.data as any).linkedData)).to.equal(true);
+            expect((message.data as any).linkedData.length).to.equal(2);
 
             const id: string = (message.data as any).linkedData[1].id;
             const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
@@ -550,10 +556,12 @@ describe("getMessage", () => {
                         return dictionaryKey === id;
                     }
                 )
-            ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+            ).not.to.equal(-1);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
         });
-        test("should add linkedData to a specific index of an existing array of linkedData items", () => {
+        it("should add linkedData to a specific index of an existing array of linkedData items", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -597,8 +605,8 @@ describe("getMessage", () => {
                 index: 0,
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
-            expect((message.data as any).linkedData.length).toEqual(2);
+            expect(Array.isArray((message.data as any).linkedData)).to.equal(true);
+            expect((message.data as any).linkedData.length).to.equal(2);
 
             const id: string = (message.data as any).linkedData[0].id;
             const dictionary: GetDataDictionaryMessageOutgoing = getMessage({
@@ -612,10 +620,12 @@ describe("getMessage", () => {
                         return dictionaryKey === id;
                     }
                 )
-            ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0][id].data).toEqual(linkedData[0].data);
+            ).not.to.equal(-1);
+            expect(dictionary.dataDictionary[0][id].data).to.deep.equal(
+                linkedData[0].data
+            );
         });
-        test("should add nested linked data to the data dictionary", () => {
+        it("should add nested linked data to the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -655,8 +665,8 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
-            expect((message.data as any).linkedData.length).toEqual(1);
+            expect(Array.isArray((message.data as any).linkedData)).to.equal(true);
+            expect((message.data as any).linkedData.length).to.equal(1);
 
             const id: string = (message.data as any).linkedData[0].id;
             const nestedId: string = (message.dataDictionary[0][id].data as any)
@@ -672,47 +682,10 @@ describe("getMessage", () => {
                         return dictionaryKey === id;
                     }
                 )
-            ).not.toEqual(-1);
-            expect(dictionary.dataDictionary[0]).toEqual({
-                data: {
-                    data: {
-                        linkedData: [
-                            {
-                                id: "fast5",
-                            },
-                        ],
-                    },
-                    schemaId: "foo",
-                },
-                fast5: {
-                    data: {
-                        hello: "world",
-                        linkedData: [
-                            {
-                                id: "fast6",
-                            },
-                        ],
-                    },
-                    parent: {
-                        dataLocation: "linkedData",
-                        id: "data",
-                    },
-                    schemaId: "foo",
-                },
-                fast6: {
-                    data: {
-                        hello: "pluto",
-                    },
-                    parent: {
-                        dataLocation: "linkedData",
-                        id: "fast5",
-                    },
-                    schemaId: "foo",
-                },
-            });
-            expect(message.linkedDataIds).toEqual([{ id: nestedId }, { id }]);
+            ).not.to.equal(-1);
+            expect(message.linkedDataIds).to.deep.equal([{ id: nestedId }, { id }]);
         });
-        test("should remove linkedData from the data and the data dictionary", () => {
+        it("should remove linkedData from the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -752,9 +725,9 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect((message.data as any).linkedData).toEqual([]);
+            expect((message.data as any).linkedData).to.deep.equal([]);
         });
-        test("should remove linkedData from the data and the data dictionary when specifying a dictionary ID", () => {
+        it("should remove linkedData from the data and the data dictionary when specifying a dictionary ID", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -801,9 +774,11 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect((message.dataDictionary[0].data.data as any).linkedData).toEqual([]);
+            expect((message.dataDictionary[0].data.data as any).linkedData).to.deep.equal(
+                []
+            );
         });
-        test("should remove linkedData and linked data items from the data and the data dictionary", () => {
+        it("should remove linkedData and linked data items from the data and the data dictionary", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -868,8 +843,8 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect((message.data as any).linkedData).toEqual([]);
-            expect(message.dataDictionary).toEqual([
+            expect((message.data as any).linkedData).to.deep.equal([]);
+            expect(message.dataDictionary).to.deep.equal([
                 {
                     data: {
                         schemaId: "foo",
@@ -880,9 +855,9 @@ describe("getMessage", () => {
                 },
                 "data",
             ]);
-            expect(message.linkedDataIds).toEqual(["data2", "data3"]);
+            expect(message.linkedDataIds).to.deep.equal(["data2", "data3"]);
         });
-        test("should reorder linkedData in the exist array of linkedData items", () => {
+        it("should reorder linkedData in the exist array of linkedData items", () => {
             getMessage({
                 type: MessageSystemType.initialize,
                 data: [
@@ -934,14 +909,14 @@ describe("getMessage", () => {
                 dataLocation: "linkedData",
             }) as AddLinkedDataDataMessageOutgoing;
 
-            expect(Array.isArray((message.data as any).linkedData)).toEqual(true);
-            expect((message.data as any).linkedData.length).toEqual(2);
-            expect((message.data as any).linkedData[0].id).toEqual("bar");
-            expect((message.data as any).linkedData[1].id).toEqual("foo");
+            expect(Array.isArray((message.data as any).linkedData)).to.equal(true);
+            expect((message.data as any).linkedData.length).to.equal(2);
+            expect((message.data as any).linkedData[0].id).to.equal("bar");
+            expect((message.data as any).linkedData[1].id).to.equal("foo");
         });
     });
     describe("navigation", () => {
-        test("should return messages sent with navigation updates", () => {
+        it("should return messages sent with navigation updates", () => {
             const dictionaryId: string = "foo";
             const navigationConfigId: string = "";
             const message: NavigationMessageOutgoing = getMessage({
@@ -951,12 +926,12 @@ describe("getMessage", () => {
                 activeNavigationConfigId: navigationConfigId,
             }) as NavigationMessageOutgoing;
 
-            expect(message.type).toEqual(MessageSystemType.navigation);
-            expect(message.action).toEqual(MessageSystemNavigationTypeAction.update);
-            expect(message.activeDictionaryId).toEqual(dictionaryId);
-            expect(message.activeNavigationConfigId).toEqual(navigationConfigId);
+            expect(message.type).to.equal(MessageSystemType.navigation);
+            expect(message.action).to.equal(MessageSystemNavigationTypeAction.update);
+            expect(message.activeDictionaryId).to.equal(dictionaryId);
+            expect(message.activeNavigationConfigId).to.equal(navigationConfigId);
         });
-        test("should return messages sent with navigation getter", () => {
+        it("should return messages sent with navigation getter", () => {
             const dictionaryId: string = "data";
             const navigationConfigId: string = "";
 
@@ -984,23 +959,23 @@ describe("getMessage", () => {
                 action: MessageSystemNavigationTypeAction.get,
             }) as GetNavigationMessageOutgoing;
 
-            expect(message.type).toEqual(MessageSystemType.navigation);
-            expect(message.action).toEqual(MessageSystemNavigationTypeAction.get);
-            expect(message.activeDictionaryId).toEqual(dictionaryId);
-            expect(message.activeNavigationConfigId).toEqual(navigationConfigId);
+            expect(message.type).to.equal(MessageSystemType.navigation);
+            expect(message.action).to.equal(MessageSystemNavigationTypeAction.get);
+            expect(message.activeDictionaryId).to.equal(dictionaryId);
+            expect(message.activeNavigationConfigId).to.equal(navigationConfigId);
 
             const navigationDictionary = getNavigationDictionary(
                 schemaDictionary,
                 dataBlob
             );
 
-            expect(message.navigation).toEqual(
+            expect(message.navigation).to.deep.equal(
                 navigationDictionary[0][message.activeDictionaryId]
             );
         });
     });
     describe("dataDictionary", () => {
-        test("should return messages sent to get the data dictionary", () => {
+        it("should return messages sent to get the data dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -1025,14 +1000,14 @@ describe("getMessage", () => {
                 action: MessageSystemDataDictionaryTypeAction.get,
             } as GetDataDictionaryMessageIncoming) as GetDataDictionaryMessageOutgoing;
 
-            expect(getDataDictionary.type).toEqual(MessageSystemType.dataDictionary);
-            expect(getDataDictionary.action).toEqual(
+            expect(getDataDictionary.type).to.equal(MessageSystemType.dataDictionary);
+            expect(getDataDictionary.action).to.equal(
                 MessageSystemDataDictionaryTypeAction.get
             );
-            expect(getDataDictionary.dataDictionary).toEqual(dataBlob);
-            expect(getDataDictionary.activeDictionaryId).toEqual(dataBlob[1]);
+            expect(getDataDictionary.dataDictionary).to.deep.equal(dataBlob);
+            expect(getDataDictionary.activeDictionaryId).to.equal(dataBlob[1]);
         });
-        test("should return messages set to update the active id of the data dictionary", () => {
+        it("should return messages set to update the active id of the data dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     abc: {
@@ -1075,17 +1050,17 @@ describe("getMessage", () => {
                 } as UpdateActiveIdDataDictionaryMessageIncoming
             ) as UpdateActiveIdDataDictionaryMessageOutgoing;
 
-            expect(updateDataDictionaryActiveId.type).toEqual(
+            expect(updateDataDictionaryActiveId.type).to.equal(
                 MessageSystemType.dataDictionary
             );
-            expect(updateDataDictionaryActiveId.action).toEqual(
+            expect(updateDataDictionaryActiveId.action).to.equal(
                 MessageSystemDataDictionaryTypeAction.updateActiveId
             );
-            expect(updateDataDictionaryActiveId.activeDictionaryId).toEqual("def");
+            expect(updateDataDictionaryActiveId.activeDictionaryId).to.equal("def");
         });
     });
     describe("navigationDictionary", () => {
-        test("should return messages sent to get the navigation dictionary", () => {
+        it("should return messages sent to get the navigation dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -1112,16 +1087,16 @@ describe("getMessage", () => {
                 } as GetNavigationDictionaryMessageIncoming
             ) as GetNavigationDictionaryMessageOutgoing;
 
-            expect(getNavigationDictionary.type).toEqual(
+            expect(getNavigationDictionary.type).to.equal(
                 MessageSystemType.navigationDictionary
             );
-            expect(getNavigationDictionary.action).toEqual(
+            expect(getNavigationDictionary.action).to.equal(
                 MessageSystemNavigationDictionaryTypeAction.get
             );
-            expect(getNavigationDictionary.navigationDictionary).not.toEqual(undefined);
-            expect(getNavigationDictionary.activeDictionaryId).not.toEqual(undefined);
+            expect(getNavigationDictionary.navigationDictionary).not.to.equal(undefined);
+            expect(getNavigationDictionary.activeDictionaryId).not.to.equal(undefined);
         });
-        test("should return messages set to update the active id of the navigation dictionary", () => {
+        it("should return messages set to update the active id of the navigation dictionary", () => {
             const dataBlob: DataDictionary<unknown> = [
                 {
                     data: {
@@ -1150,17 +1125,19 @@ describe("getMessage", () => {
                 } as UpdateActiveIdNavigationDictionaryMessageIncoming
             ) as UpdateActiveIdNavigationDictionaryMessageOutgoing;
 
-            expect(updateNavigationDictionaryActiveId.type).toEqual(
+            expect(updateNavigationDictionaryActiveId.type).to.equal(
                 MessageSystemType.navigationDictionary
             );
-            expect(updateNavigationDictionaryActiveId.action).toEqual(
+            expect(updateNavigationDictionaryActiveId.action).to.equal(
                 MessageSystemNavigationDictionaryTypeAction.updateActiveId
             );
-            expect(updateNavigationDictionaryActiveId.activeDictionaryId).toEqual("nav2");
+            expect(updateNavigationDictionaryActiveId.activeDictionaryId).to.equal(
+                "nav2"
+            );
         });
     });
     describe("validation", () => {
-        test("should return messages sent to update the validation", () => {
+        it("should return messages sent to update the validation", () => {
             const validationUpdate: ValidationMessageIncoming = {
                 type: MessageSystemType.validation,
                 action: MessageSystemValidationTypeAction.update,
@@ -1172,10 +1149,16 @@ describe("getMessage", () => {
                 ],
                 dictionaryId: "foo",
             };
+            const message = getMessage(validationUpdate) as ValidationMessageOutgoing;
 
-            expect(getMessage(validationUpdate)).toEqual(validationUpdate);
+            expect(message.type).to.equal(validationUpdate.type);
+            expect(message.action).to.equal(validationUpdate.action);
+            expect(message.validationErrors).to.deep.equal(
+                validationUpdate.validationErrors
+            );
+            expect(message.dictionaryId).to.equal(validationUpdate.dictionaryId);
         });
-        test("should return messages sent to get the validation", () => {
+        it("should return messages sent to get the validation", () => {
             const getValidation: ValidationMessageIncoming = {
                 type: MessageSystemType.validation,
                 action: MessageSystemValidationTypeAction.get,
@@ -1194,20 +1177,24 @@ describe("getMessage", () => {
                 dictionaryId: "bar",
             };
 
-            getMessage(validationUpdate);
+            getMessage(getValidation);
 
-            expect(getMessage(getValidation)).toEqual({
-                ...getValidation,
-                validationErrors: validationUpdate.validationErrors,
-            });
+            const message = getMessage(validationUpdate) as ValidationMessageOutgoing;
+
+            expect(message.type).to.equal(getValidation.type);
+            expect(message.action).to.equal(validationUpdate.action);
+            expect(message.validationErrors).to.deep.equal(
+                validationUpdate.validationErrors
+            );
+            expect(message.dictionaryId).to.equal(getValidation.dictionaryId);
         });
-        test("should return custom messages sent", () => {
+        it("should return custom messages sent", () => {
             const customMessage: any = {
                 type: MessageSystemType.custom,
                 foo: "bar",
             };
 
-            expect(getMessage(customMessage)).toEqual(customMessage);
+            expect(getMessage(customMessage)).to.deep.equal(customMessage);
         });
     });
 });

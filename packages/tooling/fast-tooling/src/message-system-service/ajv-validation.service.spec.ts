@@ -1,3 +1,5 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import {
     AddLinkedDataDataMessageOutgoing,
     DataDictionary,
@@ -18,8 +20,11 @@ import {
 import { DataType } from "../data-utilities/types";
 import { AjvMapper, ajvValidationId } from "./ajv-validation.service";
 
+chai.use(spies);
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 describe("AjvMapper", () => {
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
@@ -40,16 +45,16 @@ describe("AjvMapper", () => {
             new AjvMapper({
                 messageSystem,
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should not throw if the message system is undefined", () => {
+    it("should not throw if the message system is undefined", () => {
         expect(() => {
             new AjvMapper({
                 messageSystem: undefined,
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should register to the message system", () => {
+    it("should register to the message system", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -66,15 +71,15 @@ describe("AjvMapper", () => {
             },
         });
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
 
         new AjvMapper({
             messageSystem,
         });
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
     });
-    test("should deregister from the message system", () => {
+    it("should deregister from the message system", () => {
         const messageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -91,19 +96,19 @@ describe("AjvMapper", () => {
             },
         });
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
 
         const ajvMapper: AjvMapper = new AjvMapper({
             messageSystem,
         });
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
 
         ajvMapper.destroy();
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
     });
-    test("should call the message callback if an initialize message has been sent", () => {
+    it("should call the message callback if an initialize message has been sent", () => {
         const schema: any = {
             id: "foo",
         };
@@ -178,9 +183,9 @@ describe("AjvMapper", () => {
             } as any);
         });
 
-        expect(ajvMapper["validation"]["foo"]).toEqual([]);
+        expect(ajvMapper["validation"]["foo"]).to.deep.equal([]);
     });
-    test("should convert ajv errors to the error format expected by the message system", () => {
+    it("should convert ajv errors to the error format expected by the message system", () => {
         const schema: any = {
             $schema: "http://json-schema.org/schema#",
             id: "foo",
@@ -257,7 +262,7 @@ describe("AjvMapper", () => {
             } as any);
         });
 
-        expect(ajvMapper["validation"]["foo"]).toEqual([
+        expect(ajvMapper["validation"]["foo"]).to.deep.equal([
             {
                 dataLocation: "",
                 invalidMessage: "should be string",
@@ -304,7 +309,7 @@ describe("AjvMapper", () => {
             "foo",
         ];
 
-        test("with action type 'add'", () => {
+        it("with action type 'add'", () => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary,
@@ -347,14 +352,14 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(ajvMapper["validation"]["foo"]).toEqual([
+            expect(ajvMapper["validation"]["foo"]).to.deep.equal([
                 {
                     dataLocation: "",
                     invalidMessage: "should be string",
                 },
             ]);
         });
-        test("with action type 'addLinkedData'", () => {
+        it("with action type 'addLinkedData'", () => {
             const schema2: any = {
                 $schema: "http://json-schema.org/schema#",
                 id: "bar",
@@ -421,14 +426,14 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(ajvMapper["validation"]["bar"]).toEqual([
+            expect(ajvMapper["validation"]["bar"]).to.deep.equal([
                 {
                     dataLocation: "",
                     invalidMessage: "should be boolean",
                 },
             ]);
         });
-        test("with action type 'duplicate'", () => {
+        it("with action type 'duplicate'", () => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary,
@@ -471,14 +476,14 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(ajvMapper["validation"]["foo"]).toEqual([
+            expect(ajvMapper["validation"]["foo"]).to.deep.equal([
                 {
                     dataLocation: "",
                     invalidMessage: "should be string",
                 },
             ]);
         });
-        test("with action type 'update'", () => {
+        it("with action type 'update'", () => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary,
@@ -521,14 +526,14 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(ajvMapper["validation"]["foo"]).toEqual([
+            expect(ajvMapper["validation"]["foo"]).to.deep.equal([
                 {
                     dataLocation: "",
                     invalidMessage: "should be string",
                 },
             ]);
         });
-        test("without action type 'removeLinkedData'", () => {
+        it("without action type 'removeLinkedData'", () => {
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary,
@@ -571,7 +576,7 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(ajvMapper["validation"]["foo"]).toEqual([
+            expect(ajvMapper["validation"]["foo"]).to.deep.equal([
                 {
                     dataLocation: "",
                     invalidMessage: "should be string",
@@ -606,9 +611,9 @@ describe("AjvMapper", () => {
         ];
         const data = 42;
 
-        test("with action type 'request' when there is a valid schema in the schema set", () => {
-            const callback: any = jest.fn();
-            const postMessageCallback: any = jest.fn();
+        it("with action type 'request' when there is a valid schema in the schema set", () => {
+            const callback: any = chai.spy(() => {});
+            const postMessageCallback: any = chai.spy(() => {});
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary: null,
@@ -636,8 +641,8 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(postMessageCallback).toHaveBeenCalledTimes(1);
-            expect(postMessageCallback.mock.calls[0][0]).toEqual({
+            expect(postMessageCallback).to.have.been.called.exactly(1);
+            expect(postMessageCallback).to.have.been.called.with({
                 type: MessageSystemType.custom,
                 action: SchemaSetValidationAction.response,
                 id,
@@ -647,9 +652,9 @@ describe("AjvMapper", () => {
                 },
             });
         });
-        test("with action type 'request' when there is no valid schema in the schema set", () => {
-            const callback: any = jest.fn();
-            const postMessageCallback: any = jest.fn();
+        it("with action type 'request' when there is no valid schema in the schema set", () => {
+            const callback: any = chai.spy(() => {});
+            const postMessageCallback: any = chai.spy(() => {});
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary: null,
@@ -677,8 +682,8 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(postMessageCallback).toHaveBeenCalledTimes(1);
-            expect(postMessageCallback.mock.calls[0][0]).toEqual({
+            expect(postMessageCallback).to.have.been.called.exactly(1);
+            expect(postMessageCallback).to.have.been.called.with({
                 type: MessageSystemType.custom,
                 action: SchemaSetValidationAction.response,
                 id,
@@ -688,9 +693,9 @@ describe("AjvMapper", () => {
                 },
             });
         });
-        test("with action type that is not 'request'", () => {
-            const callback: any = jest.fn();
-            const postMessageCallback: any = jest.fn();
+        it("with action type that is not 'request'", () => {
+            const callback: any = chai.spy(() => {});
+            const postMessageCallback: any = chai.spy(() => {});
             const messageSystem = new MessageSystem({
                 webWorker: "",
                 dataDictionary: null,
@@ -717,7 +722,7 @@ describe("AjvMapper", () => {
                 } as any);
             });
 
-            expect(postMessageCallback).toHaveBeenCalledTimes(0);
+            expect(postMessageCallback).to.have.been.called.exactly(0);
         });
     });
 });

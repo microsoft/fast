@@ -1,114 +1,114 @@
-import "jest";
+import { expect } from "chai";
 import { getDataFromSchema } from "./generate";
 
 /**
  * Gets an example from a schema
  */
 describe("getDataFromSchema", () => {
-    test("should return a default even if no type has been specified", () => {
+    it("should return a default even if no type has been specified", () => {
         const schema: any = {
             default: "foo",
         };
 
-        expect(getDataFromSchema(schema)).toEqual("foo");
+        expect(getDataFromSchema(schema)).to.equal("foo");
     });
-    test("should return the first example from the examples array", () => {
+    it("should return the first example from the examples array", () => {
         const schema: any = {
             examples: ["bar", "bat"],
         };
 
-        expect(getDataFromSchema(schema)).toEqual("bar");
+        expect(getDataFromSchema(schema)).to.equal("bar");
     });
-    test("should not return an example if a default is available", () => {
+    it("should not return an example if a default is available", () => {
         const schema: any = {
             default: "foo",
             examples: ["bar", "bat"],
         };
 
-        expect(getDataFromSchema(schema)).toEqual("foo");
+        expect(getDataFromSchema(schema)).to.equal("foo");
     });
-    test("should return an enum value", () => {
+    it("should return an enum value", () => {
         const schema: any = {
             enum: ["foo", "bar"],
         };
 
-        expect(getDataFromSchema(schema)).toEqual("foo");
+        expect(getDataFromSchema(schema)).to.equal("foo");
     });
-    test("should return a const value", () => {
+    it("should return a const value", () => {
         const schema: any = {
             const: "foo",
         };
 
-        expect(getDataFromSchema(schema)).toEqual("foo");
+        expect(getDataFromSchema(schema)).to.equal("foo");
     });
-    test("should return a string", () => {
+    it("should return a string", () => {
         const schema: any = {
             type: "string",
         };
 
-        expect(typeof getDataFromSchema(schema)).toBe("string");
+        expect(typeof getDataFromSchema(schema)).to.equal("string");
 
         const schemaWithDefault: any = {
             type: "string",
             default: "foo",
         };
 
-        expect(typeof getDataFromSchema(schemaWithDefault)).toBe("string");
-        expect(getDataFromSchema(schemaWithDefault)).toEqual("foo");
+        expect(typeof getDataFromSchema(schemaWithDefault)).to.equal("string");
+        expect(getDataFromSchema(schemaWithDefault)).to.equal("foo");
     });
-    test("should return a boolean", () => {
+    it("should return a boolean", () => {
         const schema: any = {
             type: "boolean",
         };
 
-        expect(typeof getDataFromSchema(schema)).toBe("boolean");
+        expect(typeof getDataFromSchema(schema)).to.equal("boolean");
 
         const schemaWithDefault: any = {
             type: "boolean",
             default: false,
         };
 
-        expect(typeof getDataFromSchema(schemaWithDefault)).toBe("boolean");
-        expect(getDataFromSchema(schemaWithDefault)).toEqual(false);
+        expect(typeof getDataFromSchema(schemaWithDefault)).to.equal("boolean");
+        expect(getDataFromSchema(schemaWithDefault)).to.equal(false);
     });
-    test("should return a number", () => {
+    it("should return a number", () => {
         const schema: any = {
             type: "number",
         };
 
-        expect(typeof getDataFromSchema(schema)).toBe("number");
+        expect(typeof getDataFromSchema(schema)).to.equal("number");
 
         const schemaWithDefault: any = {
             type: "number",
             default: 1,
         };
 
-        expect(typeof getDataFromSchema(schemaWithDefault)).toBe("number");
-        expect(getDataFromSchema(schemaWithDefault)).toEqual(1);
+        expect(typeof getDataFromSchema(schemaWithDefault)).to.equal("number");
+        expect(getDataFromSchema(schemaWithDefault)).to.equal(1);
     });
-    test("should return null", () => {
+    it("should return null", () => {
         const schema: any = {
             type: "null",
         };
 
-        expect(getDataFromSchema(schema)).toBe(null);
+        expect(getDataFromSchema(schema)).to.equal(null);
     });
-    test("should return an enum specified value", () => {
+    it("should return an enum specified value", () => {
         const schema: any = {
             enum: ["foo", "bar", "bat"],
         };
 
-        expect(getDataFromSchema(schema)).toBe("foo");
+        expect(getDataFromSchema(schema)).to.equal("foo");
     });
-    test("should return default even if enums are specified", () => {
+    it("should return default even if enums are specified", () => {
         const schema: any = {
             enum: ["foo", "bar", "bat"],
             default: "bat",
         };
 
-        expect(getDataFromSchema(schema)).toBe("bat");
+        expect(getDataFromSchema(schema)).to.equal("bat");
     });
-    test("should return an array", () => {
+    it("should return an array", () => {
         const schema: any = {
             type: "array",
             items: {
@@ -118,10 +118,10 @@ describe("getDataFromSchema", () => {
 
         const exampleData: any = getDataFromSchema(schema);
 
-        expect(Array.isArray(exampleData)).toBe(true);
-        expect(exampleData).not.toHaveLength(0);
+        expect(Array.isArray(exampleData)).to.equal(true);
+        expect(exampleData).not.to.have.length(0);
     });
-    test("should return an array with minItems", () => {
+    it("should return an array with minItems", () => {
         const schema: any = {
             type: "array",
             items: {
@@ -132,10 +132,10 @@ describe("getDataFromSchema", () => {
 
         const exampleData: any = getDataFromSchema(schema);
 
-        expect(Array.isArray(exampleData)).toBe(true);
-        expect(exampleData).toHaveLength(4);
+        expect(Array.isArray(exampleData)).to.equal(true);
+        expect(exampleData).to.have.length(4);
     });
-    test("should return an empty object", () => {
+    it("should return an empty object", () => {
         const schemaWithObjectTypeAndProperties: any = {
             type: "object",
             properties: {},
@@ -145,7 +145,7 @@ describe("getDataFromSchema", () => {
             schemaWithObjectTypeAndProperties
         );
 
-        expect(schemaWithObjectTypeAndPropertiesExampleData).toEqual({});
+        expect(schemaWithObjectTypeAndPropertiesExampleData).to.deep.equal({});
 
         const schemaWithObjectType: any = {
             type: "object",
@@ -155,7 +155,7 @@ describe("getDataFromSchema", () => {
             schemaWithObjectType
         );
 
-        expect(schemaWithObjectTypeExampleData).toEqual({});
+        expect(schemaWithObjectTypeExampleData).to.deep.equal({});
 
         const schemaWithProperties: any = {
             properties: {},
@@ -165,7 +165,7 @@ describe("getDataFromSchema", () => {
             schemaWithProperties
         );
 
-        expect(schemaWithPropertiesExampleData).toEqual({});
+        expect(schemaWithPropertiesExampleData).to.deep.equal({});
 
         const schemaWithOptionalProperties: any = {
             properties: {
@@ -179,9 +179,9 @@ describe("getDataFromSchema", () => {
             schemaWithOptionalProperties
         );
 
-        expect(schemaWithOptionalPropertiesExampleData).toEqual({});
+        expect(schemaWithOptionalPropertiesExampleData).to.deep.equal({});
     });
-    test("should return an object with required properties", () => {
+    it("should return an object with required properties", () => {
         const schemaWithEmptyRequiredProperties: any = {
             properties: {
                 bool: {
@@ -195,7 +195,7 @@ describe("getDataFromSchema", () => {
             schemaWithEmptyRequiredProperties
         );
 
-        expect(schemaWithEmptyRequiredPropertiesExampleData).toEqual({});
+        expect(schemaWithEmptyRequiredPropertiesExampleData).to.deep.equal({});
 
         const schemaWithRequiredProperties: any = {
             properties: {
@@ -210,7 +210,7 @@ describe("getDataFromSchema", () => {
             schemaWithRequiredProperties
         );
 
-        expect(schemaWithRequiredPropertiesExampleData).toEqual({ bool: true });
+        expect(schemaWithRequiredPropertiesExampleData).to.deep.equal({ bool: true });
 
         const schemaWithRequiredAndOptionalProperties: any = {
             properties: {
@@ -228,11 +228,11 @@ describe("getDataFromSchema", () => {
             schemaWithRequiredAndOptionalProperties
         );
 
-        expect(schemaWithRequiredAndOptionalPropertiesExampleData).toEqual({
+        expect(schemaWithRequiredAndOptionalPropertiesExampleData).to.deep.equal({
             bool: true,
         });
     });
-    test("should return a nested object", () => {
+    it("should return a nested object", () => {
         const schemaWithNestedObject: any = {
             type: "object",
             properties: {
@@ -248,9 +248,9 @@ describe("getDataFromSchema", () => {
             schemaWithNestedObject
         );
 
-        expect(schemaWithNestedObjectExampleData).toEqual({ object: {} });
+        expect(schemaWithNestedObjectExampleData).to.deep.equal({ object: {} });
     });
-    test("should return a nested object with other required types", () => {
+    it("should return a nested object with other required types", () => {
         const schemaWithNestedObjectAndOtherProperties: any = {
             type: "object",
             properties: {
@@ -274,12 +274,12 @@ describe("getDataFromSchema", () => {
             schemaWithNestedObjectAndOtherProperties
         );
 
-        expect(schemaWithNestedObjectAndOtherPropertiesExampleData).toEqual({
+        expect(schemaWithNestedObjectAndOtherPropertiesExampleData).to.deep.equal({
             object: { string: "example text" },
             bool: true,
         });
     });
-    test("should return data corresponding to an anyOf", () => {
+    it("should return data corresponding to an anyOf", () => {
         const schemaWithAnyOf: any = {
             anyOf: [
                 {
@@ -293,9 +293,9 @@ describe("getDataFromSchema", () => {
             ],
         };
 
-        expect(getDataFromSchema(schemaWithAnyOf)).toEqual("bar");
+        expect(getDataFromSchema(schemaWithAnyOf)).to.equal("bar");
     });
-    test("should return data corresponding to a oneOf", () => {
+    it("should return data corresponding to a oneOf", () => {
         const schemaWithOneOf: any = {
             oneOf: [
                 {
@@ -309,9 +309,9 @@ describe("getDataFromSchema", () => {
             ],
         };
 
-        expect(getDataFromSchema(schemaWithOneOf)).toEqual("foo");
+        expect(getDataFromSchema(schemaWithOneOf)).to.equal("foo");
     });
-    test("should return data when the schema contains nested oneOfs", () => {
+    it("should return data when the schema contains nested oneOfs", () => {
         const schemaWithNestedOneOfs: any = {
             type: "object",
             properties: {
@@ -332,7 +332,7 @@ describe("getDataFromSchema", () => {
             required: ["foo", "bar"],
         };
 
-        expect(getDataFromSchema(schemaWithNestedOneOfs)).toEqual({
+        expect(getDataFromSchema(schemaWithNestedOneOfs)).to.deep.equal({
             foo: "example text",
             bar: true,
         });
