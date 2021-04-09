@@ -7,14 +7,21 @@
         "declaration": false,
         "outDir": "dist/esm",
         "resolveJsonModule": true,
-        "allowJs": true
+        "allowJs": true,
+        "types": [
+            "mocha",
+            "webpack-env"
+        ],
+        "lib": [
+            "DOM",
+            "ESNext",
+            "ES2015",
+            "ES2016.Array.Include"
+        ]
     },
     "exclude": [
         "app",
         "node_modules",
-        "src/message-system",
-        "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "**/__tests__/**"
+        "src/message-system/webworker.ts"
     ]
 }
