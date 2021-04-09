@@ -2,6 +2,11 @@
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "allowJs": true,
+        "types": [
+            "mocha",
+            "webpack-env"
+        ]
     }
 }
