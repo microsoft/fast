@@ -8,6 +8,7 @@ import {
     FASTTabPanel,
     FASTTabs,
 } from "@microsoft/fast-components";
+import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import { ModularForm, StandardControlPlugin } from "@microsoft/fast-tooling-react";
@@ -63,7 +64,7 @@ export function renderDeviceSelect(
             selectedIndex={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
-                    onChangeCallback((e.target as FASTSelect).value);
+                    onChangeCallback((e.target as Select).value);
                 },
             }}
             disabled={disable ? true : null}

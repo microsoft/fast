@@ -13,6 +13,7 @@ import {
 import { downChevron, upChevron } from "@microsoft/site-utilities";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ListboxOption } from "@microsoft/fast-foundation";
+import { Select } from "@microsoft/fast-foundation";
 import { Scenario } from "../fast-components/configs/data.props";
 
 /**
@@ -77,8 +78,8 @@ export function renderScenarioSelect(
             events={{
                 change: (e: React.ChangeEvent): void => {
                     onChangeCallback(
-                        (e.target as FASTSelect).value,
-                        (e.target as FASTSelect).selectedOptions
+                        (e.target as Select).value,
+                        (e.target as Select).selectedOptions
                     );
                 },
             }}
