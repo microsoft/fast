@@ -13,8 +13,8 @@ import { RadioStyles as styles } from "./radio.styles";
 export const FASTRadio = Radio.compose({
     baseName: "radio",
     template,
-    styles
-})
+    styles,
+});
 
 /**
  * Styles for Radio

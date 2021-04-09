@@ -15,7 +15,7 @@ export const FASTTreeView = TreeView.compose({
     baseName: "tree-view",
     template,
     styles,
-})
+});
 
 /**
  * Styles for TreeView

@@ -13,8 +13,8 @@ import { RadioGroupStyles as styles } from "./radio-group.styles";
 export const FASTRadioGroup = RadioGroup.compose({
     baseName: "radio-group",
     template,
-    styles
-})
+    styles,
+});
 
 /**
  * Styles for RadioGroup

@@ -8,7 +8,10 @@ import type { Combobox } from "./combobox";
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
  * @public
  */
-export const ComboboxTemplate: (context, definition) => ViewTemplate<Combobox> = (context, definition) => html`
+export const ComboboxTemplate: (context, definition) => ViewTemplate<Combobox> = (
+    context,
+    definition
+) => html`
     <template
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"

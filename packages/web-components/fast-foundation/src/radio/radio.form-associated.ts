@@ -1,5 +1,5 @@
 import { FormAssociated } from "../form-associated/form-associated";
-import { FoundationElement } from '../foundation-element';
+import { FoundationElement } from "../foundation-element";
 
 class _Radio extends FoundationElement {}
 interface _Radio extends FormAssociated {}
