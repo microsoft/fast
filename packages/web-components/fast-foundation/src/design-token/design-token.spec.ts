@@ -638,4 +638,15 @@ describe("A DesignToken", () => {
             removeElement(parent)
         })
     });
+
+    describe("with a default value set", () => {
+        it("should return the default value if no value is set for a target", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.withDefault(2)
+
+            expect(token.getValueFor(target)).to.equal(2);
+            removeElement(target)
+        });
+    }) 
 });
