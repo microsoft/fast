@@ -1,11 +1,3 @@
-import type { FASTElement } from "@microsoft/fast-element";
-
-/**
- * The type of element that a {@link (DesignToken:interface)} can be set for.
- * @alpha
- */
-export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
-
 /**
  * A {@link (DesignToken:interface)} value that is derived. These values can depend on other {@link (DesignToken:interface)}s
  * or arbitrary observable properties.
@@ -13,7 +5,7 @@ export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
  */
 export type DerivedDesignTokenValue<T> = T extends Function
     ? never
-    : (target: DesignTokenTarget) => T;
+    : (target: HTMLElement) => T;
 
 /**
  * A design token value with no observable dependencies
