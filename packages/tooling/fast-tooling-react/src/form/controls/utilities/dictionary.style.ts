@@ -28,20 +28,24 @@ const styles: ComponentStyles<DictionaryClassNameContract, {}> = {
     dictionary: {},
     dictionary_itemControl: {
         ...controlStyle,
+        "line-height": "20px",
     },
     dictionary_itemControlLabel: {
         ...labelStyle,
+        display: "block",
+        "padding-bottom": "10px",
     },
     dictionary_itemControlRegion: {
         ...controlRegionStyle,
     },
     dictionary_itemControlInput: {
         ...inputStyle,
-        width: "100%",
+        width: "calc(100% - 4px)",
     },
     dictionary_itemControlRemoveTrigger: {
         ...removeItemStyle,
-        top: "2px",
+        bottom: "2px",
+        top: "unset",
     },
     dictionary_control: {
         ...controlStyle,

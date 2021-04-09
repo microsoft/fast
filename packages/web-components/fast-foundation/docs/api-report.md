@@ -743,7 +743,7 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
 // @alpha
-export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: DesignTokenTarget) => T;
+export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @alpha (undocumented)
 export class DesignSystem {
@@ -820,24 +820,21 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T> extends CSSDirective {
-    addCustomPropertyFor(element: DesignTokenTarget): this;
+    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
     readonly cssCustomProperty: string;
-    deleteValueFor(element: DesignTokenTarget): this;
-    getValueFor(element: DesignTokenTarget): StaticDesignTokenValue<T>;
+    deleteValueFor(element: HTMLElement): this;
+    getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     // (undocumented)
     readonly name: string;
     // (undocumented)
-    removeCustomPropertyFor(element: DesignTokenTarget): this;
-    setValueFor(element: DesignTokenTarget, value: DesignTokenValue<T> | DesignToken<T>): void;
+    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
+    setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
 }
 
 // @alpha
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
-
-// @alpha
-export type DesignTokenTarget = (HTMLElement & FASTElement) | HTMLBodyElement;
 
 // @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
