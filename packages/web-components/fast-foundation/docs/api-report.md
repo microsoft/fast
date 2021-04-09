@@ -149,18 +149,9 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
-<<<<<<< HEAD
 // @beta
 export type AutoUpdateMode = "anchor" | "auto";
 
-// @beta
-export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
-
-// @beta
-export type AxisScalingMode = "anchor" | "fill" | "content";
-
-=======
->>>>>>> update api-report
 // @public
 export class Avatar extends FASTElement {
     alt: string;
