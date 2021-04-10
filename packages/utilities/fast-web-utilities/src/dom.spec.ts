@@ -1,3 +1,5 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import {
     canUseCssGrid,
     canUseFocusVisible,
@@ -9,6 +11,8 @@ import {
 } from "./dom";
 import { KeyCodes } from "./key-codes";
 
+chai.use(spies);
+
 describe("isHTMLElement", () => {
     document.body.innerHTML = `
         <div id="element">
@@ -16,183 +20,190 @@ describe("isHTMLElement", () => {
         </div>
     `;
 
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             isHTMLElement();
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should return true if all arguments are HTML elements", () => {
-        expect(isHTMLElement(document.getElementById("element"))).toBe(true);
+    it("should return true if all arguments are HTML elements", () => {
+        expect(isHTMLElement(document.getElementById("element"))).to.equal(true);
     });
-    test("should return false if all arguments are NOT HTML elements", () => {
-        expect(isHTMLElement(document.getElementById("element").childNodes)).toBe(false);
+    it("should return false if all arguments are NOT HTML elements", () => {
+        expect(isHTMLElement(document.getElementById("element").childNodes)).to.equal(
+            false
+        );
     });
 });
 
 describe("getDisplayedNodes", () => {
-    test("should not throw if both arguments are null or undefined", () => {
+    it("should not throw if both arguments are null or undefined", () => {
         expect(() => {
             getDisplayedNodes(null, null);
             getDisplayedNodes(undefined, undefined);
-        }).not.toThrow();
+        }).not.to.throw();
     });
 });
 
 describe("getKeyCode", () => {
-    test("should correctly handle null", () => {
-        expect(getKeyCode(null)).toBe(null);
+    it("should correctly handle null", () => {
+        expect(getKeyCode(null)).to.equal(null);
     });
 
-    test("should correctly handle keyboard events with `keyCode` values", () => {
+    it("should correctly handle keyboard events with `keyCode` values", () => {
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     keyCode: 39,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowRight);
+        ).to.equal(KeyCodes.arrowRight);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     keyCode: 37,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowLeft);
+        ).to.equal(KeyCodes.arrowLeft);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     keyCode: 38,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowUp);
+        ).to.equal(KeyCodes.arrowUp);
         expect(
             getKeyCode(
                 new KeyboardEvent("keydown", {
                     keyCode: 40,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowDown);
+        ).to.equal(KeyCodes.arrowDown);
         expect(
             getKeyCode(
                 new KeyboardEvent("keydown", {
                     keyCode: 13,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.enter);
+        ).to.equal(KeyCodes.enter);
         expect(
             getKeyCode(
                 new KeyboardEvent("keydown", {
                     keyCode: 32,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.space);
+        ).to.equal(KeyCodes.space);
         expect(
             getKeyCode(
                 new KeyboardEvent("keydown", {
                     keyCode: 9,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.tab);
+        ).to.equal(KeyCodes.tab);
     });
 
-    test("should correctly handle keyboard events with `which` values", () => {
+    it("should correctly handle keyboard events with `which` values", () => {
+        // Since `which` is deprecated, it can no longer be set using KeyboardEvent
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 39,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.arrowRight);
+            getKeyCode({
+                which: 39,
+                keyCode: 39,
+                charCode: 39,
+            } as any)
+        ).to.equal(KeyCodes.arrowRight);
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 37,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.arrowLeft);
+            getKeyCode({
+                which: 37,
+                keyCode: 37,
+                charCode: 37,
+            } as any)
+        ).to.equal(KeyCodes.arrowLeft);
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 38,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.arrowUp);
+            getKeyCode({
+                which: 38,
+                keyCode: 38,
+                charCode: 38,
+            } as any)
+        ).to.equal(KeyCodes.arrowUp);
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 40,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.arrowDown);
+            getKeyCode({
+                which: 40,
+                keyCode: 40,
+                charCode: 40,
+            } as any)
+        ).to.equal(KeyCodes.arrowDown);
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 13,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.enter);
+            getKeyCode({
+                which: 13,
+                keyCode: 13,
+                charCode: 13,
+            } as any)
+        ).to.equal(KeyCodes.enter);
         expect(
-            getKeyCode(
-                new KeyboardEvent("keypress", {
-                    which: 32,
-                } as KeyboardEventInit)
-            )
-        ).toBe(KeyCodes.space);
+            getKeyCode({
+                which: 32,
+                keyCode: 32,
+                charCode: 32,
+            } as any)
+        ).to.equal(KeyCodes.space);
         expect(
-            getKeyCode(new KeyboardEvent("keypress", { which: 9 } as KeyboardEventInit))
-        ).toBe(KeyCodes.tab);
+            getKeyCode({
+                which: 9,
+                keyCode: 9,
+                charCode: 9,
+            } as any)
+        ).to.equal(KeyCodes.tab);
     });
 
-    test("should correctly handle keyboard events with `charCode` values", () => {
+    it("should correctly handle keyboard events with `charCode` values", () => {
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 39,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowRight);
+        ).to.equal(KeyCodes.arrowRight);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 37,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowLeft);
+        ).to.equal(KeyCodes.arrowLeft);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 38,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowUp);
+        ).to.equal(KeyCodes.arrowUp);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 40,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.arrowDown);
+        ).to.equal(KeyCodes.arrowDown);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 13,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.enter);
+        ).to.equal(KeyCodes.enter);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 32,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.space);
+        ).to.equal(KeyCodes.space);
         expect(
             getKeyCode(
                 new KeyboardEvent("keypress", {
                     charCode: 9,
                 } as KeyboardEventInit)
             )
-        ).toBe(KeyCodes.tab);
+        ).to.equal(KeyCodes.tab);
     });
 });
 
@@ -200,15 +211,15 @@ describe("canUseFocusVisible", () => {
     beforeEach(() => {
         resetDocumentCache();
     });
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             canUseFocusVisible();
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should return true if the environment supports focus-visible selectors", () => {
-        expect(canUseFocusVisible()).toBe(true);
+    it("should return true if the environment supports focus-visible selectors", () => {
+        expect(canUseFocusVisible()).to.equal(true);
     });
-    test("should use a nonce if once is present on the page", () => {
+    it("should use a nonce if once is present on the page", () => {
         const nonce: string = "foo-nonce";
         const metaEl: HTMLMetaElement = document.createElement("meta");
         metaEl.setAttribute("property", "csp-nonce");
@@ -217,35 +228,42 @@ describe("canUseFocusVisible", () => {
 
         // Run the function and intercept its appendChild call
         const realAppendChild = document.head.appendChild;
-        const mockAppendChild = jest.fn(realAppendChild);
+        const mockAppendChild = chai.spy(realAppendChild);
         Object.defineProperty(document.head, "appendChild", {
             value: mockAppendChild,
             configurable: true,
         });
+        const mutationObserverCallback = (mutationsList: MutationRecord[]): void => {
+            expect(mutationsList).to.have.length.greaterThan(0);
+            expect(mutationsList[0].addedNodes).to.have.length.greaterThan(0);
+            expect(mutationsList[0].addedNodes.item(0)).not.to.equal(undefined);
+            expect(
+                (mutationsList[0].addedNodes.item(0) as HTMLStyleElement).nonce
+            ).to.equal(nonce);
+        };
+        const mutationObserver = new MutationObserver(mutationObserverCallback);
+        mutationObserver.observe(document.head, { childList: true, subtree: true });
         canUseFocusVisible();
 
-        expect(mockAppendChild).toBeCalledTimes(1);
-        const createdStyleElement = mockAppendChild.mock.calls[0][0] as HTMLStyleElement;
-        expect(createdStyleElement.nonce).toEqual(nonce);
+        expect(mockAppendChild).to.have.been.called.exactly(1);
         Object.defineProperty(document.head, "appendChild", {
             value: realAppendChild,
             configurable: true,
         });
     });
-    test("should cache the result for subsequent calls", () => {
+    it("should cache the result for subsequent calls", () => {
         const realAppendChild = document.head.appendChild;
-        const mockAppendChild = jest.fn(realAppendChild);
+        const mockAppendChild = chai.spy(realAppendChild);
         Object.defineProperty(document.head, "appendChild", {
             value: mockAppendChild,
             configurable: true,
         });
         canUseFocusVisible();
 
-        expect(mockAppendChild).toBeCalledTimes(1);
-        mockAppendChild.mockClear();
+        expect(mockAppendChild).to.have.been.called.exactly(1);
 
         canUseFocusVisible();
-        expect(mockAppendChild).toBeCalledTimes(0);
+        expect(mockAppendChild).to.have.been.called.exactly(1);
         Object.defineProperty(document.head, "appendChild", {
             value: realAppendChild,
             configurable: true,
@@ -257,37 +275,37 @@ describe("canUseCssGrid", () => {
     beforeEach(() => {
         resetDocumentCache();
     });
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             canUseCssGrid();
-        }).not.toThrow();
+        }).not.to.throw();
     });
 });
 
 describe("canUseForcedColors", () => {
     beforeEach(() => {
-        window.matchMedia = jest.fn().mockImplementation((query: any) => {
+        window.matchMedia = (query: any): any => {
             return {
                 matches: true,
                 media: query,
             };
-        });
+        };
     });
-    test("should return true if forced color is enabled", () => {
-        expect(canUseForcedColors()).toBe(true);
+    it("should return true if forced color is enabled", () => {
+        expect(canUseForcedColors()).to.equal(true);
     });
 });
 
 describe("canUseForcedColors", () => {
     beforeEach(() => {
-        window.matchMedia = jest.fn().mockImplementation((query: any) => {
+        window.matchMedia = (query: any): any => {
             return {
                 matches: false,
                 media: query,
             };
-        });
+        };
     });
-    test("should return false if forced color is not enabled", () => {
-        expect(canUseForcedColors()).toBe(false);
+    it("should return false if forced color is not enabled", () => {
+        expect(canUseForcedColors()).to.equal(false);
     });
 });
