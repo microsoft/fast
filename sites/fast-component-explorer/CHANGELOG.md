@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-component-explorer
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sat, 10 Apr 2021 00:23:42 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.17.2
+
+Sat, 10 Apr 2021 00:23:42 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
 
 ## [0.17.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.17.1...@microsoft/fast-component-explorer@0.17.2) (2021-04-06)
 

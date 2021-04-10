@@ -1,0 +1,40 @@
+{
+  "name": "@microsoft/fast-component-explorer",
+  "entries": [
+    {
+      "date": "Sat, 10 Apr 2021 00:23:42 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.18.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-component-explorer"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.8.1",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-component-explorer"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.7.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    }
+  ]
+}

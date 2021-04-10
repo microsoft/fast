@@ -1,0 +1,34 @@
+{
+  "name": "@microsoft/fast-components",
+  "entries": [
+    {
+      "date": "Sat, 10 Apr 2021 00:23:42 GMT",
+      "tag": "@microsoft/fast-components_v1.20.1",
+      "version": "1.20.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.18.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.18.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.7.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    }
+  ]
+}
