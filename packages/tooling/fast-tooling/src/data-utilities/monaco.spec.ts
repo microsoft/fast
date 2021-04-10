@@ -1,9 +1,10 @@
+import { expect } from "chai";
 import { linkedDataSchema } from "../schemas";
 import { mapDataDictionaryToMonacoEditorHTML } from "./monaco";
 import { ReservedElementMappingKeyword } from "./types";
 
 describe("mapDataDictionaryToMonacoEditorHTML", () => {
-    test("should not map a data dictionary if no schema dictionaries conform to entries", () => {
+    it("should not map a data dictionary if no schema dictionaries conform to entries", () => {
         const text = "Hello world";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -18,9 +19,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                 ],
                 {}
             )
-        ).toEqual("");
+        ).to.equal("");
     });
-    test("should map a data dictionary with a single string entry", () => {
+    it("should map a data dictionary with a single string entry", () => {
         const text = "Hello world";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -40,9 +41,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should not map a data dictionary with no mapsToTagName", () => {
+    it("should not map a data dictionary with no mapsToTagName", () => {
         const text = "";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -62,9 +63,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with a single self closing entry", () => {
+    it("should map a data dictionary with a single self closing entry", () => {
         const text = "<input />";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -85,9 +86,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with a single element entry", () => {
+    it("should map a data dictionary with a single element entry", () => {
         const text = "<div></div>";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -108,9 +109,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with nested entries", () => {
+    it("should map a data dictionary with nested entries", () => {
         const text = "<div>Hello world</div>";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -149,9 +150,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with multiple nested entries", () => {
+    it("should map a data dictionary with multiple nested entries", () => {
         const text = "<div><span>Hello world</span></div>";
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -209,9 +210,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with slotted nested entries", () => {
+    it("should map a data dictionary with slotted nested entries", () => {
         const text = '<div><span slot="foo">Hello world</span></div>';
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -275,9 +276,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with attributes with a single self closing entry", () => {
+    it("should map a data dictionary with attributes with a single self closing entry", () => {
         const text = '<input title="foo" disabled count="5" />';
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -303,9 +304,9 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
-    test("should map a data dictionary with attributes with a single element entry", () => {
+    it("should map a data dictionary with attributes with a single element entry", () => {
         const text = '<div id="foo"></div>';
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -328,6 +329,6 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                     },
                 }
             )
-        ).toEqual(text);
+        ).to.equal(text);
     });
 });

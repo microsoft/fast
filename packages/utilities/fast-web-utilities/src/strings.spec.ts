@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import {
     format,
     isNullOrWhiteSpace,
@@ -7,119 +8,119 @@ import {
 } from "./strings";
 
 describe("format", (): void => {
-    test("should correctly manage undefined by returning an unformatted string", (): void => {
+    it("should correctly manage undefined by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, undefined)).toBe("Hello  world");
+        expect(format(formatterString, undefined)).to.equal("Hello  world");
     });
 
-    test("should correctly manage null by returning an unformatted string", (): void => {
+    it("should correctly manage null by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, null)).toBe("Hello  world");
+        expect(format(formatterString, null)).to.equal("Hello  world");
     });
 
-    test("should correctly manage having too many parameters", (): void => {
+    it("should correctly manage having too many parameters", (): void => {
         const formatterString: string = "View {0} {1}";
 
-        expect(format(formatterString, "page", "five", "now")).toBe("View page five");
+        expect(format(formatterString, "page", "five", "now")).to.equal("View page five");
     });
 
-    test("should correctly manage a formatter with not enough parameters", (): void => {
+    it("should correctly manage a formatter with not enough parameters", (): void => {
         const formatterString: string = "View {0} {1}";
 
-        expect(format(formatterString, "page")).toBe("View page {1}");
+        expect(format(formatterString, "page")).to.equal("View page {1}");
     });
 
-    test("should correctly manage empty strings by returning a formatted string with white space", (): void => {
+    it("should correctly manage empty strings by returning a formatted string with white space", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, "")).toBe("Hello  world");
+        expect(format(formatterString, "")).to.equal("Hello  world");
     });
 
-    test("should correctly manage strings by returning a formatted string", (): void => {
+    it("should correctly manage strings by returning a formatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, "foo")).toBe("Hello foo world");
+        expect(format(formatterString, "foo")).to.equal("Hello foo world");
     });
 
-    test("should correctly manage multiple strings parameters", (): void => {
+    it("should correctly manage multiple strings parameters", (): void => {
         const formatterString: string = "View {0} {1}";
 
-        expect(format(formatterString, "page", "five")).toBe("View page five");
+        expect(format(formatterString, "page", "five")).to.equal("View page five");
     });
 
-    test("should correctly manage non-formatted strings by returning the initial string", (): void => {
+    it("should correctly manage non-formatted strings by returning the initial string", (): void => {
         const formatterString: string = "Hello";
 
-        expect(format(formatterString, "world")).toBe("Hello");
+        expect(format(formatterString, "world")).to.equal("Hello");
     });
 
-    test("should correctly manage non-formatted strings by returning the initial string", (): void => {
+    it("should correctly manage non-formatted strings by returning the initial string", (): void => {
         const formatterString: string = "Hello";
 
-        expect(format(formatterString, "world")).toBe("Hello");
+        expect(format(formatterString, "world")).to.equal("Hello");
     });
 });
 
 describe("isNullOrWhiteSpace", (): void => {
-    test("should correctly manage undefined", () => {
-        expect(isNullOrWhiteSpace(undefined)).toBe(true);
+    it("should correctly manage undefined", () => {
+        expect(isNullOrWhiteSpace(undefined)).to.equal(true);
     });
-    test("should correctly manage null", () => {
-        expect(isNullOrWhiteSpace(null)).toBe(true);
+    it("should correctly manage null", () => {
+        expect(isNullOrWhiteSpace(null)).to.equal(true);
     });
-    test("should correctly manage a value with only white space", () => {
-        expect(isNullOrWhiteSpace("\t\n ")).toBe(true);
+    it("should correctly manage a value with only white space", () => {
+        expect(isNullOrWhiteSpace("\t\n ")).to.equal(true);
     });
-    test("should correctly manage a value without white space", () => {
-        expect(isNullOrWhiteSpace("foobar")).toBe(false);
+    it("should correctly manage a value without white space", () => {
+        expect(isNullOrWhiteSpace("foobar")).to.equal(false);
     });
 });
 
 describe("pascalCase", (): void => {
-    test("should correctly manage hyphenated strings", (): void => {
-        expect(pascalCase("string-extensions")).toBe("StringExtensions");
+    it("should correctly manage hyphenated strings", (): void => {
+        expect(pascalCase("string-extensions")).to.equal("StringExtensions");
     });
 
-    test("should correctly manage strings with whitespace", (): void => {
-        expect(pascalCase(" foo bar ")).toBe("FooBar");
+    it("should correctly manage strings with whitespace", (): void => {
+        expect(pascalCase(" foo bar ")).to.equal("FooBar");
     });
 
-    test("should correctly manage all caps strings", (): void => {
-        expect(pascalCase("STRING EXTENSIONS")).toBe("StringExtensions");
+    it("should correctly manage all caps strings", (): void => {
+        expect(pascalCase("STRING EXTENSIONS")).to.equal("StringExtensions");
     });
 });
 
 describe("spinalCase", () => {
-    test("should convert pascalCase strings", (): void => {
-        expect(spinalCase("stringExtensions")).toBe("string-extensions");
+    it("should convert pascalCase strings", (): void => {
+        expect(spinalCase("stringExtensions")).to.equal("string-extensions");
     });
-    test("should convert CamelCase strings", (): void => {
-        expect(spinalCase("StringExtensions")).toBe("string-extensions");
+    it("should convert CamelCase strings", (): void => {
+        expect(spinalCase("StringExtensions")).to.equal("string-extensions");
     });
 });
 
 describe("startsWith", (): void => {
-    test("should correctly manage undefined", () => {
-        expect(startsWith(undefined, undefined)).toBe(false);
-        expect(startsWith("Hello", undefined)).toBe(false);
+    it("should correctly manage undefined", () => {
+        expect(startsWith(undefined, undefined)).to.equal(false);
+        expect(startsWith("Hello", undefined)).to.equal(false);
     });
-    test("should correctly manage null", () => {
-        expect(startsWith(null, null)).toBe(false);
-        expect(startsWith("Hello", null)).toBe(false);
+    it("should correctly manage null", () => {
+        expect(startsWith(null, null)).to.equal(false);
+        expect(startsWith("Hello", null)).to.equal(false);
     });
-    test("should correctly manage searching for an empty string", () => {
-        expect(startsWith("Helloworld", "")).toBe(false);
+    it("should correctly manage searching for an empty string", () => {
+        expect(startsWith("Helloworld", "")).to.equal(false);
     });
-    test("should correctly manage a string which includes a match but does not start with it", () => {
-        expect(startsWith("HelloWorld", "World")).toBe(false);
+    it("should correctly manage a string which includes a match but does not start with it", () => {
+        expect(startsWith("HelloWorld", "World")).to.equal(false);
     });
-    test("should correctly manage finding a valid string that starts with a match", () => {
-        expect(startsWith("start", "start")).toBe(true);
-        expect(startsWith("start", "star")).toBe(true);
+    it("should correctly manage finding a valid string that starts with a match", () => {
+        expect(startsWith("start", "start")).to.equal(true);
+        expect(startsWith("start", "star")).to.equal(true);
     });
-    test("should correctly manage incorrect casing as an invalid match", () => {
-        expect(startsWith("start", "START")).toBe(false);
+    it("should correctly manage incorrect casing as an invalid match", () => {
+        expect(startsWith("start", "START")).to.equal(false);
     });
 });

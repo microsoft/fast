@@ -185,15 +185,15 @@ export class Menu extends FASTElement {
     };
 
     private setItems = (): void => {
-        const focusIndex = this.menuItems.findIndex(this.isFocusableElement);
+        const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
-        if (focusIndex !== -1) {
-            this.focusIndex = focusIndex;
+        if (menuItems.length) {
+            this.focusIndex = 0;
         }
 
-        this.menuItems.forEach((item: HTMLElement, index: number) => {
-            item.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
+        menuItems.forEach((item: HTMLElement, index: number) => {
+            item.setAttribute("tabindex", index === 0 ? "0" : "-1");
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
         });
@@ -270,14 +270,21 @@ export class Menu extends FASTElement {
     };
 
     private setFocus(focusIndex: number, adjustment: number): void {
-        const children: Element[] = this.menuItems;
+        if (this.menuItems === undefined) {
+            return;
+        }
 
-        while (inRange(focusIndex, children.length)) {
-            const child: Element = children[focusIndex];
+        while (inRange(focusIndex, this.menuItems.length)) {
+            const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {
                 // change the previous index to -1
-                children[this.focusIndex].setAttribute("tabindex", "-1");
+                if (
+                    this.focusIndex > -1 &&
+                    this.menuItems.length >= this.focusIndex - 1
+                ) {
+                    this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+                }
 
                 // update the focus index
                 this.focusIndex = focusIndex;
