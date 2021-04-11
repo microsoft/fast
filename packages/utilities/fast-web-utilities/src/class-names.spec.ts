@@ -1,60 +1,63 @@
+import { expect } from "chai";
 import { classNames } from "./class-names";
 
 describe("classNames", (): void => {
-    test("should return a string when invalid values are provided", (): void => {
-        expect(classNames()).toBe("");
-        expect(classNames(undefined as any)).toBe("");
-        expect(classNames(null as any)).toBe("");
-        expect(classNames(NaN as any)).toBe("");
-        expect(classNames(Infinity as any)).toBe("");
-        expect(classNames(new Date() as any)).toBe("");
-        expect(classNames(1 as any)).toBe("");
-        expect(classNames([undefined as any, true])).toBe("");
-        expect(classNames([null as any, true])).toBe("");
-        expect(classNames([NaN as any, true])).toBe("");
-        expect(classNames([Infinity as any, true])).toBe("");
-        expect(classNames([new Date() as any, true])).toBe("");
-        expect(classNames([1 as any, true])).toBe("");
+    it("should return a string when invalid values are provided", (): void => {
+        expect(classNames()).to.equal("");
+        expect(classNames(undefined as any)).to.equal("");
+        expect(classNames(null as any)).to.equal("");
+        expect(classNames(NaN as any)).to.equal("");
+        expect(classNames(Infinity as any)).to.equal("");
+        expect(classNames(new Date() as any)).to.equal("");
+        expect(classNames(1 as any)).to.equal("");
+        expect(classNames([undefined as any, true])).to.equal("");
+        expect(classNames([null as any, true])).to.equal("");
+        expect(classNames([NaN as any, true])).to.equal("");
+        expect(classNames([Infinity as any, true])).to.equal("");
+        expect(classNames([new Date() as any, true])).to.equal("");
+        expect(classNames([1 as any, true])).to.equal("");
     });
 
-    test("should return a single string argument unmodified", (): void => {
-        expect(classNames("hello")).toBe("hello");
+    it("should return a single string argument unmodified", (): void => {
+        expect(classNames("hello")).to.equal("hello");
     });
 
-    test("should join multiple string arguments together", (): void => {
-        expect(classNames("hello", "world")).toBe("hello world");
+    it("should join multiple string arguments together", (): void => {
+        expect(classNames("hello", "world")).to.equal("hello world");
     });
 
-    test("should return the return value of a single function", (): void => {
-        expect(classNames(() => "hello")).toBe("hello");
+    it("should return the return value of a single function", (): void => {
+        expect(classNames(() => "hello")).to.equal("hello");
     });
 
-    test("should join the return value of a multiple functions", (): void => {
+    it("should join the return value of a multiple functions", (): void => {
         expect(
             classNames(
                 () => "hello",
                 () => "world"
             )
-        ).toBe("hello world");
+        ).to.equal("hello world");
     });
 
-    test("should return a the first index of an array arg when the second index is truthy", (): void => {
-        expect(classNames(["foo", true])).toBe("foo");
+    it("should return a the first index of an array arg when the second index is truthy", (): void => {
+        expect(classNames(["foo", true])).to.equal("foo");
     });
 
-    test("should return a single function return value of an array arg when the second index is truthy", (): void => {
-        expect(classNames([(): string => "foo", true])).toBe("foo");
+    it("should return a single function return value of an array arg when the second index is truthy", (): void => {
+        expect(classNames([(): string => "foo", true])).to.equal("foo");
     });
 
-    test("should join multiple array index when all second indexes are true", (): void => {
-        expect(classNames(["foo", true], ["bar", true])).toBe("foo bar");
+    it("should join multiple array index when all second indexes are true", (): void => {
+        expect(classNames(["foo", true], ["bar", true])).to.equal("foo bar");
     });
 
-    test("should omit first indexes of an array argument when the second index is falsey", (): void => {
-        expect(classNames(["foo", true], ["bar", false], ["bat", true])).toBe("foo bat");
+    it("should omit first indexes of an array argument when the second index is falsey", (): void => {
+        expect(classNames(["foo", true], ["bar", false], ["bat", true])).to.equal(
+            "foo bat"
+        );
     });
 
-    test("should join string, function, and object arguments", (): void => {
+    it("should join string, function, and object arguments", (): void => {
         expect(
             classNames(
                 "hello",
@@ -64,6 +67,6 @@ describe("classNames", (): void => {
                 "world",
                 () => "earth"
             )
-        ).toBe("hello foo bat world earth");
+        ).to.equal("hello foo bat world earth");
     });
 });
