@@ -954,6 +954,10 @@ export class AnchoredRegion extends FASTElement {
         }
 
         if (positionChanged) {
+            // do a position check to ensure we're in the right spot
+            // temporary until method for recalculating offsets on position changes improved
+            this.requestPositionUpdates();
+            // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
     };
