@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "await a macro task instead of a DOM.nextUpdate()",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
