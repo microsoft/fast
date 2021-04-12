@@ -3,10 +3,10 @@ import { Octokit } from "@octokit/rest";
 import { PackageChangelogRenderInfo, ChangelogEntry } from "beachball";
 import { getPullRequestForCommit, repoDetails } from "./github";
 
-const githubPAT = process.env.GITHUB_PUBLISH_PAT;
+const githubPAT = process.env.GITHUB_TOKEN;
 if (!githubPAT && (process.argv.includes("bump") || process.argv.includes("publish"))) {
     console.warn(
-        "\nGITHUB_PAT environment variable not found. GitHub requests may be rate-limited.\n"
+        "\nGITHUB_TOKEN environment variable not found. GitHub requests may be rate-limited.\n"
     );
 }
 

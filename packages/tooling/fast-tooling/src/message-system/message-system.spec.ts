@@ -1,15 +1,22 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import MessageSystem from "./message-system";
 import { Register } from "./message-system.props";
 
+chai.use(spies);
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 describe("MessageSystem", () => {
-    test("should not throw when Workers are not available", () => {
+    it("should not throw when Workers are not available", () => {
         expect(() => {
+            (window as any).Worker = void 0;
+
             new MessageSystem({
                 webWorker: "",
             });
-        });
+        }).not.to.throw();
     });
-    test("should not throw when the webWorker is a string", () => {
+    it("should not throw when the webWorker is a string", () => {
         class Worker {}
 
         (window as any).Worker = Worker;
@@ -18,11 +25,11 @@ describe("MessageSystem", () => {
             new MessageSystem({
                 webWorker: "",
             });
-        }).not.toThrow();
+        }).not.to.throw();
 
         (window as any).Worker = undefined;
     });
-    test("should not throw when the webWorker is a Worker instance", () => {
+    it("should not throw when the webWorker is a Worker instance", () => {
         class Worker {
             constructor(url: string) {
                 url;
@@ -45,11 +52,11 @@ describe("MessageSystem", () => {
             new MessageSystem({
                 webWorker: myWorker as any,
             });
-        }).not.toThrow();
+        }).not.to.throw();
 
         (window as any).Worker = undefined;
     });
-    test("should not throw when attempting to initialize and Workers are not available", () => {
+    it("should not throw when attempting to initialize and Workers are not available", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
         });
@@ -69,10 +76,10 @@ describe("MessageSystem", () => {
                     foo: {},
                 },
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should send an initialization message when Workers are available", () => {
-        const postMessageCallback: any = jest.fn();
+    it("should send an initialization message when Workers are available", () => {
+        const postMessageCallback: any = chai.spy(() => {});
         class Worker {
             public postMessage: any = postMessageCallback;
         }
@@ -97,9 +104,9 @@ describe("MessageSystem", () => {
             },
         });
 
-        expect(postMessageCallback).toHaveBeenCalledTimes(1);
+        expect(postMessageCallback).to.have.been.called.exactly(1);
     });
-    test("should add an item to the register", () => {
+    it("should add an item to the register", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -116,15 +123,15 @@ describe("MessageSystem", () => {
             },
         });
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
 
         messageSystem.add({
-            onMessage: jest.fn(),
+            onMessage: () => {},
         });
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
     });
-    test("should remove an item from the register", () => {
+    it("should remove an item from the register", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -141,18 +148,18 @@ describe("MessageSystem", () => {
             },
         });
         const config: any = {
-            onMessage: jest.fn(),
+            onMessage: () => {},
         };
 
         messageSystem.add(config);
 
-        expect(messageSystem["register"].size).toEqual(1);
+        expect(messageSystem["register"].size).to.equal(1);
 
         messageSystem.remove(config);
 
-        expect(messageSystem["register"].size).toEqual(0);
+        expect(messageSystem["register"].size).to.equal(0);
     });
-    test("should add a worker if there is a Worker available on the window", () => {
+    it("should add a worker if there is a Worker available on the window", () => {
         class Worker {
             public postMessage = (): void => void 0;
         }
@@ -174,16 +181,16 @@ describe("MessageSystem", () => {
             },
         });
 
-        expect(messageSystem["worker"] instanceof Worker).toEqual(true);
+        expect(messageSystem["worker"] instanceof Worker).to.equal(true);
     });
-    test("should post a message when the postMessage method is called", () => {
-        const postMessageCallback: any = jest.fn();
+    it("should post a message when the postMessage method is called", () => {
+        const postMessageCallback: any = chai.spy(() => {});
         class Worker {
             public postMessage: any = postMessageCallback;
         }
         (window as any).Worker = Worker;
 
-        expect(postMessageCallback).toHaveBeenCalledTimes(0);
+        expect(postMessageCallback).to.have.been.called.exactly(0);
 
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
@@ -201,18 +208,37 @@ describe("MessageSystem", () => {
             },
         });
 
-        expect(postMessageCallback).toHaveBeenCalledTimes(1);
+        expect(postMessageCallback).to.have.been.called.exactly(1);
 
         messageSystem.postMessage({
             data: "foo",
         } as any);
 
-        expect(postMessageCallback).toHaveBeenCalledTimes(2);
+        expect(postMessageCallback).to.have.been.called.exactly(2);
     });
-    test("should post a message when the onmessage of the worker has been called", () => {
-        const postMessageCallback: any = jest.fn();
-        const onMessageCallback: any = jest.fn();
-        const registeredCallback: any = jest.fn();
+    it("should not post a message when the postMessage method is called if workers are not available", () => {
+        const postMessageCallback: any = chai.spy(() => {});
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = undefined;
+        const myWorker: Worker = new Worker();
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: myWorker as any,
+        });
+
+        messageSystem["worker"] = undefined;
+        messageSystem.postMessage({
+            data: "foo",
+        } as any);
+
+        expect(postMessageCallback).to.have.been.called.exactly(0);
+    });
+    it("should post a message when the onmessage of the worker has been called", () => {
+        const postMessageCallback: any = () => {};
+        const onMessageCallback: any = () => {};
+        const registeredCallback: any = chai.spy(() => {});
         class Worker {
             public postMessage: any = postMessageCallback;
             public onmessage: any = onMessageCallback;
@@ -239,13 +265,13 @@ describe("MessageSystem", () => {
             onMessage: registeredCallback,
         });
 
-        expect(registeredCallback).toHaveBeenCalledTimes(0);
+        expect(registeredCallback).to.have.been.called.exactly(0);
 
         messageSystem["onMessage"]({ data: "foo" } as any);
 
-        expect(registeredCallback).toHaveBeenCalledTimes(1);
+        expect(registeredCallback).to.have.been.called.exactly(1);
     });
-    test("should set the limit on history items if the historyLimit is set", () => {
+    it("should set the limit on history items if the historyLimit is set", () => {
         class Worker {}
         (window as any).Worker = Worker;
 
@@ -254,10 +280,10 @@ describe("MessageSystem", () => {
             historyLimit: 10,
         });
 
-        expect(messageSystem["historyLimit"]).toEqual(10);
+        expect(messageSystem["historyLimit"]).to.equal(10);
     });
-    test("should update the limit on history items if the historyLimit is set again", () => {
-        const postMessageCallback: any = jest.fn();
+    it("should update the limit on history items if the historyLimit is set again", () => {
+        const postMessageCallback: any = () => {};
         class Worker {
             public postMessage: any = postMessageCallback;
         }
@@ -272,9 +298,9 @@ describe("MessageSystem", () => {
             historyLimit: 5,
         });
 
-        expect(messageSystem["historyLimit"]).toEqual(5);
+        expect(messageSystem["historyLimit"]).to.equal(5);
     });
-    test("should get a config if a registered item with a corresponding id is present", () => {
+    it("should get a config if a registered item with a corresponding id is present", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -296,16 +322,16 @@ describe("MessageSystem", () => {
         };
         const config: Register = {
             id,
-            onMessage: jest.fn(),
+            onMessage: () => {},
             config: data,
         };
 
         messageSystem.add(config);
 
-        expect(messageSystem["register"].size).toEqual(1);
-        expect(messageSystem.getConfigById(id)).toEqual(data);
+        expect(messageSystem["register"].size).to.equal(1);
+        expect(messageSystem.getConfigById(id)).to.equal(data);
     });
-    test("should return null if no registered item with a corresponding id is present", () => {
+    it("should return null if no registered item with a corresponding id is present", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
             dataDictionary: [
@@ -327,13 +353,13 @@ describe("MessageSystem", () => {
         };
         const config: Register = {
             id,
-            onMessage: jest.fn(),
+            onMessage: () => {},
             config: data,
         };
 
         messageSystem.add(config);
 
-        expect(messageSystem["register"].size).toEqual(1);
-        expect(messageSystem.getConfigById("qux")).toEqual(null);
+        expect(messageSystem["register"].size).to.equal(1);
+        expect(messageSystem.getConfigById("qux")).to.equal(null);
     });
 });

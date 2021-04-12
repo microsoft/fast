@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.17.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.17.1...@microsoft/fast-component-explorer@0.17.2) (2021-04-06)
+
+
+### Bug Fixes
+
+* addresses an issue in the windows cross browser testing where scenarios were not found ([#4499](https://github.com/Microsoft/fast/issues/4499)) ([81db98a](https://github.com/Microsoft/fast/commit/81db98a739e9ca713be6ddd16f287502cfda4b65)), closes [#4495](https://github.com/Microsoft/fast/issues/4495)
+
+
+
+
+
 ## [0.17.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-component-explorer@0.17.0...@microsoft/fast-component-explorer@0.17.1) (2021-03-18)
 
 **Note:** Version bump only for package @microsoft/fast-component-explorer

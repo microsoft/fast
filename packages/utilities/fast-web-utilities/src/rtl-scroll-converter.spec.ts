@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { RtlScrollConverter } from "./rtl-scroll-converter";
 import { Direction } from "./localization";
 
@@ -15,33 +16,33 @@ function getDummyDiv(): HTMLDivElement {
 }
 
 describe("RtlScrollConverter", (): void => {
-    test("should not throw on getter", () => {
+    it("should not throw on getter", () => {
         const testElement: HTMLDivElement = getDummyDiv();
 
         expect(() => {
             RtlScrollConverter.getScrollLeft(testElement, Direction.ltr);
-        }).not.toThrow();
+        }).not.to.throw();
     });
 
-    test("should not throw on setter", () => {
+    it("should not throw on setter", () => {
         const testElement: HTMLDivElement = getDummyDiv();
 
         expect(() => {
             RtlScrollConverter.setScrollLeft(testElement, 0, Direction.ltr);
-        }).not.toThrow();
+        }).not.to.throw();
     });
 
     // note: this test must happen before any rtl calls to getScrollLeft/setScrollLeft in this test suite
-    test("getter and setter start as referencing initial function", () => {
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+    it("getter and setter start as referencing initial function", () => {
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialSetRtlScrollConverter"]
         );
     });
 
-    test("calling getter with inital function set applies converters", () => {
+    it("calling getter with inital function set applies converters", () => {
         const testElement: HTMLDivElement = getDummyDiv();
 
         RtlScrollConverter["getRtlScrollLeftConverter"] =
@@ -49,24 +50,24 @@ describe("RtlScrollConverter", (): void => {
         RtlScrollConverter["setRtlScrollLeftConverter"] =
             RtlScrollConverter["initialSetRtlScrollConverter"];
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialSetRtlScrollConverter"]
         );
 
         RtlScrollConverter.getScrollLeft(testElement, Direction.rtl);
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directSetRtlScrollConverter"]
         );
     });
 
-    test("calling setter with inital function set applies converters", () => {
+    it("calling setter with inital function set applies converters", () => {
         const testElement: HTMLDivElement = getDummyDiv();
 
         RtlScrollConverter["getRtlScrollLeftConverter"] =
@@ -74,205 +75,208 @@ describe("RtlScrollConverter", (): void => {
         RtlScrollConverter["setRtlScrollLeftConverter"] =
             RtlScrollConverter["initialSetRtlScrollConverter"];
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["initialSetRtlScrollConverter"]
         );
 
         RtlScrollConverter.setScrollLeft(testElement, -1, Direction.rtl);
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directSetRtlScrollConverter"]
         );
     });
 
-    test("directGetRtlScrollConverter returns correct value", () => {
+    it("directGetRtlScrollConverter returns correct value", () => {
         const testElement: HTMLDivElement = getDummyDiv();
+        document.body.appendChild(testElement);
         testElement.scrollLeft = -1;
 
-        expect(RtlScrollConverter["directGetRtlScrollConverter"](testElement)).toEqual(
+        expect(RtlScrollConverter["directGetRtlScrollConverter"](testElement)).to.equal(
             -1
         );
     });
 
-    test("invertedGetRtlScrollConverter returns correct value", () => {
+    it("invertedGetRtlScrollConverter returns correct value", () => {
         const testElement: HTMLDivElement = getDummyDiv();
+        document.body.appendChild(testElement);
         testElement.scrollLeft = 1;
 
-        expect(RtlScrollConverter["invertedGetRtlScrollConverter"](testElement)).toEqual(
+        expect(RtlScrollConverter["invertedGetRtlScrollConverter"](testElement)).to.equal(
             -1
         );
     });
 
-    test("reverseGetRtlScrollConverter returns correct value", () => {
+    it("reverseGetRtlScrollConverter returns correct value", () => {
         const testElement: HTMLDivElement = getDummyDiv();
         testElement.scrollLeft = 0;
+        document.body.appendChild(testElement);
 
-        expect(RtlScrollConverter["reverseGetRtlScrollConverter"](testElement)).toEqual(
-            testElement.scrollWidth - testElement.clientWidth
+        expect(RtlScrollConverter["reverseGetRtlScrollConverter"](testElement)).to.equal(
+            testElement.scrollLeft - (testElement.scrollWidth - testElement.clientWidth)
         );
 
         testElement.scrollLeft = -1;
 
-        expect(RtlScrollConverter["reverseGetRtlScrollConverter"](testElement)).toEqual(
-            testElement.scrollWidth - testElement.clientWidth - 1
+        expect(RtlScrollConverter["reverseGetRtlScrollConverter"](testElement)).to.equal(
+            -1 - (testElement.scrollWidth - testElement.clientWidth)
         );
     });
 
-    test("directSetRtlScrollConverter applies correct value", () => {
+    it("directSetRtlScrollConverter applies correct value", () => {
         const testElement: HTMLDivElement = { scrollLeft: 0 } as HTMLDivElement;
         RtlScrollConverter["directSetRtlScrollConverter"](testElement, -100);
-        expect(testElement.scrollLeft).toEqual(-100);
+        expect(testElement.scrollLeft).to.equal(-100);
     });
 
-    test("invertedSetRtlScrollConverter applies correct value", () => {
+    it("invertedSetRtlScrollConverter applies correct value", () => {
         const testElement: HTMLDivElement = { scrollLeft: 0 } as HTMLDivElement;
         RtlScrollConverter["invertedSetRtlScrollConverter"](testElement, -100);
-        expect(testElement.scrollLeft).toEqual(100);
+        expect(testElement.scrollLeft).to.equal(100);
     });
 
-    test("reverseSetRtlScrollConverter applies correct value", () => {
+    it("reverseSetRtlScrollConverter applies correct value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
             clientWidth: 100,
             scrollWidth: 200,
         } as HTMLDivElement;
         RtlScrollConverter["reverseSetRtlScrollConverter"](testElement, -100);
-        expect(testElement.scrollLeft).toEqual(0);
+        expect(testElement.scrollLeft).to.equal(0);
     });
 
-    test("getter should not adjust value in ltr mode", () => {
+    it("getter should not adjust value in ltr mode", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: -200,
         } as HTMLDivElement;
 
-        expect(RtlScrollConverter.getScrollLeft(testElement, Direction.ltr)).toEqual(
+        expect(RtlScrollConverter.getScrollLeft(testElement, Direction.ltr)).to.equal(
             -200
         );
     });
 
-    test("setter should not adjust value in ltr mode", () => {
+    it("setter should not adjust value in ltr mode", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
 
         RtlScrollConverter.setScrollLeft(testElement, -200, Direction.ltr);
-        expect(testElement.scrollLeft).toEqual(-200);
+        expect(testElement.scrollLeft).to.equal(-200);
     });
 
-    test("generated test element has correct attributes", () => {
+    it("generated test element has correct attributes", () => {
         const testElement: HTMLDivElement = RtlScrollConverter["getTestElement"]();
 
-        expect(testElement.dir).toEqual("rtl");
-        expect(testElement.style.fontSize).toEqual("14px");
-        expect(testElement.style.width).toEqual("4px");
-        expect(testElement.style.height).toEqual("1px");
-        expect(testElement.style.position).toEqual("absolute");
-        expect(testElement.style.top).toEqual("-1000px");
-        expect(testElement.style.overflow).toEqual("scroll");
+        expect(testElement.dir).to.equal("rtl");
+        expect(testElement.style.fontSize).to.equal("14px");
+        expect(testElement.style.width).to.equal("4px");
+        expect(testElement.style.height).to.equal("1px");
+        expect(testElement.style.position).to.equal("absolute");
+        expect(testElement.style.top).to.equal("-1000px");
+        expect(testElement.style.overflow).to.equal("scroll");
     });
 
-    test("applyDirectScrollConverters applies correct converters", () => {
+    it("applyDirectScrollConverters applies correct converters", () => {
         RtlScrollConverter["getRtlScrollLeftConverter"] = null;
         RtlScrollConverter["setRtlScrollLeftConverter"] = null;
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["directSetRtlScrollConverter"]
         );
 
         RtlScrollConverter["applyDirectScrollConverters"]();
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directSetRtlScrollConverter"]
         );
     });
 
-    test("applyInvertedScrollConverters applies correct converters", () => {
+    it("applyInvertedScrollConverters applies correct converters", () => {
         RtlScrollConverter["getRtlScrollLeftConverter"] = null;
         RtlScrollConverter["setRtlScrollLeftConverter"] = null;
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["invertedGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["invertedSetRtlScrollConverter"]
         );
 
         RtlScrollConverter["applyInvertedScrollConverters"]();
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["invertedGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["invertedSetRtlScrollConverter"]
         );
     });
 
-    test("applyReverseScrollConverters applies correct converters", () => {
+    it("applyReverseScrollConverters applies correct converters", () => {
         RtlScrollConverter["getRtlScrollLeftConverter"] = null;
         RtlScrollConverter["setRtlScrollLeftConverter"] = null;
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["reverseGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["reverseSetRtlScrollConverter"]
         );
 
         RtlScrollConverter["applyReverseScrollConverters"]();
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["reverseGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["reverseSetRtlScrollConverter"]
         );
     });
 
-    test("isReverse returns true if provided with an element with a positive scroll value", () => {
+    it("isReverse returns true if provided with an element with a positive scroll value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 1,
         } as HTMLDivElement;
 
-        expect(RtlScrollConverter["isReverse"](testElement)).toBe(true);
+        expect(RtlScrollConverter["isReverse"](testElement)).to.equal(true);
     });
 
-    test("isReverse returns false if provided with an element with a 0 scroll value", () => {
+    it("isReverse returns false if provided with an element with a 0 scroll value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
 
-        expect(RtlScrollConverter["isReverse"](testElement)).toBe(false);
+        expect(RtlScrollConverter["isReverse"](testElement)).to.equal(false);
     });
 
-    test("isReverse returns false if provided with an element with a negative scroll value", () => {
+    it("isReverse returns false if provided with an element with a negative scroll value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: -1,
         } as HTMLDivElement;
 
-        expect(RtlScrollConverter["isReverse"](testElement)).toBe(false);
+        expect(RtlScrollConverter["isReverse"](testElement)).to.equal(false);
     });
 
-    test("isDirect returns true if provided with an element that accepts a negative scroll value", () => {
+    it("isDirect returns true if provided with an element that accepts a negative scroll value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
 
-        expect(RtlScrollConverter["isDirect"](testElement)).toBe(true);
+        expect(RtlScrollConverter["isDirect"](testElement)).to.equal(true);
     });
 
-    test("checkForScrollType applies reverse converters if provided with an element with a positive scroll value", () => {
+    it("checkForScrollType applies reverse converters if provided with an element with a positive scroll value", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 1,
         } as HTMLDivElement;
@@ -282,15 +286,15 @@ describe("RtlScrollConverter", (): void => {
 
         RtlScrollConverter["checkForScrollType"](testElement);
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["reverseGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["reverseSetRtlScrollConverter"]
         );
     });
 
-    test("checkForScrollType applies direct converters if provided with an element with a scroll value of 0 that uses negative values", () => {
+    it("checkForScrollType applies direct converters if provided with an element with a scroll value of 0 that uses negative values", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
@@ -300,15 +304,15 @@ describe("RtlScrollConverter", (): void => {
 
         RtlScrollConverter["checkForScrollType"](testElement);
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["directSetRtlScrollConverter"]
         );
     });
 
-    test("checkForScrollType applies inverted converters if provided with a scroll value of 0 that uses positive values", () => {
+    it("checkForScrollType applies inverted converters if provided with a scroll value of 0 that uses positive values", () => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
@@ -327,10 +331,10 @@ describe("RtlScrollConverter", (): void => {
 
         RtlScrollConverter["checkForScrollType"](testElement);
 
-        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["invertedGetRtlScrollConverter"]
         );
-        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).toBe(
+        expect(RtlScrollConverter["setRtlScrollLeftConverter"]).to.equal(
             RtlScrollConverter["invertedSetRtlScrollConverter"]
         );
     });

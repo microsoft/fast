@@ -1,7 +1,8 @@
 import { DOM } from "../dom";
-import { Notifier, PropertyChangeNotifier, SubscriberSet, Subscriber } from "./notifier";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
+import type { Notifier, Subscriber } from "./notifier";
 
-const volatileRegex = /(\:|\&\&|\|\||if)/;
+const volatileRegex = /(:|&&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
 const accessorLookup = new WeakMap<any, Accessor[]>();
 let watcher: BindingObserverImplementation | undefined = void 0;
@@ -195,6 +196,7 @@ export const Observable = Object.freeze({
         initialSubscriber?: Subscriber,
         isVolatileBinding: boolean = this.isVolatileBinding(binding)
     ): BindingObserver<TSource, TReturn, TParent> {
+        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingObserverImplementation(
             binding,
             initialSubscriber,
@@ -235,7 +237,11 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
  * @param name - The existing descriptor.
  * @public
  */
-export function volatile(target: {}, name, descriptor) {
+export function volatile(
+    target: {},
+    name: string | Accessor,
+    descriptor: PropertyDescriptor
+): PropertyDescriptor {
     return Object.assign({}, descriptor, {
         get: function (this: any) {
             trackVolatile();

@@ -15,7 +15,7 @@ export const ProgressTemplate: ViewTemplate<BaseProgress> = html`
         class="${x => (x.paused ? "paused" : "")}"
     >
         ${when(
-            x => x.value,
+            x => typeof x.value === "number",
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="determinate">
                     <div
@@ -27,7 +27,7 @@ export const ProgressTemplate: ViewTemplate<BaseProgress> = html`
             `
         )}
         ${when(
-            x => !x.value,
+            x => typeof x.value !== "number",
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="indeterminate">
                     <slot class="indeterminate" name="indeterminate">

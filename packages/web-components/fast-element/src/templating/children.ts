@@ -1,6 +1,6 @@
-import { CaptureType } from "./template";
 import { AttachedBehaviorHTMLDirective } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
+import type { CaptureType } from "./template";
 
 /**
  * The options used to configure child list observation.

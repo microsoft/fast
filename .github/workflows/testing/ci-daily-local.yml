@@ -35,10 +35,8 @@ jobs:
       with:
         coverageCommand: lerna run coverage
         coverageLocations: |
-          ${{github.workspace}}/packages/tooling/fast-tooling/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-web-utilities/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov
         debug: true
