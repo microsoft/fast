@@ -23,6 +23,7 @@ Next, we'll install the FAST packages, along with supporting libraries. To do th
 
 ```shell
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
+npm install -D cross-env
 ```
 
 ## Configure create-react-app
@@ -33,9 +34,9 @@ npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 {
     //...
     "scripts": {
-        "start": "EXTEND_ESLINT=true react-scripts start",
-        "build": "EXTEND_ESLINT=true react-scripts build",
-        "test": "EXTEND_ESLINT=true react-scripts test",
+        "start": "cross-env EXTEND_ESLINT=true react-scripts start",
+        "build": "cross-env EXTEND_ESLINT=true react-scripts build",
+        "test": "cross-env EXTEND_ESLINT=true react-scripts test",
     }
     // ...
 }
