@@ -20,9 +20,9 @@ import {
 
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { FormId } from "../creator.props";
 import { defaultDevices, Device } from "./devices";
-import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
