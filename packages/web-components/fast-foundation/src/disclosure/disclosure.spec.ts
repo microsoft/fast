@@ -17,13 +17,21 @@ async function createDisclosure() {
     return { element, connect, disconnect };
 }
 
+async function macrotask() {
+    return new Promise((resolve, reject) => {
+        window.setTimeout(() => {
+            resolve(void 0);
+        })
+    })
+}
+
 describe("Disclosure", () => {
     describe("User interaction", () => {
         it("should toggle the content using `toggle()`", async () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.toggle();
-            await DOM.nextUpdate();
+            await macrotask();
             expect(element.expanded).to.equal(true);
             await disconnect();
         });
@@ -32,10 +40,10 @@ describe("Disclosure", () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.show();
-            await DOM.nextUpdate();
+            await macrotask();
             expect(element.expanded).to.equal(true);
             element.hide();
-            await DOM.nextUpdate();
+            await macrotask();
             expect(element.expanded).to.equal(false);
             await disconnect();
         });
