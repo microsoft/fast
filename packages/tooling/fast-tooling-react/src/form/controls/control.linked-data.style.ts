@@ -60,7 +60,7 @@ const styles: ComponentStyles<LinkedDataControlClassNameContract, {}> = {
     linkedDataControl_existingLinkedDataItemContent: {},
     linkedDataControl_linkedDataListControl: {
         position: "relative",
-        width: "calc(100% - 30px)",
+        width: "100%",
     },
     linkedDataControl_linkedDataListInput: {
         ...selectInputStyle,
