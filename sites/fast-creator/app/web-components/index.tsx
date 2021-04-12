@@ -5,6 +5,7 @@ import {
     FASTButton,
     FASTSelect,
     FASTSlider,
+    FASTSliderLabel,
     FASTTab,
     FASTTabPanel,
     FASTTabs,
@@ -21,12 +22,14 @@ import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { FormId } from "../creator.props";
 import { defaultDevices, Device } from "./devices";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
 FASTButton;
 FASTSlider;
+FASTSliderLabel;
 FASTTab;
 FASTTabs;
 FASTTabPanel;
@@ -80,6 +83,22 @@ export function renderDeviceSelect(
     );
 }
 
+function getSliderLabels(positions: number[]): React.ReactNode {
+    const positionLength = positions.length - 1;
+
+    return positions.map((position: number, index: number) => {
+        const displayNumber: XOR<void, number> =
+            positions.length > 10 && index !== 0 && index !== positionLength
+                ? undefined
+                : position;
+        return (
+            <fast-slider-label key={position} position={position}>
+                {displayNumber}
+            </fast-slider-label>
+        );
+    });
+}
+
 function getSliderControl(
     id: string,
     updateHandler: (updatedData: { [key: string]: unknown }) => void,
@@ -92,6 +111,12 @@ function getSliderControl(
         id,
         context: ControlContext.fill,
         control: (config: ControlConfig): React.ReactNode => {
+            const positions: number[] = new Array((max - min) / step + 1)
+                .fill(0)
+                .map((number: number, index: number): number => {
+                    return min + step * index;
+                });
+
             return (
                 <fast-slider
                     value={config.value || defaultValue}
@@ -105,7 +130,9 @@ function getSliderControl(
                             });
                         },
                     }}
-                ></fast-slider>
+                >
+                    {getSliderLabels(positions)}
+                </fast-slider>
             );
         },
     });
