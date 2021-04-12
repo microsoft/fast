@@ -47,7 +47,13 @@ fillColor.deleteValueFor(descendent);
 fillColor.getValueFor(descendent); // "#FFFFFF"
 ```
 
-### 5. Emit a token to a CSS Custom Property
+### 5. Setting a default value
+A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
+
+```ts
+fillColor.withDefault("#FFFFFF");
+```
+### 6. Emit a token to a CSS Custom Property
 A Design Token can be made available in CSS through CSS custom properties. The custom property value will be set to the token's value for the supplied target element.
 
 ```ts
