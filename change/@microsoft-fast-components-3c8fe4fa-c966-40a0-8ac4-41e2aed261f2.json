@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix anchored region positioning bugs",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
