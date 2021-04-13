@@ -17,10 +17,10 @@ describe("neutralDividerRest", (): void => {
     });
 });
 
-const color = (parseColorHexRGB(neutralBaseColor)!)
-const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
 
-describe("ensure the same", () => {
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         it(`should be the same for ${newSwatch}`, () => {
             expect(neutralDivider(palette, newSwatch, fastDesignSystemDefaults.neutralDividerRestDelta).toColorSting().toUpperCase()).to.equal(

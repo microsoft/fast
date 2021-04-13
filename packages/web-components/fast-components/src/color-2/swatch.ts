@@ -13,8 +13,6 @@ export class SwatchRGB extends ColorRGBA64 implements Swatch {
         this.relativeLuminance = rgbToRelativeLuminance(this);
     }
 
-    toColorSting = this.toStringHexRGB;
-    contrast(target: RelativeLuminance): number {
-        return contrast(this, target);
-    }
+    public toColorSting = this.toStringHexRGB;
+    public contrast = contrast.bind(null, this);
 }

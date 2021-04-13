@@ -6,6 +6,8 @@ export interface RelativeLuminance {
 }
 
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number {
-    ``;
-    return (a.relativeLuminance + 0.05) / (b.relativeLuminance + 0.05);
+    const L1 = a.relativeLuminance > b.relativeLuminance ? a : b;
+    const L2 = a.relativeLuminance > b.relativeLuminance ? b : a;
+
+    return (L1.relativeLuminance + 0.05) / (L2.relativeLuminance + 0.05);
 }
