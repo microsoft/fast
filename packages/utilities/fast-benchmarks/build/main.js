@@ -95,6 +95,7 @@ async function webpackDone(stats) {
     const testPaths = testNamesToRun.map(x => `${x}.html`);
 
     // There should be an emitted .html file for each benchmark, but just to make sure
+    console.log(testPaths, emittedAssets);
     for (let testPath of testPaths) {
         if (!emittedAssets.has(testPath)) {
             console.error(
