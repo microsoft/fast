@@ -1,17 +1,18 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, eventScroll, eventResize } from "@microsoft/fast-web-utilities";
+import type {
+    ConstructibleResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
+import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+
 import { getDirection } from "../utilities";
 import { IntersectionService } from "./intersection-service";
+import type { ResizeObserverEntry } from "./resize-observer-entry";
 
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
 // https://github.com/microsoft/TypeScript/issues/37861
-import type {
-    ConstructibleResizeObserver,
-    ResizeObserverClassDefinition,
-} from "./resize-observer";
-import type { ResizeObserverEntry } from "./resize-observer-entry";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -413,6 +414,7 @@ export class AnchoredRegion extends FASTElement {
     private pendingLayoutUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
+    private regionVisible: boolean = false;
 
     // defines how big a difference in pixels there must be between states to
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
@@ -476,7 +478,7 @@ export class AnchoredRegion extends FASTElement {
         this.anchorTop = this.anchorTop + verticalOffsetDelta;
         this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
 
-        this.requestLayoutUpdate();
+        this.updateLayout();
     };
 
     /**
@@ -528,7 +530,7 @@ export class AnchoredRegion extends FASTElement {
     private requestLayoutUpdate(): void {
         if (this.pendingLayoutUpdate === false && this.pendingReset === false) {
             this.pendingLayoutUpdate = true;
-            DOM.queueUpdate(this.updateLayout);
+            DOM.queueUpdate(() => this.updateLayout());
         }
     }
 
@@ -542,7 +544,7 @@ export class AnchoredRegion extends FASTElement {
         ) {
             this.pendingLayoutUpdate = false;
             this.setInitialState();
-            DOM.queueUpdate(this.reset);
+            DOM.queueUpdate(() => this.reset());
             this.pendingReset = true;
         }
     }
@@ -552,6 +554,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private setInitialState(): void {
         this.initialLayoutComplete = false;
+        this.regionVisible = false;
         this.regionTop = "0";
         this.regionRight = "0";
         this.regionBottom = "0";
@@ -690,7 +693,7 @@ export class AnchoredRegion extends FASTElement {
         }
 
         this.updateRegionOffset(this.regionRect);
-        this.requestLayoutUpdate();
+        this.updateLayout();
     };
 
     /**
@@ -816,10 +819,6 @@ export class AnchoredRegion extends FASTElement {
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        if (!this.pendingLayoutUpdate) {
-            return;
-        }
-
         this.pendingLayoutUpdate = false;
 
         let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel = "undefined";
@@ -942,13 +941,23 @@ export class AnchoredRegion extends FASTElement {
 
         if (!this.initialLayoutComplete) {
             this.initialLayoutComplete = true;
+            this.requestPositionUpdates();
+            return;
+        }
+
+        if (!this.regionVisible) {
+            this.regionVisible = true;
             this.style.removeProperty("pointer-events");
             this.style.removeProperty("opacity");
             this.classList.toggle("loaded", true);
-            DOM.queueUpdate(() => this.$emit("loaded", this, { bubbles: false }));
+            this.$emit("loaded", this, { bubbles: false });
         }
 
         if (positionChanged) {
+            // do a position check to ensure we're in the right spot
+            // temporary until method for recalculating offsets on position changes improved
+            this.requestPositionUpdates();
+            // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
     };
@@ -1168,7 +1177,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.horizontalInset) {
             return ["insetLeft", "insetRight"];
         }
-
         return ["left", "right"];
     };
 
@@ -1179,7 +1187,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.verticalInset) {
             return ["insetTop", "insetBottom"];
         }
-
         return ["top", "bottom"];
     };
 

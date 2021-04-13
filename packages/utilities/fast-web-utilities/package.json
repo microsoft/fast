@@ -20,68 +20,55 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
-    "coverage": "jest --coverage",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "yarn eslint && yarn unit-tests",
+    "test": "yarn eslint && yarn build && yarn test-chrome:verbose",
+    "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+    "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+    "test-chrome": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage",
+    "test-chrome:verbose": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
+    "test-chrome:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
+    "test-chrome:debugger": "karma start karma.conf.js --browsers=ChromeDebugging",
+    "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
+    "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
+    "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
+    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix",
-    "unit-tests": "jest --runInBand",
-    "unit-tests:watch": "jest --watch",
     "watch": "yarn build -- -w --preserveWatchOutput"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageReporters": [
-      "json",
-      "text",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../../"
-        }
-      ]
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 97,
-        "branches": 94,
-        "functions": 97,
-        "lines": 97
-      }
-    },
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es"
-    ],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ]
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
+    "@types/chai": "^4.2.11",
+    "@types/karma": "^5.0.0",
+    "@types/mocha": "^7.0.2",
     "@microsoft/eslint-config-fast-dna": "^1.2.0",
-    "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.4",
     "babel-core": "^7.0.0-bridge.0",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^4.0.0",
-    "jest": "^25.4.0",
+    "istanbul": "^0.4.5",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
+    "karma": "^5.0.4",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.2",
+    "karma-coverage-istanbul-reporter": "^3.0.0",
+    "karma-firefox-launcher": "^2.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-source-map-support": "^1.4.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
+    "mocha": "^7.1.2",
     "prettier": "2.0.2",
-    "ts-jest": "^25.4.0",
     "ts-loader": "^4.0.1",
     "typescript": "^3.9.0"
   },
