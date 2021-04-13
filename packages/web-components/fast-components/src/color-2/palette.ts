@@ -44,11 +44,11 @@ export class PaletteRGB implements Palette<SwatchRGB> {
             new ComponentStateColorPalette({
                 baseColor: source,
             }).palette
-                .map(x => parseColorHexRGB(x.toStringHexRGB())!)
+                .map(x => parseColorHexRGB(x.toStringHexRGB())!) // TODO: we need lower fidelity
                 .map(x => new SwatchRGB(x.r, x.g, x.b))
         );
 
-        this.reversedSwatches = Object.freeze(this.swatches.concat([]).reverse());
+        this.reversedSwatches = Object.freeze([...this.swatches].reverse());
         this.lastIndex = this.swatches.length - 1;
     }
 
