@@ -78,6 +78,16 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should have the attribute aria-expanded set to false", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.getAttribute("aria-expanded")).to.equal("false");
+
+        await disconnect();
+    });
+
     it("should NOT have a tabindex when `disabled` is true", async () => {
         const { element, connect, disconnect } = await setup();
         element.disabled = true;
@@ -141,6 +151,20 @@ describe("Select", () => {
         element.value = "two";
 
         expect(element.value).to.equal("two");
+
+        await disconnect();
+    });
+
+    it("should update the aria-expanded attribute when opened", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.click();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-expanded")).to.equal("true");
 
         await disconnect();
     });
