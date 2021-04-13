@@ -133,7 +133,7 @@ module.exports = function (config) {
     if (config.coverage) {
         options.webpack.module.rules.push({
             enforce: "post",
-            exclude: /(fast-web-utilities|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
+            exclude: /(utilities|web-components|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,

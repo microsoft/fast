@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix tooling coverage globbing pattern",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
