@@ -290,7 +290,8 @@ class Creator extends Editor<{}, CreatorState> {
                         this.fastMessageSystem,
                         this.fastDesignMessageSystem,
                         this.linkedDataControl,
-                        this.handleFormVisibility
+                        this.handleFormVisibility,
+                        this.updateDesignSystemDataDictionaryState
                     )}
                 </div>
                 <Footer />
@@ -481,7 +482,9 @@ class Creator extends Editor<{}, CreatorState> {
         this.setResponsiveDeviceId();
     };
 
-    private updateDesignSystemDataDictionaryState(newData: any) {
+    private updateDesignSystemDataDictionaryState = (newData: {
+        [key: string]: unknown;
+    }): void => {
         this.setState(
             {
                 designSystemDataDictionary: [
@@ -514,7 +517,7 @@ class Creator extends Editor<{}, CreatorState> {
                 });
             }
         );
-    }
+    };
 
     /**
      * Event handler for accent color input changes
