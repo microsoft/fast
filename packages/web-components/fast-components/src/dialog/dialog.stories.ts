@@ -1,4 +1,4 @@
-import { Dialog } from "@microsoft/fast-foundation";
+import { Dialog as FastDialog } from "@microsoft/fast-foundation";
 import DialogTemplate from "./fixtures/dialog.html";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
@@ -48,13 +48,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             dialog4.hidden = true;
         });
 
-        (dialog2 as Dialog).tabQueueStart = document.getElementById("starttabqueue2")!;
-        (dialog2 as Dialog).tabQueueEnd = document.getElementById("endtabqueue2")!;
+        (dialog2 as FastDialog).tabQueueStart = document.getElementById(
+            "starttabqueue2"
+        )!;
+        (dialog2 as FastDialog).tabQueueEnd = document.getElementById("endtabqueue2")!;
 
-        (dialog3 as Dialog).tabQueueStart = () => {
+        (dialog3 as FastDialog).tabQueueStart = () => {
             return document.getElementById("starttabqueue3")!;
         };
-        (dialog3 as Dialog).tabQueueEnd = () => {
+        (dialog3 as FastDialog).tabQueueEnd = () => {
             return document.getElementById("endtabqueue3")!;
         };
     }
@@ -64,4 +66,4 @@ export default {
     title: "Dialog",
 };
 
-export const FastDialog = () => DialogTemplate;
+export const Dialog = () => DialogTemplate;

@@ -58,6 +58,23 @@ export const fastDialogDefinition: WebComponentDefinition = {
                     default: false,
                     required: false,
                 },
+                {
+                    name: "tab-queue-start",
+                    title: "Tab queue start element id",
+                    description:
+                        "The id of the element that starts the dialog focus trap",
+                    type: DataType.string,
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "tab-queue-end",
+                    title: "Tab queue end element id",
+                    description: "The id of the element that ends the dialog focus trap",
+                    type: DataType.string,
+                    default: false,
+                    required: false,
+                },
             ],
             slots: [
                 {
