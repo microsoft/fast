@@ -1,0 +1,6 @@
+import { Palette } from "../palette";
+import { Swatch } from "../swatch";
+
+export function neutralForeground(palette: Palette, reference: Swatch) {
+    return palette.colorContrast(reference, 14);
+}
