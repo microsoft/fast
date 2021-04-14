@@ -5,7 +5,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
   GITHUB_SERVICE_USER: "Microsoft FAST Builds"
   GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
       
