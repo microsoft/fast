@@ -91,31 +91,9 @@ export class Dialog extends FoundationElement {
     public ariaLabel: string;
 
     /**
-     * The html element at the begginning of the dialog's tab queue.
-     * This can be set directly or through the tab-queue-start-id attribute
-     *
-     * @public
-     */
-    @observable
-    public tabQueueStartElement: HTMLElement | null | undefined;
-
-    /**
-     * The html element at the end of the dialog's tab queue.
-     * This can be set directly or through the tab-queue-start-id attribute
-     *
-     * @public
-     */
-    @observable
-    public tabQueueEndElement: HTMLElement | null | undefined;
-
-    /**
      * @internal
      */
     public dialog: HTMLDivElement;
-
-    private tabbableElements: Array<HTMLElement | SVGElement>;
-
-    private observer: MutationObserver;
 
     /**
      * @internal
