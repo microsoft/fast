@@ -4,16 +4,14 @@ on:
   workflow_dispatch
 
 env:
-  NPM_PAT: ${{ secrets.NPM_PAT}}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_SERVICE_PAT: ${{ secrets.GH_PAT }}
   GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-  GITHUB_SERVICE_EMAIL: "fastdna@service.microsoft.com"
+  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
       
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-    if: contains('chrisdholt,janechu,nicholasrice', github.actor)
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel,EisenbergEffect', github.actor)
 
     steps:
     - uses: actions/checkout@v2
@@ -40,7 +38,9 @@ jobs:
     - name: Testing unit tests
       run: lerna run test --stream   
    
-    - name: Publish NPM changed packages
-      run: |
-        yarn publish-ci -y  --access public $NPM_PAT 
+    - name: Publish NPM packages
+      run: yarn publish-ci -n $NPM_TOKEN
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN}}
+
      
