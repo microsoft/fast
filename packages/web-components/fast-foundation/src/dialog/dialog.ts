@@ -43,40 +43,24 @@ export class Dialog extends FoundationElement {
     public trapFocus: boolean = true;
 
     /**
-     * The id of the start element of the internal tab queue when trap-focus is true.
+     * The start element of the internal tab queue
      *
      * @public
      * @remarks
-     * HTML Attribute: tab-queue-start-id
+     * HTML Attribute: tab-queue-start
      */
-    @attr({ attribute: "tab-queue-start-id" })
-    public tabQueueStartId: string;
-    private tabQueueStartIdChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            this.tabQueueStartElement =
-                typeof this.tabQueueStartId === "string"
-                    ? document.getElementById(this.tabQueueStartId)
-                    : undefined;
-        }
-    }
+    @attr({ attribute: "tab-queue-start" })
+    public tabQueueStart: string | HTMLElement | ((HTMLElement) => HTMLElement);
 
     /**
-     * The id of the end element of the internal tab queue when trap-focus is true
+     * The end element of the internal tab queue
      *
      * @public
      * @remarks
-     * HTML Attribute: tab-queue-end-id
+     * HTML Attribute: tab-queue-end
      */
-    @attr({ attribute: "tab-queue-end-id" })
-    public tabQueueEndId: string;
-    private tabQueueEndIdChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            this.tabQueueEndElement =
-                typeof this.tabQueueEndId === "string"
-                    ? document.getElementById(this.tabQueueEndId)
-                    : undefined;
-        }
-    }
+    @attr({ attribute: "tab-queue-end" })
+    public tabQueueEnd: string | HTMLElement | ((HTMLElement) => HTMLElement);
 
     /**
      * The id of the element describing the dialog.
@@ -105,24 +89,6 @@ export class Dialog extends FoundationElement {
      */
     @attr({ attribute: "aria-label" })
     public ariaLabel: string;
-
-    /**
-     * The html element at the begginning of the dialog's tab queue.
-     * This can be set directly or through the tab-queue-start-id attribute
-     *
-     * @public
-     */
-    @observable
-    public tabQueueStartElement: HTMLElement | null | undefined;
-
-    /**
-     * The html element at the end of the dialog's tab queue.
-     * This can be set directly or through the tab-queue-start-id attribute
-     *
-     * @public
-     */
-    @observable
-    public tabQueueEndElement: HTMLElement | null | undefined;
 
     /**
      * @internal
@@ -164,10 +130,6 @@ export class Dialog extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.observer = new MutationObserver(this.onChildListChange);
-        // only observe if nodes are added or removed
-        this.observer.observe(this as Element, { childList: true });
-
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
         // Ensure the DOM is updated
@@ -181,9 +143,6 @@ export class Dialog extends FoundationElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
-        // disconnect observer
-        this.observer.disconnect();
-
         // remove keydown event listener
         document.removeEventListener("keydown", this.handleDocumentKeydown);
 
@@ -193,31 +152,8 @@ export class Dialog extends FoundationElement {
         }
     }
 
-    private onChildListChange = (mutations: MutationRecord[]): void => {
-        if (mutations.length) {
-            this.tabbableElements = tabbable(this);
-        }
-    };
-
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
-            // store references to tabbable elements
-
-            // NOTE:  tabbable's list of elements in the tab queue is a legacy fallback as it does not
-            // account for web-components unless those are marked with tab index of 0 or greater
-            // authors should get more reliable results by specifying the start/end elements of
-            // the internal tab queue directly through the tab start/end attributes or properties
-            this.tabbableElements = tabbable(this as Element);
-
-            this.tabQueueStartElement =
-                typeof this.tabQueueStartId === "string"
-                    ? document.getElementById(this.tabQueueStartId)
-                    : undefined;
-            this.tabQueueEndElement =
-                typeof this.tabQueueEndId === "string"
-                    ? document.getElementById(this.tabQueueEndId)
-                    : undefined;
-
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
 
@@ -254,58 +190,84 @@ export class Dialog extends FoundationElement {
     };
 
     private handleTabKeyDown = (e: KeyboardEvent): void => {
-        if (!this.trapFocus) {
+        if (!this.trapFocus || this.hidden) {
             return;
         }
 
-        // use start/end elements if available
-        if (this.tabQueueStartElement && this.tabQueueEndElement) {
-            if (e.shiftKey && e.target === this.tabQueueStartElement) {
-                this.tabQueueEndElement.focus();
-                e.preventDefault();
-            } else if (!e.shiftKey && e.target === this.tabQueueEndElement) {
-                this.tabQueueStartElement.focus();
-                e.preventDefault();
-            }
+        const bounds: HTMLElement[] = this.getTabQueueBounds();
 
+        if (bounds.length === 0) {
             return;
         }
 
-        // fall back to tabbable
-        const tabbableElementCount: number = this.tabbableElements.length;
-
-        if (tabbableElementCount === 0) {
-            this.dialog.focus();
+        if (bounds.length === 1) {
+            // keep focus on single element
+            bounds[0].focus();
             e.preventDefault();
             return;
         }
 
-        if (e.shiftKey && e.target === this.tabbableElements[0]) {
-            this.tabbableElements[tabbableElementCount - 1].focus();
+        if (e.shiftKey && e.target === bounds[0]) {
+            bounds[bounds.length - 1].focus();
             e.preventDefault();
-        } else if (
-            !e.shiftKey &&
-            e.target === this.tabbableElements[tabbableElementCount - 1]
-        ) {
-            this.tabbableElements[0].focus();
+        } else if (!e.shiftKey && e.target === bounds[bounds.length - 1]) {
+            bounds[0].focus();
             e.preventDefault();
         }
+
+        return;
+    };
+
+    private getTabQueueBounds = (): HTMLElement[] => {
+        if (this.tabQueueStart === undefined) {
+            return tabbable(this);
+        }
+
+        const bounds: HTMLElement[] = [];
+
+        const boundStart: HTMLElement | null = this.resolveElementReference(
+            this.tabQueueStart
+        );
+        if (boundStart !== null) {
+            bounds.push(boundStart);
+        }
+
+        const boundEnd: HTMLElement | null = this.resolveElementReference(
+            this.tabQueueEnd
+        );
+        if (boundEnd !== null) {
+            bounds.push(boundEnd);
+        }
+
+        return bounds;
+    };
+
+    private resolveElementReference = (
+        elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
+    ): HTMLElement | null => {
+        if (typeof elementRef === "string") {
+            return document.getElementById(elementRef);
+        }
+
+        if (typeof elementRef === "function") {
+            return elementRef(this.dialog);
+        }
+
+        if (isHTMLElement(elementRef)) {
+            return elementRef;
+        }
+
+        return null;
     };
 
     /**
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        if (this.tabQueueStartElement) {
-            this.tabQueueStartElement.focus();
-            return;
-        }
+        const bounds: HTMLElement[] = this.getTabQueueBounds();
 
-        // fall back to tabbable if we have no start element specified
-        if (this.tabbableElements.length === 0) {
-            this.dialog.focus();
-        } else {
-            this.tabbableElements[0].focus();
+        if (bounds.length > 0) {
+            bounds[0].focus();
         }
     };
 
