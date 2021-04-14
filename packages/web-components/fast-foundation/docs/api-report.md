@@ -912,10 +912,8 @@ export class Dialog extends FASTElement {
     hide(): void;
     modal: boolean;
     show(): void;
-    tabQueueEndElement: HTMLElement | null | undefined;
-    tabQueueEndId: string;
-    tabQueueStartElement: HTMLElement | null | undefined;
-    tabQueueStartId: string;
+    tabQueueEnd: string | HTMLElement | ((HTMLElement: any) => HTMLElement);
+    tabQueueStart: string | HTMLElement | ((HTMLElement: any) => HTMLElement);
     trapFocus: boolean;
     }
 
