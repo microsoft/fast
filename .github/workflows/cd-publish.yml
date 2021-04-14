@@ -39,7 +39,8 @@ jobs:
       run: lerna run test --stream   
    
     - name: Publish NPM packages
-      run: yarn publish-ci -n $NPM_TOKEN
+      run: |
+        yarn publish-ci -n $NPM_TOKEN -verbose
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN}}
 
