@@ -207,12 +207,6 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 *Slots:*
 - default slot for content
 
-*functions:*
-- updateAnchorOffset = (
-    horizontalOffsetDelta: number,
-    verticalOffsetDelta: number
-) 
-
 *Events:*
 - loaded - The contents of the anchored region are loaded into the DOM.
 - positionchange - The positioning of the anchored region has changed.

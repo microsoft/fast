@@ -154,38 +154,6 @@
         </div>
     </div>
 
-    <h2>Scaling via offset</h2>
-    <div
-        id="viewport-scaling-offset"
-        style="
-            height: 400px;
-            width: 400px;
-            background: lightgray;
-            overflow: scroll;
-            position: relative;
-        "
-    >
-        <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <button
-                id="anchor-scaling-offset"
-                style="margin-left: 500px; margin-top: 500px;"
-            >
-                anchor
-            </button>
-            <fast-anchored-region
-                id="region-scaling-offset"
-                anchor="anchor-scaling-offset"
-                viewport="viewport-scaling-offset"
-                vertical-positioning-mode="dynamic"
-                vertical-scaling="fill"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="fill"
-            >
-                <div style="height: 100%; width: 100%; background: yellow;"></div>
-            </fast-anchored-region>
-        </div>
-    </div>
-
     <h2>Inset</h2>
     <div
         id="viewport-inset"
