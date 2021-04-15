@@ -56,6 +56,175 @@ describe("FASTDialog", function () {
     it("should trap focus by default", async function () {
         const element = await this.page.$("fast-dialog");
 
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+    });
+
+    it("should trap focus when element id's are specified", async function () {
+        const element = await this.page.$("fast-dialog");
+
+        expect(element).to.exist;
+
+        await element?.evaluate(node => (node as FASTDialog).tabQueueStart = "button1");
+        await element?.evaluate(node => (node as FASTDialog).tabQueueEnd = "button2");
+
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+    });
+
+    it("should trap focus when element instances are specified", async function () {
+        const element = await this.page.$("fast-dialog");
+
+        expect(element).to.exist;
+
+        await element?.evaluate(node => (node as FASTDialog).tabQueueStart = document.getElementById("button1") as HTMLElement);
+        await element?.evaluate(node => (node as FASTDialog).tabQueueEnd = document.getElementById("button2") as HTMLElement);
+
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+    });
+
+    it("should trap focus when callback functions are specified", async function () {
+        const element = await this.page.$("fast-dialog");
+
+        expect(element).to.exist;
+
+        await element?.evaluate(node => (node as FASTDialog).tabQueueStart = () => { return document.getElementById("button1") as HTMLElement });
+        await element?.evaluate(node => (node as FASTDialog).tabQueueEnd = () => { return document.getElementById("button2") as HTMLElement });
+
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button2");
+
+        await element?.press("Shift+Tab");
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+    });
+
+    // FASTDialog should render on the page
+    it("should trap focus by default", async function () {
+        const element = await this.page.$("fast-dialog");
+
         await element?.focus();
 
         expect(
