@@ -41,4 +41,4 @@ jobs:
     - name: Publish NPM packages
       env:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: yarn publish-ci -n $NPM_SECRET_TOKEN -verbose
+      run: yarn publish-ci -n $NPM_SECRET_TOKEN
