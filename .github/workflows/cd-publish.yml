@@ -36,11 +36,9 @@ jobs:
       run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream   
+      run: lerna run test --stream
    
     - name: Publish NPM packages
-      run: yarn publish-ci -n $NPM_TOKEN
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN}}
-
-     
+        NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: yarn publish-ci -n $NPM_SECRET_TOKEN -verbose
