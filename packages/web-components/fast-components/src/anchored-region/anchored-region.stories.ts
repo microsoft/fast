@@ -71,23 +71,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         document
             .getElementById("viewport-scaling-update")!
             .addEventListener("scroll", () => regionScalingUpdate.update());
-
-        const regionScalingOffset = document.getElementById(
-            "region-scaling-offset"
-        ) as FASTAnchoredRegion;
-        document
-            .getElementById("viewport-scaling-offset")
-            ?.addEventListener("scroll", (e: MouseEvent) => {
-                const target = e.target as HTMLElement;
-
-                regionScalingOffset.updateAnchorOffset(
-                    scalingViewportPreviousXValue - target.scrollLeft,
-                    scalingViewportPreviousYValue - target.scrollTop
-                );
-
-                scalingViewportPreviousXValue = target.scrollLeft;
-                scalingViewportPreviousYValue = target.scrollTop;
-            });
     }
 });
 
