@@ -386,18 +386,11 @@ export class AnchoredRegion extends FASTElement {
 
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
-    private viewportRect: ClientRect | DOMRect | null = null;
-    private anchorRect: ClientRect | DOMRect | null = null;
-    private regionRect: ClientRect | DOMRect | null = null;
+    private viewportRect: ClientRect | DOMRect | null;
+    private anchorRect: ClientRect | DOMRect | null;
+    private regionRect: ClientRect | DOMRect | null;
 
     private regionDimension: Dimension;
-
-    private anchorTop: number;
-    private anchorRight: number;
-    private anchorBottom: number;
-    private anchorLeft: number;
-    private anchorHeight: number;
-    private anchorWidth: number;
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -546,13 +539,6 @@ export class AnchoredRegion extends FASTElement {
         this.regionRect = null;
         this.anchorRect = null;
         this.regionDimension = { height: 0, width: 0 };
-
-        this.anchorTop = 0;
-        this.anchorRight = 0;
-        this.anchorBottom = 0;
-        this.anchorLeft = 0;
-        this.anchorHeight = 0;
-        this.anchorWidth = 0;
 
         this.verticalPosition = "undefined";
         this.horizontalPosition = "undefined";
@@ -736,14 +722,9 @@ export class AnchoredRegion extends FASTElement {
     /**
      *  Update data based on anchor intersections
      */
-    private handleAnchorIntersection = (anchorEntry: IntersectionObserverEntry): void => {
-        this.anchorTop = anchorEntry.boundingClientRect.top;
-        this.anchorRight = anchorEntry.boundingClientRect.right;
-        this.anchorBottom = anchorEntry.boundingClientRect.bottom;
-        this.anchorLeft = anchorEntry.boundingClientRect.left;
-        this.anchorHeight = anchorEntry.boundingClientRect.height;
-        this.anchorWidth = anchorEntry.boundingClientRect.width;
-    };
+    private handleAnchorIntersection = (
+        anchorEntry: IntersectionObserverEntry
+    ): void => {};
 
     /**
      *  Update data based on positioner intersections
@@ -996,7 +977,7 @@ export class AnchoredRegion extends FASTElement {
 
         switch (this.horizontalScaling) {
             case "anchor":
-                this.regionWidth = `${this.anchorWidth}px`;
+                this.regionWidth = `${this.anchorRect?.width}px`;
                 break;
 
             case "fill":
@@ -1046,7 +1027,7 @@ export class AnchoredRegion extends FASTElement {
 
         switch (this.verticalScaling) {
             case "anchor":
-                this.regionHeight = `${this.anchorHeight}px`;
+                this.regionHeight = `${this.anchorRect?.height}px`;
                 break;
 
             case "fill":
@@ -1063,54 +1044,64 @@ export class AnchoredRegion extends FASTElement {
      *  Update the offset values
      */
     private updateRegionOffset = (regionRect: DOMRect | ClientRect): void => {
+        if (this.anchorRect === undefined || this.anchorRect === null) {
+            return;
+        }
         if (this.horizontalPositioningMode === "uncontrolled") {
-            this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
+            this.baseHorizontalOffset = this.anchorRect.left - regionRect.left;
         } else {
             switch (this.horizontalPosition) {
                 case "undefined":
-                    this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
+                    this.baseHorizontalOffset = this.anchorRect.left - regionRect.left;
                     break;
                 case "left":
                     this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorLeft - regionRect.right);
+                        this.baseHorizontalOffset +
+                        (this.anchorRect.left - regionRect.right);
                     break;
                 case "insetLeft":
                     this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorRight - regionRect.right);
+                        this.baseHorizontalOffset +
+                        (this.anchorRect.right - regionRect.right);
                     break;
                 case "insetRight":
                     this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorLeft - regionRect.left);
+                        this.baseHorizontalOffset +
+                        (this.anchorRect.left - regionRect.left);
                     break;
                 case "right":
                     this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorRight - regionRect.left);
+                        this.baseHorizontalOffset +
+                        (this.anchorRect.right - regionRect.left);
                     break;
             }
         }
 
         if (this.verticalPositioningMode === "uncontrolled") {
-            this.baseVerticalOffset = this.anchorTop - regionRect.top;
+            this.baseVerticalOffset = this.anchorRect.top - regionRect.top;
         } else {
             switch (this.verticalPosition) {
                 case "undefined":
-                    this.baseVerticalOffset = this.anchorTop - regionRect.top;
+                    this.baseVerticalOffset = this.anchorRect.top - regionRect.top;
                     break;
                 case "top":
                     this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorTop - regionRect.bottom);
+                        this.baseVerticalOffset +
+                        (this.anchorRect.top - regionRect.bottom);
                     break;
                 case "insetTop":
                     this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorBottom - regionRect.bottom);
+                        this.baseVerticalOffset +
+                        (this.anchorRect.bottom - regionRect.bottom);
                     break;
                 case "insetBottom":
                     this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorTop - regionRect.top);
+                        this.baseVerticalOffset + (this.anchorRect.top - regionRect.top);
                     break;
                 case "bottom":
                     this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorBottom - regionRect.top);
+                        this.baseVerticalOffset +
+                        (this.anchorRect.bottom - regionRect.top);
                     break;
             }
         }
@@ -1142,18 +1133,18 @@ export class AnchoredRegion extends FASTElement {
     private getAvailableWidth = (
         positionOption: AnchoredRegionHorizontalPositionLabel
     ): number => {
-        if (this.viewportRect !== null) {
-            const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
+        if (this.viewportRect !== null && this.anchorRect !== null) {
+            const spaceLeft: number = this.anchorRect.left - this.viewportRect.left;
             const spaceRight: number =
-                this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
+                this.viewportRect.right - (this.anchorRect.left + this.anchorRect.width);
 
             switch (positionOption) {
                 case "left":
                     return spaceLeft;
                 case "insetLeft":
-                    return spaceLeft + this.anchorWidth;
+                    return spaceLeft + this.anchorRect.width;
                 case "insetRight":
-                    return spaceRight + this.anchorWidth;
+                    return spaceRight + this.anchorRect.width;
                 case "right":
                     return spaceRight;
             }
@@ -1168,18 +1159,18 @@ export class AnchoredRegion extends FASTElement {
     private getAvailableHeight = (
         positionOption: AnchoredRegionVerticalPositionLabel
     ): number => {
-        if (this.viewportRect !== null) {
-            const spaceAbove: number = this.anchorTop - this.viewportRect.top;
+        if (this.viewportRect !== null && this.anchorRect !== null) {
+            const spaceAbove: number = this.anchorRect.top - this.viewportRect.top;
             const spaceBelow: number =
-                this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
+                this.viewportRect.bottom - (this.anchorRect.top + this.anchorRect.height);
 
             switch (positionOption) {
                 case "top":
                     return spaceAbove;
                 case "insetTop":
-                    return spaceAbove + this.anchorHeight;
+                    return spaceAbove + this.anchorRect.height;
                 case "insetBottom":
-                    return spaceBelow + this.anchorHeight;
+                    return spaceBelow + this.anchorRect.height;
                 case "bottom":
                     return spaceBelow;
             }
