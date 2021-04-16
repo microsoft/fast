@@ -20,7 +20,7 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "stroke-linecap",
                     description: "The path stroke-linecap",
                     default: "",
-                    title: "",
+                    title: "stroke-linecap",
                     type: DataType.string,
                     required: false,
                 },
