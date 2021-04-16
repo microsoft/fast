@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add pointer-events none to button styles to prevent focus rect outline",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
