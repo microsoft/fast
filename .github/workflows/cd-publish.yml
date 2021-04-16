@@ -17,11 +17,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN}}
 
     - name: Add or Update packages
       run: sudo yarn global add lerna
 
-    - name: Authenticate Git for Pushes
+    - name: Set Git User
       run: |
         git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
         git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
@@ -36,11 +37,9 @@ jobs:
       run: lerna run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream   
+      run: lerna run test --stream
    
     - name: Publish NPM packages
-      run: yarn publish-ci -n $NPM_TOKEN
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN}}
-
-     
+        NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: yarn publish-ci -n $NPM_SECRET_TOKEN
