@@ -79,14 +79,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     @observable
     public defaultSlottedNodes: Node[];
     private defaultSlottedNodesChanged(): void {
-        if (
-            (this.getAttribute("aria-label") === null || this.labelDerivedFromContent) &&
-            this.defaultSlottedNodes.length > 0 &&
-            this.defaultSlottedNodes[0].nodeType === Node.TEXT_NODE &&
-            this.defaultSlottedNodes[0].nodeValue !== null
-        ) {
-            this.setAttribute("aria-label", this.defaultSlottedNodes[0].nodeValue);
-            this.labelDerivedFromContent = true;
+        if (this.$fastController.isConnected) {
+            this.updateAriaLabelForNodeChange();
         }
     }
 
@@ -180,6 +174,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
                 }
             }
         }
+
+        this.updateAriaLabelForNodeChange();
     }
 
     constructor() {
@@ -205,6 +201,18 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     private updateForm(): void {
         const value = this.checked ? this.value : null;
         this.setFormValue(value, value);
+    }
+
+    private updateAriaLabelForNodeChange(): void {
+        if (
+            (this.getAttribute("aria-label") === null || this.labelDerivedFromContent) &&
+            this.defaultSlottedNodes.length > 0 &&
+            this.defaultSlottedNodes[0].nodeType === Node.TEXT_NODE &&
+            this.defaultSlottedNodes[0].nodeValue !== null
+        ) {
+            this.setAttribute("aria-label", this.defaultSlottedNodes[0].nodeValue);
+            this.labelDerivedFromContent = true;
+        }
     }
 
     /**

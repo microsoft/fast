@@ -50,6 +50,11 @@ export class Checkbox extends FormAssociatedCheckbox {
      */
     @observable
     public defaultSlottedNodes: Node[];
+    private defaultSlottedNodesChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateAriaLabelForNodeChange();
+        }
+    }
 
     /**
      * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
@@ -112,6 +117,12 @@ export class Checkbox extends FormAssociatedCheckbox {
      */
     private constructed: boolean = false;
 
+    /**
+     * Tracks whether the "aria-label" property is being defined by
+     * the component's contents or has been set externally
+     */
+    private labelDerivedFromContent: boolean = false;
+
     constructor() {
         super();
 
@@ -130,6 +141,8 @@ export class Checkbox extends FormAssociatedCheckbox {
         this.proxy.setAttribute("type", "checkbox");
 
         this.updateForm();
+
+        this.updateAriaLabelForNodeChange();
     }
 
     /**
@@ -164,4 +177,16 @@ export class Checkbox extends FormAssociatedCheckbox {
             this.checked = !this.checked;
         }
     };
+
+    private updateAriaLabelForNodeChange(): void {
+        if (
+            (this.getAttribute("aria-label") === null || this.labelDerivedFromContent) &&
+            this.defaultSlottedNodes.length > 0 &&
+            this.defaultSlottedNodes[0].nodeType === Node.TEXT_NODE &&
+            this.defaultSlottedNodes[0].nodeValue !== null
+        ) {
+            this.setAttribute("aria-label", this.defaultSlottedNodes[0].nodeValue);
+            this.labelDerivedFromContent = true;
+        }
+    }
 }

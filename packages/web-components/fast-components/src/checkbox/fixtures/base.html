@@ -41,7 +41,21 @@
     <fast-checkbox checked>Oranges</fast-checkbox>
 </fieldset>
 
-<h2>Visual vs audio label</h2>
+<h2>Aria</h2>
 <fast-checkbox>
-    <span aria-label="Audio label">Visible label</span>
+    Labeled by content
 </fast-checkbox>
+
+<div style="display: flex; flex-direction: column; margin-top: 12px;">
+    <h3 id="externallabel">External label</h3>
+    <fast-checkbox aria-labeledby="externallabel">
+        Content not used as aria label
+    </fast-checkbox>
+</div>
+
+<div style="display: flex; flex-direction: column; margin-top: 12px;">
+    <h3 id="label1">Aria label attribute specified</h3>
+    <fast-checkbox aria-label="label specified by attribute">
+        Content not used as aria label
+    </fast-checkbox>
+</div>

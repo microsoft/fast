@@ -19,20 +19,20 @@
 <fast-radio disabled>label</fast-radio>
 <fast-radio disabled checked id="anotherCheckedOne">checked</fast-radio>
 
-<h2>Visual vs audio label</h2>
+<h2>Aria</h2>
 <fast-radio>
     Labeled by content
 </fast-radio>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
-    <label id="label1">External label</label>
-    <fast-radio aria-labeledby="external label">
+    <h3 id="externallabel">External label</h3>
+    <fast-radio aria-labeledby="externallabel">
         Content not used as aria label
     </fast-radio>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
-    <label id="label1">Aria label attribute specified</label>
+    <h3 id="label1">Aria label attribute specified</h3>
     <fast-radio aria-label="label specified by attribute">
         Content not used as aria label
     </fast-radio>

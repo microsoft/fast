@@ -409,4 +409,34 @@ describe("Radio", () => {
             await disconnect();
         });
     });
+
+    
+    it("should set aria-label to match content when not aria-label is not set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.appendChild(new Text("test"));
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-label")).to.equal("test");
+
+        await disconnect();
+    });
+
+    it("should not set aria to match content when not aria-label is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.setAttribute("aria-label", "author set");
+        element.appendChild(new Text("test"));
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-label")).to.equal("author set");
+
+        await disconnect();
+    });
 });
