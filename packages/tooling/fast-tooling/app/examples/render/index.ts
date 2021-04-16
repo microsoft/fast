@@ -2,6 +2,7 @@ import {
     MessageSystem,
     MessageSystemDataTypeAction,
     MessageSystemType,
+    MessageSystemNavigationTypeAction
 } from "../../../src";
 import { HTMLRender } from "../../../src/web-components/html-render/html-render"
 import dataDictionaryConfig from "./data-dictionary-config";
@@ -29,6 +30,10 @@ function handleMessageSystem(e: MessageEvent) {
 
         if (e.data.type === MessageSystemType.initialize) {
 //            const config: any = fastMessageSystem.getConfigById(shortcutsId) as any;
+        }
+        if (e.data.type === MessageSystemType.navigation && e.data.action === MessageSystemNavigationTypeAction.update)
+        {
+            console.log("Message Recieved", e.data);
         }
     }
 }

@@ -1,9 +1,6 @@
 import {
     customElement,
-    DOM,
     FASTElement,
-    $global,
-    attr,
     observable,
 } from "@microsoft/fast-element";
 import {
@@ -19,21 +16,45 @@ import {
 import {
     DataDictionary,
     MessageSystem,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
+import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 import { nativeElementDefinitions } from "../../../../../../sites/site-utilities/src/definitions";
-import { doc } from "prettier";
+
+class OverylayPosition {
+    public top: number;
+    public left: number;
+    public width: number;
+    public height: number;
+
+    constructor(top:number, left:number, width:number, height:number){
+        this.top = top;
+        this.left = left;
+        this.width = width;
+        this.height = height;
+    }
+}
 
 @customElement({
     name: "fast-tooling-html-render",
     template: HTMLRenderTemplate,
+    styles: HTMLRenderStyles
 })
 export class HTMLRender extends FASTElement {
     private dataDictionary: DataDictionary<unknown>;
 
     private schemaDictionary: SchemaDictionary;
+
+    private navigationConfigId:string = "fast-tooling::html-renderer";
+
+    private dataDictionaryAttr:string = "data-datadictionaryid";
+
+    private tabCounter:number = 1;
+
+    private currentElement:HTMLElement;
 
     @observable
     public markup: HTMLElement;
@@ -42,8 +63,31 @@ export class HTMLRender extends FASTElement {
     public messageSystem: MessageSystem;
     private messageSystemChanged(): void {
         if (this.messageSystem !== undefined) {
+            this.tabCounter = 1;
             this.messageSystem.add({ onMessage: this.handleMessageSystem });
         }
+    }
+
+    @observable
+    public hoverPosition: OverylayPosition = new OverylayPosition(0,0,0,0);
+
+    @observable
+    public clickPosition: OverylayPosition = new OverylayPosition(0,0,0,0);
+
+    @observable
+    public hoverClassName: string = "";
+
+    @observable
+    public clickClassName: string = "";
+
+    @observable
+    public clickPillContent: string = "";
+
+    @observable
+    public hoverPillContent: string = "";
+
+    connectedCallback() {
+        super.connectedCallback();
     }
 
     private handleMessageSystem = (e: MessageEvent): void => {
@@ -59,83 +103,152 @@ export class HTMLRender extends FASTElement {
         }
     };
 
-    // private markupPolicy = $global.trustedTypes.createPolicy('markupPolicy',{
-    //     createHTML: html => html
-    // });
+    /// Mouse Handlers
 
-    connectedCallback() {
-        super.connectedCallback();
-        //        DOM.setHTMLPolicy(this.markupPolicy);
+    private GetPositionFromElement(target: HTMLElement): OverylayPosition
+    {
+        const pos: DOMRectList = target.getClientRects();
+        return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
     }
 
-    public RenderMarkup(): void {
-        this.markup = mapDataDictionary({
-            dataDictionary: this.dataDictionary,
-            schemaDictionary: this.schemaDictionary,
-            mapper: htmlMapper({
-                version: 1,
-                tags: Object.entries({
-                    ...nativeElementDefinitions,
-                }).reduce(
-                    (
-                        previousValue: WebComponentDefinitionTag[],
-                        currentValue: [string, WebComponentDefinition]
-                    ) => {
-                        if (Array.isArray(currentValue[1].tags)) {
-                            return previousValue.concat(currentValue[1].tags);
-                        }
+    public hoverHandler(e: MouseEvent): boolean {
+        const el:HTMLElement = (e.composedPath()[0] as HTMLElement);
+        const dataId = el.getAttribute(this.dataDictionaryAttr);
+        if(dataId !== null && !(this.currentElement && dataId === this.currentElement.getAttribute(this.dataDictionaryAttr)))
+        {
+            this.hoverPosition = this.GetPositionFromElement(el);
+            this.hoverPillContent = dataId;
+            this.hoverClassName = "active";
+        }
+        return false;
+    }
 
-                        return previousValue;
-                    },
-                    []
-                ),
-            }),
-            resolver: this.renderHtmlResolver,
+    public blurHandler(e: MouseEvent): boolean {
+        this.hoverClassName = "";
+        return false;
+    }
+
+    private selectElement(el:HTMLElement, dataId:string)
+    {
+
+        this.messageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId: dataId,
+            activeNavigationConfigId: this.navigationConfigId
         });
-        console.log(this.markup);
+
+        this.clickPosition = this.GetPositionFromElement(el);
+        this.clickClassName = "active";
+        this.clickPillContent = dataId;
+        this.hoverClassName = "";
+        this.currentElement = el;
+    }
+
+    private clearElement()
+    {
+        this.messageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId: '',
+            activeNavigationConfigId: this.navigationConfigId
+        });
+
+        this.clickClassName = "";
+        this.currentElement = null;
     }
 
     public clickHandler(e: MouseEvent): boolean {
-        /*         messageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: dictionaryId,
-            activeNavigationConfigId: navigationConfigId,
-            options: {
-                originatorId: navigationId,
-            },
-        });
- */
+        const el:HTMLElement = (e.composedPath()[0] as HTMLElement);
+        const dataId = el.getAttribute(this.dataDictionaryAttr);
+        if(dataId!==null)
+        {
+            this.selectElement(el, dataId);
+            e.stopPropagation();
+            return false;
+        }
+    }
 
-        console.log("click", e);
+    public keyUpHandler(e: KeyboardEvent): boolean {
+        if(e.key==="Tab")
+        {
+            const currTab:number = this.currentElement ? Number(this.currentElement.getAttribute("taborder")) : e.shiftKey ? this.tabCounter : 0;
+            const nextTab:number = e.shiftKey ? currTab-1 : currTab+1;
+
+            if(nextTab > 0 && nextTab < this.tabCounter)
+            {
+                let tabElements:Array<Element> = Array.from((e.composedPath()[0] as HTMLElement).getElementsByTagName("*"));
+                tabElements.every((el:HTMLElement)=>{
+                    if(Number(el.getAttribute("taborder"))===nextTab)
+                    {
+                        const dataId = el.getAttribute(this.dataDictionaryAttr);
+                        this.selectElement(el, dataId);
+                        return false;
+                    }
+                    return true;
+                });
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+            else
+            {
+                this.clearElement();
+                (e.composedPath()[0] as HTMLElement).blur();
+            }
+        }
+        return true;
+    }
+
+    public keyDownHandler(e: KeyboardEvent): boolean {
+        e.preventDefault();
         e.stopPropagation();
         return false;
     }
 
+    public containerClickHandler(e: MouseEvent): boolean {
+        this.clearElement();
+        e.stopPropagation();
+        return false;
+    }
+
+    /// Render
+
     private renderHtmlResolver = (config: ResolverConfig<any>): HTMLElement | Text => {
         htmlResolver(config);
-        let wrapper = document.createElement("div");
-        wrapper.id = config.dictionaryId;
-        wrapper.className = "wrap";
-        wrapper.addEventListener("click", (e: MouseEvent) => {
-            console.log("Click!");
-        });
-        if (config.dataDictionary[0][config.dictionaryId].parent !== undefined) {
-            let parentid = config.dataDictionary[0][config.dictionaryId].parent.id;
-            config.dataDictionary[0][parentid].data.childNodes.forEach(value =>
-                wrapper.appendChild(value)
-            );
-            config.dataDictionary[0][parentid].data.prepend(wrapper);
-        } else {
-            wrapper.appendChild(config.dataDictionary[0][config.dictionaryId].data);
-            let button = document.createElement("button");
-            button.textContent = "Button!";
-            button.addEventListener("click", (e: MouseEvent) => {
-                console.log("Click!");
-            });
-            wrapper.appendChild(button);
-            config.dataDictionary[0][config.dictionaryId].data = wrapper;
+        if((config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute)
+        {
+            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute(this.dataDictionaryAttr, config.dictionaryId);
+            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute("taborder", (this.tabCounter++).toString());
+            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).className += "foo";
         }
         return config.dataDictionary[0][config.dictionaryId].data;
-    };
+    }; 
+
+    public RenderMarkup(): void {
+        this.markup = mapDataDictionary({
+           dataDictionary: this.dataDictionary,
+           schemaDictionary: this.schemaDictionary,
+           mapper: htmlMapper({
+               version: 1,
+               tags: Object.entries({
+                   ...nativeElementDefinitions,
+               }).reduce(
+                   (
+                       previousValue: WebComponentDefinitionTag[],
+                       currentValue: [string, WebComponentDefinition]
+                   ) => {
+                       if (Array.isArray(currentValue[1].tags)) {
+                           return previousValue.concat(currentValue[1].tags);
+                       }
+
+                       return previousValue;
+                   },
+                   []
+               ),
+           }),
+           resolver: this.renderHtmlResolver,
+       }); 
+   }
+
 }
