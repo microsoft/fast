@@ -22,7 +22,7 @@ import {
 } from "../../message-system";
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
-import { nativeElementDefinitions } from "../../../../../../sites/site-utilities/src/definitions";
+//import { nativeElementDefinitions } from "../../../../../../sites/site-utilities/src/definitions";
 
 class OverylayPosition {
     public top: number;
@@ -226,7 +226,7 @@ export class HTMLRender extends FASTElement {
     }; 
 
     public RenderMarkup(): void {
-        this.markup = mapDataDictionary({
+/*         this.markup = mapDataDictionary({
            dataDictionary: this.dataDictionary,
            schemaDictionary: this.schemaDictionary,
            mapper: htmlMapper({
@@ -248,7 +248,7 @@ export class HTMLRender extends FASTElement {
                ),
            }),
            resolver: this.renderHtmlResolver,
-       }); 
+       });
    }
 
 }
