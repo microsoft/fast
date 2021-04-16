@@ -7,7 +7,7 @@ export const svgDefinition: WebComponentDefinition = {
         {
             name: "svg",
             description: "The svg element",
-            title: "",
+            title: "svg",
             attributes: [
                 {
                     name: "width",
