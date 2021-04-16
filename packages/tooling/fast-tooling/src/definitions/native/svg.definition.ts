@@ -37,7 +37,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "fill",
                     description: "The svg fill",
                     default: "",
-                    title: "",
+                    title: "fill",
                     type: DataType.string,
                     required: false,
                 },
