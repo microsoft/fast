@@ -21,7 +21,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "height",
                     description: "The svg height",
                     default: "",
-                    title: "",
+                    title: "height",
                     type: DataType.string,
                     required: false,
                 },
