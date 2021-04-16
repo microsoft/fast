@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "A React-specific set of components and utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "2.8.1",
+  "version": "2.8.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -111,7 +111,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "^1.20.1",
+    "@microsoft/fast-components": "^1.20.2",
     "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
