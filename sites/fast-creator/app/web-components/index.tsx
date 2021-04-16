@@ -10,6 +10,7 @@ import {
     FASTTabPanel,
     FASTTabs,
 } from "@microsoft/fast-components";
+import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -28,6 +29,7 @@ import { defaultDevices, Device } from "./devices";
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
 FASTButton;
+FASTColorPicker;
 FASTSlider;
 FASTSliderLabel;
 FASTTab;
@@ -81,6 +83,39 @@ export function renderDeviceSelect(
             {renderDeviceOptions()}
         </fast-select>
     );
+}
+
+function getColorPickerControl(
+    id: string,
+    updateHandler: (updatedData: { [key: string]: unknown }) => void
+): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id,
+        context: ControlContext.fill,
+        control: (config: ControlConfig): React.ReactNode => {
+            return (
+                <color-picker
+                    value={config.value || config.default}
+                    events={{
+                        change: (e: React.ChangeEvent<HTMLInputElement>): void => {
+                            updateHandler({
+                                [config.dataLocation]: e.target.value,
+                            });
+                        },
+                    }}
+                ></color-picker>
+            );
+        },
+    });
+}
+
+export function getColorPickerControls(
+    updateHandler: (updatedData: { [key: string]: unknown }) => void
+): StandardControlPlugin[] {
+    return [
+        getColorPickerControl("background-color", updateHandler),
+        getColorPickerControl("accent-base-color", updateHandler),
+    ];
 }
 
 function getSliderLabels(positions: number[]): React.ReactNode {
@@ -195,6 +230,7 @@ export function renderFormTabs(
                     controls={[
                         linkedDataControl,
                         ...getSliderControls(handleDesignSystemChange),
+                        ...getColorPickerControls(handleDesignSystemChange),
                     ]}
                     categories={componentCategories}
                 />
