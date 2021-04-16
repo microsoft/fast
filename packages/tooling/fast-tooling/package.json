@@ -93,6 +93,7 @@
         "lodash-es": "^4.0.0"
     },
     "dependencies": {
+        "@microsoft/fast-foundation": "^1.17.0",
         "@microsoft/fast-web-utilities": "^4.7.3",
         "vscode-html-languageservice": "^3.1.3"
     }
