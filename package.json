@@ -46,6 +46,7 @@
     "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
     "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
     "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
+    "postinstall": "yarn-deduplicate",
     "prepare": "lerna run prepare",
     "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
@@ -88,7 +89,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest" 
+      "^.+\\.js?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
@@ -143,7 +144,8 @@
     "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
     "typescript": "^3.9.0",
-    "yargs": "^16.2.0"
+    "yargs": "^16.2.0",
+    "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
     "saucelabs": "^1.5.0",
