@@ -13,7 +13,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "width",
                     description: "The svg width",
                     default: "",
-                    title: "",
+                    title: "width",
                     type: DataType.string,
                     required: false,
                 },
