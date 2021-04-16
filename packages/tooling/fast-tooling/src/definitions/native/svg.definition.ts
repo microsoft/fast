@@ -29,7 +29,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "viewBox",
                     description: "The svg viewBox",
                     default: "",
-                    title: "",
+                    title: "viewBox",
                     type: DataType.string,
                     required: false,
                 },
