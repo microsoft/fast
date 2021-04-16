@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add auto position tracking to tooltip",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
