@@ -1,3 +1,4 @@
+import * as vscodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
 import { DataType } from "../../data-utilities";
 import {
     WebComponentAttribute,
@@ -12,7 +13,6 @@ import { voidElements } from "../../data-utilities/html-element";
  * specifically the browsers.html-data.json file which defines native html elements and their attributes
  * as used by vscode
  */
-import * as vscodeHTMLData from "vscode-web-custom-data/data/browsers.html-data.json";
 import {
     VSCodeNativeHTMLAttribute,
     VSCodeNativeHTMLDefinition,
@@ -73,7 +73,7 @@ function convertAttributeData(tag: VSCodeNativeHTMLTag): WebComponentAttribute[]
             default: "",
             required: false,
             values: findValueSetValues(attribute.valueSet),
-            description: attribute.description.toString(),
+            description: attribute.description ? attribute.description.toString() : "",
         };
     });
 }
