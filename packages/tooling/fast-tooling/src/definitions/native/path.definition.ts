@@ -12,7 +12,7 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "d",
                     description: "The path d",
                     default: "",
-                    title: "",
+                    title: "d",
                     type: DataType.string,
                     required: false,
                 },
