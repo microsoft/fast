@@ -33,7 +33,7 @@ export const pathDefinition: WebComponentDefinition = {
                     required: false,
                 },
             ],
-            title: "",
+            title: "path",
             slots: [],
         },
     ],
