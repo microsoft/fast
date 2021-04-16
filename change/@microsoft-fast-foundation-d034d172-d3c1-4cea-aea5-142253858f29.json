@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add missing aria-expanded to the select template",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "mathieu.lavoie@logmein.com",
-  "dependentChangeType": "patch"
-}

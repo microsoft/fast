@@ -1,0 +1,26 @@
+{
+  "name": "@microsoft/fast-tooling",
+  "entries": [
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-tooling_v0.18.0",
+      "version": "0.18.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Replace Jest testing with Karma/Mocha/Chai",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "fix tooling coverage globbing pattern",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "e8bbd10e718c44c6be0b655dde97958db5dc8570",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    }
+  ]
+}
