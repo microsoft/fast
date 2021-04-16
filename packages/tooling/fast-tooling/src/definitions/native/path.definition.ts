@@ -28,7 +28,7 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "stroke-linejoin",
                     description: "The path stroke-linejoin",
                     default: "",
-                    title: "",
+                    title: "stroke-linejoin",
                     type: DataType.string,
                     required: false,
                 },
