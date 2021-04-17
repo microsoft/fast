@@ -97,13 +97,6 @@ type AnchoredRegionVerticalPositionLabel =
     | "undefined";
 
 /**
- * describes possible transform origin settings
- *
- * @internal
- */
-type Location = "top" | "left" | "right" | "bottom";
-
-/**
  * An anchored region Custom HTML Element.
  *
  * @beta
@@ -376,7 +369,7 @@ export class AnchoredRegion extends FASTElement {
     private translateY: number;
 
     /**
-     * the span in pixels of the selected position on each axis
+     * the span to be applied to the region on each axis
      */
     private regionWidth: string;
     private regionHeight: string;
@@ -389,8 +382,6 @@ export class AnchoredRegion extends FASTElement {
     private viewportRect: ClientRect | DOMRect | null;
     private anchorRect: ClientRect | DOMRect | null;
     private regionRect: ClientRect | DOMRect | null;
-
-    private regionDimension: Dimension;
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -444,7 +435,7 @@ export class AnchoredRegion extends FASTElement {
      * update position
      */
     public update = (): void => {
-        if (this.viewportRect === null || this.regionDimension === null) {
+        if (this.viewportRect === null || this.regionRect === null) {
             this.requestLayoutUpdate();
             return;
         }
@@ -538,7 +529,6 @@ export class AnchoredRegion extends FASTElement {
         this.viewportRect = null;
         this.regionRect = null;
         this.anchorRect = null;
-        this.regionDimension = { height: 0, width: 0 };
 
         this.verticalPosition = "undefined";
         this.horizontalPosition = "undefined";
@@ -692,9 +682,6 @@ export class AnchoredRegion extends FASTElement {
             this.anchorRect = anchorEntry.boundingClientRect;
             this.viewportRect = viewportEntry.boundingClientRect;
 
-            this.handleRegionIntersection(regionEntry);
-            this.handleAnchorIntersection(anchorEntry);
-
             return true;
         }
 
@@ -717,24 +704,6 @@ export class AnchoredRegion extends FASTElement {
             return true;
         }
         return false;
-    };
-
-    /**
-     *  Update data based on anchor intersections
-     */
-    private handleAnchorIntersection = (
-        anchorEntry: IntersectionObserverEntry
-    ): void => {};
-
-    /**
-     *  Update data based on positioner intersections
-     */
-    private handleRegionIntersection = (regionEntry: IntersectionObserverEntry): void => {
-        const regionRect: ClientRect | DOMRect = regionEntry.boundingClientRect;
-        this.regionDimension = {
-            height: regionRect.height,
-            width: regionRect.width,
-        };
     };
 
     /**
@@ -829,7 +798,9 @@ export class AnchoredRegion extends FASTElement {
             const horizontalThreshold: number =
                 this.horizontalThreshold !== undefined
                     ? this.horizontalThreshold
-                    : this.regionDimension.width;
+                    : this.regionRect !== null
+                    ? this.regionRect.width
+                    : 0;
 
             if (
                 desiredHorizontalPosition === "undefined" ||
@@ -864,7 +835,9 @@ export class AnchoredRegion extends FASTElement {
             const verticalThreshold: number =
                 this.verticalThreshold !== undefined
                     ? this.verticalThreshold
-                    : this.regionDimension.height;
+                    : this.regionRect !== null
+                    ? this.regionRect.height
+                    : 0;
 
             if (
                 desiredVerticalPosition === "undefined" ||
@@ -1186,8 +1159,8 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionVerticalPositionLabel
     ): Dimension => {
         const newRegionDimension: Dimension = {
-            height: this.regionDimension.height,
-            width: this.regionDimension.width,
+            height: this.regionRect !== null ? this.regionRect.height : 0,
+            width: this.regionRect !== null ? this.regionRect.width : 0,
         };
 
         if (this.horizontalScaling === "fill") {
