@@ -1,296 +1,564 @@
-<fast-anchored-region
-    anchor="anchor-fixed"
-    auto-update-mode="auto"
-    vertical-positioning-mode="dynamic"
-    vertical-scaling="anchor"
-    vertical-inset="true"
-    horizontal-positioning-mode="dynamic"
-    horizontal-default-position="right"
-    style="z-index: 11;"
->
-    <div style="height: 100%; width: 100%; background: purple;">
-        outside
-    </div>
-</fast-anchored-region>
-
 <div
     style="
+        margin: 20px;
         position: fixed;
-        height: 80px;
-        width: 100%;
-        background: darkgray;
+        height: 100px;
+        width: calc(100% - 60px);
+        box-sizing: border-box;
+        background: black;
+        border-color: white;
+        border: 2px solid;
         overflow: hidden;
-        display: flex;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr auto auto;
         z-index: 10;
     "
     id="fixed-header"
 >
-    <h1>Anchored region</h1>
-    <button id="anchor-fixed" style="margin-left: 200px; margin-top: 20px; height: 20px;">
-        anchor in fixed container
-    </button>
+    <div
+        style="
+            grid-column: 1 / 3;
+            line-height: 60%;
+            height: 50px;
+            padding: 0 8px;
+            white-space: nowrap;
+        "
+    >
+        <h1>
+            Anchored region
+        </h1>
+    </div>
+    <fast-button
+        id="anchor-header-menu-fixed"
+        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 2;"
+    >
+        Fixed size menu
+    </fast-button>
+    <fast-tooltip position="top" anchor="anchor-header-menu-fixed" style="z-index: 1000;">
+        This menu is of fixed height and avoids the performance cost of resizing itself.
+    </fast-tooltip>
+    <fast-button
+        id="anchor-header-menu-scaling"
+        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 3;"
+    >
+        Scaling menu
+    </fast-button>
+    <fast-tooltip
+        position="top"
+        anchor="anchor-header-menu-scaling"
+        style="z-index: 1000;"
+    >
+        <span style="max-width: 200px;">
+            This menu scales with the parent document and gains scrollbars when it needs
+            to.
+        </span>
+    </fast-tooltip>
     <fast-anchored-region
-        anchor="anchor-fixed"
-        vertical-positioning-mode="dynamic"
-        vertical-scaling="anchor"
-        horizontal-positioning-mode="dynamic"
+        style="display: none;"
+        id="header-menu-fixed"
+        anchor="anchor-header-menu-fixed"
+        fixed-placement="true"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
         horizontal-scaling="anchor"
         horizontal-inset="true"
         auto-update-mode="auto"
     >
-        <div style="height: 100%; width: 100%; background: yellow;">
-            inside
-        </div>
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region
+        style="display: none; overflow-y: auto;"
+        id="header-menu-scaling"
+        anchor="anchor-header-menu-scaling"
+        fixed-placement="true"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        vertical-scaling="fill"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
+        horizontal-scaling="anchor"
+        horizontal-inset="true"
+        auto-update-mode="auto"
+    >
+        <fast-listbox style="width: 100%;">
+            <fast-option>William Hartnell</fast-option>
+            <fast-option>Patrick Troughton</fast-option>
+            <fast-option>Jon Pertwee</fast-option>
+            <fast-option>Tom Baker</fast-option>
+            <fast-option>Peter Davidson</fast-option>
+            <fast-option>Colin Baker</fast-option>
+            <fast-option>Sylvester McCoy</fast-option>
+            <fast-option>Paul McGann</fast-option>
+            <fast-option>Christopher Eccleston</fast-option>
+            <fast-option>David Tenant</fast-option>
+            <fast-option>Matt Smith</fast-option>
+            <fast-option>Peter Capaldi</fast-option>
+            <fast-option>Jodie Whittaker</fast-option>
+        </fast-listbox>
     </fast-anchored-region>
 </div>
 
-<div style="margin-top: 80px; overflow: auto; height: 100%;">
-    <h2>Dynamic - default</h2>
+<div style="overflow: auto; height: 100%; padding: 140px 20px; position: relative;">
+    <h2>
+        About
+    </h2>
+    <span>
+        The "anchored-region" component is a container that can position itself relative
+        to another html element in the same document referred to as the "anchor".
+        Additionally, the component can choose its position based on the available space
+        between the anchor element and the a "viewport" element (the document is used as
+        viewport if not otherwise specified).
+        <p>
+            An anchored-region is primarily intended to be used as the positioning element
+            within other components like tooltips or flyout menus.
+        </p>
+    </span>
+
+    <h2>
+        Header samples
+    </h2>
+    <span>
+        This header element of this page has position:fixed and overflow: hidden. The
+        flyout menus contained within it are wrapped in anchored regions with
+        "fixed-placement" set to "true" which allows the menus render outside the bounds
+        of the parent header when it would otherwise be clipped.
+    </span>
+
+    <h2>
+        Position updates
+    </h2>
+    <span>
+        The component always calculates its position on screen when it is first placed in
+        the dom, when its properties/attributes are changed, when the anchor element
+        resizes and when the component's update() function is invoked. Authors can use the
+        component's "auto-update-mode" attribute to "auto" which triggers additional
+        positioning checks on window resize, viewport resize and any scroll event in the
+        window.
+        <p>
+            Position checks stive to be efficient but authors should be conscious of
+            possible performance impacts of having many instances running.
+        </p>
+
+        <p>
+            It should be noted that anchored-region's method of checking position uses
+            intersection observer callbacks which avoids some expensive function calls but
+            introduces a frame delay in getting results. This causes an unavoidable 1
+            frame delay in repositioning when layouts change. Because regions positioned
+            "absolute" vs "fixed" require fewer position corrections this lag is less
+            evident in that case.
+        </p>
+    </span>
+
+    <h2>Positioning options</h2>
+    <span>
+        Authors can specify the default positions of an anchored region relative to its
+        anchor on both the horizontal and vertical axis. A "locktodefault" option forces
+        this position regardless of available space on the other side of the anchor.
+    </span>
+
     <div
-        id="viewport-default"
+        id="anchor-pos1"
         style="
-            position: relative;
-            height: 400px;
-            width: 400px;
-            background: lightgray;
-            overflow: scroll;
+            height: 160px;
+            width: 160px;
+            background: grey;
+            margin: 200px;
+            padding: 12px;
         "
     >
-        <div style="height: 1000px; width: 1000px;">
-            <button id="anchor-default" style="margin-left: 500px; margin-top: 500px;">
-                anchor
-            </button>
-            <fast-anchored-region
-                anchor="anchor-default"
-                viewport="viewport-default"
-                vertical-positioning-mode="dynamic"
-                horizontal-positioning-mode="dynamic"
-            >
-                <div style="height: 100px; width: 100px; background: yellow;"></div>
-            </fast-anchored-region>
-        </div>
+        anchor
     </div>
+    <fast-anchored-region
+        anchor="anchor-pos1"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            top/left
+        </div>
+    </fast-anchored-region>
 
-    <h2>Lock to default</h2>
+    <fast-anchored-region
+        anchor="anchor-pos1"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            top/right
+        </div>
+    </fast-anchored-region>
+    <fast-anchored-region
+        anchor="anchor-pos1"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            bottom/left
+        </div>
+    </fast-anchored-region>
+
+    <fast-anchored-region
+        anchor="anchor-pos1"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            bottom/right
+        </div>
+    </fast-anchored-region>
+
+    <h2>Inset</h2>
+    <span>
+        Setting "inset on a particular axis changes the anchor point from the outer edge,
+        to the inner edge. The anchored region always grows "away" from the edge it is
+        anchored to (a "top" oriented region would always grow upwards if it were to get
+        taller).
+    </span>
+
     <div
-        id="viewport-locked"
+        id="anchor-pos2"
         style="
-            height: 400px;
-            width: 400px;
-            background: lightgray;
-            overflow: scroll;
-            position: relative;
+            height: 260px;
+            width: 260px;
+            background: grey;
+            margin: 40px 160px;
+            padding: 12px;
         "
     >
-        <div style="height: 1000px; width: 1000px;">
-            <fast-anchored-region
-                anchor="anchor-locked"
-                viewport="viewport-locked"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="bottom"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="right"
-            >
-                <div style="height: 150px; width: 150px; background: green;"></div>
-            </fast-anchored-region>
-            <div style="position: relative; height: 0; width: 0;">
-                <fast-anchored-region
-                    anchor="anchor-locked"
-                    viewport="viewport-locked"
-                    vertical-positioning-mode="locktodefault"
-                    vertical-default-position="bottom"
-                    horizontal-positioning-mode="locktodefault"
-                    horizontal-default-position="right"
-                >
-                    <div style="height: 100px; width: 100px; background: yellow;"></div>
-                </fast-anchored-region>
-            </div>
-            <fast-anchored-region
-                anchor="anchor-locked"
-                viewport="viewport-locked"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="bottom"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="right"
-            >
-                <div style="height: 50px; width: 50px; background: blue;"></div>
-            </fast-anchored-region>
-            <div></div>
-            <button id="anchor-locked" style="margin-left: 500px; margin-top: 500px;">
-                anchor
-            </button>
-        </div>
+        anchor
     </div>
+    <fast-anchored-region
+        anchor="anchor-pos2"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
+        horizontal-inset="true"
+        vertical-inset="true"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            inset top/
+            <br />
+            inset left
+        </div>
+    </fast-anchored-region>
 
-    <h2>Scaling via update</h2>
+    <fast-anchored-region
+        anchor="anchor-pos2"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right"
+        horizontal-inset="true"
+        vertical-inset="true"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            inset top/
+            <br />
+            inset right
+        </div>
+    </fast-anchored-region>
+    <fast-anchored-region
+        anchor="anchor-pos2"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left"
+        horizontal-inset="true"
+        vertical-inset="true"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            inset bottom/
+            <br />
+            inset left
+        </div>
+    </fast-anchored-region>
+
+    <fast-anchored-region
+        anchor="anchor-pos2"
+        vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom"
+        horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right"
+        horizontal-inset="true"
+        vertical-inset="true"
+    >
+        <div
+            style="
+                height: 100px;
+                width: 100px;
+                background: darkblue;
+                padding: 12px;
+                border: 2px solid white;
+            "
+        >
+            inset bottom/
+            <br />
+            inset right
+        </div>
+    </fast-anchored-region>
+
+    <h2>Dynamic positioning</h2>
+    <span>
+        An anchored region can "flip" its position relative to its anchor based on
+        available space when its positioning mode is set to "dynamic".
+    </span>
+
     <div
-        id="viewport-scaling-update"
+        id="viewport-dyn1"
         style="
             height: 400px;
-            width: 400px;
+            width: 80%;
+            margin-top: 20px;
             background: lightgray;
             overflow: scroll;
             position: relative;
         "
     >
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <button
-                id="anchor-scaling-update"
-                style="margin-left: 500px; margin-top: 500px;"
+            <div
+                id="anchor-dyn1"
+                style="
+                    margin-top: 450px;
+                    margin-left: 450px;
+                    height: 100px;
+                    width: 100px;
+                    background: grey;
+                    padding: 12px;
+                "
             >
                 anchor
-            </button>
+            </div>
             <fast-anchored-region
-                id="region-scaling-update"
-                anchor="anchor-scaling-update"
-                viewport="viewport-scaling-update"
+                anchor="anchor-dyn1"
+                viewport="viewport-dyn1"
                 vertical-positioning-mode="dynamic"
-                vertical-scaling="fill"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="fill"
+                horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="left"
+                horizontal-inset="true"
+                auto-update-mode="auto"
             >
+                <div
+                    style="
+                        height: 100px;
+                        width: 100px;
+                        background: darkblue;
+                        padding: 12px;
+                        border: 2px solid white;
+                    "
+                >
+                    Dynamic vertical axis
+                </div>
+            </fast-anchored-region>
+            <fast-anchored-region
+                anchor="anchor-dyn1"
+                viewport="viewport-dyn1"
+                horizontal-positioning-mode="dynamic"
+                vertical-positioning-mode="locktodefault"
+                vertical-default-position="top"
+                vertical-inset="true"
+                auto-update-mode="auto"
+            >
+                <div
+                    style="
+                        height: 100px;
+                        width: 100px;
+                        background: darkblue;
+                        padding: 12px;
+                        border: 2px solid white;
+                    "
+                >
+                    Dynamic horizontal axis
+                </div>
+            </fast-anchored-region>
+
+            <!-- <fast-anchored-region anchor="anchor-dyn1" viewport="viewport-dyn1" vertical-positioning-mode="dynamic"
+            horizontal-positioning-mode="dynamic" horizontal-inset="true" vertical-inset="true">
+            <div style="height: 100px; width: 100px; background: darkblue; padding: 12px;border: 2px solid white;">
+                inset top/<br>inset right
+            </div>
+        </fast-anchored-region> -->
+        </div>
+
+        <!-- 
+    <h2>Manual scaling via update</h2>
+    <div id="viewport-scaling-update" style="
+            height: 400px;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
+            overflow: scroll;
+            position: relative;
+        ">
+        <div style="height: 1000px; width: 1000px; overflow: hidden;">
+            <button id="anchor-scaling-update" style="margin-left: 500px; margin-top: 500px;">
+                anchor
+            </button>
+            <fast-anchored-region id="region-scaling-update" anchor="anchor-scaling-update"
+                viewport="viewport-scaling-update" vertical-positioning-mode="dynamic" vertical-scaling="fill"
+                horizontal-positioning-mode="dynamic" horizontal-scaling="fill">
                 <div style="height: 100%; width: 100%; background: yellow;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>Inset</h2>
-    <div
-        id="viewport-inset"
-        style="
+    <div id="viewport-inset" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
             <button id="anchor-inset" style="margin-left: 500px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                anchor="anchor-inset"
-                viewport="viewport-inset"
-                vertical-positioning-mode="dynamic"
-                vertical-inset="true"
-                horizontal-positioning-mode="dynamic"
-                horizontal-inset="true"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="height: 100px; width: 100px; background: yellow; opacity: 0.5;"
-                ></div>
+            <fast-anchored-region anchor="anchor-inset" viewport="viewport-inset" vertical-positioning-mode="dynamic"
+                vertical-inset="true" horizontal-positioning-mode="dynamic" horizontal-inset="true"
+                auto-update-mode="auto">
+                <div style="height: 100px; width: 100px; background: yellow; opacity: 0.5;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>Thresholds</h2>
-    <div
-        id="viewport-thresholds"
-        style="
+    <div id="viewport-thresholds" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
             <button id="anchor-thresholds" style="margin-left: 500px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                anchor="anchor-thresholds"
-                viewport="viewport-thresholds"
-                vertical-positioning-mode="dynamic"
-                vertical-default-position="top"
-                vertical-threshold="200"
-                horizontal-positioning-mode="dynamic"
-                horizontal-default-position="left"
-                horizontal-threshold="200"
-                auto-update-mode="auto"
-            >
+            <fast-anchored-region anchor="anchor-thresholds" viewport="viewport-thresholds"
+                vertical-positioning-mode="dynamic" vertical-default-position="top" vertical-threshold="200"
+                horizontal-positioning-mode="dynamic" horizontal-default-position="left" horizontal-threshold="200"
+                auto-update-mode="auto">
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>Toggle anchor</h2>
-    <div
-        id="viewport-toggle-anchor"
-        style="
+    <div id="viewport-toggle-anchor" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <button
-                id="toggle-anchor-anchor1"
-                style="margin-left: 400px; margin-top: 500px;"
-            >
+            <button id="toggle-anchor-anchor1" style="margin-left: 400px; margin-top: 500px;">
                 Set anchor 1
             </button>
             <button id="toggle-anchor-anchor2">
                 Set anchor 2
             </button>
-            <fast-anchored-region
-                id="toggle-anchor-region"
-                anchor="toggle-anchor-anchor1"
-                viewport="viewport-toggle-anchor"
-                vertical-positioning-mode="dynamic"
-                horizontal-positioning-mode="dynamic"
-            >
+            <fast-anchored-region id="toggle-anchor-region" anchor="toggle-anchor-anchor1"
+                viewport="viewport-toggle-anchor" vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="dynamic">
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>Toggle positions and size</h2>
-    <div
-        id="viewport-toggle-positions"
-        style="
+    <div id="viewport-toggle-positions" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <button
-                id="anchor-toggle-positions"
-                style="margin-left: 400px; margin-top: 500px;"
-            >
+            <button id="anchor-toggle-positions" style="margin-left: 400px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                id="toggle-positions-region"
-                anchor="anchor-toggle-positions"
-                viewport="viewport-toggle-positions"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="bottom"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="right"
-            >
-                <div
-                    id="toggle-positions-small"
-                    style="height: 50px; width: 50px; background: yellow;"
-                    hidden="true"
-                ></div>
-                <div
-                    id="toggle-positions-large"
-                    style="height: 100px; width: 100px; background: yellow;"
-                ></div>
+            <fast-anchored-region id="toggle-positions-region" anchor="anchor-toggle-positions"
+                viewport="viewport-toggle-positions" vertical-positioning-mode="locktodefault"
+                vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="right">
+                <div id="toggle-positions-small" style="height: 50px; width: 50px; background: yellow;" hidden="true">
+                </div>
+                <div id="toggle-positions-large" style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
             <div style="margin-top: 20px; display: flex; flex-direction: row;">
-                <button
-                    id="toggle-positions-horizontal"
-                    style="margin-left: 250px; margin-top: 120px;"
-                >
+                <button id="toggle-positions-horizontal" style="margin-left: 250px; margin-top: 120px;">
                     toggle horizontal
                 </button>
                 <button id="toggle-positions-vertical" style="margin-top: 120px;">
@@ -307,214 +575,111 @@
     </div>
 
     <h2>RTL-dynamic</h2>
-    <div
-        id="viewport-rtl-dynamic"
-        style="
+    <div id="viewport-rtl-dynamic" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-        dir="rtl"
-    >
+        " dir="rtl">
         <div style="height: 1000px; width: 1000px;">
-            <fast-anchored-region
-                anchor="anchor-rtl-dynamic"
-                viewport="viewport-rtl-dynamic"
-                vertical-positioning-mode="dynamic"
-                vertical-default-position="top"
-                horizontal-positioning-mode="dynamic"
-                horizontal-default-position="left"
-            >
+            <fast-anchored-region anchor="anchor-rtl-dynamic" viewport="viewport-rtl-dynamic"
+                vertical-positioning-mode="dynamic" vertical-default-position="top"
+                horizontal-positioning-mode="dynamic" horizontal-default-position="left">
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
-            <button
-                id="anchor-rtl-dynamic"
-                style="margin-right: 500px; margin-top: 500px;"
-            >
+            <button id="anchor-rtl-dynamic" style="margin-right: 500px; margin-top: 500px;">
                 anchor
             </button>
         </div>
     </div>
 
     <h2>Size to anchor</h2>
-    <div
-        id="viewport-anchor-sized"
-        style="
+    <div id="viewport-anchor-sized" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px;">
-            <fast-anchored-region
-                anchor="anchor-anchor-sized"
-                viewport="viewport-anchor-sized"
-                vertical-positioning-mode="dynamic"
-                vertical-scaling="anchor"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="anchor"
-                horizontal-inset="true"
-            >
+            <fast-anchored-region anchor="anchor-anchor-sized" viewport="viewport-anchor-sized"
+                vertical-positioning-mode="dynamic" vertical-scaling="anchor" horizontal-positioning-mode="dynamic"
+                horizontal-scaling="anchor" horizontal-inset="true">
                 <div style="height: 100%; width: 100%; background: yellow;"></div>
             </fast-anchored-region>
-            <button
-                id="anchor-anchor-sized"
-                style="margin-left: 500px; margin-top: 500px;"
-            >
+            <button id="anchor-anchor-sized" style="margin-left: 500px; margin-top: 500px;">
                 anchor
             </button>
         </div>
     </div>
 
     <h2>RTL-fill</h2>
-    <div
-        id="viewport-rtl-fill"
-        dir="rtl"
-        style="
+    <div id="viewport-rtl-fill" dir="rtl" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px;">
             <button id="anchor-rtl-fill" style="margin-right: 500px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                anchor="anchor-rtl-fill"
-                viewport="viewport-rtl-fill"
-                vertical-positioning-mode="dynamic"
-                vertical-scaling="fill"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="fill"
-            >
+            <fast-anchored-region anchor="anchor-rtl-fill" viewport="viewport-rtl-fill"
+                vertical-positioning-mode="dynamic" vertical-scaling="fill" horizontal-positioning-mode="dynamic"
+                horizontal-scaling="fill">
                 <div style="height: 100%; width: 100%; background: yellow;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>Start & End</h2>
-    <div
-        id="viewport-se"
-        style="
+    <div id="viewport-se" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px;">
             <button id="anchor-se" style="margin-left: 500px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                anchor="anchor-se"
-                viewport="viewport-se"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="start"
-            >
+            <fast-anchored-region anchor="anchor-se" viewport="viewport-se" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="start">
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
 
-            <fast-anchored-region
-                anchor="anchor-se"
-                viewport="viewport-se"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="end"
-            >
+            <fast-anchored-region anchor="anchor-se" viewport="viewport-se" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="end">
                 <div style="height: 100px; width: 100px; background: green;"></div>
             </fast-anchored-region>
         </div>
     </div>
 
     <h2>RTL-Start & End</h2>
-    <div
-        id="viewport-rtl-se"
-        dir="rtl"
-        style="
+    <div id="viewport-rtl-se" dir="rtl" style="
             position: relative;
             height: 400px;
-            width: 400px;
-            background: lightgray;
+            width: 80%;
+            margin-left: 100px; background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px;">
             <button id="anchor-rtl-se" style="margin-right: 500px; margin-top: 500px;">
                 anchor
             </button>
-            <fast-anchored-region
-                anchor="anchor-rtl-se"
-                viewport="viewport-rtl-se"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="start"
-            >
+            <fast-anchored-region anchor="anchor-rtl-se" viewport="viewport-rtl-se"
+                horizontal-positioning-mode="locktodefault" horizontal-default-position="start">
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
 
-            <fast-anchored-region
-                anchor="anchor-rtl-se"
-                viewport="viewport-rtl-se"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="end"
-            >
+            <fast-anchored-region anchor="anchor-rtl-se" viewport="viewport-rtl-se"
+                horizontal-positioning-mode="locktodefault" horizontal-default-position="end">
                 <div style="height: 100px; width: 100px; background: green;"></div>
             </fast-anchored-region>
         </div>
-    </div>
-
-    <h2>Auto update auto</h2>
-    <div
-        id="viewport-auto-update-auto"
-        style="
-            height: 400px;
-            width: 400px;
-            background: lightgray;
-            overflow: scroll;
-            position: relative;
-        "
-    >
-        <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <button
-                id="anchor-auto-update-auto"
-                style="margin-left: 500px; margin-top: 500px;"
-            >
-                anchor
-            </button>
-            <fast-anchored-region
-                auto-update-mode="auto"
-                id="region-auto-update-auto"
-                anchor="anchor-auto-update-auto"
-                viewport="viewport-auto-update-auto"
-                vertical-positioning-mode="dynamic"
-                vertical-scaling="fill"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="fill"
-            >
-                <div style="height: 100%; width: 100%; background: yellow;"></div>
-            </fast-anchored-region>
-        </div>
+    </div> -->
     </div>
 </div>
-<fast-anchored-region
-    anchor="anchor-fixed"
-    vertical-positioning-mode="dynamic"
-    vertical-scaling="anchor"
-    vertical-inset="true"
-    horizontal-positioning-mode="locktodefault"
-    horizontal-default-position="left"
-    auto-update-mode="auto"
-    fixed-placement="true"
-    style="z-index: 11;"
->
-    <div style="height: 100%; width: 100%; background: blue; z-index: 11;">
-        outside & fixed
-    </div>
-</fast-anchored-region>
