@@ -52,7 +52,7 @@ export const BaseButtonStyles = css`
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((10 + max(0, calc(var(--corner-radius) - 10)) + (var(--design-unit) * 2 * var(--density)))  * 1px);
         white-space: nowrap;
         outline: none;
         text-decoration: none;
