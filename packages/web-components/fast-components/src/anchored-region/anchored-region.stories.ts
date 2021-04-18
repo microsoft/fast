@@ -42,68 +42,75 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             }
         });
 
-        // toggle flyout
-        // document.querySelectorAll("[id^=toggle-flyout-anchor").forEach(anchor => {
-        //     anchor.addEventListener("click", (e: MouseEvent) => {
-        //         document
-        //             .getElementById("toggle-anchor-region")!
-        //             .setAttribute("anchor", (e.target as HTMLElement).id);
-        //     });
-        // });
+        const regionScalingUpdate = document.getElementById(
+            "region-upd1"
+        ) as FASTAnchoredRegion;
+        document
+            .getElementById("viewport-upd1")!
+            .addEventListener("scroll", () => regionScalingUpdate.update());
+
+        const togglesRegion = document.getElementById("toggles-region");
 
         // toggle anchor example
-        // document.querySelectorAll("[id^=toggle-anchor-anchor").forEach(anchor => {
-        //     anchor.addEventListener("click", (e: MouseEvent) => {
-        //         document
-        //             .getElementById("toggle-anchor-region")!
-        //             .setAttribute("anchor", (e.target as HTMLElement).id);
-        //     });
+        document.querySelectorAll("[id^=toggles1-anchor").forEach(anchor => {
+            anchor.addEventListener("click", (e: MouseEvent) => {
+                togglesRegion!.setAttribute("anchor", (e.target as HTMLElement).id);
+            });
+        });
+
+        document
+            .getElementById("toggle-positions-horizontal")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (
+                    togglesRegion?.getAttribute("horizontal-default-position") === "right"
+                ) {
+                    togglesRegion!.setAttribute("horizontal-default-position", "left");
+                } else {
+                    togglesRegion!.setAttribute("horizontal-default-position", "right");
+                }
+            });
+
+        document
+            .getElementById("toggle-positions-vertical")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (togglesRegion?.getAttribute("vertical-default-position") === "top") {
+                    togglesRegion!.setAttribute("vertical-default-position", "bottom");
+                } else {
+                    togglesRegion!.setAttribute("vertical-default-position", "top");
+                }
+            });
+
+        document
+            .querySelectorAll("[id^=anchor-menu-many]")
+            .forEach((el: HTMLButtonElement) => {
+                el.addEventListener("click", (e: MouseEvent) => {
+                    const menuNum = el.id.substr(16, el.id.length - 16);
+                    const menu: FASTAnchoredRegion = document.getElementById(
+                        `menu-many${menuNum}`
+                    ) as FASTAnchoredRegion;
+                    if (menu.style.display === "none") {
+                        menu.style.display = "";
+                    } else {
+                        menu.style.display = "none";
+                    }
+                });
+            });
+
+        // document.getElementById("toggle-inset-vertical")!.addEventListener("click", (e: MouseEvent) => {
+        //     if ((togglesRegion as FASTAnchoredRegion)!.verticalInset === true){
+        //         (togglesRegion as FASTAnchoredRegion)!.verticalInset = false;
+        //     } else {
+        //         (togglesRegion as FASTAnchoredRegion)!.verticalInset = true;
+        //     }
         // });
 
-        // const positionsRegion = document.getElementById("toggle-positions-region")!;
-        // document
-        //     .querySelectorAll("#toggle-positions-horizontal, #toggle-positions-vertical")
-        //     .forEach((el: HTMLElement) => {
-        //         el.addEventListener("click", (e: MouseEvent) => {
-        //             const isHorizontal = (e.target as HTMLElement).id.includes(
-        //                 "horizontal"
-        //             );
-        //             const direction = isHorizontal ? "horizontal" : "vertical";
-        //             const attr = `${direction}-default-position`;
-
-        //             const currentPosition = positionsRegion.getAttribute(attr);
-
-        //             positionsRegion.setAttribute(
-        //                 attr,
-        //                 isHorizontal
-        //                     ? currentPosition === "left"
-        //                         ? "right"
-        //                         : "left"
-        //                     : currentPosition === "top"
-        //                     ? "bottom"
-        //                     : "top"
-        //             );
-        //         });
-        //     });
-
-        // const smallContent = document.getElementById("toggle-positions-small")!;
-        // const largeContent = document.getElementById("toggle-positions-large")!;
-        // document
-        //     .querySelectorAll("[id^=btn-toggle-positions]")
-        //     .forEach((el: HTMLElement) => {
-        //         el.addEventListener("click", (e: MouseEvent) => {
-        //             const isSmall = (e.target as HTMLElement).id.includes("small");
-        //             smallContent.hidden = !isSmall;
-        //             largeContent.hidden = isSmall;
-        //         });
-        //     });
-
-        // const regionScalingUpdate = document.getElementById(
-        //     "region-scaling-update"
-        // ) as FASTAnchoredRegion;
-        // document
-        //     .getElementById("viewport-scaling-update")!
-        //     .addEventListener("scroll", () => regionScalingUpdate.update());
+        // document.getElementById("toggle-inset-horizontal")!.addEventListener("click", (e: MouseEvent) => {
+        //     if ((togglesRegion as FASTAnchoredRegion)!.horizontalInset === true){
+        //         (togglesRegion as FASTAnchoredRegion)!.horizontalInset = false;
+        //     } else {
+        //         (togglesRegion as FASTAnchoredRegion)!.horizontalInset = true;
+        //     }
+        // });
     }
 });
 
