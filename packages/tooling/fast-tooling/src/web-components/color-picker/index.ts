@@ -1,7 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { ColorPicker } from "./color-picker";
 import { ColorPickerTemplate as template } from "./color-picker.template";
-
 import { colorPickerStyles as styles } from "./color-picker.styles";
 
 /**

@@ -133,7 +133,7 @@ module.exports = function (config) {
     if (config.coverage) {
         options.webpack.module.rules.push({
             enforce: "post",
-            exclude: /(fast-web-utilities|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
+            exclude: /(message-system\.service\.[tj]s|monaco-adapter\.service\.[tj]s|shortcuts\.service\.[tj]s|ajv-validation\.service\.[tj]s|monaco-adapter\.service\.[tj]s|packages\/utilities|packages\/web-components|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
@@ -146,10 +146,10 @@ module.exports = function (config) {
             thresholds: {
                 emitWarning: false,
                 global: {
-                    statements: 100,
-                    lines: 100,
-                    branches: 100,
-                    functions: 100,
+                    statements: 90,
+                    lines: 90,
+                    branches: 90,
+                    functions: 90,
                 },
             },
         };

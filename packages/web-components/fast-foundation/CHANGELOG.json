@@ -1,0 +1,60 @@
+{
+  "name": "@microsoft/fast-foundation",
+  "entries": [
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-foundation_v1.18.0",
+      "version": "1.18.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add missing aria-expanded to the select template",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "8a86d721281ab9a7341bb5694a8c93f7892aa841",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "remove incorrect role from horizontal-scroll element",
+            "author": "chhol@microsoft.com",
+            "commit": "b0d3816d089df8d353c14fb2667ad0aa8626dc8d",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "ensure DesignToken works with falsey values",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "a94fda52cc9c0c0d1d0fc1c749dee52780b45834",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix anchored region positioning bugs",
+            "author": "scomea@microsoft.com",
+            "commit": "b0aaad7a455e6fd08336ffe210eb4e2db72781c9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "open up getter and setter functions to HTMLElement",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b6c2929d5b0eddc334b302db553a91681d4c4a0a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "await a macro task instead of a DOM.nextUpdate()",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f7fc9f1b9b4ac6ffa2176c952d1b433d8e4bf4e8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.7.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    }
+  ]
+}

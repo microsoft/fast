@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ensure DesignToken works with falsey values",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
