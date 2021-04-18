@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Support passing env. variables - platform agnostics",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "adi.biton@gmail.com",
+  "dependentChangeType": "none"
+}
