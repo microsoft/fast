@@ -17,8 +17,15 @@ import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
 chai.use(spies);
 
+/**
+ * These tests rely on some async functionality.
+ * They are therefore not included with the rest of the coverage
+ * and should be run only locally when making changes to the MonacoAdapter service.
+ *
+ * TODO: enable these tests #4602
+ */
 /* eslint-disable @typescript-eslint/no-empty-function */
-describe("MonacoAdapter", () => {
+xdescribe("MonacoAdapter", () => {
     it("should not throw", () => {
         expect(() => {
             const messageSystem = new MessageSystem({

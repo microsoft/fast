@@ -1,13 +1,14 @@
 <fast-anchored-region
     anchor="anchor-fixed"
+    auto-update-mode="auto"
     vertical-positioning-mode="dynamic"
     vertical-scaling="anchor"
     vertical-inset="true"
-    horizontal-positioning-mode="locktodefault"
+    horizontal-positioning-mode="dynamic"
     horizontal-default-position="right"
     style="z-index: 11;"
 >
-    <div style="height: 100%; width: 100%; background: blue;">
+    <div style="height: 100%; width: 100%; background: purple;">
         outside
     </div>
 </fast-anchored-region>
@@ -35,6 +36,7 @@
         horizontal-positioning-mode="dynamic"
         horizontal-scaling="anchor"
         horizontal-inset="true"
+        auto-update-mode="auto"
     >
         <div style="height: 100%; width: 100%; background: yellow;">
             inside
@@ -206,6 +208,7 @@
                 vertical-inset="true"
                 horizontal-positioning-mode="dynamic"
                 horizontal-inset="true"
+                auto-update-mode="auto"
             >
                 <div
                     style="height: 100px; width: 100px; background: yellow; opacity: 0.5;"
@@ -234,10 +237,11 @@
                 viewport="viewport-thresholds"
                 vertical-positioning-mode="dynamic"
                 vertical-default-position="top"
-                vertical-threshold="0"
+                vertical-threshold="200"
                 horizontal-positioning-mode="dynamic"
                 horizontal-default-position="left"
                 horizontal-threshold="200"
+                auto-update-mode="auto"
             >
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
@@ -353,6 +357,7 @@
                 vertical-positioning-mode="dynamic"
                 vertical-default-position="top"
                 horizontal-positioning-mode="dynamic"
+                horizontal-default-position="left"
             >
                 <div style="height: 100px; width: 100px; background: yellow;"></div>
             </fast-anchored-region>
@@ -537,6 +542,7 @@
     vertical-inset="true"
     horizontal-positioning-mode="locktodefault"
     horizontal-default-position="left"
+    auto-update-mode="auto"
     fixed-placement="true"
     style="z-index: 11;"
 >

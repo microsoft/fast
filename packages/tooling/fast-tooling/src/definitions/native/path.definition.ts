@@ -1,5 +1,5 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { DataType } from "@microsoft/fast-tooling";
+import { WebComponentDefinition } from "../../data-utilities/web-component";
+import { DataType } from "../../data-utilities";
 
 export const pathDefinition: WebComponentDefinition = {
     version: 1,
@@ -12,6 +12,7 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "d",
                     description: "The path d",
                     default: "",
+                    title: "d",
                     type: DataType.string,
                     required: false,
                 },
@@ -19,6 +20,7 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "stroke-linecap",
                     description: "The path stroke-linecap",
                     default: "",
+                    title: "stroke-linecap",
                     type: DataType.string,
                     required: false,
                 },
@@ -26,10 +28,12 @@ export const pathDefinition: WebComponentDefinition = {
                     name: "stroke-linejoin",
                     description: "The path stroke-linejoin",
                     default: "",
+                    title: "stroke-linejoin",
                     type: DataType.string,
                     required: false,
                 },
             ],
+            title: "path",
             slots: [],
         },
     ],

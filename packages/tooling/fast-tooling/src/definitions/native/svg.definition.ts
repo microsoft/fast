@@ -1,5 +1,5 @@
-import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { DataType } from "@microsoft/fast-tooling";
+import { WebComponentDefinition } from "../../data-utilities/web-component";
+import { DataType } from "../../data-utilities";
 
 export const svgDefinition: WebComponentDefinition = {
     version: 1,
@@ -7,11 +7,13 @@ export const svgDefinition: WebComponentDefinition = {
         {
             name: "svg",
             description: "The svg element",
+            title: "svg",
             attributes: [
                 {
                     name: "width",
                     description: "The svg width",
                     default: "",
+                    title: "width",
                     type: DataType.string,
                     required: false,
                 },
@@ -19,6 +21,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "height",
                     description: "The svg height",
                     default: "",
+                    title: "height",
                     type: DataType.string,
                     required: false,
                 },
@@ -26,6 +29,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "viewBox",
                     description: "The svg viewBox",
                     default: "",
+                    title: "viewBox",
                     type: DataType.string,
                     required: false,
                 },
@@ -33,6 +37,7 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "fill",
                     description: "The svg fill",
                     default: "",
+                    title: "fill",
                     type: DataType.string,
                     required: false,
                 },
@@ -40,14 +45,16 @@ export const svgDefinition: WebComponentDefinition = {
                     name: "xmlns",
                     description: "The svg xmls",
                     default: "http://www.w3.org/2000/svg",
+                    title: "xmlns",
                     type: DataType.string,
                     required: false,
                 },
             ],
             slots: [
                 {
-                    name: "",
+                    name: "Default slot",
                     description: "The default slot",
+                    title: "Default slot",
                 },
             ],
         },
