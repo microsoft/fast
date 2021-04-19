@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Moving native definitions to fast-tooling",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "44823142+williamw2@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
