@@ -2,11 +2,11 @@
 
 import React from "react";
 import {
-    FASTButton,
-    FASTSelect,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastButton,
+    fastSelect,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
@@ -20,10 +20,11 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
-FASTTab;
-FASTTabs;
-FASTTabPanel;
+fastButton;
+fastSelect;
+fastTab;
+fastTabs;
+fastTabPanel;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (

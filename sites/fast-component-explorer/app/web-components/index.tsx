@@ -2,13 +2,13 @@
 
 import React from "react";
 import {
-    FASTButton,
+    fastButton,
     FASTDesignSystemProvider,
-    FASTOption,
-    FASTSelect,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastOption,
+    fastSelect,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
 } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
@@ -19,13 +19,13 @@ import { Scenario } from "../fast-components/configs/data.props";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
+fastButton;
 FASTDesignSystemProvider;
-FASTOption;
-FASTSelect;
-FASTTab;
-FASTTabPanel;
-FASTTabs;
+fastOption;
+fastSelect;
+fastTab;
+fastTabPanel;
+fastTabs;
 
 interface RenderDevToolsTabsConfig {
     codeRenderCallback: (e: HTMLElement) => void;

@@ -3,25 +3,25 @@ import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped c
 
 import React from "react";
 import {
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastTextField,
+} from "@microsoft/fast-components";
+import {
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
-import {
-    FASTCheckbox,
-    FASTNumberField,
-    FASTOption,
-    FASTSelect,
-    FASTTextField,
-} from "@microsoft/fast-components";
 import { FASTColorPicker } from "./css";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
-FASTCheckbox;
-FASTNumberField;
-FASTOption;
-FASTSelect;
-FASTTextField;
+fastCheckbox;
+fastNumberField;
+fastOption;
+fastSelect;
+fastTextField;
 FASTColorPicker;
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
