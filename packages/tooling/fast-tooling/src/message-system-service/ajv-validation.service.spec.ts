@@ -22,8 +22,15 @@ import { AjvMapper, ajvValidationId } from "./ajv-validation.service";
 
 chai.use(spies);
 
+/**
+ * These tests rely on some async functionality.
+ * They are therefore not included with the rest of the coverage
+ * and should be run only locally when making changes to the AjvMapper service.
+ *
+ * TODO: enable these tests in #4603
+ */
 /* eslint-disable @typescript-eslint/no-empty-function */
-describe("AjvMapper", () => {
+xdescribe("AjvMapper", () => {
     it("should not throw", () => {
         expect(() => {
             const messageSystem = new MessageSystem({
