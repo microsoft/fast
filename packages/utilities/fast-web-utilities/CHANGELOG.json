@@ -1,0 +1,20 @@
+{
+  "name": "@microsoft/fast-web-utilities",
+  "entries": [
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-web-utilities_v4.7.3",
+      "version": "4.7.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: convert Jest tests to Karma/Mocha/Chai",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    }
+  ]
+}

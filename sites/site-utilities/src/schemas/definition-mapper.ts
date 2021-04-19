@@ -1,9 +1,9 @@
 import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
-import * as nativeElementDefinitions from "../definitions/native";
 import {
     fastComponentExtendedDefinitions,
+    nativeElementDefinitions,
     nativeElementExtendedDefinitions,
 } from "../definitions";
 
