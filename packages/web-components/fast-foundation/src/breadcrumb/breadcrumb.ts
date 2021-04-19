@@ -25,9 +25,18 @@ export class Breadcrumb extends FASTElement {
                 this.slottedBreadcrumbItems.length - 1
             ];
 
+            this.resetItemSeparator();
             this.removeLastItemSeparator(lastNode);
             this.setLastItemAriaCurrent(lastNode);
         }
+    }
+
+    private resetItemSeparator(): void {
+        this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
+            if (item instanceof BreadcrumbItem) {
+                (item as BreadcrumbItem).separator = true;
+            }
+        });
     }
 
     private removeLastItemSeparator(lastNode: HTMLElement): void {
