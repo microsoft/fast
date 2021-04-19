@@ -10,7 +10,7 @@ import { TabPanelStyles as styles } from "./tab-panel.styles";
  * @remarks
  * HTML Element: \<fast-tab-panel\>
  */
-export const FASTTabPanel = TabPanel.compose({
+export const fastTabPanel = TabPanel.compose({
     baseName: "tab-panel",
     template,
     styles,

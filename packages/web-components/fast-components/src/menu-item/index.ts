@@ -10,7 +10,7 @@ import { MenuItemStyles as styles } from "./menu-item.styles";
  * @remarks
  * HTML Element: \<fast-menu-item\>
  */
-export const FASTMenuItem = MenuItem.compose({
+export const fastMenuItem = MenuItem.compose({
     baseName: "menu-item",
     template,
     styles,

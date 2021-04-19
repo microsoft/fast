@@ -1,4 +1,4 @@
-import { attr, customElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
 import {
     NumberField as FoundationNumberField,
     NumberFieldTemplate as template,
@@ -54,7 +54,7 @@ export const NumberFieldStyles = styles;
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const FASTNumberField = NumberField.compose({
+export const fastNumberField = NumberField.compose({
     baseName: "number-field",
     styles,
     template,

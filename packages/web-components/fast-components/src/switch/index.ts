@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
 import { SwitchStyles as styles } from "./switch.styles";
 
@@ -11,7 +10,7 @@ import { SwitchStyles as styles } from "./switch.styles";
  * @remarks
  * HTML Element: \<fast-switch\>
  */
-export const FASTSwitch = Switch.compose({
+export const fastSwitch = Switch.compose({
     baseName: "switch",
     template,
     styles,

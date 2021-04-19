@@ -10,7 +10,7 @@ import { TabStyles as styles } from "./tab.styles";
  * @remarks
  * HTML Element: \<fast-tab\>
  */
-export const FASTTab = Tab.compose({
+export const fastTab = Tab.compose({
     baseName: "tab",
     template,
     styles,

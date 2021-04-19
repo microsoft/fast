@@ -11,7 +11,7 @@ import { SelectStyles as styles } from "./select.styles";
  * HTML Element: \<fast-select\>
  *
  */
-export const FASTSelect = Select.compose({
+export const fastSelect = Select.compose({
     baseName: "fast",
     template,
     styles,

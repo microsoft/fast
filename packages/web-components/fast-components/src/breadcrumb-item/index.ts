@@ -13,7 +13,7 @@ import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
  * @remarks
  * HTML Element: \<fast-breadcrumb-item\>
  */
-export const FASTBreadcrumbItem = BreadcrumbItem.compose({
+export const fastBreadcrumbItem = BreadcrumbItem.compose({
     baseName: "breadcrumb-item",
     template,
     styles,

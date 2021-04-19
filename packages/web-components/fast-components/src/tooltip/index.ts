@@ -10,7 +10,7 @@ import { TooltipStyles as styles } from "./tooltip.styles";
  * @remarks
  * HTML Element: \<fast-tooltip\>
  */
-export const FASTTooltip = Tooltip.compose({
+export const fastTooltip = Tooltip.compose({
     baseName: "tooltip",
     template,
     styles,

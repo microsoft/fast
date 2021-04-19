@@ -12,7 +12,7 @@ export * from "../accordion-item/index";
  * @remarks
  * HTML Element: \<fast-accordion\>
  */
-export const FASTAccordion = Accordion.compose({
+export const fastAccordion = Accordion.compose({
     baseName: "accordion",
     template,
     styles,

@@ -10,7 +10,7 @@ import { ComboboxStyles as styles } from "./combobox.styles";
  * HTML Element: \<fast-combobox\>
  *
  */
-export const FASTCombobox = Combobox.compose({
+export const fastCombobox = Combobox.compose({
     baseName: "combobox",
     template,
     styles,

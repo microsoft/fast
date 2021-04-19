@@ -10,7 +10,7 @@ import { FlipperStyles as styles } from "./flipper.styles";
  * @remarks
  * HTML Element: \<fast-flipper\>
  */
-export const FASTFlipper = Flipper.compose({
+export const fastFlipper = Flipper.compose({
     baseName: "flipper",
     template,
     styles,

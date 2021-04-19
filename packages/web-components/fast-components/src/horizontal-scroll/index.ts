@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     HorizontalScroll as FoundationHorizontalScroll,
     HorizontalScrollTemplate as template,
@@ -33,7 +32,7 @@ export class HorizontalScroll extends FoundationHorizontalScroll {
  * @remarks
  * HTML Element: \<fast-horizontal-scroll\>
  */
-export const FASTHorizontalScroll = HorizontalScroll.compose({
+export const fastHorizontalScroll = HorizontalScroll.compose({
     baseName: "horizontal-scroll",
     template,
     styles,

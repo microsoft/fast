@@ -13,7 +13,7 @@ import { ProgressStyles as styles } from "./progress.styles";
  * @remarks
  * HTML Element: \<fast-progress\>
  */
-export const FASTProgress = Progress.compose({
+export const fastProgress = Progress.compose({
     baseName: "progress",
     template,
     styles,

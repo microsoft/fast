@@ -48,7 +48,7 @@ export class TextArea extends FoundationTextArea {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const FASTTextArea = TextArea.compose({
+export const fastTextArea = TextArea.compose({
     baseName: "text-area",
     template,
     styles,

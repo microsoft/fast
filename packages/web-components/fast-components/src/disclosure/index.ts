@@ -93,7 +93,7 @@ export const DisclosureStyles = styles;
  * HTML Element: \<fast-Disclosure\>
  *
  */
-export const FASTDisclosure = Disclosure.compose({
+export const fastDisclosure = Disclosure.compose({
     baseName: "disclosure",
     template,
     styles,

@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     SliderLabel as FoundationSliderLabel,
     SliderLabelTemplate as template,
@@ -35,7 +34,7 @@ export class SliderLabel extends FoundationSliderLabel {
  * HTML Element: \<fast-slider-label\>
  */
 
-export const FASTSliderLabel = SliderLabel.compose({
+export const fastSliderLabel = SliderLabel.compose({
     baseName: "slider-label",
     template,
     styles,

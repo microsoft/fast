@@ -10,7 +10,7 @@ import { BadgeStyles as styles } from "./badge.styles";
  * @remarks
  * HTML Element: \<fast-badge\>
  */
-export const FASTBadge = Badge.compose({
+export const fastBadge = Badge.compose({
     baseName: "badge",
     template,
     styles,

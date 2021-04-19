@@ -11,7 +11,7 @@ import { TreeViewStyles as styles } from "./tree-view.styles";
  * HTML Element: \<fast-tree-view\>
  *
  */
-export const FASTTreeView = TreeView.compose({
+export const fastTreeView = TreeView.compose({
     baseName: "tree-view",
     template,
     styles,

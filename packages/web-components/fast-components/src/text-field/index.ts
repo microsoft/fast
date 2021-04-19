@@ -48,7 +48,7 @@ export class TextField extends FoundationTextField {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const FASTTextField = TextField.compose({
+export const fastTextField = TextField.compose({
     baseName: "text-field",
     template,
     styles,
