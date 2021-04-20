@@ -25,7 +25,8 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles";
 
-export const TabStyles = css`
+export const tabStyles = (context, definition) =>
+    css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
@@ -112,23 +113,23 @@ export const TabStyles = css`
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    neutralFillActiveBehavior,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        accentForegroundActiveBehavior,
+        accentForegroundHoverBehavior,
+        accentForegroundRestBehavior,
+        neutralFillActiveBehavior,
+        neutralFillHoverBehavior,
+        neutralFillRestBehavior,
+        neutralFillStealthRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundHintBehavior,
+        neutralForegroundActiveBehavior,
+        neutralForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             :host {
                 forced-color-adjust: none;
                 border-color: transparent;
@@ -152,5 +153,5 @@ export const TabStyles = css`
                 box-shadow: none;
             }
         `
-    )
-);
+        )
+    );

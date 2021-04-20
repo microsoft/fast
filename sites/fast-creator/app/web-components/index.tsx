@@ -1,16 +1,16 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-
-import React from "react";
-import {
-    FASTButton,
-    FASTSelect,
-    FASTSlider,
-    FASTSliderLabel,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
-} from "@microsoft/fast-components";
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+import {
+    fastButton,
+    fastSelect,
+    fastSlider,
+    fastSliderLabel,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+} from "@microsoft/fast-components";
+import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -19,7 +19,6 @@ import {
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
 
-import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { FormId } from "../creator.props";
@@ -28,13 +27,14 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
 FASTColorPicker;
-FASTSlider;
-FASTSliderLabel;
-FASTTab;
-FASTTabs;
-FASTTabPanel;
+fastSlider;
+fastSliderLabel;
+fastButton;
+fastSelect;
+fastTab;
+fastTabPanel;
+fastTabs;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -75,7 +75,7 @@ export function renderDeviceSelect(
             selectedIndex={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
-                    onChangeCallback((e.target as FASTSelect).value);
+                    onChangeCallback((e.target as Select).value);
                 },
             }}
             disabled={disable ? true : null}

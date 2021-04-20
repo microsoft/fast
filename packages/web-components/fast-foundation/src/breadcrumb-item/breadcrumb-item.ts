@@ -1,5 +1,5 @@
 import { observable } from "@microsoft/fast-element";
-import { DelegatesARIALink, Anchor } from "../anchor";
+import { Anchor, DelegatesARIALink } from "../anchor";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 

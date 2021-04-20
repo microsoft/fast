@@ -6,7 +6,10 @@ import type { Skeleton } from "./skeleton";
  * The template for the fast-skeleton component
  * @public
  */
-export const SkeletonTemplate: ViewTemplate<Skeleton> = html`
+export const skeletonTemplate: (context, definition) => ViewTemplate<Skeleton> = (
+    context,
+    definition
+) => html`
     <template
         class="${x => (x.shape === "circle" ? "circle" : "rect")}"
         pattern="${x => x.pattern}"

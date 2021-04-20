@@ -146,15 +146,19 @@ export class FoundationElement extends FASTElement {
      * function for.
      */
     public static compose<
-        T extends FoundationElementDefinition = FoundationElementDefinition
+        T extends FoundationElementDefinition = FoundationElementDefinition,
+        K extends Constructable<FoundationElement> = Constructable<FoundationElement>
     >(
+        this: K,
         elementDefinition: T
-    ): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => Registry {
-        return (
-            overrideDefinition: OverrideFoundationElementDefinition<T> = {}
-        ): Registry =>
-            new FoundationElementRegistry(
-                this === FoundationElement ? class extends FoundationElement {} : this,
+    ): (
+        overrideDefinition?: OverrideFoundationElementDefinition<T>
+    ) => FoundationElementRegistry<T, K> {
+        return (overrideDefinition: OverrideFoundationElementDefinition<T> = {}) =>
+            new FoundationElementRegistry<T, K>(
+                (this as any) === FoundationElement
+                    ? class extends FoundationElement {}
+                    : this,
                 elementDefinition,
                 overrideDefinition
             );
@@ -173,19 +177,30 @@ function resolveOption<T, K extends FoundationElementDefinition>(
     return option;
 }
 
-class FoundationElementRegistry<T extends FoundationElementDefinition> {
-    constructor(
-        private type: Constructable<FoundationElement>,
-        private elementDefinition: T,
-        private overrideDefinition: OverrideFoundationElementDefinition<T>
-    ) {}
+/**
+ * Registry capable of defining presentation properties for a DOM Container hierarchy.
+ *
+ * @alpha
+ */
+export class FoundationElementRegistry<
+    TDefinition extends FoundationElementDefinition,
+    TType
+> implements Registry {
+    public readonly definition: OverrideFoundationElementDefinition<TDefinition>;
 
-    public register(container: Container) {
-        const definition = {
+    constructor(
+        public readonly type: Constructable<FoundationElement>,
+        private elementDefinition: TDefinition,
+        private overrideDefinition: OverrideFoundationElementDefinition<TDefinition>
+    ) {
+        this.definition = {
             ...this.elementDefinition,
             ...this.overrideDefinition,
-        } as OverrideFoundationElementDefinition<T>;
+        } as OverrideFoundationElementDefinition<TDefinition>;
+    }
 
+    public register(container: Container) {
+        const definition = this.definition;
         const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;

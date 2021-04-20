@@ -1,22 +1,20 @@
-import { customElement } from "@microsoft/fast-element";
-import { TabPanel, TabPanelTemplate as template } from "@microsoft/fast-foundation";
-import { TabPanelStyles as styles } from "./tab-panel.styles";
+import { TabPanel, tabPanelTemplate as template } from "@microsoft/fast-foundation";
+import { tabPanelStyles as styles } from "./tab-panel.styles";
 
 /**
  * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel},
- * {@link @microsoft/fast-foundation#TabPanelTemplate}
+ * {@link @microsoft/fast-foundation#tabPanelTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-tab-panel\>
  */
-@customElement({
-    name: "fast-tab-panel",
+export const fastTabPanel = TabPanel.compose({
+    baseName: "tab-panel",
     template,
     styles,
-})
-export class FASTTabPanel extends TabPanel {}
+});
 
 /**
  * Styles for TabPanel
