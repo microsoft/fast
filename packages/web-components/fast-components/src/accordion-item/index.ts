@@ -23,4 +23,4 @@ export const fastAccordionItem = AccordionItem.compose({
  * Styles for AccordionItem
  * @public
  */
-export const AccordionItemStyles = styles;
+export const accordionItemStyles = styles;

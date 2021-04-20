@@ -6,7 +6,7 @@ import { Select, selectTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTSelect = Select.compose({
-    baseName: "fast",
+    baseName: "select",
     template
 })
 
