@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adjust button padding with --corner-radius changes",
+  "packageName": "@microsoft/fast-components",
+  "email": "ben@platform5.ch",
+  "dependentChangeType": "patch"
+}
