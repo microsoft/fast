@@ -1,11 +1,12 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Badge Custom HTML Element.
  *
  * @public
  */
-export class Badge extends FASTElement {
+export class Badge extends FoundationElement {
     /**
      * Indicates the badge should have a filled style.
      * @public

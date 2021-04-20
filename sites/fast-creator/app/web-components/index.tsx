@@ -2,12 +2,13 @@
 
 import React from "react";
 import {
-    FASTButton,
-    FASTSelect,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastButton,
+    fastSelect,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
 } from "@microsoft/fast-components";
+import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import { ModularForm, StandardControlPlugin } from "@microsoft/fast-tooling-react";
@@ -19,10 +20,11 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
-FASTTab;
-FASTTabs;
-FASTTabPanel;
+fastButton;
+fastSelect;
+fastTab;
+fastTabs;
+fastTabPanel;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -63,7 +65,7 @@ export function renderDeviceSelect(
             selectedIndex={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
-                    onChangeCallback((e.target as FASTSelect).value);
+                    onChangeCallback((e.target as Select).value);
                 },
             }}
             disabled={disable ? true : null}

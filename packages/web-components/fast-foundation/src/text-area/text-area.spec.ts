@@ -1,18 +1,14 @@
 import { expect, assert } from "chai";
-import { TextArea, TextAreaTemplate as template } from "./index";
+import { TextArea, textAreaTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-text-area",
+const FASTTextArea = TextArea.compose({
+    baseName: "text-area",
     template,
 })
-class FASTTextArea extends TextArea {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTTextArea>(
-        "fast-text-area"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTTextArea());
 
     return { element, connect, disconnect, parent };
 }

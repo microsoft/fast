@@ -1,34 +1,30 @@
 import { assert, expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
-import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
+import { DOM } from "@microsoft/fast-element";
+import { listboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../fixture";
-import { Select, SelectTemplate } from "./index";
+import { Select, selectTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-select",
-    template: SelectTemplate,
+const FASTSelect = Select.compose({
+    baseName: "fast",
+    template
 })
-class FASTSelect extends Select {}
 
-@customElement({
-    name: "fast-option",
-    template: ListboxOptionTemplate,
+const FASTOption = ListboxOption.compose({
+    baseName: "option",
+    template: listboxOptionTemplate,
 })
-class FASTOption extends ListboxOption {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTSelect>(
-        "fast-select"
-    );
+    const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
 
-    const option1 = document.createElement("fast-option") as FASTOption;
+    const option1 = document.createElement("fast-option") as ListboxOption;
     option1.value = "one";
 
-    const option2 = document.createElement("fast-option") as FASTOption;
+    const option2 = document.createElement("fast-option") as ListboxOption;
     option2.value = "two";
 
-    const option3 = document.createElement("fast-option") as FASTOption;
+    const option3 = document.createElement("fast-option") as ListboxOption;
     option3.value = "three";
 
     element.appendChild(option1);

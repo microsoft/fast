@@ -9,7 +9,7 @@ import {
     accentForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const DisclosureStyles = css`
+export const disclosureStyles = css`
     .disclosure {
         transition: height 0.35s;
     }

@@ -1,6 +1,7 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { isHTMLElement, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
+import { attr, DOM, observable } from "@microsoft/fast-element";
+import { keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Tree view Custom HTML Element.
@@ -8,7 +9,7 @@ import { isTreeItemElement, TreeItem } from "../tree-item";
  *
  * @public
  */
-export class TreeView extends FASTElement {
+export class TreeView extends FoundationElement {
     public treeView: HTMLElement;
 
     @attr({ attribute: "render-collapsed-nodes" })

@@ -4,16 +4,17 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
-    neutralForegroundRestBehavior,
     heightNumber,
+    neutralForegroundRestBehavior,
 } from "../styles/index";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 
-export const BreadcrumbItemStyles = css`
+export const breadcrumbItemStyles = (context, definition) =>
+    css`
     ${display("inline-flex")} :host {
         background: transparent;
         box-sizing: border-box;
@@ -112,16 +113,16 @@ export const BreadcrumbItemStyles = css`
         margin-inline-start: 6px;
     }
 `.withBehaviors(
-    accentForegroundRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            .control:hover .content::before {
-                background: ${SystemColors.LinkText};
-            }
-        `
-    )
-);
+        accentForegroundRestBehavior,
+        accentForegroundHoverBehavior,
+        accentForegroundActiveBehavior,
+        accentForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
+                .control:hover .content::before {
+                    background: ${SystemColors.LinkText};
+                }
+            `
+        )
+    );

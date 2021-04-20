@@ -1,19 +1,16 @@
 import { expect } from "chai";
-import { Dialog, DialogTemplate as template } from "./index";
+import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-dialog",
-    template,
+const FASTDialog = Dialog.compose({
+    baseName: "dialog",
+    template,  
 })
-class FASTDialog extends Dialog {}
 
 async function setup() {
-    const { connect, disconnect, document, element } = await fixture<Dialog>(
-        "fast-dialog"
-    );
+    const { connect, disconnect, document, element } = await fixture(FASTDialog());
 
     return { connect, disconnect, document, element };
 }

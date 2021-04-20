@@ -1,26 +1,16 @@
 import { expect, assert } from "chai";
-import { Slider, SliderTemplate as template } from "./index";
-import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
+import { Slider, sliderTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-slider",
-    template,
+const FASTSlider = Slider.compose({
+    baseName: "slider",
+    template
 })
-class FASTSlider extends Slider {}
-
-@customElement({
-    name: "fast-slider-label",
-    template: itemTemplate,
-})
-class FASTSliderLabel extends SliderLabel {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(
-        "fast-slider"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTSlider());
 
     return { element, connect, disconnect, parent };
 }

@@ -1,37 +1,33 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
 import { fixture } from "../fixture";
 import { ListboxOption } from "../listbox-option/listbox-option";
-import { ListboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
-import { Listbox, ListboxTemplate as template } from "./index";
+import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
+import { Listbox, listboxTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-listbox",
-    template,
+const FASTListbox = Listbox.compose({
+    baseName: "listbox",
+    template
 })
-class FASTListbox extends Listbox {}
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Listbox", () => {
-    @customElement({
-        name: "fast-option",
-        template: itemTemplate,
+    const FASTOption = ListboxOption.compose({
+        baseName: "option",
+        template: itemTemplate
     })
-    class FASTOption extends ListboxOption {}
 
     async function setup() {
-        const { element, connect, disconnect } = await fixture<FASTListbox>(
-            "fast-listbox"
-        );
+        const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
 
         const option1 = document.createElement("fast-option");
-        (option1 as FASTOption).textContent = "option 1";
+        (option1 as ListboxOption).textContent = "option 1";
 
         const option2 = document.createElement("fast-option");
-        (option2 as FASTOption).textContent = "option 2";
+        (option2 as ListboxOption).textContent = "option 2";
 
         const option3 = document.createElement("fast-option");
-        (option3 as FASTOption).textContent = "option 3";
+        (option3 as ListboxOption).textContent = "option 3";
 
         element.appendChild(option1);
         element.appendChild(option2);

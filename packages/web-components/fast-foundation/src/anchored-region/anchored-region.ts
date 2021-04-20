@@ -1,5 +1,6 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, eventScroll, eventResize } from "@microsoft/fast-web-utilities";
+import { attr, DOM, observable } from "@microsoft/fast-element";
+import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import { getDirection } from "../utilities";
 import { IntersectionService } from "./intersection-service";
 
@@ -107,7 +108,7 @@ type Location = "top" | "left" | "right" | "bottom";
  *
  * @beta
  */
-export class AnchoredRegion extends FASTElement {
+export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
@@ -289,7 +290,7 @@ export class AnchoredRegion extends FASTElement {
     public fixedPlacement: boolean = false;
     private fixedPlacementChanged(): void {
         if (
-            (this as FASTElement).$fastController.isConnected &&
+            (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
             this.initialize();
@@ -310,7 +311,7 @@ export class AnchoredRegion extends FASTElement {
         newMode: AutoUpdateMode
     ): void {
         if (
-            (this as FASTElement).$fastController.isConnected &&
+            (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
             if (prevMode === "auto") {
@@ -343,7 +344,7 @@ export class AnchoredRegion extends FASTElement {
     public viewportElement: HTMLElement | null = null;
     private viewportElementChanged(): void {
         if (
-            (this as FASTElement).$fastController.isConnected &&
+            (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
             this.initialize();
@@ -504,7 +505,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private updateForAttributeChange(): void {
         if (
-            (this as FASTElement).$fastController.isConnected &&
+            (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
             this.update();
@@ -537,7 +538,7 @@ export class AnchoredRegion extends FASTElement {
      */
     private requestReset(): void {
         if (
-            (this as FASTElement).$fastController.isConnected &&
+            (this as FoundationElement).$fastController.isConnected &&
             this.pendingReset === false
         ) {
             this.pendingLayoutUpdate = false;
@@ -699,13 +700,13 @@ export class AnchoredRegion extends FASTElement {
     private applyIntersectionEntries = (
         entries: IntersectionObserverEntry[]
     ): boolean => {
-        let regionEntry: IntersectionObserverEntry | undefined = entries.find(
+        const regionEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this
         );
-        let anchorEntry: IntersectionObserverEntry | undefined = entries.find(
+        const anchorEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.anchorElement
         );
-        let viewportEntry: IntersectionObserverEntry | undefined = entries.find(
+        const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.viewportElement
         );
 
