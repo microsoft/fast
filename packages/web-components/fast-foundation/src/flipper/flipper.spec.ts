@@ -1,17 +1,16 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { FlipperDirection } from "./flipper.options";
-import { Flipper, FlipperTemplate as template } from "./index";
+import { Flipper, flipperTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-flipper",
-    template,
+const FASTFlipper = Flipper.compose({
+    baseName: "flipper",
+    template
 })
-class FASTFlipper extends Flipper {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Flipper>("fast-flipper");
+    const { element, connect, disconnect } = await fixture(FASTFlipper());
 
     return { element, connect, disconnect };
 }
@@ -73,12 +72,10 @@ describe("Flipper", () => {
     });
 
     it("should set a tabindex of 0 when aria-hidden attribute is false", async () => {
-        const { element, connect, disconnect } = await fixture<Flipper>(
-            html`
-                <fast-flipper aria-hidden="false"></fast-flipper>
-            `
-        );
+        const { element, connect, disconnect } = await setup();
 
+        element.setAttribute("aria-hidden", "false");
+        
         await connect();
         await DOM.nextUpdate();
 

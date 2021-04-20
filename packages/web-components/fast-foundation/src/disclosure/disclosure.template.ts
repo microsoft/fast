@@ -6,7 +6,10 @@ import type { Disclosure } from "./disclosure";
  * The template for the {@link @microsoft/fast-foundation#Disclosure} component.
  * @public
  */
-export const DisclosureTemplate: ViewTemplate<Disclosure> = html`
+export const disclosureTemplate: (context, definition) => ViewTemplate<Disclosure> = (
+    context,
+    definition
+) => html`
     <details class="disclosure" ${ref("details")}>
         <summary
             class="invoker"

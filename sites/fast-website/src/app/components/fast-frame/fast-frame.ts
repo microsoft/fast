@@ -1,13 +1,12 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
 import {
     createColorPalette,
-    FASTSlider,
     FASTDesignSystem,
     fastDesignSystemDefaults,
     StandardLuminance,
     neutralLayerCardContainer,
-    FASTRadioGroup,
 } from "@microsoft/fast-components";
+import { RadioGroup, Slider } from "@microsoft/fast-foundation";
 import {
     ColorHSL,
     ColorRGBA64,
@@ -83,7 +82,7 @@ export class FastFrame extends FASTElement {
     public isMobile: boolean = this.mql.matches;
 
     public accentChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTRadioGroup) {
+        if (e.target instanceof RadioGroup) {
             this.accentColor = e.target.value;
             const accentColorHSL = rgbToHSL(parseColorHexRGB(this.accentColor)!);
             this.hue = accentColorHSL.h;
@@ -95,7 +94,7 @@ export class FastFrame extends FASTElement {
     };
 
     public neutralChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTRadioGroup) {
+        if (e.target instanceof RadioGroup) {
             const parsedColor = parseColorHexRGB(e.target.value);
             this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
             this.updateBackgroundColor();
@@ -103,32 +102,32 @@ export class FastFrame extends FASTElement {
     };
 
     public densityChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
+        if (e.target instanceof Slider) {
             this.density = parseInt(e.target.value);
         }
     };
 
     public borderRadiusChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
+        if (e.target instanceof Slider) {
             this.borderRadius = parseInt(e.target.value);
         }
     };
 
     public outlineWidthChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
+        if (e.target instanceof Slider) {
             this.outlineWidth = parseInt(e.target.value);
         }
     };
 
     public saturationChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
+        if (e.target instanceof Slider) {
             this.saturation = parseFloat(e.target.value);
         }
         this.updateAccentColor();
     };
 
     public hueChangeHandler = (e: CustomEvent): void => {
-        if (e.target instanceof FASTSlider) {
+        if (e.target instanceof Slider) {
             this.hue = parseFloat(e.target.value);
         }
         this.updateAccentColor();

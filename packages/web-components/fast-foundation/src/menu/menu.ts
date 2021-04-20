@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
@@ -8,6 +8,7 @@ import {
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
 import { MenuItem, MenuItemRole } from "../menu-item/index";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Menu Custom HTML Element.
@@ -15,7 +16,7 @@ import { MenuItem, MenuItemRole } from "../menu-item/index";
  *
  * @public
  */
-export class Menu extends FASTElement {
+export class Menu extends FoundationElement {
     /**
      * @internal
      */

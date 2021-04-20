@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -10,6 +10,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
@@ -26,7 +27,7 @@ export enum TabsOrientation {
  *
  * @public
  */
-export class Tabs extends FASTElement {
+export class Tabs extends FoundationElement {
     /**
      * The orientation
      * @public
