@@ -1,9 +1,9 @@
 import { attr } from "@microsoft/fast-element";
 import {
     TextArea as FoundationTextArea,
-    TextAreaTemplate as template,
+    textAreaTemplate as template,
 } from "@microsoft/fast-foundation";
-import { TextAreaStyles as styles } from "./text-area.styles";
+import { textAreaStyles as styles } from "./text-area.styles";
 
 /**
  * Text area appearances

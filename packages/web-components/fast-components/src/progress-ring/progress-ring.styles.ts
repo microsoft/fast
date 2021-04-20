@@ -8,7 +8,7 @@ import {
     neutralForegroundHintBehavior,
 } from "../styles";
 
-export const ProgressRingStyles = (context, defintion) =>
+export const progressRingStyles = (context, defintion) =>
     css`
         ${display("flex")} :host {
             align-items: center;

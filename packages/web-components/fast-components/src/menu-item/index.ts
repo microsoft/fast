@@ -1,5 +1,5 @@
-import { MenuItem, MenuItemTemplate as template } from "@microsoft/fast-foundation";
-import { MenuItemStyles as styles } from "./menu-item.styles";
+import { MenuItem, menuItemTemplate as template } from "@microsoft/fast-foundation";
+import { menuItemStyles as styles } from "./menu-item.styles";
 
 /**
  * The FAST Menu Item Element. Implements {@link @microsoft/fast-foundation#MenuItem},

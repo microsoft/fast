@@ -1,11 +1,11 @@
 import {
     SliderLabel as FoundationSliderLabel,
-    SliderLabelTemplate as template,
+    sliderLabelTemplate as template,
 } from "@microsoft/fast-foundation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import {
     horizontalSliderStyles,
-    SliderLabelStyles as styles,
+    sliderLabelStyles as styles,
     verticalSliderStyles,
 } from "./slider-label.styles";
 

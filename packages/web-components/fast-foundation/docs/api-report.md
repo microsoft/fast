@@ -55,10 +55,10 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
-export const AccordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;
+export const accordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;
 
 // @public
-export const AccordionTemplate: (context: any, definition: any) => ViewTemplate<Accordion>;
+export const accordionTemplate: (context: any, definition: any) => ViewTemplate<Accordion>;
 
 // @alpha (undocumented)
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
@@ -124,10 +124,10 @@ export class AnchoredRegion extends FoundationElement {
     }
 
 // @beta
-export const AnchoredRegionTemplate: (context: any, definition: any) => ViewTemplate<AnchoredRegion>;
+export const anchoredRegionTemplate: (context: any, definition: any) => ViewTemplate<AnchoredRegion>;
 
 // @public
-export const AnchorTemplate: (context: any, definition: any) => ViewTemplate<Anchor>;
+export const anchorTemplate: (context: any, definition: any) => ViewTemplate<Anchor>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -176,7 +176,7 @@ export class Badge extends FoundationElement {
 }
 
 // @public
-export const BadgeTemplate: (context: any, definition: any) => ViewTemplate<Badge>;
+export const badgeTemplate: (context: any, definition: any) => ViewTemplate<Badge>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "BaseProgress" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //
@@ -212,10 +212,10 @@ export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
-export const BreadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;
+export const breadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;
 
 // @public
-export const BreadcrumbTemplate: (context: any, definition: any) => ViewTemplate<Breadcrumb>;
+export const breadcrumbTemplate: (context: any, definition: any) => ViewTemplate<Breadcrumb>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
@@ -245,7 +245,7 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
-export const ButtonTemplate: (context: any, definition: any) => ViewTemplate<Button>;
+export const buttonTemplate: (context: any, definition: any) => ViewTemplate<Button>;
 
 // @public
 export class Card extends FASTElement {
@@ -279,7 +279,7 @@ export class Checkbox extends FormAssociatedCheckbox {
     }
 
 // @public
-export const CheckboxTemplate: (context: any, definition: any) => ViewTemplate<Checkbox>;
+export const checkboxTemplate: (context: any, definition: any) => ViewTemplate<Checkbox>;
 
 // @public
 export interface ColumnDefinition {
@@ -368,7 +368,7 @@ export enum ComboboxAutocomplete {
 }
 
 // @public
-export const ComboboxTemplate: (context: any, definition: any) => ViewTemplate<Combobox>;
+export const comboboxTemplate: (context: any, definition: any) => ViewTemplate<Combobox>;
 
 // @alpha
 export interface ComponentPresentation {
@@ -888,7 +888,7 @@ export class Dialog extends FoundationElement {
     }
 
 // @public
-export const DialogTemplate: (context: any, definition: any) => ViewTemplate<Dialog>;
+export const dialogTemplate: (context: any, definition: any) => ViewTemplate<Dialog>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -922,7 +922,7 @@ export class Disclosure extends FoundationElement {
 }
 
 // @public
-export const DisclosureTemplate: (context: any, definition: any) => ViewTemplate<Disclosure>;
+export const disclosureTemplate: (context: any, definition: any) => ViewTemplate<Disclosure>;
 
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
@@ -941,7 +941,7 @@ export enum DividerRole {
 }
 
 // @public
-export const DividerTemplate: (context: any, definition: any) => ViewTemplate<Divider>;
+export const dividerTemplate: (context: any, definition: any) => ViewTemplate<Divider>;
 
 // @alpha (undocumented)
 export interface DOMParentLocatorEventDetail {
@@ -1015,7 +1015,7 @@ export enum FlipperDirection {
 }
 
 // @public
-export const FlipperTemplate: (context: any, definition: any) => ViewTemplate<Flipper>;
+export const flipperTemplate: (context: any, definition: any) => ViewTemplate<Flipper>;
 
 // @public
 export const focusVisible: string;
@@ -1170,7 +1170,7 @@ export class HorizontalScroll extends FoundationElement {
     }
 
 // @public (undocumented)
-export const HorizontalScrollTemplate: (context: any, definition: any) => ViewTemplate<HorizontalScroll>;
+export const horizontalScrollTemplate: (context: any, definition: any) => ViewTemplate<HorizontalScroll>;
 
 // @public
 export type HorizontalScrollView = "default" | "mobile";
@@ -1324,7 +1324,7 @@ export interface ListboxOption extends StartEnd {
 }
 
 // @public
-export const ListboxOptionTemplate: (context: any, definition: any) => ViewTemplate<ListboxOption>;
+export const listboxOptionTemplate: (context: any, definition: any) => ViewTemplate<ListboxOption>;
 
 // @public
 export enum ListboxRole {
@@ -1333,7 +1333,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const ListboxTemplate: (context: any, definition: any) => ViewTemplate<Listbox>;
+export const listboxTemplate: (context: any, definition: any) => ViewTemplate<Listbox>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -1428,10 +1428,10 @@ export enum MenuItemRole {
 }
 
 // @public
-export const MenuItemTemplate: (context: any, definition: any) => ViewTemplate<MenuItem>;
+export const menuItemTemplate: (context: any, definition: any) => ViewTemplate<MenuItem>;
 
 // @public
-export const MenuTemplate: (context: any, definition: any) => ViewTemplate<Menu>;
+export const menuTemplate: (context: any, definition: any) => ViewTemplate<Menu>;
 
 // @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;
@@ -1481,7 +1481,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const NumberFieldTemplate: (context: any, definition: any) => ViewTemplate<NumberField>;
+export const numberFieldTemplate: (context: any, definition: any) => ViewTemplate<NumberField>;
 
 // @alpha
 export const optional: (key: any) => any;
@@ -1495,10 +1495,10 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 export type ParentLocator = (owner: any) => Container | null;
 
 // @public
-export const ProgressRingTemplate: (context: any, definition: any) => ViewTemplate<BaseProgress>;
+export const progressRingTemplate: (context: any, definition: any) => ViewTemplate<BaseProgress>;
 
 // @public
-export const ProgressTemplate: (context: any, defintion: any) => ViewTemplate<BaseProgress>;
+export const progressTemplate: (context: any, defintion: any) => ViewTemplate<BaseProgress>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {
@@ -1570,10 +1570,10 @@ export class RadioGroup extends FoundationElement {
 }
 
 // @public
-export const RadioGroupTemplate: (context: any, definition: any) => ViewTemplate<RadioGroup>;
+export const radioGroupTemplate: (context: any, definition: any) => ViewTemplate<RadioGroup>;
 
 // @public
-export const RadioTemplate: (context: any, definition: any) => ViewTemplate<Radio>;
+export const radioTemplate: (context: any, definition: any) => ViewTemplate<Radio>;
 
 // @alpha (undocumented)
 export type RegisterSelf<T extends Constructable> = {
@@ -1730,7 +1730,7 @@ export enum SelectRole {
 }
 
 // @public
-export const SelectTemplate: (context: any, definition: any) => ViewTemplate<Select>;
+export const selectTemplate: (context: any, definition: any) => ViewTemplate<Select>;
 
 // @alpha (undocumented)
 export interface ServiceLocator {
@@ -1778,7 +1778,7 @@ export class Skeleton extends FoundationElement {
 export type SkeletonShape = "rect" | "circle";
 
 // @public
-export const SkeletonTemplate: (context: any, definition: any) => ViewTemplate<Skeleton>;
+export const skeletonTemplate: (context: any, definition: any) => ViewTemplate<Skeleton>;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
 //
@@ -1869,7 +1869,7 @@ export class SliderLabel extends FoundationElement {
 }
 
 // @public
-export const SliderLabelTemplate: (context: any, definition: any) => ViewTemplate<SliderLabel>;
+export const sliderLabelTemplate: (context: any, definition: any) => ViewTemplate<SliderLabel>;
 
 // @public
 export enum SliderMode {
@@ -1878,7 +1878,7 @@ export enum SliderMode {
 }
 
 // @public
-export const SliderTemplate: (context: any, definition: any) => ViewTemplate<Slider>;
+export const sliderTemplate: (context: any, definition: any) => ViewTemplate<Slider>;
 
 // @public
 export class StartEnd {
@@ -1940,7 +1940,7 @@ export class Switch extends FormAssociatedSwitch {
     }
 
 // @public
-export const SwitchTemplate: (context: any, definition: any) => ViewTemplate<Switch>;
+export const switchTemplate: (context: any, definition: any) => ViewTemplate<Switch>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Tab" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //
@@ -1956,7 +1956,7 @@ export class TabPanel extends FoundationElement {
 }
 
 // @public
-export const TabPanelTemplate: (context: any, definition: any) => ViewTemplate<TabPanel>;
+export const tabPanelTemplate: (context: any, definition: any) => ViewTemplate<TabPanel>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-incompatible-release-tags) The symbol "Tabs" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
@@ -2000,10 +2000,10 @@ export enum TabsOrientation {
 }
 
 // @public
-export const TabsTemplate: (context: any, definition: any) => ViewTemplate<Tabs>;
+export const tabsTemplate: (context: any, definition: any) => ViewTemplate<Tabs>;
 
 // @public
-export const TabTemplate: (context: any, definition: any) => ViewTemplate<Tab>;
+export const tabTemplate: (context: any, definition: any) => ViewTemplate<Tab>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
@@ -2046,7 +2046,7 @@ export enum TextAreaResize {
 }
 
 // @public
-export const TextAreaTemplate: (context: any, definition: any) => ViewTemplate<TextArea>;
+export const textAreaTemplate: (context: any, definition: any) => ViewTemplate<TextArea>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
@@ -2081,7 +2081,7 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const TextFieldTemplate: (context: any, definition: any) => ViewTemplate<TextField>;
+export const textFieldTemplate: (context: any, definition: any) => ViewTemplate<TextField>;
 
 // @public
 export enum TextFieldType {
@@ -2144,7 +2144,7 @@ export enum TooltipPosition {
 }
 
 // @public
-export const TooltipTemplate: (context: any, definition: any) => ViewTemplate;
+export const tooltipTemplate: (context: any, definition: any) => ViewTemplate;
 
 // @alpha (undocumented)
 type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
@@ -2207,7 +2207,7 @@ export interface TreeItem extends StartEnd {
 }
 
 // @public
-export const TreeItemTemplate: (context: any, definition: any) => ViewTemplate<TreeItem>;
+export const treeItemTemplate: (context: any, definition: any) => ViewTemplate<TreeItem>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "TreeView" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //
@@ -2234,7 +2234,7 @@ export class TreeView extends FoundationElement {
 }
 
 // @public
-export const TreeViewTemplate: (context: any, definition: any) => ViewTemplate<TreeView>;
+export const treeViewTemplate: (context: any, definition: any) => ViewTemplate<TreeView>;
 
 // Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
 //

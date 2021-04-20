@@ -23,7 +23,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SwitchStyles = (context, definition) =>
+export const switchStyles = (context, definition) =>
     css`
     :host([hidden]) {
         display: none;

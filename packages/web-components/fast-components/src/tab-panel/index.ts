@@ -1,5 +1,5 @@
-import { TabPanel, TabPanelTemplate as template } from "@microsoft/fast-foundation";
-import { TabPanelStyles as styles } from "./tab-panel.styles";
+import { TabPanel, tabPanelTemplate as template } from "@microsoft/fast-foundation";
+import { tabPanelStyles as styles } from "./tab-panel.styles";
 
 /**
  * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel},

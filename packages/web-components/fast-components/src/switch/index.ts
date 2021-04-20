@@ -1,5 +1,5 @@
-import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
-import { SwitchStyles as styles } from "./switch.styles";
+import { Switch, switchTemplate as template } from "@microsoft/fast-foundation";
+import { switchStyles as styles } from "./switch.styles";
 
 /**
  * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch},

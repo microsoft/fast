@@ -19,7 +19,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const FlipperStyles = (context, definition) =>
+export const flipperStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);

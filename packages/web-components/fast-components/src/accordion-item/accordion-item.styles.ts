@@ -16,7 +16,7 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const AccordionItemStyles = (context, definition) =>
+export const accordionItemStyles = (context, definition) =>
     css`
     ${display("flex")} :host {
         box-sizing: border-box;

@@ -1,5 +1,5 @@
-import { Divider, DividerTemplate as template } from "@microsoft/fast-foundation";
-import { DividerStyles as styles } from "./divider.styles";
+import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation";
+import { dividerStyles as styles } from "./divider.styles";
 
 /**
  * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider},

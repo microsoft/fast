@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { AnchoredRegion, AnchoredRegionTemplate as template } from "./index";
+import { AnchoredRegion, anchoredRegionTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 

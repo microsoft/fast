@@ -1,5 +1,5 @@
-import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
-import { BadgeStyles as styles } from "./badge.styles";
+import { Badge, badgeTemplate as template } from "@microsoft/fast-foundation";
+import { badgeStyles as styles } from "./badge.styles";
 
 /**
  * The FAST Badge Element. Implements {@link @microsoft/fast-foundation#Badge},

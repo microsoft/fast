@@ -1,5 +1,5 @@
-import { Skeleton, SkeletonTemplate as template } from "@microsoft/fast-foundation";
-import { SkeletonStyles as styles } from "./skeleton.styles";
+import { Skeleton, skeletonTemplate as template } from "@microsoft/fast-foundation";
+import { skeletonStyles as styles } from "./skeleton.styles";
 
 /**
  * The FAST Skeleton Element. Implements {@link @microsoft/fast-foundation#Skeleton},

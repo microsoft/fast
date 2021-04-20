@@ -7,7 +7,7 @@ import {
     neutralLayerFloatingBehavior,
 } from "../styles/index";
 
-export const MenuStyles = (context, definition) =>
+export const menuStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             --elevation: 11;

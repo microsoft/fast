@@ -14,7 +14,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TooltipStyles = (context, definition) =>
+export const tooltipStyles = (context, definition) =>
     css`
         :host {
             contain: layout;

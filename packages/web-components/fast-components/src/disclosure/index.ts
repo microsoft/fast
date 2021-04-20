@@ -1,9 +1,9 @@
 import { attr } from "@microsoft/fast-element";
 import {
     Disclosure as FoundationDisclosure,
-    DisclosureTemplate as template,
+    disclosureTemplate as template,
 } from "@microsoft/fast-foundation";
-import { DisclosureStyles as styles } from "./disclosure.styles";
+import { disclosureStyles as styles } from "./disclosure.styles";
 /**
  * Types of anchor appearance.
  * @public

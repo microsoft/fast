@@ -1,5 +1,5 @@
-import { Select, SelectTemplate as template } from "@microsoft/fast-foundation";
-import { SelectStyles as styles } from "./select.styles";
+import { Select, selectTemplate as template } from "@microsoft/fast-foundation";
+import { selectStyles as styles } from "./select.styles";
 
 /**
  * The FAST select Custom Element. Implements, {@link @microsoft/fast-foundation#Select}

@@ -22,7 +22,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const RadioStyles = (context, definition) =>
+export const radioStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + var(--design-unit));

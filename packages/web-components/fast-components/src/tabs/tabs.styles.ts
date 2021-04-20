@@ -7,7 +7,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
-export const TabsStyles = (context, definition) =>
+export const tabsStyles = (context, definition) =>
     css`
         ${display("grid")} :host {
             box-sizing: border-box;

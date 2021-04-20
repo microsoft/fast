@@ -1,5 +1,5 @@
-import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
-import { RadioStyles as styles } from "./radio.styles";
+import { Radio, radioTemplate as template } from "@microsoft/fast-foundation";
+import { radioStyles as styles } from "./radio.styles";
 
 /**
  * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio},

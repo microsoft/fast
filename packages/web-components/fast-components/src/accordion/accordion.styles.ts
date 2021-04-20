@@ -5,7 +5,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const AccordionStyles = (context, definition) =>
+export const accordionStyles = (context, definition) =>
     css`
         ${display("flex")} :host {
             box-sizing: border-box;

@@ -1,5 +1,5 @@
-import { Combobox, ComboboxTemplate as template } from "@microsoft/fast-foundation";
-import { ComboboxStyles as styles } from "./combobox.styles";
+import { Combobox, comboboxTemplate as template } from "@microsoft/fast-foundation";
+import { comboboxStyles as styles } from "./combobox.styles";
 
 /**
  * The FAST Combobox Custom Element. Implements {@link @microsoft/fast-foundation#Combobox|Combobox},

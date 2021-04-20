@@ -18,7 +18,7 @@ import {
     neutralLayerL3Behavior,
 } from "../styles/index";
 
-export const MenuItemStyles = (context, definition) =>
+export const menuItemStyles = (context, definition) =>
     css`
     ${display("grid")} :host {
         contain: layout;

@@ -1,5 +1,5 @@
-import { TreeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
-import { TreeViewStyles as styles } from "./tree-view.styles";
+import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
+import { treeViewStyles as styles } from "./tree-view.styles";
 
 /**
  * The FAST tree view Custom Element. Implements, {@link @microsoft/fast-foundation#TreeView}

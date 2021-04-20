@@ -68,7 +68,7 @@ const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     FASTDesignSystemProvider.findProvider
 );
 
-export const TreeItemStyles = (context, definition) =>
+export const treeItemStyles = (context, definition) =>
     css`
     ${display("block")} :host {
         contain: content;

@@ -25,7 +25,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles";
 
-export const TabStyles = (context, definition) =>
+export const tabStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;

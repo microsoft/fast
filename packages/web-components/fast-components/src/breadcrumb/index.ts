@@ -1,5 +1,5 @@
-import { Breadcrumb, BreadcrumbTemplate as template } from "@microsoft/fast-foundation";
-import { BreadcrumbStyles as styles } from "./breadcrumb.styles";
+import { Breadcrumb, breadcrumbTemplate as template } from "@microsoft/fast-foundation";
+import { breadcrumbStyles as styles } from "./breadcrumb.styles";
 
 /**
  * The FAST Breadcrumb Element. Implements {@link @microsoft/fast-foundation#Breadcrumb},

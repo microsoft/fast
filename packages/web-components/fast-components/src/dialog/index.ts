@@ -1,5 +1,5 @@
-import { Dialog, DialogTemplate as template } from "@microsoft/fast-foundation";
-import { DialogStyles as styles } from "./dialog.styles";
+import { Dialog, dialogTemplate as template } from "@microsoft/fast-foundation";
+import { dialogStyles as styles } from "./dialog.styles";
 
 /**
  * The FAST Dialog Element. Implements {@link @microsoft/fast-foundation#Dialog},

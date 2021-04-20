@@ -7,7 +7,7 @@ import {
     neutralForegroundHintBehavior,
 } from "../styles";
 
-export const ProgressStyles = (context, definition) =>
+export const progressStyles = (context, definition) =>
     css`
         ${display("flex")} :host {
             align-items: center;

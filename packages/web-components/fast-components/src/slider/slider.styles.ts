@@ -16,7 +16,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SliderStyles = (context, definition) =>
+export const sliderStyles = (context, definition) =>
     css`
     :host([hidden]) {
         display: none;

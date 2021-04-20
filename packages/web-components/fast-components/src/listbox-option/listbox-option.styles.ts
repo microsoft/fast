@@ -23,7 +23,7 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const OptionStyles = (context, definition) =>
+export const optionStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;

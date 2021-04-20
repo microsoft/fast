@@ -8,7 +8,7 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
-export const ButtonStyles = (context, definition) =>
+export const buttonStyles = (context, definition) =>
     css`
         ${BaseButtonStyles}
     `.withBehaviors(

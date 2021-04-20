@@ -23,7 +23,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const CheckboxStyles = (context, definition) =>
+export const checkboxStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;

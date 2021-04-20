@@ -20,7 +20,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TextFieldStyles = (context, definition) =>
+export const textFieldStyles = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);

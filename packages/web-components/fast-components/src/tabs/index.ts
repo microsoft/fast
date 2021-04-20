@@ -1,5 +1,5 @@
-import { Tabs, TabsTemplate as template } from "@microsoft/fast-foundation";
-import { TabsStyles as styles } from "./tabs.styles";
+import { Tabs, tabsTemplate as template } from "@microsoft/fast-foundation";
+import { tabsStyles as styles } from "./tabs.styles";
 
 /**
  * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs},

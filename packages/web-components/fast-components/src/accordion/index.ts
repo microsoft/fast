@@ -1,5 +1,5 @@
-import { Accordion, AccordionTemplate as template } from "@microsoft/fast-foundation";
-import { AccordionStyles as styles } from "./accordion.styles";
+import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
+import { accordionStyles as styles } from "./accordion.styles";
 
 export * from "../accordion-item/index";
 

@@ -1,9 +1,9 @@
 import { attr } from "@microsoft/fast-element";
 import {
     TextField as FoundationTextField,
-    TextFieldTemplate as template,
+    textFieldTemplate as template,
 } from "@microsoft/fast-foundation";
-import { TextFieldStyles as styles } from "./text-field.styles";
+import { textFieldStyles as styles } from "./text-field.styles";
 
 /**
  * Text field appearances

@@ -1,9 +1,9 @@
 import { attr } from "@microsoft/fast-element";
 import {
     NumberField as FoundationNumberField,
-    NumberFieldTemplate as template,
+    numberFieldTemplate as template,
 } from "@microsoft/fast-foundation";
-import { NumberFieldStyles as styles } from "./number-field.styles";
+import { numberFieldStyles as styles } from "./number-field.styles";
 
 /**
  * Number field appearances

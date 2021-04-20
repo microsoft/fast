@@ -1,5 +1,5 @@
-import { TreeItemTemplate as template, TreeItem } from "@microsoft/fast-foundation";
-import { TreeItemStyles as styles } from "./tree-item.styles";
+import { treeItemTemplate as template, TreeItem } from "@microsoft/fast-foundation";
+import { treeItemStyles as styles } from "./tree-item.styles";
 
 /**
  * The FAST tree item Custom Element. Implements, {@link @microsoft/fast-foundation#TreeItem}

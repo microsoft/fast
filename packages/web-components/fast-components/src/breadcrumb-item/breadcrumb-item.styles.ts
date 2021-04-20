@@ -13,7 +13,7 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
-export const BreadcrumbItemStyles = (context, definition) =>
+export const breadcrumbItemStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         background: transparent;

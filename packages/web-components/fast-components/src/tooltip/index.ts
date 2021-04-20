@@ -1,5 +1,5 @@
-import { TooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
-import { TooltipStyles as styles } from "./tooltip.styles";
+import { tooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
+import { tooltipStyles as styles } from "./tooltip.styles";
 
 /**
  * The FAST Tooltip Custom Element. Implements {@link @microsoft/fast-foundation#Tooltip},

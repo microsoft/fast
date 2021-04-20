@@ -48,7 +48,7 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const SliderLabelStyles = (context, definition) =>
+export const sliderLabelStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             font-family: var(--body-font);

@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { neutralDividerRestBehavior } from "../styles/index";
 
-export const DividerStyles = (context, definition) =>
+export const dividerStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             box-sizing: content-box;

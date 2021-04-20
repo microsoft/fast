@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
-export const RadioGroupStyles = (context, definition) => css`
+export const radioGroupStyles = (context, definition) => css`
     ${display("flex")} :host {
         align-items: flex-start;
         margin: calc(var(--design-unit) * 1px) 0;

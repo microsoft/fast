@@ -25,7 +25,7 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const SelectStyles = (context, definition) =>
+export const selectStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;

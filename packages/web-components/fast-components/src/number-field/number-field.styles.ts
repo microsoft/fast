@@ -20,7 +20,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const NumberFieldStyles = (context, definition) =>
+export const numberFieldStyles = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);

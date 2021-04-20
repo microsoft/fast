@@ -12,7 +12,7 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
-export const ListboxStyles = (context, definition) =>
+export const listboxStyles = (context, definition) =>
     css`
         ${display("inline-flex")} :host {
             background: ${neutralLayerFloatingBehavior.var};

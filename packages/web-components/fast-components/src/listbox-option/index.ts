@@ -1,8 +1,8 @@
 import {
     ListboxOption,
-    ListboxOptionTemplate as template,
+    listboxOptionTemplate as template,
 } from "@microsoft/fast-foundation";
-import { OptionStyles as styles } from "./listbox-option.styles";
+import { optionStyles as styles } from "./listbox-option.styles";
 
 /**
  * The FAST option Custom Element. Implements {@link @microsoft/fast-foundation#ListboxOption}
