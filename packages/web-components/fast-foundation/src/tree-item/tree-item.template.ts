@@ -7,7 +7,7 @@ import type { TreeItem } from "./tree-item";
  * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
  * @public
  */
-export const TreeItemTemplate: (context, definition) => ViewTemplate<TreeItem> = (
+export const treeItemTemplate: (context, definition) => ViewTemplate<TreeItem> = (
     context,
     definition
 ) => html`

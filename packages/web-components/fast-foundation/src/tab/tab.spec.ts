@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Tab, TabTemplate as template } from "./index";
+import { Tab, tabTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 const FASTTab = Tab.compose({

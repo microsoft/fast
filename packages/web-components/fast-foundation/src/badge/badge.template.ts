@@ -6,7 +6,7 @@ import type { Badge } from "./badge";
  * The template for the {@link @microsoft/fast-foundation#Badge} component.
  * @public
  */
-export const BadgeTemplate: (context, definition) => ViewTemplate<Badge> = (
+export const badgeTemplate: (context, definition) => ViewTemplate<Badge> = (
     context,
     definition
 ) => html`

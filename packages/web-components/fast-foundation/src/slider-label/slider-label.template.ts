@@ -7,7 +7,7 @@ import type { SliderLabel } from "./slider-label";
  * The template for the {@link @microsoft/fast-foundation#(SliderLabel:class)} component.
  * @public
  */
-export const SliderLabelTemplate: (context, definition) => ViewTemplate<SliderLabel> = (
+export const sliderLabelTemplate: (context, definition) => ViewTemplate<SliderLabel> = (
     context,
     definition
 ) => html`

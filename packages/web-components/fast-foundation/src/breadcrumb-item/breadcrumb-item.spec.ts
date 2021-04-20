@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import { BreadcrumbItem, BreadcrumbItemTemplate as template } from "./index";
+import { BreadcrumbItem, breadcrumbItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement, DOM } from "@microsoft/fast-element";
 
 const FASTBreadcrumbItem = BreadcrumbItem.compose({
     baseName: "breadcrumb-item",

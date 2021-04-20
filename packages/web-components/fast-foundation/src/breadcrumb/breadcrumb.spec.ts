@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Breadcrumb, BreadcrumbTemplate as template } from "./index";
+import { Breadcrumb, breadcrumbTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { BreadcrumbItem } from "../breadcrumb-item";
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { AccordionItem, AccordionItemTemplate as template } from "./index";
+import { AccordionItem, accordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 

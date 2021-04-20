@@ -1,5 +1,5 @@
 import { expect, assert } from "chai";
-import { TextArea, TextAreaTemplate as template } from "./index";
+import { TextArea, textAreaTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 const FASTTextArea = TextArea.compose({

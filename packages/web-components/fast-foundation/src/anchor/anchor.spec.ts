@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Anchor, AnchorTemplate as template } from "./index";
+import { Anchor, anchorTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 const FASTAnchor = Anchor.compose({

@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
+import { listboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../fixture";
-import { Select, SelectTemplate as template } from "./index";
+import { Select, selectTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTSelect = Select.compose({
@@ -12,7 +12,7 @@ const FASTSelect = Select.compose({
 
 const FASTOption = ListboxOption.compose({
     baseName: "option",
-    template: ListboxOptionTemplate,
+    template: listboxOptionTemplate,
 })
 
 async function setup() {

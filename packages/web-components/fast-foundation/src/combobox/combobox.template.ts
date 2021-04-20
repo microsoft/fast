@@ -8,7 +8,7 @@ import type { Combobox } from "./combobox";
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
  * @public
  */
-export const ComboboxTemplate: (context, definition) => ViewTemplate<Combobox> = (
+export const comboboxTemplate: (context, definition) => ViewTemplate<Combobox> = (
     context,
     definition
 ) => html`

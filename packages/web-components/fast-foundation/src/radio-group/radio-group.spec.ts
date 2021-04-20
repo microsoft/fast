@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
-import { RadioGroup, RadioGroupTemplate as template } from "./index";
-import { Radio, RadioTemplate as itemTemplate } from "../radio";
+import { RadioGroup, radioGroupTemplate as template } from "./index";
+import { Radio, radioTemplate as itemTemplate } from "../radio";
 import { fixture } from "../fixture";
 import { DOM, html } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";

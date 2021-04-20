@@ -8,7 +8,7 @@ import type { Select } from "./select";
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
  * @public
  */
-export const SelectTemplate: (context, definition) => ViewTemplate<Select> = (
+export const selectTemplate: (context, definition) => ViewTemplate<Select> = (
     context,
     definition
 ) => html`

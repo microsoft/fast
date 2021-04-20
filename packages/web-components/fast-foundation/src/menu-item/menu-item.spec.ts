@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { MenuItem, MenuItemTemplate as template } from "./index";
+import { MenuItem, menuItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { AnchoredRegion, AnchoredRegionTemplate } from "../anchored-region";
+import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region";
 
 const FASTMenuItem = MenuItem.compose({
     baseName: "menu-item",
@@ -13,7 +13,7 @@ const FASTMenuItem = MenuItem.compose({
 
 const FASTAnchoredRegion = AnchoredRegion.compose({
     baseName: "anchored-region",
-    template: AnchoredRegionTemplate
+    template: anchoredRegionTemplate
 })
 
 async function setup() {

@@ -7,7 +7,7 @@ import type { Button } from "./button";
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
  * @public
  */
-export const ButtonTemplate: (context, definition) => ViewTemplate<Button> = (
+export const buttonTemplate: (context, definition) => ViewTemplate<Button> = (
     context,
     definition
 ) => html`

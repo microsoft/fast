@@ -6,7 +6,7 @@ import type { Switch } from "./switch";
  * The template for the {@link @microsoft/fast-foundation#(Switch:class)} component.
  * @public
  */
-export const SwitchTemplate: (context, definition) => ViewTemplate<Switch> = (
+export const switchTemplate: (context, definition) => ViewTemplate<Switch> = (
     context,
     definition
 ) => html`

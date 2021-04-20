@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { TooltipTemplate as template, Tooltip } from "./index";
+import { tooltipTemplate as template, Tooltip } from "./index";
 import { TooltipPosition } from "./tooltip";
-import { AnchoredRegion, AnchoredRegionTemplate } from '../anchored-region';
+import { AnchoredRegion, anchoredRegionTemplate } from '../anchored-region';
 
 const FASTTooltip = Tooltip.compose({
     baseName: "tooltip",
@@ -12,7 +12,7 @@ const FASTTooltip = Tooltip.compose({
 
 const FASTAnchoredRegion = AnchoredRegion.compose({
     baseName: "anchored-region",
-    template: AnchoredRegionTemplate
+    template: anchoredRegionTemplate
 })
 
 async function setup() {

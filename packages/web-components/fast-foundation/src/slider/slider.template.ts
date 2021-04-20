@@ -7,7 +7,7 @@ import type { Slider } from "./slider";
  * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
-export const SliderTemplate: (context, definition) => ViewTemplate<Slider> = (
+export const sliderTemplate: (context, definition) => ViewTemplate<Slider> = (
     context,
     definition
 ) => html`

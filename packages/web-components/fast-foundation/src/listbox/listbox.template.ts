@@ -6,7 +6,7 @@ import { Listbox } from "./listbox";
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.
  * @public
  */
-export const ListboxTemplate: (context, definition) => ViewTemplate<Listbox> = (
+export const listboxTemplate: (context, definition) => ViewTemplate<Listbox> = (
     context,
     definition
 ) => html`

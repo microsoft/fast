@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { SliderLabel, SliderLabelTemplate as template } from "../index";
+import { SliderLabel, sliderLabelTemplate as template } from "../index";
 import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";

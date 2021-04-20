@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { TabPanel, TabPanelTemplate as template } from "./index";
+import { TabPanel, tabPanelTemplate as template } from "./index";
 import { fixture } from "../fixture";
 
 const FASTTabPanel = TabPanel.compose({

@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Menu, MenuTemplate as template } from "./index";
-import { MenuItem, MenuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
+import { Menu, menuTemplate as template } from "./index";
+import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
 import { fixture } from "../fixture";
 import { DOM, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";

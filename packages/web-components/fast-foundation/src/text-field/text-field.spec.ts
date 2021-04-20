@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { fixture } from "../fixture";
-import { TextField, TextFieldTemplate as template } from "./index";
+import { TextField, textFieldTemplate as template } from "./index";
 import { TextFieldType } from "./text-field";
 
 const FASTTextField = TextField.compose({

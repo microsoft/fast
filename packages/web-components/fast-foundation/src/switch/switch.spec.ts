@@ -1,7 +1,7 @@
 import { expect, assert } from "chai";
-import { Switch, SwitchTemplate as template } from "./index";
+import { Switch, switchTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTSwitch = Switch.compose({

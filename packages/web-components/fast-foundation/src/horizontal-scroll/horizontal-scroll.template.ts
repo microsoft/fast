@@ -6,7 +6,7 @@ import type { HorizontalScroll } from "./horizontal-scroll";
 /**
  * @public
  */
-export const HorizontalScrollTemplate: (
+export const horizontalScrollTemplate: (
     context,
     definition
 ) => ViewTemplate<HorizontalScroll> = (context, definition) => html`

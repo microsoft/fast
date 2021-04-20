@@ -6,7 +6,7 @@ import type { Dialog } from "./dialog";
  * The template for the {@link @microsoft/fast-foundation#Dialog} component.
  * @public
  */
-export const DialogTemplate: (context, definition) => ViewTemplate<Dialog> = (
+export const dialogTemplate: (context, definition) => ViewTemplate<Dialog> = (
     context,
     definition
 ) => html`

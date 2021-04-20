@@ -7,7 +7,7 @@ import type { NumberField } from "./number-field";
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const NumberFieldTemplate: (context, definition) => ViewTemplate<NumberField> = (
+export const numberFieldTemplate: (context, definition) => ViewTemplate<NumberField> = (
     context,
     definition
 ) => html`

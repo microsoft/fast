@@ -6,7 +6,7 @@ import type { Divider } from "./divider";
  * The template for the {@link @microsoft/fast-foundation#Divider} component.
  * @public
  */
-export const DividerTemplate: (context, definition) => ViewTemplate<Divider> = (
+export const dividerTemplate: (context, definition) => ViewTemplate<Divider> = (
     context,
     definition
 ) => html`

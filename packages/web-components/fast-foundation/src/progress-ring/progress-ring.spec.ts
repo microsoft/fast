@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import { BaseProgress as Progress } from "../progress";
-import { ProgressRingTemplate as template } from "./index";
+import { progressRingTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
 
 const FASTProgressRing = Progress.compose({
     baseName: "progress-ring",

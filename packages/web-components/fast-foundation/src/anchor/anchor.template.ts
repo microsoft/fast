@@ -7,7 +7,7 @@ import type { Anchor } from "./anchor";
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.
  * @public
  */
-export const AnchorTemplate: (context, definition) => ViewTemplate<Anchor> = (
+export const anchorTemplate: (context, definition) => ViewTemplate<Anchor> = (
     context,
     definition
 ) => html`

@@ -6,7 +6,7 @@ import type { Skeleton } from "./skeleton";
  * The template for the fast-skeleton component
  * @public
  */
-export const SkeletonTemplate: (context, definition) => ViewTemplate<Skeleton> = (
+export const skeletonTemplate: (context, definition) => ViewTemplate<Skeleton> = (
     context,
     definition
 ) => html`

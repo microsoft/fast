@@ -7,7 +7,7 @@ import type { AccordionItem } from "./accordion-item";
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
  * @public
  */
-export const AccordionItemTemplate: (
+export const accordionItemTemplate: (
     context,
     definition
 ) => ViewTemplate<AccordionItem> = (context, definition) => html`

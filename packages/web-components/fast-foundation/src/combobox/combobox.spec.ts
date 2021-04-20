@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../fixture";
-import { Combobox, ComboboxTemplate as template } from "./index";
+import { Combobox, comboboxTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTCombobox = Combobox.compose({

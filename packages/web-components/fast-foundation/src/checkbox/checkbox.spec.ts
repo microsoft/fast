@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { Checkbox, CheckboxTemplate as template } from "./index";
+import { Checkbox, checkboxTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";

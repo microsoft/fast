@@ -7,7 +7,7 @@ import type { ListboxOption } from "./listbox-option";
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
  * @public
  */
-export const ListboxOptionTemplate: (
+export const listboxOptionTemplate: (
     context,
     definition
 ) => ViewTemplate<ListboxOption> = (context, definition) => html`

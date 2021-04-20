@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Dialog, DialogTemplate as template } from "./index";
+import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";

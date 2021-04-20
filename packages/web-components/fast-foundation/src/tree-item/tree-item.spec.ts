@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { TreeItem, TreeItemTemplate as template } from "./index";
+import { TreeItem, treeItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM } from "@microsoft/fast-element";
 

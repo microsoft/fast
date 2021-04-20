@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { Accordion, AccordionTemplate as template } from "./index";
-import { AccordionItem, AccordionItemTemplate as itemTemplate } from "../accordion-item";
+import { Accordion, accordionTemplate as template } from "./index";
+import { AccordionItem, accordionItemTemplate as itemTemplate } from "../accordion-item";
 import { fixture } from "../fixture";
-import { customElement, DOM, elements } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
 
 const FASTAccordion = Accordion.compose({

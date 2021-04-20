@@ -7,7 +7,7 @@ import type { Tabs } from "./tabs";
  * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.
  * @public
  */
-export const TabsTemplate: (context, definition) => ViewTemplate<Tabs> = (
+export const tabsTemplate: (context, definition) => ViewTemplate<Tabs> = (
     context,
     definition
 ) => html`

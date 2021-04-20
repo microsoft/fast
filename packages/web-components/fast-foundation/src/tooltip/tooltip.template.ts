@@ -7,7 +7,7 @@ import type { Tooltip } from "./tooltip";
  * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
  * @public
  */
-export const TooltipTemplate: (context, definition) => ViewTemplate = (
+export const tooltipTemplate: (context, definition) => ViewTemplate = (
     context,
     definition
 ) => {

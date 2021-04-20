@@ -6,7 +6,7 @@ import type { BaseProgress } from "./base-progress";
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressTemplate: (context, defintion) => ViewTemplate<BaseProgress> = (
+export const progressTemplate: (context, defintion) => ViewTemplate<BaseProgress> = (
     context,
     defintion
 ) => html`

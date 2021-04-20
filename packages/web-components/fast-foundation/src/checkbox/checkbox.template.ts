@@ -6,7 +6,7 @@ import type { Checkbox } from "./checkbox";
  * The template for the {@link @microsoft/fast-foundation#(Checkbox:class)} component.
  * @public
  */
-export const CheckboxTemplate: (context, definition) => ViewTemplate<Checkbox> = (
+export const checkboxTemplate: (context, definition) => ViewTemplate<Checkbox> = (
     context,
     definition
 ) => html`

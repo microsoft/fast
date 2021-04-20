@@ -6,7 +6,7 @@ import type { AnchoredRegion } from "./anchored-region";
  * The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component.
  * @beta
  */
-export const AnchoredRegionTemplate: (
+export const anchoredRegionTemplate: (
     context,
     definition
 ) => ViewTemplate<AnchoredRegion> = (context, definition) => html`

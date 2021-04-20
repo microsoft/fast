@@ -6,7 +6,7 @@ import type { TreeView } from "./tree-view";
  * The template for the {@link @microsoft/fast-foundation#TreeView} component.
  * @public
  */
-export const TreeViewTemplate: (context, definition) => ViewTemplate<TreeView> = (
+export const treeViewTemplate: (context, definition) => ViewTemplate<TreeView> = (
     context,
     definition
 ) => html`

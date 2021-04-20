@@ -11,7 +11,7 @@ import type { MenuItem } from "./menu-item";
  *
  * @public
  */
-export const MenuItemTemplate: (context, definition) => ViewTemplate<MenuItem> = (
+export const menuItemTemplate: (context, definition) => ViewTemplate<MenuItem> = (
     context,
     definition
 ) => html<MenuItem>`
