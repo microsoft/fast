@@ -1,5 +1,5 @@
-import { WebComponentAttribute } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { DataType } from "@microsoft/fast-tooling";
+import { WebComponentAttribute } from "../../data-utilities/web-component";
+import { DataType } from "../../data-utilities";
 
 export const commonHTMLAttributes: WebComponentAttribute[] = [
     {

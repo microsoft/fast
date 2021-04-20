@@ -133,10 +133,11 @@ module.exports = function (config) {
     if (config.coverage) {
         options.webpack.module.rules.push({
             enforce: "post",
-            exclude: /(message-system\.service\.[tj]s|monaco-adapter\.service\.[tj]s|shortcuts\.service\.[tj]s|ajv-validation\.service\.[tj]s|monaco-adapter\.service\.[tj]s|packages\/utilities|packages\/web-components|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
+            exclude: /(message-system\.service\.[tj]s|monaco-adapter\.service\.[tj]s|shortcuts\.service\.[tj]s|ajv-validation\.service\.[tj]s|monaco-adapter\.service\.[tj]s|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
+            include: path.resolve(__dirname, './dist/')
         });
         options.reporters = ["coverage-istanbul", ...options.reporters];
         options.coverageIstanbulReporter = {
