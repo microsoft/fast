@@ -3,6 +3,7 @@ import {
     ComponentStateColorPalette,
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
+import { cond } from "lodash";
 import { Swatch, SwatchRGB } from "./swatch";
 import { directionByMode } from "./utilities/direction-by-mode";
 import { contrast } from "./utilities/relative-luminance";
@@ -19,7 +20,12 @@ export interface Palette<T extends Swatch = Swatch> {
      * We need to know where to start searching
      * and which direction to search in - isDarkMode?
      */
-    colorContrast(reference: Swatch, contrast: number): Swatch;
+    colorContrast(
+        reference: Swatch | number,
+        contrast: number,
+        initialIndex?: number,
+        direction?: 1 | -1
+    ): Swatch;
 
     /**
      * Returns the index of the palette that most closely matches
@@ -40,6 +46,7 @@ export class PaletteRGB implements Palette<SwatchRGB> {
     private lastIndex: number;
     private reversedSwatches: ReadonlyArray<SwatchRGB>;
     constructor(source: SwatchRGB) {
+        this.source = source;
         this.swatches = Object.freeze(
             new ComponentStateColorPalette({
                 baseColor: source,
@@ -52,23 +59,33 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         this.lastIndex = this.swatches.length - 1;
     }
 
-    public colorContrast(reference: Swatch, contrastTarget: number): SwatchRGB {
-        const referenceIndex = this.closestIndexOf(reference);
-        let startIndex: number;
-        let source: ReadonlyArray<SwatchRGB>;
-        const direction = directionByMode(reference);
+    public colorContrast(
+        reference: Swatch,
+        contrastTarget: number,
+        initialSearchIndex?: number,
+        direction?: 1 | -1
+    ): SwatchRGB {
+        if (initialSearchIndex === undefined) {
+            initialSearchIndex = this.closestIndexOf(reference);
+        }
+
+        let source: ReadonlyArray<SwatchRGB> = this.swatches;
+        const endSearchIndex = this.lastIndex;
+        let startSearchIndex = initialSearchIndex;
+
+        if (direction === undefined) {
+            direction = directionByMode(reference);
+        }
+
         const condition = (value: SwatchRGB) =>
             contrast(reference, value) >= contrastTarget;
 
         if (direction === -1) {
-            startIndex = this.lastIndex - referenceIndex;
             source = this.reversedSwatches;
-        } else {
-            startIndex = referenceIndex;
-            source = this.swatches;
+            startSearchIndex = endSearchIndex - startSearchIndex;
         }
 
-        return binarySearch(source, condition, startIndex, this.lastIndex);
+        return binarySearch(source, condition, startSearchIndex, endSearchIndex);
     }
 
     public get(index: number): SwatchRGB {
