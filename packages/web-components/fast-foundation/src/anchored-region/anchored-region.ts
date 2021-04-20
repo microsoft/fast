@@ -670,21 +670,33 @@ export class AnchoredRegion extends FASTElement {
             this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect) ||
             this.isRectDifferent(this.regionRect, regionEntry.boundingClientRect)
         ) {
-            this.updateRegionOffset(
-                anchorEntry.boundingClientRect,
-                this.anchorRect,
-                regionEntry.boundingClientRect,
-                this.regionRect
-            );
-
             this.regionRect = regionEntry.boundingClientRect;
             this.anchorRect = anchorEntry.boundingClientRect;
             this.viewportRect = viewportEntry.boundingClientRect;
+
+            this.updateRegionOffset();
 
             return true;
         }
 
         return false;
+    };
+
+    /**
+     *  Update the offset values
+     */
+    private updateRegionOffset = (): void => {
+        if (this.anchorRect && this.regionRect) {
+            this.baseHorizontalOffset =
+                this.baseHorizontalOffset +
+                (this.anchorRect.left - this.regionRect.left) +
+                (this.translateX - this.baseHorizontalOffset);
+
+            this.baseVerticalOffset =
+                this.baseVerticalOffset +
+                (this.anchorRect.top - this.regionRect.top) +
+                (this.translateY - this.baseVerticalOffset);
+        }
     };
 
     /**
@@ -927,10 +939,6 @@ export class AnchoredRegion extends FASTElement {
 
         switch (this.horizontalScaling) {
             case "anchor":
-                nextRegionWidth = this.anchorRect.width;
-                this.regionWidth = `${nextRegionWidth}px`;
-                break;
-
             case "fill":
                 nextRegionWidth = nextPositionerDimension.width;
                 this.regionWidth = `${nextRegionWidth}px`;
@@ -948,7 +956,8 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "insetLeft":
-                this.translateX = this.baseHorizontalOffset - nextRegionWidth;
+                this.translateX =
+                    this.baseHorizontalOffset - nextRegionWidth + this.anchorRect.width;
                 break;
 
             case "insetRight":
@@ -978,10 +987,6 @@ export class AnchoredRegion extends FASTElement {
 
         switch (this.verticalScaling) {
             case "anchor":
-                nextRegionHeight = this.anchorRect.height;
-                this.regionHeight = `${nextRegionHeight}px`;
-                break;
-
             case "fill":
                 nextRegionHeight = nextPositionerDimension.height;
                 this.regionHeight = `${nextRegionHeight}px`;
@@ -999,7 +1004,8 @@ export class AnchoredRegion extends FASTElement {
                 break;
 
             case "insetTop":
-                this.translateY = this.baseVerticalOffset - nextRegionHeight;
+                this.translateY =
+                    this.baseVerticalOffset - nextRegionHeight + this.anchorRect.height;
                 break;
 
             case "insetBottom":
@@ -1012,92 +1018,6 @@ export class AnchoredRegion extends FASTElement {
         }
 
         this.verticalPosition = desiredVerticalPosition;
-    };
-
-    /**
-     *  Update the offset values
-     */
-    private updateRegionOffset = (
-        anchorRectNew: ClientRect | DOMRect,
-        anchreRectOld: ClientRect | DOMRect | undefined,
-        regionRectNew: ClientRect | DOMRect,
-        regionRectOld: ClientRect | DOMRect | undefined
-    ): void => {
-        if (this.horizontalPositioningMode === "uncontrolled") {
-            this.baseHorizontalOffset = anchorRectNew.left - regionRectNew.left;
-        } else {
-            const regionWidthDelta: number =
-                regionRectOld !== undefined
-                    ? regionRectNew.width - regionRectOld.width
-                    : 0;
-            const anchorWidthDelta: number =
-                anchreRectOld !== undefined
-                    ? anchreRectOld.width - anchorRectNew.width
-                    : 0;
-            switch (this.horizontalPosition) {
-                case "undefined":
-                    this.baseHorizontalOffset = anchorRectNew.left - regionRectNew.left;
-                    break;
-                case "left":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset +
-                        (anchorRectNew.left - regionRectNew.right + regionWidthDelta);
-                    break;
-                case "insetLeft":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset +
-                        (anchorRectNew.right - regionRectNew.right + regionWidthDelta);
-                    break;
-                case "insetRight":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset +
-                        (anchorRectNew.left - regionRectNew.left + anchorWidthDelta);
-                    break;
-                case "right":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset +
-                        (anchorRectNew.right - regionRectNew.left + anchorWidthDelta);
-                    break;
-            }
-        }
-
-        if (this.verticalPositioningMode === "uncontrolled") {
-            this.baseVerticalOffset = anchorRectNew.top - regionRectNew.top;
-        } else {
-            const regionHeightDelta: number =
-                regionRectOld !== undefined
-                    ? regionRectNew.height - regionRectOld.height
-                    : 0;
-            const anchorHeightDelta: number =
-                anchreRectOld !== undefined
-                    ? anchreRectOld.height - anchorRectNew.height
-                    : 0;
-            switch (this.verticalPosition) {
-                case "undefined":
-                    this.baseVerticalOffset = anchorRectNew.top - regionRectNew.top;
-                    break;
-                case "top":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset +
-                        (anchorRectNew.top - regionRectNew.bottom + regionHeightDelta);
-                    break;
-                case "insetTop":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset +
-                        (anchorRectNew.bottom - regionRectNew.bottom + regionHeightDelta);
-                    break;
-                case "insetBottom":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset +
-                        (anchorRectNew.top - regionRectNew.top + anchorHeightDelta);
-                    break;
-                case "bottom":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset +
-                        (anchorRectNew.bottom - regionRectNew.top + anchorHeightDelta);
-                    break;
-            }
-        }
     };
 
     /**
@@ -1185,10 +1105,16 @@ export class AnchoredRegion extends FASTElement {
 
         if (this.horizontalScaling === "fill") {
             newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
+        } else if (this.horizontalScaling === "anchor") {
+            newRegionDimension.width =
+                this.anchorRect !== undefined ? this.anchorRect.width : 0;
         }
 
         if (this.verticalScaling === "fill") {
             newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
+        } else if (this.verticalScaling === "anchor") {
+            newRegionDimension.height =
+                this.anchorRect !== undefined ? this.anchorRect.height : 0;
         }
 
         return newRegionDimension;
