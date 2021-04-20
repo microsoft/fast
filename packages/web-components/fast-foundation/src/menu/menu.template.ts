@@ -6,7 +6,10 @@ import type { Menu } from "./menu";
  * The template for the {@link @microsoft/fast-foundation#Menu} component.
  * @public
  */
-export const MenuTemplate: ViewTemplate<Menu> = html`
+export const menuTemplate: (context, definition) => ViewTemplate<Menu> = (
+    context,
+    definition
+) => html`
     <template
         slot="${x => (x.isNestedMenu() ? "submenu" : void 0)}"
         role="menu"

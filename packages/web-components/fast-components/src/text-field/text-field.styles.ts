@@ -20,7 +20,8 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TextFieldStyles = css`
+export const textFieldStyles = (context, definition) =>
+    css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -136,46 +137,46 @@ export const TextFieldStyles = css`
         border-color: ${neutralOutlineRestBehavior.var};
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            .root,
-            :host([appearance="filled"]) .root {
-                forced-color-adjust: none;
-                background: ${SystemColors.Field};
-                border-color: ${SystemColors.FieldText};
-            }
-            :host(:hover:not([disabled])) .root,
-            :host([appearance="filled"]:hover:not([disabled])) .root,
-            :host([appearance="filled"]:hover) .root {
-                background: ${SystemColors.Field};
-                border-color: ${SystemColors.Highlight};
-            }
-            .start,
-            .end {
-                fill: currentcolor;
-            }
-            :host([disabled]) {
-                opacity: 1;
-            }
-            :host([disabled]) .root,
-            :host([appearance="filled"]:hover[disabled]) .root {
-                border-color: ${SystemColors.GrayText};
-                background: ${SystemColors.Field};
-            }
-            :host(:focus-within:enabled) .root {
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
-            }
-        `
-    )
-);
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        neutralFillHoverBehavior,
+        neutralFillInputHoverBehavior,
+        neutralFillInputRestBehavior,
+        neutralFillRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundRestBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
+                .root,
+                :host([appearance="filled"]) .root {
+                    forced-color-adjust: none;
+                    background: ${SystemColors.Field};
+                    border-color: ${SystemColors.FieldText};
+                }
+                :host(:hover:not([disabled])) .root,
+                :host([appearance="filled"]:hover:not([disabled])) .root,
+                :host([appearance="filled"]:hover) .root {
+                    background: ${SystemColors.Field};
+                    border-color: ${SystemColors.Highlight};
+                }
+                .start,
+                .end {
+                    fill: currentcolor;
+                }
+                :host([disabled]) {
+                    opacity: 1;
+                }
+                :host([disabled]) .root,
+                :host([appearance="filled"]:hover[disabled]) .root {
+                    border-color: ${SystemColors.GrayText};
+                    background: ${SystemColors.Field};
+                }
+                :host(:focus-within:enabled) .root {
+                    border-color: ${SystemColors.Highlight};
+                    box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
+                }
+            `
+        )
+    );
