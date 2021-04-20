@@ -23,7 +23,7 @@ function addItem(): void {
 }
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("breadcrumb")) {
+    if (name.toLowerCase() === "breadcrumb--breadcrumb") {
         const button = document.getElementById("add-button") as HTMLElement;
         button.addEventListener("click", addItem);
     }
