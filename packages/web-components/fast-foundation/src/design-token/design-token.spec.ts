@@ -638,4 +638,42 @@ describe("A DesignToken", () => {
             removeElement(parent)
         })
     });
+
+    describe("with a default value set", () => {
+        it("should return the default value if no value is set for a target", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.withDefault(2)
+
+            expect(token.getValueFor(target)).to.equal(2);
+            removeElement(target)
+        });
+        it("should return the default value for a descendent if no value is set for a target", () => {
+            const parent = addElement()
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+            token.withDefault(2)
+
+            expect(token.getValueFor(target)).to.equal(2);
+            removeElement(parent)
+        });
+        it("should return the value set and not the default if value is set", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.withDefault(4)
+            token.setValueFor(target, 2)
+
+            expect(token.getValueFor(target)).to.equal(2);
+            removeElement(target)
+        });
+        it("should get a new default value if a new default is provided", () => {
+            const target = addElement();
+            const token = DesignToken.create<number>("test");
+            token.withDefault(2);
+            token.withDefault(4);
+
+            expect(token.getValueFor(target)).to.equal(4);
+            removeElement(target)
+        });
+    }) 
 });
