@@ -1,25 +1,23 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     AccordionItem,
-    AccordionItemTemplate as template,
+    accordionItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { AccordionItemStyles as styles } from "./accordion-item.styles";
+import { accordionItemStyles as styles } from "./accordion-item.styles";
 
 /**
  * The FAST Accordion Item Element. Implements {@link @microsoft/fast-foundation#AccordionItem},
- * {@link @microsoft/fast-foundation#AccordionItemTemplate}
+ * {@link @microsoft/fast-foundation#accordionItemTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-accordion-item\>
  */
-@customElement({
-    name: "fast-accordion-item",
+export const fastAccordionItem = AccordionItem.compose({
+    baseName: "accordion-item",
     template,
     styles,
-})
-export class FASTAccordionItem extends AccordionItem {}
+});
 
 /**
  * Styles for AccordionItem

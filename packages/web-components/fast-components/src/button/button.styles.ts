@@ -17,7 +17,7 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
-export const ButtonStyles = css`
+export const buttonStyles = (context, definition) => css`
     :host([disabled]),
     :host([disabled]:hover),
     :host([disabled]:active) {

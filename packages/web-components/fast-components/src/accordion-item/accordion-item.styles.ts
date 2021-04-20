@@ -16,7 +16,8 @@ import {
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
-export const AccordionItemStyles = css`
+export const accordionItemStyles = (context, definition) =>
+    css`
     ${display("flex")} :host {
         box-sizing: border-box;
         font-family: var(--body-font);
@@ -130,19 +131,19 @@ export const AccordionItemStyles = css`
         z-index: 2;
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    neutralDividerRestBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralFocusBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillRestBehavior,
+        neutralDividerRestBehavior,
+        neutralForegroundActiveBehavior,
+        neutralForegroundFocusBehavior,
+        neutralForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        neutralFocusBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             .button:${focusVisible}::before {
                 border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${SystemColors.Highlight};
             }
         `
-    )
-);
+        )
+    );

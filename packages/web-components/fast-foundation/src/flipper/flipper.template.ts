@@ -7,7 +7,10 @@ import { FlipperDirection } from "./flipper.options";
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.
  * @public
  */
-export const FlipperTemplate: ViewTemplate<Flipper> = html`
+export const flipperTemplate: (context, definition) => ViewTemplate<Flipper> = (
+    context,
+    definition
+) => html`
     <template
         role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"

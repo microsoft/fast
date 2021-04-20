@@ -20,7 +20,8 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const TextAreaStyles = css`
+export const textAreaStyles = (context, definition) =>
+    css`
     ${display("inline-block")} :host {
         font-family: var(--body-font);
         outline: none;
@@ -112,22 +113,22 @@ export const TextAreaStyles = css`
         border-color: ${neutralOutlineRestBehavior.var};
     }
  `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host([disabled]) {
-                opacity: 1;
-            }
-        `
-    )
-);
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        neutralFillHoverBehavior,
+        neutralFillInputActiveBehavior,
+        neutralFillInputHoverBehavior,
+        neutralFillInputRestBehavior,
+        neutralFillRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundRestBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
+                :host([disabled]) {
+                    opacity: 1;
+                }
+            `
+        )
+    );

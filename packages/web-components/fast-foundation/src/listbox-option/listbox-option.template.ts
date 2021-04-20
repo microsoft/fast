@@ -7,7 +7,10 @@ import type { ListboxOption } from "./listbox-option";
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
  * @public
  */
-export const ListboxOptionTemplate: ViewTemplate<ListboxOption> = html`
+export const listboxOptionTemplate: (
+    context,
+    definition
+) => ViewTemplate<ListboxOption> = (context, definition) => html`
     <template
         aria-selected="${x => x.selected}"
         class="${x => (x.selected ? "selected" : "")} ${x =>

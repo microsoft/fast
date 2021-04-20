@@ -1,27 +1,27 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-
+import {
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastTextField,
+} from "@microsoft/fast-components";
+import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import React from "react";
 import {
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
-import {
-    FASTCheckbox,
-    FASTNumberField,
-    FASTOption,
-    FASTSelect,
-    FASTTextField,
-} from "@microsoft/fast-components";
-import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
-FASTCheckbox;
-FASTNumberField;
-FASTOption;
-FASTSelect;
-FASTTextField;
+fastCheckbox;
+fastNumberField;
+fastOption;
+fastSelect;
+fastTextField;
 FASTColorPicker;
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {

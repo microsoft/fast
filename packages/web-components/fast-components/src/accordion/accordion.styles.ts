@@ -5,15 +5,16 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/recipes";
 
-export const AccordionStyles = css`
-    ${display("flex")} :host {
-        box-sizing: border-box;
-        flex-direction: column;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
-        color: ${neutralForegroundRestBehavior.var};
-        border-top: calc(var(--outline-width) * 1px) solid
-            ${neutralDividerRestBehavior.var};
-    }
-`.withBehaviors(neutralDividerRestBehavior, neutralForegroundRestBehavior);
+export const accordionStyles = (context, definition) =>
+    css`
+        ${display("flex")} :host {
+            box-sizing: border-box;
+            flex-direction: column;
+            font-family: var(--body-font);
+            font-size: var(--type-ramp-minus-1-font-size);
+            line-height: var(--type-ramp-minus-1-line-height);
+            color: ${neutralForegroundRestBehavior.var};
+            border-top: calc(var(--outline-width) * 1px) solid
+                ${neutralDividerRestBehavior.var};
+        }
+    `.withBehaviors(neutralDividerRestBehavior, neutralForegroundRestBehavior);

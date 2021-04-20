@@ -8,7 +8,10 @@ import type { TextField } from "./text-field";
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
  */
-export const TextFieldTemplate: ViewTemplate<TextField> = html`
+export const textFieldTemplate: (context, definition) => ViewTemplate<TextField> = (
+    context,
+    definition
+) => html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}
