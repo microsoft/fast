@@ -35,10 +35,10 @@ export class Breadcrumb extends FASTElement {
             if (item instanceof BreadcrumbItem) {
                 (item as BreadcrumbItem).separator = true;
             }
-            if (lastNode instanceof BreadcrumbItem) {
-                (lastNode as BreadcrumbItem).separator = false;
-            }
         });
+        if (lastNode instanceof BreadcrumbItem) {
+            (lastNode as BreadcrumbItem).separator = false;
+        }
     }
 
     /**
