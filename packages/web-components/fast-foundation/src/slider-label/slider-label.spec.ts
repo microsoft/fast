@@ -1,32 +1,22 @@
 import { expect } from "chai";
-import { Slider, SliderTemplate } from "../slider";
-import { SliderLabel, SliderLabelTemplate as template } from "../index";
+import { SliderLabel, sliderLabelTemplate as template } from "../index";
 import { fixture } from "../fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
-import { KeyCodes, Orientation } from "@microsoft/fast-web-utilities";
+import { DOM } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-slider",
-    template: SliderTemplate,
+const FASTSliderLabel = SliderLabel.compose({
+    baseName: "slider-label",
+    template
 })
-class FASTSlider extends Slider {}
-
-@customElement({
-    name: "fast-slider-label",
-    template,
-})
-class FASTSliderLabel extends SliderLabel {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTSliderLabel>(
-        "fast-slider-label"
-    );
+    const { element, connect, disconnect } = await fixture(FASTSliderLabel())
 
     return { element, connect, disconnect };
 }
 
 // TODO: Need to add tests for positioning and slider configuration
-describe("Slider", () => {
+describe("Slider label", () => {
     it("should set the `aria-disabled` attribute when `disabled` value is true", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -52,13 +42,13 @@ describe("Slider", () => {
     it("should add a class equal to the `sliderOrientation` value", async () => {
         const { element, connect, disconnect } = await setup();
 
-        (element as FASTSliderLabel).sliderOrientation = Orientation.horizontal;
+        (element as SliderLabel).sliderOrientation = Orientation.horizontal;
 
         await connect();
 
         expect(element.classList.contains(`${Orientation.horizontal}`)).to.equal(true);
 
-        (element as FASTSliderLabel).sliderOrientation = Orientation.vertical;
+        (element as SliderLabel).sliderOrientation = Orientation.vertical;
 
         await DOM.nextUpdate();
 

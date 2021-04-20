@@ -1,18 +1,15 @@
 import { expect } from "chai";
-import { AccordionItem, AccordionItemTemplate as template } from "./index";
+import { AccordionItem, accordionItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-accordion-item",
-    template,
+
+const FASTAccordionItem = AccordionItem.compose({
+    baseName: "accordion-item",
+    template
 })
-class FASTAccordionItem extends AccordionItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTAccordionItem>(
-        "fast-accordion-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTAccordionItem());
 
     return { element, connect, disconnect };
 }

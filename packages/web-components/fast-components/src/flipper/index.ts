@@ -1,22 +1,20 @@
-import { customElement } from "@microsoft/fast-element";
-import { Flipper, FlipperTemplate as template } from "@microsoft/fast-foundation";
-import { FlipperStyles as styles } from "./flipper.styles";
+import { Flipper, flipperTemplate as template } from "@microsoft/fast-foundation";
+import { flipperStyles as styles } from "./flipper.styles";
 
 /**
  * The FAST Flipper Element. Implements {@link @microsoft/fast-foundation#Flipper},
- * {@link @microsoft/fast-foundation#FlipperTemplate}
+ * {@link @microsoft/fast-foundation#flipperTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-flipper\>
  */
-@customElement({
-    name: "fast-flipper",
+export const fastFlipper = Flipper.compose({
+    baseName: "flipper",
     template,
     styles,
-})
-export class FASTFlipper extends Flipper {}
+});
 
 /**
  * Styles for Flipper

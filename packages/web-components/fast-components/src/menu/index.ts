@@ -1,22 +1,20 @@
-import { customElement } from "@microsoft/fast-element";
-import { Menu, MenuTemplate as template } from "@microsoft/fast-foundation";
-import { MenuStyles as styles } from "./menu.styles";
+import { Menu, menuTemplate as template } from "@microsoft/fast-foundation";
+import { menuStyles as styles } from "./menu.styles";
 
 /**
  * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu},
- * {@link @microsoft/fast-foundation#MenuTemplate}
+ * {@link @microsoft/fast-foundation#menuTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-menu\>
  */
-@customElement({
-    name: "fast-menu",
+export const fastMenu = Menu.compose({
+    baseName: "menu",
     template,
     styles,
-})
-export class FASTMenu extends Menu {}
+});
 
 /**
  * Styles for Menu

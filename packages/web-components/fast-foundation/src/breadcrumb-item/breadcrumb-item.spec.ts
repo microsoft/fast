@@ -1,18 +1,14 @@
 import { expect } from "chai";
-import { BreadcrumbItem, BreadcrumbItemTemplate as template } from "./index";
+import { BreadcrumbItem, breadcrumbItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
-import { customElement, DOM } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-breadcrumb-item",
-    template,
+const FASTBreadcrumbItem = BreadcrumbItem.compose({
+    baseName: "breadcrumb-item",
+    template
 })
-class FASTBreadcrumbItem extends BreadcrumbItem {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBreadcrumbItem>(
-        "fast-breadcrumb-item"
-    );
+    const { element, connect, disconnect } = await fixture(FASTBreadcrumbItem());
 
     return { element, connect, disconnect };
 }

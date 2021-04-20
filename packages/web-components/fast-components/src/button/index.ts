@@ -1,6 +1,9 @@
-import { attr, customElement } from "@microsoft/fast-element";
-import { Button, ButtonTemplate as template } from "@microsoft/fast-foundation";
-import { ButtonStyles as styles } from "./button.styles";
+import { attr } from "@microsoft/fast-element";
+import {
+    Button as FoundationButton,
+    buttonTemplate as template,
+} from "@microsoft/fast-foundation";
+import { buttonStyles as styles } from "./button.styles";
 
 /**
  * Types of button appearance.
@@ -14,25 +17,9 @@ export type ButtonAppearance =
     | "stealth";
 
 /**
- * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button},
- * {@link @microsoft/fast-foundation#ButtonTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-button\>
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ * @internal
  */
-@customElement({
-    name: "fast-button",
-    template,
-    styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-})
-export class FASTButton extends Button {
+export class Button extends FoundationButton {
     /**
      * The appearance the button should have.
      *
@@ -67,6 +54,26 @@ export class FASTButton extends Button {
         }
     }
 }
+
+/**
+ * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button},
+ * {@link @microsoft/fast-foundation#buttonTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-button\>
+ *
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ */
+export const fastButton = Button.compose({
+    baseName: "button",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});
 
 /**
  * Styles for Button

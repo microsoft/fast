@@ -1,6 +1,9 @@
-import { attr, customElement } from "@microsoft/fast-element";
-import { NumberField, NumberFieldTemplate as template } from "@microsoft/fast-foundation";
-import { NumberFieldStyles as styles } from "./number-field.styles";
+import { attr } from "@microsoft/fast-element";
+import {
+    NumberField as FoundationNumberField,
+    numberFieldTemplate as template,
+} from "@microsoft/fast-foundation";
+import { numberFieldStyles as styles } from "./number-field.styles";
 
 /**
  * Number field appearances
@@ -9,25 +12,9 @@ import { NumberFieldStyles as styles } from "./number-field.styles";
 export type NumberFieldAppearance = "filled" | "outline";
 
 /**
- * The FAST Number Field Custom Element. Implements {@link @microsoft/fast-foundation#NumberField},
- * {@link @microsoft/fast-foundation#NumberFieldTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-number-field\>
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ * @internal
  */
-@customElement({
-    name: "fast-number-field",
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-    styles,
-    template,
-})
-export class FASTNumberField extends NumberField {
+export class NumberField extends FoundationNumberField {
     /**
      * The appearance of the element.
      *
@@ -55,3 +42,23 @@ export class FASTNumberField extends NumberField {
  * @public
  */
 export const NumberFieldStyles = styles;
+
+/**
+ * The FAST Number Field Custom Element. Implements {@link @microsoft/fast-foundation#NumberField},
+ * {@link @microsoft/fast-foundation#numberFieldTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-number-field\>
+ *
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ */
+export const fastNumberField = NumberField.compose({
+    baseName: "number-field",
+    styles,
+    template,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

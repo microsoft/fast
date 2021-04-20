@@ -6,7 +6,10 @@ import type { Dialog } from "./dialog";
  * The template for the {@link @microsoft/fast-foundation#Dialog} component.
  * @public
  */
-export const DialogTemplate: ViewTemplate<Dialog> = html`
+export const dialogTemplate: (context, definition) => ViewTemplate<Dialog> = (
+    context,
+    definition
+) => html`
     <div class="positioning-region" part="positioning-region">
         ${when(
             x => x.modal,

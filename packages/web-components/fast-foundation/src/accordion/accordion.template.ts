@@ -6,7 +6,10 @@ import type { Accordion } from "./accordion";
  * The template for the {@link @microsoft/fast-foundation#Accordion} component.
  * @public
  */
-export const AccordionTemplate: ViewTemplate<Accordion> = html`
+export const accordionTemplate: (context, definition) => ViewTemplate<Accordion> = (
+    context,
+    definition
+) => html`
     <template>
         <slot name="item" part="item" ${slotted("accordionItems")}></slot>
     </template>

@@ -7,6 +7,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region";
+import { FoundationElement } from "../foundation-element";
 import type { Menu } from "../menu/menu";
 import { StartEnd } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
@@ -21,7 +22,7 @@ export { MenuItemRole };
  *
  * @public
  */
-export class MenuItem extends FASTElement {
+export class MenuItem extends FoundationElement {
     /**
      * The disabled state of the element.
      *

@@ -7,7 +7,10 @@ import type { RadioGroup } from "./radio-group";
  * The template for the {@link @microsoft/fast-foundation#RadioGroup} component.
  * @public
  */
-export const RadioGroupTemplate: ViewTemplate<RadioGroup> = html`
+export const radioGroupTemplate: (context, definition) => ViewTemplate<RadioGroup> = (
+    context,
+    definition
+) => html`
     <template
         role="radiogroup"
         aria-disabled="${x => x.disabled}"

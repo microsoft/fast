@@ -1,7 +1,10 @@
-import { attr, customElement } from "@microsoft/fast-element";
-import { Anchor, AnchorTemplate as template } from "@microsoft/fast-foundation";
+import { attr } from "@microsoft/fast-element";
+import {
+    Anchor as FoundationAnchor,
+    anchorTemplate as template,
+} from "@microsoft/fast-foundation";
 import { ButtonAppearance } from "../button";
-import { AnchorStyles as styles } from "./anchor.styles";
+import { anchorStyles as styles } from "./anchor.styles";
 
 /**
  * Types of anchor appearance.
@@ -10,25 +13,10 @@ import { AnchorStyles as styles } from "./anchor.styles";
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 /**
- * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
- * {@link @microsoft/fast-foundation#AnchorTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-anchor\>
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ * The FAST components version of Anchor
+ * @internal
  */
-@customElement({
-    name: "fast-anchor",
-    template,
-    styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-})
-export class FASTAnchor extends Anchor {
+export class Anchor extends FoundationAnchor {
     /**
      * The appearance the anchor should have.
      *
@@ -79,3 +67,23 @@ export class FASTAnchor extends Anchor {
  * @public
  */
 export const AnchorStyles = styles;
+
+/**
+ * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
+ * {@link @microsoft/fast-foundation#anchorTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-anchor\>
+ *
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ */
+export const fastAnchor = Anchor.compose({
+    baseName: "anchor",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});

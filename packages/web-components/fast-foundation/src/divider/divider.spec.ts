@@ -1,17 +1,16 @@
 import { expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
 import { DividerRole } from "./divider.options";
-import { Divider, DividerTemplate as template } from "./index";
+import { Divider, dividerTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-divider",
-    template,
+const FASTDivider = Divider.compose({
+    baseName: "divider",
+    template
 })
-class FASTDivider extends Divider {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<Divider>("fast-divider");
+    const { element, connect, disconnect } = await fixture(FASTDivider());
 
     return { element, connect, disconnect };
 }

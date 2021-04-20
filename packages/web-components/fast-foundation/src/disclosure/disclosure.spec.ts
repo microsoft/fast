@@ -1,18 +1,15 @@
 import { expect } from "chai";
 import { fixture } from "../fixture";
-import { customElement, DOM, html, ref } from "@microsoft/fast-element";
-import { Disclosure, DisclosureTemplate as template } from "./index";
+import { DOM } from "@microsoft/fast-element";
+import { Disclosure, disclosureTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-disclosure",
-    template,
+const FastDisclosure = Disclosure.compose({
+    baseName: "disclosure",
+    template
 })
-class FastDisclosure extends Disclosure {}
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture<FastDisclosure>(
-        "fast-disclosure"
-    );
+    const { element, connect, disconnect } = await fixture(FastDisclosure());
 
     return { element, connect, disconnect };
 }
