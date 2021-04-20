@@ -1,11 +1,11 @@
 import {
-    FASTAnchor,
-    FASTBadge,
+    fastAnchor,
+    fastBadge,
     FASTDesignSystemProvider,
-    FASTDivider,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastDivider,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
     neutralLayerL1,
     StandardLuminance,
 } from "@microsoft/fast-components";
@@ -18,13 +18,13 @@ import toolingReactGuidance from "./.tmp/tooling-react-guidance";
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 
 // prevent tree shaking
-FASTAnchor;
-FASTBadge;
-FASTDivider;
+fastAnchor;
+fastBadge;
+fastDivider;
 FASTDesignSystemProvider;
-FASTTabs;
-FASTTab;
-FASTTabPanel;
+fastTabs;
+fastTab;
+fastTabPanel;
 FASTInlineLogo;
 
 /**

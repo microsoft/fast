@@ -1,6 +1,9 @@
-import { attr, customElement } from "@microsoft/fast-element";
-import { TextFieldTemplate as template, TextField } from "@microsoft/fast-foundation";
-import { TextFieldStyles as styles } from "./text-field.styles";
+import { attr } from "@microsoft/fast-element";
+import {
+    TextField as FoundationTextField,
+    textFieldTemplate as template,
+} from "@microsoft/fast-foundation";
+import { textFieldStyles as styles } from "./text-field.styles";
 
 /**
  * Text field appearances
@@ -9,25 +12,9 @@ import { TextFieldStyles as styles } from "./text-field.styles";
 export type TextFieldAppearance = "filled" | "outline";
 
 /**
- * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField},
- * {@link @microsoft/fast-foundation#TextFieldTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-text-field\>
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ * @internal
  */
-@customElement({
-    name: "fast-text-field",
-    template,
-    styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-})
-export class FASTTextField extends TextField {
+export class TextField extends FoundationTextField {
     /**
      * The appearance of the element.
      *
@@ -49,6 +36,26 @@ export class FASTTextField extends TextField {
         }
     }
 }
+
+/**
+ * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField},
+ * {@link @microsoft/fast-foundation#textFieldTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-text-field\>
+ *
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ */
+export const fastTextField = TextField.compose({
+    baseName: "text-field",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});
 
 /**
  * Styles for TextField

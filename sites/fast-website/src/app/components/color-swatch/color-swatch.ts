@@ -1,7 +1,7 @@
-import { attr, observable, FASTElement } from "@microsoft/fast-element";
-import { FASTRadio } from "@microsoft/fast-components";
+import { attr, observable } from "@microsoft/fast-element";
+import { Radio } from "@microsoft/fast-foundation";
 
-export class ColorSwatch extends FASTRadio {
+export class ColorSwatch extends Radio {
     @attr({ attribute: "background-color" })
     public backgroundColor: string = "#F33378";
 

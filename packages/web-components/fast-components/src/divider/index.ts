@@ -1,22 +1,20 @@
-import { customElement } from "@microsoft/fast-element";
-import { Divider, DividerTemplate as template } from "@microsoft/fast-foundation";
-import { DividerStyles as styles } from "./divider.styles";
+import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation";
+import { dividerStyles as styles } from "./divider.styles";
 
 /**
  * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider},
- * {@link @microsoft/fast-foundation#DividerTemplate}
+ * {@link @microsoft/fast-foundation#dividerTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-divider\>
  */
-@customElement({
-    name: "fast-divider",
+export const fastDivider = Divider.compose({
+    baseName: "divider",
     template,
     styles,
-})
-export class FASTDivider extends Divider {}
+});
 
 /**
  * Styles for Divider

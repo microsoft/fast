@@ -1,22 +1,20 @@
-import { customElement } from "@microsoft/fast-element";
-import { Slider, SliderTemplate as template } from "@microsoft/fast-foundation";
-import { SliderStyles as styles } from "./slider.styles";
+import { Slider, sliderTemplate as template } from "@microsoft/fast-foundation";
+import { sliderStyles as styles } from "./slider.styles";
 
 /**
  * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#(Slider:class)},
- * {@link @microsoft/fast-foundation#SliderTemplate}
+ * {@link @microsoft/fast-foundation#sliderTemplate}
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-slider\>
  */
-@customElement({
-    name: "fast-slider",
+export const fastSlider = Slider.compose({
+    baseName: "slider",
     template,
     styles,
-})
-export class FASTSlider extends Slider {}
+});
 
 /**
  * Styles for Slider

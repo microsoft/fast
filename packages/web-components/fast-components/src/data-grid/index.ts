@@ -1,11 +1,11 @@
 import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
-    DataGrid,
-    createDataGridTemplate,
-    DataGridRow,
-    createDataGridRowTemplate,
-    DataGridCell,
     createDataGridCellTemplate,
+    createDataGridRowTemplate,
+    createDataGridTemplate,
+    DataGrid,
+    DataGridCell,
+    DataGridRow,
 } from "@microsoft/fast-foundation";
 import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";

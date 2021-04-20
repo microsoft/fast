@@ -1,4 +1,5 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -8,7 +9,7 @@ import { applyMixins } from "../utilities/apply-mixins";
  *
  * @public
  */
-export class Anchor extends FASTElement {
+export class Anchor extends FoundationElement {
     /**
      * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
