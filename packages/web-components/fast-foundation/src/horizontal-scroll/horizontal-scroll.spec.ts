@@ -1,7 +1,7 @@
-import { css, customElement, DOM, FASTElement, html } from "@microsoft/fast-element";
-import { expect, assert } from "chai";
+import { css, DOM, html } from "@microsoft/fast-element";
+import { expect } from "chai";
 import { fixture } from "../fixture";
-import { HorizontalScroll, HorizontalScrollTemplate as template } from "./index";
+import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";
 
 const styles = css`
     :host {
@@ -23,12 +23,11 @@ const styles = css`
     }
 `;
 
-@customElement({
-    name: "fast-horizontal-scroll",
+const FASTHorizontalScroll = HorizontalScroll.compose({
+    baseName: "horizontal-scroll",
     template,
     styles
 })
-class FASTHorizontalScroll extends HorizontalScroll {}
 
 /**
  * Static widths for calculating expected returns
@@ -58,15 +57,21 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
  */
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
-describe("HorinzontalScroll", () => {
+async function setup() {
+    const { element, connect, disconnect } = await fixture(FASTHorizontalScroll());
 
+
+    return { element, connect, disconnect };
+}
+
+describe("HorinzontalScroll", () => {
     describe("Flippers", () => {
         it("should enable the next flipper when content exceeds horizontal-scroll width", async () => {
-            const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
 
@@ -76,11 +81,11 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should disable the next flipper if content is less than horizontal-scroll width", async () => {
-            const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: 800px">
-                    ${cardTemplate}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.setAttribute("style", "width: 800px");
+            element.innerHTML = cardTemplate;
+
             await connect();
             await DOM.nextUpdate();
 
@@ -90,7 +95,10 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should disable the previous flipper by default", async () => {
-            const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`<fast-horizontal-scroll>${getCards(8)}</fast-horizontal-scroll>`);
+            const { element, connect, disconnect} = await setup();
+
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
 
@@ -100,13 +108,15 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should enable the previous flipper when content is scrolled", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
+
             element.scrollToNext();
 
             await setTimeout(async () => {
@@ -116,13 +126,15 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should disable the previous flipper when scrolled back to the beginning", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
+
             element.scrollToNext();
             element.scrollToPrevious();
 
@@ -133,11 +145,12 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should disable the next flipper when it reaches the end of the content", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
-                    ${getCards(5)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(5);
+
             await connect();
             await DOM.nextUpdate();
             element.scrollToNext();
@@ -152,11 +165,12 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should re-enable the next flipper when its scrolled back from the end", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
             element.scrollToNext();
@@ -176,11 +190,11 @@ describe("HorinzontalScroll", () => {
 
     describe("Scrolling", () => {
         it("should start in the 0 position", async () => {
-            const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
 
@@ -190,11 +204,12 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should scroll to the beginning of the last element in full view", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
             element.scrollToNext();
@@ -213,11 +228,11 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should not scroll past the beginning", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
             element.scrollToPrevious();
@@ -232,11 +247,11 @@ describe("HorinzontalScroll", () => {
         });
 
         it("should not scroll past the last in view element", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
 
@@ -258,11 +273,12 @@ describe("HorinzontalScroll", () => {
         });
         
         it("should change scroll stop on resize", async () => {
-            const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
-                <fast-horizontal-scroll style="width: ${horizontalScrollWidth * 2}px" speed="-1">
-                    ${getCards(8)}
-                </fast-horizontal-scroll>
-            `);
+            const { element, connect, disconnect } = await setup();
+
+            element.speed = -1;
+            element.setAttribute("style", `width: ${horizontalScrollWidth * 2}px}`);
+            element.innerHTML = getCards(8);
+
             await connect();
             await DOM.nextUpdate();
             const scrollContent: any = element.shadowRoot?.querySelector(".content-container");

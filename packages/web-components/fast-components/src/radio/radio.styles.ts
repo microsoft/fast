@@ -22,7 +22,8 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const RadioStyles = css`
+export const radioStyles = (context, definition) =>
+    css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + var(--design-unit));
         align-items: center;
@@ -140,20 +141,20 @@ export const RadioStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillActiveBehavior,
+        accentFillHoverBehavior,
+        accentFillRestBehavior,
+        accentForegroundCutRestBehavior,
+        neutralFillInputActiveBehavior,
+        neutralFillInputHoverBehavior,
+        neutralFillInputRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundRestBehavior,
+        neutralOutlineActiveBehavior,
+        neutralOutlineHoverBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             .control,
             :host([checked]:not([disabled])) .control {
                 forced-color-adjust: none;
@@ -204,5 +205,5 @@ export const RadioStyles = css`
                 background: ${SystemColors.GrayText};
             }
         `
-    )
-);
+        )
+    );

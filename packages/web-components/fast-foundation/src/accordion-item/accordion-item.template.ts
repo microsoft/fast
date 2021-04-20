@@ -7,7 +7,10 @@ import type { AccordionItem } from "./accordion-item";
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
  * @public
  */
-export const AccordionItemTemplate: ViewTemplate<AccordionItem> = html`
+export const accordionItemTemplate: (
+    context,
+    definition
+) => ViewTemplate<AccordionItem> = (context, definition) => html`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"
         slot="item"

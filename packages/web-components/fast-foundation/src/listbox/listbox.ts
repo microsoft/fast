@@ -1,5 +1,6 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import { attr, observable, Observable } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
+import { FoundationElement } from "../foundation-element";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -11,7 +12,7 @@ import { ListboxRole } from "./listbox.options";
  *
  * @public
  */
-export class Listbox extends FASTElement {
+export class Listbox extends FoundationElement {
     /**
      * The index of the selected option
      *

@@ -1,4 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable } from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
@@ -8,6 +8,7 @@ import type {
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
 import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
+import { FoundationElement } from "../foundation-element";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -31,7 +32,7 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
  * A HorizontalScroll Custom HTML Element
  * @public
  */
-export class HorizontalScroll extends FASTElement {
+export class HorizontalScroll extends FoundationElement {
     /**
      * Reference to DOM element that scrolls the content
      * @public

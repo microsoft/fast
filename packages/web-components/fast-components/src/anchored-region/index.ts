@@ -1,25 +1,23 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     AnchoredRegion,
-    AnchoredRegionTemplate as template,
+    anchoredRegionTemplate as template,
 } from "@microsoft/fast-foundation";
-import { AnchoredRegionStyles as styles } from "./anchored-region.styles";
+import { anchoredRegionStyles as styles } from "./anchored-region.styles";
 
 /**
  * The FAST AnchoredRegion Element. Implements {@link @microsoft/fast-foundation#AnchoredRegion},
- * {@link @microsoft/fast-foundation#AnchoredRegionTemplate}
+ * {@link @microsoft/fast-foundation#anchoredRegionTemplate}
  *
  *
  * @beta
  * @remarks
  * HTML Element: \<fast-anchored-region\>
  */
-@customElement({
-    name: "fast-anchored-region",
+export const fastAnchoredRegion = AnchoredRegion.compose({
+    baseName: "anchored-region",
     template,
     styles,
-})
-export class FASTAnchoredRegion extends AnchoredRegion {}
+});
 
 /**
  * Styles for AnchoredRegion
