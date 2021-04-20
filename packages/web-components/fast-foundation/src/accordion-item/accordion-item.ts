@@ -1,4 +1,5 @@
-import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
@@ -6,7 +7,7 @@ import { applyMixins } from "../utilities/apply-mixins";
  * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
  * @public
  */
-export class AccordionItem extends FASTElement {
+export class AccordionItem extends FoundationElement {
     /**
      * Configures the {@link https://www.w3.org/TR/wai-aria-1.1/#aria-level | level} of the
      * heading element.

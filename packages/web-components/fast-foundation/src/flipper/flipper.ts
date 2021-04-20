@@ -1,4 +1,5 @@
-import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import { attr, booleanConverter } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import { FlipperDirection } from "./flipper.options";
 
 export { FlipperDirection };
@@ -9,7 +10,7 @@ export { FlipperDirection };
  *
  * @public
  */
-export class Flipper extends FASTElement {
+export class Flipper extends FoundationElement {
     /**
      * The disabled state of the flipper.
      * @public

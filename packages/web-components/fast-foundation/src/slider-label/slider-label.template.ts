@@ -7,7 +7,10 @@ import type { SliderLabel } from "./slider-label";
  * The template for the {@link @microsoft/fast-foundation#(SliderLabel:class)} component.
  * @public
  */
-export const SliderLabelTemplate: ViewTemplate<SliderLabel> = html`
+export const sliderLabelTemplate: (context, definition) => ViewTemplate<SliderLabel> = (
+    context,
+    definition
+) => html`
     <template
         aria-disabled="${x => x.disabled}"
         class="${x => x.sliderOrientation || Orientation.horizontal}

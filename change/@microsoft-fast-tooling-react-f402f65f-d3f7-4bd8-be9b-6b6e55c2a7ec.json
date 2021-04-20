@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update fast-tooling references to web components",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

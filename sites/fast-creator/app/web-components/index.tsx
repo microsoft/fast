@@ -1,20 +1,20 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
+import { FASTColorPicker, FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import {
-    FASTButton,
-    FASTSelect,
-    FASTSlider,
-    FASTSliderLabel,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastButton,
+    fastSelect,
+    fastSlider,
+    fastSliderLabel,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
 } from "@microsoft/fast-components";
-import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import { HTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
 import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
+import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -23,7 +23,6 @@ import {
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
 
-import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
@@ -38,13 +37,14 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
 FASTColorPicker;
-FASTSlider;
-FASTSliderLabel;
-FASTTab;
-FASTTabs;
-FASTTabPanel;
+fastSlider;
+fastSliderLabel;
+fastButton;
+fastSelect;
+fastTab;
+fastTabPanel;
+fastTabs;
 HTMLRender;
 HTMLRenderLayerInlineEdit;
 HTMLRenderLayerNavgation;
@@ -89,7 +89,7 @@ export function renderDeviceSelect(
             selectedIndex={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
-                    onChangeCallback((e.target as FASTSelect).value);
+                    onChangeCallback((e.target as Select).value);
                 },
             }}
             disabled={disable ? true : null}
