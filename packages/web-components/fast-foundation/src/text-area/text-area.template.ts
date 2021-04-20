@@ -7,7 +7,10 @@ import type { TextArea } from "./text-area";
  * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
  * @public
  */
-export const TextAreaTemplate: ViewTemplate<TextArea> = html`
+export const textAreaTemplate: (context, definition) => ViewTemplate<TextArea> = (
+    context,
+    definition
+) => html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

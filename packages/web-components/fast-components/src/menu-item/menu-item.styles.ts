@@ -18,7 +18,8 @@ import {
     neutralLayerL3Behavior,
 } from "../styles/index";
 
-export const MenuItemStyles = css`
+export const menuItemStyles = (context, definition) =>
+    css`
     ${display("grid")} :host {
         contain: layout;
         overflow: visible;
@@ -227,15 +228,15 @@ export const MenuItemStyles = css`
         pointer-events: none;
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL2Behavior,
-    neutralLayerL3Behavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        accentFillRestBehavior,
+        neutralFillStealthRestBehavior,
+        neutralFocusBehavior,
+        neutralForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        neutralLayerL2Behavior,
+        neutralLayerL3Behavior,
+        forcedColorsStylesheetBehavior(
+            css`
             :host {
                 border-color: transparent;
                 color: ${SystemColors.ButtonText};
@@ -322,24 +323,24 @@ export const MenuItemStyles = css`
                 background: ${SystemColors.Highlight};
             }
         `
-    ),
+        ),
 
-    new DirectionalStyleSheetBehavior(
-        css`
-            .expand-collapse-glyph {
-                transform: rotate(0deg);
-            }
-            :host([expanded="true"]) .expand-collapse-glyph {
-                transform: rotate(45deg);
-            }
-        `,
-        css`
-            .expand-collapse-glyph {
-                transform: rotate(180deg);
-            }
-            :host([expanded="true"]) .expand-collapse-glyph {
-                transform: rotate(135deg);
-            }
-        `
-    )
-);
+        new DirectionalStyleSheetBehavior(
+            css`
+                .expand-collapse-glyph {
+                    transform: rotate(0deg);
+                }
+                :host([expanded="true"]) .expand-collapse-glyph {
+                    transform: rotate(45deg);
+                }
+            `,
+            css`
+                .expand-collapse-glyph {
+                    transform: rotate(180deg);
+                }
+                :host([expanded="true"]) .expand-collapse-glyph {
+                    transform: rotate(135deg);
+                }
+            `
+        )
+    );

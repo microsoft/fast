@@ -16,7 +16,8 @@ import {
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
-export const SliderStyles = css`
+export const sliderStyles = (context, definition) =>
+    css`
     :host([hidden]) {
         display: none;
     }
@@ -116,14 +117,14 @@ export const SliderStyles = css`
         opacity: var(--disabled-opacity);
     }
 `.withBehaviors(
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        neutralFocusBehavior,
+        neutralForegroundActiveBehavior,
+        neutralForegroundHoverBehavior,
+        neutralForegroundRestBehavior,
+        neutralOutlineHoverBehavior,
+        neutralOutlineRestBehavior,
+        forcedColorsStylesheetBehavior(
+            css`
             .thumb-cursor {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.FieldText};
@@ -155,5 +156,5 @@ export const SliderStyles = css`
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
             }
         `
-    )
-);
+        )
+    );

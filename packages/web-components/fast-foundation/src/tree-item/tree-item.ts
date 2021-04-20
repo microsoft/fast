@@ -1,10 +1,4 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    observable,
-    Observable,
-} from "@microsoft/fast-element";
+import { attr, Notifier, observable, Observable } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -17,6 +11,7 @@ import {
 import { StartEnd } from "../patterns/start-end";
 import type { TreeView } from "../tree-view";
 import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * check if the item is a tree item
@@ -33,7 +28,7 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  *
  * @public
  */
-export class TreeItem extends FASTElement {
+export class TreeItem extends FoundationElement {
     /**
      * When true, the control will be appear expanded by user interaction.
      * @public

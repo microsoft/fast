@@ -6,6 +6,7 @@ import type {
     AxisScalingMode,
 } from "../anchored-region";
 import { getDirection } from "../utilities/";
+import { FoundationElement } from "../foundation-element";
 import { TooltipPosition } from "./tooltip.options";
 
 export { TooltipPosition };
@@ -15,7 +16,7 @@ export { TooltipPosition };
  *
  * @public
  */
-export class Tooltip extends FASTElement {
+export class Tooltip extends FoundationElement {
     private static DirectionAttributeName: string = "dir";
 
     /**

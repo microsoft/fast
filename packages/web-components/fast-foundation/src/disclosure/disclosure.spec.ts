@@ -1,24 +1,26 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { timeout } from "../test-utilities/timeout";
-import { customElement, DOM, html, ref } from "@microsoft/fast-element";
-import { Disclosure, DisclosureTemplate as template } from "./index";
+import { DOM } from "@microsoft/fast-element";
+import { Disclosure, disclosureTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-disclosure",
-    template,
+const FastDisclosure = Disclosure.compose({
+    baseName: "disclosure",
+    template
 })
-class FastDisclosure extends Disclosure {}
 
 async function createDisclosure() {
-    const { element, connect, disconnect } = await fixture<FastDisclosure>(
-        "fast-disclosure"
-    );
+    const { element, connect, disconnect } = await fixture(FastDisclosure());
 
     return { element, connect, disconnect };
 }
 
-
+async function macrotask() {
+    return new Promise((resolve, reject) => {
+        window.setTimeout(() => {
+            resolve(void 0);
+        })
+    })
+}
 
 describe("Disclosure", () => {
     describe("User interaction", () => {
@@ -26,7 +28,7 @@ describe("Disclosure", () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.toggle();
-            await timeout();
+            await macrotask();
             expect(element.expanded).to.equal(true);
             await disconnect();
         });
@@ -35,10 +37,10 @@ describe("Disclosure", () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.show();
-            await timeout();
+            await macrotask();
             expect(element.expanded).to.equal(true);
             element.hide();
-            await timeout();
+            await macrotask();
             expect(element.expanded).to.equal(false);
             await disconnect();
         });

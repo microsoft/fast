@@ -6,7 +6,10 @@ import type { Breadcrumb } from "./breadcrumb";
  * The template for the {@link @microsoft/fast-foundation#Breadcrumb} component.
  * @public
  */
-export const BreadcrumbTemplate: ViewTemplate<Breadcrumb> = html`
+export const breadcrumbTemplate: (context, definition) => ViewTemplate<Breadcrumb> = (
+    context,
+    definition
+) => html`
     <template role="navigation">
         <div role="list" class="list" part="list">
             <slot
