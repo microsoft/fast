@@ -26,7 +26,7 @@ export class SliderLabel extends FoundationSliderLabel {
 
 /**
  * The FAST Slider Label Custom Element. Implements {@link @microsoft/fast-foundation#(SliderLabel:class)},
- * {@link @microsoft/fast-foundation#SliderLabelTemplate}
+ * {@link @microsoft/fast-foundation#sliderLabelTemplate}
  *
  *
  * @public

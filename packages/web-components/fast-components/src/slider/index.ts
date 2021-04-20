@@ -3,7 +3,7 @@ import { sliderStyles as styles } from "./slider.styles";
 
 /**
  * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#(Slider:class)},
- * {@link @microsoft/fast-foundation#SliderTemplate}
+ * {@link @microsoft/fast-foundation#sliderTemplate}
  *
  *
  * @public

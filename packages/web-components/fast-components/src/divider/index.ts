@@ -3,7 +3,7 @@ import { dividerStyles as styles } from "./divider.styles";
 
 /**
  * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider},
- * {@link @microsoft/fast-foundation#DividerTemplate}
+ * {@link @microsoft/fast-foundation#dividerTemplate}
  *
  *
  * @public

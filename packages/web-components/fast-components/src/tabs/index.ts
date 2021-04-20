@@ -3,7 +3,7 @@ import { tabsStyles as styles } from "./tabs.styles";
 
 /**
  * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs},
- * {@link @microsoft/fast-foundation#TabsTemplate}
+ * {@link @microsoft/fast-foundation#tabsTemplate}
  *
  *
  * @public

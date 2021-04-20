@@ -3,7 +3,7 @@ import { menuStyles as styles } from "./menu.styles";
 
 /**
  * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu},
- * {@link @microsoft/fast-foundation#MenuTemplate}
+ * {@link @microsoft/fast-foundation#menuTemplate}
  *
  *
  * @public

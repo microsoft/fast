@@ -3,7 +3,7 @@ import { radioStyles as styles } from "./radio.styles";
 
 /**
  * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio},
- * {@link @microsoft/fast-foundation#RadioTemplate}
+ * {@link @microsoft/fast-foundation#radioTemplate}
  *
  *
  * @public

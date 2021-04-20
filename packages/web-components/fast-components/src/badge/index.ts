@@ -3,7 +3,7 @@ import { badgeStyles as styles } from "./badge.styles";
 
 /**
  * The FAST Badge Element. Implements {@link @microsoft/fast-foundation#Badge},
- * {@link @microsoft/fast-foundation#BadgeTemplate}
+ * {@link @microsoft/fast-foundation#badgeTemplate}
  *
  *
  * @public

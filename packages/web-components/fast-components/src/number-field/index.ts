@@ -45,7 +45,7 @@ export const NumberFieldStyles = styles;
 
 /**
  * The FAST Number Field Custom Element. Implements {@link @microsoft/fast-foundation#NumberField},
- * {@link @microsoft/fast-foundation#NumberFieldTemplate}
+ * {@link @microsoft/fast-foundation#numberFieldTemplate}
  *
  *
  * @public

@@ -39,7 +39,7 @@ export class TextArea extends FoundationTextArea {
 
 /**
  * The FAST Text Area Custom Element. Implements {@link @microsoft/fast-foundation#TextArea},
- * {@link @microsoft/fast-foundation#TextAreaTemplate}
+ * {@link @microsoft/fast-foundation#textAreaTemplate}
  *
  *
  * @public

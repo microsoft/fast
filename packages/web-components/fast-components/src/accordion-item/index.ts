@@ -6,7 +6,7 @@ import { accordionItemStyles as styles } from "./accordion-item.styles";
 
 /**
  * The FAST Accordion Item Element. Implements {@link @microsoft/fast-foundation#AccordionItem},
- * {@link @microsoft/fast-foundation#AccordionItemTemplate}
+ * {@link @microsoft/fast-foundation#accordionItemTemplate}
  *
  *
  * @public

@@ -3,7 +3,7 @@ import { selectStyles as styles } from "./select.styles";
 
 /**
  * The FAST select Custom Element. Implements, {@link @microsoft/fast-foundation#Select}
- * {@link @microsoft/fast-foundation#SelectTemplate}
+ * {@link @microsoft/fast-foundation#selectTemplate}
  *
  *
  * @public

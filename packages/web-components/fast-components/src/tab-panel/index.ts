@@ -3,7 +3,7 @@ import { tabPanelStyles as styles } from "./tab-panel.styles";
 
 /**
  * The FAST Tab Panel Custom Element. Implements {@link @microsoft/fast-foundation#TabPanel},
- * {@link @microsoft/fast-foundation#TabPanelTemplate}
+ * {@link @microsoft/fast-foundation#tabPanelTemplate}
  *
  *
  * @public

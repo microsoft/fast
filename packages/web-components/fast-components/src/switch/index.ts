@@ -3,7 +3,7 @@ import { switchStyles as styles } from "./switch.styles";
 
 /**
  * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch},
- * {@link @microsoft/fast-foundation#SwitchTemplate}
+ * {@link @microsoft/fast-foundation#switchTemplate}
  *
  *
  * @public

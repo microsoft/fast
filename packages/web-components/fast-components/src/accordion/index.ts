@@ -5,7 +5,7 @@ export * from "../accordion-item/index";
 
 /**
  * The FAST Accordion Element. Implements {@link @microsoft/fast-foundation#Accordion},
- * {@link @microsoft/fast-foundation#AccordionTemplate}
+ * {@link @microsoft/fast-foundation#accordionTemplate}
  *
  *
  * @public

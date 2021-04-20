@@ -3,7 +3,7 @@ import { breadcrumbStyles as styles } from "./breadcrumb.styles";
 
 /**
  * The FAST Breadcrumb Element. Implements {@link @microsoft/fast-foundation#Breadcrumb},
- * {@link @microsoft/fast-foundation#BreadcrumbTemplate}
+ * {@link @microsoft/fast-foundation#breadcrumbTemplate}
  *
  *
  * @public

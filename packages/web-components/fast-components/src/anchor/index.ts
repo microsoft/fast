@@ -70,7 +70,7 @@ export const AnchorStyles = styles;
 
 /**
  * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
- * {@link @microsoft/fast-foundation#AnchorTemplate}
+ * {@link @microsoft/fast-foundation#anchorTemplate}
  *
  *
  * @public

@@ -3,7 +3,7 @@ import { tooltipStyles as styles } from "./tooltip.styles";
 
 /**
  * The FAST Tooltip Custom Element. Implements {@link @microsoft/fast-foundation#Tooltip},
- * {@link @microsoft/fast-foundation#createTooltipTemplate}
+ * {@link @microsoft/fast-foundation#tooltipTemplate}
  *
  *
  * @public

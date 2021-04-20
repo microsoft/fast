@@ -3,7 +3,7 @@ import { radioGroupStyles as styles } from "./radio-group.styles";
 
 /**
  * The FAST Radio Group Element. Implements {@link @microsoft/fast-foundation#RadioGroup},
- * {@link @microsoft/fast-foundation#RadioGroupTemplate}
+ * {@link @microsoft/fast-foundation#radioGroupTemplate}
  *
  *
  * @public

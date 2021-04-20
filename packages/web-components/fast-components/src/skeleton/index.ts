@@ -3,7 +3,7 @@ import { skeletonStyles as styles } from "./skeleton.styles";
 
 /**
  * The FAST Skeleton Element. Implements {@link @microsoft/fast-foundation#Skeleton},
- * {@link @microsoft/fast-foundation#SkeletonTemplate}
+ * {@link @microsoft/fast-foundation#skeletonTemplate}
  *
  *
  * @public

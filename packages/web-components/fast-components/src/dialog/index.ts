@@ -3,7 +3,7 @@ import { dialogStyles as styles } from "./dialog.styles";
 
 /**
  * The FAST Dialog Element. Implements {@link @microsoft/fast-foundation#Dialog},
- * {@link @microsoft/fast-foundation#DialogTemplate}
+ * {@link @microsoft/fast-foundation#dialogTemplate}
  *
  *
  * @public

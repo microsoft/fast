@@ -6,7 +6,7 @@ import { anchoredRegionStyles as styles } from "./anchored-region.styles";
 
 /**
  * The FAST AnchoredRegion Element. Implements {@link @microsoft/fast-foundation#AnchoredRegion},
- * {@link @microsoft/fast-foundation#AnchoredRegionTemplate}
+ * {@link @microsoft/fast-foundation#anchoredRegionTemplate}
  *
  *
  * @beta

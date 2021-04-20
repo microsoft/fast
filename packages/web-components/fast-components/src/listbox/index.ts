@@ -3,7 +3,7 @@ import { listboxStyles as styles } from "./listbox.styles";
 
 /**
  * The FAST listbox Custom Element. Implements, {@link @microsoft/fast-foundation#Listbox}
- * {@link @microsoft/fast-foundation#ListboxTemplate}
+ * {@link @microsoft/fast-foundation#listboxTemplate}
  *
  *
  * @public

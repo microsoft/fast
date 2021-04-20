@@ -6,7 +6,7 @@ import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
 
 /**
  * The FAST BreadcrumbItem Element. Implements {@link @microsoft/fast-foundation#BreadcrumbItem},
- * {@link @microsoft/fast-foundation#BreadcrumbItemTemplate}
+ * {@link @microsoft/fast-foundation#breadcrumbItemTemplate}
  *
  *
  * @public

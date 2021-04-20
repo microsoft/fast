@@ -25,7 +25,7 @@ export class HorizontalScroll extends FoundationHorizontalScroll {
 
 /**
  * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
- * {@link @microsoft/fast-foundation#HorizontalScrollTemplate}
+ * {@link @microsoft/fast-foundation#horizontalScrollTemplate}
  *
  *
  * @public

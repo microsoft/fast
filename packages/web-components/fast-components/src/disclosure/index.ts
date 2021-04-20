@@ -85,7 +85,7 @@ export const DisclosureStyles = styles;
 
 /**
  * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},
- * {@link @microsoft/fast-foundation#DisclosureTemplate}
+ * {@link @microsoft/fast-foundation#disclosureTemplate}
  *
  *
  * @public

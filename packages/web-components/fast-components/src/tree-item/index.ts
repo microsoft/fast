@@ -3,7 +3,7 @@ import { treeItemStyles as styles } from "./tree-item.styles";
 
 /**
  * The FAST tree item Custom Element. Implements, {@link @microsoft/fast-foundation#TreeItem}
- * {@link @microsoft/fast-foundation#TreeItemTemplate}
+ * {@link @microsoft/fast-foundation#treeItemTemplate}
  *
  *
  * @public

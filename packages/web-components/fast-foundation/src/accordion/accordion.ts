@@ -31,7 +31,7 @@ export enum AccordionExpandMode {
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#AccordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
+ * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
  */
 export class Accordion extends FoundationElement {
     /**
