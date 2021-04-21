@@ -2,6 +2,7 @@ import { ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
 /**
+ * Represents a color in a {@link Palette}
  * @public
  */
 export interface Swatch extends RelativeLuminance {
@@ -10,6 +11,7 @@ export interface Swatch extends RelativeLuminance {
 }
 
 /**
+ * A RGB implementation of {@link Swatch}
  * @public
  */
 export class SwatchRGB extends ColorRGBA64 implements Swatch {

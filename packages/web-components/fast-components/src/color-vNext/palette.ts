@@ -9,6 +9,7 @@ import { directionByIsDark } from "./utilities/direction-by-is-dark";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
 /**
+ * A collection of {@link Swatch} instances
  * @public
  */
 export interface Palette<T extends Swatch = Swatch> {
@@ -18,10 +19,6 @@ export interface Palette<T extends Swatch = Swatch> {
     /**
      * Returns a swatch from the palette that most closely matches
      * the contrast ratio provided to a provided reference.
-     *
-     * @remarks
-     * We need to know where to start searching
-     * and which direction to search in - isDarkMode?
      */
     colorContrast(
         reference: Swatch,
@@ -48,6 +45,9 @@ export interface Palette<T extends Swatch = Swatch> {
  * @public
  */
 export class PaletteRGB implements Palette<SwatchRGB> {
+    /**
+     * {@inheritdoc Palette.source}
+     */
     public readonly source: SwatchRGB;
     public readonly swatches: ReadonlyArray<SwatchRGB>;
     private lastIndex: number;
@@ -65,6 +65,9 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         this.lastIndex = this.swatches.length - 1;
     }
 
+    /**
+     * {@inheritdoc Palette.colorContrast}
+     */
     public colorContrast(
         reference: Swatch,
         contrastTarget: number,
@@ -94,6 +97,9 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         return binarySearch(source, condition, startSearchIndex, endSearchIndex);
     }
 
+    /**
+     * {@inheritdoc Palette.get}
+     */
     public get(index: number): SwatchRGB {
         return (
             this.swatches[index] ||
@@ -101,6 +107,9 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         );
     }
 
+    /**
+     * {@inheritdoc Palette.closestIndexOf}
+     */
     public closestIndexOf(reference: Swatch): number {
         const index = this.swatches.indexOf(reference as SwatchRGB);
 
