@@ -10,6 +10,11 @@ import {
 } from "./neutral-foreground-hint";
 import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { neutralBaseColor } from "./color-constants";
+import { PaletteRGB } from "../color-2/palette";
+import { SwatchRGB } from "../color-2/swatch";
+import { neutralForegroundHint as neutralForegroundHintNew } from "../color-2/recipes/neutral-foreground-hint";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -69,3 +74,15 @@ describe("neutralForegroundHint", (): void => {
         });
     });
 });
+
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    palette.swatches.forEach(( newSwatch, index ) => {
+        it(`should be the same for ${newSwatch}`, () => {
+            expect(neutralForegroundHintNew(palette, newSwatch).toColorString().toUpperCase()).to.equal(
+                neutralForegroundHint({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
+            )
+        })
+    })
+})

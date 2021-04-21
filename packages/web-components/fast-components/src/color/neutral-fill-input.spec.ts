@@ -1,9 +1,13 @@
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
+import { PaletteRGB } from "../color-2/palette";
+import { SwatchRGB } from "../color-2/swatch";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
+import { neutralBaseColor } from "./color-constants";
 import { clamp, FillSwatchFamily, Swatch } from "./common";
 import {
     neutralFillInput,
@@ -14,6 +18,7 @@ import {
     neutralFillInputSelected,
 } from "./neutral-fill-input";
 import { isDarkMode, Palette } from "./palette";
+import { neutralFillInput as neutralFillInputNew } from "../color-2/recipes/neutral-fill-input";
 
 describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -128,3 +133,31 @@ describe("neutralFillInput", (): void => {
         });
     });
 });
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    palette.swatches.forEach(( newSwatch, index ) => {
+        const {
+            neutralFillInputRestDelta,
+            neutralFillInputHoverDelta,
+            neutralFillInputActiveDelta,
+            neutralFillInputFocusDelta,
+            neutralFillInputSelectedDelta
+        } = fastDesignSystemDefaults;
+        const oldValues = neutralFillInput({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const newValues = neutralFillInputNew(
+            palette,
+            newSwatch,
+            neutralFillInputRestDelta,
+            neutralFillInputHoverDelta,
+            neutralFillInputActiveDelta,
+            neutralFillInputFocusDelta,
+            neutralFillInputSelectedDelta
+        );
+            it(`should be the same for ${newSwatch}`, () => {
+                for (let key in oldValues) {
+                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                }
+        });
+    })
+})

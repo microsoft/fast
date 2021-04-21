@@ -14,6 +14,11 @@ import {
 } from "./neutral-fill";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { neutralBaseColor } from "./color-constants";
+import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-2/palette";
+import { neutralFill as neutralFillNew } from "../color-2/recipes/neutral-fill"
 
 describe("neutralFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -98,3 +103,17 @@ describe("neutralFill", (): void => {
         });
     });
 });
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    palette.swatches.forEach(( newSwatch, index ) => {
+        const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta } = fastDesignSystemDefaults;
+        const oldValues = neutralFill({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta );
+            it(`should be the same for ${newSwatch}`, () => {
+                for (let key in oldValues) {
+                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                }
+        });
+    })
+})

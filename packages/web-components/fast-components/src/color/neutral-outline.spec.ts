@@ -1,4 +1,4 @@
-import { isColorStringHexRGB } from "@microsoft/fast-colors";
+import { isColorStringHexRGB, parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
@@ -14,6 +14,10 @@ import {
 } from "./neutral-outline";
 import { Palette } from "./palette";
 import { Swatch, SwatchFamily } from "./common";
+import { neutralBaseColor } from "./color-constants";
+import { PaletteRGB } from "../color-2/palette";
+import { SwatchRGB } from "../color-2/swatch";
+import { neutralOutline as neutralOutlineNew } from "../color-2/recipes/neutral-outline"
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -98,3 +102,25 @@ describe("neutralOutline", (): void => {
         });
     });
 });
+
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    palette.swatches.forEach(( newSwatch, index ) => {
+        const { neutralOutlineRestDelta, neutralOutlineHoverDelta, neutralOutlineFocusDelta, neutralOutlineActiveDelta } = fastDesignSystemDefaults;
+        const oldValues = neutralOutline({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const newValues = neutralOutlineNew(
+            palette,
+            newSwatch,
+            neutralOutlineRestDelta,
+            neutralOutlineHoverDelta,
+            neutralOutlineActiveDelta,
+            neutralOutlineFocusDelta,
+        );
+            it(`should be the same for ${newSwatch}`, () => {
+                for (let key in oldValues) {
+                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                }
+        });
+    })
+})

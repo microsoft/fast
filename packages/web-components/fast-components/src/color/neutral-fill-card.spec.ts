@@ -1,6 +1,11 @@
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
+import { PaletteRGB } from "../color-2/palette";
+import { SwatchRGB } from "../color-2/swatch";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
+import { neutralBaseColor } from "./color-constants";
 import { neutralFillCard } from "./neutral-fill-card";
+import { neutralFillCard as neutralFillCardNew } from "../color-2/recipes/neutral-fill-card"
 
 describe("neutralFillCard", (): void => {
     it("should operate on design system defaults", (): void => {
@@ -42,3 +47,15 @@ describe("neutralFillCard", (): void => {
         ).to.equal(fastDesignSystemDefaults.neutralPalette[1]);
     });
 });
+describe("ensure parity between old and new recipe implementation", () => {
+    const color = (parseColorHexRGB(neutralBaseColor)!)
+    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const { neutralFillCardDelta } = fastDesignSystemDefaults;
+    palette.swatches.forEach(( newSwatch, index ) => {
+            it(`should be the same for ${newSwatch}`, () => {
+                expect(
+                    neutralFillCard({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
+                ).to.be.equal(neutralFillCardNew( palette, newSwatch, neutralFillCardDelta).toColorString().toUpperCase())
+        });
+    })
+})
