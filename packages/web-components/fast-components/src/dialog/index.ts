@@ -20,4 +20,4 @@ export const fastDialog = Dialog.compose({
  * Styles for Dialog
  * @public
  */
-export const DialogStyles = styles;
+export const dialogStyles = styles;

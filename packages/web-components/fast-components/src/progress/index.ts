@@ -23,4 +23,4 @@ export const fastProgress = Progress.compose({
  * Styles for Progress
  * @public
  */
-export const ProgressStyles = styles;
+export const progressStyles = styles;

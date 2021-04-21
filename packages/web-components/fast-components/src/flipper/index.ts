@@ -20,4 +20,4 @@ export const fastFlipper = Flipper.compose({
  * Styles for Flipper
  * @public
  */
-export const FlipperStyles = styles;
+export const flipperStyles = styles;
