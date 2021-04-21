@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import {
     keyCodeArrowDown,
     keyCodeArrowLeft,
@@ -53,9 +53,7 @@ export class Tabs extends FASTElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
-            this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
+            this.updateTabs();
         }
     }
 
@@ -72,9 +70,7 @@ export class Tabs extends FASTElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
-            this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
+            this.updateTabs();
         }
     }
 
@@ -91,9 +87,7 @@ export class Tabs extends FASTElement {
             this.$fastController.isConnected &&
             this.tabpanels.length <= this.tabs.length
         ) {
-            this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
+            this.updateTabs();
         }
     }
 
@@ -228,9 +222,7 @@ export class Tabs extends FASTElement {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
             this.change();
-            this.setTabs();
-            this.handleActiveIndicatorPosition();
-            this.setTabPanels();
+            this.updateTabs();
             this.focusTab();
             this.change();
         }
@@ -395,15 +387,21 @@ export class Tabs extends FASTElement {
         this.tabs[this.activeTabIndex].focus();
     }
 
+    private updateTabs(): void {
+        this.setTabs();
+        this.setTabPanels();
+        this.handleActiveIndicatorPosition();
+    }
+
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
-        this.activeTabIndex = this.getActiveIndex();
+        DOM.queueUpdate(() => {
+            this.updateTabs();
+        });
     }
 }
 

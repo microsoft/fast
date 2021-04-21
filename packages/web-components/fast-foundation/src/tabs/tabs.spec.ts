@@ -246,6 +246,33 @@ describe("Tabs", () => {
             await disconnect();
         });
 
+        it("should set an `aria-selected` attribute on the active tab when `activeId` is provided and no id's are set", async () => {
+            const { element, connect, disconnect } = await fixture<FASTTabs>(html<
+                FASTTabs
+            >`
+                <fast-tabs activeid="tab-2">
+                    <fast-tab>Tab one</fast-tab>
+                    <fast-tab>Tab two</fast-tab>
+                    <fast-tab>Tab three</fast-tab>
+                    <fast-tab-panel>
+                        Tab one content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab two content. This is for testing.
+                    </fast-tab-panel>
+                    <fast-tab-panel>
+                        Tab three content. This is for testing.
+                    </fast-tab-panel>
+                </fast-tabs>
+            `);
+
+            await connect();
+
+            expect(element.querySelector("[id='tab-2']")?.getAttribute("aria-selected")).to.equal("true");
+
+            await disconnect();
+        });
+
         it("should default the first tab as the active index if `activeId` is NOT provided", async () => {
             const { connect, disconnect, tab1 } = await setup();
 
