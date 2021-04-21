@@ -6,8 +6,11 @@ import {
 import { cond } from "lodash";
 import { Swatch, SwatchRGB } from "./swatch";
 import { directionByMode } from "./utilities/direction-by-mode";
-import { contrast } from "./utilities/relative-luminance";
+import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
+/**
+ * @public
+ */
 export interface Palette<T extends Swatch = Swatch> {
     readonly source: T;
     readonly swatches: ReadonlyArray<T>;
@@ -31,7 +34,7 @@ export interface Palette<T extends Swatch = Swatch> {
      * Returns the index of the palette that most closely matches
      * the relativeLuminance of the provided swatch
      */
-    closestIndexOf(reference: Swatch): number;
+    closestIndexOf(reference: RelativeLuminance): number;
 
     /**
      * Gets a swatch by index. Index is clamped to the limits
@@ -40,6 +43,9 @@ export interface Palette<T extends Swatch = Swatch> {
     get(index: number): Swatch;
 }
 
+/**
+ * @public
+ */
 export class PaletteRGB implements Palette<SwatchRGB> {
     public readonly source: SwatchRGB;
     public readonly swatches: ReadonlyArray<SwatchRGB>;

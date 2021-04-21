@@ -3,6 +3,9 @@ import { Palette } from "../palette";
 import { Swatch } from "../swatch";
 import { isDarkMode } from "../utilities/is-dark-mode";
 
+/**
+ * @internal
+ */
 export function accentFill(
     palette: Palette,
     neutralPalette: Palette,

@@ -2,6 +2,9 @@ import { Palette } from "../palette";
 import { Swatch } from "../swatch";
 import { directionByMode } from "../utilities/direction-by-mode";
 
+/**
+ * @internal
+ */
 export function neutralFillInput(
     palette: Palette,
     reference: Swatch,

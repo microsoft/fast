@@ -1,6 +1,9 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
 
+/**
+ * @internal
+ */
 export function neutralFillStealth(
     palette: Palette,
     reference: Swatch,

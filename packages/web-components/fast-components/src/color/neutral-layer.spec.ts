@@ -10,6 +10,16 @@ import {
     neutralLayerL4,
     StandardLuminance,
 } from "./neutral-layer";
+import {
+    neutralLayerFloating as neutralLayerFloatingNew
+} from '../color-2/recipes/neutral-layer-floating';
+import {
+    neutralLayerCard as neutralLayerCardNew
+} from '../color-2/recipes/neutral-layer-card';
+import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { neutralBaseColor } from "./color-constants";
+import { PaletteRGB } from "../color-2/palette";
+import { SwatchRGB } from "../color-2/swatch";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(
     {},
@@ -159,6 +169,13 @@ describe("neutralLayer", (): void => {
             expect(color).not.to.equal(neutralLayerFloating(fastDesignSystemDefaults));
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
+        
+        it("should have a new implementation that matches the old implementation", () => {
+             const color = (parseColorHexRGB(neutralBaseColor)!)
+            const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+            expect(neutralLayerFloating(lightModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerFloating(darkModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+        })
     });
     describe("neutralLayerCardContainer", (): void => {
         it("should return a color from the neutral palette", (): void => {
@@ -195,5 +212,11 @@ describe("neutralLayer", (): void => {
             expect(color).not.to.equal(neutralLayerCard(fastDesignSystemDefaults));
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
+        it("should have a new implementation that matches the old implementation", () => {
+             const color = (parseColorHexRGB(neutralBaseColor)!)
+            const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+            expect(neutralLayerCard(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerCard(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+        })
     });
 });

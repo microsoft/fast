@@ -8,6 +8,8 @@ import { Swatch } from "../swatch";
  * @param delta - The offset from the reference's location
  * @param threshold - Determines if a lighter or darker color than the reference will be picked.
  * @returns
+ *
+ * @internal
  */
 export function neutralFill(
     palette: Palette,
