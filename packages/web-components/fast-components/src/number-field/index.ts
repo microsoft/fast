@@ -41,7 +41,7 @@ export class NumberField extends FoundationNumberField {
  * Styles for NumberField
  * @public
  */
-export const NumberFieldStyles = styles;
+export const numberFieldStyles = styles;
 
 /**
  * The FAST Number Field Custom Element. Implements {@link @microsoft/fast-foundation#NumberField},

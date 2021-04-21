@@ -23,4 +23,4 @@ export const fastProgressRing = Progress.compose({
  * Styles for ProgressRing
  * @public
  */
-export const ProgressRingStyles = styles;
+export const progressRingStyles = styles;
