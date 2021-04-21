@@ -25,7 +25,7 @@ Further rules will need to be defined based on [MDN CSS syntax](https://github.c
 #### Text field
 
 Used for:
-    - a default value if the property name is not recognized
+- a default value if the property name is not recognized
 
 Example value:
 ```css
@@ -81,16 +81,17 @@ Some utilities that may be required:
 
 ## Overrides
 
-To make this flexible, the abstract class should allow a way to override the default creation of any property. The implementation of this in the CSS styles or CSS stylesheets controls may look like:
+To make this flexible, the class should allow a way to override the default creation of any property. The implementation of this in the CSS styles or CSS stylesheets controls may look like:
 
 ```tsx
-<CSSStyles
-    // This is true be default as setting shorthand is more user friendly, 
-    // if set to false, all non-shorthand values short up eg. "border-style"
-    shorthandOnly={true}
+<CSSControl
+    // A subset of CSS properties must be provided, this is done
+    // to simplify and reduce package size as the amount of CSS definitions
+    // is large.
+    css={subsetOfMDNCSSProperties}
     controls={[
         new StandardCSSControlPlugin({
-            name: "border",
+            name: ["border"],
             control: (config) => {
                 return (
                     <input
@@ -103,6 +104,8 @@ To make this flexible, the abstract class should allow a way to override the def
     ]}
 />
 ```
+
+Note that multiple CSS styles may be overridden, this should allow logical groupings to remain together. An example would be the use of `flexbox` and `CSS grid`. These might provide an opportunity to group CSS together to edit with a single control, as well as the flexibility to allow controls to communicate between instances. An example of this might be that when setting a display to `flex` on a parent container, the immediate children of that container could register that they should include any `flexbox` CSS in a custom UI.
 
 ## CSS Styles
 
