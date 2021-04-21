@@ -17,6 +17,8 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
+const defaultElement = document.createElement("div");
+
 /**
  * Describes a DesignToken instance.
  * @alpha
@@ -61,6 +63,11 @@ export interface DesignToken<T> extends CSSDirective {
      * @param element - The element to remove the value from
      */
     deleteValueFor(element: HTMLElement): this;
+
+    /**
+     * Associates a default value to the token
+     */
+    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
 interface Disposable {
@@ -155,6 +162,12 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public createBehavior() {
         return new DesignTokenBehavior(this);
+    }
+
+    public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
+        DesignTokenNode.for(this, defaultElement).set(value);
+
+        return this;
     }
 }
 
@@ -330,16 +343,21 @@ class DesignTokenNode<T> {
         return this.target.contains(node.target);
     }
 
-    private findParentNode() {
+    private findParentNode(): DesignTokenNode<T> | null {
+        if (this.target === defaultElement) {
+            return null;
+        }
+
         if (this.target !== document.body && this.target.parentNode) {
             const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+            // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
             try {
                 return container.get(DesignTokenNode.channel(this.token));
             } catch (e) {
-                return null;
+                return DesignTokenNode.for(this.token, defaultElement);
             }
         } else {
-            return null;
+            return DesignTokenNode.for(this.token, defaultElement);
         }
     }
 
