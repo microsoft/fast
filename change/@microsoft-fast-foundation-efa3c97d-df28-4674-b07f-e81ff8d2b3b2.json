@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add function to check for separator, add example and update style for not href item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "khamu@microsoft.com",
+  "dependentChangeType": "patch"
+}
