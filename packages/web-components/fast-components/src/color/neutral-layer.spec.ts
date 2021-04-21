@@ -12,14 +12,14 @@ import {
 } from "./neutral-layer";
 import {
     neutralLayerFloating as neutralLayerFloatingNew
-} from '../color-2/recipes/neutral-layer-floating';
+} from '../color-vNext/recipes/neutral-layer-floating';
 import {
     neutralLayerCard as neutralLayerCardNew
-} from '../color-2/recipes/neutral-layer-card';
+} from '../color-vNext/recipes/neutral-layer-card';
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { neutralBaseColor } from "./color-constants";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(
     {},
@@ -172,7 +172,7 @@ describe("neutralLayer", (): void => {
         
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
             expect(neutralLayerFloating(lightModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
             expect(neutralLayerFloating(darkModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })
@@ -214,7 +214,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
             expect(neutralLayerCard(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
             expect(neutralLayerCard(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })

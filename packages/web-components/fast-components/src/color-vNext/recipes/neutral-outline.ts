@@ -1,6 +1,6 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { directionByMode } from "../utilities/direction-by-mode";
+import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
  * @internal
@@ -14,7 +14,7 @@ export function neutralOutline(
     focusDelta: number
 ) {
     const backgroundIndex = palette.closestIndexOf(reference);
-    const direction = directionByMode(reference);
+    const direction = directionByIsDark(reference);
 
     const restIndex = backgroundIndex + direction * restDelta;
     const hoverIndex = restIndex + direction * (hoverDelta - restDelta);

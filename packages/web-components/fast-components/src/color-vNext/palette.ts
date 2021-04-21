@@ -3,9 +3,8 @@ import {
     ComponentStateColorPalette,
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
-import { cond } from "lodash";
 import { Swatch, SwatchRGB } from "./swatch";
-import { directionByMode } from "./utilities/direction-by-mode";
+import { directionByIsDark } from "./utilities/direction-by-is-dark";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
 /**
@@ -24,7 +23,7 @@ export interface Palette<T extends Swatch = Swatch> {
      * and which direction to search in - isDarkMode?
      */
     colorContrast(
-        reference: Swatch | number,
+        reference: Swatch,
         contrast: number,
         initialIndex?: number,
         direction?: 1 | -1
@@ -40,7 +39,7 @@ export interface Palette<T extends Swatch = Swatch> {
      * Gets a swatch by index. Index is clamped to the limits
      * of the palette so a Swatch will always be returned.
      */
-    get(index: number): Swatch;
+    get(index: number): T;
 }
 
 /**
@@ -51,15 +50,9 @@ export class PaletteRGB implements Palette<SwatchRGB> {
     public readonly swatches: ReadonlyArray<SwatchRGB>;
     private lastIndex: number;
     private reversedSwatches: ReadonlyArray<SwatchRGB>;
-    constructor(source: SwatchRGB) {
+    constructor(source: SwatchRGB, swatches: ReadonlyArray<SwatchRGB>) {
         this.source = source;
-        this.swatches = Object.freeze(
-            new ComponentStateColorPalette({
-                baseColor: source,
-            }).palette
-                .map(x => parseColorHexRGB(x.toStringHexRGB())!) // TODO: we need lower fidelity
-                .map(x => new SwatchRGB(x.r, x.g, x.b))
-        );
+        this.swatches = swatches;
 
         this.reversedSwatches = Object.freeze([...this.swatches].reverse());
         this.lastIndex = this.swatches.length - 1;
@@ -80,7 +73,7 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         let startSearchIndex = initialSearchIndex;
 
         if (direction === undefined) {
-            direction = directionByMode(reference);
+            direction = directionByIsDark(reference);
         }
 
         const condition = (value: SwatchRGB) =>
@@ -116,6 +109,20 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         );
 
         return this.swatches.indexOf(closest);
+    }
+
+    static from(source: SwatchRGB) {
+        return new PaletteRGB(
+            source,
+            Object.freeze(
+                new ComponentStateColorPalette({
+                    baseColor: source,
+                }).palette.map(x => {
+                    const _x = parseColorHexRGB(x.toStringHexRGB())!;
+                    return new SwatchRGB(_x.r, _x.g, _x.b);
+                })
+            )
+        );
     }
 }
 

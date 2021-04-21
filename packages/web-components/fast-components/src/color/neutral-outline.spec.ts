@@ -15,9 +15,9 @@ import {
 import { Palette } from "./palette";
 import { Swatch, SwatchFamily } from "./common";
 import { neutralBaseColor } from "./color-constants";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
-import { neutralOutline as neutralOutlineNew } from "../color-2/recipes/neutral-outline"
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
+import { neutralOutline as neutralOutlineNew } from "../color-vNext/recipes/neutral-outline"
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -105,7 +105,7 @@ describe("neutralOutline", (): void => {
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralOutlineRestDelta, neutralOutlineHoverDelta, neutralOutlineFocusDelta, neutralOutlineActiveDelta } = fastDesignSystemDefaults;
         const oldValues = neutralOutline({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});

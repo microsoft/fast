@@ -1,6 +1,6 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { directionByMode } from "../utilities/direction-by-mode";
+import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
  * @internal
@@ -14,7 +14,7 @@ export function neutralFillInput(
     focusDelta: number,
     selectedDelta: number
 ) {
-    const direction = directionByMode(reference);
+    const direction = directionByIsDark(reference);
     const referenceIndex = palette.closestIndexOf(reference);
 
     return {

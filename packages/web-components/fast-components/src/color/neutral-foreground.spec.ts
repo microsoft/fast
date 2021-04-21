@@ -1,8 +1,8 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
-import { PaletteRGB } from "../color-2/palette";
-import { neutralForeground } from "../color-2/recipes/neutral-foreground";
-import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-vNext/palette";
+import { neutralForeground } from "../color-vNext/recipes/neutral-foreground";
+import { SwatchRGB } from "../color-vNext/swatch";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralBaseColor } from "./color-constants";
 import { contrast } from "./common";
@@ -133,7 +133,7 @@ describe("neutralForeground", (): void => {
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
             it(`should be the same for ${newSwatch}`, () => {
                 expect(neutralForegroundRest({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralForeground( palette, newSwatch).toColorString().toUpperCase())

@@ -1,6 +1,6 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { directionByMode } from "../utilities/direction-by-mode";
+import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
  * @internal
@@ -13,7 +13,7 @@ export function neutralFillToggle(
     activeDelta: number,
     focusDelta: number
 ) {
-    const direction = directionByMode(reference);
+    const direction = directionByIsDark(reference);
     const accessibleIndex = palette.closestIndexOf(palette.colorContrast(reference, 4.5));
     const accessibleIndex2 =
         accessibleIndex + direction * Math.abs(restDelta - hoverDelta);

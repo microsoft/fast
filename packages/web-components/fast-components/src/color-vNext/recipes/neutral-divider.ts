@@ -1,6 +1,6 @@
 import { Swatch } from "../swatch";
 import { Palette } from "../palette";
-import { directionByMode } from "../utilities/direction-by-mode";
+import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
  * The neutralDivider color recipe
@@ -11,7 +11,7 @@ import { directionByMode } from "../utilities/direction-by-mode";
  * @internal
  */
 export function neutralDivider(palette: Palette, background: Swatch, offset: number) {
-    const direction = directionByMode(background);
+    const direction = directionByIsDark(background);
 
     return palette.get(palette.closestIndexOf(background) + direction * offset);
 }

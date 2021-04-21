@@ -1,7 +1,7 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
     accentPalette as getAccentPalette,
@@ -18,7 +18,7 @@ import {
     neutralFillInputSelected,
 } from "./neutral-fill-input";
 import { isDarkMode, Palette } from "./palette";
-import { neutralFillInput as neutralFillInputNew } from "../color-2/recipes/neutral-fill-input";
+import { neutralFillInput as neutralFillInputNew } from "../color-vNext/recipes/neutral-fill-input";
 
 describe("neutralFillInput", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -135,7 +135,7 @@ describe("neutralFillInput", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const {
             neutralFillInputRestDelta,

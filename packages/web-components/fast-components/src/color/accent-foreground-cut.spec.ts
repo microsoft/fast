@@ -1,12 +1,12 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
 import { neutralBaseColor, accentBaseColor } from "./color-constants";
 import { Swatch } from "./common";
-import { accentForegroundCut as accentForegroundCutNew } from "../color-2/recipes/accent-foreground-cut";
+import { accentForegroundCut as accentForegroundCutNew } from "../color-vNext/recipes/accent-foreground-cut";
 
 describe("Cut text", (): void => {
     it("should return white by by default", (): void => {
@@ -35,7 +35,7 @@ describe("Cut text", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(accentBaseColor)!)
-    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
     it(
         `should be the same for ${palette.source}`,
         () => {

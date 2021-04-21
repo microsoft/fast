@@ -17,9 +17,9 @@ import {
 import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
 import { accentBaseColor, neutralBaseColor } from "./color-constants";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
-import { accentForeground as accentForegroundNew } from "../color-2/recipes/accent-foreground";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
+import { accentForeground as accentForegroundNew } from "../color-vNext/recipes/accent-foreground";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -131,8 +131,8 @@ describe("ensure parity between old and new recipe implementation", () => {
     const neutralBase = parseColorHexRGB(neutralBaseColor)!;
     const accentBase = parseColorHexRGB(accentBaseColor)!;
 
-    const neutralPalette = new PaletteRGB(new SwatchRGB(neutralBase.r, neutralBase.g, neutralBase.b));
-    const accentPalette = new PaletteRGB(new SwatchRGB(accentBase.r, accentBase.g, accentBase.b));
+    const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralBase.r, neutralBase.g, neutralBase.b));
+    const accentPalette = PaletteRGB.from(new SwatchRGB(accentBase.r, accentBase.g, accentBase.b));
     
     neutralPalette.swatches.forEach((newSwatch, index) => {
         const {

@@ -1,6 +1,6 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { directionByMode } from "../utilities/direction-by-mode";
+import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
  * @internal
@@ -16,7 +16,7 @@ export function accentForeground(
 ) {
     const accent = palette.source;
     const accentIndex = palette.closestIndexOf(accent);
-    const direction = directionByMode(reference);
+    const direction = directionByIsDark(reference);
     const startIndex =
         accentIndex +
         (direction === 1

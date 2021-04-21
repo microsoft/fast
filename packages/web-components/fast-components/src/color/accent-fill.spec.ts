@@ -19,10 +19,10 @@ import { findClosestSwatchIndex, Palette } from "./palette";
 import { contrast, Swatch } from "./common";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { neutralBaseColor, accentBaseColor } from "./color-constants";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
-import { accentFill as accentFillNew } from "../color-2/recipes/accent-fill";
-import { accentForegroundCut as accentForegroundCutNew  } from '../color-2/recipes/accent-foreground-cut';
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
+import { accentFill as accentFillNew } from "../color-vNext/recipes/accent-fill";
+import { accentForegroundCut as accentForegroundCutNew  } from '../color-vNext/recipes/accent-foreground-cut';
 import { accentForegroundCut } from "./accent-foreground-cut";
 
 describe("accentFill", (): void => {
@@ -98,9 +98,9 @@ describe("accentFill", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const neutralColor = (parseColorHexRGB(neutralBaseColor)!)
-    const neutralPalette = new PaletteRGB(new SwatchRGB(neutralColor.r, neutralColor.g, neutralColor.b));
+    const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralColor.r, neutralColor.g, neutralColor.b));
     const accentColor = (parseColorHexRGB(accentBaseColor)!)
-    const accentPalette = new PaletteRGB(new SwatchRGB(accentColor.r, accentColor.g, accentColor.b));
+    const accentPalette = PaletteRGB.from(new SwatchRGB(accentColor.r, accentColor.g, accentColor.b));
     neutralPalette.swatches.forEach(( newSwatch, index ) => {
         const {
             accentFillHoverDelta,

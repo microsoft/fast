@@ -1,7 +1,7 @@
 import { inRange } from "lodash";
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { isDarkMode } from "../utilities/is-dark-mode";
+import { isDark } from "../utilities/is-dark";
 
 /**
  * @internal
@@ -48,7 +48,7 @@ export function accentFill(
     const activeIndex = restIndex + direction * activeDelta;
     const focusIndex = restIndex + direction * focusDelta;
     const selectedIndex =
-        restIndex + (isDarkMode(reference) ? selectedDelta * -1 : selectedDelta);
+        restIndex + (isDark(reference) ? selectedDelta * -1 : selectedDelta);
 
     return {
         rest: palette.get(restIndex),

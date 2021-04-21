@@ -15,10 +15,10 @@ import {
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { PaletteRGB } from "../color-2/palette";
-import { SwatchRGB } from "../color-2/swatch";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
 import { neutralBaseColor } from "./color-constants";
-import { neutralFillStealth as neutralFillStealthNew } from "../color-2/recipes/neutral-fill-stealth";
+import { neutralFillStealth as neutralFillStealthNew } from "../color-vNext/recipes/neutral-fill-stealth";
 
 describe("neutralFillStealth", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -117,7 +117,7 @@ describe("neutralFillStealth", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const {
             neutralFillStealthRestDelta,
