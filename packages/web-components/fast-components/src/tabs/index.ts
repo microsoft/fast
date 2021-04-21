@@ -22,4 +22,4 @@ export * from "../tab-panel";
  * Styles for Tabs
  * @public
  */
-export const TabsStyles = styles;
+export const tabsStyles = styles;

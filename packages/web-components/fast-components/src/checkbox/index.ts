@@ -20,4 +20,4 @@ export const fastCheckbox = Checkbox.compose({
  * Styles for Checkbox
  * @public
  */
-export const CheckboxStyles = styles;
+export const checkboxStyles = styles;

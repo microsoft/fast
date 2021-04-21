@@ -21,4 +21,4 @@ export const fastTreeItem = TreeItem.compose({
  * Styles for TreeItem
  * @public
  */
-export const TreeItemStyles = styles;
+export const treeItemStyles = styles;
