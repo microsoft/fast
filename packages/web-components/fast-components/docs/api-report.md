@@ -210,10 +210,10 @@ export const accentForegroundRest: SwatchRecipe;
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public
-export const AccordionItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const accordionItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const AccordionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const accordionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Anchor" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -232,13 +232,13 @@ export class Anchor extends Anchor_2 {
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 // @public
-export const AnchoredRegionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const anchoredRegionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const AnchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const anchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const BadgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const badgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Button" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -256,16 +256,16 @@ export class Button extends Button_2 {
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
-export const ButtonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const buttonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const CheckboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const checkboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const ComboboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const comboboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export function createColorPalette(baseColor: any): string[];
@@ -280,7 +280,7 @@ export const DataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
 export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const dialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Disclosure" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -302,10 +302,10 @@ export class Disclosure extends Disclosure_2 {
 export type DisclosureAppearance = "accent" | "lightweight";
 
 // @public
-export const DisclosureStyles: import("@microsoft/fast-element").ElementStyles;
+export const disclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DividerStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const dividerStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -996,7 +996,7 @@ export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundat
 }, typeof TreeView>;
 
 // @public
-export const FlipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const flipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1020,13 +1020,13 @@ export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustom
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
-export const ListboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const listboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const MenuItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const menuItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const MenuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const menuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFill" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1430,10 +1430,10 @@ export class NumberField extends NumberField_2 {
 export type NumberFieldAppearance = "filled" | "outline";
 
 // @public
-export const NumberFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const numberFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const OptionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const optionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export type Palette = Swatch[];
@@ -1455,22 +1455,22 @@ export enum PaletteType {
 export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
-export const ProgressRingStyles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
+export const progressRingStyles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const ProgressStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const progressStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const RadioGroupStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const radioGroupStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const RadioStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const radioStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SelectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const selectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SkeletonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const skeletonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "SliderLabel" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1481,10 +1481,10 @@ export class SliderLabel extends SliderLabel_2 {
 }
 
 // @public
-export const SliderLabelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const sliderLabelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const SliderStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const sliderStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export enum StandardLuminance {
@@ -1495,16 +1495,16 @@ export enum StandardLuminance {
 }
 
 // @public
-export const SwitchStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const switchStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabPanelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const tabPanelStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabsStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const tabsStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TabStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const tabStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextArea" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1520,7 +1520,7 @@ export class TextArea extends TextArea_2 {
 export type TextAreaAppearance = "filled" | "outline";
 
 // @public
-export const TextAreaStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const textAreaStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1536,16 +1536,16 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const TextFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const textFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const ToolbarStyles: ElementStyles;
 
 // @public
-export const TreeItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const treeItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const TreeViewStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+export const treeViewStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 
 // (No @packageDocumentation comment for this package)

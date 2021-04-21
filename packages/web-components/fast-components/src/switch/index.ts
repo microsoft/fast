@@ -20,4 +20,4 @@ export const fastSwitch = Switch.compose({
  * Styles for Switch
  * @public
  */
-export const SwitchStyles = styles;
+export const switchStyles = styles;
