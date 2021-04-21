@@ -4,6 +4,7 @@ import {
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
 import { Swatch, SwatchRGB } from "./swatch";
+import { binarySearch } from "./utilities/binary-search";
 import { directionByIsDark } from "./utilities/direction-by-is-dark";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
@@ -43,6 +44,7 @@ export interface Palette<T extends Swatch = Swatch> {
 }
 
 /**
+ * A {@link Palette} representing RGB swatch values.
  * @public
  */
 export class PaletteRGB implements Palette<SwatchRGB> {
@@ -50,6 +52,11 @@ export class PaletteRGB implements Palette<SwatchRGB> {
     public readonly swatches: ReadonlyArray<SwatchRGB>;
     private lastIndex: number;
     private reversedSwatches: ReadonlyArray<SwatchRGB>;
+    /**
+     *
+     * @param source - The source color for the palette
+     * @param swatches - All swatches in the palette
+     */
     constructor(source: SwatchRGB, swatches: ReadonlyArray<SwatchRGB>) {
         this.source = source;
         this.swatches = swatches;
@@ -111,6 +118,11 @@ export class PaletteRGB implements Palette<SwatchRGB> {
         return this.swatches.indexOf(closest);
     }
 
+    /**
+     * Create a color palette from a provided swatch
+     * @param source - The source swatch to create a palette from
+     * @returns
+     */
     static from(source: SwatchRGB) {
         return new PaletteRGB(
             source,
@@ -124,33 +136,4 @@ export class PaletteRGB implements Palette<SwatchRGB> {
             )
         );
     }
-}
-
-function binarySearch<T>(
-    valuesToSearch: T[] | ReadonlyArray<T>,
-    searchCondition: (value: T) => boolean,
-    startIndex: number = 0,
-    endIndex: number = valuesToSearch.length - 1
-): T {
-    if (endIndex === startIndex) {
-        return valuesToSearch[startIndex];
-    }
-
-    const middleIndex: number = Math.floor((endIndex - startIndex) / 2) + startIndex;
-
-    // Check to see if this passes on the item in the center of the array
-    // if it does check the previous values
-    return searchCondition(valuesToSearch[middleIndex])
-        ? binarySearch(
-              valuesToSearch,
-              searchCondition,
-              startIndex,
-              middleIndex // include this index because it passed the search condition
-          )
-        : binarySearch(
-              valuesToSearch,
-              searchCondition,
-              middleIndex + 1, // exclude this index because it failed the search condition
-              endIndex
-          );
 }
