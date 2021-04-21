@@ -33,6 +33,8 @@ Action. Clicking a date should execute a user defined script. How should this be
 ### Prior Art/Examples
 
 *Screenshots and/or links to existing, canonical, or exemplary implementations of the component.*
+Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
+
 
 ---
 
@@ -56,6 +58,7 @@ TBD
 - `dayLabels`: string - comma separated list of week day labels (sun, mon, tue, etc.)
 - `minWeeks`: number - default 0. Setting to 5 will normalize the height of all months of the year
 - `action`: function - callback function when a date is clicked. executes the function with the clicked date as an argument.
+- `language`: string - 2 character repesentation of languages. (en, fr, de, etc.)
 
 *Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
 
@@ -63,13 +66,17 @@ TBD
 
 *Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
 
-- *Slot Names*
+*Slot Names*
+Dynamically generated slots with the date as the name in the template.
+
 - *Host Classes*
-- *Slotted Content/Slotted Classes*
+
+*Slotted Content/Slotted Classes*
 
 *CSS Parts*
 - `title` - the month name
 - `day` - the name of the day (ex: Sun, Mon, Tue, etc.)
+- `today` - the current day
 
 ---
 
@@ -78,7 +85,7 @@ TBD
 *Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ```html
-<fast-calendar month="1" year="2025" action="datePicked(date)"></fast-calendar>
+<fast-calendar month="1" year="2025" action="datePicked"></fast-calendar>
 ```
 
 
@@ -108,10 +115,9 @@ TBD
 - *Swapping of internal icons/visuals*
 - *Localization*
 
-- Localization of the month names
-- Localization of the week day names
+- Localization of month and week day labels handled by Intl js library when setting the language.
+- RTL initiated when using 'ar' or 'he' language codes.
 - RTL, is it just reversed?
-- RTL controls for changing the month
 
 ### Test Plan
 
