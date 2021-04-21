@@ -20,4 +20,4 @@ export const fastRadio = Radio.compose({
  * Styles for Radio
  * @public
  */
-export const RadioStyles = styles;
+export const radioStyles = styles;

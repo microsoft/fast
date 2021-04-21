@@ -61,4 +61,4 @@ export const fastTextField = TextField.compose({
  * Styles for TextField
  * @public
  */
-export const TextFieldStyles = styles;
+export const textFieldStyles = styles;

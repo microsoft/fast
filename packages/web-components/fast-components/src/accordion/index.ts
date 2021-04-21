@@ -22,4 +22,4 @@ export const fastAccordion = Accordion.compose({
  * Styles for Accordion
  * @public
  */
-export const AccordionStyles = styles;
+export const accordionStyles = styles;
