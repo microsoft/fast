@@ -81,7 +81,7 @@ export class Disclosure extends FoundationDisclosure {
  * Styles for Disclosure
  * @public
  */
-export const DisclosureStyles = styles;
+export const disclosureStyles = styles;
 
 /**
  * The FAST Disclosure Element. Implements {@link @microsoft/fast-foundation#Disclosure},

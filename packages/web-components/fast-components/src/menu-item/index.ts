@@ -20,4 +20,4 @@ export const fastMenuItem = MenuItem.compose({
  * Styles for MenuItem
  * @public
  */
-export const MenuItemStyles = styles;
+export const menuItemStyles = styles;

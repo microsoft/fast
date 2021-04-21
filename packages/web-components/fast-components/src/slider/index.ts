@@ -20,4 +20,4 @@ export const fastSlider = Slider.compose({
  * Styles for Slider
  * @public
  */
-export const SliderStyles = styles;
+export const sliderStyles = styles;

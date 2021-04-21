@@ -12,7 +12,7 @@ import { selectStyles as styles } from "./select.styles";
  *
  */
 export const fastSelect = Select.compose({
-    baseName: "fast",
+    baseName: "select",
     template,
     styles,
 });
@@ -21,4 +21,4 @@ export const fastSelect = Select.compose({
  * Styles for Select
  * @public
  */
-export const SelectStyles = styles;
+export const selectStyles = styles;

@@ -24,4 +24,4 @@ export const fastOption = ListboxOption.compose({
  * Styles for Option
  * @public
  */
-export const OptionStyles = styles;
+export const optionStyles = styles;
