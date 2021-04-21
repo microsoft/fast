@@ -157,7 +157,7 @@ describe("ensure parity between old and new recipe implementation", () => {
         it(`should be the same for ${newSwatch}`, () => {
             for (let key in newValues) {
                 expect(oldValues[key]).to.equal(
-                    newValues[key].toColorSting().toUpperCase()
+                    newValues[key].toColorString().toUpperCase()
                 );
             }
         });

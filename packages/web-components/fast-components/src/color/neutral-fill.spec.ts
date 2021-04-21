@@ -112,7 +112,7 @@ describe("ensure parity between old and new recipe implementation", () => {
         const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta );
             it(`should be the same for ${newSwatch}`, () => {
                 for (let key in oldValues) {
-                    expect(oldValues[key]).to.equal(newValues[key].toColorSting().toUpperCase())
+                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
                 }
         });
     })

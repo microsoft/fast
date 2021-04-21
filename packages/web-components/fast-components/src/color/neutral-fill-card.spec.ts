@@ -55,7 +55,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             it(`should be the same for ${newSwatch}`, () => {
                 expect(
                     neutralFillCard({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
-                ).to.be.equal(neutralFillCardNew( palette, newSwatch, neutralFillCardDelta).toColorSting().toUpperCase())
+                ).to.be.equal(neutralFillCardNew( palette, newSwatch, neutralFillCardDelta).toColorString().toUpperCase())
         });
     })
 })

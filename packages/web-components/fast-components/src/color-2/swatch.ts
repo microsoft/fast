@@ -2,7 +2,7 @@ import { ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
 
 export interface Swatch extends RelativeLuminance {
-    toColorSting(): string;
+    toColorString(): string;
     contrast(target: RelativeLuminance): number;
 }
 
@@ -13,6 +13,6 @@ export class SwatchRGB extends ColorRGBA64 implements Swatch {
         this.relativeLuminance = rgbToRelativeLuminance(this);
     }
 
-    public toColorSting = this.toStringHexRGB;
+    public toColorString = this.toStringHexRGB;
     public contrast = contrast.bind(null, this);
 }

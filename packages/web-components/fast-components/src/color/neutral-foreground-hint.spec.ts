@@ -80,7 +80,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         it(`should be the same for ${newSwatch}`, () => {
-            expect(neutralForegroundHintNew(palette, newSwatch).toColorSting().toUpperCase()).to.equal(
+            expect(neutralForegroundHintNew(palette, newSwatch).toColorString().toUpperCase()).to.equal(
                 neutralForegroundHint({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
             )
         })

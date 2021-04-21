@@ -44,7 +44,7 @@ describe("ensure parity between old and new recipe implementation", () => {
                     { ...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.accentBaseColor }
                 )
             ).to.be.equal(
-                accentForegroundCutNew(palette.source, 4.5).toColorSting().toUpperCase()
+                accentForegroundCutNew(palette.source, 4.5).toColorString().toUpperCase()
             )
         }
     )

@@ -27,7 +27,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = new PaletteRGB(new SwatchRGB(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
             it(`should be the same for ${newSwatch}`, () => {
-                expect(neutralFocus({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralFocusNew( palette, newSwatch).toColorSting().toUpperCase())
+                expect(neutralFocus({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralFocusNew( palette, newSwatch).toColorString().toUpperCase())
         });
     })
 })
