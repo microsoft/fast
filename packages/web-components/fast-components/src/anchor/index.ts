@@ -66,7 +66,7 @@ export class Anchor extends FoundationAnchor {
  * Styles for Anchor
  * @public
  */
-export const AnchorStyles = styles;
+export const anchorStyles = styles;
 
 /**
  * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},

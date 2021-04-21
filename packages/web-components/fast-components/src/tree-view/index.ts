@@ -21,4 +21,4 @@ export const fastTreeView = TreeView.compose({
  * Styles for TreeView
  * @public
  */
-export const TreeViewStyles = styles;
+export const treeViewStyles = styles;

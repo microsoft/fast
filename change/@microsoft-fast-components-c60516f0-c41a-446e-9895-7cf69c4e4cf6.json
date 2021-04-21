@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "update name casing for style exports to lowercase as they are functions",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}

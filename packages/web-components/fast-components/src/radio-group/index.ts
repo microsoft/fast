@@ -20,4 +20,4 @@ export const fastRadioGroup = RadioGroup.compose({
  * Styles for RadioGroup
  * @public
  */
-export const RadioGroupStyles = styles;
+export const radioGroupStyles = styles;

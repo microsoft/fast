@@ -44,4 +44,4 @@ export const fastSliderLabel = SliderLabel.compose({
  * Styles for SliderLabel
  * @public
  */
-export const SliderLabelStyles = styles;
+export const sliderLabelStyles = styles;
