@@ -23,4 +23,4 @@ export const fastCombobox = Combobox.compose({
  * Styles for combobox
  * @public
  */
-export const ComboboxStyles = styles;
+export const comboboxStyles = styles;

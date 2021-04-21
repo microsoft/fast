@@ -20,4 +20,4 @@ export const fastSkeleton = Skeleton.compose({
  * Styles for Skeleton
  * @public
  */
-export const SkeletonStyles = styles;
+export const skeletonStyles = styles;

@@ -20,4 +20,4 @@ export const fastDivider = Divider.compose({
  * Styles for Divider
  * @public
  */
-export const DividerStyles = styles;
+export const dividerStyles = styles;
