@@ -21,4 +21,4 @@ export const fastListbox = Listbox.compose({
  * Styles for Listbox
  * @public
  */
-export const ListboxStyles = styles;
+export const listboxStyles = styles;

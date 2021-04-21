@@ -20,4 +20,4 @@ export const fastBadge = Badge.compose({
  * Styles for Badge
  * @public
  */
-export const BadgeStyles = styles;
+export const badgeStyles = styles;
