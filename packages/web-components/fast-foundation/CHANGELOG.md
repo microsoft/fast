@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 16 Apr 2021 01:19:08 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.19.0
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Minor changes
+
+- adding withDefault method to DesignToken (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add function to check for separator, add example and update style for not href item (khamu@microsoft.com)
 
 ## 1.18.0
 

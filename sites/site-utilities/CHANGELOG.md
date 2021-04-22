@@ -1,19 +1,16 @@
-# Change Log
+# Change Log - @microsoft/site-utilities
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
 
-# [0.9.0](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.8.1...@microsoft/site-utilities@0.9.0) (2021-04-06)
+<!-- Start content -->
 
+## 0.9.0
 
-### Features
+Thu, 22 Apr 2021 07:21:10 GMT
 
-* add auto-update attribute for anchored region ([#4433](https://github.com/Microsoft/fast/issues/4433)) ([8db8523](https://github.com/Microsoft/fast/commit/8db852379e45c487d1233865a9e02ed1af3dc70e))
-* add design system ui to creator ([#4474](https://github.com/Microsoft/fast/issues/4474)) ([c486489](https://github.com/Microsoft/fast/commit/c486489562a9f90a05fb331ee3658cc99ae575d2))
+### Patches
 
-
-
-
+- Bump @microsoft/fast-components to v1.20.3 (chhol@microsoft.com)
 
 ## [0.8.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.8.0...@microsoft/site-utilities@0.8.1) (2021-03-18)
 
