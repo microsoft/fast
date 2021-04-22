@@ -1,7 +1,9 @@
-name: CI - FAST Manual Publish
+name: CI - FAST Publish
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * 0-4'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -11,13 +13,13 @@ env:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
-    if: contains('chrisdholt,janechu,nicholasrice,awentzel,EisenbergEffect', github.actor)
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
 
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN}}
+        token: ${{ secrets.GH_TOKEN }}
 
     - name: Add or Update packages
       run: sudo yarn global add lerna

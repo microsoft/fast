@@ -1,12 +1,12 @@
 # Change Log - @microsoft/fast-creator
 
-This log was last generated on Thu, 22 Apr 2021 00:17:07 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
 
 <!-- Start content -->
 
 ## 0.7.0
 
-Thu, 22 Apr 2021 00:17:07 GMT
+Thu, 22 Apr 2021 07:21:10 GMT
 
 ### Patches
 

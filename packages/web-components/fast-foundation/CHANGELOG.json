@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
-      "date": "Thu, 22 Apr 2021 00:17:07 GMT",
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
       "tag": "@microsoft/fast-foundation_v1.19.0",
       "version": "1.19.0",
       "comments": {
@@ -11,6 +11,14 @@
             "comment": "adding withDefault method to DesignToken",
             "author": "nicholasrice@users.noreply.github.com",
             "commit": "e53592ca1d600076cc91dc4e8a54dc9f6a51e1a1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "docs: missing events in the menu api",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "679f9f026aec2c069e0387d6af9de7043a9cd7eb",
             "package": "@microsoft/fast-foundation"
           }
         ],
