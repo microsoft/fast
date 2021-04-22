@@ -4,6 +4,7 @@ import {
     neutralForegroundHoverDelta,
     neutralPalette,
 } from "../fast-design-system";
+import { accessibleAlgorithm } from "./accessible-recipe";
 import {
     colorRecipeFactory,
     SwatchFamilyResolver,
@@ -11,7 +12,6 @@ import {
     SwatchFamilyType,
     SwatchRecipe,
 } from "./common";
-import { accessibleAlgorithm } from "./accessible-recipe";
 
 /**
  * @internal
