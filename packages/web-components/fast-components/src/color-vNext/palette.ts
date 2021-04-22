@@ -103,7 +103,7 @@ export class PaletteRGB implements Palette<SwatchRGB> {
     public get(index: number): SwatchRGB {
         return (
             this.swatches[index] ||
-            this.swatches[clamp(index, 0, this.swatches.length - 1)]
+            this.swatches[clamp(index, 0, this.lastIndex)]
         );
     }
 
