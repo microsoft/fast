@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Fri, 16 Apr 2021 01:19:08 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Apr 2021 00:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.3
+
+Thu, 22 Apr 2021 00:17:07 GMT
+
+### Patches
+
+- Moving Color Picker (44823142+williamw2@users.noreply.github.com)
 
 ## 2.8.1
 
