@@ -4,11 +4,15 @@ import {
     neutralPalette as defaultNeutralPalette,
 } from "./default-palette";
 
+/**
+ * @deprecated
+ */
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 
 /**
  * Defines the properties in the FAST Design System
  * @public
+ * @deprecated
  */
 export interface FASTDesignSystem {
     /**
@@ -199,6 +203,7 @@ export interface FASTDesignSystem {
 /**
  * The default values for {@link FASTDesignSystem}
  * @public
+ * @deprecated
  */
 export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampMinus2FontSize: "10px",
