@@ -26,6 +26,7 @@ import {
     FloatingColorName,
 } from "../../src/style";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import { ControlContext } from "../../src/form/templates/types";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -125,6 +126,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             }),
             new StandardControlPlugin({
                 id: testConfigs.customControl.schema.properties.css.formControlId,
+                context: ControlContext.fill,
                 control: (config: ControlConfig): React.ReactNode => {
                     return (
                         <CSSControl
