@@ -194,6 +194,7 @@ export function getSliderControls(
 function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
+        context: ControlContext.fill,
         control: (config: ControlConfig): React.ReactNode => {
             return (
                 <CSSControl
