@@ -1,4 +1,7 @@
 import "../src/design-system-provider";
+import * as FAST from "../src/index-rollup";
+
+FAST;
 
 const withThemeProvider = Story => `
   <fast-design-system-provider id="root-provider" use-defaults>
