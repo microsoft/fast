@@ -101,10 +101,7 @@ export class PaletteRGB implements Palette<SwatchRGB> {
      * {@inheritdoc Palette.get}
      */
     public get(index: number): SwatchRGB {
-        return (
-            this.swatches[index] ||
-            this.swatches[clamp(index, 0, this.lastIndex)]
-        );
+        return this.swatches[index] || this.swatches[clamp(index, 0, this.lastIndex)];
     }
 
     /**
