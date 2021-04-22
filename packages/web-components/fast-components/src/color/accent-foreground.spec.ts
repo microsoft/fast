@@ -12,9 +12,14 @@ import {
     accentForegroundLargeHover,
     accentForegroundLargeRest,
     accentForegroundRest,
+    accentForeground
 } from "./accent-foreground";
 import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
+import { accentBaseColor, neutralBaseColor } from "./color-constants";
+import { PaletteRGB } from "../color-vNext/palette";
+import { SwatchRGB } from "../color-vNext/swatch";
+import { accentForeground as accentForegroundNew } from "../color-vNext/recipes/accent-foreground";
 
 describe("accentForeground", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -119,5 +124,42 @@ describe("accentForeground", (): void => {
                 });
             }
         );
+    });
+});
+
+describe("ensure parity between old and new recipe implementation", () => {
+    const neutralBase = parseColorHexRGB(neutralBaseColor)!;
+    const accentBase = parseColorHexRGB(accentBaseColor)!;
+
+    const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralBase.r, neutralBase.g, neutralBase.b));
+    const accentPalette = PaletteRGB.from(new SwatchRGB(accentBase.r, accentBase.g, accentBase.b));
+    
+    neutralPalette.swatches.forEach((newSwatch, index) => {
+        const {
+            accentForegroundRestDelta,
+            accentForegroundFocusDelta,
+            accentForegroundActiveDelta,
+            accentForegroundHoverDelta
+        } = fastDesignSystemDefaults;
+        const oldValues = accentForeground({
+            ...fastDesignSystemDefaults,
+            backgroundColor: fastDesignSystemDefaults.neutralPalette[index],
+        });
+        const newValues = accentForegroundNew(
+            accentPalette,
+            newSwatch,
+            4.5,
+            accentForegroundRestDelta,
+            accentForegroundHoverDelta,
+            accentForegroundActiveDelta,
+            accentForegroundFocusDelta,
+        );
+        it(`should be the same for ${newSwatch}`, () => {
+            for (let key in newValues) {
+                expect(oldValues[key]).to.equal(
+                    newValues[key].toColorString().toUpperCase()
+                );
+            }
+        });
     });
 });
