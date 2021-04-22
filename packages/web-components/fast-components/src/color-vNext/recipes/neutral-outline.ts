@@ -13,10 +13,10 @@ export function neutralOutline(
     activeDelta: number,
     focusDelta: number
 ) {
-    const backgroundIndex = palette.closestIndexOf(reference);
+    const referenceIndex = palette.closestIndexOf(reference);
     const direction = directionByIsDark(reference);
 
-    const restIndex = backgroundIndex + direction * restDelta;
+    const restIndex = referenceIndex + direction * restDelta;
     const hoverIndex = restIndex + direction * (hoverDelta - restDelta);
     const activeIndex = restIndex + direction * (activeDelta - restDelta);
     const focusIndex = restIndex + direction * (focusDelta - restDelta);

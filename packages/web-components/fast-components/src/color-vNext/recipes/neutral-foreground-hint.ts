@@ -4,10 +4,10 @@ import { Palette } from "../palette";
 /**
  * The neutralForegroundHint color recipe
  * @param palette - The palette to operate on
- * @param background - The background of the divider
+ * @param reference - The reference color
  *
  * @internal
  */
-export function neutralForegroundHint(palette: Palette, background: Swatch) {
-    return palette.colorContrast(background, 4.5);
+export function neutralForegroundHint(palette: Palette, reference: Swatch) {
+    return palette.colorContrast(reference, 4.5);
 }

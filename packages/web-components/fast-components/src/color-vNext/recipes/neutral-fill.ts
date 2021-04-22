@@ -20,15 +20,15 @@ export function neutralFill(
     focusDelta: number,
     selectedDelta: number
 ) {
-    const backgroundIndex = palette.closestIndexOf(reference);
+    const referenceIndex = palette.closestIndexOf(reference);
     const threshold = Math.max(restDelta, hoverDelta, activeDelta, focusDelta);
-    const direction = backgroundIndex >= threshold ? -1 : 1;
+    const direction = referenceIndex >= threshold ? -1 : 1;
 
     return {
-        rest: palette.get(backgroundIndex + direction * restDelta),
-        hover: palette.get(backgroundIndex + direction * hoverDelta),
-        active: palette.get(backgroundIndex + direction * activeDelta),
-        focus: palette.get(backgroundIndex + direction * focusDelta),
-        selected: palette.get(backgroundIndex + direction * selectedDelta),
+        rest: palette.get(referenceIndex + direction * restDelta),
+        hover: palette.get(referenceIndex + direction * hoverDelta),
+        active: palette.get(referenceIndex + direction * activeDelta),
+        focus: palette.get(referenceIndex + direction * focusDelta),
+        selected: palette.get(referenceIndex + direction * selectedDelta),
     };
 }
