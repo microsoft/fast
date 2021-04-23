@@ -1,11 +1,17 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
+import {
+    density,
+    designUnit,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
 
 export const tabPanelStyles = (context, definition) => css`
     ${display("flex")} :host {
         box-sizing: border-box;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
     }
 `;
