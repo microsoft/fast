@@ -1,24 +1,27 @@
 import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { DataGridRow } from "./data-grid-row";
+import { DataGridCell } from "./data-grid-cell";
 
-function createCellItemTemplate(prefix: string): ViewTemplate {
+function createCellItemTemplate(context): ViewTemplate {
+    const cellTag = context.tagFor(DataGridCell);
     return html`
-    <${prefix}-data-grid-cell
+    <${cellTag}
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
-    ></${prefix}-data-grid-cell>
+    ></${cellTag}>
 `;
 }
 
-function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
+function createHeaderCellItemTemplate(context): ViewTemplate {
+    const cellTag = context.tagFor(DataGridCell);
     return html`
-    <${prefix}-data-grid-cell
+    <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
         :columnDefinition="${x => x}"
-    ></${prefix}-data-grid-cell>
+    ></${cellTag}>
 `;
 }
 
@@ -28,9 +31,12 @@ function createHeaderCellItemTemplate(prefix: string): ViewTemplate {
  *
  * @public
  */
-export function createDataGridRowTemplate(prefix: string): ViewTemplate {
-    const cellItemTemplate: ViewTemplate = createCellItemTemplate(prefix);
-    const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(prefix);
+export const dataGridRowTemplate: (context, definition) => ViewTemplate<DataGridRow> = (
+    context,
+    definition
+) => {
+    const cellItemTemplate: ViewTemplate = createCellItemTemplate(context);
+    const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(context);
     return html<DataGridRow>`
         <template
             role="row"

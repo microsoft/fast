@@ -1,19 +1,23 @@
 import { expect } from "chai";
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../fixture";
-import { ColumnDefinition, createDataGridRowTemplate, DataGridRow } from "./index";
+import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-data-grid-row",
-    template: createDataGridRowTemplate("fast"),
+const FASTDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
+    template: dataGridCellTemplate
 })
-class FASTDataGridRow extends DataGridRow {}
+
+const FASTDataGridRow = DataGridRow.compose({
+    baseName: "data-grid-row",
+    template: dataGridRowTemplate
+})
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTDataGridRow>(
-        "fast-data-grid-row"
+    const { element, connect, disconnect } = await fixture(
+        [FASTDataGridRow(), FASTDataGridCell()]
     );
     return { element, connect, disconnect };
 }
