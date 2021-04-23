@@ -60,7 +60,19 @@ export type VerticalPosition = "top" | "bottom" | "unset";
  *
  * @beta
  */
-export type AutoUpdateMode = "anchor" | "auto";
+export type AutoUpdateMode = "anchor" | "auto"
+
+/**
+ * Describes the possible positions of the region relative
+ * to its anchor. Depending on the axis start = left/top, end = right/bottom
+ *
+ * @beta
+ */
+ export type AnchoredRegionPositionLabel =
+ | "start"
+ | "insetStart"
+ | "insetEnd"
+ | "end";
 
 /**
  * @internal
@@ -69,18 +81,6 @@ interface Dimension {
     height: number;
     width: number;
 }
-
-/**
- * Describes the possible positions of the region relative
- * to its anchor. Depending on the axis start = left/top, end = right/bottom
- *
- * @internal
- */
-type AnchoredRegionPositionLabel =
-    | "start"
-    | "insetStart"
-    | "insetEnd"
-    | "end";
 
 /**
  * An anchored region Custom HTML Element.
@@ -889,10 +889,6 @@ export class AnchoredRegion extends FASTElement {
         }
 
         if (positionChanged) {
-            // do a position check to ensure we're in the right spot
-            // temporary until method for recalculating offsets on position changes improved
-            this.requestPositionUpdates();
-
             // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
@@ -970,7 +966,7 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     * Get vertical positioning state based on desired position
+     * Set vertical positioning state based on desired position
      */
     private setVerticalPosition = (
         desiredVerticalPosition: AnchoredRegionPositionLabel | undefined,

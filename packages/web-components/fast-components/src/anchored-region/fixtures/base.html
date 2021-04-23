@@ -1,5 +1,4 @@
-<div
-    style="
+<div style="
         margin: 20px;
         position: fixed;
         height: 100px;
@@ -13,81 +12,49 @@
         grid-template-rows: 1fr;
         grid-template-columns: 1fr auto auto;
         z-index: 10;
-    "
-    id="fixed-header"
->
-    <div
-        style="
+    " id="fixed-header">
+    <div style="
             grid-column: 1 / 3;
             line-height: 60%;
             height: 50px;
             padding: 0 8px;
             white-space: nowrap;
-        "
-    >
+        ">
         <h1>
             Anchored region
         </h1>
     </div>
-    <fast-button
-        id="anchor-header-menu-fixed"
-        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 2;"
-    >
+    <fast-button id="anchor-header-menu-fixed"
+        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 2;">
         Fixed size menu
     </fast-button>
     <fast-tooltip position="top" anchor="anchor-header-menu-fixed" style="z-index: 1000;">
         This menu is of fixed height and avoids the performance cost of resizing itself.
     </fast-tooltip>
-    <fast-button
-        id="anchor-header-menu-scaling"
-        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 3;"
-    >
+    <fast-button id="anchor-header-menu-scaling"
+        style="grid-row: 2; margin: 8px 10px; height: 30px; width: 200px; grid-column: 3;">
         Scaling menu
     </fast-button>
-    <fast-tooltip
-        position="top"
-        anchor="anchor-header-menu-scaling"
-        style="z-index: 1000;"
-    >
+    <fast-tooltip position="top" anchor="anchor-header-menu-scaling" style="z-index: 1000;">
         <span style="max-width: 200px;">
             This menu scales with the parent document and gains scrollbars when it needs
             to.
         </span>
     </fast-tooltip>
-    <fast-anchored-region
-        style="display: none;"
-        id="header-menu-fixed"
-        anchor="anchor-header-menu-fixed"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="header-menu-fixed" anchor="anchor-header-menu-fixed"
+        fixed-placement="true" vertical-positioning-mode="locktodefault" vertical-default-position="bottom"
+        vertical-scaling="content" horizontal-positioning-mode="locktodefault" horizontal-default-position="left"
+        horizontal-scaling="anchor" horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none; overflow-y: auto;"
-        id="header-menu-scaling"
-        anchor="anchor-header-menu-scaling"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="fill"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none; overflow-y: auto;" id="header-menu-scaling"
+        anchor="anchor-header-menu-scaling" fixed-placement="true" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" vertical-scaling="fill" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left" horizontal-scaling="anchor" horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>William Hartnell</fast-option>
             <fast-option>Patrick Troughton</fast-option>
@@ -168,97 +135,64 @@
         this position regardless of available space on the other side of the anchor.
     </span>
 
-    <div
-        id="anchor-pos1"
-        style="
+    <div id="anchor-pos1" style="
             height: 120px;
             width: 120px;
             background: grey;
             margin: 200px;
             padding: 12px;
-        "
-    >
+        ">
         anchor
     </div>
-    <fast-anchored-region
-        anchor="anchor-pos1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos1" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             top/left
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-pos1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="right"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos1" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="right" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             top/right
         </div>
     </fast-anchored-region>
-    <fast-anchored-region
-        anchor="anchor-pos1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos1" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             bottom/left
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-pos1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="right"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos1" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             bottom/right
         </div>
     </fast-anchored-region>
@@ -271,111 +205,72 @@
         taller).
     </span>
 
-    <div
-        id="anchor-pos2"
-        style="
+    <div id="anchor-pos2" style="
             height: 260px;
             width: 260px;
             background: grey;
             margin: 40px 160px;
             padding: 12px;
-        "
-    >
+        ">
         anchor
     </div>
-    <fast-anchored-region
-        anchor="anchor-pos2"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-inset="true"
-        vertical-inset="true"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos2" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-inset="true"
+        vertical-inset="true" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             inset top/
             <br />
             inset left
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-pos2"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="right"
-        horizontal-inset="true"
-        vertical-inset="true"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos2" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="right" horizontal-inset="true"
+        vertical-inset="true" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             inset top/
             <br />
             inset right
         </div>
     </fast-anchored-region>
-    <fast-anchored-region
-        anchor="anchor-pos2"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-inset="true"
-        vertical-inset="true"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos2" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="left" horizontal-inset="true" vertical-inset="true" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             inset bottom/
             <br />
             inset left
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-pos2"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="right"
-        horizontal-inset="true"
-        vertical-inset="true"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-pos2" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="right" horizontal-inset="true" vertical-inset="true" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             inset bottom/
             <br />
             inset right
@@ -388,70 +283,48 @@
         available space when its positioning mode is set to "dynamic".
     </span>
 
-    <div
-        id="viewport-dyn1"
-        style="
+    <div id="viewport-dyn1" style="
             height: 400px;
             width: 80%;
             margin-top: 20px;
             background: lightgray;
             overflow: scroll;
             position: relative;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <div
-                id="anchor-dyn1"
-                style="
+            <div id="anchor-dyn1" style="
                     margin-top: 450px;
                     margin-left: 450px;
                     height: 100px;
                     width: 100px;
                     background: grey;
                     padding: 12px;
-                "
-            >
+                ">
                 anchor
             </div>
-            <fast-anchored-region
-                anchor="anchor-dyn1"
-                viewport="viewport-dyn1"
-                vertical-positioning-mode="dynamic"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="left"
-                horizontal-inset="true"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-dyn1" viewport="viewport-dyn1" vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-inset="true"
+                auto-update-mode="auto">
+                <div style="
                         height: 100px;
                         width: 100px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Dynamic vertical axis
                 </div>
             </fast-anchored-region>
-            <fast-anchored-region
-                anchor="anchor-dyn1"
-                viewport="viewport-dyn1"
-                horizontal-positioning-mode="dynamic"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="top"
-                vertical-inset="true"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-dyn1" viewport="viewport-dyn1" horizontal-positioning-mode="dynamic"
+                vertical-positioning-mode="locktodefault" vertical-default-position="top" vertical-inset="true"
+                auto-update-mode="auto">
+                <div style="
                         height: 100px;
                         width: 100px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Dynamic horizontal axis
                 </div>
             </fast-anchored-region>
@@ -468,74 +341,48 @@
         (except scaling is set to "fill" in which case a value is required).
     </span>
 
-    <div
-        id="viewport-dyn2"
-        style="
+    <div id="viewport-dyn2" style="
             height: 400px;
             width: 80%;
             margin-top: 20px;
             background: lightgray;
             overflow: scroll;
             position: relative;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <div
-                id="anchor-dyn2"
-                style="
+            <div id="anchor-dyn2" style="
                     margin-top: 450px;
                     margin-left: 450px;
                     height: 100px;
                     width: 100px;
                     background: grey;
                     padding: 12px;
-                "
-            >
+                ">
                 anchor
             </div>
-            <fast-anchored-region
-                anchor="anchor-dyn2"
-                viewport="viewport-dyn2"
-                vertical-positioning-mode="dynamic"
-                vertical-default-position="bottom"
-                vertical-threshold="110"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="left"
-                horizontal-inset="true"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-dyn2" viewport="viewport-dyn2" vertical-positioning-mode="dynamic"
+                vertical-default-position="bottom" vertical-threshold="110" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="left" horizontal-inset="true" auto-update-mode="auto">
+                <div style="
                         height: 100px;
                         width: 100px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Defaults to bottom
                 </div>
             </fast-anchored-region>
-            <fast-anchored-region
-                anchor="anchor-dyn2"
-                viewport="viewport-dyn2"
-                horizontal-positioning-mode="dynamic"
-                horizontal-default-position="right"
-                horizontal-threshold="110"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="top"
-                vertical-inset="true"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-dyn2" viewport="viewport-dyn2" horizontal-positioning-mode="dynamic"
+                horizontal-default-position="right" horizontal-threshold="110" vertical-positioning-mode="locktodefault"
+                vertical-default-position="top" vertical-inset="true" auto-update-mode="auto">
+                <div style="
                         height: 100px;
                         width: 100px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     defaults to right
                 </div>
             </fast-anchored-region>
@@ -549,95 +396,63 @@
         anchor and the edge of the viewport.
     </span>
 
-    <div
-        id="viewport-sz1"
-        style="
+    <div id="viewport-sz1" style="
             height: 400px;
             width: 80%;
             margin-top: 20px;
             background: lightgray;
             overflow: scroll;
             position: relative;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <div
-                id="anchor-sz1"
-                style="
+            <div id="anchor-sz1" style="
                     margin-top: 450px;
                     margin-left: 450px;
                     height: 100px;
                     width: 100px;
                     background: grey;
                     padding: 12px;
-                "
-            >
+                ">
                 anchor
             </div>
-            <fast-anchored-region
-                anchor="anchor-sz1"
-                viewport="viewport-sz1"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="top"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="left"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-sz1" viewport="viewport-sz1" vertical-positioning-mode="locktodefault"
+                vertical-default-position="top" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="left">
+                <div style="
                         height: 60px;
                         width: 120px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Size to content
                 </div>
             </fast-anchored-region>
-            <fast-anchored-region
-                anchor="anchor-sz1"
-                viewport="viewport-sz1"
-                vertical-scaling="anchor"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="top"
-                horizontal-scaling="anchor"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="right"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-sz1" viewport="viewport-sz1" vertical-scaling="anchor"
+                vertical-positioning-mode="locktodefault" vertical-default-position="top" horizontal-scaling="anchor"
+                horizontal-positioning-mode="locktodefault" horizontal-default-position="right">
+                <div style="
                         box-sizing: border-box;
                         height: 100%;
                         width: 100%;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Size to anchor
                 </div>
             </fast-anchored-region>
-            <fast-anchored-region
-                anchor="anchor-sz1"
-                viewport="viewport-sz1"
-                vertical-scaling="fill"
-                vertical-positioning-mode="locktodefault"
-                vertical-default-position="bottom"
-                horizontal-scaling="fill"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="right"
-                auto-update-mode="auto"
-            >
-                <div
-                    style="
+            <fast-anchored-region anchor="anchor-sz1" viewport="viewport-sz1" vertical-scaling="fill"
+                vertical-positioning-mode="locktodefault" vertical-default-position="bottom" horizontal-scaling="fill"
+                horizontal-positioning-mode="locktodefault" horizontal-default-position="right" auto-update-mode="auto">
+                <div style="
                         box-sizing: border-box;
                         height: 100%;
                         width: 100%;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Fill
                 </div>
             </fast-anchored-region>
@@ -678,50 +493,36 @@
         Authors can force position updates by calling the component's update() function.
     </span>
 
-    <div
-        id="viewport-upd1"
-        style="
+    <div id="viewport-upd1" style="
             height: 400px;
             width: 80%;
             margin-top: 20px;
             background: lightgray;
             overflow: scroll;
             position: relative;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <div
-                id="anchor-upd1"
-                style="
+            <div id="anchor-upd1" style="
                     margin-top: 450px;
                     margin-left: 450px;
                     height: 100px;
                     width: 100px;
                     background: grey;
                     padding: 12px;
-                "
-            >
+                ">
                 anchor
             </div>
-            <fast-anchored-region
-                id="region-upd1"
-                anchor="anchor-upd1"
-                viewport="viewport-upd1"
-                vertical-positioning-mode="dynamic"
-                vertical-scaling="fill"
-                horizontal-positioning-mode="dynamic"
-                horizontal-scaling="fill"
-            >
-                <div
-                    style="
+            <fast-anchored-region id="region-upd1" anchor="anchor-upd1" viewport="viewport-upd1"
+                vertical-positioning-mode="dynamic" vertical-scaling="fill" horizontal-positioning-mode="dynamic"
+                horizontal-scaling="fill">
+                <div style="
                         box-sizing: border-box;
                         height: 100%;
                         width: 100%;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
-                    "
-                >
+                    ">
                     Rescaling on update()
                 </div>
             </fast-anchored-region>
@@ -734,100 +535,65 @@
         based on direction.
     </span>
 
-    <div
-        id="anchor-rtl1"
-        style="
+    <div id="anchor-rtl1" style="
             margin-top: 200px;
             margin-left: 200px;
             height: 100px;
             width: 100px;
             background: grey;
             padding: 12px;
-        "
-    >
+        ">
         anchor
     </div>
-    <fast-anchored-region
-        anchor="anchor-rtl1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="start"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-rtl1" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="start" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             top/start
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-rtl1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="top"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="end"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-rtl1" vertical-positioning-mode="locktodefault" vertical-default-position="top"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="end" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             top/end
         </div>
     </fast-anchored-region>
-    <fast-anchored-region
-        anchor="anchor-rtl1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="start"
-        dir="rtl"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-rtl1" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault"
+        horizontal-default-position="start" dir="rtl" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             bottom/start/rtl
         </div>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        anchor="anchor-rtl1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="end"
-        dir="rtl"
-        auto-update-mode="auto"
-    >
-        <div
-            style="
+    <fast-anchored-region anchor="anchor-rtl1" vertical-positioning-mode="locktodefault"
+        vertical-default-position="bottom" horizontal-positioning-mode="locktodefault" horizontal-default-position="end"
+        dir="rtl" auto-update-mode="auto">
+        <div style="
                 height: 100px;
                 width: 100px;
                 background: darkblue;
                 padding: 12px;
                 border: 2px solid white;
-            "
-        >
+            ">
             bottom/end/rtl
         </div>
     </fast-anchored-region>
@@ -837,27 +603,22 @@
         Test changing attributes on the fly
     </span>
 
-    <div
-        id="viewport-toggles1"
-        style="
+    <div id="viewport-toggles1" style="
             position: relative;
             height: 400px;
             margin-top: 20px;
             width: 80%;
             background: lightgray;
             overflow: scroll;
-        "
-    >
+        ">
         <div style="height: 1000px; width: 1000px; overflow: hidden;">
-            <div
-                style="
+            <div style="
                     display: grid;
                     grid-template-columns: 1fr auto 150px auto 1fr;
                     grid-template-rows: 1fr auto 1fr;
                     height: 100%;
                     width: 100%;
-                "
-            >
+                ">
                 <fast-button id="toggles1-anchor1" style="grid-column: 2; grid-row: 2;">
                     Set as anchor
                 </fast-button>
@@ -865,25 +626,17 @@
                     Set as anchor
                 </fast-button>
             </div>
-            <fast-anchored-region
-                id="toggles-region"
-                anchor="toggles1-anchor1"
-                viewport="viewport-toggles1"
-                vertical-positioning-mode="locktodefault"
-                horizontal-positioning-mode="locktodefault"
-                horizontal-default-position="left"
-                vertical-default-position="top"
-            >
-                <div
-                    style="
+            <fast-anchored-region id="toggles-region" anchor="toggles1-anchor1" viewport="viewport-toggles1"
+                vertical-positioning-mode="locktodefault" horizontal-positioning-mode="locktodefault"
+                horizontal-default-position="left" vertical-default-position="top">
+                <div style="
                         height: 100px;
                         width: 100px;
                         background: darkblue;
                         padding: 12px;
                         border: 2px solid white;
                         box-sizing: border-box;
-                    "
-                ></div>
+                    "></div>
             </fast-anchored-region>
         </div>
     </div>
@@ -915,637 +668,449 @@
     </span>
 
     <div style="display: flex; flex-wrap: wrap;">
-        <fast-button
-            id="anchor-menu-many1"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many1" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many2"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many2" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many3"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many3" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many4"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many4" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many5"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many5" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many6"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many6" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many7"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many7" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many8"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many8" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many9"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many9" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many10"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many10" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many11"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many11" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many12"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many12" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many13"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many13" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many14"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many14" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many15"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many15" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many16"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many16" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many17"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many17" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many18"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many18" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many19"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many19" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many20"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many20" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many21"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many21" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many22"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many22" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many23"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many23" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Absolute position menu
         </fast-button>
 
-        <fast-button
-            id="anchor-menu-many24"
-            style="margin: 20px 20px 100px 0; height: 30px; width: 200px;"
-        >
+        <fast-button id="anchor-menu-many24" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Fixed position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many25" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Absolute position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many26" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Fixed position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many27" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Absolute position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many28" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Fixed position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many29" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Absolute position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many30" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Fixed position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many31" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
+            Absolute position menu
+        </fast-button>
+
+        <fast-button id="anchor-menu-many32" style="margin: 20px 20px 100px 0; height: 30px; width: 200px;">
             Fixed position menu
         </fast-button>
     </div>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many1"
-        anchor="anchor-menu-many1"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many1" anchor="anchor-menu-many1"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many2"
-        anchor="anchor-menu-many2"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many2" anchor="anchor-menu-many2" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many3"
-        anchor="anchor-menu-many3"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many3" anchor="anchor-menu-many3"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many4"
-        anchor="anchor-menu-many4"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many4" anchor="anchor-menu-many4" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many5"
-        anchor="anchor-menu-many5"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many5" anchor="anchor-menu-many5"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many6"
-        anchor="anchor-menu-many6"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many6" anchor="anchor-menu-many6" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many7"
-        anchor="anchor-menu-many7"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many7" anchor="anchor-menu-many7"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many8"
-        anchor="anchor-menu-many8"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many8" anchor="anchor-menu-many8" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many9"
-        anchor="anchor-menu-many9"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many9" anchor="anchor-menu-many9"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many10"
-        anchor="anchor-menu-many10"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many10" anchor="anchor-menu-many10" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many11"
-        anchor="anchor-menu-many11"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many11" anchor="anchor-menu-many11"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many12"
-        anchor="anchor-menu-many12"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many12" anchor="anchor-menu-many12" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many13"
-        anchor="anchor-menu-many13"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many13" anchor="anchor-menu-many13"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many14"
-        anchor="anchor-menu-many14"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many14" anchor="anchor-menu-many14" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many15"
-        anchor="anchor-menu-many15"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many15" anchor="anchor-menu-many15"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many16"
-        anchor="anchor-menu-many16"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many16" anchor="anchor-menu-many16" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many17"
-        anchor="anchor-menu-many17"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many17" anchor="anchor-menu-many17"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many18"
-        anchor="anchor-menu-many18"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many18" anchor="anchor-menu-many18" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many19"
-        anchor="anchor-menu-many19"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many19" anchor="anchor-menu-many19"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many20"
-        anchor="anchor-menu-many20"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many20" anchor="anchor-menu-many20" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many21"
-        anchor="anchor-menu-many21"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many21" anchor="anchor-menu-many21"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many22"
-        anchor="anchor-menu-many22"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many22" anchor="anchor-menu-many22" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many23"
-        anchor="anchor-menu-many23"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many23" anchor="anchor-menu-many23"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>
         </fast-listbox>
     </fast-anchored-region>
 
-    <fast-anchored-region
-        style="display: none;"
-        id="menu-many24"
-        anchor="anchor-menu-many24"
-        fixed-placement="true"
-        vertical-positioning-mode="locktodefault"
-        vertical-default-position="bottom"
-        vertical-scaling="content"
-        horizontal-positioning-mode="locktodefault"
-        horizontal-default-position="left"
-        horizontal-scaling="anchor"
-        horizontal-inset="true"
-        auto-update-mode="auto"
-    >
+    <fast-anchored-region style="display: none;" id="menu-many24" anchor="anchor-menu-many24" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many25" anchor="anchor-menu-many25"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many26" anchor="anchor-menu-many26" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many27" anchor="anchor-menu-many27"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many28" anchor="anchor-menu-many28" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many29" anchor="anchor-menu-many29"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many30" anchor="anchor-menu-many30" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many31" anchor="anchor-menu-many31"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
+        <fast-listbox style="width: 100%;">
+            <fast-option>Yes</fast-option>
+            <fast-option>No</fast-option>
+        </fast-listbox>
+    </fast-anchored-region>
+
+    <fast-anchored-region style="display: none;" id="menu-many32" anchor="anchor-menu-many32" fixed-placement="true"
+        vertical-positioning-mode="locktodefault" vertical-default-position="bottom" vertical-scaling="content"
+        horizontal-positioning-mode="locktodefault" horizontal-default-position="left" horizontal-scaling="anchor"
+        horizontal-inset="true" auto-update-mode="auto">
         <fast-listbox style="width: 100%;">
             <fast-option>Yes</fast-option>
             <fast-option>No</fast-option>

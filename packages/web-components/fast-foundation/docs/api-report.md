@@ -97,7 +97,7 @@ export class AnchoredRegion extends FASTElement {
     fixedPlacement: boolean;
     horizontalDefaultPosition: HorizontalPosition;
     horizontalInset: boolean;
-    horizontalPosition: AnchoredRegionPositionLabel;
+    horizontalPosition: AnchoredRegionPositionLabel | undefined;
     horizontalPositioningMode: AxisPositioningMode;
     horizontalScaling: AxisScalingMode;
     horizontalThreshold: number;
@@ -106,14 +106,16 @@ export class AnchoredRegion extends FASTElement {
     update: () => void;
     verticalDefaultPosition: VerticalPosition;
     verticalInset: boolean;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionPositionLabel" needs to be exported by the entry point index.d.ts
-    verticalPosition: AnchoredRegionPositionLabel;
+    verticalPosition: AnchoredRegionPositionLabel | undefined;
     verticalPositioningMode: AxisPositioningMode;
     verticalScaling: AxisScalingMode;
     verticalThreshold: number;
     viewport: string;
     viewportElement: HTMLElement | null;
     }
+
+// @beta
+export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
 
 // @beta
 export const AnchoredRegionTemplate: ViewTemplate<AnchoredRegion>;
