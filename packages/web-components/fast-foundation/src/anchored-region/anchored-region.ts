@@ -80,8 +80,7 @@ type AnchoredRegionPositionLabel =
     | "start"
     | "insetStart"
     | "insetEnd"
-    | "end"
-    | "undefined";
+    | "end";
 
 /**
  * An anchored region Custom HTML Element.
@@ -342,12 +341,12 @@ export class AnchoredRegion extends FASTElement {
     /**
      * indicates the current horizontal position of the region
      */
-    public verticalPosition: AnchoredRegionPositionLabel;
+    public verticalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
      * indicates the current vertical position of the region
      */
-    public horizontalPosition: AnchoredRegionPositionLabel;
+    public horizontalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
      * values to be applied to the component's transform on render
@@ -513,8 +512,8 @@ export class AnchoredRegion extends FASTElement {
         this.regionRect = undefined;
         this.anchorRect = undefined;
 
-        this.verticalPosition = "undefined";
-        this.horizontalPosition = "undefined";
+        this.verticalPosition = undefined;
+        this.horizontalPosition = undefined;
 
         this.style.opacity = "0";
         this.style.pointerEvents = "none";
@@ -742,11 +741,11 @@ export class AnchoredRegion extends FASTElement {
     private updateLayout = (): void => {
         this.pendingLayoutUpdate = false;
 
-        let desiredVerticalPosition: AnchoredRegionPositionLabel = "undefined";
-        let desiredHorizontalPosition: AnchoredRegionPositionLabel = "undefined";
+        let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
+        let desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined = undefined;
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
-            const horizontalOptions: AnchoredRegionPositionLabel[] = this.getHorizontalPositioningOptions();
+            const horizontalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(this.horizontalInset);
 
             if (this.horizontalDefaultPosition !== "unset") {
                 let dirCorrectedHorizontalDefaultPosition: string = this
@@ -799,22 +798,28 @@ export class AnchoredRegion extends FASTElement {
                     ? this.regionRect.width
                     : 0;
 
+            const anchorLeft: number = this.anchorRect !== undefined ? this.anchorRect.left : 0;
+            const anchorRight: number = this.anchorRect !== undefined ? this.anchorRect.right : 0;
+            const anchorWidth: number = this.anchorRect !== undefined ? this.anchorRect.width : 0;
+            const viewportLeft: number = this.viewportRect !== undefined ? this.viewportRect.left : 0;
+            const viewportRight: number = this.viewportRect !== undefined ? this.viewportRect.right : 0;
+
             if (
-                desiredHorizontalPosition === "undefined" ||
+                desiredHorizontalPosition === undefined ||
                 (!(this.horizontalPositioningMode === "locktodefault") &&
-                    this.getAvailableWidth(desiredHorizontalPosition) <
+                    this.getAvailableSpace(desiredHorizontalPosition, anchorLeft, anchorRight, anchorWidth, viewportLeft, viewportRight) <
                         horizontalThreshold)
             ) {
                 desiredHorizontalPosition =
-                    this.getAvailableWidth(horizontalOptions[0]) >
-                    this.getAvailableWidth(horizontalOptions[1])
+                    this.getAvailableSpace(horizontalOptions[0], anchorLeft, anchorRight, anchorWidth, viewportLeft, viewportRight) >
+                    this.getAvailableSpace(horizontalOptions[1], anchorLeft, anchorRight, anchorWidth, viewportLeft, viewportRight)
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
         }
 
         if (this.verticalPositioningMode !== "uncontrolled") {
-            const verticalOptions: AnchoredRegionPositionLabel[] = this.getVerticalPositioningOptions();
+            const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(this.verticalInset);
             if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
@@ -836,14 +841,20 @@ export class AnchoredRegion extends FASTElement {
                     ? this.regionRect.height
                     : 0;
 
+            const anchorTop: number = this.anchorRect !== undefined ? this.anchorRect.top : 0;
+            const anchorBottom: number = this.anchorRect !== undefined ? this.anchorRect.bottom : 0;
+            const anchorHeight: number = this.anchorRect !== undefined ? this.anchorRect.height : 0;
+            const viewportTop: number = this.viewportRect !== undefined ? this.viewportRect.top : 0;
+            const viewportBottom: number = this.viewportRect !== undefined ? this.viewportRect.bottom : 0;
+
             if (
-                desiredVerticalPosition === "undefined" ||
+                desiredVerticalPosition === undefined ||
                 (!(this.verticalPositioningMode === "locktodefault") &&
-                    this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
+                    this.getAvailableSpace(desiredVerticalPosition, anchorTop, anchorBottom, anchorHeight, viewportTop, viewportBottom) < verticalThreshold)
             ) {
                 desiredVerticalPosition =
-                    this.getAvailableHeight(verticalOptions[0]) >
-                    this.getAvailableHeight(verticalOptions[1])
+                    this.getAvailableSpace(verticalOptions[0], anchorTop, anchorBottom, anchorHeight, viewportTop, viewportBottom) >
+                    this.getAvailableSpace(verticalOptions[1], anchorTop, anchorBottom, anchorHeight, viewportTop, viewportBottom)
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
@@ -914,10 +925,10 @@ export class AnchoredRegion extends FASTElement {
      * Get horizontal positioning state based on desired position
      */
     private setHorizontalPosition = (
-        desiredHorizontalPosition: AnchoredRegionPositionLabel,
+        desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined,
         nextPositionerDimension: Dimension
     ): void => {
-        if (this.regionRect === undefined || this.anchorRect === undefined) {
+        if (desiredHorizontalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined) {
             return;
         }
 
@@ -962,10 +973,10 @@ export class AnchoredRegion extends FASTElement {
      * Get vertical positioning state based on desired position
      */
     private setVerticalPosition = (
-        desiredVerticalPosition: AnchoredRegionPositionLabel,
+        desiredVerticalPosition: AnchoredRegionPositionLabel | undefined,
         nextPositionerDimension: Dimension
     ): void => {
-        if (this.regionRect === undefined || this.anchorRect === undefined) {
+        if (desiredVerticalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined) {
             return;
         }
 
@@ -1007,20 +1018,10 @@ export class AnchoredRegion extends FASTElement {
     };
 
     /**
-     *  Get available Horizontal positions based on positioning mode
+     *  Get available positions based on positioning mode
      */
-    private getHorizontalPositioningOptions = (): AnchoredRegionPositionLabel[] => {
-        if (this.horizontalInset) {
-            return ["insetStart", "insetEnd"];
-        }
-        return ["start", "end"];
-    };
-
-    /**
-     * Get available Vertical positions based on positioning mode
-     */
-    private getVerticalPositioningOptions = (): AnchoredRegionPositionLabel[] => {
-        if (this.verticalInset) {
+    private getPositioningOptions = (inset: boolean): AnchoredRegionPositionLabel[] => {
+        if (inset) {
             return ["insetStart", "insetEnd"];
         }
         return ["start", "end"];
@@ -1029,73 +1030,59 @@ export class AnchoredRegion extends FASTElement {
     /**
      *  Get the width available for a particular horizontal position
      */
-    private getAvailableWidth = (positionOption: AnchoredRegionPositionLabel): number => {
-        if (this.viewportRect !== undefined && this.anchorRect !== undefined) {
-            const spaceLeft: number = this.anchorRect.left - this.viewportRect.left;
-            const spaceRight: number =
-                this.viewportRect.right - (this.anchorRect.left + this.anchorRect.width);
+    private getAvailableSpace = (positionOption: AnchoredRegionPositionLabel, anchorStart: number, anchorEnd: number, anchorSpan: number, viewportStart: number, viewportEnd: number): number => {
 
-            switch (positionOption) {
-                case "start":
-                    return spaceLeft;
-                case "insetStart":
-                    return spaceLeft + this.anchorRect.width;
-                case "insetEnd":
-                    return spaceRight + this.anchorRect.width;
-                case "end":
-                    return spaceRight;
-            }
+        const spaceStart: number = anchorStart - viewportStart;
+        const spaceEnd: number =
+            viewportEnd - (anchorStart + anchorSpan);
+
+        switch (positionOption) {
+            case "start":
+                return spaceStart;
+            case "insetStart":
+                return spaceStart + anchorSpan;
+            case "insetEnd":
+                return spaceEnd + anchorSpan;
+            case "end":
+                return spaceEnd;
         }
-
-        return 0;
-    };
-
-    /**
-     *  Get the height available for a particular vertical position
-     */
-    private getAvailableHeight = (
-        positionOption: AnchoredRegionPositionLabel
-    ): number => {
-        if (this.viewportRect !== undefined && this.anchorRect !== undefined) {
-            const spaceAbove: number = this.anchorRect.top - this.viewportRect.top;
-            const spaceBelow: number =
-                this.viewportRect.bottom - (this.anchorRect.top + this.anchorRect.height);
-
-            switch (positionOption) {
-                case "start":
-                    return spaceAbove;
-                case "insetStart":
-                    return spaceAbove + this.anchorRect.height;
-                case "insetEnd":
-                    return spaceBelow + this.anchorRect.height;
-                case "end":
-                    return spaceBelow;
-            }
-        }
-        return 0;
     };
 
     /**
      * Get region dimensions
      */
     private getNextRegionDimension = (
-        desiredHorizontalPosition: AnchoredRegionPositionLabel,
-        desiredVerticalPosition: AnchoredRegionPositionLabel
+        desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined,
+        desiredVerticalPosition: AnchoredRegionPositionLabel | undefined
     ): Dimension => {
         const newRegionDimension: Dimension = {
             height: this.regionRect !== undefined ? this.regionRect.height : 0,
             width: this.regionRect !== undefined ? this.regionRect.width : 0,
         };
 
-        if (this.horizontalScaling === "fill") {
-            newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
+        if (desiredHorizontalPosition !== undefined && this.horizontalScaling === "fill") {
+            newRegionDimension.width = this.getAvailableSpace(
+                desiredHorizontalPosition, 
+                this.anchorRect !== undefined ? this.anchorRect.left : 0,
+                this.anchorRect !== undefined ? this.anchorRect.right : 0,
+                this.anchorRect !== undefined ? this.anchorRect.width : 0,
+                this.viewportRect !== undefined ? this.viewportRect.left : 0,
+                this.viewportRect !== undefined ? this.viewportRect.right : 0,
+            );
         } else if (this.horizontalScaling === "anchor") {
             newRegionDimension.width =
                 this.anchorRect !== undefined ? this.anchorRect.width : 0;
         }
 
-        if (this.verticalScaling === "fill") {
-            newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
+        if (desiredVerticalPosition !== undefined && this.verticalScaling === "fill") {
+            newRegionDimension.height =this.getAvailableSpace(
+                desiredVerticalPosition, 
+                this.anchorRect !== undefined ? this.anchorRect.top : 0,
+                this.anchorRect !== undefined ? this.anchorRect.bottom : 0,
+                this.anchorRect !== undefined ? this.anchorRect.height : 0,
+                this.viewportRect !== undefined ? this.viewportRect.top : 0,
+                this.viewportRect !== undefined ? this.viewportRect.bottom : 0,
+            );
         } else if (this.verticalScaling === "anchor") {
             newRegionDimension.height =
                 this.anchorRect !== undefined ? this.anchorRect.height : 0;
