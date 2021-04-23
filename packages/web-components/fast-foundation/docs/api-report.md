@@ -754,11 +754,11 @@ export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: H
 // @alpha (undocumented)
 export interface DesignSystem {
     // (undocumented)
-    register(...params: any[]): this;
+    register(...params: any[]): DesignSystem;
     // (undocumented)
-    withElementDisambiguation(callback: ElementDisambiguationCallback): this;
+    withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
     // (undocumented)
-    withPrefix(prefix: string): this;
+    withPrefix(prefix: string): DesignSystem;
 }
 
 // @alpha (undocumented)

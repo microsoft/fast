@@ -69,9 +69,9 @@ const elementTagsByType = new Map<Constructable, string>();
  * @alpha
  */
 export interface DesignSystem {
-    register(...params: any[]): this;
-    withPrefix(prefix: string): this;
-    withElementDisambiguation(callback: ElementDisambiguationCallback): this;
+    register(...params: any[]): DesignSystem;
+    withPrefix(prefix: string): DesignSystem;
+    withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
 }
 
 const designSystemKey = DI.createInterface<DesignSystem>(x =>
@@ -141,17 +141,19 @@ class DefaultDesignSystem implements DesignSystem {
         );
     }
 
-    public withPrefix(prefix: string) {
+    public withPrefix(prefix: string): DesignSystem {
         this.prefix = prefix;
         return this;
     }
 
-    public withElementDisambiguation(callback: ElementDisambiguationCallback) {
+    public withElementDisambiguation(
+        callback: ElementDisambiguationCallback
+    ): DesignSystem {
         this.disambiguate = callback;
         return this;
     }
 
-    public register(...registrations: any[]) {
+    public register(...registrations: any[]): DesignSystem {
         const container = this.container;
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
