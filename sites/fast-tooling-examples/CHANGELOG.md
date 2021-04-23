@@ -1,7 +1,24 @@
-# Change Log
+# Change Log - @microsoft/fast-tooling-examples
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.4.19
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## [0.4.19](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.18...@microsoft/fast-tooling-examples@0.4.19) (2021-04-06)
+
+**Note:** Version bump only for package @microsoft/fast-tooling-examples
+
+
+
+
 
 ## [0.4.18](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-examples@0.4.17...@microsoft/fast-tooling-examples@0.4.18) (2021-03-18)
 

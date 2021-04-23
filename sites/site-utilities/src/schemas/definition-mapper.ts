@@ -1,9 +1,9 @@
 import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
 import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
 import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
-import * as nativeElementDefinitions from "../definitions/native";
 import {
     fastComponentExtendedDefinitions,
+    nativeElementDefinitions,
     nativeElementExtendedDefinitions,
 } from "../definitions";
 
@@ -32,6 +32,28 @@ mapToJSONSchemas(fastComponentDefinitions, fastComponentSchemas);
 mapToJSONSchemas(nativeElementDefinitions, nativeElementSchemas);
 mapToJSONSchemas(fastComponentExtendedDefinitions, fastComponentExtendedSchemas);
 mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas);
+
+/**
+ * Map the formControlId to all property names for use by the <Form /> component
+ */
+Object.entries(fastComponentExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
+    Object.keys(fastComponentExtendedSchemas[schemaKey].properties).forEach(
+        (propertyKey: string) => {
+            fastComponentExtendedSchemas[schemaKey].properties[propertyKey][
+                "formControlId"
+            ] = propertyKey;
+        }
+    );
+});
+Object.entries(nativeElementExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
+    Object.keys(nativeElementExtendedSchemas[schemaKey].properties).forEach(
+        (propertyKey: string) => {
+            nativeElementExtendedSchemas[schemaKey].properties[propertyKey][
+                "formControlId"
+            ] = propertyKey;
+        }
+    );
+});
 
 export {
     fastComponentSchemas,

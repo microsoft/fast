@@ -1,7 +1,35 @@
-# Change Log
+# Change Log - @microsoft/fast-foundation
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 1.19.0
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Minor changes
+
+- adding withDefault method to DesignToken (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add function to check for separator, add example and update style for not href item (khamu@microsoft.com)
+
+## 1.18.0
+
+Fri, 16 Apr 2021 01:19:08 GMT
+
+### Minor changes
+
+- open up getter and setter functions to HTMLElement (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add missing aria-expanded to the select template (mathieu.lavoie@logmein.com)
+- remove incorrect role from horizontal-scroll element (chhol@microsoft.com)
+- ensure DesignToken works with falsey values (nicholasrice@users.noreply.github.com)
+- fix anchored region positioning bugs (scomea@microsoft.com)
 
 ## [1.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-foundation@1.16.0...@microsoft/fast-foundation@1.16.1) (2021-03-18)
 

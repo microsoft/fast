@@ -1,7 +1,12 @@
+import chai, { expect } from "chai";
+import spies from "chai-spies";
 import { ShortcutsAction } from "./shortcuts.service-action";
 
+chai.use(spies);
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 describe("ShortcutsAction", () => {
-    test("should not throw", () => {
+    it("should not throw", () => {
         expect(() => {
             new ShortcutsAction({
                 id: "foo",
@@ -11,10 +16,10 @@ describe("ShortcutsAction", () => {
                     return;
                 },
             });
-        }).not.toThrow();
+        }).not.to.throw();
     });
-    test("should not run an action if supplied action lengths do not match", () => {
-        const action = jest.fn();
+    it("should not run an action if supplied action lengths do not match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -25,10 +30,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).not.toHaveBeenCalled();
+        expect(action).not.to.have.been.called();
     });
-    test("should run an action if supplied actions match registered actions", () => {
-        const action = jest.fn();
+    it("should run an action if supplied actions match registered actions", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -39,10 +44,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
-    test("should not run an action if modifier keys do not match", () => {
-        const action = jest.fn();
+    it("should not run an action if modifier keys do not match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -61,10 +66,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).not.toHaveBeenCalled();
+        expect(action).not.to.have.been.called();
     });
-    test("should run an action if meta modifier keys match", () => {
-        const action = jest.fn();
+    it("should run an action if meta modifier keys match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -83,10 +88,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
-    test("should run an action if shift modifier keys match", () => {
-        const action = jest.fn();
+    it("should run an action if shift modifier keys match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -105,10 +110,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
-    test("should run an action if ctrl modifier keys match", () => {
-        const action = jest.fn();
+    it("should run an action if ctrl modifier keys match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -127,10 +132,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
-    test("should run an action if alt modifier keys match", () => {
-        const action = jest.fn();
+    it("should run an action if alt modifier keys match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -149,10 +154,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
-    test("should not run an action if specific keys do not match", () => {
-        const action = jest.fn();
+    it("should not run an action if specific keys do not match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -171,10 +176,10 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).not.toHaveBeenCalled();
+        expect(action).not.to.have.been.called();
     });
-    test("should run an action if specific keys match", () => {
-        const action = jest.fn();
+    it("should run an action if specific keys match", () => {
+        const action = chai.spy(() => {});
         const shortcutAction = new ShortcutsAction({
             id: "foo",
             name: "Foo",
@@ -193,6 +198,6 @@ describe("ShortcutsAction", () => {
             shortcutAction.invoke();
         }
 
-        expect(action).toHaveBeenCalledTimes(1);
+        expect(action).to.have.been.called.exactly(1);
     });
 });

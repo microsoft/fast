@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "CSS control update to override inner web component widths",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

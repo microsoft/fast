@@ -30,52 +30,52 @@ export const ColorPickerTemplate = html<ColorPicker>`
                 :value="${x => x.value}"
                 ${ref("control")}
             >
-                <div slot="start" class="selectedColor"></div>
+                <div slot="start" class="selected-color"></div>
             </fast-text-field>
-            <div class="colorUI">
-                <div class="pickerContainer">
+            <div class="color-ui">
+                <div class="picker-region">
                     <div
-                        class="satLightPicker"
+                        class="sat-light-picker"
                         style="background-color:${x => x.uiValues.HueCSSColor}"
                         @mousedown="${(x, c) =>
                             x.handleMouseDown("sv", c.event as MouseEvent)}"
                     >
                         <div
-                            class="satLightLocation"
+                            class="sat-light-indicator"
                             style="left: ${x =>
                                 x.uiValues.SatValLeftPos - 2}%; top: ${x =>
                                 x.uiValues.SatValTopPos - 2}%"
                         ></div>
                     </div>
                     <div
-                        class="huePicker"
+                        class="hue-picker"
                         @mousedown="${(x, c) =>
                             x.handleMouseDown("h", c.event as MouseEvent)}"
                     >
                         <div
-                            class="hueLocation"
+                            class="hue-indicator"
                             style="left: ${x => x.uiValues.HuePosition - 1}%"
                         ></div>
                     </div>
                     <div
-                        class="alphaPicker"
+                        class="alpha-picker"
                         @mousedown="${(x, c) =>
                             x.handleMouseDown("a", c.event as MouseEvent)}"
                     >
                         <div
-                            class="alphaMask"
+                            class="alpha-mask"
                             style="background-image: linear-gradient(to right, transparent, ${x =>
                                 x.uiValues.HueCSSColor})"
                         ></div>
                         <div
-                            class="alphaLocation"
+                            class="alpha-indicator"
                             style="left: ${x => x.uiValues.AlphaPos - 1}%"
                         ></div>
                     </div>
                 </div>
-                <div class="inputContainer">
+                <div class="input-region">
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("r", c.event)}"
                         :value="${x => Math.round(x.uiValues.RGBColor.r * 255)}"
@@ -83,7 +83,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         <span slot="start">R:</span>
                     </fast-text-field>
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("g", c.event)}"
                         :value="${x => Math.round(x.uiValues.RGBColor.g * 255)}"
@@ -91,7 +91,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         <span slot="start">G:</span>
                     </fast-text-field>
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("b", c.event)}"
                         :value="${x => Math.round(x.uiValues.RGBColor.b * 255)}"
@@ -100,7 +100,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                     </fast-text-field>
 
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("h", c.event)}"
                         :value="${x => Math.round(x.uiValues.HSVColor.h)}"
@@ -108,7 +108,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         <span slot="start">H:</span>
                     </fast-text-field>
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("s", c.event)}"
                         :value="${x => Math.round(x.uiValues.HSVColor.s * 100)}"
@@ -116,7 +116,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         <span slot="start">S:</span>
                     </fast-text-field>
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("v", c.event)}"
                         :value="${x => Math.round(x.uiValues.HSVColor.v * 100)}"
@@ -124,7 +124,7 @@ export const ColorPickerTemplate = html<ColorPicker>`
                         <span slot="start">V:</span>
                     </fast-text-field>
                     <fast-text-field
-                        maxLength="3"
+                        maxlength="3"
                         size="3"
                         @input="${(x, c) => x.handleTextValueInput("a", c.event)}"
                         :value="${x => Math.round(x.uiValues.RGBColor.a * 100)}"

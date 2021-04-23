@@ -1,0 +1,69 @@
+{
+  "name": "@microsoft/fast-tooling-react",
+  "entries": [
+    {
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.3",
+      "version": "2.8.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Moving Color Picker",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "72e6442cb7f473803b7cc972d76b9fa684b3df1a",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "adjust categories to allow them to work on linked data",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "5502515293374fd9af426e951df95d0e54fe3266",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "update the CSS control spec for upcoming work regarding the use of overrides to multiple CSS properties",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "ad5e62d69ad43b99b925d9131dc103776f97ffef",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.1",
+      "version": "2.8.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: update styling to fit the width of the area the form is placed in",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "3fb50d124790386efc1c90c9fdc768f93477764c",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.18.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.20.1",
+            "author": "scomea@microsoft.com",
+            "commit": "b0aaad7a455e6fd08336ffe210eb4e2db72781c9",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.7.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "832c1086c05099de4f7c9261dd85b7b32605538c",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    }
+  ]
+}

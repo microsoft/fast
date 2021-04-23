@@ -1,7 +1,25 @@
-# Change Log
+# Change Log - @microsoft/fast-components
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 1.20.3
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- add pointer-events none to button styles to prevent focus rect outline (chhol@microsoft.com)
+- add function to check for separator, add example and update style for not href item (khamu@microsoft.com)
+
+## 1.20.1
+
+Fri, 16 Apr 2021 01:19:08 GMT
+
+### Patches
+
+- fix anchored region positioning bugs (scomea@microsoft.com)
 
 ## [1.19.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-components@1.19.0...@microsoft/fast-components@1.19.1) (2021-03-18)
 

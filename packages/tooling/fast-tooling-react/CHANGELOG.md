@@ -1,7 +1,25 @@
-# Change Log
+# Change Log - @microsoft/fast-tooling-react
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 2.8.3
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Moving Color Picker (44823142+williamw2@users.noreply.github.com)
+- adjust categories to allow them to work on linked data (7559015+janechu@users.noreply.github.com)
+
+## 2.8.1
+
+Fri, 16 Apr 2021 01:19:08 GMT
+
+### Patches
+
+- fix: update styling to fit the width of the area the form is placed in (7559015+janechu@users.noreply.github.com)
 
 ## [2.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.0...@microsoft/fast-tooling-react@2.7.1) (2021-03-18)
 

@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/site-utilities
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.9.0
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.20.3 (chhol@microsoft.com)
 
 ## [0.8.1](https://github.com/Microsoft/fast/compare/@microsoft/site-utilities@0.8.0...@microsoft/site-utilities@0.8.1) (2021-03-18)
 

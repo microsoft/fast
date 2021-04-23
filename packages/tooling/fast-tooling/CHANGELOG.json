@@ -1,0 +1,47 @@
+{
+  "name": "@microsoft/fast-tooling",
+  "entries": [
+    {
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
+      "tag": "@microsoft/fast-tooling_v0.18.1",
+      "version": "0.18.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Moving Color Picker",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "72e6442cb7f473803b7cc972d76b9fa684b3df1a",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Moving native definitions to fast-tooling",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "b0fed4b3467be20e201d66021393eb30150e3717",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-tooling_v0.18.0",
+      "version": "0.18.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Replace Jest testing with Karma/Mocha/Chai",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "fix tooling coverage globbing pattern",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "e8bbd10e718c44c6be0b655dde97958db5dc8570",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    }
+  ]
+}

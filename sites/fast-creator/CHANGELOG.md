@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-creator
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.7.0
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.20.3 (chhol@microsoft.com)
 
 ## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.6.0...@microsoft/fast-creator@0.6.1) (2021-03-18)
 

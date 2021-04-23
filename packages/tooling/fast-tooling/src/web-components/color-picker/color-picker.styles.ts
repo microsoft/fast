@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 
 export const colorPickerStyles = css`
-    .root .colorUI {
+    .root .color-ui {
         display: none;
         padding: 2px;
         flex-direction: row;
@@ -10,23 +10,23 @@ export const colorPickerStyles = css`
         border-radius: calc(var(--corner-radius) * 1px);
     }
 
-    .root.open .colorUI {
+    .root.open .color-ui {
         display: flex;
         position: absolute;
         z-index: 1;
         margin-left: -32px;
     }
 
-    .pickerContainer {
+    .picker-region {
         margin: 4px 6px 4px 4px;
     }
 
-    .inputContainer {
+    .input-region {
         width: 65px;
         margin: 0 4px 4px 0;
     }
 
-    .satLightPicker {
+    .sat-light-picker {
         position: relative;
         width: 200px;
         height: 200px;
@@ -37,7 +37,7 @@ export const colorPickerStyles = css`
         border: 1px solid #fff;
     }
 
-    .satLightLocation {
+    .sat-light-indicator {
         position: absolute;
         top: 0;
         left: 0;
@@ -48,7 +48,7 @@ export const colorPickerStyles = css`
         pointer-events: none;
     }
 
-    .huePicker {
+    .hue-picker {
         position: relative;
         width: 200px;
         height: 30px;
@@ -66,8 +66,8 @@ export const colorPickerStyles = css`
         );
     }
 
-    .hueLocation,
-    .alphaLocation {
+    .hue-indicator,
+    .alpha-indicator {
         position: absolute;
         left: 0;
         top: -2px;
@@ -78,7 +78,7 @@ export const colorPickerStyles = css`
         margin-left: 1px;
     }
 
-    .alphaPicker {
+    .alpha-picker {
         position: relative;
         width: 200px;
         height: 30px;
@@ -92,14 +92,14 @@ export const colorPickerStyles = css`
         background-color: #fff;
     }
 
-    .alphaMask {
+    .alpha-mask {
         width: 100%;
         height: 100%;
         background-image: linear-gradient(to right, transparent, #f00);
         margin-bottom: 5px;
     }
 
-    .selectedColor {
+    .selected-color {
         position: relative;
         display: inline-block;
         width: 25px;
@@ -109,7 +109,7 @@ export const colorPickerStyles = css`
         border: 1px solid var(--fast-tooling-l1-color, #333333);
     }
 
-    .selectedColor::before {
+    .selected-color::before {
         position: absolute;
         content: "";
         left: 0;
@@ -124,7 +124,7 @@ export const colorPickerStyles = css`
         );
     }
 
-    .selectedColor::after {
+    .selected-color::after {
         position: absolute;
         content: "";
         left: 0;
