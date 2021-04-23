@@ -1,5 +1,11 @@
 import { css } from "@microsoft/fast-element";
 import {
+    bodyFont,
+    cornerRadius,
+    outlineWidth,
+    typeRampBaseFontSize,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -25,9 +31,9 @@ export const disclosureStyles = css`
     :host([appearance="accent"]) .invoker {
         background: ${accentFillRestBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        border-radius: calc(var(--corner-radius) * 1px);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        border-radius: calc(${cornerRadius} * 1px);
         outline: none;
         cursor: pointer;
         margin: 16px 0;
@@ -46,8 +52,7 @@ export const disclosureStyles = css`
     :host([appearance="lightweight"]) .invoker {
         background: transparent;
         color: ${accentForegroundRestBehavior.var};
-        border-bottom: calc(var(--outline-width) * 1px) solid
-            var(--accent-foreground-rest);
+        border-bottom: calc(${outlineWidth} * 1px) solid var(--accent-foreground-rest);
         cursor: pointer;
         width: max-content;
         margin: 16px 0;

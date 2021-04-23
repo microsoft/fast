@@ -6,6 +6,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { cornerRadius, density, designUnit, disabledOpacity } from "../design-tokens";
 import {
     heightNumber,
     neutralFocusBehavior,
@@ -23,17 +24,17 @@ export const sliderStyles = (context, definition) =>
     }
 
     ${display("inline-grid")} :host {
-        --thumb-size: calc(${heightNumber} * 0.5 - var(--design-unit));
+        --thumb-size: calc(${heightNumber} * 0.5 - ${designUnit});
         --thumb-translate: calc(var(--thumb-size) * 0.5);
-        --track-overhang: calc((var(--design-unit) / 2) * -1);
-        --track-width: var(--design-unit);
+        --track-overhang: calc((${designUnit} / 2) * -1);
+        --track-width: ${designUnit};
         --fast-slider-height: calc(var(--thumb-size) * 10);
         align-items: center;
         width: 100%;
-        margin: calc(var(--design-unit) * 1px) 0;
+        margin: calc(${designUnit} * 1px) 0;
         user-select: none;
         box-sizing: border-box;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         outline: none;
         cursor: pointer;
     }
@@ -68,7 +69,7 @@ export const sliderStyles = (context, definition) =>
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
         background: ${neutralForegroundRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
     }
     .thumb-cursor:hover {
         background: ${neutralForegroundHoverBehavior.var};
@@ -90,31 +91,31 @@ export const sliderStyles = (context, definition) =>
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
-        margin-top: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
+        margin-top: calc((${designUnit} + calc(${density} + 2)) * 1px);
         height: calc(var(--track-width) * 1px);
     }
     :host([orientation="vertical"]) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         width: calc(var(--track-width) * 1px);
-        margin-inline-start: calc((var(--design-unit) + calc(var(--density) + 2)) * 1px);
+        margin-inline-start: calc((${designUnit} + calc(${density} + 2)) * 1px);
         height: 100%;
     }
     .track {
         background: ${neutralOutlineRestBehavior.var};
         position: absolute;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
     }
     :host([orientation="vertical"]) {
         height: calc(var(--fast-slider-height) * 1px);
         min-height: calc(var(--thumb-size) * 1px);
-        min-width: calc(var(--design-unit) * 20px);
+        min-width: calc(${designUnit} * 20px);
     }
     :host([disabled]), :host([readonly]) {
         cursor: ${disabledCursor};
     }
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 `.withBehaviors(
         neutralFocusBehavior,

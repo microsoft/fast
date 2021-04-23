@@ -7,6 +7,14 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    designUnit,
+    disabledOpacity,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -25,10 +33,10 @@ import {
 export const radioStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
-        --input-size: calc((${heightNumber} / 2) + var(--design-unit));
+        --input-size: calc((${heightNumber} / 2) + ${designUnit});
         align-items: center;
         outline: none;
-        margin: calc(var(--design-unit) * 1px) 0;
+        margin: calc(${designUnit} * 1px) 0;
         ${
             /*
              * Chromium likes to select label text or the default slot when
@@ -42,26 +50,26 @@ export const radioStyles = (context, definition) =>
 
     .control {
         position: relative;
-        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
-        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
         border-radius: 999px;
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
         outline: none;
         cursor: pointer;
     }
 
     .label {
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         color: ${neutralForegroundRestBehavior.var};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
 
     .label__hidden {
@@ -106,17 +114,17 @@ export const radioStyles = (context, definition) =>
 
     :host([aria-checked="true"]) .control {
         background: ${accentFillRestBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillHoverBehavior.var};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillActiveBehavior.var};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
@@ -138,7 +146,7 @@ export const radioStyles = (context, definition) =>
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 `.withBehaviors(
         accentFillActiveBehavior,

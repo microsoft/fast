@@ -8,6 +8,16 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusOutlineWidth,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillRestBehavior,
     heightNumber,
     neutralFillStealthRestBehavior,
@@ -23,7 +33,7 @@ export const menuItemStyles = (context, definition) =>
     ${display("grid")} :host {
         contain: layout;
         overflow: visible;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
@@ -32,15 +42,15 @@ export const menuItemStyles = (context, definition) =>
         justify-items: center;
         align-items: center;
         padding: 0;
-        margin: 0 calc(var(--design-unit) * 1px);
+        margin: 0 calc(${designUnit} * 1px);
         white-space: nowrap;
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--focus-outline-width) * 1px) solid transparent;
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${focusOutlineWidth} * 1px) solid transparent;
     }
 
     :host(:${focusVisible}) {
@@ -63,7 +73,7 @@ export const menuItemStyles = (context, definition) =>
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]:hover) {
@@ -174,9 +184,7 @@ export const menuItemStyles = (context, definition) =>
 
     :host .checkbox,
     :host .radio {
-        border: calc(var(--outline-width) * 1px) solid ${
-            neutralForegroundRestBehavior.var
-        };
+        border: calc(${outlineWidth} * 1px) solid ${neutralForegroundRestBehavior.var};
     }
 
     :host([aria-checked="true"]) .checkbox,
@@ -186,7 +194,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host .checkbox {
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
     }
 
     :host .radio {
@@ -266,7 +274,7 @@ export const menuItemStyles = (context, definition) =>
             :host(:${focusVisible}) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
