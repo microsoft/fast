@@ -1,8 +1,6 @@
-import {
-    customElement,
-    FASTElement,
-    observable,
-} from "@microsoft/fast-element";
+import { customElement, FASTElement, observable } from "@microsoft/fast-element";
+
+import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import {
     htmlMapper,
     htmlResolver,
@@ -20,44 +18,51 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
+import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
-//import { nativeElementDefinitions } from "../../../../../../sites/site-utilities/src/definitions";
-
-class OverylayPosition {
-    public top: number;
-    public left: number;
-    public width: number;
-    public height: number;
-
-    constructor(top:number, left:number, width:number, height:number){
-        this.top = top;
-        this.left = left;
-        this.width = width;
-        this.height = height;
-    }
-}
 
 @customElement({
     name: "fast-tooling-html-render",
     template: HTMLRenderTemplate,
-    styles: HTMLRenderStyles
+    styles: HTMLRenderStyles,
 })
 export class HTMLRender extends FASTElement {
     private dataDictionary: DataDictionary<unknown>;
 
     private schemaDictionary: SchemaDictionary;
 
-    private navigationConfigId:string = "fast-tooling::html-renderer";
+    private navigationConfigId: string = "fast-tooling::html-renderer";
 
-    private dataDictionaryAttr:string = "data-datadictionaryid";
+    private dataDictionaryAttr: string = "data-datadictionaryid";
 
-    private tabCounter:number = 1;
+    private tabCounter: number = 1;
 
-    private currentElement:HTMLElement;
+    private currentElement: HTMLElement;
+
+    private renderLayers: HTMLRenderLayer[];
 
     @observable
     public markup: HTMLElement;
+
+    @observable
+    public markupDefinitions: WebComponentDefinition[] = null;
+
+    @observable
+    public layers: HTMLSlotElement;
+    private layersChanged(oldValue, newValue): void {
+        if (this.$fastController.isConnected) {
+            this.renderLayers = [];
+            if (this.children.length > 0) {
+                Array.from(this.children).forEach((value: HTMLRenderLayer) => {
+                    if (this.isHtmlRenderLayer(value)) {
+                        value.messageSystem = this.messageSystem;
+                        this.renderLayers.push(value);
+                    }
+                });
+            }
+        }
+    }
 
     @observable
     public messageSystem: MessageSystem;
@@ -68,27 +73,11 @@ export class HTMLRender extends FASTElement {
         }
     }
 
-    @observable
-    public hoverPosition: OverylayPosition = new OverylayPosition(0,0,0,0);
-
-    @observable
-    public clickPosition: OverylayPosition = new OverylayPosition(0,0,0,0);
-
-    @observable
-    public hoverClassName: string = "";
-
-    @observable
-    public clickClassName: string = "";
-
-    @observable
-    public clickPillContent: string = "";
-
-    @observable
-    public hoverPillContent: string = "";
-
     connectedCallback() {
         super.connectedCallback();
     }
+
+    // Messaging
 
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
@@ -100,69 +89,82 @@ export class HTMLRender extends FASTElement {
                 this.schemaDictionary = e.data.schemaDictionary;
                 this.RenderMarkup();
             }
+            if (
+                e.data.type === MessageSystemType.navigation &&
+                e.data.activeNavigationConfigId !== this.navigationConfigId
+            ) {
+                if (e.data.action === MessageSystemNavigationTypeAction.update) {
+                    const dataId: string = e.data.activeDictionaryId;
+                    const el: HTMLElement = this.shadowRoot.querySelector(
+                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
+                    );
+                    if (el) {
+                        this.currentElement = el;
+                        this.updateLayers(ActivityType.click, dataId, el);
+                    }
+                }
+            }
         }
     };
 
-    /// Mouse Handlers
-
-    private GetPositionFromElement(target: HTMLElement): OverylayPosition
-    {
-        const pos: DOMRectList = target.getClientRects();
-        return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
+    private updateLayers(
+        activityType: ActivityType,
+        dictionaryId: string,
+        elementRef: HTMLElement
+    ) {
+        this.renderLayers.forEach(value => {
+            value.elementActivity(activityType, dictionaryId, elementRef);
+        });
     }
 
+    /// Mouse Handlers
+
     public hoverHandler(e: MouseEvent): boolean {
-        const el:HTMLElement = (e.composedPath()[0] as HTMLElement);
+        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
         const dataId = el.getAttribute(this.dataDictionaryAttr);
-        if(dataId !== null && !(this.currentElement && dataId === this.currentElement.getAttribute(this.dataDictionaryAttr)))
-        {
-            this.hoverPosition = this.GetPositionFromElement(el);
-            this.hoverPillContent = dataId;
-            this.hoverClassName = "active";
+        if (
+            dataId !== null &&
+            !(
+                this.currentElement &&
+                dataId === this.currentElement.getAttribute(this.dataDictionaryAttr)
+            )
+        ) {
+            this.updateLayers(ActivityType.hover, dataId, el);
         }
         return false;
     }
 
     public blurHandler(e: MouseEvent): boolean {
-        this.hoverClassName = "";
+        this.updateLayers(ActivityType.blur, "", null);
         return false;
     }
 
-    private selectElement(el:HTMLElement, dataId:string)
-    {
-
+    private selectElement(el: HTMLElement, dataId: string) {
         this.messageSystem.postMessage({
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: dataId,
-            activeNavigationConfigId: this.navigationConfigId
+            activeNavigationConfigId: this.navigationConfigId,
         });
-
-        this.clickPosition = this.GetPositionFromElement(el);
-        this.clickClassName = "active";
-        this.clickPillContent = dataId;
-        this.hoverClassName = "";
         this.currentElement = el;
+        this.updateLayers(ActivityType.click, dataId, el);
     }
 
-    private clearElement()
-    {
+    private clearElement() {
         this.messageSystem.postMessage({
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: '',
-            activeNavigationConfigId: this.navigationConfigId
+            activeDictionaryId: "",
+            activeNavigationConfigId: this.navigationConfigId,
         });
-
-        this.clickClassName = "";
         this.currentElement = null;
+        this.updateLayers(ActivityType.clear, "", null);
     }
 
     public clickHandler(e: MouseEvent): boolean {
-        const el:HTMLElement = (e.composedPath()[0] as HTMLElement);
+        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
         const dataId = el.getAttribute(this.dataDictionaryAttr);
-        if(dataId!==null)
-        {
+        if (dataId !== null) {
             this.selectElement(el, dataId);
             e.stopPropagation();
             return false;
@@ -170,17 +172,20 @@ export class HTMLRender extends FASTElement {
     }
 
     public keyUpHandler(e: KeyboardEvent): boolean {
-        if(e.key==="Tab")
-        {
-            const currTab:number = this.currentElement ? Number(this.currentElement.getAttribute("taborder")) : e.shiftKey ? this.tabCounter : 0;
-            const nextTab:number = e.shiftKey ? currTab-1 : currTab+1;
+        if (e.key === "Tab") {
+            const currTab: number = this.currentElement
+                ? Number(this.currentElement.getAttribute("taborder"))
+                : e.shiftKey
+                ? this.tabCounter
+                : 0;
+            const nextTab: number = e.shiftKey ? currTab - 1 : currTab + 1;
 
-            if(nextTab > 0 && nextTab < this.tabCounter)
-            {
-                let tabElements:Array<Element> = Array.from((e.composedPath()[0] as HTMLElement).getElementsByTagName("*"));
-                tabElements.every((el:HTMLElement)=>{
-                    if(Number(el.getAttribute("taborder"))===nextTab)
-                    {
+            if (nextTab > 0 && nextTab < this.tabCounter) {
+                const tabElements: Array<Element> = Array.from(
+                    (e.composedPath()[0] as HTMLElement).getElementsByTagName("*")
+                );
+                tabElements.every((el: HTMLElement) => {
+                    if (Number(el.getAttribute("taborder")) === nextTab) {
                         const dataId = el.getAttribute(this.dataDictionaryAttr);
                         this.selectElement(el, dataId);
                         return false;
@@ -190,9 +195,7 @@ export class HTMLRender extends FASTElement {
                 e.preventDefault();
                 e.stopPropagation();
                 return false;
-            }
-            else
-            {
+            } else {
                 this.clearElement();
                 (e.composedPath()[0] as HTMLElement).blur();
             }
@@ -216,39 +219,55 @@ export class HTMLRender extends FASTElement {
 
     private renderHtmlResolver = (config: ResolverConfig<any>): HTMLElement | Text => {
         htmlResolver(config);
-        if((config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute)
-        {
-            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute(this.dataDictionaryAttr, config.dictionaryId);
-            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).setAttribute("taborder", (this.tabCounter++).toString());
-            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement).className += "foo";
+        if (
+            (config.dataDictionary[0][config.dictionaryId].data as HTMLElement)
+                .setAttribute
+        ) {
+            (config.dataDictionary[0][config.dictionaryId]
+                .data as HTMLElement).setAttribute(
+                this.dataDictionaryAttr,
+                config.dictionaryId
+            );
+            (config.dataDictionary[0][config.dictionaryId]
+                .data as HTMLElement).setAttribute(
+                "taborder",
+                (this.tabCounter++).toString()
+            );
         }
         return config.dataDictionary[0][config.dictionaryId].data;
-    }; 
+    };
 
     public RenderMarkup(): void {
-/*         this.markup = mapDataDictionary({
-           dataDictionary: this.dataDictionary,
-           schemaDictionary: this.schemaDictionary,
-           mapper: htmlMapper({
-               version: 1,
-               tags: Object.entries({
-                   ...nativeElementDefinitions,
-               }).reduce(
-                   (
-                       previousValue: WebComponentDefinitionTag[],
-                       currentValue: [string, WebComponentDefinition]
-                   ) => {
-                       if (Array.isArray(currentValue[1].tags)) {
-                           return previousValue.concat(currentValue[1].tags);
-                       }
+        if (this.markupDefinitions !== null) {
+            this.markup = mapDataDictionary({
+                dataDictionary: this.dataDictionary,
+                schemaDictionary: this.schemaDictionary,
+                mapper: htmlMapper({
+                    version: 1,
+                    tags: Object.entries({
+                        ...this.markupDefinitions,
+                    }).reduce(
+                        (
+                            previousValue: WebComponentDefinitionTag[],
+                            currentValue: [string, WebComponentDefinition]
+                        ) => {
+                            if (Array.isArray(currentValue[1].tags)) {
+                                return previousValue.concat(currentValue[1].tags);
+                            }
 
-                       return previousValue;
-                   },
-                   []
-               ),
-           }),
-           resolver: this.renderHtmlResolver,
-       });
-   }
+                            return previousValue;
+                        },
+                        []
+                    ),
+                }),
+                resolver: this.renderHtmlResolver,
+            });
+        }
+    }
 
+    private isHtmlRenderLayer(el: Element): el is HTMLElement {
+        return (
+            isHTMLElement(el) && (el.getAttribute("role") as string) === "htmlrenderlayer"
+        );
+    }
 }

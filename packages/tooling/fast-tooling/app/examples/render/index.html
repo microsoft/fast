@@ -9,11 +9,21 @@
                 width:100%;
                 height:100%;
             }
+            div.foo {
+                border: 1px solid black;
+                padding: 15px;
+            }
+
         </style>
     </head>
     <body>
         <div id="root">
-            <fast-tooling-html-render id="htmlRender"></fast-tooling-html-render>
+            <button id="testbutton1">select root</button><button id="testbutton2">select span</button>
+            <fast-design-system-provider use-defaults background-color="#fff" accent-base-color="#fb356d" style="width:100%;height:100%;">
+                <fast-tooling-html-render id="htmlRender">
+                    <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                </fast-tooling-html-render>
+            </fast-design-system-provider>
         </div>
     </body>
 </html>

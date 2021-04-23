@@ -1,10 +1,12 @@
+import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import {
     MessageSystem,
-    MessageSystemDataTypeAction,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
-    MessageSystemNavigationTypeAction
 } from "../../../src";
-import { HTMLRender } from "../../../src/web-components/html-render/html-render"
+import { HTMLRender } from "../../../src/web-components/html-render/html-render";
+import { HTMLRenderLayerNavgation } from "../../../src/web-components/html-render-layer-navigation/html-render-layer-navigation";
+import { nativeElementDefinitions } from "../../../src/definitions/";
 import dataDictionaryConfig from "./data-dictionary-config";
 import schemaDictionary from "./schema-dictionary";
 
@@ -16,8 +18,12 @@ const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
 
 HTMLRender;
+HTMLRenderLayerNavgation;
+FASTDesignSystemProvider;
 
-const htmlRender:HTMLRender = document.getElementById("htmlRender") as HTMLRender;
+const htmlRender: HTMLRender = document.getElementById("htmlRender") as HTMLRender;
+const button1: HTMLElement = document.getElementById("testbutton1");
+const button2: HTMLElement = document.getElementById("testbutton2");
 
 function handleMessageSystem(e: MessageEvent) {
     if (e.data) {
@@ -29,10 +35,13 @@ function handleMessageSystem(e: MessageEvent) {
         }
 
         if (e.data.type === MessageSystemType.initialize) {
-//            const config: any = fastMessageSystem.getConfigById(shortcutsId) as any;
+            //            const config: any = fastMessageSystem.getConfigById(shortcutsId) as any;
         }
-        if (e.data.type === MessageSystemType.navigation && e.data.action === MessageSystemNavigationTypeAction.update)
-        {
+        if (
+            e.data.type === MessageSystemType.navigation &&
+            e.data.action === MessageSystemNavigationTypeAction.update &&
+            e.data.activeNavigationConfigId !== "foo"
+        ) {
             console.log("Message Recieved", e.data);
         }
     }
@@ -47,5 +56,22 @@ if ((window as any).Worker) {
     fastMessageSystem.add({
         onMessage: handleMessageSystem,
     });
+    htmlRender.markupDefinitions = Object.values(nativeElementDefinitions);
     htmlRender.messageSystem = fastMessageSystem;
+    button1.onclick = () => {
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId: "root",
+            activeNavigationConfigId: "foo",
+        });
+    };
+    button2.onclick = () => {
+        fastMessageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId: "span",
+            activeNavigationConfigId: "foo",
+        });
+    };
 }
