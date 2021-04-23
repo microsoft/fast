@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { designUnit } from "../design-tokens";
 import {
     accentForegroundRestBehavior,
     neutralFillRestBehavior,
@@ -12,13 +13,13 @@ export const progressStyles = (context, definition) =>
         ${display("flex")} :host {
             align-items: center;
             outline: none;
-            height: calc(var(--design-unit) * 1px);
-            margin: calc(var(--design-unit) * 1px) 0;
+            height: calc(${designUnit} * 1px);
+            margin: calc(${designUnit} * 1px) 0;
         }
 
         .progress {
             background-color: ${neutralFillRestBehavior.var};
-            border-radius: calc(var(--design-unit) * 1px);
+            border-radius: calc(${designUnit} * 1px);
             width: 100%;
             height: 100%;
             display: flex;
@@ -28,7 +29,7 @@ export const progressStyles = (context, definition) =>
 
         .determinate {
             background-color: ${accentForegroundRestBehavior.var};
-            border-radius: calc(var(--design-unit) * 1px);
+            border-radius: calc(${designUnit} * 1px);
             height: 100%;
             transition: all 0.2s ease-in-out;
             display: flex;
@@ -36,7 +37,7 @@ export const progressStyles = (context, definition) =>
 
         .indeterminate {
             height: 100%;
-            border-radius: calc(var(--design-unit) * 1px);
+            border-radius: calc(${designUnit} * 1px);
             display: flex;
             width: 100%;
             position: relative;
@@ -48,7 +49,7 @@ export const progressStyles = (context, definition) =>
             opacity: 0;
             height: 100%;
             background-color: ${accentForegroundRestBehavior.var};
-            border-radius: calc(var(--design-unit) * 1px);
+            border-radius: calc(${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 40%;
             animation: indeterminate-1 2s infinite;
@@ -59,7 +60,7 @@ export const progressStyles = (context, definition) =>
             opacity: 0;
             height: 100%;
             background-color: ${accentForegroundRestBehavior.var};
-            border-radius: calc(var(--design-unit) * 1px);
+            border-radius: calc(${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 60%;
             animation: indeterminate-2 2s infinite;
