@@ -30,4 +30,9 @@ export class SwatchRGB extends ColorRGBA64 implements Swatch {
 
     public toColorString = this.toStringHexRGB;
     public contrast = contrast.bind(null, this);
+    public createCSS = this.toColorString;
+
+    static fromObject(obj: { r: number; g: number; b: number }) {
+        return new SwatchRGB(obj.r, obj.g, obj.b);
+    }
 }

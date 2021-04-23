@@ -3,7 +3,7 @@ import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { neutralFillRestBehavior } from "../styles";
-import { cornerRadius } from "../design-tokens";
+import { cornerRadius, fillColor } from "../design-tokens";
 
 export const skeletonStyles = (context, definition) =>
     css`

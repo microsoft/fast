@@ -1,5 +1,8 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { Palette, PaletteRGB } from "./color-vNext/palette";
+import { Swatch } from "./color-vNext/swatch";
+import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
 
@@ -184,3 +187,14 @@ export const typeRampPlus6FontSize = create<string>(
 export const typeRampPlus6LineHeight = create<string>(
     "type-ramp-plus6-line-height"
 ).withDefault("72px");
+
+export const neutralPalette = create<Palette>("neutral-palette").withDefault(
+    PaletteRGB.from(middleGrey)
+);
+export const accentPalette = create<Palette>("accent-palette").withDefault(
+    PaletteRGB.from(accentBase)
+);
+export const fillColor = create<Swatch>("fill-color").withDefault(element => {
+    const palette = neutralPalette.getValueFor(element);
+    return palette.get(palette.swatches.length - 1);
+});
