@@ -752,9 +752,7 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @alpha (undocumented)
-export class DesignSystem {
-    // (undocumented)
-    applyTo(element: HTMLElement): Container;
+export interface DesignSystem {
     // (undocumented)
     register(...params: any[]): this;
     // (undocumented)
@@ -762,6 +760,13 @@ export class DesignSystem {
     // (undocumented)
     withPrefix(prefix: string): this;
 }
+
+// @alpha (undocumented)
+export const DesignSystem: Readonly<{
+    tagFor(type: Constructable): string;
+    responsibleFor(element: HTMLElement): DesignSystem;
+    getOrCreate(element?: HTMLElement): DesignSystem;
+}>;
 
 // @public
 export interface DesignSystemConsumer {
