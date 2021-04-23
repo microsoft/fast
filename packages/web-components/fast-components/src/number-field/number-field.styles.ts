@@ -7,6 +7,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -23,7 +32,7 @@ import {
 export const numberFieldStyles = (context, definition) =>
     css`
     ${display("inline-block")} :host {
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         outline: none;
         user-select: none;
     }
@@ -35,8 +44,8 @@ export const numberFieldStyles = (context, definition) =>
         flex-direction: row;
         color: ${neutralForegroundRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
         height: calc(${heightNumber} * 1px);
     }
 
@@ -51,9 +60,9 @@ export const numberFieldStyles = (context, definition) =>
         margin-top: auto;
         margin-bottom: auto;
         border: none;
-        padding: 0 calc(var(--design-unit) * 2px + 1px);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        padding: 0 calc(${designUnit} * 2px + 1px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
 
     .control:hover,
@@ -71,8 +80,8 @@ export const numberFieldStyles = (context, definition) =>
         display: block;
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         margin-bottom: 4px;
     }
 
@@ -160,7 +169,7 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]) .control {
