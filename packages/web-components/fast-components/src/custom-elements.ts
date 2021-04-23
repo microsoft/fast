@@ -11,7 +11,7 @@ export { fastButton } from "./button/index";
 // export * from "./card/index";
 export { fastCheckbox } from "./checkbox/index";
 export { fastCombobox } from "./combobox/index";
-// export * from "./data-grid/index";
+export {fastDataGrid, fastDataGridCell, fastDataGridRow} from "./data-grid/index";
 // export * from "./design-system-provider/index";
 export { fastDialog } from "./dialog/index";
 export { fastDisclosure } from "./disclosure/index";
