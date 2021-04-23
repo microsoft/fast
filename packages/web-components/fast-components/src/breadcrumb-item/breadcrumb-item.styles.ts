@@ -6,6 +6,13 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    focusOutlineWidth,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
@@ -18,10 +25,10 @@ export const breadcrumbItemStyles = (context, definition) =>
     ${display("inline-flex")} :host {
         background: transparent;
         box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
         fill: currentColor;
-        line-height: var(--type-ramp-base-line-height);
+        line-height: ${typeRampBaseLineHeight};
         min-width: calc(${heightNumber} * 1px);
         outline: none;
     }
@@ -63,7 +70,7 @@ export const breadcrumbItemStyles = (context, definition) =>
     .control .content::before {
         content: "";
         display: block;
-        height: calc(var(--outline-width) * 1px);
+        height: calc(${outlineWidth} * 1px);
         left: 0;
         position: absolute;
         right: 0;
@@ -81,7 +88,7 @@ export const breadcrumbItemStyles = (context, definition) =>
 
     .control:${focusVisible} .content::before {
         background: ${neutralForegroundRestBehavior.var};
-        height: calc(var(--focus-outline-width) * 1px);
+        height: calc(${focusOutlineWidth} * 1px);
     }
 
     .control:not([href]) {

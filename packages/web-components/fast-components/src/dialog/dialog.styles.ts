@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import { cornerRadius, outlineWidth } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 
 export const dialogStyles = (context, definition) => css`
@@ -42,7 +43,7 @@ export const dialogStyles = (context, definition) => css`
         height: var(--dialog-height);
         background-color: var(--background-color);
         z-index: 1;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid transparent;
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid transparent;
     }
 `;

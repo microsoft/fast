@@ -7,6 +7,16 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusOutlineWidth,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -29,15 +39,15 @@ export const tabStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
-        padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
+        padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
         color: ${neutralForegroundHintBehavior.var};
         fill: currentcolor;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid transparent;
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
         grid-row: 1;
@@ -56,7 +66,7 @@ export const tabStyles = (context, definition) =>
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]:hover) {
@@ -84,8 +94,8 @@ export const tabStyles = (context, definition) =>
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
             ${neutralFocusBehavior.var};
     }
 
