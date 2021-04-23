@@ -5,6 +5,25 @@ import { uniqueElementName } from "../fixture";
 import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
 
 describe("DesignSystem", () => {
+    it("Should return the same instance for the same element", () => {
+        const host = document.createElement("div");
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.getOrCreate(host);
+
+        expect(ds1).to.equal(ds2);
+    });
+
+    it("Should find the responsible design system for an element in the hierarchy", () => {
+        const host = document.createElement("div");
+        const child = document.createElement("div");
+        host.appendChild(child);
+
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.responsibleFor(child);
+
+        expect(ds1).to.equal(ds2);
+    });
+
     it("Should initialize with a default prefix of 'fast'", () => {
         const host = document.createElement("div");
         let prefix = '';
