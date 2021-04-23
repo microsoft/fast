@@ -8,6 +8,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -32,8 +41,8 @@ export const switchStyles = (context, definition) =>
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
-        font-family: var(--body-font);
-        margin: calc(var(--design-unit) * 1px) 0;
+        font-family: ${bodyFont};
+        margin: calc(${designUnit} * 1px) 0;
         ${
             /*
              * Chromium likes to select label text or the default slot when
@@ -43,7 +52,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]) .label,
@@ -58,10 +67,10 @@ export const switchStyles = (context, definition) =>
         outline: none;
         box-sizing: border-box;
         width: calc(${heightNumber} * 1px);
-        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
     .switch:hover {
@@ -94,15 +103,15 @@ export const switchStyles = (context, definition) =>
         top: 5px;
         bottom: 5px;
         background: ${neutralForegroundRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
 
     :host([disabled]) .status-message,
@@ -115,9 +124,9 @@ export const switchStyles = (context, definition) =>
 
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        } margin-inline-end: calc(${designUnit} * 2px + 2px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         cursor: pointer;
     }
 
@@ -129,7 +138,7 @@ export const switchStyles = (context, definition) =>
     ::slotted(*) {
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        } margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([aria-checked="true"]) .checked-indicator {

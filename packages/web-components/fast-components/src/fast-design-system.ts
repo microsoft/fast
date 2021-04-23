@@ -5,14 +5,14 @@ import {
 } from "./default-palette";
 
 /**
- * @deprecated
+ * @deprecated - use DesignTokens
  */
 export type DesignSystemResolver<T, Y = FASTDesignSystem> = (d: Y) => T;
 
 /**
  * Defines the properties in the FAST Design System
  * @public
- * @deprecated
+ * @deprecated - use DesignTokens
  */
 export interface FASTDesignSystem {
     /**
@@ -203,7 +203,7 @@ export interface FASTDesignSystem {
 /**
  * The default values for {@link FASTDesignSystem}
  * @public
- * @deprecated
+ * @deprecated - Use DesignTokens
  */
 export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampMinus2FontSize: "10px",

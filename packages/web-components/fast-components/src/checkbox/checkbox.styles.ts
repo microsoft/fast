@@ -7,6 +7,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -28,7 +37,7 @@ export const checkboxStyles = (context, definition) =>
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
-        margin: calc(var(--design-unit) * 1px) 0;
+        margin: calc(${designUnit} * 1px) 0;
         ${
             /*
              * Chromium likes to select label text or the default slot when
@@ -39,26 +48,26 @@ export const checkboxStyles = (context, definition) =>
 
     .control {
         position: relative;
-        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
-        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
         outline: none;
         cursor: pointer;
     }
 
     .label {
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         color: ${neutralForegroundRestBehavior.var};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
 
     .label__hidden {
@@ -76,7 +85,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     .indeterminate-indicator {
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         background: ${accentForegroundCutRestBehavior.var};
         position: absolute;
         top: 50%;
@@ -106,17 +115,17 @@ export const checkboxStyles = (context, definition) =>
 
     :host([aria-checked="true"]) .control {
         background: ${accentFillRestBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHoverBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillHoverBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillHoverBehavior.var};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillActiveBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillActiveBehavior.var};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
@@ -140,7 +149,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 `.withBehaviors(
         accentFillActiveBehavior,

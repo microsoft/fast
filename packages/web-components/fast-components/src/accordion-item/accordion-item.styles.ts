@@ -6,6 +6,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    density,
+    designUnit,
+    focusOutlineWidth,
+    outlineWidth,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
+} from "../design-tokens";
+import {
     accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralFocusBehavior,
@@ -20,16 +29,16 @@ export const accordionItemStyles = (context, definition) =>
     css`
     ${display("flex")} :host {
         box-sizing: border-box;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         flex-direction: column;
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        font-size: ${typeRampMinus1FontSize};
+        line-height: ${typeRampMinus1LineHeight};
+        border-bottom: calc(${outlineWidth} * 1px) solid var(--neutral-divider-rest);
     }
     
     .region {
         display: none;
-        padding: calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
     }
 
     .heading {
@@ -46,7 +55,7 @@ export const accordionItemStyles = (context, definition) =>
         grid-column: 2;
         grid-row: 1;
         outline: none;
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
         color: ${neutralForegroundRestBehavior.var};
@@ -75,8 +84,8 @@ export const accordionItemStyles = (context, definition) =>
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
             ${neutralFocusBehavior.var};
     }
 
@@ -117,7 +126,7 @@ export const accordionItemStyles = (context, definition) =>
     .start {
         display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 1px);
+        padding-inline-start: calc(${designUnit} * 1px);
         justify-content: center;
         grid-column: 1;
         z-index: 2;
@@ -142,7 +151,7 @@ export const accordionItemStyles = (context, definition) =>
             css`
             .button:${focusVisible}::before {
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${SystemColors.Highlight};
             }
         `
         )

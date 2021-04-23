@@ -6,6 +6,15 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -23,7 +32,7 @@ import {
 export const textAreaStyles = (context, definition) =>
     css`
     ${display("inline-block")} :host {
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         outline: none;
         user-select: none;
     }
@@ -33,13 +42,13 @@ export const textAreaStyles = (context, definition) =>
         position: relative;
         color: ${neutralForegroundRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
         height: calc(${heightNumber} * 2px);
         font: inherit;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        padding: calc(var(--design-unit) * 2px + 1px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        padding: calc(${designUnit} * 2px + 1px);
         width: 100%;
         resize: none;
     }
@@ -90,8 +99,8 @@ export const textAreaStyles = (context, definition) =>
         display: block;
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         margin-bottom: 4px;
     }
 
@@ -107,7 +116,7 @@ export const textAreaStyles = (context, definition) =>
         cursor: ${disabledCursor};
     }
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
     :host([disabled]) .control {
         border-color: ${neutralOutlineRestBehavior.var};

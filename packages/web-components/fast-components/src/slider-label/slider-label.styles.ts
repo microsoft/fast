@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { bodyFont, designUnit, disabledOpacity } from "../design-tokens";
 import {
     heightNumber,
     neutralForegroundRestBehavior,
@@ -12,7 +13,7 @@ export const horizontalSliderStyles = css`
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
-        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         width: auto;
     }
     .container {
@@ -30,7 +31,7 @@ export const verticalSliderStyles = css`
         grid-column: 2;
         margin-left: 2px;
         height: auto;
-        width: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
+        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
     }
     .container {
         grid-template-columns: auto auto;
@@ -43,7 +44,7 @@ export const verticalSliderStyles = css`
         align-self: center;
     }
     .label {
-        margin-left: calc((var(--design-unit) / 2) * 3px);
+        margin-left: calc((${designUnit} / 2) * 3px);
         align-self: center;
     }
 `;
@@ -51,7 +52,7 @@ export const verticalSliderStyles = css`
 export const sliderLabelStyles = (context, definition) =>
     css`
         ${display("block")} :host {
-            font-family: var(--body-font);
+            // font-family: ${bodyFont};
             color: ${neutralForegroundRestBehavior.var};
             fill: currentcolor;
         }
@@ -70,13 +71,13 @@ export const sliderLabelStyles = (context, definition) =>
             max-width: 30px;
         }
         .mark {
-            width: calc((var(--design-unit) / 4) * 1px);
+            width: calc((${designUnit} / 4) * 1px);
             height: calc(${heightNumber} * 0.25 * 1px);
             background: ${neutralOutlineRestBehavior.var};
             justify-self: center;
         }
         :host(.disabled) {
-            opacity: var(--disabled-opacity);
+            opacity: ${disabledOpacity};
         }
     `.withBehaviors(
         neutralForegroundRestBehavior,
