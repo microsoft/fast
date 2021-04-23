@@ -148,6 +148,19 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
+     * Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: horizontal-viewport-lock
+     */
+    @attr({ attribute: "horizontal-viewport-lock", mode: "boolean" })
+    public horizontalViewportLock: boolean = false;
+    private horizontalViewportLockChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
      * @beta
@@ -217,6 +230,19 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
+     * Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: vertical-viewport-lock
+     */
+    @attr({ attribute: "vertical-viewport-lock", mode: "boolean" })
+    public verticalViewportLock: boolean = false;
+    private verticalViewportLockChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
      * Whether the region overlaps the anchor on the vertical axis
      *
      * @beta
@@ -228,6 +254,7 @@ export class AnchoredRegion extends FASTElement {
     private verticalInsetChanged(): void {
         this.updateForAttributeChange();
     }
+     
 
     /**
      * How short the space allocated to the default position has to be before the tallest area
@@ -466,8 +493,6 @@ export class AnchoredRegion extends FASTElement {
         if (this.anchorElement === null) {
             this.anchorElement = this.getAnchor();
         }
-        this.style.top = "0";
-        this.style.left = "0";
         this.requestReset();
     }
 
@@ -517,6 +542,9 @@ export class AnchoredRegion extends FASTElement {
 
         this.style.opacity = "0";
         this.style.pointerEvents = "none";
+
+        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        this.updatePositionClasses();
 
         this.updateRegionStyle();
     }
@@ -880,7 +908,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        if (!this.regionVisible) {
+        if (!this.regionVisible && !this.pendingPositioningUpdate && !this.pendingLayoutUpdate) {
             this.regionVisible = true;
             this.style.removeProperty("pointer-events");
             this.style.removeProperty("opacity");
@@ -889,6 +917,8 @@ export class AnchoredRegion extends FASTElement {
         }
 
         if (positionChanged) {
+            this.updatePositionClasses();
+
             // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
@@ -899,6 +929,15 @@ export class AnchoredRegion extends FASTElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
+        this.style.width = this.regionWidth;
+        this.style.height = this.regionHeight;
+        this.style.transform = `translate(${this.translateX}px, ${this.translateY}px)`;
+    };
+
+    /**
+     *  Updates the css classes that reflect the current position of the element
+     */
+    private updatePositionClasses = (): void => {
         this.classList.toggle("top", this.verticalPosition === "start");
         this.classList.toggle("bottom", this.verticalPosition === "end");
         this.classList.toggle("inset-top", this.verticalPosition === "insetStart");
@@ -908,14 +947,7 @@ export class AnchoredRegion extends FASTElement {
         this.classList.toggle("right", this.horizontalPosition === "end");
         this.classList.toggle("inset-left", this.horizontalPosition === "insetStart");
         this.classList.toggle("inset-right", this.horizontalPosition === "insetEnd");
-
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
-
-        this.style.width = this.regionWidth;
-        this.style.height = this.regionHeight;
-
-        this.style.transform = `translate(${this.translateX}px, ${this.translateY}px)`;
-    };
+    }
 
     /**
      * Get horizontal positioning state based on desired position
@@ -924,7 +956,7 @@ export class AnchoredRegion extends FASTElement {
         desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined,
         nextPositionerDimension: Dimension
     ): void => {
-        if (desiredHorizontalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined) {
+        if (desiredHorizontalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined || this.viewportRect === undefined) {
             return;
         }
 
@@ -946,19 +978,31 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredHorizontalPosition) {
             case "start":
                 this.translateX = this.baseHorizontalOffset - nextRegionWidth;
+                if(this.horizontalViewportLock && this.anchorRect.left > this.viewportRect.right){
+                    this.translateX = this.translateX - (this.anchorRect.left - this.viewportRect.right);
+                }
                 break;
 
             case "insetStart":
                 this.translateX =
                     this.baseHorizontalOffset - nextRegionWidth + this.anchorRect.width;
+                if(this.horizontalViewportLock && this.anchorRect.right > this.viewportRect.right){
+                    this.translateX = this.translateX - (this.anchorRect.right - this.viewportRect.right);
+                }
                 break;
 
             case "insetEnd":
                 this.translateX = this.baseHorizontalOffset;
+                if(this.horizontalViewportLock && this.anchorRect.left < this.viewportRect.left){
+                    this.translateX = this.translateX - (this.anchorRect.left - this.viewportRect.left);
+                }
                 break;
 
             case "end":
                 this.translateX = this.baseHorizontalOffset + this.anchorRect.width;
+                if(this.horizontalViewportLock && this.anchorRect.right < this.viewportRect.left){
+                    this.translateX = this.translateX - (this.anchorRect.right - this.viewportRect.left);
+                }
                 break;
         }
 
@@ -972,7 +1016,7 @@ export class AnchoredRegion extends FASTElement {
         desiredVerticalPosition: AnchoredRegionPositionLabel | undefined,
         nextPositionerDimension: Dimension
     ): void => {
-        if (desiredVerticalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined) {
+        if (desiredVerticalPosition === undefined || this.regionRect === undefined || this.anchorRect === undefined || this.viewportRect === undefined) {
             return;
         }
 
@@ -994,19 +1038,31 @@ export class AnchoredRegion extends FASTElement {
         switch (desiredVerticalPosition) {
             case "start":
                 this.translateY = this.baseVerticalOffset - nextRegionHeight;
+                if(this.verticalViewportLock && this.anchorRect.top > this.viewportRect.bottom){
+                    this.translateY = this.translateY - (this.anchorRect.top - this.viewportRect.bottom);
+                }
                 break;
 
             case "insetStart":
                 this.translateY =
                     this.baseVerticalOffset - nextRegionHeight + this.anchorRect.height;
+                if(this.verticalViewportLock && this.anchorRect.bottom > this.viewportRect.bottom){
+                    this.translateY = this.translateY - (this.anchorRect.bottom - this.viewportRect.bottom);
+                }
                 break;
 
             case "insetEnd":
                 this.translateY = this.baseVerticalOffset;
+                if(this.verticalViewportLock && this.anchorRect.top < this.viewportRect.top){
+                    this.translateY = this.translateY - (this.anchorRect.top - this.viewportRect.top);
+                }
                 break;
 
             case "end":
                 this.translateY = this.baseVerticalOffset + this.anchorRect.height;
+                if(this.verticalViewportLock && this.anchorRect.bottom < this.viewportRect.top){
+                    this.translateY = this.translateY - (this.anchorRect.bottom - this.viewportRect.top);
+                }
                 break;
         }
 

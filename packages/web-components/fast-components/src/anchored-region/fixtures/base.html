@@ -331,6 +331,61 @@
         </div>
     </div>
 
+    <h2>Viewport lock</h2>
+    <span>
+        When 'viewport lock' is enabled on a particular axis the region will not follow it's anchor 
+        out of the viewport.  To keep a tooltip in view, for example.
+    </span>
+
+    <div id="viewport-vloc1" style="
+            height: 400px;
+            width: 80%;
+            margin-top: 20px;
+            background: lightgray;
+            overflow: scroll;
+            position: relative;
+        ">
+        <div style="height: 2000px; width: 2000px; overflow: hidden;">
+            <div id="anchor-vloc1" style="
+                    margin-top: 650px;
+                    margin-left: 650px;
+                    height: 100px;
+                    width: 100px;
+                    background: grey;
+                    padding: 12px;
+                ">
+                anchor
+            </div>
+            <fast-anchored-region anchor="anchor-vloc1" viewport="viewport-vloc1" vertical-positioning-mode="dynamic"
+                horizontal-positioning-mode="dynamic" horizontal-inset="true"
+                auto-update-mode="auto" vertical-viewport-lock="true" horizontal-viewport-lock="true">
+                <div style="
+                        height: 100px;
+                        width: 100px;
+                        background: darkblue;
+                        padding: 12px;
+                        border: 2px solid white;
+                    ">
+                    Horizontal inset
+                </div>
+            </fast-anchored-region>
+            <fast-anchored-region anchor="anchor-vloc1" viewport="viewport-vloc1" horizontal-positioning-mode="dynamic"
+                vertical-positioning-mode="dynamic" vertical-inset="true"
+                auto-update-mode="auto" vertical-viewport-lock="true" horizontal-viewport-lock="true">
+                <div style="
+                        height: 100px;
+                        width: 100px;
+                        background: darkblue;
+                        padding: 12px;
+                        border: 2px solid white;
+                    ">
+                     Vertical inset
+                </div>
+            </fast-anchored-region>
+        </div>
+    </div>
+
+
     <h3>Thresholds</h3>
     <span>
         Dynamically place regions can favor one side over the other by setting a default

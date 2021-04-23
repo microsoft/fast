@@ -101,6 +101,7 @@ export class AnchoredRegion extends FASTElement {
     horizontalPositioningMode: AxisPositioningMode;
     horizontalScaling: AxisScalingMode;
     horizontalThreshold: number;
+    horizontalViewportLock: boolean;
     // @internal
     initialLayoutComplete: boolean;
     update: () => void;
@@ -110,6 +111,7 @@ export class AnchoredRegion extends FASTElement {
     verticalPositioningMode: AxisPositioningMode;
     verticalScaling: AxisScalingMode;
     verticalThreshold: number;
+    verticalViewportLock: boolean;
     viewport: string;
     viewportElement: HTMLElement | null;
     }
