@@ -34,17 +34,26 @@ mapToJSONSchemas(fastComponentExtendedDefinitions, fastComponentExtendedSchemas)
 mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas);
 
 /**
- * Map the formControlId for the design system to the property name for use by the <Form /> component
+ * Map the formControlId to all property names for use by the <Form /> component
  */
-if (fastComponentExtendedSchemas["fast-design-system-provider"]) {
-    Object.keys(
-        fastComponentExtendedSchemas["fast-design-system-provider"].properties
-    ).forEach((key: string) => {
-        fastComponentExtendedSchemas["fast-design-system-provider"].properties[key][
-            "formControlId"
-        ] = key;
-    });
-}
+Object.entries(fastComponentExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
+    Object.keys(fastComponentExtendedSchemas[schemaKey].properties).forEach(
+        (propertyKey: string) => {
+            fastComponentExtendedSchemas[schemaKey].properties[propertyKey][
+                "formControlId"
+            ] = propertyKey;
+        }
+    );
+});
+Object.entries(nativeElementExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
+    Object.keys(nativeElementExtendedSchemas[schemaKey].properties).forEach(
+        (propertyKey: string) => {
+            nativeElementExtendedSchemas[schemaKey].properties[propertyKey][
+                "formControlId"
+            ] = propertyKey;
+        }
+    );
+});
 
 export {
     fastComponentSchemas,

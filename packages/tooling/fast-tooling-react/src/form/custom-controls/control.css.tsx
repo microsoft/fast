@@ -10,6 +10,7 @@ import { classNames } from "@microsoft/fast-web-utilities";
 import { CSSProperty } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
 import { FASTDesignSystemProvider } from "@microsoft/fast-components";
+import { CSSStandardControlPlugin } from "./css";
 
 /*
  * Ensure that tree-shaking doesn't remove these components from the bundle.
@@ -41,11 +42,42 @@ class CSSControl extends React.Component<
     }
 
     private renderCSSProperties(): React.ReactNode {
-        return Object.entries(this.props.css).map(
-            ([cssPropertyName, cssProperty]: [string, CSSProperty]): React.ReactNode => {
-                return this.renderCSSProperty(cssProperty, cssPropertyName);
-            }
-        );
+        const css = {
+            // An object spread is used here to control
+            // mutability at the top level of the css prop
+            ...this.props.css,
+        };
+        const renderedCssControls: React.ReactNode[] = [];
+
+        if (this.props.cssControls) {
+            this.props.cssControls.forEach(
+                (cssControl: CSSStandardControlPlugin): void => {
+                    cssControl.updateProps({
+                        css: {
+                            ...this.state,
+                        },
+                        onChange: this.handleMultiplePropertyOnChange,
+                    });
+
+                    renderedCssControls.push(cssControl.render());
+                    cssControl.getPropertyNames().forEach((propertyName: string) => {
+                        delete css[propertyName];
+                    });
+                }
+            );
+        }
+
+        return [
+            ...renderedCssControls,
+            ...Object.entries(css).map(
+                ([cssPropertyName, cssProperty]: [
+                    string,
+                    CSSProperty
+                ]): React.ReactNode => {
+                    return this.renderCSSProperty(cssProperty, cssPropertyName);
+                }
+            ),
+        ];
     }
 
     private renderCSSProperty(
@@ -67,6 +99,15 @@ class CSSControl extends React.Component<
             </fieldset>
         );
     }
+
+    private handleMultiplePropertyOnChange = (css: { [key: string]: string }): void => {
+        this.setState(
+            {
+                ...css,
+            },
+            this.resolveCSS
+        );
+    };
 
     private handleOnChange = (propertyName: string): ((value: string) => void) => {
         return (value: string): void => {

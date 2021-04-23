@@ -10,6 +10,8 @@ import childrenSchema from "./children.schema";
 import componentPluginSchema from "./component-plugin.schema";
 import constSchema from "./const.schema";
 import controlPluginSchema from "./control-plugin.schema";
+import controlPluginCssWithOverridesSchema from "./control-plugin.css-with-overrides.schema";
+import controlPluginCssSchema from "./control-plugin.css.schema";
 import defaultsSchema from "./defaults.schema";
 import dictionarySchema from "./dictionary.schema";
 import disabledSchema from "./disabled.schema";
@@ -41,6 +43,8 @@ export {
     componentPluginSchema,
     constSchema,
     controlPluginSchema,
+    controlPluginCssWithOverridesSchema,
+    controlPluginCssSchema,
     defaultsSchema,
     dictionarySchema,
     disabledSchema,

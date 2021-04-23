@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
+      "tag": "@microsoft/fast-components_v1.20.3",
+      "version": "1.20.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add pointer-events none to button styles to prevent focus rect outline",
+            "author": "chhol@microsoft.com",
+            "commit": "07ca9bdfb7699dbc6b4a101aa9218856e98cca8b",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "add function to check for separator, add example and update style for not href item",
+            "author": "khamu@microsoft.com",
+            "commit": "e8efeefeca3743076874cd51c06fa3ea7d13e7d0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Apr 2021 01:19:08 GMT",
       "tag": "@microsoft/fast-components_v1.20.1",
       "version": "1.20.1",
