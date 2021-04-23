@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { outlineWidth } from "../design-tokens";
 import { neutralDividerRestBehavior, neutralFillRestBehavior } from "../styles/recipes";
 
 export const DataGridRowStyles = css`
@@ -8,7 +9,7 @@ export const DataGridRowStyles = css`
         padding: 1px 0;
         box-sizing: border-box;
         width: 100%;
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        border-bottom: calc(${outlineWidth} * 1px) solid var(--neutral-divider-rest);
     }
 
     :host(.header) {

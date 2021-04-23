@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { cornerRadius } from "../design-tokens";
 import { elevation } from "../styles/index";
 
 export const CardStyles = css`
@@ -12,7 +13,7 @@ export const CardStyles = css`
         width: var(--card-width, 100%);
         box-sizing: border-box;
         background: var(--background-color);
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         ${elevation}
     }
 `.withBehaviors(

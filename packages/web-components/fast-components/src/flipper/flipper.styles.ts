@@ -6,6 +6,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { disabledOpacity, focusOutlineWidth, outlineWidth } from "../design-tokens";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
@@ -39,7 +40,7 @@ export const flipperStyles = (context, definition) =>
     :host::before {
         content: "";
         background: ${accentFillRestBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -61,7 +62,7 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
         fill: currentcolor;
         color: ${neutralForegroundRestBehavior.var};
@@ -71,7 +72,7 @@ export const flipperStyles = (context, definition) =>
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
         background: ${neutralFillStealthRestBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
     :host(:hover)::before {
@@ -89,9 +90,9 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
-            neutralFocusInnerAccentBehavior.var
-        };
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
+        neutralFocusInnerAccentBehavior.var
+    };
         border-color: ${neutralFocusBehavior.var};
     }
 

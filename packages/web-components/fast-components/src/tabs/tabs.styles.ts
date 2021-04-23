@@ -2,6 +2,13 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillRestBehavior,
     heightNumber,
     neutralForegroundRestBehavior,
@@ -11,9 +18,9 @@ export const tabsStyles = (context, definition) =>
     css`
         ${display("grid")} :host {
             box-sizing: border-box;
-            font-family: var(--body-font);
-            font-size: var(--type-ramp-base-font-size);
-            line-height: var(--type-ramp-base-line-height);
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
             color: ${neutralForegroundRestBehavior.var};
             grid-template-columns: auto 1fr auto;
             grid-template-rows: auto 1fr;
@@ -26,7 +33,7 @@ export const tabsStyles = (context, definition) =>
             position: relative;
             width: max-content;
             align-self: end;
-            padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
+            padding: calc(${designUnit} * 4px) calc(${designUnit} * 4px) 0;
             box-sizing: border-box;
         }
 
@@ -43,8 +50,7 @@ export const tabsStyles = (context, definition) =>
             justify-self: center;
             background: ${accentFillRestBehavior.var};
             margin-top: 10px;
-            border-radius: calc(var(--corner-radius) * 1px)
-                calc(var(--corner-radius) * 1px) 0 0;
+            border-radius: calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0 0;
         }
 
         .activeIndicatorTransition {
@@ -73,9 +79,8 @@ export const tabsStyles = (context, definition) =>
             width: max-content;
             justify-self: end;
             width: 100%;
-            padding: calc((${heightNumber} - var(--design-unit)) * 1px)
-                calc(var(--design-unit) * 4px)
-                calc((${heightNumber} - var(--design-unit)) * 1px) 0;
+            padding: calc((${heightNumber} - ${designUnit}) * 1px)
+                calc(${designUnit} * 4px) calc((${heightNumber} - ${designUnit}) * 1px) 0;
         }
 
         :host([orientation="vertical"]) .tabpanel {
@@ -97,8 +102,7 @@ export const tabsStyles = (context, definition) =>
             align-self: center;
             background: ${accentFillRestBehavior.var};
             margin-top: 0;
-            border-radius: 0 calc(var(--corner-radius) * 1px)
-                calc(var(--corner-radius) * 1px) 0;
+            border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
         }
 
         :host([orientation="vertical"]) .activeIndicatorTransition {
