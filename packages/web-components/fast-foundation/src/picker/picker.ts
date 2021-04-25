@@ -485,29 +485,57 @@ export class Picker extends FASTElement {
             }
 
             case "ArrowRight": {
-                this.incrementFocusedItem(1);
-                return false;
+                if (document.activeElement !== this.inputElement){
+                    this.incrementFocusedItem(1);
+                    return false;
+                }
+                // don't block if arrow keys moving caret in input element
+                return true;
             }
 
             case "ArrowLeft": {
-                this.incrementFocusedItem(-1);
-                return false;
+                if (this.inputElement.selectionStart === 0) {
+                    this.incrementFocusedItem(-1);
+                    return false;
+                }
+                // don't block if arrow keys moving caret in input element
+                return true;
             }
 
             case "Delete":
             case "Backspace": {
-                if (
-                    this.inputElement.value.length === 0 &&
-                    this.selectedOptions.length > 0
-                ) {
-                    this.selection = this.selectedOptions
-                        .slice(0, this.selectedOptions.length - 1)
-                        .toString();
-                    this.toggleMenu(false);
-                    return false;
-                } else {
+                if (document.activeElement === null){
                     return true;
                 }
+
+                if (document.activeElement === this.inputElement){
+                    if (this.inputElement.selectionStart === 0) {
+                        this.selection = this.selectedOptions
+                        .slice(0, this.selectedOptions.length - 1)
+                        .toString();
+                        this.toggleMenu(false);
+                        return false;
+                    }
+                    // let text deletion proceed
+                    return true;
+                }
+
+                const selectedItems: Element[] = Array.from(this.selectedList.children);
+                const currentFocusedItemIndex: number = selectedItems.indexOf(document.activeElement);
+
+                if (currentFocusedItemIndex > -1) {
+                    // delete currently focused item
+                    this.selection = this.selectedOptions
+                        .splice(currentFocusedItemIndex, 1)
+                        .toString();
+                    DOM.queueUpdate(
+                        ()=>{
+                            (selectedItems[Math.min(selectedItems.length, currentFocusedItemIndex)] as HTMLElement).focus();
+                        }
+                    );
+                    return false;
+                }
+                return true;
             }
         }
         this.toggleMenu(true);
