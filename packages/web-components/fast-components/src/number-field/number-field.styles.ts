@@ -18,13 +18,13 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/index";
@@ -144,8 +144,8 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host(:focus-within:not([disabled])) .root {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 1px ${neutralFocus} inset;
     }
 
     :host(:hover:not([disabled])) .controls,
@@ -176,7 +176,6 @@ export const numberFieldStyles = (context, definition) =>
         border-color: ${neutralOutlineRestBehavior.var};
     }
 `.withBehaviors(
-        neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(

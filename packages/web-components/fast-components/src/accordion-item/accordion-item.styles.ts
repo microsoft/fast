@@ -11,13 +11,12 @@ import {
     density,
     designUnit,
     focusOutlineWidth,
+    neutralFocus,
     outlineWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
 import {
-    neutralDividerRestBehavior,
-    neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundFocusBehavior,
     neutralForegroundHoverBehavior,
@@ -84,9 +83,9 @@ export const accordionItemStyles = (context, definition) =>
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
         box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocusBehavior.var};
+            ${neutralFocus};
     }
 
     :host([expanded]) .region {
@@ -140,12 +139,10 @@ export const accordionItemStyles = (context, definition) =>
         z-index: 2;
     }
 `.withBehaviors(
-        neutralDividerRestBehavior,
         neutralForegroundActiveBehavior,
         neutralForegroundFocusBehavior,
         neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,
-        neutralFocusBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .button:${focusVisible}::before {

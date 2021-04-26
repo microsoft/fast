@@ -10,7 +10,6 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
@@ -31,6 +30,7 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFillStealthSelected,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -104,7 +104,7 @@ export const treeItemStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .positioning-region {
-        border: ${neutralFocusBehavior.var} calc(${outlineWidth} * 1px) solid;
+        border: ${neutralFocus} calc(${outlineWidth} * 1px) solid;
         border-radius: calc(${cornerRadius} * 1px);
         color: ${neutralForegroundActiveBehavior.var};
     }
@@ -259,7 +259,6 @@ export const treeItemStyles = (context, definition) =>
 `.withBehaviors(
         expandCollapseHoverBehavior,
         selectedExpandCollapseHoverBehavior,
-        neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundActiveBehavior,
         neutralForegroundRestBehavior,

@@ -9,12 +9,11 @@ import {
     cornerRadius,
     designUnit,
     focusOutlineWidth,
+    neutralFocus,
     outlineWidth,
 } from "../design-tokens";
 import {
-    neutralFocusBehavior,
     neutralLayerFloatingBehavior,
-    neutralOutlineFocusBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/recipes";
 
@@ -30,8 +29,8 @@ export const listboxStyles = (context, definition) =>
         }
 
         :host(:focus-within:not([disabled])) {
-            border-color: ${neutralFocusBehavior.var};
-            box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+            border-color: ${neutralFocus};
+            box-shadow: 0 0 0 1px ${neutralFocus} inset;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
@@ -53,7 +52,5 @@ export const listboxStyles = (context, definition) =>
             }
         `
         ),
-        neutralLayerFloatingBehavior,
-        neutralOutlineRestBehavior,
-        neutralOutlineFocusBehavior
+        neutralLayerFloatingBehavior
     );

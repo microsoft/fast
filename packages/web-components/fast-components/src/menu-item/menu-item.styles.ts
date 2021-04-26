@@ -15,13 +15,13 @@ import {
     disabledOpacity,
     focusOutlineWidth,
     neutralFillStealthRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
     neutralLayerL2Behavior,
@@ -54,7 +54,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocusBehavior.var};
+        border-color: ${neutralFocus};
         background: ${neutralLayerL3Behavior.var};
         color: ${neutralForegroundRestBehavior.var};
     }
@@ -236,7 +236,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        neutralFocusBehavior,
         neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,
         neutralLayerL2Behavior,

@@ -16,11 +16,11 @@ import {
     disabledOpacity,
     focusOutlineWidth,
     neutralFillHover,
+    neutralFocus,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
@@ -54,7 +54,7 @@ export const optionStyles = (context, definition) =>
         box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
         neutralFocusInnerAccentBehavior.var
     };
-        border-color: ${neutralFocusBehavior.var};
+        border-color: ${neutralFocus};
         background: ${accentFillHover};
         color: ${accentForegroundCut};
     }
@@ -142,7 +142,6 @@ export const optionStyles = (context, definition) =>
                 }
             `
         ),
-        neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,

@@ -18,13 +18,13 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
@@ -107,10 +107,8 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        border-color: ${neutralFocus};
     }
 
     :host([aria-checked="true"]) .control {
@@ -129,9 +127,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
         border-color: transparent;
     }
 
@@ -152,7 +148,6 @@ export const checkboxStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineActiveBehavior,

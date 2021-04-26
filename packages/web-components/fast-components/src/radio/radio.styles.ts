@@ -17,13 +17,13 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
     neutralOutlineHoverBehavior,
@@ -106,10 +106,8 @@ export const radioStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        border-color: ${neutralFocus};
     }
 
     :host([aria-checked="true"]) .control {
@@ -128,9 +126,7 @@ export const radioStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
         border-color: transparent;
     }
 
@@ -149,7 +145,6 @@ export const radioStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineActiveBehavior,
         neutralOutlineHoverBehavior,

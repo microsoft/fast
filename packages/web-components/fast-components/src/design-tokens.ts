@@ -11,6 +11,7 @@ import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/rec
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
 import { neutralFillToggle as neutralFillToggleAlgorithm } from "./color-vNext/recipes/neutral-fill-toggle";
 import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
+import { neutralFocus as NeutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -557,4 +558,21 @@ export const neutralFillFocus = create<SwatchRGB>("neutral-fill-focus").withDefa
 export const neutralFillSelected = create<SwatchRGB>("neutral-fill-selected").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).selected
+);
+
+// Neutral Focus
+export const NeutralFocus = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-focus",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            NeutralFocusAlgorithm(
+                accentPalette.getValueFor(element),
+                fillColor.getValueFor(element)
+            )
+        )
+);
+export const neutralFocus = create<SwatchRGB>(
+    "neutral-focus"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralFocus)(element)
 );

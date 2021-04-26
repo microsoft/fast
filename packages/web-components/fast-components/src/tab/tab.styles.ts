@@ -19,13 +19,13 @@ import {
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHintBehavior,
     neutralForegroundHoverBehavior,
@@ -91,9 +91,9 @@ export const tabStyles = (context, definition) =>
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
         box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocusBehavior.var};
+            ${neutralFocus};
     }
 
     :host(:focus) {
@@ -120,7 +120,6 @@ export const tabStyles = (context, definition) =>
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-        neutralFocusBehavior,
         neutralForegroundHintBehavior,
         neutralForegroundActiveBehavior,
         neutralForegroundHoverBehavior,

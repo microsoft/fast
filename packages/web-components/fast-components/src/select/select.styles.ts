@@ -20,17 +20,14 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillStealthRest,
+    neutralFocus,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
     accentForegroundFocusBehavior,
-    neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
     neutralLayerFloatingBehavior,
@@ -96,15 +93,15 @@ export const selectStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${neutralFocusBehavior.var};
+        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${neutralFocus};
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
         neutralFocusInnerAccentBehavior.var
     };
-        border-color: ${neutralFocusBehavior.var};
+        border-color: ${neutralFocus};
         background: ${accentFillHover};
         color: ${accentForegroundCut};
     }
@@ -200,9 +197,6 @@ export const selectStyles = (context, definition) =>
     }
 
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
         accentForegroundFocusBehavior,
         forcedColorsStylesheetBehavior(
             css`
@@ -265,9 +259,7 @@ export const selectStyles = (context, definition) =>
             }
         `
         ),
-        neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundRestBehavior,
-        neutralLayerFloatingBehavior,
-        neutralOutlineRestBehavior
+        neutralLayerFloatingBehavior
     );
