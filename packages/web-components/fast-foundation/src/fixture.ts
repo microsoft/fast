@@ -6,7 +6,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
-import type { Registry } from "./di";
+import { DI, Registry } from "./di";
 import type {
     FoundationElement,
     FoundationElementDefinition,
@@ -155,16 +155,14 @@ export async function fixture<TElement = HTMLElement>(
 
     if (Array.isArray(templateNameOrRegistry)) {
         const first = templateNameOrRegistry[0];
-        const container = (options.designSystem || new DesignSystem())
-            .register(templateNameOrRegistry)
-            .applyTo(parent);
-
+        (options.designSystem || DesignSystem.getOrCreate(parent)).register(
+            templateNameOrRegistry
+        );
+        const container = DI.getOrCreateDOMContainer(parent);
         const context = container.get(DesignSystemRegistrationContext);
         const elementName = `${context.elementPrefix}-${first.definition.baseName}`;
         const html = `<${elementName}></${elementName}>`;
         templateNameOrRegistry = new ViewTemplate(html, []);
-    } else if (options.designSystem) {
-        options.designSystem.applyTo(parent);
     }
 
     const view = templateNameOrRegistry.create();
