@@ -11,7 +11,7 @@ import {
     DesignSystemRegistrationContext,
     ElementDefinitionContext,
 } from "../design-system";
-import { Container, Registration, Registry } from "../di";
+import type { Container, Registry } from "../di";
 
 type LazyFoundationOption<T, K extends FoundationElementDefinition> = (
     context: ElementDefinitionContext,
@@ -85,8 +85,6 @@ export type OverrideFoundationElementDefinition<
  * @alpha
  */
 export class FoundationElement extends FASTElement {
-    @Container
-    private container: Container;
     private _presentation: ComponentPresentation | null = null;
 
     /**
@@ -95,9 +93,7 @@ export class FoundationElement extends FASTElement {
      */
     protected get $presentation(): ComponentPresentation {
         if (this._presentation === null) {
-            this._presentation = this.container.get(
-                ComponentPresentation.keyFrom(this.tagName)
-            );
+            this._presentation = ComponentPresentation.forTag(this.tagName, this);
         }
 
         return this._presentation;
@@ -211,9 +207,7 @@ export class FoundationElementRegistry<
                 resolveOption(definition.styles, x, definition)
             );
 
-            x.container.register(
-                Registration.instance(ComponentPresentation.keyFrom(x.name), presentation)
-            );
+            x.definePresentation(presentation);
 
             x.defineElement({
                 elementOptions: resolveOption(definition.elementOptions, x, definition),
