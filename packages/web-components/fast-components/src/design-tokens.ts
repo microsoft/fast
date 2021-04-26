@@ -9,8 +9,11 @@ import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
+import {
+    neutralFillToggle,
+    neutralFillToggle as neutralFillToggleAlgorithm,
+} from "./color-vNext/recipes/neutral-fill-toggle";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
-import { elements } from "@microsoft/fast-element";
 
 const { create } = DesignToken;
 
@@ -110,6 +113,9 @@ export const neutralFillStealthRestDelta = create<number>(
 export const neutralFillStealthSelectedDelta = create<number>(
     "neutral-fill-stealth-selected-delta"
 ).withDefault(7);
+export const neutralFillToggleRestDelta = create<number>(
+    "neutral-fill-toggle-rest-delta"
+).withDefault(0);
 export const neutralFillToggleActiveDelta = create<number>(
     "neutral-fill-toggle-active-delta"
 ).withDefault(-5);
@@ -230,12 +236,12 @@ export const AccentForegroundCutLarge = DI.createInterface<
     )
 );
 
-export const accentForegroundCut = DesignToken.create<SwatchRGB>(
-    "accent-foreground-cut"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentForegroundCut)(element);
-});
-export const accentForegroundCutLarge = DesignToken.create<SwatchRGB>(
+export const accentForegroundCut = create<SwatchRGB>("accent-foreground-cut").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentForegroundCut)(element);
+    }
+);
+export const accentForegroundCutLarge = create<SwatchRGB>(
     "accent-foreground-cut"
 ).withDefault((element: HTMLElement) => {
     return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
@@ -264,31 +270,31 @@ export const AccentFill = DI.createInterface<
     builder.instance(accentFillByContrast(ContrastTarget.normal))
 );
 
-export const accentFillRest = DesignToken.create<SwatchRGB>(
-    "accent-fill-rest"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).rest;
-});
-export const accentFillHover = DesignToken.create<SwatchRGB>(
-    "accent-fill-hover"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).hover;
-});
-export const accentFillActive = DesignToken.create<SwatchRGB>(
-    "accent-fill-active"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).active;
-});
-export const accentFillFocus = DesignToken.create<SwatchRGB>(
-    "accent-fill-focus"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).focus;
-});
-export const accentFillSelected = DesignToken.create<SwatchRGB>(
-    "accent-fill-selected"
-).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).selected;
-});
+export const accentFillRest = create<SwatchRGB>("accent-fill-rest").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).rest;
+    }
+);
+export const accentFillHover = create<SwatchRGB>("accent-fill-hover").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).hover;
+    }
+);
+export const accentFillActive = create<SwatchRGB>("accent-fill-active").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).active;
+    }
+);
+export const accentFillFocus = create<SwatchRGB>("accent-fill-focus").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).focus;
+    }
+);
+export const accentFillSelected = create<SwatchRGB>("accent-fill-selected").withDefault(
+    (element: HTMLElement) => {
+        return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).selected;
+    }
+);
 
 const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) => {
     return accentForegroundAlgorithm(
@@ -311,26 +317,26 @@ export const AccentForeground = DI.createInterface<
     builder.instance(accentForegroundByContrast(ContrastTarget.normal))
 );
 
-export const accentForegroundRest = DesignToken.create<SwatchRGB>(
+export const accentForegroundRest = create<SwatchRGB>(
     "accent-foreground-rest"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).rest
 );
 
-export const accentForegroundHover = DesignToken.create<SwatchRGB>(
+export const accentForegroundHover = create<SwatchRGB>(
     "accent-foreground-hover"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).hover
 );
-export const accentForegroundActive = DesignToken.create<SwatchRGB>(
+export const accentForegroundActive = create<SwatchRGB>(
     "accent-foreground-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).active
 );
-export const accentForegroundFocus = DesignToken.create<SwatchRGB>(
+export const accentForegroundFocus = create<SwatchRGB>(
     "accent-foreground-focus"
 ).withDefault(
     (element: HTMLElement) =>
@@ -349,9 +355,7 @@ export const NeutralDivider = DI.createInterface<(element: HTMLElement) => Swatc
             )
         )
 );
-export const neutralDivider = DesignToken.create<SwatchRGB>(
-    "neutral-divider"
-).withDefault(element =>
+export const neutralDivider = create<SwatchRGB>("neutral-divider").withDefault(element =>
     DI.getOrCreateDOMContainer(element).get(NeutralDivider)(element)
 );
 
@@ -367,7 +371,7 @@ export const NeutralFillCard = DI.createInterface<(element: HTMLElement) => Swat
             )
         )
 );
-export const neutralFillCard = DesignToken.create<SwatchRGB>(
+export const neutralFillCard = create<SwatchRGB>(
     "neutral-fill-card"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralFillCard)(element)
@@ -390,32 +394,32 @@ export const NeutralFillInput = DI.createInterface<
     })
 );
 
-export const neutralFillInputRest = DesignToken.create<SwatchRGB>(
+export const neutralFillInputRest = create<SwatchRGB>(
     "neutral-fill-input-rest"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).rest
 );
-export const neutralFillInputHover = DesignToken.create<SwatchRGB>(
+export const neutralFillInputHover = create<SwatchRGB>(
     "neutral-fill-input-hover"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).hover
 );
 
-export const neutralFillInputFocus = DesignToken.create<SwatchRGB>(
+export const neutralFillInputFocus = create<SwatchRGB>(
     "neutral-fill-input-focus"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).focus
 );
-export const neutralFillInputActive = DesignToken.create<SwatchRGB>(
+export const neutralFillInputActive = create<SwatchRGB>(
     "neutral-fill-input-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).active
 );
-export const neutralFillInputSelected = DesignToken.create<SwatchRGB>(
+export const neutralFillInputSelected = create<SwatchRGB>(
     "neutral-fill-input-selected"
 ).withDefault(
     (element: HTMLElement) =>
@@ -443,35 +447,80 @@ export const NeutralFillStealth = DI.createInterface<
     )
 );
 
-export const neutralFillStealthRest = DesignToken.create<SwatchRGB>(
+export const neutralFillStealthRest = create<SwatchRGB>(
     "neutral-fill-stealth-rest"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).rest
 );
 
-export const neutralFillStealthHover = DesignToken.create<SwatchRGB>(
+export const neutralFillStealthHover = create<SwatchRGB>(
     "neutral-fill-stealth-hover"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).hover
 );
 
-export const neutralFillStealthActive = DesignToken.create<SwatchRGB>(
+export const neutralFillStealthActive = create<SwatchRGB>(
     "neutral-fill-stealth-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).active
 );
-export const neutralFillStealthFocus = DesignToken.create<SwatchRGB>(
+export const neutralFillStealthFocus = create<SwatchRGB>(
     "neutral-fill-stealth-focus"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).focus
 );
-export const neutralFillStealthSelected = DesignToken.create<SwatchRGB>(
+export const neutralFillStealthSelected = create<SwatchRGB>(
     "neutral-fill-stealth-selected"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).selected
+);
+
+// Neutral Fill Toggle
+// TODO: none of these are actually used, do we need them?
+export const NeutralFillToggle = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof neutralFillToggleAlgorithm>
+>("neutral-fill-toggle", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralFillToggleAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element.parentElement || element),
+            neutralFillToggleRestDelta.getValueFor(element),
+            neutralFillToggleHoverDelta.getValueFor(element),
+            neutralFillToggleActiveDelta.getValueFor(element),
+            neutralFillToggleFocusDelta.getValueFor(element)
+        )
+    )
+);
+
+export const neutralFillToggleRest = create<SwatchRGB>(
+    "neutral-fill-rest-delta"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).rest
+);
+
+export const neutralFillToggleHover = create<SwatchRGB>(
+    "neutral-fill-rest-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).hover
+);
+
+export const neutralFillToggleActive = create<SwatchRGB>(
+    "neutral-fill-rest-active"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).active
+);
+
+export const neutralFillToggleFocus = create<SwatchRGB>(
+    "neutral-fill-rest-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).focus
 );
