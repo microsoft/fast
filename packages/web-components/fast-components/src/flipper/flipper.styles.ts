@@ -6,12 +6,16 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { disabledOpacity, focusOutlineWidth, outlineWidth } from "../design-tokens";
+import {
+    accentForegroundCut,
+    disabledOpacity,
+    focusOutlineWidth,
+    outlineWidth,
+} from "../design-tokens";
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
@@ -30,7 +34,7 @@ export const flipperStyles = (context, definition) =>
         margin: 0;
         position: relative;
         fill: currentcolor;
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
         background: transparent;
         outline: none;
         border: none;
@@ -103,7 +107,6 @@ export const flipperStyles = (context, definition) =>
         accentFillActiveBehavior,
         accentFillHoverBehavior,
         accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
         neutralFillStealthRestBehavior,
         neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,

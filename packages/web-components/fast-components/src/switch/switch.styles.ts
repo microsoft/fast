@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -142,7 +143,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]) .checked-indicator {
-        background: ${accentForegroundCutRestBehavior.var};
+        background: ${accentForegroundCut};
     }
 
     :host([aria-checked="true"]) .switch {
@@ -186,7 +187,6 @@ export const switchStyles = (context, definition) =>
         accentFillActiveBehavior,
         accentFillHoverBehavior,
         accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
         neutralFillInputActiveBehavior,
         neutralFillInputHoverBehavior,
         neutralFillInputRestBehavior,

@@ -129,7 +129,7 @@ export class PaletteRGB implements Palette<SwatchRGB> {
      * @param source - The source swatch to create a palette from
      * @returns
      */
-    static from(source: SwatchRGB) {
+    static from(source: SwatchRGB): PaletteRGB {
         return new PaletteRGB(
             source,
             Object.freeze(

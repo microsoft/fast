@@ -1,8 +1,10 @@
-import { DesignToken } from "@microsoft/fast-foundation";
+import { DesignToken, DI } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { Palette, PaletteRGB } from "./color-vNext/palette";
-import { Swatch } from "./color-vNext/swatch";
+import { PaletteRGB } from "./color-vNext/palette";
+import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
+import { accentFill } from "./color-vNext/recipes/accent-fill";
+import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
 
 const { create } = DesignToken;
 
@@ -188,13 +190,46 @@ export const typeRampPlus6LineHeight = create<string>(
     "type-ramp-plus6-line-height"
 ).withDefault("72px");
 
-export const neutralPalette = create<Palette>("neutral-palette").withDefault(
+export const neutralPalette = create<PaletteRGB>("neutral-palette").withDefault(
     PaletteRGB.from(middleGrey)
 );
-export const accentPalette = create<Palette>("accent-palette").withDefault(
+export const accentPalette = create<PaletteRGB>("accent-palette").withDefault(
     PaletteRGB.from(accentBase)
 );
-export const fillColor = create<Swatch>("fill-color").withDefault(element => {
+export const fillColor = create<SwatchRGB>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);
     return palette.get(palette.swatches.length - 1);
+});
+
+enum ContrastTarget {
+    normal = 4.5,
+    large = 7,
+}
+
+const accentForegroundCutByContrast = (contrast: number) => (element: HTMLElement) =>
+    accentForegroundCutAlgorithm(accentPalette.getValueFor(element).source, contrast);
+export const AccentForegroundCut = DI.createInterface<
+    (element: HTMLElement) => SwatchRGB
+>("accent-foreground-cut", builder =>
+    builder.instance((element: HTMLElement) =>
+        accentForegroundCutByContrast(ContrastTarget.normal)(element)
+    )
+);
+export const AccentForegroundCutLarge = DI.createInterface<
+    (element: HTMLElement) => SwatchRGB
+>("accent-foreground-cut-large", builder =>
+    builder.instance((element: HTMLElement) =>
+        accentForegroundCutByContrast(ContrastTarget.large)(element)
+    )
+);
+
+export const accentForegroundCut = DesignToken.create<SwatchRGB>(
+    "accent-foreground-cut"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentForegroundCut)(element);
+});
+export const accentForegroundCutLarge = DesignToken.create<SwatchRGB>(
+    "accent-foreground-cut"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
 });

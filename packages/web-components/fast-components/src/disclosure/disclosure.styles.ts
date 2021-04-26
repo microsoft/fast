@@ -1,5 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     outlineWidth,
@@ -10,7 +11,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundActiveBehavior,
-    accentForegroundCutRestBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
 } from "../styles/recipes";
@@ -30,7 +30,7 @@ export const disclosureStyles = css`
 
     :host([appearance="accent"]) .invoker {
         background: ${accentFillRestBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
         border-radius: calc(${cornerRadius} * 1px);
@@ -81,7 +81,6 @@ export const disclosureStyles = css`
 `.withBehaviors(
     accentFillRestBehavior,
     accentForegroundRestBehavior,
-    accentForegroundCutRestBehavior,
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentFillHoverBehavior,

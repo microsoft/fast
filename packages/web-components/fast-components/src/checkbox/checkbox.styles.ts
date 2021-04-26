@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -79,14 +80,14 @@ export const checkboxStyles = (context, definition) =>
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${accentForegroundCutRestBehavior.var};
+        fill: ${accentForegroundCut};
         opacity: 0;
         pointer-events: none;
     }
 
     .indeterminate-indicator {
         border-radius: calc(${cornerRadius} * 1px);
-        background: ${accentForegroundCutRestBehavior.var};
+        background: ${accentForegroundCut};
         position: absolute;
         top: 50%;
         left: 50%;

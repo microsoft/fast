@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundCut,
     bodyFont,
     designUnit,
     disabledOpacity,
@@ -18,7 +19,6 @@ import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
@@ -89,8 +89,8 @@ export const radioStyles = (context, definition) =>
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        background: ${accentForegroundCutRestBehavior.var};
-        fill: ${accentForegroundCutRestBehavior.var};
+        background: ${accentForegroundCut};
+        fill: ${accentForegroundCut};
         opacity: 0;
         pointer-events: none;
     }
@@ -152,7 +152,6 @@ export const radioStyles = (context, definition) =>
         accentFillActiveBehavior,
         accentFillHoverBehavior,
         accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
         neutralFillInputActiveBehavior,
         neutralFillInputHoverBehavior,
         neutralFillInputRestBehavior,

@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -60,17 +61,17 @@ export const optionStyles = (context, definition) =>
     };
         border-color: ${neutralFocusBehavior.var};
         background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
     }
 
     :host([aria-selected="true"]) {
         background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
     }
 
     :host(:active) {
         background: ${accentFillActiveBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
     }
 
     :host(:not([aria-selected="true"]):hover) {
@@ -125,7 +126,6 @@ export const optionStyles = (context, definition) =>
         accentFillActiveBehavior,
         accentFillHoverBehavior,
         accentFillSelectedBehavior,
-        accentForegroundCutRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host {

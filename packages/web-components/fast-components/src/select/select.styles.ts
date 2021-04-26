@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -21,7 +22,6 @@ import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     accentForegroundFocusBehavior,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
@@ -103,7 +103,7 @@ export const selectStyles = (context, definition) =>
     };
         border-color: ${neutralFocusBehavior.var};
         background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
     }
 
     :host([disabled]) {
@@ -200,7 +200,6 @@ export const selectStyles = (context, definition) =>
         accentFillActiveBehavior,
         accentFillHoverBehavior,
         accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
         accentForegroundFocusBehavior,
         forcedColorsStylesheetBehavior(
             css`
