@@ -23,7 +23,7 @@ const defaultElement = document.createElement("div");
  * Describes a DesignToken instance.
  * @alpha
  */
-export interface DesignToken<T> extends CSSDirective {
+export interface DesignToken<T extends { createCSS?(): string }> extends CSSDirective {
     readonly name: string;
 
     /**
@@ -77,7 +77,8 @@ interface Disposable {
 /**
  * Implementation of {@link (DesignToken:interface)}
  */
-class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
+class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
+    implements DesignToken<T> {
     private cssVar: string;
     private customPropertyChangeHandlers: WeakMap<
         HTMLElement & FASTElement,
@@ -124,8 +125,8 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
         if (!this.customPropertyChangeHandlers.has(element)) {
-            const node = DesignTokenNode.for(this, element);
-            let value = node.value;
+            const node = DesignTokenNode.for<T>(this, element);
+            let value = this.resolveCSSValue(node.value);
 
             const add = () => CustomPropertyManager.addTo(element, this, value);
             const remove = () => CustomPropertyManager.removeFrom(element, this, value);
@@ -133,7 +134,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
             const subscriber: Subscriber & Disposable = {
                 handleChange: (source, key) => {
                     remove();
-                    value = source[key];
+                    value = this.resolveCSSValue(source[key]);
                     add();
                 },
                 dispose: () => {
@@ -168,6 +169,10 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
         DesignTokenNode.for(this, defaultElement).set(value);
 
         return this;
+    }
+
+    private resolveCSSValue(value: T) {
+        return typeof value.createCSS === "function" ? value.createCSS() : value;
     }
 }
 
