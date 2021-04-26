@@ -11,15 +11,11 @@ import {
     density,
     designUnit,
     disabledOpacity,
+    neutralForegroundRest,
     neutralOutlineHover,
     neutralOutlineRest,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const sliderStyles = (context, definition) =>
     css`
@@ -65,22 +61,22 @@ export const sliderStyles = (context, definition) =>
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: all 0.2s ease;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         border-radius: calc(${cornerRadius} * 1px);
     }
     .thumb-cursor:hover {
-        background: ${neutralForegroundHoverBehavior.var};
+        background: ${neutralForegroundRest};
         border-color: ${neutralOutlineHover};
     }
     .thumb-cursor:active {
-        background: ${neutralForegroundActiveBehavior.var};
+        background: ${neutralForegroundRest};
     }
     :host([orientation="horizontal"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
@@ -122,7 +118,6 @@ export const sliderStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .thumb-cursor {

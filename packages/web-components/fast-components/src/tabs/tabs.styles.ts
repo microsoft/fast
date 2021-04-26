@@ -6,10 +6,11 @@ import {
     bodyFont,
     cornerRadius,
     designUnit,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const tabsStyles = (context, definition) =>
     css`
@@ -18,7 +19,7 @@ export const tabsStyles = (context, definition) =>
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForegroundRestBehavior.var};
+            color: ${neutralForegroundRest};
             grid-template-columns: auto 1fr auto;
             grid-template-rows: auto 1fr;
         }
@@ -106,7 +107,6 @@ export const tabsStyles = (context, definition) =>
             transition: transform 0.2s linear;
         }
     `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .activeIndicator,

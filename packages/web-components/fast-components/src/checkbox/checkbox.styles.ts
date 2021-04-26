@@ -19,6 +19,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
@@ -26,11 +27,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
 
 export const checkboxStyles = (context, definition) =>
     css`
@@ -60,7 +57,7 @@ export const checkboxStyles = (context, definition) =>
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -149,7 +146,6 @@ export const checkboxStyles = (context, definition) =>
     }
 `.withBehaviors(
         neutralFocusInnerAccentBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .control {

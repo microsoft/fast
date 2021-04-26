@@ -19,12 +19,13 @@ import {
     neutralFillInputRest,
     neutralFillRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const textAreaStyles = (context, definition) =>
     css`
@@ -37,7 +38,7 @@ export const textAreaStyles = (context, definition) =>
     .control {
         box-sizing: border-box;
         position: relative;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
@@ -94,7 +95,7 @@ export const textAreaStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -119,7 +120,6 @@ export const textAreaStyles = (context, definition) =>
         border-color: ${neutralOutlineRest};
     }
  `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {

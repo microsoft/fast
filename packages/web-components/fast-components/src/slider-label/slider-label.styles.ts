@@ -5,9 +5,10 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
+    neutralForegroundRest,
     neutralOutlineRest,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const horizontalSliderStyles = css`
     :host {
@@ -54,7 +55,7 @@ export const sliderLabelStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             font-family: ${bodyFont};
-            color: ${neutralForegroundRestBehavior.var};
+            color: ${neutralForegroundRest};
             fill: currentcolor;
         }
         .root {
@@ -81,7 +82,6 @@ export const sliderLabelStyles = (context, definition) =>
             opacity: ${disabledOpacity};
         }
     `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .mark {

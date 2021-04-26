@@ -14,6 +14,7 @@ import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutr
 import { neutralFocus as NeutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
 import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes/neutral-outline";
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
+import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -596,6 +597,25 @@ export const neutralForegroundHint = create<SwatchRGB>(
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralForegroundHint)(element)
 );
+
+// Neutral Foreground
+export const NeutralForeground = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof neutralForegroundAlgorithm>
+>("neutral-foreground", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralForegroundAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element)
+        )
+    )
+);
+
+export const neutralForegroundRest = create<SwatchRGB>(
+    "neutral-outline-rest"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralForeground)(element)
+);
+
 // Neutral Outline
 export const NeutralOutline = DI.createInterface<
     (element: HTMLElement) => ReturnType<typeof NeutralOutlineAlgorithm>

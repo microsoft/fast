@@ -11,11 +11,12 @@ import {
     accentForegroundRest,
     bodyFont,
     focusOutlineWidth,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const breadcrumbItemStyles = (context, definition) =>
     css`
@@ -84,12 +85,12 @@ export const breadcrumbItemStyles = (context, definition) =>
     }
 
     .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         height: calc(${focusOutlineWidth} * 1px);
     }
 
     .control:not([href]) {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: default;
     }
 
@@ -118,7 +119,6 @@ export const breadcrumbItemStyles = (context, definition) =>
         margin-inline-start: 6px;
     }
 `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .control:hover .content::before {

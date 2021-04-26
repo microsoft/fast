@@ -17,15 +17,11 @@ import {
     focusOutlineWidth,
     neutralFillHover,
     neutralFocus,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL1Behavior,
-} from "../styles/recipes";
+import { neutralFocusInnerAccentBehavior } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const optionStyles = (context, definition) =>
@@ -36,7 +32,7 @@ export const optionStyles = (context, definition) =>
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${focusOutlineWidth} * 1px) solid transparent;
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
@@ -71,12 +67,12 @@ export const optionStyles = (context, definition) =>
 
     :host(:not([aria-selected="true"]):hover) {
         background: ${neutralFillHover};
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
@@ -142,8 +138,5 @@ export const optionStyles = (context, definition) =>
                 }
             `
         ),
-        neutralFocusInnerAccentBehavior,
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
-        neutralLayerL1Behavior
+        neutralFocusInnerAccentBehavior
     );

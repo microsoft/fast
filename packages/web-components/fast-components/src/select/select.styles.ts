@@ -21,6 +21,7 @@ import {
     neutralFillInputRest,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
@@ -30,7 +31,6 @@ import { elevation } from "../styles/elevation";
 import {
     accentForegroundFocusBehavior,
     neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
     neutralLayerFloatingBehavior,
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
@@ -43,7 +43,7 @@ export const selectStyles = (context, definition) =>
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         font-family: ${bodyFont};
         height: calc(${heightNumber} * 1px);
         position: relative;
@@ -118,7 +118,7 @@ export const selectStyles = (context, definition) =>
 
     :host([disabled]:hover) {
         background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
@@ -260,6 +260,5 @@ export const selectStyles = (context, definition) =>
         `
         ),
         neutralFocusInnerAccentBehavior,
-        neutralForegroundRestBehavior,
         neutralLayerFloatingBehavior
     );

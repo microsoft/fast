@@ -16,14 +16,13 @@ import {
     focusOutlineWidth,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
     neutralLayerL2Behavior,
     neutralLayerL3Behavior,
 } from "../styles/index";
@@ -44,7 +43,7 @@ export const menuItemStyles = (context, definition) =>
         padding: 0;
         margin: 0 calc(${designUnit} * 1px);
         white-space: nowrap;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
@@ -56,19 +55,19 @@ export const menuItemStyles = (context, definition) =>
     :host(:${focusVisible}) {
         border-color: ${neutralFocus};
         background: ${neutralLayerL3Behavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(:hover) {
         background: ${neutralLayerL3Behavior.var};
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
         background: ${neutralLayerL2Behavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
@@ -77,7 +76,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         background: ${neutralFillStealthRest};
     }
@@ -85,7 +84,7 @@ export const menuItemStyles = (context, definition) =>
     :host([disabled]:hover) .start,
     :host([disabled]:hover) .end,
     :host([disabled]:hover)::slotted(svg) {
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRest};
     }
 
     .expand-collapse-glyph {
@@ -125,7 +124,7 @@ export const menuItemStyles = (context, definition) =>
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRest};
     }
 
     :host([aria-haspopup="menu"]),
@@ -184,7 +183,7 @@ export const menuItemStyles = (context, definition) =>
 
     :host .checkbox,
     :host .radio {
-        border: calc(${outlineWidth} * 1px) solid ${neutralForegroundRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]) .checkbox,
@@ -215,7 +214,7 @@ export const menuItemStyles = (context, definition) =>
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRest};
         pointer-events: none;
     }
 
@@ -227,7 +226,7 @@ export const menuItemStyles = (context, definition) =>
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         pointer-events: none;
     }
 
@@ -236,8 +235,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
         neutralLayerL2Behavior,
         neutralLayerL3Behavior,
         forcedColorsStylesheetBehavior(

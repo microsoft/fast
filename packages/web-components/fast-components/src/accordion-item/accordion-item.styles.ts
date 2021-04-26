@@ -12,16 +12,11 @@ import {
     designUnit,
     focusOutlineWidth,
     neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
-import {
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const accordionItemStyles = (context, definition) =>
@@ -57,17 +52,17 @@ export const accordionItemStyles = (context, definition) =>
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-family: inherit;
     }
 
     .button:hover {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button:active {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button::before {
@@ -139,10 +134,6 @@ export const accordionItemStyles = (context, definition) =>
         z-index: 2;
     }
 `.withBehaviors(
-        neutralForegroundActiveBehavior,
-        neutralForegroundFocusBehavior,
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .button:${focusVisible}::before {

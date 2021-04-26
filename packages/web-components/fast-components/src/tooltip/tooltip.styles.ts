@@ -5,14 +5,11 @@ import {
     cornerRadius,
     neutralFillRest,
     neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
 
 export const tooltipStyles = (context, definition) =>
     css`
@@ -29,7 +26,7 @@ export const tooltipStyles = (context, definition) =>
             border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
             box-shadow: 0 0 0 1px ${neutralFocus} inset;
             background: ${neutralFillRest};
-            color: ${neutralForegroundRestBehavior.var};
+            color: ${neutralForegroundRest};
             padding: 4px;
             height: fit-content;
             width: fit-content;
@@ -71,8 +68,6 @@ export const tooltipStyles = (context, definition) =>
             margin-left: 4px;
         }
     `.withBehaviors(
-        neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {

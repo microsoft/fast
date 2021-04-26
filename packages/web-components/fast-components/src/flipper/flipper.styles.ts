@@ -15,14 +15,11 @@ import {
     focusOutlineWidth,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineRest,
     outlineWidth,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
 
 export const flipperStyles = (context, definition) =>
     css`
@@ -69,7 +66,7 @@ export const flipperStyles = (context, definition) =>
         opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
         fill: currentcolor;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled])::before,
@@ -105,7 +102,6 @@ export const flipperStyles = (context, definition) =>
     }
 `.withBehaviors(
         neutralFocusInnerAccentBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host {

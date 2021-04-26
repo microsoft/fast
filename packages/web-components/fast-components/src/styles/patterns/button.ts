@@ -6,10 +6,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../size";
-import {
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-} from "../recipes";
+import { neutralFocusInnerAccentBehavior } from "../recipes";
 import {
     accentFillActive,
     accentFillHover,
@@ -30,6 +27,7 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -47,7 +45,7 @@ export const BaseButtonStyles = css`
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         background-color: ${neutralFillRest};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         border-radius: calc(${cornerRadius} * 1px);
         fill: currentcolor;
         cursor: pointer;
@@ -119,7 +117,6 @@ export const BaseButtonStyles = css`
         margin-inline-start: 11px;
     }
 `.withBehaviors(
-    neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host .control {
@@ -337,11 +334,10 @@ export const LightweightButtonStyles = css`
     }
 
     :host([appearance="lightweight"]) .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         height: calc(${focusOutlineWidth} * 1px);
     }
 `.withBehaviors(
-    neutralForegroundRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host([appearance="lightweight"]) .control:hover,

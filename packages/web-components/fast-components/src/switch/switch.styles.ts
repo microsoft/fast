@@ -20,6 +20,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
@@ -27,7 +28,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const switchStyles = (context, definition) =>
     css`
@@ -97,13 +98,13 @@ export const switchStyles = (context, definition) =>
         position: absolute;
         top: 5px;
         bottom: 5px;
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         border-radius: calc(${cornerRadius} * 1px);
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -115,7 +116,7 @@ export const switchStyles = (context, definition) =>
     }
 
     .label {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
 
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
@@ -176,7 +177,6 @@ export const switchStyles = (context, definition) =>
         display: block;
     }
 `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .checked-indicator,

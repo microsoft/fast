@@ -8,12 +8,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import {
-    heightNumber,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
 import {
     neutralFillStealthHover as neutralFillStealthHoverRecipe,
     neutralFillStealthSelected as neutralFillStealthSelectedRecipe,
@@ -31,6 +26,7 @@ import {
     neutralFillStealthRest,
     neutralFillStealthSelected,
     neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -87,7 +83,7 @@ export const treeItemStyles = (context, definition) =>
         contain: content;
         position: relative;
         outline: none;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         background: ${neutralFillStealthRest};
         cursor: pointer;
         font-family: ${bodyFont};
@@ -106,7 +102,7 @@ export const treeItemStyles = (context, definition) =>
     :host(:${focusVisible}) .positioning-region {
         border: ${neutralFocus} calc(${outlineWidth} * 1px) solid;
         border-radius: calc(${cornerRadius} * 1px);
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .positioning-region {
@@ -260,8 +256,6 @@ export const treeItemStyles = (context, definition) =>
         expandCollapseHoverBehavior,
         selectedExpandCollapseHoverBehavior,
         neutralFocusInnerAccentBehavior,
-        neutralForegroundActiveBehavior,
-        neutralForegroundRestBehavior,
         new DirectionalStyleSheetBehavior(ltr, rtl),
         forcedColorsStylesheetBehavior(
             css`

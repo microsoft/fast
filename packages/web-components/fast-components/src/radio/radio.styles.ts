@@ -18,6 +18,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
+    neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
@@ -25,7 +26,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const radioStyles = (context, definition) =>
     css`
@@ -59,7 +60,7 @@ export const radioStyles = (context, definition) =>
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -142,7 +143,6 @@ export const radioStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .control,
