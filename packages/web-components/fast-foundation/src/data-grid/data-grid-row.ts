@@ -1,11 +1,11 @@
 import {
     attr,
-    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import {
     eventFocusOut,
     eventKeyDown,
@@ -22,7 +22,7 @@ import { DataGridRowTypes } from "./data-grid.options";
  *
  * @public
  */
-export class DataGridRow extends FASTElement {
+export class DataGridRow extends FoundationElement {
     /**
      * String that gets applied to the the css gridTemplateColumns attribute for the row
      *
