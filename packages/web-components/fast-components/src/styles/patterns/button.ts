@@ -66,11 +66,11 @@ export const BaseButtonStyles = css`
         line-height: inherit;
     }
 
-    :host(:hover) {
+    :host(:hover:not([disabled])) {
         background-color: ${neutralFillHoverBehavior.var};
     }
 
-    :host(:active) {
+    :host(:active:not([disabled])) {
         background-color: ${neutralFillActiveBehavior.var};
     }
 
@@ -83,12 +83,6 @@ export const BaseButtonStyles = css`
 
     .control::-moz-focus-inner {
         border: 0;
-    }
-
-    :host([disabled]) {
-        opacity: var(--disabled-opacity);
-        background-color: ${neutralFillRestBehavior.var};
-        cursor: ${disabledCursor};
     }
 
     .start,
@@ -187,20 +181,16 @@ export const AccentButtonStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host([appearance="accent"]:hover) {
+    :host([appearance="accent"]:hover:not([disabled])) {
         background: ${accentFillHoverBehavior.var};
     }
 
-    :host([appearance="accent"]:active) .control:active {
+    :host([appearance="accent"]:active:not([disabled])) .control:active {
         background: ${accentFillActiveBehavior.var};
     }
 
     :host([appearance="accent"]) .control:${focusVisible} {
         box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${neutralFocusInnerAccentBehavior.var};
-    }
-
-    :host([appearance="accent"][disabled]) {
-        background: ${accentFillRestBehavior.var};
     }
 `.withBehaviors(
     accentFillRestBehavior,
