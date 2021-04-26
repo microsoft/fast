@@ -16,6 +16,9 @@ import {
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -26,9 +29,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundFocusBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
@@ -42,7 +42,7 @@ export const selectStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
@@ -91,7 +91,7 @@ export const selectStyles = (context, definition) =>
     }
 
     :host(:not([disabled]):hover) {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${accentFillHover};
     }
 
@@ -126,7 +126,7 @@ export const selectStyles = (context, definition) =>
     }
 
     :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActiveBehavior.var};
+        background: ${neutralFillInputActive};
         border-color: ${accentFillActive};
     }
 
@@ -265,9 +265,6 @@ export const selectStyles = (context, definition) =>
             }
         `
         ),
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
         neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundRestBehavior,

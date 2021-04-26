@@ -13,6 +13,9 @@ import {
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -20,9 +23,6 @@ import {
 import {
     heightNumber,
     neutralFillHoverBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
@@ -41,7 +41,7 @@ export const textAreaStyles = (context, definition) =>
         box-sizing: border-box;
         position: relative;
         color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 2px);
@@ -54,12 +54,12 @@ export const textAreaStyles = (context, definition) =>
     }
 
     .control:hover:enabled {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${accentFillHover};
     }
 
     .control:active:enabled {
-        background: ${neutralFillInputActiveBehavior.var};
+        background: ${neutralFillInputActive};
         border-color: ${accentFillActive};
     }
 
@@ -123,9 +123,6 @@ export const textAreaStyles = (context, definition) =>
     }
  `.withBehaviors(
         neutralFillHoverBehavior,
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
         neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,

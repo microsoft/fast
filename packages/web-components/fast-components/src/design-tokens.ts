@@ -7,6 +7,7 @@ import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNe
 import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
 import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
+import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -368,4 +369,53 @@ export const neutralFillCard = DesignToken.create<SwatchRGB>(
     "neutral-fill-card"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralFillCard)(element)
+);
+
+// Neutral Fill Input
+export const NeutralFillInput = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof NeutralFillInputAlgorithm>
+>("neutral-fill-input", builder =>
+    builder.instance((element: HTMLElement) => {
+        return NeutralFillInputAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element.parentElement || element),
+            neutralFillInputRestDelta.getValueFor(element),
+            neutralFillInputHoverDelta.getValueFor(element),
+            neutralFillInputActiveDelta.getValueFor(element),
+            neutralFillInputFocusDelta.getValueFor(element),
+            neutralFillInputSelectedDelta.getValueFor(element)
+        );
+    })
+);
+
+export const neutralFillInputRest = DesignToken.create<SwatchRGB>(
+    "neutral-fill-input-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).rest
+);
+export const neutralFillInputHover = DesignToken.create<SwatchRGB>(
+    "neutral-fill-input-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).hover
+);
+
+export const neutralFillInputFocus = DesignToken.create<SwatchRGB>(
+    "neutral-fill-input-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).focus
+);
+export const neutralFillInputActive = DesignToken.create<SwatchRGB>(
+    "neutral-fill-input-active"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).active
+);
+export const neutralFillInputSelected = DesignToken.create<SwatchRGB>(
+    "neutral-fill-input-selected"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).selected
 );

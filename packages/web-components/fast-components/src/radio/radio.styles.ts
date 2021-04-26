@@ -14,15 +14,15 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
@@ -55,7 +55,7 @@ export const radioStyles = (context, definition) =>
         box-sizing: border-box;
         border-radius: 999px;
         border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
     }
@@ -96,12 +96,12 @@ export const radioStyles = (context, definition) =>
     }
 
     :host(:not([disabled])) .control:hover{
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${neutralOutlineHoverBehavior.var};
     }
 
     :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActiveBehavior.var};
+        background: ${neutralFillInputActive};
         border-color: ${neutralOutlineActiveBehavior.var};
     }
 
@@ -149,9 +149,6 @@ export const radioStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineActiveBehavior,

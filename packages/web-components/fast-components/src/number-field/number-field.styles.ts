@@ -14,6 +14,8 @@ import {
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillInputHover,
+    neutralFillInputRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -21,8 +23,6 @@ import {
 import {
     heightNumber,
     neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
@@ -43,7 +43,7 @@ export const numberFieldStyles = (context, definition) =>
         display: flex;
         flex-direction: row;
         color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
@@ -134,12 +134,12 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host(:hover:not([disabled])) .root {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${accentFillHover};
     }
 
     :host(:active:not([disabled])) .root {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${accentFillActive};
     }
 
@@ -177,9 +177,6 @@ export const numberFieldStyles = (context, definition) =>
     }
 `.withBehaviors(
         neutralFillHoverBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineRestBehavior,

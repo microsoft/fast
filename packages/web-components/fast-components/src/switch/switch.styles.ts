@@ -16,15 +16,15 @@ import {
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineActiveBehavior,
@@ -68,26 +68,26 @@ export const switchStyles = (context, definition) =>
         box-sizing: border-box;
         width: calc(${heightNumber} * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
     .switch:hover {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${neutralOutlineHoverBehavior.var};
         cursor: pointer;
     }
 
     host([disabled]) .switch:hover,
     host([readonly]) .switch:hover {
-        background: ${neutralFillInputHoverBehavior.var};
+        background: ${neutralFillInputHover};
         border-color: ${neutralOutlineHoverBehavior.var};
         cursor: ${disabledCursor};
     }
 
     :host(:not([disabled])) .switch:active {
-        background: ${neutralFillInputActiveBehavior.var};
+        background: ${neutralFillInputActive};
         border-color: ${neutralOutlineActiveBehavior.var};
     }
 
@@ -183,9 +183,6 @@ export const switchStyles = (context, definition) =>
         display: block;
     }
 `.withBehaviors(
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineActiveBehavior,
