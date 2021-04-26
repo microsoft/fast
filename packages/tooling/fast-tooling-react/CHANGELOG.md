@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.4
+
+Sun, 25 Apr 2021 07:21:02 GMT
+
+### Patches
+
+- CSS control update to override inner web component widths (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.3
 
