@@ -209,7 +209,7 @@ export const accentPalette = create<PaletteRGB>("accent-palette").withDefault(
 );
 export const fillColor = create<SwatchRGB>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);
-    return palette.get(palette.swatches.length - 1);
+    return palette.get(palette.swatches.length - 5);
 });
 
 enum ContrastTarget {
