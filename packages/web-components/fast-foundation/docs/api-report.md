@@ -478,15 +478,6 @@ export class ContainerImpl implements Container {
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @public
-export function createDataGridCellTemplate(prefix: string): ViewTemplate;
-
-// @public
-export function createDataGridRowTemplate(prefix: string): ViewTemplate;
-
-// @public
-export function createDataGridTemplate(prefix: string): ViewTemplate;
-
-// @public
 export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
     constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
     // @internal
@@ -543,8 +534,10 @@ export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
 // @public
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
+// Warning: (ae-incompatible-release-tags) The symbol "DataGrid" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class DataGrid extends FASTElement {
+export class DataGrid extends FoundationElement {
     constructor();
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
@@ -567,15 +560,16 @@ export class DataGrid extends FASTElement {
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
-    prefix: string;
-    // @internal
     rowElements: HTMLElement[];
+    rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     }
 
+// Warning: (ae-incompatible-release-tags) The symbol "DataGridCell" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class DataGridCell extends FASTElement {
+export class DataGridCell extends FoundationElement {
     cellType: DataGridCellTypes;
     columnDefinition: ColumnDefinition | null;
     // @internal (undocumented)
@@ -593,6 +587,9 @@ export class DataGridCell extends FASTElement {
     }
 
 // @public
+export const dataGridCellTemplate: (context: any, definition: any) => ViewTemplate<DataGridCell>;
+
+// @public
 export enum DataGridCellTypes {
     // (undocumented)
     columnHeader = "columnheader",
@@ -600,8 +597,10 @@ export enum DataGridCellTypes {
     default = "default"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "DataGridRow" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class DataGridRow extends FASTElement {
+export class DataGridRow extends FoundationElement {
     // @internal
     activeCellItemTemplate?: ViewTemplate;
     // @internal
@@ -636,6 +635,9 @@ export class DataGridRow extends FASTElement {
     }
 
 // @public
+export const dataGridRowTemplate: (context: any, definition: any) => ViewTemplate<DataGridRow>;
+
+// @public
 export enum DataGridRowTypes {
     // (undocumented)
     default = "default",
@@ -644,6 +646,9 @@ export enum DataGridRowTypes {
     // (undocumented)
     stickyHeader = "sticky-header"
 }
+
+// @public
+export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
 // @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {

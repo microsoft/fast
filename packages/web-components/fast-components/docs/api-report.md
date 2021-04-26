@@ -269,13 +269,13 @@ export const comboboxStyles: (context: any, definition: any) => import("@microso
 export function createColorPalette(baseColor: any): string[];
 
 // @public
-export const DataGridCellStyles: import("@microsoft/fast-element").ElementStyles;
+export const dataGridCellStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
+export const dataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const DataGridStyles: import("@microsoft/fast-element").ElementStyles;
+export const dataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const dialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -451,16 +451,37 @@ export const fastCombobox: (overrideDefinition?: import("@microsoft/fast-foundat
 }, typeof Combobox>;
 
 // @public
-export class FASTDataGrid extends DataGrid {
-}
+export const fastDataGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGrid, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGrid, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof DataGrid>;
 
 // @public
-export class FASTDataGridCell extends DataGridCell {
-}
+export const fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGridCell, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof DataGridCell>;
 
 // @public
-export class FASTDataGridRow extends DataGridRow {
-}
+export const fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<DataGridRow, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof DataGridRow>;
 
 // @public @deprecated
 export interface FASTDesignSystem {

@@ -1,8 +1,7 @@
-import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
-    createDataGridCellTemplate,
-    createDataGridRowTemplate,
-    createDataGridTemplate,
+    dataGridCellTemplate,
+    dataGridRowTemplate,
+    dataGridTemplate,
     DataGrid,
     DataGridCell,
     DataGridRow,
@@ -11,29 +10,24 @@ import { DataGridStyles as gridStyles } from "./data-grid.styles";
 import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
-const gridTemplate: ViewTemplate = createDataGridTemplate("fast");
-const rowTemplate: ViewTemplate = createDataGridRowTemplate("fast");
-const cellTemplate: ViewTemplate = createDataGridCellTemplate("fast");
-
 /**
- * The FAST Data Grid Element.
+ * The FAST Data Grid Cell Element.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid\>
+ * HTML Element: \<fast-data-grid-cell\>
  */
-@customElement({
-    name: "fast-data-grid",
-    template: gridTemplate,
-    styles: gridStyles,
-})
-export class FASTDataGrid extends DataGrid {}
+export const fastDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
+    template: dataGridCellTemplate,
+    styles: cellStyles,
+});
 
 /**
- * Styles for DataGrid
+ * Styles for DataGrid cell
  * @public
  */
-export const DataGridStyles = gridStyles;
+export const dataGridCellStyles = cellStyles;
 
 /**
  * The FAST Data Grid Row Element.
@@ -42,35 +36,33 @@ export const DataGridStyles = gridStyles;
  * @remarks
  * HTML Element: \<fast-data-grid-row\>
  */
-@customElement({
-    name: "fast-data-grid-row",
-    template: rowTemplate,
+export const fastDataGridRow = DataGridRow.compose({
+    baseName: "data-grid-row",
+    template: dataGridRowTemplate,
     styles: rowStyles,
-})
-export class FASTDataGridRow extends DataGridRow {}
+});
 
 /**
  * Styles for DataGrid row
  * @public
  */
-export const DataGridRowStyles = rowStyles;
+export const dataGridRowStyles = rowStyles;
 
 /**
- * The FAST Data Grid Cell Element.
+ * The FAST Data Grid Element.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid-cell\>
+ * HTML Element: \<fast-data-grid\>
  */
-@customElement({
-    name: "fast-data-grid-cell",
-    template: cellTemplate,
-    styles: cellStyles,
-})
-export class FASTDataGridCell extends DataGridCell {}
+export const fastDataGrid = DataGrid.compose({
+    baseName: "data-grid",
+    template: dataGridTemplate,
+    styles: gridStyles,
+});
 
 /**
- * Styles for DataGrid cell
+ * Styles for DataGrid
  * @public
  */
-export const DataGridCellStyles = cellStyles;
+export const dataGridStyles = gridStyles;
