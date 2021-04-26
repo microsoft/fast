@@ -7,6 +7,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     accentForegroundCut,
     bodyFont,
     cornerRadius,
@@ -41,7 +44,7 @@ export const selectStyles = (context, definition) =>
         --elevation: 14;
         background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
         color: ${neutralForegroundRestBehavior.var};
         font-family: ${bodyFont};
@@ -89,7 +92,7 @@ export const selectStyles = (context, definition) =>
 
     :host(:not([disabled]):hover) {
         background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        border-color: ${accentFillHover};
     }
 
     :host(:${focusVisible}) {
@@ -102,7 +105,7 @@ export const selectStyles = (context, definition) =>
         neutralFocusInnerAccentBehavior.var
     };
         border-color: ${neutralFocusBehavior.var};
-        background: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
         color: ${accentForegroundCut};
     }
 
@@ -124,7 +127,7 @@ export const selectStyles = (context, definition) =>
 
     :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        border-color: ${accentFillActive};
     }
 
     :host([open][position="above"]) .listbox,

@@ -1,5 +1,8 @@
 import { css } from "@microsoft/fast-element";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     accentForegroundCut,
     bodyFont,
     cornerRadius,
@@ -9,7 +12,6 @@ import {
 import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
-    accentFillRestBehavior,
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
@@ -29,7 +31,7 @@ export const disclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker {
-        background: ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
         color: ${accentForegroundCut};
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
@@ -42,11 +44,11 @@ export const disclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker:active {
-        background: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
     }
 
     :host([appearance="accent"]) .invoker:hover {
-        background: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
     }
 
     :host([appearance="lightweight"]) .invoker {
@@ -79,7 +81,6 @@ export const disclosureStyles = css`
         }
     }
 `.withBehaviors(
-    accentFillRestBehavior,
     accentForegroundRestBehavior,
     accentForegroundActiveBehavior,
     accentForegroundHoverBehavior,

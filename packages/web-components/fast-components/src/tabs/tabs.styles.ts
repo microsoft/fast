@@ -2,17 +2,14 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillRestBehavior,
-    heightNumber,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
 
 export const tabsStyles = (context, definition) =>
     css`
@@ -48,7 +45,7 @@ export const tabsStyles = (context, definition) =>
             width: 100%;
             height: 5px;
             justify-self: center;
-            background: ${accentFillRestBehavior.var};
+            background: ${accentFillRest};
             margin-top: 10px;
             border-radius: calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0 0;
         }
@@ -100,7 +97,7 @@ export const tabsStyles = (context, definition) =>
             height: 100%;
             margin-inline-end: 10px;
             align-self: center;
-            background: ${accentFillRestBehavior.var};
+            background: ${accentFillRest};
             margin-top: 0;
             border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
         }
@@ -109,7 +106,6 @@ export const tabsStyles = (context, definition) =>
             transition: transform 0.2s linear;
         }
     `.withBehaviors(
-        accentFillRestBehavior,
         neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`

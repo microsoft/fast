@@ -6,6 +6,9 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -15,9 +18,6 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
     heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputActiveBehavior,
@@ -43,7 +43,7 @@ export const textAreaStyles = (context, definition) =>
         color: ${neutralForegroundRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: ${typeRampBaseFontSize};
@@ -55,12 +55,12 @@ export const textAreaStyles = (context, definition) =>
 
     .control:hover:enabled {
         background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        border-color: ${accentFillHover};
     }
 
     .control:active:enabled {
         background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        border-color: ${accentFillActive};
     }
 
     .control:hover,
@@ -122,9 +122,6 @@ export const textAreaStyles = (context, definition) =>
         border-color: ${neutralOutlineRestBehavior.var};
     }
  `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
         neutralFillHoverBehavior,
         neutralFillInputActiveBehavior,
         neutralFillInputHoverBehavior,

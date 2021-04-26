@@ -6,6 +6,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     density,
     designUnit,
@@ -15,7 +16,6 @@ import {
     typeRampMinus1LineHeight,
 } from "../design-tokens";
 import {
-    accentFillRestBehavior,
     neutralDividerRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
@@ -104,7 +104,7 @@ export const accordionItemStyles = (context, definition) =>
 
     slot[name="expanded-icon"],
     slot[name="collapsed-icon"] {
-        fill: ${accentFillRestBehavior.var};
+        fill: ${accentFillRest};
     }
 
     slot[name="collapsed-icon"] {
@@ -140,7 +140,6 @@ export const accordionItemStyles = (context, definition) =>
         z-index: 2;
     }
 `.withBehaviors(
-        accentFillRestBehavior,
         neutralDividerRestBehavior,
         neutralForegroundActiveBehavior,
         neutralForegroundFocusBehavior,

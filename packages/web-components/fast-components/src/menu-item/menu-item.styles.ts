@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -18,7 +19,6 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillRestBehavior,
     heightNumber,
     neutralFillStealthRestBehavior,
     neutralFocusBehavior,
@@ -189,8 +189,8 @@ export const menuItemStyles = (context, definition) =>
 
     :host([aria-checked="true"]) .checkbox,
     :host([aria-checked="true"]) .radio {
-        background: ${accentFillRestBehavior.var};
-        border-color: ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
     }
 
     :host .checkbox {
@@ -236,7 +236,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        accentFillRestBehavior,
         neutralFillStealthRestBehavior,
         neutralFocusBehavior,
         neutralForegroundHoverBehavior,

@@ -7,6 +7,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -16,9 +19,6 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
     heightNumber,
     neutralFillHoverBehavior,
     neutralFillInputHoverBehavior,
@@ -45,7 +45,7 @@ export const numberFieldStyles = (context, definition) =>
         color: ${neutralForegroundRestBehavior.var};
         background: ${neutralFillInputRestBehavior.var};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
     }
 
@@ -135,12 +135,12 @@ export const numberFieldStyles = (context, definition) =>
 
     :host(:hover:not([disabled])) .root {
         background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        border-color: ${accentFillHover};
     }
 
     :host(:active:not([disabled])) .root {
         background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        border-color: ${accentFillActive};
     }
 
     :host(:focus-within:not([disabled])) .root {
@@ -176,9 +176,6 @@ export const numberFieldStyles = (context, definition) =>
         border-color: ${neutralOutlineRestBehavior.var};
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
         neutralFillHoverBehavior,
         neutralFillInputHoverBehavior,
         neutralFillInputRestBehavior,

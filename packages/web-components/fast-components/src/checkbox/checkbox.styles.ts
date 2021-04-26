@@ -7,6 +7,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     accentForegroundCut,
     bodyFont,
     cornerRadius,
@@ -17,9 +20,6 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
     accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillInputActiveBehavior,
@@ -115,18 +115,18 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]) .control {
-        background: ${accentFillRestBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHoverBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
-        background: ${accentFillActiveBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
@@ -153,9 +153,6 @@ export const checkboxStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
         accentForegroundCutRestBehavior,
         neutralFillInputActiveBehavior,
         neutralFillInputHoverBehavior,

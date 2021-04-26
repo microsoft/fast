@@ -8,6 +8,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     accentForegroundCut,
     bodyFont,
     cornerRadius,
@@ -18,10 +21,6 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
     heightNumber,
     neutralFillInputActiveBehavior,
     neutralFillInputHoverBehavior,
@@ -147,18 +146,18 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]) .switch {
-        background: ${accentFillRestBehavior.var};
-        border-color: ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .switch:hover {
-        background: ${accentFillHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .switch:active {
-        background: ${accentFillActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
@@ -184,9 +183,6 @@ export const switchStyles = (context, definition) =>
         display: block;
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
         neutralFillInputActiveBehavior,
         neutralFillInputHoverBehavior,
         neutralFillInputRestBehavior,

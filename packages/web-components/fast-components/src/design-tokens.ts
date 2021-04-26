@@ -3,8 +3,9 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { PaletteRGB } from "./color-vNext/palette";
 import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
-import { accentFill } from "./color-vNext/recipes/accent-fill";
+import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
 import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
+import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
 
 const { create } = DesignToken;
 
@@ -233,3 +234,53 @@ export const accentForegroundCutLarge = DesignToken.create<SwatchRGB>(
 ).withDefault((element: HTMLElement) => {
     return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
 });
+
+const accentFillByContrast = (contrast: number) => (element: HTMLElement) => {
+    return accentFillAlgorithm(
+        accentPalette.getValueFor(element),
+        neutralPalette.getValueFor(element),
+        fillColor.getValueFor(element.parentElement || element),
+        accentForegroundCut.getValueFor(element),
+        contrast,
+        accentFillHoverDelta.getValueFor(element),
+        accentFillActiveDelta.getValueFor(element),
+        accentFillFocusDelta.getValueFor(element),
+        accentFillSelectedDelta.getValueFor(element),
+        neutralFillRestDelta.getValueFor(element),
+        neutralFillHoverDelta.getValueFor(element),
+        neutralFillActiveDelta.getValueFor(element)
+    );
+};
+export const AccentFill = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof accentFillAlgorithm>
+>("accent-fill", builder =>
+    builder.instance(accentFillByContrast(ContrastTarget.normal))
+);
+
+export const accentFillRest = DesignToken.create<SwatchRGB>(
+    "accent-fill-rest"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).rest;
+});
+export const accentFillHover = DesignToken.create<SwatchRGB>(
+    "accent-fill-hover"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).hover;
+});
+export const accentFillActive = DesignToken.create<SwatchRGB>(
+    "accent-fill-active"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).active;
+});
+export const accentFillFocus = DesignToken.create<SwatchRGB>(
+    "accent-fill-focus"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).focus;
+});
+export const accentFillSelected = DesignToken.create<SwatchRGB>(
+    "accent-fill-selected"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).selected;
+});
+
+const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) => {};
