@@ -7,6 +7,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusOutlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillSelectedBehavior,
@@ -27,28 +36,28 @@ export const optionStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;
-        font-family: var(--body-font);
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--focus-outline-width) * 1px) solid transparent;
+        font-family: ${bodyFont};
+        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${focusOutlineWidth} * 1px) solid transparent;
         box-sizing: border-box;
         color: ${neutralForegroundRestBehavior.var};
         cursor: pointer;
         fill: currentcolor;
-        font-size: var(--type-ramp-base-font-size);
+        font-size: ${typeRampBaseFontSize};
         height: calc(${heightNumber} * 1px);
-        line-height: var(--type-ramp-base-line-height);
-        margin: 0 calc(var(--design-unit) * 1px);
+        line-height: ${typeRampBaseLineHeight};
+        margin: 0 calc(${designUnit} * 1px);
         outline: none;
         overflow: hidden;
-        padding: 0 calc(var(--design-unit) * 2.25px);
+        padding: 0 calc(${designUnit} * 2.25px);
         user-select: none;
         white-space: nowrap;
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
-            neutralFocusInnerAccentBehavior.var
-        };
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
+        neutralFocusInnerAccentBehavior.var
+    };
         border-color: ${neutralFocusBehavior.var};
         background: ${accentFillHoverBehavior.var};
         color: ${accentForegroundCutRestBehavior.var};
@@ -76,7 +85,7 @@ export const optionStyles = (context, definition) =>
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]:hover) {
@@ -100,8 +109,8 @@ export const optionStyles = (context, definition) =>
         ${
             /* Glyph size and margin-left is temporary - replace when adaptive typography is figured out */ ""
         }
-        height: calc(var(--design-unit) * 4px);
-        width: calc(var(--design-unit) * 4px);
+        height: calc(${designUnit} * 4px);
+        width: calc(${designUnit} * 4px);
     }
 
     ::slotted([slot="end"]) {

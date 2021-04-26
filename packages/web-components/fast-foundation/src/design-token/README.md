@@ -57,19 +57,42 @@ fillColor.withDefault("#FFFFFF");
 A Design Token can be made available in CSS through CSS custom properties. The custom property value will be set to the token's value for the supplied target element.
 
 ```ts
-fillColor.addCustomPropertyFor(descendent); // --background-color: #FFFFFF;
+fillColor.addCustomPropertyFor(descendent); // --fill-color: #FFFFFF;
 ```
 
 If the value of the token *changes* for the target element, the CSS custom property will be updated to the new value:
 
 ```ts
-fillColor.setValueFor(descendent, "#F7F7F7"); // --background-color: #F7F7F7;
+fillColor.setValueFor(descendent, "#F7F7F7"); // --fill-color: #F7F7F7;
 ```
 
 The CSS custom property can also be removed through a parallel method:
 
 ```ts
 fillColor.removeCustomPropertyFor(descendent);
+```
+
+#### Values with a 'createCSS' method
+It is sometimes useful to be able to set a token to a complex object but still use that value in CSS. If a DesignToken is assigned a value with a `createCSS` method on it, the product of that method will be used when emitting to a CSS custom property instead of the Design Token value itself:
+
+```ts
+interface RGBColor {
+    r: number;
+    g: number;
+    b: number;
+    createCSS(): string;
+}
+const fancyFillColor = DesignToken.create<RGBColor>("fancy-fill-color");
+const value = {
+    r: 255,
+    g: 0,
+    b: 0,
+    createCSS() {
+        return `rgb(${this.r}, ${this.g}, ${this.b})`;
+    }
+}
+fancyFillColor.setValueFor(descendent, value)
+fancyFillColor.addCustomPropertyFor(descendent); // --fancy-fill-color: rgb(255, 0, 0);
 ```
 
 ## Using Design Tokens in CSS

@@ -1,6 +1,13 @@
 import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
+    bodyFont,
+    cornerRadius,
+    outlineWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import {
     accentFillActiveBehavior,
     accentFillHoverBehavior,
     accentFillRestBehavior,
@@ -25,17 +32,17 @@ export const tooltipStyles = (context, definition) =>
 
         .tooltip {
             box-sizing: border-box;
-            border-radius: calc(var(--corner-radius) * 1px);
-            border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
+            border-radius: calc(${cornerRadius} * 1px);
+            border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
             box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
             background: ${neutralFillRestBehavior.var};
             color: ${neutralForegroundRestBehavior.var};
             padding: 4px;
             height: fit-content;
             width: fit-content;
-            font-family: var(--body-font);
-            font-size: var(--type-ramp-base-font-size);
-            line-height: var(--type-ramp-base-line-height);
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
             white-space: nowrap;
             ${/* TODO: a mechanism to manage z-index across components
             https://github.com/microsoft/fast/issues/3813 */ ""}

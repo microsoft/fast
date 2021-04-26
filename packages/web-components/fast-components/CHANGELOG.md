@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Fri, 16 Apr 2021 01:19:08 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.20.3
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- add pointer-events none to button styles to prevent focus rect outline (chhol@microsoft.com)
+- add function to check for separator, add example and update style for not href item (khamu@microsoft.com)
 
 ## 1.20.1
 

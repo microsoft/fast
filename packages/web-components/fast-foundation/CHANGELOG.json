@@ -2,6 +2,37 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
+      "tag": "@microsoft/fast-foundation_v1.19.0",
+      "version": "1.19.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding withDefault method to DesignToken",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e53592ca1d600076cc91dc4e8a54dc9f6a51e1a1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "docs: missing events in the menu api",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "679f9f026aec2c069e0387d6af9de7043a9cd7eb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add function to check for separator, add example and update style for not href item",
+            "author": "khamu@microsoft.com",
+            "commit": "e8efeefeca3743076874cd51c06fa3ea7d13e7d0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Apr 2021 01:19:08 GMT",
       "tag": "@microsoft/fast-foundation_v1.18.0",
       "version": "1.18.0",

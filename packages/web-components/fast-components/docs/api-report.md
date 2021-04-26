@@ -462,7 +462,7 @@ export class FASTDataGridCell extends DataGridCell {
 export class FASTDataGridRow extends DataGridRow {
 }
 
-// @public
+// @public @deprecated
 export interface FASTDesignSystem {
     accentBaseColor: string;
     // (undocumented)
@@ -586,7 +586,7 @@ export interface FASTDesignSystem {
     typeRampPlus6LineHeight: string;
 }
 
-// @public
+// @public @deprecated
 export const fastDesignSystemDefaults: FASTDesignSystem;
 
 // @public
