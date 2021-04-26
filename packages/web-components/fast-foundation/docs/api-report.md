@@ -774,16 +774,21 @@ export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @alpha (undocumented)
-export class DesignSystem {
+export interface DesignSystem {
     // (undocumented)
-    applyTo(element: HTMLElement): Container;
+    register(...params: any[]): DesignSystem;
     // (undocumented)
-    register(...params: any[]): this;
+    withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
     // (undocumented)
-    withElementDisambiguation(callback: ElementDisambiguationCallback): this;
-    // (undocumented)
-    withPrefix(prefix: string): this;
+    withPrefix(prefix: string): DesignSystem;
 }
+
+// @alpha (undocumented)
+export const DesignSystem: Readonly<{
+    tagFor(type: Constructable): string;
+    responsibleFor(element: HTMLElement): DesignSystem;
+    getOrCreate(element?: HTMLElement): DesignSystem;
+}>;
 
 // @public
 export interface DesignSystemConsumer {
