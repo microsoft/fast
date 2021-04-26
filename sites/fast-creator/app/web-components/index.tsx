@@ -20,9 +20,12 @@ import {
 } from "@microsoft/fast-tooling-react";
 
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
+import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
+import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { FormId } from "../creator.props";
+import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
 
 /**
@@ -188,6 +191,21 @@ export function getSliderControls(
     ];
 }
 
+function getCSSControls(): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id: "style",
+        context: ControlContext.fill,
+        control: (config: ControlConfig): React.ReactNode => {
+            return (
+                <CSSControl
+                    css={(CSSProperties as unknown) as CSSPropertiesDictionary}
+                    {...config}
+                />
+            );
+        },
+    });
+}
+
 export function renderFormTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -218,7 +236,7 @@ export function renderFormTabs(
                 <ModularForm
                     key={FormId.component}
                     messageSystem={fastMessageSystem}
-                    controls={[linkedDataControl]}
+                    controls={[linkedDataControl, getCSSControls()]}
                     categories={componentCategories}
                 />
             </fast-tab-panel>
@@ -231,6 +249,7 @@ export function renderFormTabs(
                         linkedDataControl,
                         ...getSliderControls(handleDesignSystemChange),
                         ...getColorPickerControls(handleDesignSystemChange),
+                        getCSSControls(),
                     ]}
                     categories={componentCategories}
                 />
