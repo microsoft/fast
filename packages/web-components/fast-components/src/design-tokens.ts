@@ -6,6 +6,7 @@ import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/rec
 import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
 import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
 import { Swatch as SwatchRGB } from "./color-vNext/swatch";
+import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -349,4 +350,22 @@ export const neutralDivider = DesignToken.create<SwatchRGB>(
     "neutral-divider"
 ).withDefault(element =>
     DI.getOrCreateDOMContainer(element).get(NeutralDivider)(element)
+);
+
+// Neutral Fill Card
+export const NeutralFillCard = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-fill-card",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            neutralFillCardAlgorithm(
+                neutralPalette.getValueFor(element),
+                fillColor.getValueFor(element.parentElement || element),
+                neutralFillCardDelta.getValueFor(element)
+            )
+        )
+);
+export const neutralFillCard = DesignToken.create<SwatchRGB>(
+    "neutral-fill-card"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralFillCard)(element)
 );
