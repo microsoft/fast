@@ -1,11 +1,12 @@
 import { DesignToken, DI } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { PaletteRGB } from "./color-vNext/palette";
+import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
+import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
+import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
+import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
 import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
-import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
-import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
-import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
 
 const { create } = DesignToken;
 
@@ -207,6 +208,7 @@ enum ContrastTarget {
     large = 7,
 }
 
+// Accent Foreground Cut
 const accentForegroundCutByContrast = (contrast: number) => (element: HTMLElement) =>
     accentForegroundCutAlgorithm(accentPalette.getValueFor(element).source, contrast);
 export const AccentForegroundCut = DI.createInterface<
@@ -235,6 +237,7 @@ export const accentForegroundCutLarge = DesignToken.create<SwatchRGB>(
     return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
 });
 
+// Accent Fill
 const accentFillByContrast = (contrast: number) => (element: HTMLElement) => {
     return accentFillAlgorithm(
         accentPalette.getValueFor(element),
@@ -295,6 +298,9 @@ const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) 
     );
 };
 
+/**
+ * Accent Foreground
+ */
 export const AccentForeground = DI.createInterface<
     (element: HTMLElement) => ReturnType<typeof accentForegroundAlgorithm>
 >("accent-foreground", builder =>
@@ -325,4 +331,22 @@ export const accentForegroundFocus = DesignToken.create<SwatchRGB>(
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).focus
+);
+
+// Neutral Divider
+export const NeutralDivider = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-divider",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            neutralDividerAlgorithm(
+                neutralPalette.getValueFor(element),
+                fillColor.getValueFor(element),
+                neutralDividerRestDelta.getValueFor(element)
+            )
+        )
+);
+export const neutralDivider = DesignToken.create<SwatchRGB>(
+    "neutral-divider"
+).withDefault(element =>
+    DI.getOrCreateDOMContainer(element).get(NeutralDivider)(element)
 );
