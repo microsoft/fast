@@ -8,10 +8,6 @@ export * from "./index";
 /**
  * TODO rename this to FASTDesignSystem when {@link @FASTDesignSystem} interface is removed.
  */
-export const fastDesignSystem = new DesignSystem();
-
-Object.values(fastComponents).forEach(definition => {
-    fastDesignSystem.register(definition());
-});
-
-fastDesignSystem.applyTo(document.body);
+export const fastDesignSystem = DesignSystem.getOrCreate().register(
+    ...Object.values(fastComponents).map(definition => definition())
+);

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "fix(fast-components): update rollup index to use the new DS API",
+  "packageName": "@microsoft/fast-components",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
