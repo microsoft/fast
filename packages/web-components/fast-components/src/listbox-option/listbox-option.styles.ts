@@ -15,16 +15,11 @@ import {
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillHover,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    neutralFillHoverBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundHoverBehavior,
@@ -75,12 +70,12 @@ export const optionStyles = (context, definition) =>
     }
 
     :host(:not([aria-selected="true"]):hover) {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
         color: ${neutralForegroundHoverBehavior.var};
     }
 
     :host(:not([aria-selected="true"]):active) {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
         color: ${neutralForegroundHoverBehavior.var};
     }
 
@@ -147,10 +142,6 @@ export const optionStyles = (context, definition) =>
                 }
             `
         ),
-        neutralFillHoverBehavior,
-        neutralFillStealthHoverBehavior,
-        neutralFillStealthRestBehavior,
-        neutralFillStealthSelectedBehavior,
         neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundHoverBehavior,

@@ -1,8 +1,8 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { accentForegroundRest, designUnit } from "../design-tokens";
-import { neutralFillRestBehavior, neutralForegroundHintBehavior } from "../styles";
+import { accentForegroundRest, designUnit, neutralFillRest } from "../design-tokens";
+import { neutralForegroundHintBehavior } from "../styles";
 
 export const progressStyles = (context, definition) =>
     css`
@@ -14,7 +14,7 @@ export const progressStyles = (context, definition) =>
         }
 
         .progress {
-            background-color: ${neutralFillRestBehavior.var};
+            background-color: ${neutralFillRest};
             border-radius: calc(${designUnit} * 1px);
             width: 100%;
             height: 100%;
@@ -65,7 +65,7 @@ export const progressStyles = (context, definition) =>
         :host([paused]) .indeterminate-indicator-1,
         :host([paused]) .indeterminate-indicator-2 {
             animation-play-state: paused;
-            background-color: ${neutralFillRestBehavior.var};
+            background-color: ${neutralFillRest};
         }
 
         :host([paused]) .determinate {
@@ -108,7 +108,6 @@ export const progressStyles = (context, definition) =>
             }
         }
     `.withBehaviors(
-        neutralFillRestBehavior,
         neutralForegroundHintBehavior,
         forcedColorsStylesheetBehavior(
             css`

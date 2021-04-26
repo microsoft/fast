@@ -2,8 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
-import { neutralFillRestBehavior } from "../styles";
-import { cornerRadius, fillColor } from "../design-tokens";
+import { cornerRadius, neutralFillRest } from "../design-tokens";
 
 export const skeletonStyles = (context, definition) =>
     css`
@@ -53,10 +52,7 @@ export const skeletonStyles = (context, definition) =>
             );
             background-size: 0px 0px / 90% 100%;
             background-repeat: no-repeat;
-            background-color: var(
-                --skeleton-animation-fill,
-                ${neutralFillRestBehavior.var}
-            );
+            background-color: var(--skeleton-animation-fill, ${neutralFillRest});
             animation: shimmer 2s infinite;
             animation-timing-function: var(
                 --skeleton-animation-timing,
@@ -84,7 +80,6 @@ export const skeletonStyles = (context, definition) =>
             }
         }
     `.withBehaviors(
-        neutralFillRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host {

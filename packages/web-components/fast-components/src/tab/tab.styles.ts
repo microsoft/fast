@@ -15,6 +15,9 @@ import {
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
     neutralFillStealthRest,
     outlineWidth,
     typeRampBaseFontSize,
@@ -22,9 +25,6 @@ import {
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillActiveBehavior,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHintBehavior,
@@ -72,19 +72,19 @@ export const tabStyles = (context, definition) =>
     }
 
     :host([aria-selected="true"]) {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
         color: ${accentForegroundRest};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:hover) {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
         color: ${accentForegroundHover};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:active) {
-        background: ${neutralFillActiveBehavior.var};
+        background: ${neutralFillActive};
         color: ${accentForegroundActive};
         fill: currentcolor;
     }
@@ -120,9 +120,6 @@ export const tabStyles = (context, definition) =>
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-        neutralFillActiveBehavior,
-        neutralFillHoverBehavior,
-        neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundHintBehavior,
         neutralForegroundActiveBehavior,

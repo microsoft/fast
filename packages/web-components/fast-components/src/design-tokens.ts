@@ -9,10 +9,8 @@ import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
-import {
-    neutralFillToggle,
-    neutralFillToggle as neutralFillToggleAlgorithm,
-} from "./color-vNext/recipes/neutral-fill-toggle";
+import { neutralFillToggle as neutralFillToggleAlgorithm } from "./color-vNext/recipes/neutral-fill-toggle";
+import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -523,4 +521,40 @@ export const neutralFillToggleFocus = create<SwatchRGB>(
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).focus
+);
+// Neutral Fill
+export const NeutralFill = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof neutralFillAlgorithm>
+>("neutral-fill", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralFillAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element.parentElement || element),
+            neutralFillRestDelta.getValueFor(element),
+            neutralFillHoverDelta.getValueFor(element),
+            neutralFillActiveDelta.getValueFor(element),
+            neutralFillFocusDelta.getValueFor(element),
+            neutralFillSelectedDelta.getValueFor(element)
+        )
+    )
+);
+export const neutralFillRest = create<SwatchRGB>("neutral-fill-rest").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).rest
+);
+export const neutralFillHover = create<SwatchRGB>("neutral-fill-hover").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).hover
+);
+export const neutralFillActive = create<SwatchRGB>("neutral-fill-active").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).active
+);
+export const neutralFillFocus = create<SwatchRGB>("neutral-fill-focus").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).focus
+);
+export const neutralFillSelected = create<SwatchRGB>("neutral-fill-selected").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).selected
 );

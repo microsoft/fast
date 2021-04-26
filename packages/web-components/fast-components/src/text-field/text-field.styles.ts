@@ -14,16 +14,16 @@ import {
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
@@ -124,11 +124,11 @@ export const textFieldStyles = (context, definition) =>
     }
 
     :host([appearance="filled"]) .root {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
     }
 
     :host([appearance="filled"]:hover:not([disabled])) .root {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
     }
 
     :host([disabled]) .label,
@@ -146,8 +146,6 @@ export const textFieldStyles = (context, definition) =>
         border-color: ${neutralOutlineRestBehavior.var};
     }
 `.withBehaviors(
-        neutralFillHoverBehavior,
-        neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineRestBehavior,

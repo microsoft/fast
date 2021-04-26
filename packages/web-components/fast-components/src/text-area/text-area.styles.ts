@@ -13,17 +13,17 @@ import {
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
@@ -76,11 +76,11 @@ export const textAreaStyles = (context, definition) =>
     }
 
     :host([appearance="filled"]) .control {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
     }
 
     :host([appearance="filled"]:hover:not([disabled])) .control {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
     }
 
     :host([resize="both"]) .control {
@@ -122,8 +122,6 @@ export const textAreaStyles = (context, definition) =>
         border-color: ${neutralOutlineRestBehavior.var};
     }
  `.withBehaviors(
-        neutralFillHoverBehavior,
-        neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineRestBehavior,

@@ -3,19 +3,12 @@ import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     cornerRadius,
+    neutralFillRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
     neutralOutlineRestBehavior,
@@ -35,7 +28,7 @@ export const tooltipStyles = (context, definition) =>
             border-radius: calc(${cornerRadius} * 1px);
             border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
             box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
-            background: ${neutralFillRestBehavior.var};
+            background: ${neutralFillRest};
             color: ${neutralForegroundRestBehavior.var};
             padding: 4px;
             height: fit-content;
@@ -78,14 +71,6 @@ export const tooltipStyles = (context, definition) =>
             margin-left: 4px;
         }
     `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        neutralFillHoverBehavior,
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFillRestBehavior,
         neutralFocusBehavior,
         neutralForegroundRestBehavior,
         neutralOutlineRestBehavior,
