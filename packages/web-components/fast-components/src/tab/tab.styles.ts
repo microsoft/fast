@@ -20,6 +20,7 @@ import {
     neutralFillRest,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundHint,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -27,7 +28,6 @@ import {
 import {
     heightNumber,
     neutralForegroundActiveBehavior,
-    neutralForegroundHintBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
 } from "../styles";
@@ -41,7 +41,7 @@ export const tabStyles = (context, definition) =>
         line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
         padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
-        color: ${neutralForegroundHintBehavior.var};
+        color: ${neutralForegroundHint};
         fill: currentcolor;
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid transparent;
@@ -67,7 +67,7 @@ export const tabStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundHintBehavior.var};
+        color: ${neutralForegroundHint};
         background: ${neutralFillStealthRest};
     }
 
@@ -120,7 +120,6 @@ export const tabStyles = (context, definition) =>
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-        neutralForegroundHintBehavior,
         neutralForegroundActiveBehavior,
         neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,

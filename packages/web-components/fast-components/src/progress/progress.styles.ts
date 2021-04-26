@@ -1,8 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { accentForegroundRest, designUnit, neutralFillRest } from "../design-tokens";
-import { neutralForegroundHintBehavior } from "../styles";
+import {
+    accentForegroundRest,
+    designUnit,
+    neutralFillRest,
+    neutralForegroundHint,
+} from "../design-tokens";
 
 export const progressStyles = (context, definition) =>
     css`
@@ -69,7 +73,7 @@ export const progressStyles = (context, definition) =>
         }
 
         :host([paused]) .determinate {
-            background-color: ${neutralForegroundHintBehavior.var};
+            background-color: ${neutralForegroundHint};
         }
 
         @keyframes indeterminate-1 {
@@ -108,7 +112,6 @@ export const progressStyles = (context, definition) =>
             }
         }
     `.withBehaviors(
-        neutralForegroundHintBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .progress {

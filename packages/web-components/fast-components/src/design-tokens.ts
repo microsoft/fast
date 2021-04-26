@@ -12,6 +12,8 @@ import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext
 import { neutralFillToggle as neutralFillToggleAlgorithm } from "./color-vNext/recipes/neutral-fill-toggle";
 import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
 import { neutralFocus as NeutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
+import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes/neutral-outline";
+import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 
 const { create } = DesignToken;
@@ -575,4 +577,56 @@ export const neutralFocus = create<SwatchRGB>(
     "neutral-focus"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralFocus)(element)
+);
+
+// Neutral Foreground Hint
+export const NeutralForegroundHint = DI.createInterface<
+    (element: HTMLElement) => SwatchRGB
+>("neutral-foreground-hint", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralForegroundHintAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element)
+        )
+    )
+);
+
+export const neutralForegroundHint = create<SwatchRGB>(
+    "neutral-foreground-hint"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralForegroundHint)(element)
+);
+// Neutral Outline
+export const NeutralOutline = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof NeutralOutlineAlgorithm>
+>("neutral-outline", builder =>
+    builder.instance((element: HTMLElement) =>
+        NeutralOutlineAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            neutralOutlineRestDelta.getValueFor(element),
+            neutralOutlineHoverDelta.getValueFor(element),
+            neutralOutlineActiveDelta.getValueFor(element),
+            neutralOutlineFocusDelta.getValueFor(element)
+        )
+    )
+);
+
+export const neutralOutlineRest = create<SwatchRGB>("neutral-outline-rest").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).rest
+);
+export const neutralOutlineHover = create<SwatchRGB>("neutral-outline-hover").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).hover
+);
+export const neutralOutlineActive = create<SwatchRGB>(
+    "neutral-outline-active"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).active
+);
+export const neutralOutlineFocus = create<SwatchRGB>("neutral-outline-focus").withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).focus
 );

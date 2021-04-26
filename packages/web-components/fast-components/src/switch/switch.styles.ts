@@ -20,17 +20,14 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
 
 export const switchStyles = (context, definition) =>
     css`
@@ -70,25 +67,25 @@ export const switchStyles = (context, definition) =>
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
     }
 
     .switch:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        border-color: ${neutralOutlineHover};
         cursor: pointer;
     }
 
     host([disabled]) .switch:hover,
     host([readonly]) .switch:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        border-color: ${neutralOutlineHover};
         cursor: ${disabledCursor};
     }
 
     :host(:not([disabled])) .switch:active {
         background: ${neutralFillInputActive};
-        border-color: ${neutralOutlineActiveBehavior.var};
+        border-color: ${neutralOutlineActive};
     }
 
     :host(:${focusVisible}) .switch {
@@ -180,9 +177,6 @@ export const switchStyles = (context, definition) =>
     }
 `.withBehaviors(
         neutralForegroundRestBehavior,
-        neutralOutlineActiveBehavior,
-        neutralOutlineHoverBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .checked-indicator,

@@ -1,8 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { accentForegroundRest, neutralFillRest } from "../design-tokens";
-import { heightNumber, neutralForegroundHintBehavior } from "../styles";
+import {
+    accentForegroundRest,
+    neutralFillRest,
+    neutralForegroundHint,
+} from "../design-tokens";
+import { heightNumber } from "../styles";
 
 export const progressRingStyles = (context, defintion) =>
     css`
@@ -52,7 +56,7 @@ export const progressRingStyles = (context, defintion) =>
         }
 
         :host([paused]) .determinate {
-            stroke: ${neutralForegroundHintBehavior.var};
+            stroke: ${neutralForegroundHint};
         }
 
         @keyframes spin-infinite {
@@ -70,7 +74,6 @@ export const progressRingStyles = (context, defintion) =>
             }
         }
     `.withBehaviors(
-        neutralForegroundHintBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .indeterminate-indicator-1,

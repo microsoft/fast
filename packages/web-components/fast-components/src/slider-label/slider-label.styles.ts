@@ -1,12 +1,13 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { bodyFont, designUnit, disabledOpacity } from "../design-tokens";
 import {
-    heightNumber,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    bodyFont,
+    designUnit,
+    disabledOpacity,
+    neutralOutlineRest,
+} from "../design-tokens";
+import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
 
 export const horizontalSliderStyles = css`
     :host {
@@ -73,7 +74,7 @@ export const sliderLabelStyles = (context, definition) =>
         .mark {
             width: calc((${designUnit} / 4) * 1px);
             height: calc(${heightNumber} * 0.25 * 1px);
-            background: ${neutralOutlineRestBehavior.var};
+            background: ${neutralOutlineRest};
             justify-self: center;
         }
         :host(.disabled) {
@@ -81,7 +82,6 @@ export const sliderLabelStyles = (context, definition) =>
         }
     `.withBehaviors(
         neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .mark {

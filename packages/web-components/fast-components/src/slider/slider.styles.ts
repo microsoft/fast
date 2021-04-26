@@ -6,15 +6,19 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { cornerRadius, density, designUnit, disabledOpacity } from "../design-tokens";
+import {
+    cornerRadius,
+    density,
+    designUnit,
+    disabledOpacity,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "../design-tokens";
 import {
     heightNumber,
-    neutralFocusBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
 } from "../styles/index";
 
 export const sliderStyles = (context, definition) =>
@@ -73,7 +77,7 @@ export const sliderStyles = (context, definition) =>
     }
     .thumb-cursor:hover {
         background: ${neutralForegroundHoverBehavior.var};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        border-color: ${neutralOutlineHover};
     }
     .thumb-cursor:active {
         background: ${neutralForegroundActiveBehavior.var};
@@ -102,7 +106,7 @@ export const sliderStyles = (context, definition) =>
         height: 100%;
     }
     .track {
-        background: ${neutralOutlineRestBehavior.var};
+        background: ${neutralOutlineRest};
         position: absolute;
         border-radius: calc(${cornerRadius} * 1px);
     }
@@ -118,12 +122,7 @@ export const sliderStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralFocusBehavior,
-        neutralForegroundActiveBehavior,
-        neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,
-        neutralOutlineHoverBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .thumb-cursor {

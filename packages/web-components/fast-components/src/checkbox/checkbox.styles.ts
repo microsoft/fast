@@ -19,6 +19,9 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFocus,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -27,9 +30,6 @@ import {
     heightNumber,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
 } from "../styles/index";
 
 export const checkboxStyles = (context, definition) =>
@@ -52,7 +52,7 @@ export const checkboxStyles = (context, definition) =>
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
         background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
@@ -98,12 +98,12 @@ export const checkboxStyles = (context, definition) =>
 
     :host(:not([disabled])) .control:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        border-color: ${neutralOutlineHover};
     }
 
     :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActive};
-        border-color: ${neutralOutlineActiveBehavior.var};
+        border-color: ${neutralOutlineActive};
     }
 
     :host(:${focusVisible}) .control {
@@ -150,9 +150,6 @@ export const checkboxStyles = (context, definition) =>
 `.withBehaviors(
         neutralFocusInnerAccentBehavior,
         neutralForegroundRestBehavior,
-        neutralOutlineActiveBehavior,
-        neutralOutlineHoverBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .control {

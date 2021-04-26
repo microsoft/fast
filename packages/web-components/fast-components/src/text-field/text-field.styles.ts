@@ -19,15 +19,12 @@ import {
     neutralFillInputRest,
     neutralFillRest,
     neutralFocus,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+import { heightNumber, neutralForegroundRestBehavior } from "../styles/index";
 
 export const textFieldStyles = (context, definition) =>
     css`
@@ -143,11 +140,10 @@ export const textFieldStyles = (context, definition) =>
     }
 
     :host([disabled]) .control {
-        border-color: ${neutralOutlineRestBehavior.var};
+        border-color: ${neutralOutlineRest};
     }
 `.withBehaviors(
         neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .root,
