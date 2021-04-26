@@ -7,6 +7,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -76,19 +79,19 @@ export const tabStyles = (context, definition) =>
 
     :host([aria-selected="true"]) {
         background: ${neutralFillRestBehavior.var};
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:hover) {
         background: ${neutralFillHoverBehavior.var};
-        color: ${accentForegroundHoverBehavior.var};
+        color: ${accentForegroundHover};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:active) {
         background: ${neutralFillActiveBehavior.var};
-        color: ${accentForegroundActiveBehavior.var};
+        color: ${accentForegroundActive};
         fill: currentcolor;
     }
 
@@ -123,12 +126,6 @@ export const tabStyles = (context, definition) =>
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        accentForegroundActiveBehavior,
-        accentForegroundHoverBehavior,
-        accentForegroundRestBehavior,
         neutralFillActiveBehavior,
         neutralFillHoverBehavior,
         neutralFillRestBehavior,

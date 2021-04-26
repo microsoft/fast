@@ -9,7 +9,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRestBehavior,
     heightNumber,
     neutralFillStealthActiveBehavior,
     neutralFillStealthHoverBehavior,
@@ -23,6 +22,7 @@ import {
 import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
 import {
+    accentForegroundRest,
     bodyFont,
     cornerRadius,
     designUnit,
@@ -245,7 +245,7 @@ export const treeItemStyles = (context, definition) =>
         ${
             /* The french fry background needs to be calculated based on the selected background state for this control.
             We currently have no way of changing that, so setting to accent-foreground-rest for the time being */ ""
-        } background: ${accentForegroundRestBehavior.var};
+        } background: ${accentForegroundRest};
         border-radius: calc(${cornerRadius} * 1px);
     }
 
@@ -254,7 +254,6 @@ export const treeItemStyles = (context, definition) =>
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
 `.withBehaviors(
-        accentForegroundRestBehavior,
         neutralFillStealthSelectedBehavior,
         neutralFillStealthActiveBehavior,
         expandCollapseHoverBehavior,

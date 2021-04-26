@@ -283,4 +283,46 @@ export const accentFillSelected = DesignToken.create<SwatchRGB>(
     return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).selected;
 });
 
-const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) => {};
+const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) => {
+    return accentForegroundAlgorithm(
+        accentPalette.getValueFor(element),
+        fillColor.getValueFor(element),
+        contrast,
+        accentForegroundRestDelta.getValueFor(element),
+        accentForegroundHoverDelta.getValueFor(element),
+        accentForegroundActiveDelta.getValueFor(element),
+        accentForegroundFocusDelta.getValueFor(element)
+    );
+};
+
+export const AccentForeground = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof accentForegroundAlgorithm>
+>("accent-foreground", builder =>
+    builder.instance(accentForegroundByContrast(ContrastTarget.normal))
+);
+
+export const accentForegroundRest = DesignToken.create<SwatchRGB>(
+    "accent-foreground-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).rest
+);
+
+export const accentForegroundHover = DesignToken.create<SwatchRGB>(
+    "accent-foreground-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).hover
+);
+export const accentForegroundActive = DesignToken.create<SwatchRGB>(
+    "accent-foreground-active"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).active
+);
+export const accentForegroundFocus = DesignToken.create<SwatchRGB>(
+    "accent-foreground-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).focus
+);
