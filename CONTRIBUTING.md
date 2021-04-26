@@ -83,6 +83,10 @@ If you'd like to contribute by fixing a bug, implementing a feature, or even cor
 #### Change Files
 Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `yarn change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
 
+:::note
+When working across feature branches, you'll need to target the branch using the following command: `yarn change -- branch origin/{branch-name}`.
+:::
+
 **Example: Generated change file:**
 ```json
 {

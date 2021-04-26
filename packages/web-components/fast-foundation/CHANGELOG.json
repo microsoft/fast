@@ -2,6 +2,20 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 25 Apr 2021 07:21:02 GMT",
+      "tag": "@microsoft/fast-foundation_v1.20.0",
+      "version": "1.20.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "048081bd5d85c62911d4a4105cbbd23c60ae446d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Apr 2021 07:21:10 GMT",
       "tag": "@microsoft/fast-foundation_v1.19.0",
       "version": "1.19.0",
