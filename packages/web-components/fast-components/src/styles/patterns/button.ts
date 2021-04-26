@@ -30,6 +30,9 @@ import {
     density,
     designUnit,
     focusOutlineWidth,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -401,13 +404,6 @@ export const OutlineButtonStyles = css`
         box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${neutralFocusBehavior.var};
         border-color: ${neutralFocusBehavior.var};
     }
-<<<<<<< HEAD
-=======
-
-    :host([appearance="outline"][disabled]) {
-        border-color: ${accentFillRest};
-    }
->>>>>>> add accent-fill design tokens
 `.withBehaviors(
     neutralFocusBehavior,
     forcedColorsStylesheetBehavior(
@@ -444,20 +440,24 @@ export const OutlineButtonStyles = css`
  */
 export const StealthButtonStyles = css`
     :host([appearance="stealth"]) {
-        background: ${neutralFillStealthRestBehavior.var};
+        background: ${neutralFillStealthRest};
     }
 
     :host([appearance="stealth"]:hover) {
-        background: ${neutralFillStealthHoverBehavior.var};
+        background: ${neutralFillStealthHover};
     }
 
     :host([appearance="stealth"]:active) {
-        background: ${neutralFillStealthActiveBehavior.var};
+        background: ${neutralFillStealthActive};
     }
+<<<<<<< HEAD
+=======
+
+    :host([appearance="stealth"][disabled]) {
+        background: ${neutralFillStealthRest};
+    }
+>>>>>>> adding neutral-fill-stealth
 `.withBehaviors(
-    neutralFillStealthRestBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthActiveBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host([appearance="stealth"]),

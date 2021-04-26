@@ -14,13 +14,13 @@ import {
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillStealthRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralForegroundHoverBehavior,
     neutralForegroundRestBehavior,
@@ -79,7 +79,7 @@ export const menuItemStyles = (context, definition) =>
     :host([disabled]:hover) {
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
-        background: ${neutralFillStealthRestBehavior.var}
+        background: ${neutralFillStealthRest};
     }
 
     :host([disabled]:hover) .start,
@@ -236,7 +236,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        neutralFillStealthRestBehavior,
         neutralFocusBehavior,
         neutralForegroundHoverBehavior,
         neutralForegroundRestBehavior,

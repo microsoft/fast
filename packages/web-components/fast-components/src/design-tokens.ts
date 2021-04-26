@@ -8,7 +8,9 @@ import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes
 import { Swatch as SwatchRGB } from "./color-vNext/swatch";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
+import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
+import { elements } from "@microsoft/fast-element";
 
 const { create } = DesignToken;
 
@@ -418,4 +420,58 @@ export const neutralFillInputSelected = DesignToken.create<SwatchRGB>(
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).selected
+);
+
+// Neutral Fill Stealth
+export const NeutralFillStealth = DI.createInterface<
+    (element: HTMLElement) => ReturnType<typeof neutralFillStealthAlgorithm>
+>("neutral-fill-stealth", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralFillStealthAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element.parentElement || element),
+            neutralFillStealthRestDelta.getValueFor(element),
+            neutralFillStealthHoverDelta.getValueFor(element),
+            neutralFillStealthActiveDelta.getValueFor(element),
+            neutralFillStealthFocusDelta.getValueFor(element),
+            neutralFillStealthSelectedDelta.getValueFor(element),
+            neutralFillRestDelta.getValueFor(element),
+            neutralFillHoverDelta.getValueFor(element),
+            neutralFillActiveDelta.getValueFor(element),
+            neutralFillFocusDelta.getValueFor(element)
+        )
+    )
+);
+
+export const neutralFillStealthRest = DesignToken.create<SwatchRGB>(
+    "neutral-fill-stealth-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).rest
+);
+
+export const neutralFillStealthHover = DesignToken.create<SwatchRGB>(
+    "neutral-fill-stealth-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).hover
+);
+
+export const neutralFillStealthActive = DesignToken.create<SwatchRGB>(
+    "neutral-fill-stealth-active"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).active
+);
+export const neutralFillStealthFocus = DesignToken.create<SwatchRGB>(
+    "neutral-fill-stealth-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).focus
+);
+export const neutralFillStealthSelected = DesignToken.create<SwatchRGB>(
+    "neutral-fill-stealth-selected"
+).withDefault(
+    (element: HTMLElement) =>
+        DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).selected
 );

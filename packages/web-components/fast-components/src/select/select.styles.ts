@@ -19,6 +19,7 @@ import {
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillStealthRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -29,7 +30,6 @@ import {
     accentFillHoverBehavior,
     accentFillRestBehavior,
     accentForegroundFocusBehavior,
-    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
@@ -120,7 +120,7 @@ export const selectStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        background: ${neutralFillStealthRestBehavior.var};
+        background: ${neutralFillStealthRest};
         color: ${neutralForegroundRestBehavior.var};
         fill: currentcolor;
     }

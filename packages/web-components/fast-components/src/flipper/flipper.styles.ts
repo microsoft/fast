@@ -13,11 +13,11 @@ import {
     accentForegroundCut,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillStealthRest,
     outlineWidth,
 } from "../design-tokens";
 import {
     heightNumber,
-    neutralFillStealthRestBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundRestBehavior,
@@ -75,7 +75,7 @@ export const flipperStyles = (context, definition) =>
     :host([disabled])::before,
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
-        background: ${neutralFillStealthRestBehavior.var};
+        background: ${neutralFillStealthRest};
         border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
     }
 
@@ -104,7 +104,6 @@ export const flipperStyles = (context, definition) =>
         border: 0;
     }
 `.withBehaviors(
-        neutralFillStealthRestBehavior,
         neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundRestBehavior,

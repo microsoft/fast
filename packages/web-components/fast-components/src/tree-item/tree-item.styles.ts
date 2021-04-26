@@ -10,16 +10,15 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     heightNumber,
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFillStealthSelectedBehavior,
     neutralFocusBehavior,
     neutralFocusInnerAccentBehavior,
     neutralForegroundActiveBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
-import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
+import {
+    neutralFillStealthHover as neutralFillStealthHoverRecipe,
+    neutralFillStealthSelected as neutralFillStealthSelectedRecipe,
+} from "../color/index";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
 import {
     accentForegroundRest,
@@ -28,6 +27,10 @@ import {
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralFillStealthSelected,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -68,13 +71,13 @@ export const expandCollapseButtonSize =
 
 const expandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-hover",
-    x => neutralFillStealthHover(neutralFillStealthHover)(x),
+    x => neutralFillStealthHoverRecipe(neutralFillStealthHoverRecipe)(x),
     FASTDesignSystemProvider.findProvider
 );
 
 const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-stealth-hover-over-selected",
-    x => neutralFillStealthHover(neutralFillStealthSelected)(x),
+    x => neutralFillStealthHoverRecipe(neutralFillStealthSelectedRecipe)(x),
     FASTDesignSystemProvider.findProvider
 );
 
@@ -85,7 +88,7 @@ export const treeItemStyles = (context, definition) =>
         position: relative;
         outline: none;
         color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillStealthRestBehavior.var};
+        background: ${neutralFillStealthRest};
         cursor: pointer;
         font-family: ${bodyFont};
         --expand-collapse-button-size: calc(${heightNumber} * 1px);
@@ -122,11 +125,11 @@ export const treeItemStyles = (context, definition) =>
     }
 
     .positioning-region:hover {
-        background: ${neutralFillStealthHoverBehavior.var};
+        background: ${neutralFillStealthHover};
     }
 
     .positioning-region:active {
-        background: ${neutralFillStealthActiveBehavior.var};
+        background: ${neutralFillStealthActive};
     }
 
     .content-region {
@@ -228,7 +231,7 @@ export const treeItemStyles = (context, definition) =>
     }
     
     :host([selected]) .positioning-region {
-        background: ${neutralFillStealthSelectedBehavior.var};
+        background: ${neutralFillStealthSelected};
     }
 
     :host([selected]) .expand-collapse-button:hover {
@@ -254,12 +257,8 @@ export const treeItemStyles = (context, definition) =>
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
 `.withBehaviors(
-        neutralFillStealthSelectedBehavior,
-        neutralFillStealthActiveBehavior,
         expandCollapseHoverBehavior,
-        neutralFillStealthHoverBehavior,
         selectedExpandCollapseHoverBehavior,
-        neutralFillStealthRestBehavior,
         neutralFocusBehavior,
         neutralFocusInnerAccentBehavior,
         neutralForegroundActiveBehavior,
