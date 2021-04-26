@@ -2,15 +2,23 @@
 import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { DesignSystem } from "../design-system";
+import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
 
-new DesignSystem().register(
-    FoundationElement.compose({ type: class extends FoundationElement { }, template: html`<slot></slot>`, baseName: "custom-element" })()
-).applyTo(document.body)
+const elementName = uniqueElementName();
+
+DesignSystem.getOrCreate()
+    .register(
+        FoundationElement.compose({ 
+            type: class extends FoundationElement { }, 
+            baseName: elementName,
+            template: html`<slot></slot>`
+        })()
+    );
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
-    const el = document.createElement("fast-custom-element") as any;
+    const el = document.createElement(`fast-${elementName}`) as any;
     parent.appendChild(el);
     return el;
 }

@@ -68,31 +68,97 @@ const elementTagsByType = new Map<Constructable, string>();
 /**
  * @alpha
  */
-export class DesignSystem {
-    private registrations: any[] = [];
+export interface DesignSystem {
+    register(...params: any[]): DesignSystem;
+    withPrefix(prefix: string): DesignSystem;
+    withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
+}
+
+const designSystemKey = DI.createInterface<DesignSystem>(x =>
+    x.cachedCallback(handler => {
+        const element = document.body as any;
+        const owned = element.$designSystem as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        return new DefaultDesignSystem(element, handler);
+    })
+);
+
+/**
+ * @alpha
+ */
+export const DesignSystem = Object.freeze({
+    tagFor(type: Constructable): string {
+        return elementTagsByType.get(type)!;
+    },
+
+    responsibleFor(element: HTMLElement): DesignSystem {
+        const owned = (element as any).$designSystem as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        const container = DI.findResponsibleContainer(element);
+        return container.get(designSystemKey);
+    },
+
+    getOrCreate(element: HTMLElement = document.body): DesignSystem {
+        const owned = (element as any).$designSystem as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        const container = DI.getOrCreateDOMContainer(element);
+
+        if (!container.has(designSystemKey, false)) {
+            container.register(
+                Registration.instance(
+                    designSystemKey,
+                    new DefaultDesignSystem(element, container)
+                )
+            );
+        }
+
+        return container.get(designSystemKey);
+    },
+});
+
+class DefaultDesignSystem implements DesignSystem {
     private prefix: string = "fast";
     private disambiguate: ElementDisambiguationCallback = () => null;
+    private context: DesignSystemRegistrationContext;
 
-    public withPrefix(prefix: string) {
+    constructor(private host: HTMLElement, private container: Container) {
+        (host as any).$designSystem = this;
+
+        container.register(
+            Registration.callback(DesignSystemRegistrationContext, () => this.context)
+        );
+    }
+
+    public withPrefix(prefix: string): DesignSystem {
         this.prefix = prefix;
         return this;
     }
 
-    public withElementDisambiguation(callback: ElementDisambiguationCallback) {
+    public withElementDisambiguation(
+        callback: ElementDisambiguationCallback
+    ): DesignSystem {
         this.disambiguate = callback;
         return this;
     }
 
-    public register(...params: any[]) {
-        this.registrations.push(...params);
-        return this;
-    }
-
-    public applyTo(element: HTMLElement) {
-        const container = DI.getOrCreateDOMContainer(element);
+    public register(...registrations: any[]): DesignSystem {
+        const container = this.container;
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
-        const context: DesignSystemRegistrationContext = {
+
+        const context: DesignSystemRegistrationContext = (this.context = {
             elementPrefix: this.prefix,
             tryDefineElement(
                 name: string,
@@ -131,13 +197,9 @@ export class DesignSystem {
                     )
                 );
             },
-        };
+        });
 
-        container.register(
-            Registration.instance(DesignSystemRegistrationContext, context)
-        );
-
-        container.register(...this.registrations);
+        container.register(...registrations);
 
         for (const entry of elementDefinitionEntries) {
             entry.callback(entry);
@@ -147,7 +209,7 @@ export class DesignSystem {
             }
         }
 
-        return container;
+        return this;
     }
 }
 
@@ -170,6 +232,6 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
     }
 
     tagFor(type: Constructable): string {
-        return elementTagsByType.get(type)!;
+        return DesignSystem.tagFor(type)!;
     }
 }
