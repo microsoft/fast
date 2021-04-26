@@ -132,7 +132,8 @@ describe("FoundationElement", () => {
             });
 
             const host = document.createElement("div");
-            const container = new DesignSystem().register(myElement()).applyTo(host);
+            DesignSystem.getOrCreate(host).register(myElement());
+            const container = DI.getOrCreateDOMContainer(host);
 
             const fullName = `fast-${baseName}`;
             const presentation = container.get<DefaultComponentPresentation>(
@@ -171,7 +172,8 @@ describe("FoundationElement", () => {
             });
 
             const host = document.createElement("div");
-            const container = new DesignSystem().register(myElement()).applyTo(host);
+            DesignSystem.getOrCreate(host).register(myElement());
+            const container = DI.getOrCreateDOMContainer(host);
 
             const presentation = container.get<DefaultComponentPresentation>(
                 ComponentPresentation.keyFrom(fullName)
@@ -200,9 +202,9 @@ describe("FoundationElement", () => {
             };
 
             const host = document.createElement("div");
-            const container = new DesignSystem()
-                .register(myElement(overrides))
-                .applyTo(host);
+            DesignSystem.getOrCreate(host)
+                .register(myElement(overrides));
+            const container = DI.getOrCreateDOMContainer(host);
 
             const originalFullName = `fast-${originalName}`;
             const overrideFullName = `my-${overrideName}`;
