@@ -6,8 +6,8 @@ import {
     MessageSystemNavigationTypeAction,
     MessageSystemType,
 } from "../../message-system";
-import dataDictionaryConfig from "../../../app/examples/render/data-dictionary-config";
-import schemaDictionary from "../../../app/examples/render/schema-dictionary";
+import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-config";
+import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { nativeElementDefinitions } from "../../definitions";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 import { HTMLRender } from "./html-render";
@@ -16,7 +16,7 @@ HTMLRender;
 HTMLRenderLayer;
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const FASTMessageSystemWorker = require("../../../../message-system.min.js");
+const FASTMessageSystemWorker = require("../../../message-system.min.js");
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 
@@ -53,9 +53,7 @@ async function setup() {
     const { element, connect, disconnect } = await fixture<HTMLRender>(
         html`
             <fast-tooling-html-render>
-                <fast-tooling-html-render-layer-test
-                    role="htmlrenderlayer"
-                ></fast-tooling-html-render-layer-test>
+                <fast-tooling-html-render-layer-test role="htmlrenderlayer" />
             </fast-tooling-html-render>
         `
     );
@@ -77,7 +75,7 @@ describe("HTMLRender", () => {
         await DOM.nextUpdate();
 
         expect(element.layers).to.not.be.null;
-        expect(element.layers.length).to.be.equal(1);
+        expect(element.querySelector("[role=htmlrenderlayer]")).to.not.be.null;
         const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
         expect(el).to.not.be.null;
 
@@ -143,16 +141,36 @@ describe("HTMLRender", () => {
 
         expect(messageSent).to.equal("root");
 
+        container.dispatchEvent(
+            new KeyboardEvent("keyup", { key: "Tab", shiftKey: true })
+        );
+        await DOM.nextUpdate();
+
+        expect(messageSent).to.equal("span");
+
         container.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
+        await DOM.nextUpdate();
+
+        expect(messageSent).to.equal("span");
+
+        container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
+        await DOM.nextUpdate();
+        messageSent = "";
+        container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
+        await DOM.nextUpdate();
+        expect(messageSent).to.equal("");
+
+        container.dispatchEvent(
+            new KeyboardEvent("keyup", { key: "Tab", shiftKey: true })
+        );
         await DOM.nextUpdate();
 
         expect(messageSent).to.equal("root");
 
-        messageSent = "";
-
-        container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
+        container.dispatchEvent(new KeyboardEvent("keyup", { key: "a" }));
         await DOM.nextUpdate();
-        expect(messageSent).to.equal("");
+
+        expect(messageSent).to.equal("root");
 
         await disconnect();
     });
@@ -195,23 +213,30 @@ describe("HTMLRender", () => {
         el.click();
         await DOM.nextUpdate();
 
-        let activity: ActivityResult = (element.layers[0] as HTMLRenderLayerTest)
-            .lastActivity;
+        let activity: ActivityResult = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.click).to.equal(true);
         expect(activity.datadictionaryid).to.equal("root");
-        (element.layers[0] as HTMLRenderLayerTest).lastActivity = null;
+        (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity = null;
 
         const container = element.shadowRoot?.querySelector(".htmlRender");
         expect(container).to.not.be.null;
         container.click();
         await DOM.nextUpdate();
 
-        activity = (element.layers[0] as HTMLRenderLayerTest).lastActivity;
+        activity = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.clear).to.equal(true);
         expect(activity.datadictionaryid).to.equal("");
-        (element.layers[0] as HTMLRenderLayerTest).lastActivity = null;
+        (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity = null;
 
         await disconnect();
     });
@@ -229,21 +254,53 @@ describe("HTMLRender", () => {
         });
         await DOM.nextUpdate();
 
-        let activity: ActivityResult = (element.layers[0] as HTMLRenderLayerTest)
-            .lastActivity;
+        let activity: ActivityResult = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.hover).to.equal(true);
         expect(activity.datadictionaryid).to.equal("root");
-        (element.layers[0] as HTMLRenderLayerTest).lastActivity = null;
+        (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity = null;
 
         element.blurHandler({});
         await DOM.nextUpdate();
 
-        activity = (element.layers[0] as HTMLRenderLayerTest).lastActivity;
+        activity = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.blur).to.equal(true);
         expect(activity.datadictionaryid).to.equal("");
-        (element.layers[0] as HTMLRenderLayerTest).lastActivity = null;
+        (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity = null;
+
+        await disconnect();
+    });
+    it("should not send hover activity on clicked elements to layers", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+        await DOM.nextUpdate();
+
+        const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        expect(el).to.not.be.null;
+        el.click();
+        await DOM.nextUpdate();
+
+        element.hoverHandler({
+            composedPath: () => {
+                return [el];
+            },
+        });
+        await DOM.nextUpdate();
+        const activity: ActivityResult = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
+        expect(activity).to.not.be.null;
+        expect(activity.activityType === ActivityType.click).to.equal(true);
+        expect(activity.datadictionaryid).to.equal("root");
 
         await disconnect();
     });
@@ -260,12 +317,15 @@ describe("HTMLRender", () => {
         });
 
         await DOM.nextUpdate();
-        const activity: ActivityResult = (element.layers[0] as HTMLRenderLayerTest)
-            .lastActivity;
+        const activity: ActivityResult = (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.click).to.equal(true);
         expect(activity.datadictionaryid).to.equal("root");
-        (element.layers[0] as HTMLRenderLayerTest).lastActivity = null;
+        (element.querySelector(
+            "[role=htmlrenderlayer]"
+        ) as HTMLRenderLayerTest).lastActivity = null;
 
         await disconnect();
     });

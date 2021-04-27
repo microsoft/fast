@@ -1,16 +1,29 @@
 import { DOM } from "@microsoft/fast-element";
 import { fixture } from "@microsoft/fast-foundation/dist/esm/fixture";
 import { expect } from "chai";
+import { MessageSystem } from "../../message-system";
+import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-config";
+import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { ActivityType } from "../html-render-layer/html-render-layer";
 import { HTMLRenderLayerNavgation } from "./html-render-layer-navigation";
 
 HTMLRenderLayerNavgation;
 
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const FASTMessageSystemWorker = require("../../../message-system.min.js");
+
+const fastMessageSystemWorker = new FASTMessageSystemWorker();
+
 async function setup() {
     const { element, connect, disconnect, parent } = await fixture<
         HTMLRenderLayerNavgation
     >("fast-tooling-html-render-layer-navigation");
-
+    const message = new MessageSystem({
+        webWorker: fastMessageSystemWorker,
+        dataDictionary: dataDictionaryConfig as any,
+        schemaDictionary,
+    });
+    element.messageSystem = message;
     return { element, connect, disconnect, parent };
 }
 
