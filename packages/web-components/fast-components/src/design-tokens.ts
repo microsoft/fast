@@ -650,3 +650,5 @@ export const neutralOutlineFocus = create<SwatchRGB>("neutral-outline-focus").wi
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).focus
 );
+
+// Neutral Layer Floating

@@ -1,4 +1,4 @@
-import { inRange } from "lodash";
+import { inRange } from "lodash-es";
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
 import { isDark } from "../utilities/is-dark";
