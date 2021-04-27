@@ -17,11 +17,13 @@ import {
 import { appearanceBehavior } from "../utilities/behaviors";
 
 export const ButtonStyles = css`
-    ${BaseButtonStyles} :host ([disabled]) {
+    :host([disabled]) {
         opacity: var(--disabled-opacity);
         background-color: ${neutralFillRestBehavior.var};
         cursor: ${disabledCursor};
     }
+
+    ${BaseButtonStyles}
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
         css`
@@ -39,9 +41,11 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "accent",
         css`
-            ${AccentButtonStyles} :host ([appearance="accent"][disabled]) {
+            :host([appearance="accent"][disabled]) {
                 background: ${accentFillRestBehavior.var};
             }
+
+            ${AccentButtonStyles}
         `.withBehaviors(
             forcedColorsStylesheetBehavior(
                 css`
@@ -58,9 +62,11 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "lightweight",
         css`
-            ${LightweightButtonStyles} :host ([appearance="lightweight"][disabled]) .content::before {
+            :host([appearance="lightweight"][disabled]) .content::before {
                 background: transparent;
             }
+
+            ${LightweightButtonStyles}
         `.withBehaviors(
             forcedColorsStylesheetBehavior(
                 css`
@@ -68,6 +74,7 @@ export const ButtonStyles = css`
                         forced-color-adjust: none;
                         color: ${SystemColors.GrayText};
                     }
+
                     :host([appearance="lightweight"].disabled)
                         .control:hover
                         .content::before {
@@ -80,9 +87,11 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "outline",
         css`
-            ${OutlineButtonStyles} :host ([appearance="outline"][disabled]) {
+            :host([appearance="outline"][disabled]) {
                 border-color: ${accentFillRestBehavior.var};
             }
+
+            ${OutlineButtonStyles}
         `.withBehaviors(
             forcedColorsStylesheetBehavior(
                 css`
@@ -96,15 +105,18 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "stealth",
         css`
-            ${StealthButtonStyles} :host ([appearance="stealth"][disabled]) {
+            :host([appearance="stealth"][disabled]) {
                 background: ${neutralFillStealthRestBehavior.var};
             }
+
+            ${StealthButtonStyles}
         `.withBehaviors(
             forcedColorsStylesheetBehavior(
                 css`
                     :host([appearance="stealth"].disabled) {
                         background: ${SystemColors.ButtonFace};
                     }
+
                     :host([appearance="stealth"].disabled) .control {
                         background: ${SystemColors.ButtonFace};
                         border-color: transparent;
