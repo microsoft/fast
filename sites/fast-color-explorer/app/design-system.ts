@@ -39,6 +39,7 @@ export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
         neutralForegroundDarkIndex: 0,
         neutralForegroundLightIndex: 0,
 
+        baseHeightMultiplier: 8,
         baseLayerLuminance: StandardLuminance.DarkMode,
         neutralPalette,
         accentPalette: createColorPalette(
