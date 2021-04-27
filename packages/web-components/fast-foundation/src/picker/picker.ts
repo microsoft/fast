@@ -8,7 +8,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
-import type { AnchoredRegion, AutoUpdateMode } from "../anchored-region";
+import { AnchoredRegion, AnchoredRegionConfig, flyoutBelowScaling} from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 
 /**
@@ -51,59 +51,6 @@ export class Picker extends FASTElement {
      */
     @attr({ attribute: "loading-text" })
     public loadingText: string;
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: menu-position
-     */
-    @attr({ attribute: "menu-position" })
-    public menuPosition: PickerMenuPosition = "bottom";
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: dynamic-menu-positioning
-     */
-    @attr({ attribute: "dynamic-menu-positioning", mode: "boolean" })
-    public dynamicMenuPositioning: boolean = true;
-
-    /**
-     * Whether the menu is positioned using css "position: fixed".
-     * Otherwise the menu uses "position: absolute".
-     * Fixed placement allows the region to break out of parent containers
-     * may exhibit more latency on scrolling/resizing
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: fixed-placement
-     */
-    @attr({ attribute: "fixed-placement", mode: "boolean" })
-    public fixedPlacement: boolean = true;
-
-    /**
-     * The theshold in pixels where the menu will move away from its default position
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: menu-vertical-threshold
-     */
-    @attr({ attribute: "menu-vertical-threshold" })
-    public menuVerticalThreshold: number = 240;
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: auto-update-mode
-     */
-    @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: AutoUpdateMode = "auto";
 
     /**
      *
@@ -154,6 +101,22 @@ export class Picker extends FASTElement {
     public maxSelected: number | undefined;
     private maxSelectedChanged(): void {
         if (this.$fastController.isConnected) {
+        }
+    }
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public menuConfig: AnchoredRegionConfig;
+    private menuConfigChanged(): void {
+        if (
+            this.$fastController.isConnected &&
+            !this.menuConfig
+        ) {
+            this.menuConfig = flyoutBelowScaling;
         }
     }
 
@@ -328,6 +291,10 @@ export class Picker extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
+        if (this.menuConfig === undefined){
+            this.menuConfig = flyoutBelowScaling;
+        }
 
         if (this.defaultSelection !== undefined && this.selection === "") {
             this.selection = this.defaultSelection;

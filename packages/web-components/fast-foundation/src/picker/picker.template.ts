@@ -28,19 +28,19 @@ export function createPickerTemplate(
                 x => x.menuOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
-                    auto-update-mode="${x => x.autoUpdateMode}"
                     class="region"
-                    fixed-placement="${x => x.fixedPlacement}"
-                    vertical-positioning-mode="${x =>
-                        x.dynamicMenuPositioning ? "dynamic" : "locktodefault"}"
-                    vertical-default-position="${x => x.menuPosition}"
-                    vertical-scaling="fill"
-                    vertical-inset="false"
-                    vertical-threshold="${x => x.menuVerticalThreshold}"
-                    horizontal-positioning-mode="locktodefault"
-                    horizontal-default-position="right"
-                    horizontal-scaling="content"
-                    horizontal-inset="true"
+                    auto-update-mode="${x => x.menuConfig.autoUpdateMode !== undefined ? x.menuConfig.autoUpdateMode : 'auto'}"
+                    fixed-placement="${x => x.menuConfig.fixedPlacement !== undefined ? x.menuConfig.fixedPlacement : true }"
+                    vertical-positioning-mode="${x =>x.menuConfig.verticalPositioningMode}"
+                    vertical-default-position="${x => x.menuConfig.verticalDefaultPosition}"
+                    vertical-scaling="${x => x.menuConfig.verticalScaling}"
+                    vertical-inset="${x => x.menuConfig.verticalInset}"
+                    vertical-threshold="${x => x.menuConfig.verticalThreshold}"
+                    horizontal-positioning-mode="${x =>x.menuConfig.horizontalPositioningMode}"
+                    horizontal-default-position="${x => x.menuConfig.horizontalDefaultPosition}"
+                    horizontal-scaling="${x => x.menuConfig.horizontalScaling}"
+                    horizontal-inset="${x => x.menuConfig.horizontalInset}"
+                    horizontal-threshold="${x => x.menuConfig.horizontalThreshold}"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
