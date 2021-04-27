@@ -112,9 +112,11 @@ export class HTMLRender extends FASTElement {
         dictionaryId: string,
         elementRef: HTMLElement
     ) {
-        this.renderLayers.forEach(value => {
-            value.elementActivity(activityType, dictionaryId, elementRef);
-        });
+        if (this.renderLayers) {
+            this.renderLayers.forEach(value => {
+                value.elementActivity(activityType, dictionaryId, elementRef);
+            });
+        }
     }
 
     /// Mouse Handlers

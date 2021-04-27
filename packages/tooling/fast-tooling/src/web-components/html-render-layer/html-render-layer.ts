@@ -38,11 +38,9 @@ export abstract class HTMLRenderLayer extends FASTElement {
         }
     }
 
-    public elementActivity(
+    public abstract elementActivity(
         activityType: ActivityType,
         datadictionaryid: string,
         elementRef: HTMLElement
-    ) {
-        return;
-    }
+    );
 }
