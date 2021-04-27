@@ -17,11 +17,13 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
+const defaultElement = document.createElement("div");
+
 /**
  * Describes a DesignToken instance.
  * @alpha
  */
-export interface DesignToken<T> extends CSSDirective {
+export interface DesignToken<T extends { createCSS?(): string }> extends CSSDirective {
     readonly name: string;
 
     /**
@@ -61,6 +63,11 @@ export interface DesignToken<T> extends CSSDirective {
      * @param element - The element to remove the value from
      */
     deleteValueFor(element: HTMLElement): this;
+
+    /**
+     * Associates a default value to the token
+     */
+    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
 interface Disposable {
@@ -70,7 +77,8 @@ interface Disposable {
 /**
  * Implementation of {@link (DesignToken:interface)}
  */
-class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
+class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
+    implements DesignToken<T> {
     private cssVar: string;
     private customPropertyChangeHandlers: WeakMap<
         HTMLElement & FASTElement,
@@ -117,8 +125,8 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
         if (!this.customPropertyChangeHandlers.has(element)) {
-            const node = DesignTokenNode.for(this, element);
-            let value = node.value;
+            const node = DesignTokenNode.for<T>(this, element);
+            let value = this.resolveCSSValue(node.value);
 
             const add = () => CustomPropertyManager.addTo(element, this, value);
             const remove = () => CustomPropertyManager.removeFrom(element, this, value);
@@ -126,7 +134,7 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
             const subscriber: Subscriber & Disposable = {
                 handleChange: (source, key) => {
                     remove();
-                    value = source[key];
+                    value = this.resolveCSSValue(source[key]);
                     add();
                 },
                 dispose: () => {
@@ -155,6 +163,16 @@ class DesignTokenImpl<T> extends CSSDirective implements DesignToken<T> {
 
     public createBehavior() {
         return new DesignTokenBehavior(this);
+    }
+
+    public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
+        DesignTokenNode.for(this, defaultElement).set(value);
+
+        return this;
+    }
+
+    private resolveCSSValue(value: T) {
+        return typeof value.createCSS === "function" ? value.createCSS() : value;
     }
 }
 
@@ -330,16 +348,21 @@ class DesignTokenNode<T> {
         return this.target.contains(node.target);
     }
 
-    private findParentNode() {
+    private findParentNode(): DesignTokenNode<T> | null {
+        if (this.target === defaultElement) {
+            return null;
+        }
+
         if (this.target !== document.body && this.target.parentNode) {
             const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+            // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
             try {
                 return container.get(DesignTokenNode.channel(this.token));
             } catch (e) {
-                return null;
+                return DesignTokenNode.for(this.token, defaultElement);
             }
         } else {
-            return null;
+            return DesignTokenNode.for(this.token, defaultElement);
         }
     }
 
