@@ -22,8 +22,6 @@ import {
     accentForegroundCut,
     accentForegroundHover,
     accentForegroundRest,
-    backgroundColor,
-    fontWeight,
     neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
@@ -44,18 +42,21 @@ import {
     neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
+} from "@microsoft/fast-components";
+import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import {
     neutralOutlineContrastActive,
     neutralOutlineContrastHover,
     neutralOutlineContrastRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
 } from "@microsoft/fast-components-styles-msft";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
 import { get, isEqual, uniqueId } from "lodash-es";
 import { DividerClassNameContract } from "@microsoft/fast-components-react-base";
 import { connect } from "react-redux";
-import { ColorsDesignSystem } from "./design-system";
+import { bridge, ColorsDesignSystem } from "./design-system";
 import { StealthIcon } from "./icons";
 import { AppState, ComponentTypes } from "./state";
 import { Swatch, SwatchProps, SwatchTypes } from "./swatch";
@@ -67,14 +68,14 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         flexGrow: "1",
         alignItems: "stretch",
         textAlign: "center",
-        color: neutralForegroundRest,
+        color: bridge(neutralForegroundRest),
         position: "relative",
         transition: "opacity .1s linear",
         height: "100%",
     },
     colorBlocks_title: {
         margin: "16px auto 4px",
-        fontWeight: fontWeight.semibold.toString(),
+        fontWeight: "600",
         height: "34px",
     },
     colorBlocks_content: {
@@ -183,7 +184,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     > = {
         caption: {
             margin: "20px 0 12px",
-            color: neutralForegroundRest,
+            color: bridge(neutralForegroundRest),
         },
     };
 
@@ -193,10 +194,10 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     > = {
         paragraph: {
             "&:hover": {
-                color: neutralForegroundHover,
+                color: bridge(neutralForegroundHover),
             },
             "&:active": {
-                color: neutralForegroundActive,
+                color: bridge(neutralForegroundActive),
             },
         },
     };
@@ -206,7 +207,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         ColorsDesignSystem
     > = {
         caption: {
-            color: neutralForegroundHint,
+            color: bridge(neutralForegroundHint),
         },
     };
 
@@ -240,7 +241,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
             >
                 <Caption
                     className={this.props.managedClasses.colorBlocks_title}
-                    jssStyleSheet={{ caption: { color: neutralForegroundHint } }}
+                    jssStyleSheet={{ caption: { color: bridge(neutralForegroundHint) } }}
                 >
                     BACKGROUND {this.props.index} -{" "}
                     {this.state.designSystem.backgroundColor.toUpperCase()}

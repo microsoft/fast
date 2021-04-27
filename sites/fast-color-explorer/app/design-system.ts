@@ -1,22 +1,44 @@
 import {
-    DesignSystem,
-    DesignSystemDefaults,
+    FASTDesignSystem,
+    fastDesignSystemDefaults,
     Palette,
-} from "@microsoft/fast-components-styles-msft";
-import { createColorPalette } from "@microsoft/fast-components-styles-msft";
+} from "@microsoft/fast-components";
+import { createColorPalette } from "@microsoft/fast-components";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft/dist/utilities/color/neutral-layer";
+import { StandardLuminance } from "@microsoft/fast-components";
 import { defaultAccentColor, defaultNeutralColor } from "./colors";
+import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/fast-design-system";
 
 const neutralPalette: Palette = createColorPalette(
     parseColorHexRGB(defaultNeutralColor) as ColorRGBA64
 );
 
-export type ColorsDesignSystem = DesignSystem;
+/**
+ * Bridge recipes between React and web component implementations.
+ *
+ * @param recipe
+ * @returns
+ */
+export const bridge = (recipe: DesignSystemResolver<string>) => {
+    return (d?: FASTDesignSystem) => recipe(d || fastDesignSystemDefaults);
+};
+
+export type ColorsDesignSystem = FASTDesignSystem & {
+    // Bring these back from the old DesignSystem for use with React components
+    contrast: number;
+    neutralForegroundDarkIndex: number;
+    neutralForegroundLightIndex: number;
+};
+
 export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
     {},
-    DesignSystemDefaults,
+    fastDesignSystemDefaults,
     {
+        // These three are only for legacy React component support
+        contrast: 0,
+        neutralForegroundDarkIndex: 0,
+        neutralForegroundLightIndex: 0,
+
         baseLayerLuminance: StandardLuminance.DarkMode,
         neutralPalette,
         accentPalette: createColorPalette(

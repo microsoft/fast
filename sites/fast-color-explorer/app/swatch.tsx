@@ -4,26 +4,14 @@ import manageJss, {
     DesignSystemConsumer,
 } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
-import {
-    applyElevation,
-    backgroundColor,
-    DesignSystemResolver,
-    designUnit,
-    elevation,
-    ElevationMultiplier,
-    fontWeight,
-    neutralForegroundHint,
-    neutralForegroundRest,
-    neutralOutlineRest,
-} from "@microsoft/fast-components-styles-msft";
-import { contrastRatio, parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    ColorRecipe,
-    contrast,
-} from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { neutralForegroundHint, neutralOutlineRest } from "@microsoft/fast-components";
+import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/color";
+import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import { ColorRecipe, contrast } from "@microsoft/fast-components/dist/esm/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
-import { ColorsDesignSystem } from "./design-system";
-import { ComponentTypes } from "./state";
+import { bridge, ColorsDesignSystem } from "./design-system";
+import { SwatchRecipe } from "@microsoft/fast-components/dist/esm/color/common";
+import { applyElevation } from "@microsoft/fast-components-styles-msft";
 
 export enum SwatchTypes {
     fill = "fill",
@@ -59,17 +47,17 @@ interface SwatchBaseProps extends SwatchManagedClasses {
     /**
      * The recipe to derive the fill color of the swatch
      */
-    fillRecipe: DesignSystemResolver<string>;
+    fillRecipe: SwatchRecipe;
 
     /**
      * The recipe to derive text over the control
      */
-    foregroundRecipe: DesignSystemResolver<string>;
+    foregroundRecipe: SwatchRecipe;
 
     /**
      * The recipe to derive the outline
      */
-    outlineRecipe?: DesignSystemResolver<string>;
+    outlineRecipe?: SwatchRecipe;
 }
 
 const swatchTwoStyles: ComponentStyleSheet<
@@ -84,7 +72,7 @@ const swatchTwoStyles: ComponentStyleSheet<
         width: "100%",
         padding: "4px 0",
         boxSizing: "border-box",
-        color: neutralForegroundHint,
+        color: bridge(neutralForegroundHint),
         fontSize: "12px",
         gridColumnGap: "16px",
         justifyItems: "start",
@@ -106,11 +94,14 @@ const swatchTwoStyles: ComponentStyleSheet<
     },
     swatch__foreground: {
         "& $swatch_icon": {
-            border: format<ColorsDesignSystem>("1px solid {0}", neutralOutlineRest),
+            border: format<ColorsDesignSystem>(
+                "1px solid {0}",
+                bridge(neutralOutlineRest)
+            ),
             "&::before": {
                 fontSize: "13px",
                 content: "'A'",
-                fontWeight: fontWeight.normal,
+                fontWeight: "400",
             },
         },
     },
