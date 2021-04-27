@@ -93,6 +93,7 @@
         "lodash-es": "^4.0.0"
     },
     "dependencies": {
+        "@microsoft/fast-components": "^1.20.4",
         "@microsoft/fast-element": "^1.0.1",
         "@microsoft/fast-foundation": "^1.18.0",
         "@microsoft/fast-web-utilities": "^4.7.3",
