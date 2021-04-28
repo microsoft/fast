@@ -10,15 +10,15 @@ import {
     designUnit,
     focusOutlineWidth,
     neutralFocus,
+    neutralLayerFloating,
     neutralOutlineRest,
     outlineWidth,
 } from "../design-tokens";
-import { neutralLayerFloatingBehavior } from "../styles/recipes";
 
 export const listboxStyles = (context, definition) =>
     css`
         ${display("inline-flex")} :host {
-            background: ${neutralLayerFloatingBehavior.var};
+            background: ${neutralLayerFloating};
             border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
             border-radius: calc(${cornerRadius} * 1px);
             box-sizing: border-box;
@@ -49,6 +49,5 @@ export const listboxStyles = (context, definition) =>
                 fill: currentcolor;
             }
         `
-        ),
-        neutralLayerFloatingBehavior
+        )
     );

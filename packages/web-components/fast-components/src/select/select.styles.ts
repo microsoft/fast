@@ -22,6 +22,7 @@ import {
     neutralFillStealthRest,
     neutralFocus,
     neutralForegroundRest,
+    neutralLayerFloating,
     neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
@@ -31,7 +32,6 @@ import { elevation } from "../styles/elevation";
 import {
     accentForegroundFocusBehavior,
     neutralFocusInnerAccentBehavior,
-    neutralLayerFloatingBehavior,
 } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
@@ -55,7 +55,7 @@ export const selectStyles = (context, definition) =>
 
     .listbox {
         ${elevation}
-        background: ${neutralLayerFloatingBehavior.var};
+        background: ${neutralLayerFloating};
         border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
         border-radius: calc(${cornerRadius} * 1px);
         box-sizing: border-box;
@@ -259,6 +259,5 @@ export const selectStyles = (context, definition) =>
             }
         `
         ),
-        neutralFocusInnerAccentBehavior,
-        neutralLayerFloatingBehavior
+        neutralFocusInnerAccentBehavior
     );
