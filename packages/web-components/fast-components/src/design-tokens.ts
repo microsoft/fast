@@ -17,6 +17,7 @@ import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
+import { StandardLuminance } from "./color";
 
 const { create } = DesignToken;
 
@@ -56,7 +57,9 @@ export const baseHeightMultiplier = create<number>("base-height-multiplier").wit
 export const baseHorizontalSpacingMultiplier = create<number>(
     "base-horizontal-spacing-multiplier"
 ).withDefault(3);
-export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(1);
+export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(
+    StandardLuminance.DarkMode
+);
 export const cornerRadius = create<number>("corner-radius").withDefault(3);
 export const density = create<number>("density").withDefault(0);
 export const designUnit = create<number>("design-unit").withDefault(4);
