@@ -1,4 +1,3 @@
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import {
     MessageSystem,
     MessageSystemNavigationTypeAction,
@@ -19,7 +18,6 @@ let fastMessageSystem: MessageSystem;
 
 HTMLRender;
 HTMLRenderLayerNavgation;
-FASTDesignSystemProvider;
 
 const htmlRender: HTMLRender = document.getElementById("htmlRender") as HTMLRender;
 const button1: HTMLElement = document.getElementById("testbutton1");

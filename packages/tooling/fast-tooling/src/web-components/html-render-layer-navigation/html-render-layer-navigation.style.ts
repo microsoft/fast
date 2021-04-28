@@ -1,5 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { accentFillRestBehavior } from "@microsoft/fast-components";
+import {
+    AccentFillRestProperty,
+    BackgroundColorProperty,
+    FocusOutlineWidthProperty,
+    FontSize1Property,
+    ForegroundColorProperty,
+    LineHeight1Property
+} from "../style/css-properties";
 
 export const HTMLRenderLayerNavigationStyles = css`
     #navigationContainer {
@@ -20,12 +27,12 @@ export const HTMLRenderLayerNavigationStyles = css`
         width: 0;
         height: 0;
         pointer-events: none;
-        margin: calc(var(--focus-outline-width) * -1px) 0 0
-            calc(var(--focus-outline-width) * -1px);
+        margin: calc(${FocusOutlineWidthProperty} * -1px) 0 0
+            calc(${FocusOutlineWidthProperty} * -1px);
     }
     #clickDisplay.active {
         display: block;
-        border: calc(var(--focus-outline-width) * 1px) solid var(--accent-fill-rest);
+        border: calc(${FocusOutlineWidthProperty} * 1px) solid ${AccentFillRestProperty};
     }
     #hoverDisplay.active {
         display: block;
@@ -36,28 +43,26 @@ export const HTMLRenderLayerNavigationStyles = css`
         width: 100%;
         height: 100%;
         opacity: 0.16;
-        border: calc(var(--focus-outline-width) * 1px) solid var(--accent-fill-rest);
-        background-color: var(--accent-fill-rest);
+        border: calc(${FocusOutlineWidthProperty} * 1px) solid ${AccentFillRestProperty};
+        background-color: ${AccentFillRestProperty};
     }
     .pill {
         position: absolute;
         box-sizing: border-box;
         top: calc(
-            (var(--type-ramp-minus-1-line-height) + (var(--focus-outline-width) * 4px)) *
-                -1
-        );
-        line-height: var(--type-ramp-minus-1-line-height);
-        border-radius: calc(var(--type-ramp-minus-1-line-height) / 2);
-        background-color: var(--accent-fill-rest);
-        padding: 0 calc(var(--design-unit) * 2px);
-        border: calc(var(--focus-outline-width) * 1px) solid var(--accent-fill-rest);
-        font-size: var(--type-ramp-minus-1-font-size);
+            (${LineHeight1Property} + (${FocusOutlineWidthProperty} * 4px)) * -1);
+        line-height: ${LineHeight1Property};
+        border-radius: calc(${LineHeight1Property} / 2);
+        background-color: ${AccentFillRestProperty};
+        padding: 0 6px;
+        border: calc(${FocusOutlineWidthProperty} * 1px) solid ${AccentFillRestProperty};
+        font-size: ${FontSize1Property};
         text-transform: uppercase;
         font-weight: 700;
-        color: var(--background-color);
+        color: ${BackgroundColorProperty};
     }
     #hoverDisplay .pill {
-        background-color: var(--background-color);
-        color: var(--neutral-foreground-rest);
+        background-color: ${BackgroundColorProperty};
+        color: ${ForegroundColorProperty};
     }
-`.withBehaviors(accentFillRestBehavior);
+`
