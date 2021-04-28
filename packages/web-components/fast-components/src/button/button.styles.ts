@@ -7,6 +7,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
     accentFillRestBehavior,
+    accentForegroundRestBehavior,
     BaseButtonStyles,
     LightweightButtonStyles,
     neutralFillRestBehavior,
@@ -17,7 +18,9 @@ import {
 import { appearanceBehavior } from "../utilities/behaviors";
 
 export const ButtonStyles = css`
-    :host([disabled]) {
+    :host([disabled]),
+    :host([disabled]:hover),
+    :host([disabled]:active) {
         opacity: var(--disabled-opacity);
         background-color: ${neutralFillRestBehavior.var};
         cursor: ${disabledCursor};
@@ -41,7 +44,9 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "accent",
         css`
-            :host([appearance="accent"][disabled]) {
+            :host([appearance="accent"][disabled]),
+            :host([appearance="accent"][disabled]:hover),
+            :host([appearance="accent"][disabled]:active) {
                 background: ${accentFillRestBehavior.var};
             }
 
@@ -62,7 +67,16 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "lightweight",
         css`
-            :host([appearance="lightweight"][disabled]) .content::before {
+            :host([appearance="lightweight"][disabled]),
+            :host([appearance="lightweight"][disabled]:hover),
+            :host([appearance="lightweight"][disabled]:active) {
+                background-color: transparent;
+                color: ${accentForegroundRestBehavior.var};
+            }
+
+            :host([appearance="lightweight"][disabled]) .content::before,
+            :host([appearance="lightweight"][disabled]:hover) .content::before,
+            :host([appearance="lightweight"][disabled]:active) .content::before {
                 background: transparent;
             }
 
@@ -87,7 +101,10 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "outline",
         css`
-            :host([appearance="outline"][disabled]) {
+            :host([appearance="outline"][disabled]),
+            :host([appearance="outline"][disabled]:hover),
+            :host([appearance="outline"][disabled]:active) {
+                background: transparent;
                 border-color: ${accentFillRestBehavior.var};
             }
 
@@ -105,7 +122,9 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "stealth",
         css`
-            :host([appearance="stealth"][disabled]) {
+            :host([appearance="stealth"][disabled]),
+            :host([appearance="stealth"][disabled]:hover),
+            :host([appearance="stealth"][disabled]:active) {
                 background: ${neutralFillStealthRestBehavior.var};
             }
 
@@ -113,11 +132,11 @@ export const ButtonStyles = css`
         `.withBehaviors(
             forcedColorsStylesheetBehavior(
                 css`
-                    :host([appearance="stealth"].disabled) {
+                    :host([appearance="stealth"][disabled]) {
                         background: ${SystemColors.ButtonFace};
                     }
 
-                    :host([appearance="stealth"].disabled) .control {
+                    :host([appearance="stealth"][disabled]) .control {
                         background: ${SystemColors.ButtonFace};
                         border-color: transparent;
                         color: ${SystemColors.GrayText};

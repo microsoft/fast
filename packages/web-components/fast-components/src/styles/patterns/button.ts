@@ -66,11 +66,11 @@ export const BaseButtonStyles = css`
         line-height: inherit;
     }
 
-    :host(:hover:not([disabled])) {
+    :host(:hover) {
         background-color: ${neutralFillHoverBehavior.var};
     }
 
-    :host(:active:not([disabled])) {
+    :host(:active) {
         background-color: ${neutralFillActiveBehavior.var};
     }
 
@@ -171,11 +171,11 @@ export const AccentButtonStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host([appearance="accent"]:hover:not([disabled])) {
+    :host([appearance="accent"]:hover:) {
         background: ${accentFillHoverBehavior.var};
     }
 
-    :host([appearance="accent"]:active:not([disabled])) .control:active {
+    :host([appearance="accent"]:active) .control:active {
         background: ${accentFillActiveBehavior.var};
     }
 
@@ -311,11 +311,11 @@ export const LightweightButtonStyles = css`
         border-radius: 0;
     }
 
-    :host([appearance="lightweight"]:hover:not([disabled])) {
+    :host([appearance="lightweight"]:hover) {
         color: ${accentForegroundHoverBehavior.var};
     }
 
-    :host([appearance="lightweight"]:active:not([disabled])) {
+    :host([appearance="lightweight"]:active) {
         color: ${accentForegroundActiveBehavior.var};
     }
 
@@ -332,11 +332,11 @@ export const LightweightButtonStyles = css`
         width: 100%;
     }
 
-    :host([appearance="lightweight"]:hover:not([disabled])) .content::before {
+    :host([appearance="lightweight"]:hover) .content::before {
         background: ${accentForegroundHoverBehavior.var};
     }
 
-    :host([appearance="lightweight"]:active:not([disabled])) .content::before {
+    :host([appearance="lightweight"]:active) .content::before {
         background: ${accentForegroundActiveBehavior.var};
     }
 
@@ -387,11 +387,11 @@ export const OutlineButtonStyles = css`
         border-color: ${accentFillRestBehavior.var};
     }
 
-    :host([appearance="outline"]:hover:not([disabled])) {
+    :host([appearance="outline"]:hover) {
         border-color: ${accentFillHoverBehavior.var};
     }
 
-    :host([appearance="outline"]:active:not([disabled])) {
+    :host([appearance="outline"]:active) {
         border-color: ${accentFillActiveBehavior.var};
     }
 
@@ -445,11 +445,11 @@ export const StealthButtonStyles = css`
         background: ${neutralFillStealthRestBehavior.var};
     }
 
-    :host([appearance="stealth"]:hover:not([disabled])) {
+    :host([appearance="stealth"]:hover) {
         background: ${neutralFillStealthHoverBehavior.var};
     }
 
-    :host([appearance="stealth"]:active:not([disabled])) {
+    :host([appearance="stealth"]:active) {
         background: ${neutralFillStealthActiveBehavior.var};
     }
 `.withBehaviors(
