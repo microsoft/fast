@@ -11,7 +11,8 @@ import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/rec
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
 import { neutralFillToggle as neutralFillToggleAlgorithm } from "./color-vNext/recipes/neutral-fill-toggle";
 import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
-import { neutralFocus as NeutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
+import { neutralFocus as neutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
+import { neutralFocusInnerAccent as neutralFocusInnerAccentAlgorithm } from "./color-vNext/recipes/neutral-focus-inner-accent";
 import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes/neutral-outline";
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
@@ -576,7 +577,7 @@ export const NeutralFocus = DI.createInterface<(element: HTMLElement) => SwatchR
     "neutral-focus",
     builder =>
         builder.instance((element: HTMLElement) =>
-            NeutralFocusAlgorithm(
+            neutralFocusAlgorithm(
                 accentPalette.getValueFor(element),
                 fillColor.getValueFor(element)
             )
@@ -586,6 +587,25 @@ export const neutralFocus = create<SwatchRGB>(
     "neutral-focus"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralFocus)(element)
+);
+
+// Neutral Focus Inner Accent
+export const NeutralFocusInnerAccent = DI.createInterface<
+    (element: HTMLElement) => SwatchRGB
+>("neutral-focus-inner-accent", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralFocusInnerAccentAlgorithm(
+            accentPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            neutralFocus.getValueFor(element)
+        )
+    )
+);
+
+export const neutralFocusInnerAccent = create<SwatchRGB>(
+    "neutral-focus-inner-accent"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralFocusInnerAccent)(element)
 );
 
 // Neutral Foreground Hint

@@ -15,6 +15,7 @@ import {
     focusOutlineWidth,
     neutralFillStealthRest,
     neutralFocus,
+    neutralFocusInnerAccent,
     neutralForegroundRest,
     neutralOutlineRest,
     outlineWidth,
@@ -91,9 +92,7 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
-        neutralFocusInnerAccentBehavior.var
-    };
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
         border-color: ${neutralFocus};
     }
 
@@ -101,7 +100,6 @@ export const flipperStyles = (context, definition) =>
         border: 0;
     }
 `.withBehaviors(
-        neutralFocusInnerAccentBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host {

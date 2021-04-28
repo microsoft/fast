@@ -27,6 +27,7 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralFocus,
+    neutralFocusInnerAccent,
     neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
@@ -181,10 +182,9 @@ export const AccentButtonStyles = css`
     }
 
     :host([appearance="accent"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccentBehavior.var};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
     }
 `.withBehaviors(
-    neutralFocusInnerAccentBehavior,
     forcedColorsStylesheetBehavior(
         css`
             :host([appearance="accent"]) .control {

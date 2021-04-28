@@ -17,6 +17,7 @@ import {
     focusOutlineWidth,
     neutralFillHover,
     neutralFocus,
+    neutralFocusInnerAccent,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -47,9 +48,7 @@ export const optionStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
-        neutralFocusInnerAccentBehavior.var
-    };
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
         border-color: ${neutralFocus};
         background: ${accentFillHover};
         color: ${accentForegroundCut};
@@ -137,6 +136,5 @@ export const optionStyles = (context, definition) =>
                     opacity: 1;
                 }
             `
-        ),
-        neutralFocusInnerAccentBehavior
+        )
     );
