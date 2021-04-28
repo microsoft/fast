@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix an incorrect definition name which for default slots should be an empty string",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
