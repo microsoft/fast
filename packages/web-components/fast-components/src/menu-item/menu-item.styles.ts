@@ -18,6 +18,7 @@ import {
     neutralFocus,
     neutralForegroundRest,
     neutralLayerL2,
+    neutralLayerL3,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -51,12 +52,12 @@ export const menuItemStyles = (context, definition) =>
 
     :host(:${focusVisible}) {
         border-color: ${neutralFocus};
-        background: ${neutralLayerL3Behavior.var};
+        background: ${neutralLayerL3};
         color: ${neutralForegroundRest};
     }
 
     :host(:hover) {
-        background: ${neutralLayerL3Behavior.var};
+        background: ${neutralLayerL3};
         color: ${neutralForegroundRest};
     }
 
@@ -232,7 +233,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        neutralLayerL3Behavior,
         forcedColorsStylesheetBehavior(
             css`
             :host {
