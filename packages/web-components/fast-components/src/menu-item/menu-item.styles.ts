@@ -17,15 +17,12 @@ import {
     neutralFillStealthRest,
     neutralFocus,
     neutralForegroundRest,
+    neutralLayerL2,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    heightNumber,
-    neutralLayerL2Behavior,
-    neutralLayerL3Behavior,
-} from "../styles/index";
+import { heightNumber, neutralLayerL3Behavior } from "../styles/index";
 
 export const menuItemStyles = (context, definition) =>
     css`
@@ -66,7 +63,7 @@ export const menuItemStyles = (context, definition) =>
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
-        background: ${neutralLayerL2Behavior.var};
+        background: ${neutralLayerL2};
         color: ${neutralForegroundRest};
     }
 
@@ -235,7 +232,6 @@ export const menuItemStyles = (context, definition) =>
         pointer-events: none;
     }
 `.withBehaviors(
-        neutralLayerL2Behavior,
         neutralLayerL3Behavior,
         forcedColorsStylesheetBehavior(
             css`

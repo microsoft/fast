@@ -17,8 +17,10 @@ import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
 import { neutralLayerL1 as neutralLayerL1Algorithm } from "./color-vNext/recipes/neutral-layer-L1";
+import { neutralLayerL2 as neutralLayerL2Algorithm } from "./color-vNext/recipes/neutral-layer-L2";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 import { StandardLuminance } from "./color";
+import { elements } from "@microsoft/fast-element";
 
 const { create } = DesignToken;
 
@@ -691,4 +693,26 @@ export const neutralLayerL1 = create<SwatchRGB>(
     "neutral-layer-L1"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralLayerL1)(element)
+);
+
+// Neutral Layer L2
+export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-L2",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            neutralLayerL2Algorithm(
+                neutralPalette.getValueFor(element),
+                baseLayerLuminance.getValueFor(element),
+                neutralFillCardDelta.getValueFor(element),
+                neutralFillRestDelta.getValueFor(element),
+                neutralFillHoverDelta.getValueFor(element),
+                neutralFillActiveDelta.getValueFor(element)
+            )
+        )
+);
+
+export const neutralLayerL2 = create<SwatchRGB>(
+    "neutral-layer-L2"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralLayerL2)(element)
 );
