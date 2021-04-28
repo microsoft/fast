@@ -16,6 +16,7 @@ import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
+import { neutralLayerL1 as neutralLayerL1Algorithm } from "./color-vNext/recipes/neutral-layer-L1";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
 import { StandardLuminance } from "./color";
 
@@ -672,4 +673,22 @@ export const neutralLayerFloating = create<SwatchRGB>(
     "neutral-layer-floating"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralLayerFloating)(element)
+);
+
+// Neutral Layer L1
+export const NeutralLayerL1 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-L1",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            neutralLayerL1Algorithm(
+                neutralPalette.getValueFor(element),
+                baseLayerLuminance.getValueFor(element)
+            )
+        )
+);
+
+export const neutralLayerL1 = create<SwatchRGB>(
+    "neutral-layer-L1"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralLayerL1)(element)
 );

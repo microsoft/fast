@@ -1,5 +1,5 @@
 import { Palette } from "../palette";
-import { SwatchRGB } from "../swatch";
+import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 /**
  * @internal
@@ -10,8 +10,6 @@ export function neutralLayerCard(
     cardDelta: number
 ) {
     return palette.get(
-        palette.closestIndexOf(
-            new SwatchRGB(relativeLuminance, relativeLuminance, relativeLuminance)
-        ) - cardDelta
+        palette.closestIndexOf(baseLayerLuminanceSwatch(relativeLuminance)) - cardDelta
     );
 }
