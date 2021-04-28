@@ -400,7 +400,6 @@ export class AnchoredRegion extends FASTElement {
     private baseVerticalOffset: number = 0;
 
     private pendingPositioningUpdate: boolean = false;
-    private pendingLayoutUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private regionVisible: boolean = false;
@@ -445,12 +444,9 @@ export class AnchoredRegion extends FASTElement {
      * update position
      */
     public update = (): void => {
-        if (this.viewportRect === undefined || this.regionRect === undefined) {
-            this.requestLayoutUpdate();
-            return;
+        if (!this.pendingPositioningUpdate){
+            this.requestPositionUpdates();
         }
-
-        this.requestPositionUpdates();
     };
 
     /**
@@ -497,16 +493,6 @@ export class AnchoredRegion extends FASTElement {
     }
 
     /**
-     * Request a layout update if there are currently no open requests
-     */
-    private requestLayoutUpdate(): void {
-        if (this.pendingLayoutUpdate === false && this.pendingReset === false) {
-            this.pendingLayoutUpdate = true;
-            DOM.queueUpdate(() => this.updateLayout());
-        }
-    }
-
-    /**
      * Request a reset if there are currently no open requests
      */
     private requestReset(): void {
@@ -514,7 +500,6 @@ export class AnchoredRegion extends FASTElement {
             (this as FASTElement).$fastController.isConnected &&
             this.pendingReset === false
         ) {
-            this.pendingLayoutUpdate = false;
             this.setInitialState();
             DOM.queueUpdate(() => this.reset());
             this.pendingReset = true;
@@ -735,10 +720,6 @@ export class AnchoredRegion extends FASTElement {
      *  Handle resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
-        if (!this.initialLayoutComplete) {
-            return;
-        }
-
         this.update();
     };
 
@@ -767,8 +748,6 @@ export class AnchoredRegion extends FASTElement {
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        this.pendingLayoutUpdate = false;
-
         let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
         let desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined = undefined;
 
@@ -908,7 +887,7 @@ export class AnchoredRegion extends FASTElement {
             return;
         }
 
-        if (!this.regionVisible && !this.pendingPositioningUpdate && !this.pendingLayoutUpdate) {
+        if (!this.regionVisible) {
             this.regionVisible = true;
             this.style.removeProperty("pointer-events");
             this.style.removeProperty("opacity");
@@ -1147,8 +1126,8 @@ export class AnchoredRegion extends FASTElement {
      * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.update);
-        window.addEventListener(eventScroll, this.update, true);
+        window.addEventListener(eventResize, this.update, { passive: true });
+        window.addEventListener(eventScroll, this.update, { passive: true, capture: true });
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }
