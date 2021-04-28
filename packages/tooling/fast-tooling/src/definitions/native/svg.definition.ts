@@ -52,7 +52,7 @@ export const svgDefinition: WebComponentDefinition = {
             ],
             slots: [
                 {
-                    name: "Default slot",
+                    name: "",
                     description: "The default slot",
                     title: "Default slot",
                 },
