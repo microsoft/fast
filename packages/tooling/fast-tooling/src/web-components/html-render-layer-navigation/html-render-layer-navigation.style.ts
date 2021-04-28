@@ -5,7 +5,7 @@ import {
     FocusOutlineWidthProperty,
     FontSize1Property,
     ForegroundColorProperty,
-    LineHeight1Property
+    LineHeight1Property,
 } from "../style/css-properties";
 
 export const HTMLRenderLayerNavigationStyles = css`
@@ -49,8 +49,7 @@ export const HTMLRenderLayerNavigationStyles = css`
     .pill {
         position: absolute;
         box-sizing: border-box;
-        top: calc(
-            (${LineHeight1Property} + (${FocusOutlineWidthProperty} * 4px)) * -1);
+        top: calc((${LineHeight1Property} + (${FocusOutlineWidthProperty} * 4px)) * -1);
         line-height: ${LineHeight1Property};
         border-radius: calc(${LineHeight1Property} / 2);
         background-color: ${AccentFillRestProperty};
@@ -65,4 +64,4 @@ export const HTMLRenderLayerNavigationStyles = css`
         background-color: ${BackgroundColorProperty};
         color: ${ForegroundColorProperty};
     }
-`
+`;
