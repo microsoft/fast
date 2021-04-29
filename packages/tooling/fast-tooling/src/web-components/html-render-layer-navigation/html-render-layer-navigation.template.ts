@@ -2,7 +2,7 @@ import { html } from "@microsoft/fast-element";
 import { HTMLRenderLayerNavgation } from "./html-render-layer-navigation";
 
 export const HTMLRenderLayerNavigationTemplate = html<HTMLRenderLayerNavgation>`
-    <div class="navigationRegion">
+    <div class="navigation-region">
         <div
             class="${x => (x.clickLayerActive ? "click-layer active" : "click-layer")}"
             style="top:${x => x.clickPosition.top}px;left:${x =>

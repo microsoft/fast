@@ -41,7 +41,7 @@ describe("HTMLRenderLayerNavgation", () => {
 
         const select = element.shadowRoot?.querySelector(".click-layer");
         expect(select.classList.contains("active")).to.equal(true);
-        
+
         let pill = element.shadowRoot?.querySelector(".click-layer .pill");
         expect(pill.innerHTML).to.equal("Untitled");
 

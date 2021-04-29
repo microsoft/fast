@@ -9,7 +9,7 @@ import {
 } from "../style/css-properties";
 
 export const HTMLRenderLayerNavigationStyles = css`
-    .navigationRegion {
+    .navigation-region {
         position: absolute;
         top: 0;
         right: 0;

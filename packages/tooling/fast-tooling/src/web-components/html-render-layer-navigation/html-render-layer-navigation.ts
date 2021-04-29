@@ -47,9 +47,11 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     }
 
     private handleSelect(datadictionaryId: string, elementRef: HTMLElement) {
-        const title = this.schemaDictionary && this.dataDictionary ? this.schemaDictionary[
-            this.dataDictionary[0][datadictionaryId].schemaId
-        ].title : null;
+        const title =
+            this.schemaDictionary && this.dataDictionary
+                ? this.schemaDictionary[this.dataDictionary[0][datadictionaryId].schemaId]
+                      .title
+                : null;
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
         this.clickPillContent = title || "Untitled";
@@ -57,9 +59,11 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     }
 
     private handleHighlight(datadictionaryId: string, elementRef: HTMLElement) {
-        const title = this.schemaDictionary && this.dataDictionary ? this.schemaDictionary[
-            this.dataDictionary[0][datadictionaryId].schemaId
-        ].title : null;
+        const title =
+            this.schemaDictionary && this.dataDictionary
+                ? this.schemaDictionary[this.dataDictionary[0][datadictionaryId].schemaId]
+                      .title
+                : null;
         this.hoverPosition = this.GetPositionFromElement(elementRef);
         this.hoverPillContent = title || "Untitled";
         this.hoverLayerActive = true;
