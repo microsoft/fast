@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 4/22/2021
+ * Last modified: 4/28/2021
  */
 export const properties = {
     "background-color": {
@@ -82,6 +82,122 @@ export const properties = {
             type: "mixed",
         },
     },
+    "flex-direction": {
+        name: "flex-direction",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "flex-direction",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "row",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "row-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "column",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "column-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
+    "justify-content": {
+        name: "justify-content",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "justify-content",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<content-distribution>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: [
+                        {
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            ref: [
+                                {
+                                    ref: "<content-position>",
+                                    type: "syntax",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    ref: "left",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    ref: "right",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "juxtaposition",
+                            type: "group",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
     margin: {
         name: "margin",
         appliesTo: "allElementsExceptTableDisplayTypes",
@@ -117,58 +233,6 @@ export const properties = {
             multiplier: {
                 type: "atLeastATimesAtMostBTimes",
                 range: [1, 4],
-            },
-        },
-    },
-    overflow: {
-        name: "overflow",
-        appliesTo: "blockContainersFlexContainersGridContainers",
-        syntax: {
-            mapsToProperty: "overflow",
-            percentages: "no",
-            ref: [
-                {
-                    ref: "visible",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "hidden",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "clip",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "scroll",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "auto",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-            ],
-            refCombinatorType: "exactlyOne",
-            type: "group",
-            prepend: null,
-            multiplier: {
-                type: "atLeastATimesAtMostBTimes",
-                range: [1, 2],
             },
         },
     },
