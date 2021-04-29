@@ -253,7 +253,7 @@ export const accentForegroundCut = create<SwatchRGB>("accent-foreground-cut").wi
     }
 );
 export const accentForegroundCutLarge = create<SwatchRGB>(
-    "accent-foreground-cut"
+    "accent-foreground-cut-large"
 ).withDefault((element: HTMLElement) => {
     return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
 });
@@ -509,28 +509,28 @@ export const NeutralFillToggle = DI.createInterface<
 );
 
 export const neutralFillToggleRest = create<SwatchRGB>(
-    "neutral-fill-rest-delta"
+    "neutral-fill-toggle-rest"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).rest
 );
 
 export const neutralFillToggleHover = create<SwatchRGB>(
-    "neutral-fill-rest-hover"
+    "neutral-fill-toggle-hover"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).hover
 );
 
 export const neutralFillToggleActive = create<SwatchRGB>(
-    "neutral-fill-rest-active"
+    "neutral-fill-toggle-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).active
 );
 
 export const neutralFillToggleFocus = create<SwatchRGB>(
-    "neutral-fill-rest-focus"
+    "neutral-fill-toggle-focus"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).focus
@@ -639,7 +639,7 @@ export const NeutralForeground = DI.createInterface<
 );
 
 export const neutralForegroundRest = create<SwatchRGB>(
-    "neutral-outline-rest"
+    "neutral-foreground-rest"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralForeground)(element)
 );
