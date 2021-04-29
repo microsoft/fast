@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-color-explorer
 
-This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Apr 2021 07:19:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.19
+
+Thu, 29 Apr 2021 07:19:40 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
 
 ## 1.6.19
 
