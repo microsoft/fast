@@ -7,7 +7,7 @@ export const HTMLRenderStyles = css`
         padding: 40px;
         box-sizing: border-box;
     }
-    .htmlRender {
+    .html-render {
         width: 100%;
         height: 100%;
         outline: none;

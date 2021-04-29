@@ -9,7 +9,7 @@ import {
 } from "../style/css-properties";
 
 export const HTMLRenderLayerNavigationStyles = css`
-    #navigationContainer {
+    .navigationRegion {
         position: absolute;
         top: 0;
         right: 0;
@@ -17,8 +17,8 @@ export const HTMLRenderLayerNavigationStyles = css`
         left: 0;
         pointer-events: none;
     }
-    #clickDisplay,
-    #hoverDisplay {
+    .click-layer,
+    .hover-layer {
         display: none;
         position: absolute;
         box-sizing: content-box;
@@ -30,14 +30,14 @@ export const HTMLRenderLayerNavigationStyles = css`
         margin: calc(${FocusOutlineWidthProperty} * -1px) 0 0
             calc(${FocusOutlineWidthProperty} * -1px);
     }
-    #clickDisplay.active {
+    .click-layer.active {
         display: block;
         border: calc(${FocusOutlineWidthProperty} * 1px) solid ${AccentFillRestProperty};
     }
-    #hoverDisplay.active {
+    .hover-layer.active {
         display: block;
     }
-    #hoverDisplay.active:after {
+    .hover-layer.active:after {
         content: "";
         position: absolute;
         width: 100%;
@@ -60,7 +60,7 @@ export const HTMLRenderLayerNavigationStyles = css`
         font-weight: 700;
         color: ${BackgroundColorProperty};
     }
-    #hoverDisplay .pill {
+    .hover-layer .pill {
         background-color: ${BackgroundColorProperty};
         color: ${ForegroundColorProperty};
     }

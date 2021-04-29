@@ -1,5 +1,4 @@
 import { customElement, observable } from "@microsoft/fast-element";
-
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
 import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
@@ -31,10 +30,10 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     public clickPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 
     @observable
-    public hoverClassName: string = "";
+    public hoverLayerActive: boolean = false;
 
     @observable
-    public clickClassName: string = "";
+    public clickLayerActive: boolean = false;
 
     @observable
     public clickPillContent: string = "";
@@ -42,51 +41,53 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     @observable
     public hoverPillContent: string = "";
 
-    protected handleMessageSystem(e: MessageEvent): void {
-        super.handleMessageSystem(e);
-    }
-
     private GetPositionFromElement(target: HTMLElement): OverylayPosition {
         const pos: DOMRectList = target.getClientRects();
         return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
     }
 
-    private handleSelect(datadictionaryid: string, elementRef: HTMLElement) {
+    private handleSelect(datadictionaryId: string, elementRef: HTMLElement) {
+        const title = this.schemaDictionary && this.dataDictionary ? this.schemaDictionary[
+            this.dataDictionary[0][datadictionaryId].schemaId
+        ].title : null;
         this.clickPosition = this.GetPositionFromElement(elementRef);
-        this.clickClassName = "active";
-        this.clickPillContent = datadictionaryid;
-        this.hoverClassName = "";
+        this.clickLayerActive = true;
+        this.clickPillContent = title || "Untitled";
+        this.hoverLayerActive = false;
     }
 
-    private handleHighlight(datadictionaryid: string, elementRef: HTMLElement) {
+    private handleHighlight(datadictionaryId: string, elementRef: HTMLElement) {
+        const title = this.schemaDictionary && this.dataDictionary ? this.schemaDictionary[
+            this.dataDictionary[0][datadictionaryId].schemaId
+        ].title : null;
         this.hoverPosition = this.GetPositionFromElement(elementRef);
-        this.hoverPillContent = datadictionaryid;
-        this.hoverClassName = "active";
+        this.hoverPillContent = title || "Untitled";
+        this.hoverLayerActive = true;
     }
     private handleUnHighlight() {
-        this.hoverClassName = "";
+        this.hoverLayerActive = false;
         this.hoverPillContent = "";
     }
 
     private handleClear() {
-        this.clickClassName = "";
+        this.clickLayerActive = false;
         this.clickPillContent = "";
     }
 
     public elementActivity(
         activityType: ActivityType,
-        datadictionaryid: string,
+        datadictionaryId: string,
         elementRef: HTMLElement
     ) {
         switch (activityType) {
             case ActivityType.hover:
-                this.handleHighlight(datadictionaryid, elementRef);
+                this.handleHighlight(datadictionaryId, elementRef);
                 break;
             case ActivityType.blur:
                 this.handleUnHighlight();
                 break;
             case ActivityType.click:
-                this.handleSelect(datadictionaryid, elementRef);
+                this.handleSelect(datadictionaryId, elementRef);
                 break;
             case ActivityType.clear:
                 this.handleClear();

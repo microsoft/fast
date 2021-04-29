@@ -14,9 +14,9 @@ export enum ActivityType {
 }
 
 export abstract class HTMLRenderLayer extends FASTElement {
-    protected dataDictionary: DataDictionary<unknown>;
+    public dataDictionary: DataDictionary<unknown>;
 
-    protected schemaDictionary: SchemaDictionary;
+    public schemaDictionary: SchemaDictionary;
 
     @observable
     public messageSystem: MessageSystem;
@@ -26,7 +26,7 @@ export abstract class HTMLRenderLayer extends FASTElement {
         }
     }
 
-    protected handleMessageSystem(e: MessageEvent): void {
+    protected handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
             if (
                 e.data.type === MessageSystemType.initialize ||
@@ -36,11 +36,11 @@ export abstract class HTMLRenderLayer extends FASTElement {
                 this.schemaDictionary = e.data.schemaDictionary;
             }
         }
-    }
+    };
 
     public abstract elementActivity(
         activityType: ActivityType,
-        datadictionaryid: string,
+        datadictionaryId: string,
         elementRef: HTMLElement
     );
 }

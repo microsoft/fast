@@ -1,5 +1,4 @@
 import { customElement, FASTElement, observable } from "@microsoft/fast-element";
-
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import {
     htmlMapper,
@@ -40,7 +39,7 @@ export class HTMLRender extends FASTElement {
 
     private currentElement: HTMLElement;
 
-    private renderLayers: HTMLRenderLayer[];
+    private renderLayers: HTMLRenderLayer[] = [];
 
     @observable
     public markup: HTMLElement;
@@ -70,6 +69,9 @@ export class HTMLRender extends FASTElement {
         if (this.messageSystem !== undefined) {
             this.tabCounter = 1;
             this.messageSystem.add({ onMessage: this.handleMessageSystem });
+            this.renderLayers.forEach((value: HTMLRenderLayer) => {
+                value.messageSystem = this.messageSystem;
+            });
         }
     }
 
@@ -87,7 +89,7 @@ export class HTMLRender extends FASTElement {
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
-                this.RenderMarkup();
+                this.renderMarkup();
             }
             if (
                 e.data.type === MessageSystemType.navigation &&
@@ -239,7 +241,7 @@ export class HTMLRender extends FASTElement {
         return config.dataDictionary[0][config.dictionaryId].data;
     };
 
-    public RenderMarkup(): void {
+    public renderMarkup(): void {
         if (this.markupDefinitions !== null) {
             this.markup = mapDataDictionary({
                 dataDictionary: this.dataDictionary,

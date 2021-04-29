@@ -395,6 +395,7 @@ export function htmlResolver(config: ResolverConfig<any>): HTMLElement | Text {
             );
         }
     }
+
     return config.dataDictionary[0][config.dictionaryId].data;
 }
 

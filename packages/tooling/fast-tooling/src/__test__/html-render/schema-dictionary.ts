@@ -6,6 +6,7 @@ export default {
         $id: "div",
         id: "div",
         type: "object",
+        title: "root_div",
         [ReservedElementMappingKeyword.mapsToTagName]: "div",
         properties: {
             foo: {

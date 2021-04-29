@@ -39,19 +39,26 @@ describe("HTMLRenderLayerNavgation", () => {
         element.elementActivity(ActivityType.click, "Foo", div);
         await DOM.nextUpdate();
 
-        const select = element.shadowRoot?.querySelector("#clickDisplay");
+        const select = element.shadowRoot?.querySelector(".click-layer");
         expect(select.classList.contains("active")).to.equal(true);
+        
+        let pill = element.shadowRoot?.querySelector(".click-layer .pill");
+        expect(pill.innerHTML).to.equal("Untitled");
 
-        const pill = element.shadowRoot?.querySelector("#clickDisplay .pill");
-        expect(pill.innerHTML).to.equal("Foo");
-
-        element.elementActivity(ActivityType.clear, "Foo", div);
+        element.dataDictionary = null;
+        element.elementActivity(ActivityType.click, "Foo", div);
         await DOM.nextUpdate();
 
-        const selectClear = element.shadowRoot?.querySelector("#clickDisplay");
+        pill = element.shadowRoot?.querySelector(".click-layer .pill");
+        expect(pill.innerHTML).to.equal("Untitled");
+
+        element.elementActivity(ActivityType.clear, "", div);
+        await DOM.nextUpdate();
+
+        const selectClear = element.shadowRoot?.querySelector(".click-layer");
         expect(selectClear.classList.contains("active")).to.equal(false);
 
-        const pillClear = element.shadowRoot?.querySelector("#clickDisplay .pill");
+        const pillClear = element.shadowRoot?.querySelector(".click-layer .pill");
         expect(pillClear.innerHTML).to.equal("");
 
         await disconnect();
@@ -68,19 +75,26 @@ describe("HTMLRenderLayerNavgation", () => {
         element.elementActivity(ActivityType.hover, "Foo", div);
         await DOM.nextUpdate();
 
-        const hover = element.shadowRoot?.querySelector("#hoverDisplay");
+        const hover = element.shadowRoot?.querySelector(".hover-layer");
         expect(hover.classList.contains("active")).to.equal(true);
 
-        const pill = element.shadowRoot?.querySelector("#hoverDisplay .pill");
-        expect(pill.innerHTML).to.equal("Foo");
+        let pill = element.shadowRoot?.querySelector(".hover-layer .pill");
+        expect(pill.innerHTML).to.equal("Untitled");
 
-        element.elementActivity(ActivityType.blur, "Foo", div);
+        element.dataDictionary = null;
+        element.elementActivity(ActivityType.hover, "Foo", div);
         await DOM.nextUpdate();
 
-        const hoverBlur = element.shadowRoot?.querySelector("#hoverDisplay");
+        pill = element.shadowRoot?.querySelector(".hover-layer .pill");
+        expect(pill.innerHTML).to.equal("Untitled");
+
+        element.elementActivity(ActivityType.blur, "", div);
+        await DOM.nextUpdate();
+
+        const hoverBlur = element.shadowRoot?.querySelector(".hover-layer");
         expect(hoverBlur.classList.contains("active")).to.equal(false);
 
-        const pillBlur = element.shadowRoot?.querySelector("#hoverDisplay .pill");
+        const pillBlur = element.shadowRoot?.querySelector(".hover-layer .pill");
         expect(pillBlur.innerHTML).to.equal("");
 
         await disconnect();

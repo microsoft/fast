@@ -7,7 +7,7 @@ export const HTMLRenderTemplate = html<HTMLRender>`
         @click="${(x, c) => x.containerClickHandler(c.event as MouseEvent)}"
     >
         <div
-            class="htmlRender"
+            class="html-render"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             @mouseover="${(x, c) => x.hoverHandler(c.event as MouseEvent)}"
             @mouseout="${(x, c) => x.blurHandler(c.event as MouseEvent)}"

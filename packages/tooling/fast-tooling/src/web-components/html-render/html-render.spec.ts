@@ -22,10 +22,10 @@ const fastMessageSystemWorker = new FASTMessageSystemWorker();
 
 class ActivityResult {
     public activityType: ActivityType;
-    public datadictionaryid: string;
+    public datadictionaryId: string;
     constructor(activity: ActivityType, dataid: string) {
         this.activityType = activity;
-        this.datadictionaryid = dataid;
+        this.datadictionaryId = dataid;
     }
 }
 
@@ -42,10 +42,10 @@ export class HTMLRenderLayerTest extends HTMLRenderLayer {
 
     public elementActivity(
         activityType: ActivityType,
-        datadictionaryid: string,
+        datadictionaryId: string,
         elementRef: HTMLElement
     ) {
-        this.lastActivity = new ActivityResult(activityType, datadictionaryid);
+        this.lastActivity = new ActivityResult(activityType, datadictionaryId);
     }
 }
 
@@ -127,7 +127,7 @@ describe("HTMLRender", () => {
                 }
             },
         });
-        const container = element.shadowRoot?.querySelector(".htmlRender");
+        const container = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
@@ -193,7 +193,7 @@ describe("HTMLRender", () => {
                 }
             },
         });
-        const container = element.shadowRoot?.querySelector(".htmlRender");
+        const container = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
         container.click();
@@ -218,12 +218,12 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.click).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("root");
+        expect(activity.datadictionaryId).to.equal("root");
         (element.querySelector(
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
 
-        const container = element.shadowRoot?.querySelector(".htmlRender");
+        const container = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.click();
         await DOM.nextUpdate();
@@ -233,7 +233,7 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.clear).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("");
+        expect(activity.datadictionaryId).to.equal("");
         (element.querySelector(
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
@@ -259,7 +259,7 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.hover).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("root");
+        expect(activity.datadictionaryId).to.equal("root");
         (element.querySelector(
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
@@ -272,7 +272,7 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.blur).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("");
+        expect(activity.datadictionaryId).to.equal("");
         (element.querySelector(
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
@@ -300,7 +300,7 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.click).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("root");
+        expect(activity.datadictionaryId).to.equal("root");
 
         await disconnect();
     });
@@ -322,7 +322,7 @@ describe("HTMLRender", () => {
         ) as HTMLRenderLayerTest).lastActivity;
         expect(activity).to.not.be.null;
         expect(activity.activityType === ActivityType.click).to.equal(true);
-        expect(activity.datadictionaryid).to.equal("root");
+        expect(activity.datadictionaryId).to.equal("root");
         (element.querySelector(
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;

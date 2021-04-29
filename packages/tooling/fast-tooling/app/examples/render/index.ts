@@ -6,8 +6,8 @@ import {
 import { HTMLRender } from "../../../src/web-components/html-render/html-render";
 import { HTMLRenderLayerNavgation } from "../../../src/web-components/html-render-layer-navigation/html-render-layer-navigation";
 import { nativeElementDefinitions } from "../../../src/definitions/";
-import dataDictionaryConfig from "./data-dictionary-config";
-import schemaDictionary from "./schema-dictionary";
+import dataDictionaryConfig from "../../../src/__test__/html-render/data-dictionary-config";
+import schemaDictionary from "../../../src/__test__/html-render/schema-dictionary";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTMessageSystemWorker = require("../../../dist/message-system.min.js");
