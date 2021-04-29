@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Thu, 29 Apr 2021 07:19:40 GMT",
+      "tag": "@microsoft/fast-tooling_v0.18.3",
+      "version": "0.18.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix an incorrect definition name which for default slots should be an empty string",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "9357f10ca02a6a2785ac08ad2928d0a0531c03d6",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 25 Apr 2021 07:21:02 GMT",
       "tag": "@microsoft/fast-tooling_v0.18.2",
       "version": "0.18.2",
