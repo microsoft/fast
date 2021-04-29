@@ -129,26 +129,6 @@ For more insight: [Managing focus in the shadow DOM](https://nolanlawson.com/202
     ![X](./images/BottomLeftCorner.png)
 
 
-  - topLeftAligned
-
-    ![X](./images/TopLeftAlign.png)
-
-
-  - bottomLeftAligned
-
-    ![X](./images/BottomLeftAlign.png)
-
-
-  - topRightAligned
-
-    ![X](./images/TopRightAlign.png)
-
-
-  - bottomRightAligned
-
-    ![X](./images/BottomRightAlign.png)
-
-
 ### Anatomy and Appearance
 Parts:
 - `flyout` - the Flyout itself, has `role=dialog`
