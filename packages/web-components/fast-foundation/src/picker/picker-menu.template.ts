@@ -15,7 +15,7 @@ import type { PickerMenu } from "./picker-menu";
  */
 export function createPickerMenuTemplate(prefix: string): ViewTemplate {
     return html<PickerMenu>`
-        <template role="list" aria-label="choose a recipient">
+        <template role="list" aria-label="TODO: choose a recipient??">
             ${when(
                 x => !x.showNoOptions && !x.showLoading,
                 html<PickerMenu>`
@@ -40,7 +40,6 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                             aria-live="polite"
                             part="suggestions-available-alert"
                             class="suggestions-available-alert"
-                            tabindex="0"
                         >
                             ${x => x.suggestionsAvailableText}
                         </div>
@@ -63,9 +62,9 @@ export function createPickerMenuTemplate(prefix: string): ViewTemplate {
                     <div class="loading-display" part="loading-display">
                         <slot name="loading-region">
                             <${prefix}-progress-ring
-                                   part="loading-progress"
-                                   class="loading-progress
-                                   slot="loading-region"
+                                part="loading-progress"
+                                class="loading-progress
+                                slot="loading-region"
                             ></${prefix}-progress-ring>
                             ${x => x.loadingText}
                         </slot>

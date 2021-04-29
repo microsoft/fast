@@ -23,38 +23,7 @@ export type PickerMenuPosition = "top" | "bottom";
  */
 export class Picker extends FASTElement {
     /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: no-suggestions-text
-     */
-    @attr({ attribute: "no-suggestions-text" })
-    public noSuggestionsText: string;
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: suggestions-available-text
-     */
-    @attr({ attribute: "suggestions-available-text" })
-    public suggestionsAvailableText: string;
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: loading-text
-     */
-    @attr({ attribute: "loading-text" })
-    public loadingText: string;
-
-    /**
-     *
-     *
+     * Items pre-selected when component is first connected. Comma delineated string ie. "apples,oranges"
      * @public
      * @remarks
      * HTML Attribute: default-selection
@@ -63,7 +32,7 @@ export class Picker extends FASTElement {
     public defaultSelection: string;
 
     /**
-     *
+     * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
      * @public
      * @remarks
@@ -78,7 +47,7 @@ export class Picker extends FASTElement {
     }
 
     /**
-     *
+     * Currently available options. Comma delineated string ie. "apples,oranges".
      *
      * @public
      * @remarks
@@ -87,11 +56,12 @@ export class Picker extends FASTElement {
     @attr({ attribute: "options" })
     public options: string;
     private optionsChanged(): void {
+        //TODO: trim white space?
         this.optionsList = this.options.split(",");
     }
 
     /**
-     *
+     * The maximum number of items that can be selected.
      *
      * @public
      * @remarks
@@ -105,7 +75,57 @@ export class Picker extends FASTElement {
     }
 
     /**
+     * The text to present to assistive technolgies when no suggestions are available.
      *
+     * @public
+     * @remarks
+     * HTML Attribute: no-suggestions-text
+     */
+    @attr({ attribute: "no-suggestions-text" })
+    public noSuggestionsText: string;
+
+    /**
+     *  The text to present to assistive technolgies when suggestions are available.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: suggestions-available-text
+     */
+    @attr({ attribute: "suggestions-available-text" })
+    public suggestionsAvailableText: string;
+
+    /**
+     * The text to present to assistive technologies when suggestions are loading.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: loading-text
+     */
+    @attr({ attribute: "loading-text" })
+    public loadingText: string;
+
+    /**
+     * Applied to the aria-label attribute of the input element
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: label
+     */
+    @attr({ attribute: "label" })
+    public label: string;
+
+    /**
+     * Applied to the aria-labelledby attribute of the input element
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: labelledby
+     */
+    @attr({ attribute: "labelledby" })
+    public labelledby: string;
+
+    /**
+     * Allows alternate flyout menu configurations.
      *
      * @public
      */
@@ -121,18 +141,7 @@ export class Picker extends FASTElement {
     }
 
     /**
-     *
-     *
-     * @public
-     */
-    @observable
-    public optionsList: string[] = [];
-    private optionsListChanged(): void {
-        this.showNoOptions = this.optionsList.length === 0 ? true : false;
-    }
-
-    /**
-     *
+     * Template to use for selected items.
      *
      * @public
      */
@@ -140,7 +149,7 @@ export class Picker extends FASTElement {
     public itemTemplate: ViewTemplate;
 
     /**
-     *
+     * Default template to use for selected items (usually specified in the component template).
      *
      * @public
      */
@@ -148,12 +157,20 @@ export class Picker extends FASTElement {
     public defaultItemTemplate: ViewTemplate;
 
     /**
+     * Template to use for available options.
      *
-     *
-     * @internal
+     * @public
      */
     @observable
     public optionTemplate: ViewTemplate;
+     
+    /**
+     * Default template to use for available options(usually specified in the template).
+     *
+     * @public
+     */
+    @observable
+    public defaultOptionTemplate: ViewTemplate;
 
     /**
      *
@@ -161,7 +178,15 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public defaultOptionTemplate: ViewTemplate;
+    public optionsList: string[] = [];
+    private optionsListChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.showNoOptions = this.optionsList.length === 0 ? true : false;
+            this.setFocusedOption(
+                this.optionsList.length === 0 ? -1 : 0
+            );
+        }
+    }
 
     /**
      *
@@ -224,8 +249,11 @@ export class Picker extends FASTElement {
     @observable
     public showLoading: boolean = false;
     private showLoadingChanged(): void {
-        if (this.menuElement) {
-            this.menuElement.showLoading = this.showLoading;
+        if (this.$fastController.isConnected) {
+            if (this.menuElement) {
+                this.menuElement.showLoading = this.showLoading;
+            }
+            this.setFocusedOption(0);
         }
     }
 
@@ -237,8 +265,11 @@ export class Picker extends FASTElement {
     @observable
     public showNoOptions: boolean = false;
     private showNoOptionsChanged(): void {
-        if (this.menuElement) {
-            this.menuElement.showNoOptions = this.showNoOptions;
+        if (this.$fastController.isConnected) {
+            if (this.menuElement) {
+                this.menuElement.showNoOptions = this.showNoOptions;
+            }
+            this.setFocusedOption(0);
         }
     }
 
@@ -325,7 +356,8 @@ export class Picker extends FASTElement {
         this.inputElement.setAttribute("autocapitalize", "off");
         this.inputElement.setAttribute("autocomplete", "off");
         this.inputElement.setAttribute("haspopup", "list");
-        this.inputElement.setAttribute("aria-label", "the label");
+        this.inputElement.setAttribute("aria-label", this.label);
+        this.inputElement.setAttribute("aria-labelledby", this.labelledby);
         this.inputElement.setAttribute("part", "input-element");
         this.inputElement.classList.add("input-element");
 
@@ -586,6 +618,7 @@ export class Picker extends FASTElement {
             return;
         }
 
+        //TODO: trim white space?
         this.selectedOptions = this.selection === "" ? [] : this.selection.split(",");
 
         this.checkMaxItems();
@@ -649,8 +682,27 @@ export class Picker extends FASTElement {
         }
     }
 
+    private disableMenu = (): void => {
+        this.menuFocusIndex = -1;
+        this.menuFocusOptionId = null;
+        this.inputElement.removeAttribute("aria-activedescendant");
+        this.inputElement.removeAttribute("aria-owns");
+        this.inputElement.removeAttribute("aria-expanded");
+        this.menuElement.scrollTo(0, 0);
+    }
+
     private setFocusedOption = (optionIndex: number): void => {
-        if (!this.menuOpen) {
+        if (
+            !this.menuOpen || 
+            this.menuElement.optionElements.length < 1 ||
+            this.showNoOptions ||
+            this.showLoading
+        ) {
+            this.menuFocusIndex = -1;
+            this.menuFocusOptionId = null;
+            this.inputElement.removeAttribute("aria-activedescendant");
+            this.inputElement.removeAttribute("aria-owns");
+            this.inputElement.removeAttribute("aria-expanded");
             return;
         }
 
@@ -658,19 +710,14 @@ export class Picker extends FASTElement {
             element.setAttribute("aria-selected", "false");
         });
 
-        if (
-            optionIndex === -1 ||
-            optionIndex > this.menuElement.optionElements.length - 1
-        ) {
-            this.menuFocusIndex = -1;
-            this.menuFocusOptionId = null;
-            this.inputElement.setAttribute("aria-activedescendant", "unset");
-            this.menuElement.scrollTo(0, 0);
-            return;
-        }
-
         this.menuFocusIndex = optionIndex;
-        this.menuFocusOptionId = this.menuElement.optionElements[optionIndex].id;
+        if (this.menuFocusIndex > this.menuElement.optionElements.length -1 ) {
+            this.menuFocusIndex = this.menuElement.optionElements.length -1;
+        }
+        this.menuFocusOptionId = this.menuElement.optionElements[this.menuFocusIndex].id;
+
+        this.inputElement.setAttribute("aria-owns", this.menuId);
+        this.inputElement.setAttribute("aria-expanded", "true");
         this.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
 
         const focusedOption = this.menuElement.optionElements[this.menuFocusIndex];
@@ -687,30 +734,18 @@ export class Picker extends FASTElement {
 
         if (open && document.activeElement === this.inputElement) {
             this.menuOpen = open;
-            this.inputElement.setAttribute("aria-owns", this.menuId);
-            this.inputElement.setAttribute("aria-expanded", "true");
             if (this.menuElement !== undefined) {
                 this.setFocusedOption(0);
                 this.menuElement.showLoading = this.showLoading;
                 this.menuElement.showNoOptions = this.showNoOptions;
-                this.inputElement.setAttribute(
-                    "aria-activedescendant",
-                    this.menuElement.optionElements.length > 0
-                        ? this.menuElement.optionElements[0].id
-                        : "unset"
-                );
             } else {
                 this.setFocusedOption(-1);
-                this.inputElement.setAttribute("aria-activedescendant", "unset");
             }
             return;
         }
 
         this.menuOpen = false;
         this.setFocusedOption(-1);
-        this.inputElement.setAttribute("aria-owns", "unset");
-        this.inputElement.setAttribute("aria-activedescendant", "unset");
-        this.inputElement.setAttribute("aria-expanded", "false");
         return;
     }
 }
