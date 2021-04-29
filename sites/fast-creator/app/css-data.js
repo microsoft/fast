@@ -2,9 +2,123 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 4/28/2021
+ * Last modified: 4/29/2021
  */
 export const properties = {
+    "align-content": {
+        name: "align-content",
+        appliesTo: "multilineFlexContainers",
+        syntax: {
+            mapsToProperty: "align-content",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<baseline-position>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<content-distribution>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: [
+                        {
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "<content-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
+    "align-items": {
+        name: "align-items",
+        appliesTo: "allElements",
+        syntax: {
+            mapsToProperty: "align-items",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "stretch",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<baseline-position>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: [
+                        {
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "<self-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
     "background-color": {
         name: "background-color",
         appliesTo: "allElements",
@@ -80,6 +194,56 @@ export const properties = {
             multiplier: null,
             prepend: null,
             type: "mixed",
+        },
+    },
+    flex: {
+        name: "flex",
+        appliesTo: "flexItemsAndInFlowPseudos",
+        syntax: {
+            mapsToProperty: "flex",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "none",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: [
+                        {
+                            ref: "<'flex-grow'>",
+                            type: "property",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "<'flex-shrink'>",
+                            type: "property",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "<'flex-basis'>",
+                            type: "property",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "property",
         },
     },
     "flex-direction": {
@@ -182,6 +346,108 @@ export const properties = {
                             ],
                             refCombinatorType: "juxtaposition",
                             type: "group",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                    ],
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
+    "justify-items": {
+        name: "justify-items",
+        appliesTo: "allElements",
+        syntax: {
+            mapsToProperty: "justify-items",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "stretch",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<baseline-position>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: [
+                        {
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
+                        },
+                        {
+                            ref: [
+                                {
+                                    ref: "<self-position>",
+                                    type: "syntax",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    ref: "left",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                                {
+                                    ref: "right",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
+                            ],
+                            refCombinatorType: "juxtaposition",
+                            type: "group",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "legacy",
+                            type: "value",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "legacy",
+                            type: "value",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
+                        {
+                            ref: "[ left right center ]",
+                            type: "group",
+                            refCombinatorType: "none",
                             prepend: null,
                             multiplier: null,
                         },
