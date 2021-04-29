@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-component-explorer",
   "entries": [
     {
+      "date": "Thu, 29 Apr 2021 07:19:40 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.8.5",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "9357f10ca02a6a2785ac08ad2928d0a0531c03d6",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 25 Apr 2021 07:21:02 GMT",
       "tag": "@microsoft/fast-component-explorer_v0.17.2",
       "version": "0.17.2",
