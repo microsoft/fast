@@ -146,7 +146,7 @@ export class Menu extends FASTElement {
     private handleItemFocus = (e: FocusEvent) => {
         const targetItem: HTMLElement = e.target as HTMLElement;
 
-        if (targetItem !== this.menuItems[this.focusIndex]){
+        if (targetItem !== this.menuItems[this.focusIndex]) {
             this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
             this.focusIndex = this.menuItems.indexOf(targetItem);
             targetItem.setAttribute("tabindex", "0");
