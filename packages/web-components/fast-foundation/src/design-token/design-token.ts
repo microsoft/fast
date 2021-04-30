@@ -33,18 +33,6 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
     readonly cssCustomProperty: string;
 
     /**
-     * Adds the token as a CSS Custom Property to an element
-     * @param element - The element to add the CSS Custom Property to
-     */
-    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
-
-    /**
-     *
-     * @param element - The element to remove the CSS Custom Property from
-     */
-    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
-
-    /**
      * Get the token value for an element.
      * @param element - The element to get the value for
      * @returns - The value set for the element, or the value set for the nearest element ancestor.
@@ -81,7 +69,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
     private cssVar: string;
     private customPropertyChangeHandlers: WeakMap<
-        HTMLElement & FASTElement,
+        HTMLElement,
         Subscriber & Disposable
     > = new Map();
 
@@ -115,15 +103,17 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
                     .value) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
+        this.addCustomPropertyFor(element);
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
+        this.removeCustomPropertyFor(element);
         DesignTokenNode.for(this, element).delete();
         return this;
     }
 
-    public addCustomPropertyFor(element: HTMLElement & FASTElement): this {
+    public addCustomPropertyFor(element: HTMLElement): this {
         if (!this.customPropertyChangeHandlers.has(element)) {
             const node = DesignTokenNode.for<T>(this, element);
             let value = this.resolveCSSValue(node.value);
@@ -153,7 +143,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return this;
     }
 
-    public removeCustomPropertyFor(element: HTMLElement & FASTElement): this {
+    public removeCustomPropertyFor(element: HTMLElement): this {
         if (this.customPropertyChangeHandlers.has(element)) {
             this.customPropertyChangeHandlers.get(element)!.dispose();
         }
@@ -162,6 +152,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public createBehavior() {
+        // This behavior only serves to notify authors that the
+        // value hasn't been set. We should consider removing this
+        // or putting it in a development conditional so it can be
+        // removed for production builds.
         return new DesignTokenBehavior(this);
     }
 
@@ -172,7 +166,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     private resolveCSSValue(value: T) {
-        return typeof value.createCSS === "function" ? value.createCSS() : value;
+        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
     }
 }
 
@@ -183,11 +177,16 @@ class DesignTokenBehavior<T> implements Behavior {
     constructor(public token: DesignToken<T>) {}
 
     bind(target: HTMLElement & FASTElement) {
-        this.token.addCustomPropertyFor(target);
+        const container = DI.getOrCreateDOMContainer(target);
+
+        if (!container.has(DesignTokenNode.channel(this.token), true)) {
+            throw new Error(
+                `DesignToken ${this.token.name} used in CSS but has not been set to a value.`
+            );
+        }
     }
-    unbind(target: HTMLElement & FASTElement) {
-        this.token.removeCustomPropertyFor(target);
-    }
+
+    unbind(target: HTMLElement & FASTElement) {}
 }
 
 const nodeCache = new WeakMap<HTMLElement, Map<DesignToken<any>, DesignTokenNode<any>>>();
@@ -266,9 +265,7 @@ class DesignTokenNode<T> {
         );
     }
 
-    private static channel<T>(
-        token: DesignToken<T>
-    ): InterfaceSymbol<DesignTokenNode<T>> {
+    public static channel<T>(token: DesignToken<T>): InterfaceSymbol<DesignTokenNode<T>> {
         return channelCache.has(token)
             ? channelCache.get(token)!
             : channelCache.set(token, DI.createInterface<DesignTokenNode<T>>()) &&
