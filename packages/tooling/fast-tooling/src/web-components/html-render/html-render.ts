@@ -75,10 +75,6 @@ export class HTMLRender extends FASTElement {
         }
     }
 
-    connectedCallback() {
-        super.connectedCallback();
-    }
-
     // Messaging
 
     private handleMessageSystem = (e: MessageEvent): void => {
