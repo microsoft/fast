@@ -26,6 +26,9 @@ import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
+import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
+import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { FormId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
@@ -203,6 +206,15 @@ function getCSSControls(): StandardControlPlugin {
             return (
                 <CSSControl
                     css={(CSSProperties as unknown) as CSSPropertiesDictionary}
+                    cssControls={[
+                        new CSSStandardControlPlugin({
+                            id: "layout",
+                            propertyNames: cssLayoutCssProperties,
+                            control: (config: CSSControlConfig) => {
+                                return <CSSLayout onChange={config.onChange} />;
+                            },
+                        }),
+                    ]}
                     {...config}
                 />
             );
@@ -260,6 +272,28 @@ export function renderFormTabs(
             </fast-tab-panel>
         </fast-tabs>
     );
+}
+
+export interface CSSLayoutProps {
+    onChange: (config: { [key: string]: string }) => void;
+}
+
+export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
+    public layoutRef: React.RefObject<any>;
+
+    private setLayoutRef = el => {
+        this.layoutRef = el;
+
+        if (this.layoutRef) {
+            (this.layoutRef as any).onChange = e => {
+                this.props.onChange(e);
+            };
+        }
+    };
+
+    render() {
+        return <css-layout ref={this.setLayoutRef}></css-layout>;
+    }
 }
 
 export class HTMLRenderReact extends React.Component {
