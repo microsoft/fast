@@ -7,8 +7,8 @@ import {
 } from "@microsoft/fast-colors";
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
-import { FormAssociatedColorPicker } from "./color-picker.form-associated";
 import { FASTTextField } from "@microsoft/fast-components";
+import { FormAssociatedColorPicker } from "./color-picker.form-associated";
 
 // Prevent tree shaking
 FASTTextField;
