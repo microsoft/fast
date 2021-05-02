@@ -103,51 +103,11 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
                     .value) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
-        this.addCustomPropertyFor(element);
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
-        this.removeCustomPropertyFor(element);
         DesignTokenNode.for(this, element).delete();
-        return this;
-    }
-
-    public addCustomPropertyFor(element: HTMLElement): this {
-        if (!this.customPropertyChangeHandlers.has(element)) {
-            const node = DesignTokenNode.for<T>(this, element);
-            let value = this.resolveCSSValue(node.value);
-
-            const add = () => CustomPropertyManager.addTo(element, this, value);
-            const remove = () => CustomPropertyManager.removeFrom(element, this, value);
-
-            const subscriber: Subscriber & Disposable = {
-                handleChange: (source, key) => {
-                    remove();
-                    value = this.resolveCSSValue(source[key]);
-                    add();
-                },
-                dispose: () => {
-                    remove();
-                    Observable.getNotifier(node).unsubscribe(subscriber, "value");
-                    this.customPropertyChangeHandlers.delete(element);
-                },
-            };
-
-            this.customPropertyChangeHandlers.set(element, subscriber);
-            add();
-
-            Observable.getNotifier(node).subscribe(subscriber, "value");
-        }
-
-        return this;
-    }
-
-    public removeCustomPropertyFor(element: HTMLElement): this {
-        if (this.customPropertyChangeHandlers.has(element)) {
-            this.customPropertyChangeHandlers.get(element)!.dispose();
-        }
-
         return this;
     }
 
@@ -163,10 +123,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         DesignTokenNode.for(this, defaultElement).set(value);
 
         return this;
-    }
-
-    private resolveCSSValue(value: T) {
-        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
     }
 }
 
@@ -199,7 +155,7 @@ const noop = Function.prototype;
  * emitting values to CSS custom properties, and maintaining
  * inheritance structures.
  */
-class DesignTokenNode<T> {
+class DesignTokenNode<T extends { createCSS?(): string }> {
     /** Track downstream nodes */
     private children: Set<DesignTokenNode<any>> = new Set();
     private bindingObserver: BindingObserver | undefined;
@@ -265,6 +221,10 @@ class DesignTokenNode<T> {
         );
     }
 
+    private resolveCSSValue(value: T) {
+        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
+    }
+
     public static channel<T>(token: DesignToken<T>): InterfaceSymbol<DesignTokenNode<T>> {
         return channelCache.has(token)
             ? channelCache.get(token)!
@@ -281,9 +241,9 @@ class DesignTokenNode<T> {
     /**
      * Invoked when parent node's value changes
      */
-    public handleChange = this.valueChangeHandler;
+    public handleChange = this.unsetValueChangeHandler;
 
-    private valueChangeHandler(source: DesignTokenNode<T>, key: "value") {
+    private unsetValueChangeHandler(source: DesignTokenNode<T>, key: "value") {
         if (this._rawValue === void 0) {
             Observable.getNotifier(this).notify("value");
         }
@@ -408,14 +368,25 @@ class DesignTokenNode<T> {
         }
 
         this._rawValue = value;
+
+        CustomPropertyManager.addTo(
+            this.target,
+            this.token,
+            this.resolveCSSValue(this.value)
+        );
     }
 
     /**
      * Deletes any value set for the node.
      */
     public delete() {
+        CustomPropertyManager.removeFrom(
+            this.target,
+            this.token,
+            this.resolveCSSValue(this.value)
+        );
         this._rawValue = void 0;
-        this.handleChange = this.valueChangeHandler;
+        this.handleChange = this.unsetValueChangeHandler;
         this.tearDownBindingObserver();
     }
 }
