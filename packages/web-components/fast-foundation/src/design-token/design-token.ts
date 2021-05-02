@@ -352,15 +352,14 @@ class DesignTokenNode<T> {
 
         if (this.target !== document.body && this.target.parentNode) {
             const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+
             // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
-            try {
+            if (container.has(DesignTokenNode.channel(this.token), true)) {
                 return container.get(DesignTokenNode.channel(this.token));
-            } catch (e) {
-                return DesignTokenNode.for(this.token, defaultElement);
             }
-        } else {
-            return DesignTokenNode.for(this.token, defaultElement);
         }
+
+        return DesignTokenNode.for(this.token, defaultElement);
     }
 
     /**
