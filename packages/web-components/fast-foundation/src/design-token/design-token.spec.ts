@@ -245,9 +245,24 @@ describe("A DesignToken", () => {
             const tokenB = DesignToken.create<number>("B");
 
             tokenA.setValueFor(parent, 6);
+            tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            tokenA.setValueFor(target, 7);
+            
+
+            expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
+            expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
+            removeElement(target);
+        });
+
+        it("should set a CSS custom property equal to the resolved value for an both elements for which a dependent token is set when setting a derived token value", () => {
+            const parent = addElement();
+            const target = addElement(parent);
+            const tokenA = DesignToken.create<number>("A");
+            const tokenB = DesignToken.create<number>("B");
+
+            tokenA.setValueFor(parent, 6);
             tokenA.setValueFor(target, 7);
             tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
-            
 
             expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
             expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
