@@ -142,6 +142,7 @@ class DesignTokenBehavior<T> implements Behavior {
         }
     }
 
+    /* eslint-disable-next-line */
     unbind(target: HTMLElement & FASTElement) {}
 }
 
@@ -202,7 +203,12 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             if (current.rawValue !== undefined) {
                 const { rawValue } = current;
                 if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
-                    this.setupBindingObserver(rawValue);
+                    if (
+                        !this.bindingObserver ||
+                        this.bindingObserver.source !== rawValue
+                    ) {
+                        this.setupBindingObserver(rawValue);
+                    }
 
                     return this.bindingObserver!.observe(
                         this.target,
