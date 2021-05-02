@@ -238,6 +238,22 @@ describe("A DesignToken", () => {
             removeElement(target);
         });
 
+        it("should update a CSS custom property to the resolved value of a derived token value with a dependent token when the dependent token changes", async () => {
+            const target = addElement();
+            const tokenA = DesignToken.create<number>("A");
+            const tokenB = DesignToken.create<number>("B");
+
+            tokenA.setValueFor(target, 6);
+            tokenB.setValueFor(target, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
+
+            tokenA.setValueFor(target, 7);
+            await DOM.nextUpdate();
+            expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
+
+            removeElement(target);
+        });
+
         it("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", () => {
             const parent = addElement();
             const target = addElement(parent);

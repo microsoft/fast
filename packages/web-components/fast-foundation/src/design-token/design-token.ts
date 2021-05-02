@@ -254,6 +254,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
         const handler = {
             handleChange: (source: Binding<HTMLElement>) => {
+                this.setCSSCustomProperty();
                 Observable.getNotifier(this).notify("value");
             },
         };
@@ -266,6 +267,14 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             this.bindingObserver.disconnect();
             this.bindingObserver = undefined;
         }
+    }
+
+    private setCSSCustomProperty() {
+        CustomPropertyManager.addTo(
+            this.target,
+            this.token,
+            this.resolveCSSValue(this.value)
+        );
     }
 
     public static for<T>(token: DesignToken<T>, target: HTMLElement) {
@@ -369,11 +378,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
         this._rawValue = value;
 
-        CustomPropertyManager.addTo(
-            this.target,
-            this.token,
-            this.resolveCSSValue(this.value)
-        );
+        this.setCSSCustomProperty();
     }
 
     /**

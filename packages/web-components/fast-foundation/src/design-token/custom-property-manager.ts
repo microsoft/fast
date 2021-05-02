@@ -46,13 +46,13 @@ class CustomPropertyManagerImpl {
         token: { cssCustomProperty: string },
         value: any
     ): void {
-        if (isFastElement(element)) {
-            element.$fastController.addStyles(this.getElementStyles(token, value));
-        } else {
-            DOM.queueUpdate(() =>
-                element.style.setProperty(token.cssCustomProperty, value)
-            );
-        }
+        // if (isFastElement(element)) {
+        //     element.$fastController.addStyles(this.getElementStyles(token, value));
+        // } else {
+        //DOM.queueUpdate(() =>
+        element.style.setProperty(token.cssCustomProperty, value);
+        // );
+        //}
     }
 
     public removeFrom(
@@ -60,11 +60,13 @@ class CustomPropertyManagerImpl {
         token: { cssCustomProperty: string },
         value: any
     ): void {
-        if (isFastElement(element)) {
-            element.$fastController.removeStyles(this.getElementStyles(token, value));
-        } else if (element.style.getPropertyValue(token.cssCustomProperty) === value) {
-            DOM.queueUpdate(() => element.style.removeProperty(token.cssCustomProperty));
-        }
+        // if (isFastElement(element)) {
+        //     element.$fastController.removeStyles(this.getElementStyles(token, value));
+        // } else if (element.style.getPropertyValue(token.cssCustomProperty) === value) {
+        // DOM.queueUpdate(() =>
+        element.style.removeProperty(token.cssCustomProperty);
+        // );
+        // }
     }
 }
 
