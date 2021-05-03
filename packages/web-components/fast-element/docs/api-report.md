@@ -105,6 +105,7 @@ export class BindingBehavior implements Behavior {
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
     disconnect(): void;
     observe(source: TSource, context: ExecutionContext): TReturn;
+    records(): IterableIterator<ObservationRecord>;
 }
 
 // @public
@@ -401,6 +402,12 @@ export const Observable: Readonly<{
 
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
+
+// @public
+export interface ObservationRecord {
+    propertyName: string;
+    propertySource: any;
+}
 
 // @public
 export interface PartialFASTElementDefinition {
