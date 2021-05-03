@@ -321,146 +321,188 @@ describe("The Controller", () => {
         expect(attached).to.equal(false);
     });
 
-        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
-            const { controller, element } = createController({
-                shadowOptions: {
-                    mode: "open",
-                },
-                template: templateA,
-            });
+    it("should raise cancelable custom events by default", () => {
+        const { controller, element } = createController();
+        let cancelable = false;
 
-            const style = document.createElement("style") as HTMLStyleElement;
-            expect(element.shadowRoot?.contains(style)).to.equal(false);
-
-            controller.addStyles(style);
-
-            expect(element.shadowRoot?.contains(style)).to.equal(true);
-
-            controller.removeStyles(style);
-
-            expect(element.shadowRoot?.contains(style)).to.equal(false);
-        });
-        it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
-            const { controller, element } = createController({
-                shadowOptions: {
-                    mode: "open",
-                },
-                template: templateA,
-            });
-
-            const style = document.createElement("style") as HTMLStyleElement;
-            expect(element.shadowRoot?.contains(style)).to.equal(false);
-
-            controller.addStyles(style);
-
-            expect(element.shadowRoot?.contains(style)).to.equal(true);
-
-            controller.removeStyles(style);
-
-            expect(element.shadowRoot?.contains(style)).to.equal(false);
+        controller.onConnectedCallback();
+        element.addEventListener('my-event', (e: Event) => {
+            cancelable = e.cancelable;
         });
 
-        context("with behaviors", () => {
-            it("should bind all behaviors added prior to connection, during connection", () => {
-                class TestBehavior implements Behavior {
-                    public bound = false;
-                    bind() {
-                        this.bound = true;
-                    }
-                    unbind() {
-                        this.bound = false;
-                    }
+        controller.emit('my-event');
+
+        expect(cancelable).to.be.true;
+    });
+
+    it("should raise bubble custom events by default", () => {
+        const { controller, element } = createController();
+        let bubbles = false;
+
+        controller.onConnectedCallback();
+        element.addEventListener('my-event', (e: Event) => {
+            bubbles = e.bubbles;
+        });
+
+        controller.emit('my-event');
+
+        expect(bubbles).to.be.true;
+    });
+
+    it("should raise composed custom events by default", () => {
+        const { controller, element } = createController();
+        let composed = false;
+
+        controller.onConnectedCallback();
+        element.addEventListener('my-event', (e: Event) => {
+            composed = e.composed;
+        });
+
+        controller.emit('my-event');
+
+        expect(composed).to.be.true;
+    });
+
+    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+        const { controller, element } = createController({
+            shadowOptions: {
+                mode: "open",
+            },
+            template: templateA,
+        });
+
+        const style = document.createElement("style") as HTMLStyleElement;
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+        controller.addStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+        controller.removeStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+    });
+    it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
+        const { controller, element } = createController({
+            shadowOptions: {
+                mode: "open",
+            },
+            template: templateA,
+        });
+
+        const style = document.createElement("style") as HTMLStyleElement;
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+
+        controller.addStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(true);
+
+        controller.removeStyles(style);
+
+        expect(element.shadowRoot?.contains(style)).to.equal(false);
+    });
+
+    context("with behaviors", () => {
+        it("should bind all behaviors added prior to connection, during connection", () => {
+            class TestBehavior implements Behavior {
+                public bound = false;
+                bind() {
+                    this.bound = true;
+                }
+                unbind() {
+                    this.bound = false;
+                }
+            }
+
+            const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
+            const { controller, element } = createController();
+            controller.addBehaviors(behaviors);
+
+            behaviors.forEach(x => expect(x.bound).to.equal(false))
+
+            document.body.appendChild(element);
+
+            behaviors.forEach(x => expect(x.bound).to.equal(true));
+        });
+
+        it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
+            let childBehaviorBound = false;
+            class ParentBehavior implements Behavior {
+                bind(el: FASTElement) {
+                    el.$fastController.addBehaviors([new ChildBehavior()])
                 }
 
-                const behaviors = [new TestBehavior(), new TestBehavior(), new TestBehavior()];
-                const { controller, element } = createController();
-                controller.addBehaviors(behaviors);
+                unbind() {}
+            }
 
-                behaviors.forEach(x => expect(x.bound).to.equal(false))
-
-                document.body.appendChild(element);
-
-                behaviors.forEach(x => expect(x.bound).to.equal(true));
-            });
-
-            it("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", () => {
-                let childBehaviorBound = false;
-                class ParentBehavior implements Behavior {
-                    bind(el: FASTElement) {
-                        el.$fastController.addBehaviors([new ChildBehavior()])
-                    }
-
-                    unbind() {}
+            class ChildBehavior implements Behavior {
+                bind(el: FASTElement) {
+                    childBehaviorBound = true;
                 }
 
-                class ChildBehavior implements Behavior {
-                    bind(el: FASTElement) {
-                        childBehaviorBound = true;
-                    }
+                unbind() {}
+            }
 
-                    unbind() {}
+
+
+            const { element, controller } = createController();
+            controller.addBehaviors([new ParentBehavior()]);
+            document.body.appendChild(element);
+
+            expect(childBehaviorBound).to.equal(true);
+        });
+        it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
+            class TestBehavior implements Behavior {
+                public bound = false;
+                bind() {
+                    this.bound = true;
                 }
 
+                unbind() {
+                    this.bound = false;
+                }
+            }
 
+            const behavior = new TestBehavior();
+            const { element, controller } = createController();
 
-                const { element, controller } = createController();
-                controller.addBehaviors([new ParentBehavior()]);
-                document.body.appendChild(element);
+            document.body.appendChild(element);
 
-                expect(childBehaviorBound).to.equal(true);
-            });
-            it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
-                class TestBehavior implements Behavior {
-                    public bound = false;
-                    bind() {
-                        this.bound = true;
-                    }
+            controller.addBehaviors([behavior]);
+            controller.addBehaviors([behavior]);
+            controller.addBehaviors([behavior]);
 
-                    unbind() {
-                        this.bound = false;
-                    }
+            expect(behavior.bound).to.equal(true);
+            controller.removeBehaviors([behavior]);
+            expect(behavior.bound).to.equal(true);
+            controller.removeBehaviors([behavior]);
+            expect(behavior.bound).to.equal(true);
+            controller.removeBehaviors([behavior]);
+            expect(behavior.bound).to.equal(false);
+        });
+        it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
+            class TestBehavior implements Behavior {
+                public bound = false;
+                bind() {
+                    this.bound = true;
                 }
 
-                const behavior = new TestBehavior();
-                const { element, controller } = createController();
-
-                document.body.appendChild(element);
-
-                controller.addBehaviors([behavior]);
-                controller.addBehaviors([behavior]);
-                controller.addBehaviors([behavior]);
-
-                expect(behavior.bound).to.equal(true);
-                controller.removeBehaviors([behavior]);
-                expect(behavior.bound).to.equal(true);
-                controller.removeBehaviors([behavior]);
-                expect(behavior.bound).to.equal(true);
-                controller.removeBehaviors([behavior]);
-                expect(behavior.bound).to.equal(false);
-            });
-            it("should unbind a behavior whenever the behavior is removed with the force argument", () => {
-                class TestBehavior implements Behavior {
-                    public bound = false;
-                    bind() {
-                        this.bound = true;
-                    }
-
-                    unbind() {
-                        this.bound = false;
-                    }
+                unbind() {
+                    this.bound = false;
                 }
+            }
 
-                const behavior = new TestBehavior();
-                const { element, controller } = createController();
+            const behavior = new TestBehavior();
+            const { element, controller } = createController();
 
-                document.body.appendChild(element);
+            document.body.appendChild(element);
 
-                controller.addBehaviors([behavior]);
-                controller.addBehaviors([behavior]);
+            controller.addBehaviors([behavior]);
+            controller.addBehaviors([behavior]);
 
-                expect(behavior.bound).to.equal(true);
-                controller.removeBehaviors([behavior], true);
-                expect(behavior.bound).to.equal(false);
-            });
-        })
+            expect(behavior.bound).to.equal(true);
+            controller.removeBehaviors([behavior], true);
+            expect(behavior.bound).to.equal(false);
+        });
+    })
 });
