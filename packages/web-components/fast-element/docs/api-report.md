@@ -403,11 +403,9 @@ export const Observable: Readonly<{
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
 
-// @public (undocumented)
+// @public
 export interface ObservationRecord {
-    // (undocumented)
     propertyName: string;
-    // (undocumented)
     propertySource: any;
 }
 

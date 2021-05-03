@@ -354,6 +354,7 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (
 
 /**
  * A record of observable property access.
+ * @public
  */
 export interface ObservationRecord {
     /**
