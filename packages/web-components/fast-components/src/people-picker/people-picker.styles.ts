@@ -46,7 +46,7 @@ export const PeoplePickerStyles = css`
     .loading-display,
     .no-options-display {
         background: ${neutralLayerFloatingBehavior.var};
-        height: 100%;
+        height: 120px;
         display: flex;
         align-items: center;
         justify-items: center;

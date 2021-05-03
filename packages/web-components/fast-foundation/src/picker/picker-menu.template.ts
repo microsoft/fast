@@ -15,7 +15,7 @@ import type { PickerMenu } from "./picker-menu";
  */
 export function createPickerMenuTemplate(prefix: string): ViewTemplate {
     return html<PickerMenu>`
-        <template role="list" aria-label="TODO: choose a recipient??">
+        <template role="list">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">
                     <slot

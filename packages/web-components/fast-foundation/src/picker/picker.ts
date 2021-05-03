@@ -431,43 +431,51 @@ export class Picker extends FASTElement {
         }
         switch (e.key) {
             case "Home": {
-                if (this.menuElement.optionElements.length > 0) {
+                if (!this.flyoutOpen){
                     this.toggleMenu(true);
-                    this.setFocusedOption(0);
+                } else {
+                    if (this.menuElement.optionElements.length > 0) {
+                        this.setFocusedOption(0);
+                    }
                 }
                 return false;
             }
 
             case "ArrowDown": {
-                if (this.menuElement.optionElements.length > 0) {
-                    const nextFocusOptionIndex = this.flyoutOpen
+                    if (!this.flyoutOpen){
+                        this.toggleMenu(true);
+                    } else {
+                        const nextFocusOptionIndex = this.flyoutOpen
                         ? Math.min(
                               this.menuFocusIndex + 1,
                               this.menuElement.optionElements.length - 1
                           )
                         : 0;
-
-                    this.toggleMenu(true);
-                    this.setFocusedOption(nextFocusOptionIndex);
-                }
+                        this.setFocusedOption(nextFocusOptionIndex);
+                    }
                 return false;
             }
 
             case "ArrowUp": {
-                if (this.menuElement.optionElements.length > 0) {
-                    const previousFocusOptionIndex = this.flyoutOpen
+                    if (!this.flyoutOpen){
+                        this.toggleMenu(true);
+                    } else {
+                        const previousFocusOptionIndex = this.flyoutOpen
                         ? Math.max(this.menuFocusIndex - 1, 0)
                         : 0;
-                    this.toggleMenu(true);
-                    this.setFocusedOption(previousFocusOptionIndex);
-                }
+                        this.setFocusedOption(previousFocusOptionIndex);
+                    }
                 return false;
             }
 
             case "End": {
-                if (this.menuElement.optionElements.length > 0) {
+                if (!this.flyoutOpen){
                     this.toggleMenu(true);
-                    this.setFocusedOption(this.menuElement.optionElements.length - 1);
+                } else {
+                    if (this.menuElement.optionElements.length > 0) {
+                        this.toggleMenu(true);
+                        this.setFocusedOption(this.menuElement.optionElements.length - 1);
+                    }
                 }
                 return false;
             }
@@ -547,7 +555,6 @@ export class Picker extends FASTElement {
 
     public handleFocusIn = (e: FocusEvent): boolean => {
         if (!this.hasFocus) {
-            this.toggleMenu(true);
             this.hasFocus = true;
         }
         return false;
