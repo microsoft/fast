@@ -392,7 +392,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     disconnect(): void;
 
     /**
-     * Gets {@link SubscriptionRecord|SubscriptionRecords} that the {@link BindingObserver}
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
