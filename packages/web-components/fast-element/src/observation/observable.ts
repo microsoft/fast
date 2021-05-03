@@ -352,8 +352,18 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (
     context: ExecutionContext<TParent>
 ) => TReturn;
 
+/**
+ * A record of observable property access.
+ */
 export interface ObservationRecord {
+    /**
+     * The source object with an observable property that was accessed.
+     */
     propertySource: any;
+
+    /**
+     * The name of the observable property on {@link ObservationRecord.propertySource} that was accessed.
+     */
     propertyName: string;
 }
 interface SubscriptionRecord extends ObservationRecord {
