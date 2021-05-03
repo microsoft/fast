@@ -25,7 +25,7 @@ export function createPickerTemplate(
             <slot name="list-region"></slot>
 
             ${when(
-                x => x.menuOpen,
+                x => x.flyoutOpen,
                 html<Picker>`
                 <${prefix}-anchored-region
                     class="region"
@@ -44,10 +44,40 @@ export function createPickerTemplate(
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                    <slot
-                        name="menu-region"
-                    >
-                    </slot>
+                    ${when(
+                        x => !x.showNoOptions && !x.showLoading,
+                        html<Picker>`
+                            <slot
+                                name="menu-region"
+                            >
+                            </slot>
+                        `
+                    )}
+                    ${when(
+                        x => x.showNoOptions && !x.showLoading,
+                        html<Picker>`
+                            <div class="no-options-display" part="no-options-display">
+                                <slot name="no-options-region">
+                                    ${x => x.noSuggestionsText}
+                                </slot>
+                            </div>
+                        `
+                    )}
+                    ${when(
+                        x => x.showLoading,
+                        html<Picker>`
+                            <div class="loading-display" part="loading-display">
+                                <slot name="loading-region">
+                                    <${prefix}-progress-ring
+                                        part="loading-progress"
+                                        class="loading-progress
+                                        slot="loading-region"
+                                    ></${prefix}-progress-ring>
+                                    ${x => x.loadingText}
+                                </slot>
+                            </div>
+                        `
+                    )}
                 </${prefix}-anchored-region>
             `
             )}

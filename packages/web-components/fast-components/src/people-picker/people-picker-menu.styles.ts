@@ -35,21 +35,6 @@ export const PeoplePickerMenuStyles = css`
         overflow: hidden;
     }
 
-    .loading-display,
-    .no-options-display {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-items: center;
-        padding: 8px;
-    }
-
-    .loading-progress {
-        width: 42px;
-        height: 42px;
-    }
-
     ::slotted([role="listitem"]) {
         width: 100%;
         height: 58px;
@@ -62,12 +47,6 @@ export const PeoplePickerMenuStyles = css`
             ${SystemColors.HighlightText};
         color: ${SystemColors.HighlightText};
         fill: currentcolor;
-    }
-    :host([show-options="true"]) .no-options-display {
-        display: none;
-    }
-    :host([show-options="false"]) .options-display {
-        display: none;
     }
 `.withBehaviors(
     accentFillActiveBehavior,

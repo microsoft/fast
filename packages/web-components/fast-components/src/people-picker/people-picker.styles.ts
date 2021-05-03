@@ -17,6 +17,7 @@ import {
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralLayerFloatingBehavior,
     neutralOutlineRestBehavior,
 } from "../styles/index";
 
@@ -42,6 +43,21 @@ export const PeoplePickerStyles = css`
         pointer-events: none;
     }
 
+    .loading-display,
+    .no-options-display {
+        background: ${neutralLayerFloatingBehavior.var};
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        padding: 8px;
+    }
+
+    .loading-progress {
+        width: 42px;
+        height: 42px;
+    }
+
     .bottom {
         flex-direction: column;
     }
@@ -59,6 +75,7 @@ export const PeoplePickerStyles = css`
     neutralFillRestBehavior,
     neutralFocusBehavior,
     neutralForegroundRestBehavior,
+    neutralLayerFloatingBehavior,
     neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(css``)
 );

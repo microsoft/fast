@@ -199,7 +199,7 @@ export class PeoplePicker extends Picker {
     };
 
     protected toggleMenu(open: boolean): void {
-        if (open && !this.menuOpen) {
+        if (open && !this.flyoutOpen) {
             this.showLoading = true;
             this.startSearch();
         }

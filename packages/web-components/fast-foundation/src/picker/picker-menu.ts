@@ -7,21 +7,6 @@ import uniqueId from "lodash-es/uniqueId";
  * @public
  */
 export class PickerMenu extends FASTElement {
-    /**
-     *
-     *
-     * @public
-     */
-    @observable
-    public showNoOptions: boolean = false;
-
-    /**
-     *
-     *
-     * @public
-     */
-    @observable
-    public showLoading: boolean = false;
 
     /**
      *
@@ -61,25 +46,10 @@ export class PickerMenu extends FASTElement {
 
     /**
      *
-     *
-     * @public
-     */
-    @observable
-    public noSuggestionsText: string;
-
-    /**
-     *
      * @public
      */
     @observable
     public suggestionsAvailableText: string;
-
-    /**
-     *
-     * @public
-     */
-    @observable
-    public loadingText: string;
 
     /**
      * Children that are list items
@@ -100,7 +70,7 @@ export class PickerMenu extends FASTElement {
         this.addSlottedListItems(this.headerElements);
         this.addSlottedListItems(this.menuElements);
         this.addSlottedListItems(this.footerElements);
-        // TODO: emit a change?
+        this.$emit("optionsupdated", {bubbles:false});
     }
 
     private addSlottedListItems(slotChildren: HTMLElement[]) {

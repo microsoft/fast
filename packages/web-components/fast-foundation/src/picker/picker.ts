@@ -194,9 +194,9 @@ export class Picker extends FASTElement {
      * @internal
      */
     @observable
-    public menuOpen: boolean = false;
-    private menuOpenChanged(): void {
-        if (this.menuOpen) {
+    public flyoutOpen: boolean = false;
+    private flyoutOpenChanged(): void {
+        if (this.flyoutOpen) {
             DOM.queueUpdate(this.setRegionProps);
         }
     }
@@ -250,10 +250,9 @@ export class Picker extends FASTElement {
     public showLoading: boolean = false;
     private showLoadingChanged(): void {
         if (this.$fastController.isConnected) {
-            if (this.menuElement) {
-                this.menuElement.showLoading = this.showLoading;
-            }
-            this.setFocusedOption(0);
+            DOM.queueUpdate(()=>{
+                this.setFocusedOption(0);
+            });
         }
     }
 
@@ -266,10 +265,9 @@ export class Picker extends FASTElement {
     public showNoOptions: boolean = false;
     private showNoOptionsChanged(): void {
         if (this.$fastController.isConnected) {
-            if (this.menuElement) {
-                this.menuElement.showNoOptions = this.showNoOptions;
-            }
-            this.setFocusedOption(0);
+            DOM.queueUpdate(()=>{
+                this.setFocusedOption(0);
+            });
         }
     }
 
@@ -392,9 +390,8 @@ export class Picker extends FASTElement {
 
         this.menuId = this.menuElement.id;
 
-        this.menuElement.loadingText = this.loadingText;
-        this.menuElement.noSuggestionsText = this.noSuggestionsText;
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
+        this.menuElement.addEventListener("optionsupdated", this.handleMenuOptionsUpdated);
 
         this.optionsPlaceholder = document.createComment("");
         this.menuElement.append(this.optionsPlaceholder);
@@ -421,6 +418,13 @@ export class Picker extends FASTElement {
         e.preventDefault();
     };
 
+    private handleMenuOptionsUpdated = (e: Event): void => {
+        e.preventDefault();
+        if(this.flyoutOpen){
+            this.setFocusedOption(0);
+        }
+    };
+
     public handleKeyDown = (e: KeyboardEvent): boolean => {
         if (e.defaultPrevented) {
             return false;
@@ -436,7 +440,7 @@ export class Picker extends FASTElement {
 
             case "ArrowDown": {
                 if (this.menuElement.optionElements.length > 0) {
-                    const nextFocusOptionIndex = this.menuOpen
+                    const nextFocusOptionIndex = this.flyoutOpen
                         ? Math.min(
                               this.menuFocusIndex + 1,
                               this.menuElement.optionElements.length - 1
@@ -451,7 +455,7 @@ export class Picker extends FASTElement {
 
             case "ArrowUp": {
                 if (this.menuElement.optionElements.length > 0) {
-                    const previousFocusOptionIndex = this.menuOpen
+                    const previousFocusOptionIndex = this.flyoutOpen
                         ? Math.max(this.menuFocusIndex - 1, 0)
                         : 0;
                     this.toggleMenu(true);
@@ -611,7 +615,11 @@ export class Picker extends FASTElement {
         }
     };
 
-    public handleRegionLoaded = (e: Event): void => {};
+    public handleRegionLoaded = (e: Event): void => {
+        DOM.queueUpdate(()=> {
+            this.setFocusedOption(0);
+        });
+    };
 
     protected handleSelectionChange(): void {
         if (this.selectedOptions.toString() === this.selection) {
@@ -622,11 +630,11 @@ export class Picker extends FASTElement {
         this.selectedOptions = this.selection === "" ? [] : this.selection.split(",");
 
         this.checkMaxItems();
-        this.$emit("selectionchange");
+        this.$emit("selectionchange", {bubbles:false});
     }
 
     private setRegionProps = (): void => {
-        if (!this.menuOpen) {
+        if (!this.flyoutOpen) {
             return;
         }
         if (this.region === null || this.region === undefined) {
@@ -688,21 +696,21 @@ export class Picker extends FASTElement {
         this.inputElement.removeAttribute("aria-activedescendant");
         this.inputElement.removeAttribute("aria-owns");
         this.inputElement.removeAttribute("aria-expanded");
-        this.menuElement.scrollTo(0, 0);
+        //this.menuElement.scrollTo(0, 0);
     }
 
     private setFocusedOption = (optionIndex: number): void => {
         if (
-            !this.menuOpen || 
-            this.menuElement.optionElements.length < 1 ||
+            !this.flyoutOpen || 
+            optionIndex === -1 ||
             this.showNoOptions ||
             this.showLoading
         ) {
-            this.menuFocusIndex = -1;
-            this.menuFocusOptionId = null;
-            this.inputElement.removeAttribute("aria-activedescendant");
-            this.inputElement.removeAttribute("aria-owns");
-            this.inputElement.removeAttribute("aria-expanded");
+            this.disableMenu();
+            return;
+        }
+
+        if (this.menuElement.optionElements.length === 0){
             return;
         }
 
@@ -714,6 +722,7 @@ export class Picker extends FASTElement {
         if (this.menuFocusIndex > this.menuElement.optionElements.length -1 ) {
             this.menuFocusIndex = this.menuElement.optionElements.length -1;
         }
+
         this.menuFocusOptionId = this.menuElement.optionElements[this.menuFocusIndex].id;
 
         this.inputElement.setAttribute("aria-owns", this.menuId);
@@ -728,24 +737,24 @@ export class Picker extends FASTElement {
     };
 
     protected toggleMenu(open: boolean): void {
-        if (this.menuOpen === open) {
+        if (this.flyoutOpen === open) {
             return;
         }
 
         if (open && document.activeElement === this.inputElement) {
-            this.menuOpen = open;
-            if (this.menuElement !== undefined) {
-                this.setFocusedOption(0);
-                this.menuElement.showLoading = this.showLoading;
-                this.menuElement.showNoOptions = this.showNoOptions;
-            } else {
-                this.setFocusedOption(-1);
-            }
+            this.flyoutOpen = open;
+            DOM.queueUpdate(()=>{
+                if (this.menuElement !== undefined) {
+                    this.setFocusedOption(0);
+                } else {
+                    this.disableMenu();
+                }
+            });
             return;
         }
 
-        this.menuOpen = false;
-        this.setFocusedOption(-1);
+        this.flyoutOpen = false;
+        this.disableMenu();
         return;
     }
 }
