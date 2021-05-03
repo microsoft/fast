@@ -1,15 +1,11 @@
 import {
     Behavior,
-    Binding,
     BindingObserver,
     CSSDirective,
     defaultExecutionContext,
-    DOM,
-    elements,
     FASTElement,
     observable,
     Observable,
-    Subscriber,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { CustomPropertyManager } from "./custom-property-manager";
@@ -19,7 +15,7 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
-const defaultElement = document.createElement("div");
+const defaultElement = document.body;
 
 /**
  * Describes a DesignToken instance.
@@ -222,9 +218,8 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         if (target instanceof FASTElement) {
             (target as FASTElement).$fastController.addBehaviors([this]);
         } else {
-            // this.findParentNode()?.appendChild(this);
+            this.findParentNode()?.appendChild(this);
         }
-        this.bind();
     }
 
     public bind() {
@@ -233,7 +228,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     public unbind() {
         childToParent.get(this)?.removeChild(this);
-
         this.tearDownBindingObserver();
     }
 
@@ -241,8 +235,8 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         let current: DesignTokenNode<T> | undefined = node;
 
         while (current !== undefined) {
-            if (current.rawValue !== undefined) {
-                const { rawValue } = current;
+            const { rawValue } = current;
+            if (rawValue !== undefined) {
                 if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
                     if (
                         !this.bindingObserver ||
@@ -321,20 +315,20 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     public bindCSSCustomProperty() {
-        const handler = {
-            handleChange: () => {
-                CustomPropertyManager.addTo(
-                    this.target,
-                    this.token,
-                    this.resolveCSSValue(this.value)
-                );
-            },
-        };
+        Observable.getNotifier(this).subscribe(this.cssCustomPropertySubscriber, "value");
 
-        Observable.getNotifier(this).subscribe(handler, "value");
-
-        handler.handleChange();
+        this.cssCustomPropertySubscriber.handleChange();
     }
+
+    private cssCustomPropertySubscriber = {
+        handleChange: () => {
+            CustomPropertyManager.addTo(
+                this.target,
+                this.token,
+                this.resolveCSSValue(this.value)
+            );
+        },
+    };
 
     public static for<T>(token: DesignToken<T>, target: HTMLElement) {
         const targetCache = nodeCache.has(target)

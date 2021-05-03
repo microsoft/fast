@@ -336,7 +336,7 @@ describe("A DesignToken", () => {
         });
     })
     describe("deleting simple values", () => {
-        xit("should throw when deleted and no parent token value is set", () => {
+        it("should throw when deleted and no parent token value is set", () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");
 
@@ -344,7 +344,10 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(12)
             
-            token.deleteValueFor(target);
+            // TODO: should it throw here? It throws because writing the CSS custom property
+            // requires inspecting the value, which can't resolve (see expect below). Seems a bit
+            // odd that just deleting a value would throw though.
+            expect(() => token.deleteValueFor(target)).to.throw();
  
             expect(() => token.getValueFor(target)).to.throw();
             removeElement(target)
