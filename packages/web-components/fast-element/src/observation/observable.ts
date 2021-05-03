@@ -377,6 +377,12 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
      * Unsubscribe from all dependent observables of the binding.
      */
     disconnect(): void;
+
+    /**
+     * Gets {@link SubscriptionRecord|SubscriptionRecords} that the {@link BindingObserver}
+     * is observing.
+     */
+    subscriptionRecords(): IterableIterator<SubscriptionRecord>;
 }
 
 class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
@@ -471,5 +477,28 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
             this.needsQueue = true;
             this.notify(this);
         }
+    }
+
+    public subscriptionRecords(): IterableIterator<SubscriptionRecord> {
+        let next = this.first;
+
+        return {
+            next: () => {
+                const current = next;
+
+                if (current === undefined) {
+                    return { value: void 0, done: true };
+                } else {
+                    next = next.next!;
+                    return {
+                        value: current,
+                        done: false,
+                    };
+                }
+            },
+            [Symbol.iterator]: function () {
+                return this;
+            },
+        };
     }
 }
