@@ -204,7 +204,7 @@ const bindingObserver = Observable.binding(binding);
 const value = bindingObserver.observe({}, defaultExecutionContext);
 
 for (const record of bindingObserver.records()) {
-  // Do something with the bindings observable dependencies
+  // Do something with the binding's observable dependencies
   console.log(record.propertySource, record.propertyName)
 }
 ```
