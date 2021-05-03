@@ -55,11 +55,7 @@ class CustomPropertyManagerImpl {
         //}
     }
 
-    public removeFrom(
-        element: HTMLElement,
-        token: { cssCustomProperty: string },
-        value: any
-    ): void {
+    public removeFrom(element: HTMLElement, token: { cssCustomProperty: string }): void {
         // if (isFastElement(element)) {
         //     element.$fastController.removeStyles(this.getElementStyles(token, value));
         // } else if (element.style.getPropertyValue(token.cssCustomProperty) === value) {

@@ -4,6 +4,8 @@ import {
     BindingObserver,
     CSSDirective,
     defaultExecutionContext,
+    DOM,
+    elements,
     FASTElement,
     observable,
     Observable,
@@ -56,11 +58,31 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
      * Associates a default value to the token
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
+
+    /**
+     * Subscribe a subscriber to set and delete operations.
+     * On initial subscription, the subscriber will be invoked for every
+     * element the token has been set for.
+     */
+    subscribe(subscriber: DesignTokenSubscriber): void;
+
+    /**
+     * Unsubscribe a subscribe to set and delete operations.
+     */
+    unsubscribe(subscriber: DesignTokenSubscriber): void;
 }
 
 interface Disposable {
     dispose(): void;
 }
+
+export type DesignTokenSubscriber = {
+    handleChange: (
+        token: DesignToken<any>,
+        element: HTMLElement,
+        operation: "set" | "delete"
+    ) => void;
+};
 
 /**
  * Implementation of {@link (DesignToken:interface)}
@@ -68,10 +90,8 @@ interface Disposable {
 class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
     private cssVar: string;
-    private customPropertyChangeHandlers: WeakMap<
-        HTMLElement,
-        Subscriber & Disposable
-    > = new Map();
+    private subscribers = new Set<DesignTokenSubscriber>();
+    private setFor = new Set<HTMLElement>();
 
     constructor(public readonly name: string) {
         super();
@@ -96,6 +116,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         element: HTMLElement,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
+        this.setFor.add(element);
         if (value instanceof DesignTokenImpl) {
             const _value = value;
             value = ((_element: HTMLElement) =>
@@ -103,11 +124,14 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
                     .value) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
+        this.subscribers.forEach(x => x.handleChange(this, element, "set"));
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
+        this.setFor.delete(element);
         DesignTokenNode.for(this, element).delete();
+        this.subscribers.forEach(x => x.handleChange(this, element, "delete"));
         return this;
     }
 
@@ -123,6 +147,17 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         DesignTokenNode.for(this, defaultElement).set(value);
 
         return this;
+    }
+
+    public subscribe(subscriber: DesignTokenSubscriber): void {
+        if (!this.subscribers.has(subscriber)) {
+            this.subscribers.add(subscriber);
+            this.setFor.forEach(x => subscriber.handleChange(this, x, "set"));
+        }
+    }
+
+    public unsubscribe(subscriber: DesignTokenSubscriber): void {
+        this.subscribers.delete(subscriber);
     }
 }
 
@@ -185,15 +220,19 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         container.register(Registration.instance(channel, this));
 
         if (target instanceof FASTElement) {
-            (target as FASTElement).$fastController.addBehaviors([
-                {
-                    bind: () => this.findParentNode()?.appendChild(this),
-                    unbind: () => childToParent.get(this)?.removeChild(this),
-                },
-            ]);
+            (target as FASTElement).$fastController.addBehaviors([this]);
         } else {
-            this.findParentNode()?.appendChild(this);
+            // this.findParentNode()?.appendChild(this);
         }
+        this.bind();
+    }
+
+    public bind() {
+        this.findParentNode()?.appendChild(this);
+    }
+
+    public unbind() {
+        childToParent.get(this)?.removeChild(this);
     }
 
     private resolveRealValueForNode(node: DesignTokenNode<T>): T {
@@ -223,7 +262,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
 
         throw new Error(
-            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}.`
+            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
         );
     }
 
@@ -275,12 +314,24 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
     }
 
-    private setCSSCustomProperty() {
-        CustomPropertyManager.addTo(
-            this.target,
-            this.token,
-            this.resolveCSSValue(this.value)
-        );
+    public setCSSCustomProperty() {
+        const handler = {
+            handleChange: () => {
+                try {
+                    CustomPropertyManager.addTo(
+                        this.target,
+                        this.token,
+                        this.resolveCSSValue(this.value)
+                    );
+                } catch (e) {
+                    console.log("could not set CSS custom property for some reason");
+                }
+            },
+        };
+
+        Observable.getNotifier(this).subscribe(handler, "value");
+
+        handler.handleChange();
     }
 
     public static for<T>(token: DesignToken<T>, target: HTMLElement) {
@@ -337,6 +388,18 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         return DesignTokenNode.for(this.token, defaultElement);
     }
 
+    private tokenDependencySubscriber = {
+        handleChange: (
+            token: DesignToken<any>,
+            element: HTMLElement,
+            operation: "set" | "delete"
+        ) => {
+            if (operation === "set") {
+                DesignTokenNode.for(this.token, element).setCSSCustomProperty();
+            }
+        },
+    };
+
     /**
      * The resolved value for a node.
      */
@@ -375,30 +438,31 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             return;
         }
 
-        if (DesignTokenNode.isDerivedTokenValue(value)) {
-            this.handleChange = noop as () => void;
-            this.setupBindingObserver(value);
-        } else if (this._rawValue !== value) {
-            this.handleChange = noop as () => void;
-        }
-
+        this.handleChange = noop as () => void;
         this._rawValue = value;
 
         this.setCSSCustomProperty();
+
+        if (this.bindingObserver) {
+            const dependencies = this.bindingObserver.dependencies();
+
+            for (const dep of dependencies) {
+                // TODO: tear down in delete
+                (dep.propertySource as DesignTokenNode<any>).token.subscribe(
+                    this.tokenDependencySubscriber
+                );
+            }
+        }
     }
 
     /**
      * Deletes any value set for the node.
      */
     public delete() {
-        CustomPropertyManager.removeFrom(
-            this.target,
-            this.token,
-            this.resolveCSSValue(this.value)
-        );
         this._rawValue = void 0;
         this.handleChange = this.unsetValueChangeHandler;
         this.tearDownBindingObserver();
+        CustomPropertyManager.removeFrom(this.target, this.token);
     }
 }
 
