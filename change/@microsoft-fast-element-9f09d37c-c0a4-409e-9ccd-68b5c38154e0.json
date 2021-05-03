@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix: ensure that custom events are cancelable by default",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

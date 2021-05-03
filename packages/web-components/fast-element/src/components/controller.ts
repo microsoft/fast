@@ -16,6 +16,7 @@ const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
     composed: true,
+    cancelable: true,
 };
 
 function getShadowRoot(element: HTMLElement): ShadowRoot | null {
