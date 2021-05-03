@@ -413,9 +413,9 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.bindCSSCustomProperty();
 
         if (this.bindingObserver) {
-            const dependencies = this.bindingObserver.dependencies();
+            const records = this.bindingObserver.records();
 
-            for (const dep of dependencies) {
+            for (const dep of records) {
                 if (
                     dep.propertySource instanceof DesignTokenNode &&
                     dep.propertySource.token instanceof DesignTokenImpl
