@@ -26,6 +26,9 @@ import {
     FloatingColorName,
 } from "../../src/style";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import { ControlContext } from "../../src/form/templates/types";
+import { CSSStandardControlPlugin } from "../../src/form/custom-controls/css";
+import { CSSControlConfig } from "../../src/form/custom-controls/css/css.template.control.standard.props";
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
@@ -124,11 +127,75 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 },
             }),
             new StandardControlPlugin({
-                id: testConfigs.customControl.schema.properties.css.formControlId,
+                id: testConfigs.controlPluginCss.schema.properties.css.formControlId,
+                context: ControlContext.fill,
                 control: (config: ControlConfig): React.ReactNode => {
                     return (
                         <CSSControl
                             css={(properties as unknown) as CSSPropertiesDictionary}
+                            {...config}
+                        />
+                    );
+                },
+            }),
+            new StandardControlPlugin({
+                id:
+                    testConfigs.controlPluginCssWithOverrides.schema.properties
+                        .cssWithOverrides.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return (
+                        <CSSControl
+                            css={(properties as unknown) as CSSPropertiesDictionary}
+                            cssControls={[
+                                new CSSStandardControlPlugin({
+                                    id: "foo",
+                                    propertyNames: ["align-content", "align-items"],
+                                    control: (config: CSSControlConfig) => {
+                                        const handleChange = (
+                                            propertyName: string
+                                        ): ((
+                                            e: React.ChangeEvent<HTMLInputElement>
+                                        ) => void) => {
+                                            return (
+                                                e: React.ChangeEvent<HTMLInputElement>
+                                            ) => {
+                                                config.onChange({
+                                                    [propertyName]: e.target.value,
+                                                });
+                                            };
+                                        };
+
+                                        return (
+                                            <div>
+                                                <div>
+                                                    <label htmlFor={"align-content"}>
+                                                        align-content
+                                                    </label>
+                                                    <br />
+                                                    <input
+                                                        id={"align-content"}
+                                                        onChange={handleChange(
+                                                            "align-content"
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label htmlFor={"align-items"}>
+                                                        align-items
+                                                    </label>
+                                                    <br />
+                                                    <input
+                                                        id={"align-items"}
+                                                        onChange={handleChange(
+                                                            "align-items"
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    },
+                                }),
+                            ]}
                             {...config}
                         />
                     );

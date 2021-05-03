@@ -258,7 +258,7 @@ class Form extends React.Component<
                 return {
                     plugin: StandardControlPlugin,
                     component: SelectControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             case ControlType.array:
                 return {
@@ -276,7 +276,7 @@ class Form extends React.Component<
                 return {
                     plugin: StandardControlPlugin,
                     component: NumberFieldControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             case ControlType.checkbox:
                 return {
@@ -288,25 +288,25 @@ class Form extends React.Component<
                 return {
                     plugin: StandardControlPlugin,
                     component: SectionLinkControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             case ControlType.textarea:
                 return {
                     plugin: StandardControlPlugin,
                     component: TextareaControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             case ControlType.display:
                 return {
                     plugin: StandardControlPlugin,
                     component: DisplayControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             case ControlType.button:
                 return {
                     plugin: StandardControlPlugin,
                     component: ButtonControl,
-                    context: ControlContext.default,
+                    context: ControlContext.fill,
                 };
             default:
                 return {

@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./html";
 
 describe("getClientRectWithMargin", () => {
@@ -16,17 +17,17 @@ describe("getClientRectWithMargin", () => {
     };
 
     beforeEach(() => {
-        Element.prototype.getBoundingClientRect = jest.fn(() => {
+        Element.prototype.getBoundingClientRect = (): any => {
             return mockRect;
-        });
+        };
     });
 
-    test("should correctly manage undefined and null values", () => {
-        expect(() => getClientRectWithMargin(null)).not.toThrow();
-        expect(() => getClientRectWithMargin(undefined)).not.toThrow();
+    it("should correctly manage undefined and null values", () => {
+        expect(() => getClientRectWithMargin(null)).not.to.throw();
+        expect(() => getClientRectWithMargin(undefined)).not.to.throw();
     });
 
-    test("should correctly return computed client rect with margin values", () => {
+    it("should correctly return computed client rect with margin values", () => {
         document.body.innerHTML = `
             <div id="element" style="margin: 10px 20px;"></div>
         `;
@@ -40,20 +41,25 @@ describe("getClientRectWithMargin", () => {
             height: expectedHeight,
         });
 
-        expect(getClientRectWithMargin(element)).toEqual(expectedRect);
+        expect(getClientRectWithMargin(element).bottom).to.equal(expectedRect.bottom);
+        expect(getClientRectWithMargin(element).height).to.equal(expectedRect.height);
+        expect(getClientRectWithMargin(element).left).to.equal(expectedRect.left);
+        expect(getClientRectWithMargin(element).right).to.equal(expectedRect.right);
+        expect(getClientRectWithMargin(element).top).to.equal(expectedRect.top);
+        expect(getClientRectWithMargin(element).width).to.equal(expectedRect.width);
     });
 });
 
 describe("convertStylePropertyPixelsToNumber", () => {
-    test("should correctly manage undefined and null values", () => {
-        expect(() => convertStylePropertyPixelsToNumber(null, null)).not.toThrow();
-        expect(() => convertStylePropertyPixelsToNumber(undefined, null)).not.toThrow();
+    it("should correctly manage undefined and null values", () => {
+        expect(() => convertStylePropertyPixelsToNumber(null, null)).not.to.throw();
+        expect(() => convertStylePropertyPixelsToNumber(undefined, null)).not.to.throw();
         expect(() =>
             convertStylePropertyPixelsToNumber(undefined, undefined)
-        ).not.toThrow();
+        ).not.to.throw();
     });
 
-    test("should correctly convert an element's computed style property pixel value and return a number", () => {
+    it("should correctly convert an element's computed style property pixel value and return a number", () => {
         document.body.innerHTML = `
             <div id="element" style="margin: 20px 5px 12px 8px;"></div>
         `;
@@ -65,24 +71,24 @@ describe("convertStylePropertyPixelsToNumber", () => {
                 window.getComputedStyle(element),
                 "margin-top"
             )
-        ).toBe(20);
+        ).to.equal(20);
         expect(
             convertStylePropertyPixelsToNumber(
                 window.getComputedStyle(element),
                 "margin-bottom"
             )
-        ).toBe(12);
+        ).to.equal(12);
         expect(
             convertStylePropertyPixelsToNumber(
                 window.getComputedStyle(element),
                 "margin-left"
             )
-        ).toBe(8);
+        ).to.equal(8);
         expect(
             convertStylePropertyPixelsToNumber(
                 window.getComputedStyle(element),
                 "margin-right"
             )
-        ).toBe(5);
+        ).to.equal(5);
     });
 });

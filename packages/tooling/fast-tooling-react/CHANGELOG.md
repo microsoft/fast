@@ -1,23 +1,49 @@
-# Change Log
+# Change Log - @microsoft/fast-tooling-react
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
 
-# [2.8.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.1...@microsoft/fast-tooling-react@2.8.0) (2021-04-06)
+<!-- Start content -->
 
+## 2.8.6
 
-### Bug Fixes
+Sun, 02 May 2021 07:18:00 GMT
 
-* remove the use of detail as this is a synthetic event value and will not be compatible with React 17 ([#4515](https://github.com/Microsoft/fast/issues/4515)) ([2e272a6](https://github.com/Microsoft/fast/commit/2e272a63d25a5225e2c253cf2b5b8cecefaa6d80))
+### Patches
 
+- Bump @microsoft/fast-tooling to v0.19.0 (44823142+williamw2@users.noreply.github.com)
 
-### Features
+## 2.8.5
 
-* add custom control for CSS editing ([#4519](https://github.com/Microsoft/fast/issues/4519)) ([2f4e12c](https://github.com/Microsoft/fast/commit/2f4e12c697f04fba550f68271301759a2204b827)), closes [#4173](https://github.com/Microsoft/fast/issues/4173) [#4187](https://github.com/Microsoft/fast/issues/4187) [#4192](https://github.com/Microsoft/fast/issues/4192) [#4202](https://github.com/Microsoft/fast/issues/4202) [#4285](https://github.com/Microsoft/fast/issues/4285) [#4284](https://github.com/Microsoft/fast/issues/4284) [#4283](https://github.com/Microsoft/fast/issues/4283)
+Thu, 29 Apr 2021 07:19:40 GMT
 
+### Patches
 
+- Bump @microsoft/fast-tooling to v0.18.3 (7559015+janechu@users.noreply.github.com)
 
+## 2.8.4
 
+Sun, 25 Apr 2021 07:21:02 GMT
+
+### Patches
+
+- CSS control update to override inner web component widths (7559015+janechu@users.noreply.github.com)
+
+## 2.8.3
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Moving Color Picker (44823142+williamw2@users.noreply.github.com)
+- adjust categories to allow them to work on linked data (7559015+janechu@users.noreply.github.com)
+
+## 2.8.1
+
+Fri, 16 Apr 2021 01:19:08 GMT
+
+### Patches
+
+- fix: update styling to fit the width of the area the form is placed in (7559015+janechu@users.noreply.github.com)
 
 ## [2.7.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling-react@2.7.0...@microsoft/fast-tooling-react@2.7.1) (2021-03-18)
 

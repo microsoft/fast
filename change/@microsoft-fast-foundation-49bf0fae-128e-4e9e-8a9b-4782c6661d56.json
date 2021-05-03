@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "remove incorrect role from horizontal-scroll element",
+  "comment": "menu should not reset tabIndex unnecessarily",
   "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
+  "email": "scomea@microsoft.com",
   "dependentChangeType": "patch"
 }

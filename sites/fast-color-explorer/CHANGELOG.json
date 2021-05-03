@@ -1,0 +1,80 @@
+{
+  "name": "@microsoft/fast-color-explorer",
+  "entries": [
+    {
+      "date": "Sun, 02 May 2021 07:18:00 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "6fda54d6e00d4620dc1bdc140884acc85a7ce24a",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Apr 2021 07:19:40 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "9357f10ca02a6a2785ac08ad2928d0a0531c03d6",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 25 Apr 2021 07:21:02 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "048081bd5d85c62911d4a4105cbbd23c60ae446d",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Apr 2021 07:21:10 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "72e6442cb7f473803b7cc972d76b9fa684b3df1a",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Apr 2021 01:19:08 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6130e34254ba97e5b7922b669e4e287cbb54585e",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    }
+  ]
+}
