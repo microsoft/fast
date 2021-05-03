@@ -4,7 +4,7 @@ import {
     ElementViewTemplate,
     FASTElement,
 } from "@microsoft/fast-element";
-import { DI, InterfaceSymbol } from "../di/di";
+import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
 
 const presentationKeys = new Map<string, InterfaceSymbol<ComponentPresentation>>();
 
@@ -16,25 +16,46 @@ export interface ComponentPresentation {
     applyTo(element: FASTElement): void;
 }
 
+function presentationKeyFromTag(tagName: string): string {
+    return `${tagName.toLowerCase()}:presentation`;
+}
+
+const presentationRegistry = new Map<string, ComponentPresentation | false>();
+
 /**
  * @alpha
  * A gateway for utilities associated with component presentation.
  */
 export const ComponentPresentation = Object.freeze({
-    /**
-     * @alpha
-     * Creates element-specific DI keys for resolving component presentations.
-     */
-    keyFrom(tagName: string): InterfaceSymbol<ComponentPresentation> {
-        const lookup = tagName.toLowerCase();
-        let key = presentationKeys.get(lookup);
+    define(
+        tagName: string,
+        presentation: ComponentPresentation,
+        container: Container
+    ): void {
+        const key = presentationKeyFromTag(tagName);
+        const existing = presentationRegistry.get(key);
 
-        if (key === void 0) {
-            key = DI.createInterface<ComponentPresentation>(`${lookup}:presentation`);
-            presentationKeys.set(lookup, key);
+        if (existing === void 0) {
+            presentationRegistry.set(key, presentation);
+        } else {
+            // false indicates that we have more than one presentation
+            // registered for a tagName and we must resolve through DI
+            presentationRegistry.set(key, false);
         }
 
-        return key;
+        container.register(Registration.instance(key, presentation));
+    },
+
+    forTag(tagName: string, element: HTMLElement): ComponentPresentation {
+        const key = presentationKeyFromTag(tagName);
+        const existing = presentationRegistry.get(key);
+
+        if (!existing) {
+            const container = DI.findResponsibleContainer(element);
+            return container.get<ComponentPresentation>(key);
+        }
+
+        return existing;
     },
 });
 

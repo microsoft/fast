@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "feat: encapsulate and optimize ComponentPresentation resolution",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
