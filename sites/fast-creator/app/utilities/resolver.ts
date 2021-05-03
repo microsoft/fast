@@ -35,12 +35,24 @@ export function htmlMapper(
 ): (config: MapperConfig<string>) => void {
     return (config: MapperConfig<string>): void => {
         const data = config.dataDictionary[0][config.dictionaryId].data;
+        const parent = config.dataDictionary[0][config.dictionaryId].parent;
 
         if (typeof data === "string") {
-            const wrapper = document.createElement("span");
-            wrapper.setAttribute(dataSetDictionaryId, config.dictionaryId);
-            wrapper.appendChild(document.createTextNode(data));
-            config.dataDictionary[0][config.dictionaryId].data = wrapper;
+            const textNode = document.createTextNode(data);
+
+            if (
+                // ensure if this is a style tag do not add the wrapper,
+                // as the span wrapper will interfere with the <style> content
+                parent !== undefined &&
+                config.dataDictionary[0][parent.id].schemaId === "style"
+            ) {
+                config.dataDictionary[0][config.dictionaryId].data = textNode;
+            } else {
+                const wrapper = document.createElement("span");
+                wrapper.setAttribute(dataSetDictionaryId, config.dictionaryId);
+                wrapper.appendChild(textNode);
+                config.dataDictionary[0][config.dictionaryId].data = wrapper;
+            }
         } else if (
             config.schema.type === DataType.object &&
             config.schema[ReservedElementMappingKeyword.mapsToTagName] &&
