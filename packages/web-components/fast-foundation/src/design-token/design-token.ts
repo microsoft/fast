@@ -233,6 +233,8 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     public unbind() {
         childToParent.get(this)?.removeChild(this);
+
+        this.tearDownBindingObserver();
     }
 
     private resolveRealValueForNode(node: DesignTokenNode<T>): T {
@@ -254,6 +256,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                         defaultExecutionContext
                     );
                 } else {
+                    if (this.bindingObserver) {
+                        this.tearDownBindingObserver();
+                    }
+
                     return rawValue as any;
                 }
             }
@@ -297,15 +303,15 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
         this.tearDownBindingObserver();
 
-        const handler = {
-            handleChange: (source: Binding<HTMLElement>) => {
-                this.setCSSCustomProperty();
-                Observable.getNotifier(this).notify("value");
-            },
-        };
-
-        this.bindingObserver = Observable.binding(value, handler);
+        this.bindingObserver = Observable.binding(value, this.bindingChangeHandler);
     }
+
+    private bindingChangeHandler = {
+        handleChange: () => {
+            this.bindCSSCustomProperty();
+            Observable.getNotifier(this).notify("value");
+        },
+    };
 
     private tearDownBindingObserver() {
         if (this.bindingObserver) {
@@ -314,18 +320,14 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
     }
 
-    public setCSSCustomProperty() {
+    public bindCSSCustomProperty() {
         const handler = {
             handleChange: () => {
-                try {
-                    CustomPropertyManager.addTo(
-                        this.target,
-                        this.token,
-                        this.resolveCSSValue(this.value)
-                    );
-                } catch (e) {
-                    console.log("could not set CSS custom property for some reason");
-                }
+                CustomPropertyManager.addTo(
+                    this.target,
+                    this.token,
+                    this.resolveCSSValue(this.value)
+                );
             },
         };
 
@@ -395,7 +397,12 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             operation: "set" | "delete"
         ) => {
             if (operation === "set") {
-                DesignTokenNode.for(this.token, element).setCSSCustomProperty();
+                const target = DesignTokenNode.for(this.token, element);
+
+                // Only act on downstream nodes
+                if (this.contains(target)) {
+                    target.bindCSSCustomProperty();
+                }
             }
         },
     };
@@ -441,7 +448,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.handleChange = noop as () => void;
         this._rawValue = value;
 
-        this.setCSSCustomProperty();
+        this.bindCSSCustomProperty();
 
         if (this.bindingObserver) {
             const dependencies = this.bindingObserver.dependencies();
@@ -459,10 +466,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      * Deletes any value set for the node.
      */
     public delete() {
+        CustomPropertyManager.removeFrom(this.target, this.token, this.value);
         this._rawValue = void 0;
         this.handleChange = this.unsetValueChangeHandler;
         this.tearDownBindingObserver();
-        CustomPropertyManager.removeFrom(this.target, this.token);
     }
 }
 
