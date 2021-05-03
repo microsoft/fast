@@ -421,16 +421,6 @@ describe("A DesignToken", () => {
     });
 
     describe("when used as a CSSDirective", () => {
-        it("should throw if no value has been set for the token", () => {
-            const target = addElement();
-            const token = DesignToken.create<number>("test");
-            const styles = css`:host{width: calc(${token} * 1px);}`
-
-
-            expect(() => target.$fastController.addStyles(styles)).to.throw()
-
-            removeElement(target)
-        })
         it("should set a CSS custom property for the element when the token is set for the element", () => {
             const target = addElement();
             const token = DesignToken.create<number>("test");

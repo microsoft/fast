@@ -828,9 +828,6 @@ export interface DesignToken<T extends {
     // (undocumented)
     readonly name: string;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
-    // Warning: (ae-forgotten-export) The symbol "DesignTokenSubscriber" needs to be exported by the entry point index.d.ts
-    subscribe(subscriber: DesignTokenSubscriber): void;
-    unsubscribe(subscriber: DesignTokenSubscriber): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
@@ -2199,7 +2196,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:59:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:49:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

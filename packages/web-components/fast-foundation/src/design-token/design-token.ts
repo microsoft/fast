@@ -54,18 +54,6 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
      * Associates a default value to the token
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
-
-    /**
-     * Subscribe a subscriber to set and delete operations.
-     * On initial subscription, the subscriber will be invoked for every
-     * element the token has been set for.
-     */
-    subscribe(subscriber: DesignTokenSubscriber): void;
-
-    /**
-     * Unsubscribe a subscribe to set and delete operations.
-     */
-    unsubscribe(subscriber: DesignTokenSubscriber): void;
 }
 
 interface Disposable {
@@ -131,20 +119,17 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return this;
     }
 
-    public createBehavior() {
-        // This behavior only serves to notify authors that the
-        // value hasn't been set. We should consider removing this
-        // or putting it in a development conditional so it can be
-        // removed for production builds.
-        return new DesignTokenBehavior(this);
-    }
-
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
         DesignTokenNode.for(this, defaultElement).set(value);
 
         return this;
     }
 
+    /**
+     * Subscribe a subscriber to set and delete operations.
+     * On initial subscription, the subscriber will be invoked for every
+     * element the token has been set for.
+     */
     public subscribe(subscriber: DesignTokenSubscriber): void {
         if (!this.subscribers.has(subscriber)) {
             this.subscribers.add(subscriber);
@@ -152,29 +137,12 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         }
     }
 
+    /**
+     * Unsubscribe a subscribe to set and delete operations.
+     */
     public unsubscribe(subscriber: DesignTokenSubscriber): void {
         this.subscribers.delete(subscriber);
     }
-}
-
-/**
- * Behavior to add and Design Token custom properties for an element
- */
-class DesignTokenBehavior<T> implements Behavior {
-    constructor(public token: DesignToken<T>) {}
-
-    bind(target: HTMLElement & FASTElement) {
-        const container = DI.getOrCreateDOMContainer(target);
-
-        if (!container.has(DesignTokenNode.channel(this.token), true)) {
-            throw new Error(
-                `DesignToken ${this.token.name} used in CSS but has not been set to a value.`
-            );
-        }
-    }
-
-    /* eslint-disable-next-line */
-    unbind(target: HTMLElement & FASTElement) {}
 }
 
 const nodeCache = new WeakMap<HTMLElement, Map<DesignToken<any>, DesignTokenNode<any>>>();
@@ -448,10 +416,12 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             const dependencies = this.bindingObserver.dependencies();
 
             for (const dep of dependencies) {
-                // TODO: tear down in delete
-                (dep.propertySource as DesignTokenNode<any>).token.subscribe(
-                    this.tokenDependencySubscriber
-                );
+                if (
+                    dep.propertySource instanceof DesignTokenNode &&
+                    dep.propertySource.token instanceof DesignTokenImpl
+                ) {
+                    dep.propertySource.token.subscribe(this.tokenDependencySubscriber);
+                }
             }
         }
     }
