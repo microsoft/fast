@@ -352,9 +352,11 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (
     context: ExecutionContext<TParent>
 ) => TReturn;
 
-interface SubscriptionRecord {
+export interface ObservationRecord {
     propertySource: any;
     propertyName: string;
+}
+interface SubscriptionRecord extends ObservationRecord {
     notifier: Notifier;
     next: SubscriptionRecord | undefined;
 }
@@ -382,7 +384,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
      * Gets {@link SubscriptionRecord|SubscriptionRecords} that the {@link BindingObserver}
      * is observing.
      */
-    subscriptionRecords(): IterableIterator<SubscriptionRecord>;
+    records(): IterableIterator<ObservationRecord>;
 }
 
 class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
@@ -479,7 +481,7 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
         }
     }
 
-    public subscriptionRecords(): IterableIterator<SubscriptionRecord> {
+    public records(): IterableIterator<ObservationRecord> {
         let next = this.first;
 
         return {

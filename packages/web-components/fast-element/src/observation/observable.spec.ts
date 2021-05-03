@@ -623,12 +623,11 @@ describe("The Observable", () => {
             bindingObserver.observe({}, defaultExecutionContext);
 
             let i = 0;
-            for (const record of bindingObserver.subscriptionRecords()) {
+            for (const record of bindingObserver.records()) {
                 expect(record.propertySource).to.equal(observed[i]);
                 i++;
             }
         });
-
     });
 
     context("DefaultObservableAccessor", () => {
