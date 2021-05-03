@@ -378,7 +378,8 @@ export interface ComponentPresentation {
 
 // @alpha
 export const ComponentPresentation: Readonly<{
-    keyFrom(tagName: string): InterfaceSymbol<ComponentPresentation>;
+    define(tagName: string, presentation: ComponentPresentation, container: Container): void;
+    forTag(tagName: string, element: HTMLElement): ComponentPresentation;
 }>;
 
 // @public
@@ -1002,6 +1003,8 @@ export interface ElementDefinitionContext {
     readonly container: Container;
     // (undocumented)
     defineElement(definition?: ContextualElementDefinition): void;
+    // (undocumented)
+    definePresentation(presentation: ComponentPresentation): void;
     // (undocumented)
     readonly name: string;
     // (undocumented)

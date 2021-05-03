@@ -46,11 +46,10 @@ async function setup(tag: string) {
     `;
     const builtinStyles = css``;
 
-    container.register(
-        Registration.instance(
-            ComponentPresentation.keyFrom(tag),
-            new DefaultComponentPresentation(builtinTemplate, builtinStyles)
-        )
+    ComponentPresentation.define(
+        tag,
+        new DefaultComponentPresentation(builtinTemplate, builtinStyles),
+        container
     );
 
     return { element, connect, disconnect, builtinTemplate, builtinStyles };
@@ -133,12 +132,10 @@ describe("FoundationElement", () => {
 
             const host = document.createElement("div");
             DesignSystem.getOrCreate(host).register(myElement());
-            const container = DI.getOrCreateDOMContainer(host);
 
             const fullName = `fast-${baseName}`;
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(fullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(fullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(styles);
             expect(presentation.template).to.equal(template);
@@ -173,11 +170,9 @@ describe("FoundationElement", () => {
 
             const host = document.createElement("div");
             DesignSystem.getOrCreate(host).register(myElement());
-            const container = DI.getOrCreateDOMContainer(host);
 
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(fullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(fullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(styles);
             expect(presentation.template).to.equal(template);
@@ -204,19 +199,14 @@ describe("FoundationElement", () => {
             const host = document.createElement("div");
             DesignSystem.getOrCreate(host)
                 .register(myElement(overrides));
-            const container = DI.getOrCreateDOMContainer(host);
 
             const originalFullName = `fast-${originalName}`;
             const overrideFullName = `my-${overrideName}`;
 
-            expect(
-                container.has(ComponentPresentation.keyFrom(originalFullName), false)
-            ).to.equal(false);
             expect(customElements.get(originalFullName)).to.be.undefined;
 
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(overrideFullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(overrideFullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(overrides.styles);
             expect(presentation.template).to.equal(overrides.template);
