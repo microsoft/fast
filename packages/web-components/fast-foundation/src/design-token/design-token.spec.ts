@@ -567,6 +567,19 @@ describe("A DesignToken", () => {
 
                 removeElement(parent);
             })
+        });
+
+        describe("to values with a 'createCSS' method", () => {
+            it("should emit the product of 'createCSS' to CSS", () => {
+                const target = addElement();
+                const token = DesignToken.create<{ createCSS: () => string}>("test");
+                token.setValueFor(target, { createCSS: () => "12"})
+
+                token.addCustomPropertyFor(target);
+
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+                removeElement(target);
+            })
         })
     });
 
