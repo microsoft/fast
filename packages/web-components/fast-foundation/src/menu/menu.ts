@@ -144,11 +144,13 @@ export class Menu extends FASTElement {
     };
 
     private handleItemFocus = (e: FocusEvent) => {
-        this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+        const targetItem: HTMLElement = e.target as HTMLElement;
 
-        const targetItem = e.target as MenuItem;
-        this.focusIndex = this.menuItems.indexOf(targetItem);
-        targetItem.setAttribute("tabindex", "0");
+        if (targetItem !== this.menuItems[this.focusIndex]) {
+            this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
+            this.focusIndex = this.menuItems.indexOf(targetItem);
+            targetItem.setAttribute("tabindex", "0");
+        }
     };
 
     private handleExpandedChanged = (e: Event): void => {

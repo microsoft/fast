@@ -28,6 +28,7 @@ export const BreadcrumbItemStyles = css`
     .listitem {
         display: flex;
         align-items: center;
+        width: max-content;
     }
 
     .separator {

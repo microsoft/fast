@@ -1,34 +1,41 @@
-# Change Log
+# Change Log - @microsoft/fast-tooling
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
 
-# [0.18.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.17.0...@microsoft/fast-tooling@0.18.0) (2021-04-06)
+<!-- Start content -->
 
+## 0.19.0
 
-### Bug Fixes
+Sun, 02 May 2021 07:18:00 GMT
 
-* add error catching for unparsable attributes and checks for other edge cases which may occur when typing in the monaco editor ([#4485](https://github.com/Microsoft/fast/issues/4485)) ([4fe5f6b](https://github.com/Microsoft/fast/commit/4fe5f6b27cdea11af2fc49f7b54f5aa796af4431))
+### Minor changes
 
+- adding html render web component to fast-tooling (44823142+williamw2@users.noreply.github.com)
 
-### Features
+## 0.18.3
 
-* add custom control for CSS editing ([#4519](https://github.com/Microsoft/fast/issues/4519)) ([2f4e12c](https://github.com/Microsoft/fast/commit/2f4e12c697f04fba550f68271301759a2204b827)), closes [#4173](https://github.com/Microsoft/fast/issues/4173) [#4187](https://github.com/Microsoft/fast/issues/4187) [#4192](https://github.com/Microsoft/fast/issues/4192) [#4202](https://github.com/Microsoft/fast/issues/4202) [#4285](https://github.com/Microsoft/fast/issues/4285) [#4284](https://github.com/Microsoft/fast/issues/4284) [#4283](https://github.com/Microsoft/fast/issues/4283)
+Thu, 29 Apr 2021 07:19:40 GMT
 
+### Patches
 
+- fix an incorrect definition name which for default slots should be an empty string (7559015+janechu@users.noreply.github.com)
 
+## 0.18.2
 
+Sun, 25 Apr 2021 07:21:02 GMT
 
-# [0.17.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.1...@microsoft/fast-tooling@0.17.0) (2021-03-18)
+### Patches
 
+- Bump @microsoft/fast-foundation to v1.20.0 (nicholasrice@users.noreply.github.com)
 
-### Features
+## 0.18.1
 
-* create a utility that consolidates the changes made to the data structure to preserve as much of the data dictionary as possible ([#4473](https://github.com/Microsoft/fast/issues/4473)) ([c86aa87](https://github.com/Microsoft/fast/commit/c86aa87b1c05556ab32d1de7bdd71805370f78c7))
+Thu, 22 Apr 2021 07:21:10 GMT
 
+### Patches
 
-
-
+- Moving Color Picker (44823142+williamw2@users.noreply.github.com)
+- Moving native definitions to fast-tooling (44823142+williamw2@users.noreply.github.com)
 
 ## [0.16.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-tooling@0.16.0...@microsoft/fast-tooling@0.16.1) (2021-03-16)
 

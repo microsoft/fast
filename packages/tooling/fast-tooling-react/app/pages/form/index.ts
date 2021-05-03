@@ -12,6 +12,8 @@ import {
     checkboxSchema,
     childrenSchema,
     constSchema as constKeywordSchema,
+    controlPluginCssSchema,
+    controlPluginCssWithOverridesSchema,
     controlPluginSchema as customControlSchema,
     defaultsSchema,
     dictionarySchema,
@@ -36,6 +38,14 @@ export const category: ExampleComponent = {
 
 export const customControl: ExampleComponent = {
     schema: customControlSchema,
+};
+
+export const controlPluginCssWithOverrides: ExampleComponent = {
+    schema: controlPluginCssWithOverridesSchema,
+};
+
+export const controlPluginCss: ExampleComponent = {
+    schema: controlPluginCssSchema,
 };
 
 export const textField: ExampleComponent = {

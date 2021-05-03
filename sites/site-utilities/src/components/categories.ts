@@ -52,10 +52,6 @@ export const componentCategories: FormCategoryDictionary = {
     [fastDesignSystemProviderDefinition.tags[0].name]: {
         "": [
             {
-                title: "Language",
-                dataLocations: ["direction"],
-            },
-            {
                 title: "Color",
                 dataLocations: [
                     "base-layer-luminance",
@@ -85,6 +81,9 @@ export const componentCategories: FormCategoryDictionary = {
                 expandByDefault: false,
                 dataLocations: [
                     "design-unit",
+                    "no-paint",
+                    "use-defaults",
+                    "direction",
                     "type-ramp-minus-2-font-size",
                     "type-ramp-minus-2-line-height",
                     "type-ramp-minus-1-font-size",

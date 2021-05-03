@@ -1,4 +1,5 @@
 import { Dictionary } from "lodash";
+import { expect } from "chai";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
@@ -9,7 +10,7 @@ import { DataType } from "./types";
  * Gets updated data by adding data to a data blob
  */
 describe("getDataUpdatedWithSourceData", () => {
-    test("should update an undefined target with source data", () => {
+    it("should update an undefined target with source data", () => {
         const data: Dictionary<unknown> = {
             foo: "bar",
         };
@@ -22,12 +23,12 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataLocation,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             ...data,
             [targetDataLocation]: sourceData,
         });
     });
-    test("should update a array target with source data", () => {
+    it("should update a array target with source data", () => {
         const data: Dictionary<unknown> = {
             foo: ["bar"],
         };
@@ -40,11 +41,11 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataLocation,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: ["Hello world", "bar"],
         });
     });
-    test("should update a target above an array item with source data", () => {
+    it("should update a target above an array item with source data", () => {
         const data: Dictionary<unknown> = {
             foo: ["a", "c", "d"],
         };
@@ -57,11 +58,11 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataType: DataType.array,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: ["a", "b", "c", "d"],
         });
     });
-    test("should update a target in an undefined array with source data", () => {
+    it("should update a target in an undefined array with source data", () => {
         const data: Dictionary<unknown> = {
             foo: void 0,
         };
@@ -74,11 +75,11 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataType: DataType.array,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: ["b"],
         });
     });
-    test("should update a target in an array at the root level with source data", () => {
+    it("should update a target in an array at the root level with source data", () => {
         const data: Dictionary<unknown> = void 0;
         const targetDataLocation: string = "[0]";
         const sourceData: string = "b";
@@ -89,9 +90,9 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataType: DataType.array,
         });
 
-        expect(updatedData).toEqual(["b"]);
+        expect(updatedData).to.deep.equal(["b"]);
     });
-    test("should update a target below an array item with source data", () => {
+    it("should update a target below an array item with source data", () => {
         const data: Dictionary<unknown> = {
             foo: ["a", "b", "d"],
         };
@@ -104,7 +105,7 @@ describe("getDataUpdatedWithSourceData", () => {
             targetDataType: DataType.array,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: ["a", "b", "c", "d"],
         });
     });
@@ -114,7 +115,7 @@ describe("getDataUpdatedWithSourceData", () => {
  * Gets updated data by removing data from a data blob
  */
 describe("getDataUpdatedWithoutSourceData", () => {
-    test("should remove source data from an object", () => {
+    it("should remove source data from an object", () => {
         const data: Dictionary<unknown> = {
             foo: "bar",
             bar: "foo",
@@ -125,11 +126,11 @@ describe("getDataUpdatedWithoutSourceData", () => {
             sourceDataLocation,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: "bar",
         });
     });
-    test("should remove source data from an array", () => {
+    it("should remove source data from an array", () => {
         const data: Dictionary<unknown> = {
             foo: ["bar", "bat"],
         };
@@ -139,7 +140,7 @@ describe("getDataUpdatedWithoutSourceData", () => {
             sourceDataLocation,
         });
 
-        expect(updatedData).toEqual({
+        expect(updatedData).to.deep.equal({
             foo: ["bat"],
         });
     });
