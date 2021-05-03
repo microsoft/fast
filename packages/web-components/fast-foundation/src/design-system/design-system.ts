@@ -4,6 +4,7 @@ import {
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
 import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
+import { ComponentPresentation } from "./component-presentation";
 
 /**
  * Defines an element within the context of a design system.
@@ -21,6 +22,7 @@ export interface ElementDefinitionContext {
     readonly container: Container;
     readonly willDefine: boolean;
     defineElement(definition?: ContextualElementDefinition): void;
+    definePresentation(presentation: ComponentPresentation): void;
     tagFor(type: Constructable): string;
 }
 
@@ -223,6 +225,10 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         public readonly callback: ElementDefinitionCallback,
         public readonly willDefine: boolean
     ) {}
+
+    definePresentation(presentation: ComponentPresentation) {
+        ComponentPresentation.define(this.name, presentation, this.container);
+    }
 
     defineElement(definition: ContextualElementDefinition) {
         this.definition = new FASTElementDefinition(this.type, {
