@@ -30,8 +30,6 @@ export interface StyleTarget {
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
 }
 
-const styleLookup = new Map<string, ElementStyles>();
-
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.
  * @public
@@ -86,23 +84,6 @@ export abstract class ElementStyles {
     }
 
     /**
-     * Adds these styles to a global cache for easy lookup by a known key.
-     * @param key - The key to use for lookup and retrieval in the cache.
-     */
-    public withKey(key: string): this {
-        styleLookup.set(key, this);
-        return this;
-    }
-
-    /**
-     * Attempts to find cached styles by a known key.
-     * @param key - The key to search the style cache for.
-     */
-    public static find(key: string): ElementStyles | null {
-        return styleLookup.get(key) || null;
-    }
-
-    /**
      * Create ElementStyles from ComposableStyles.
      */
     public static readonly create: ElementStyleFactory = (() => {
@@ -153,30 +134,40 @@ function reduceBehaviors(
  * @internal
  */
 export class AdoptedStyleSheetsStyles extends ElementStyles {
-    private readonly styleSheets: CSSStyleSheet[];
-    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    private _styleSheets: CSSStyleSheet[] | undefined = void 0;
+
+    private get styleSheets(): CSSStyleSheet[] {
+        if (this._styleSheets === void 0) {
+            const styles = this.styles;
+            const styleSheetCache = this.styleSheetCache;
+            this._styleSheets = reduceStyles(styles).map((x: string | CSSStyleSheet) => {
+                if (x instanceof CSSStyleSheet) {
+                    return x;
+                }
+
+                let sheet = styleSheetCache.get(x);
+
+                if (sheet === void 0) {
+                    sheet = new CSSStyleSheet();
+                    (sheet as any).replaceSync(x);
+                    styleSheetCache.set(x, sheet);
+                }
+
+                return sheet;
+            });
+        }
+
+        return this._styleSheets;
+    }
+
+    public readonly behaviors: ReadonlyArray<Behavior> | null;
 
     public constructor(
         public styles: ComposableStyles[],
-        styleSheetCache: Map<string, CSSStyleSheet>
+        private styleSheetCache: Map<string, CSSStyleSheet>
     ) {
         super();
         this.behaviors = reduceBehaviors(styles);
-        this.styleSheets = reduceStyles(styles).map((x: string | CSSStyleSheet) => {
-            if (x instanceof CSSStyleSheet) {
-                return x;
-            }
-
-            let sheet = styleSheetCache.get(x);
-
-            if (sheet === void 0) {
-                sheet = new CSSStyleSheet();
-                (sheet as any).replaceSync(x);
-                styleSheetCache.set(x, sheet);
-            }
-
-            return sheet;
-        });
     }
 
     public addStylesTo(target: StyleTarget): void {
