@@ -31,6 +31,7 @@ import {
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
+import { height } from "@microsoft/fast-components-styles-msft";
 import {
     AccentColors,
     defaultAccentColor,
@@ -46,7 +47,6 @@ import {
     setNeutralBaseColor,
     setShowOnlyRecommendedBackgrounds,
 } from "./state";
-import { height } from "@microsoft/fast-components-styles-msft";
 
 export interface ControlPaneClassNameContract {
     controlPane: string;

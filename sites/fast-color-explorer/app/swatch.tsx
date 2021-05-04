@@ -9,9 +9,9 @@ import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/color"
 import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import { ColorRecipe, contrast } from "@microsoft/fast-components/dist/esm/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
-import { bridge, ColorsDesignSystem } from "./design-system";
 import { SwatchRecipe } from "@microsoft/fast-components/dist/esm/color/common";
 import { applyElevation } from "@microsoft/fast-components-styles-msft";
+import { bridge, ColorsDesignSystem } from "./design-system";
 
 export enum SwatchTypes {
     fill = "fill",

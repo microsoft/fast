@@ -6,8 +6,8 @@ import {
 import { createColorPalette } from "@microsoft/fast-components";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { StandardLuminance } from "@microsoft/fast-components";
-import { defaultAccentColor, defaultNeutralColor } from "./colors";
 import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import { defaultAccentColor, defaultNeutralColor } from "./colors";
 
 const neutralPalette: Palette = createColorPalette(
     parseColorHexRGB(defaultNeutralColor) as ColorRGBA64
@@ -19,8 +19,8 @@ const neutralPalette: Palette = createColorPalette(
  * @param recipe
  * @returns
  */
-export const bridge = (recipe: DesignSystemResolver<string>) => {
-    return (d?: FASTDesignSystem) => recipe(d || fastDesignSystemDefaults);
+export const bridge = (recipe: DesignSystemResolver<string>): any => {
+    return (d?: FASTDesignSystem): any => recipe(d || fastDesignSystemDefaults);
 };
 
 export type ColorsDesignSystem = FASTDesignSystem & {
