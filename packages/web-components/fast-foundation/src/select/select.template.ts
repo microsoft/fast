@@ -23,16 +23,16 @@ export const SelectTemplate: ViewTemplate<Select> = html`
         <div
             aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
             aria-controls="listbox"
-            aria-expanded="${x => x.ariaExpanded}"
             aria-haspopup="listbox"
+            aria-labelledby="selected-value"
             class="control"
             part="control"
-            role="button"
+            role="textbox"
             ?disabled="${x => x.disabled}"
         >
             ${startTemplate}
             <slot name="button-container">
-                <div class="selected-value" part="selected-value">
+                <div class="selected-value" part="selected-value" id="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
                 </div>
                 <div class="indicator" part="indicator" aria-hidden="true">
