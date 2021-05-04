@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 29 Apr 2021 07:19:40 GMT and should not be manually modified.
+This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.19.0
+
+Sun, 02 May 2021 07:18:00 GMT
+
+### Minor changes
+
+- adding html render web component to fast-tooling (44823142+williamw2@users.noreply.github.com)
 
 ## 0.18.3
 
