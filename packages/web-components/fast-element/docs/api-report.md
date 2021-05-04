@@ -170,7 +170,8 @@ export class Controller extends PropertyChangeNotifier {
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): Controller;
-    readonly isConnected: boolean;
+    get isConnected(): boolean;
+    set isConnected(value: boolean);
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
@@ -235,7 +236,6 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
     static readonly create: ElementStyleFactory;
-    static find(key: string): ElementStyles | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
@@ -243,7 +243,6 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior[]): this;
-    withKey(key: string): this;
 }
 
 // @public

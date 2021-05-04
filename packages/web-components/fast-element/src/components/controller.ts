@@ -33,6 +33,7 @@ export class Controller extends PropertyChangeNotifier {
     private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
+    private _isConnected = false;
 
     /**
      * The element being controlled by this controller.
@@ -56,8 +57,15 @@ export class Controller extends PropertyChangeNotifier {
      * Indicates whether or not the custom element has been
      * connected to the document.
      */
-    @observable
-    public readonly isConnected: boolean = false;
+    public get isConnected(): boolean {
+        Observable.track(this, "isConnected");
+        return this._isConnected;
+    }
+
+    public set isConnected(value: boolean) {
+        this._isConnected = value;
+        Observable.notify(this, "isConnected");
+    }
 
     /**
      * Gets/sets the template used to render the component.
