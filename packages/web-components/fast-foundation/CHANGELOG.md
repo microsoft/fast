@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 22 Apr 2021 07:21:10 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.20.0
+
+Sun, 25 Apr 2021 07:21:02 GMT
+
+### Minor changes
+
+- undefined (nicholasrice@users.noreply.github.com)
 
 ## 1.19.0
 

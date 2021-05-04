@@ -91,12 +91,17 @@ To make this flexible, the class should allow a way to override the default crea
     css={subsetOfMDNCSSProperties}
     controls={[
         new StandardCSSControlPlugin({
+            id: "example-id",
             name: ["border"],
-            control: (config) => {
+            cssControls: (config) => {
                 return (
                     <input
                         type={"text"}
-                        value={config.value}
+                        onChange={(e) => {
+                            config.onChange({
+                                ["border"]: e.target.value
+                            })
+                        }}
                     />
                 )
             }

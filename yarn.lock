@@ -361,6 +361,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.12.11.tgz#c9a1f021917dcb5ccf0d4e453e399022981fc9ed"
   integrity sha512-np/lG3uARFybkoHokJUmf1QfEvRVCPbmQeUQpKow5cQ3xWrV9i3rUHodKDJPQfTVX61qKi+UdYk8kik84n7XOw==
 
+"@babel/helper-validator-identifier@^7.14.0":
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.14.0.tgz#d26cad8a47c65286b15df1547319a5d0bcf27288"
+  integrity sha512-V3ts7zMSu5lfiwWDVWzRDGIN+lnCEUdaXgtVHJgLb1rGaA6jMrtB9EmE7L18foXJIE8Un/A/h6NJfGQp/e1J4A==
+
 "@babel/helper-validator-option@^7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-option/-/helper-validator-option-7.12.11.tgz#d66cb8b7a3e7fe4c6962b32020a131ecf0847f4f"
@@ -385,12 +390,21 @@
     "@babel/traverse" "^7.12.13"
     "@babel/types" "^7.12.13"
 
-"@babel/highlight@^7.12.13", "@babel/highlight@^7.8.3":
+"@babel/highlight@^7.12.13":
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.13.10.tgz#a8b2a66148f5b27d666b15d81774347a731d52d1"
   integrity sha512-5aPpe5XQPzflQrFwL1/QoeHkP2MsA4JCntcXHRhEsdsfPVkvPi2w7Qix4iV7t5S/oC9OodGrggd8aco1g3SZFg==
   dependencies:
     "@babel/helper-validator-identifier" "^7.12.11"
+    chalk "^2.0.0"
+    js-tokens "^4.0.0"
+
+"@babel/highlight@^7.8.3":
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.14.0.tgz#3197e375711ef6bf834e67d0daec88e4f46113cf"
+  integrity sha512-YSCOwxvTYEIMSGaBQb5kDDsCopDdiUGsqpatp3fOlI4+2HQSkTmEVWnVuySdAC5EWCqSWWTv0ib63RjR7dTBdg==
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.14.0"
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
@@ -3084,6 +3098,15 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-react-utilities/-/fast-react-utilities-1.2.0.tgz#438d97bfd5a500d0293b5bdb5f4c93895ab8375b"
   integrity sha512-jO5o96QlnVz/cceIaaPlrQCugNXSIWRky4kasTbHL9RhBDpCK0WK/HvKf8gMRf11BmaWW4wOdkEon7uvqBR34Q==
+
+"@microsoft/fast-tooling@0.18.2":
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.18.2.tgz#6130ef62f6429ff7c014ae59182ce00663eea9a1"
+  integrity sha512-GPivbo0F6PUsQkJLC+bV6ckb28RjTXP0yA2knP1kRJwSXcIERqGZ5SZH8CSAMjYSSf82FHgN3DGxkKLe5qfKXg==
+  dependencies:
+    "@microsoft/fast-foundation" "^1.20.0"
+    "@microsoft/fast-web-utilities" "^4.7.3"
+    vscode-html-languageservice "^3.1.3"
 
 "@microsoft/fast-tooling@^0.7.0":
   version "0.7.0"
@@ -6856,10 +6879,15 @@ caniuse-db@^1.0.30000529, caniuse-db@^1.0.30000634, caniuse-db@^1.0.30000639:
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30001183.tgz#e3c39eeb1372c621af2e4ed29cebd0c93b31f029"
   integrity sha512-Vh0OIg93dKq42DHBDqR0bXVlfX3grH6Lmfx2Wd2DnV3pIjXfLytURd4VHZfB8N1Zdp6Q1T2vun8ohYH5FUOMAw==
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001181:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001181:
   version "1.0.30001205"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001205.tgz#d79bf6a6fb13196b4bb46e5143a22ca0242e0ef8"
   integrity sha512-TL1GrS5V6LElbitPazidkBMD9sa448bQDDLrumDqaggmKFcuU2JW1wTOHJPukAcOMtEmLcmDJEzfRrf+GjM0Og==
+
+caniuse-lite@^1.0.30001035:
+  version "1.0.30001219"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001219.tgz#5bfa5d0519f41f993618bd318f606a4c4c16156b"
+  integrity sha512-c0yixVG4v9KBc/tQ2rlbB3A/bgBFRvl8h8M4IeUbqCca4gsiCfvtaheUssbnux/Mb66Vjz7x8yYjDgYcNQOhyQ==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -9279,10 +9307,15 @@ ejs@^3.1.2:
   dependencies:
     jake "^10.6.1"
 
-electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.378, electron-to-chromium@^1.3.649:
+electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.649:
   version "1.3.704"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.704.tgz#894205a237cbe0097d63da8f6d19e605dd13ab51"
   integrity sha512-6cz0jvawlUe4h5AbfQWxPzb+8LzVyswGAWiGc32EJEmfj39HTQyNPkLXirc7+L4x5I6RgRkzua8Ryu5QZqc8cA==
+
+electron-to-chromium@^1.3.378:
+  version "1.3.724"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.724.tgz#2d342f2a124e6138462de9a8c87310d0fc993752"
+  integrity sha512-dvHiOuYbTs1kQ9czhBKfapWGeyq3hs469bdbHFNpw01bOeau6B6dH4d8IteGZaMEGqVGmflrvWmxNpwvS+dhkA==
 
 element-resize-detector@^1.2.1:
   version "1.2.1"

@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 02 May 2021 07:18:00 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.6",
+      "version": "2.8.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.19.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "6fda54d6e00d4620dc1bdc140884acc85a7ce24a",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Apr 2021 07:19:40 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.5",
+      "version": "2.8.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.18.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "9357f10ca02a6a2785ac08ad2928d0a0531c03d6",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 25 Apr 2021 07:21:02 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.4",
+      "version": "2.8.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "add CSS control plugin overrides",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "3628f57d6dd8d5dc242bce6579c47d18ebcde6b4",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "CSS control update to override inner web component widths",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "90c3851e79454219ccdedfa9ba8c6260123c8e24",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Apr 2021 07:21:10 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.3",
       "version": "2.8.3",
