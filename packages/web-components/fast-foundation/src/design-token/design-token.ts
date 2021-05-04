@@ -56,11 +56,7 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
 }
 
 interface DesignTokenSubscriber {
-    handleChange(
-        token: DesignToken<any>,
-        element: HTMLElement,
-        operation: "set" | "delete"
-    ): void;
+    handleChange(token: DesignToken<any>, element: HTMLElement): void;
 }
 
 /**
@@ -103,14 +99,13 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
                     .value) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
-        this.subscribers.forEach(x => x.handleChange(this, element, "set"));
+        this.subscribers.forEach(x => x.handleChange(this, element));
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
         this.setFor.delete(element);
         DesignTokenNode.for(this, element).delete();
-        this.subscribers.forEach(x => x.handleChange(this, element, "delete"));
         return this;
     }
 
@@ -128,7 +123,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     public subscribe(subscriber: DesignTokenSubscriber): void {
         if (!this.subscribers.has(subscriber)) {
             this.subscribers.add(subscriber);
-            this.setFor.forEach(x => subscriber.handleChange(this, x, "set"));
+            this.setFor.forEach(x => subscriber.handleChange(this, x));
         }
     }
 
@@ -379,23 +374,17 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     private tokenDependencySubscriber = {
-        handleChange: (
-            token: DesignToken<any>,
-            element: HTMLElement,
-            operation: "set" | "delete"
-        ) => {
-            if (operation === "set") {
-                const rawValue = this.resolveRawValue();
-                const target = DesignTokenNode.for(this.token, element);
+        handleChange: (token: DesignToken<any>, element: HTMLElement) => {
+            const rawValue = this.resolveRawValue();
+            const target = DesignTokenNode.for(this.token, element);
 
-                // Only act on downstream nodes
-                if (
-                    this.contains(target) &&
-                    !target.useCSSCustomProperty &&
-                    target.resolveRawValue() === rawValue
-                ) {
-                    target.useCSSCustomProperty = true;
-                }
+            // Only act on downstream nodes
+            if (
+                this.contains(target) &&
+                !target.useCSSCustomProperty &&
+                target.resolveRawValue() === rawValue
+            ) {
+                target.useCSSCustomProperty = true;
             }
         },
     };
