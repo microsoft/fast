@@ -361,6 +361,14 @@ export class AnchoredRegion extends FoundationElement {
     public initialLayoutComplete: boolean = false;
 
     /**
+     * indicates that region contents are now loaded and visible
+     *
+     * @internal
+     */
+     @observable
+    public regionVisible: boolean = false;
+
+    /**
      * indicates the current horizontal position of the region
      */
     public verticalPosition: AnchoredRegionPositionLabel | undefined;
@@ -397,7 +405,6 @@ export class AnchoredRegion extends FoundationElement {
     private pendingPositioningUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
-    private regionVisible: boolean = false;
 
     // defines how big a difference in pixels there must be between states to
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
@@ -944,6 +951,7 @@ export class AnchoredRegion extends FoundationElement {
             this.style.removeProperty("pointer-events");
             this.style.removeProperty("opacity");
             this.classList.toggle("loaded", true);
+            this.updatePositionClasses();
             this.$emit("loaded", this, { bubbles: false });
         }
 
