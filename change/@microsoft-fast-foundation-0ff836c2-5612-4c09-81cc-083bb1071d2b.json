@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: select a11y issues",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "mathieu.lavoie@logmein.com",
+  "dependentChangeType": "patch"
+}
