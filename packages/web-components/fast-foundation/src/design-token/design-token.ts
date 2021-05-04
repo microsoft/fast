@@ -1,5 +1,4 @@
 import {
-    Behavior,
     BindingObserver,
     CSSDirective,
     defaultExecutionContext,
@@ -7,7 +6,6 @@ import {
     observable,
     Observable,
 } from "@microsoft/fast-element";
-import { result } from "lodash";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
@@ -56,18 +54,6 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
-
-interface Disposable {
-    dispose(): void;
-}
-
-export type DesignTokenSubscriber = {
-    handleChange: (
-        token: DesignToken<any>,
-        element: HTMLElement,
-        operation: "set" | "delete"
-    ) => void;
-};
 
 /**
  * Implementation of {@link (DesignToken:interface)}
