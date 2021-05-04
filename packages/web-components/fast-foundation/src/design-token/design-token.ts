@@ -169,6 +169,25 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         Observable.getNotifier(this).notify("value");
     }
 
+    @observable
+    public useCSSCustomProperty = false;
+    private useCSSCustomPropertyChanged(prev: undefined | boolean, next: boolean) {
+        if (next) {
+            Observable.getNotifier(this).subscribe(
+                this.cssCustomPropertySubscriber,
+                "value"
+            );
+
+            this.cssCustomPropertySubscriber.handleChange();
+        } else if (prev) {
+            Observable.getNotifier(this).unsubscribe(
+                this.cssCustomPropertySubscriber,
+                "value"
+            );
+            this.cssCustomPropertySubscriber.dispose();
+        }
+    }
+
     constructor(
         public readonly token: DesignToken<T>,
         public readonly target: HTMLElement | (HTMLElement & FASTElement)
@@ -270,7 +289,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private bindingChangeHandler = {
         handleChange: () => {
-            this.bindCSSCustomProperty();
             Observable.getNotifier(this).notify("value");
         },
     };
@@ -282,15 +300,16 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
     }
 
-    public bindCSSCustomProperty() {
-        Observable.getNotifier(this).subscribe(this.cssCustomPropertySubscriber, "value");
-
-        this.cssCustomPropertySubscriber.handleChange();
-    }
-
     private cssCustomPropertySubscriber = {
         handleChange: () => {
             CustomPropertyManager.addTo(
+                this.target,
+                this.token,
+                this.resolveCSSValue(this.value)
+            );
+        },
+        dispose: () => {
+            CustomPropertyManager.removeFrom(
                 this.target,
                 this.token,
                 this.resolveCSSValue(this.value)
@@ -363,7 +382,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
                 // Only act on downstream nodes
                 if (this.contains(target)) {
-                    target.bindCSSCustomProperty();
+                    target.useCSSCustomProperty = true;
                 }
             }
         },
@@ -410,7 +429,9 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.handleChange = noop as () => void;
         this._rawValue = value;
 
-        this.bindCSSCustomProperty();
+        if (!this.useCSSCustomProperty) {
+            this.useCSSCustomProperty = true;
+        }
 
         if (this.bindingObserver) {
             const records = this.bindingObserver.records();
@@ -430,7 +451,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      * Deletes any value set for the node.
      */
     public delete() {
-        CustomPropertyManager.removeFrom(this.target, this.token, this.value);
+        if (this.useCSSCustomProperty) {
+            this.useCSSCustomProperty = false;
+        }
+
         this._rawValue = void 0;
         this.handleChange = this.unsetValueChangeHandler;
         this.tearDownBindingObserver();

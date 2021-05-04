@@ -344,10 +344,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(12)
             
-            // TODO: should it throw here? It throws because writing the CSS custom property
-            // requires inspecting the value, which can't resolve (see expect below). Seems a bit
-            // odd that just deleting a value would throw though.
-            expect(() => token.deleteValueFor(target)).to.throw();
+            token.deleteValueFor(target);
  
             expect(() => token.getValueFor(target)).to.throw();
             removeElement(target)
@@ -377,10 +374,7 @@ describe("A DesignToken", () => {
 
             expect(token.getValueFor(target)).to.equal(12)
 
-            // TODO: should it throw here? It throws because writing the CSS custom property
-            // requires inspecting the value, which can't resolve (see expect below). Seems a bit
-            // odd that just deleting a value would throw though.
-            expect(() => token.deleteValueFor(target)).to.throw();
+            token.deleteValueFor(target);
 
             expect(() => token.getValueFor(target)).to.throw();
             removeElement(target)
