@@ -7,6 +7,7 @@ import {
     observable,
     Observable,
 } from "@microsoft/fast-element";
+import { result } from "lodash";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
@@ -169,6 +170,15 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         Observable.getNotifier(this).notify("value");
     }
 
+    /**
+     * The actual value set for the node, or undefined.
+     * This will be a reference to the original object for all data types
+     * passed by reference.
+     */
+    public get rawValue(): DesignTokenValue<T> | undefined {
+        return this._rawValue;
+    }
+
     @observable
     public useCSSCustomProperty = false;
     private useCSSCustomPropertyChanged(prev: undefined | boolean, next: boolean) {
@@ -218,39 +228,42 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.tearDownBindingObserver();
     }
 
-    private resolveRealValueForNode(node: DesignTokenNode<T>): T {
-        let current: DesignTokenNode<T> | undefined = node;
+    private resolveRealValue(): T {
+        const rawValue = this.resolveRawValue();
 
-        while (current !== undefined) {
+        if (rawValue === void 0) {
+            throw new Error(
+                `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
+            );
+        }
+        if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
+            if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
+                this.setupBindingObserver(rawValue);
+            }
+
+            return this.bindingObserver!.observe(this.target, defaultExecutionContext);
+        } else {
+            if (this.bindingObserver) {
+                this.tearDownBindingObserver();
+            }
+
+            return rawValue as any;
+        }
+    }
+
+    private resolveRawValue(): DesignTokenValue<T> | undefined {
+        /* eslint-disable-next-line */
+        let current: DesignTokenNode<T> | undefined = this;
+
+        do {
             const { rawValue } = current;
-            if (rawValue !== undefined) {
-                if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
-                    if (
-                        !this.bindingObserver ||
-                        this.bindingObserver.source !== rawValue
-                    ) {
-                        this.setupBindingObserver(rawValue);
-                    }
 
-                    return this.bindingObserver!.observe(
-                        this.target,
-                        defaultExecutionContext
-                    );
-                } else {
-                    if (this.bindingObserver) {
-                        this.tearDownBindingObserver();
-                    }
-
-                    return rawValue as any;
-                }
+            if (rawValue !== void 0) {
+                return rawValue;
             }
 
             current = childToParent.get(current);
-        }
-
-        throw new Error(
-            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
-        );
+        } while (current !== undefined);
     }
 
     private resolveCSSValue(value: T) {
@@ -378,10 +391,15 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             operation: "set" | "delete"
         ) => {
             if (operation === "set") {
+                const rawValue = this.resolveRawValue();
                 const target = DesignTokenNode.for(this.token, element);
 
                 // Only act on downstream nodes
-                if (this.contains(target)) {
+                if (
+                    this.contains(target) &&
+                    !target.useCSSCustomProperty &&
+                    target.resolveRawValue() === rawValue
+                ) {
                     target.useCSSCustomProperty = true;
                 }
             }
@@ -393,28 +411,19 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      */
     public get value(): T {
         try {
-            return this.resolveRealValueForNode(this);
+            return this.resolveRealValue();
         } catch (e) {
             if (!childToParent.has(this)) {
                 const parent = this.findParentNode();
 
                 if (parent) {
                     parent.appendChild(this);
-                    return this.resolveRealValueForNode(this);
+                    return this.resolveRealValue();
                 }
             }
 
             throw e;
         }
-    }
-
-    /**
-     * The actual value set for the node, or undefined.
-     * This will be a reference to the original object for all data types
-     * passed by reference.
-     */
-    public get rawValue(): DesignTokenValue<T> | undefined {
-        return this._rawValue;
     }
 
     /**

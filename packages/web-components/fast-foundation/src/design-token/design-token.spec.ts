@@ -281,7 +281,6 @@ describe("A DesignToken", () => {
             tokenA.setValueFor(target, 7);
             tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
 
-            DOM.nextUpdate();
 
             expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
             expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
