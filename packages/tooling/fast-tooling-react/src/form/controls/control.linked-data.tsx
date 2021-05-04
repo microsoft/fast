@@ -290,18 +290,8 @@ class LinkedDataControl extends React.Component<
      * Change handler for editing the search term filter
      */
     private handleSearchTermUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const normalizedValue: string = e.target.value.toLowerCase();
-        const hasSingleMatchedValue = this.matchExactValueWithASingleSchema(
-            e.target.value
-        );
-
-        // If an exact match is available, the linked data will be added
-        if (hasSingleMatchedValue) {
-            this.addLinkedData(normalizedValue, e.target.value);
-        }
-
         this.setState({
-            searchTerm: hasSingleMatchedValue ? "" : e.target.value,
+            searchTerm: e.target.value,
         });
     };
 
