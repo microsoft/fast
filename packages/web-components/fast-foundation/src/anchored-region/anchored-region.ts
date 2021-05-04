@@ -365,7 +365,7 @@ export class AnchoredRegion extends FoundationElement {
      *
      * @internal
      */
-     @observable
+    @observable
     public regionVisible: boolean = false;
 
     /**
