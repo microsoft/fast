@@ -167,7 +167,7 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
         private styleSheetCache: Map<string, CSSStyleSheet>
     ) {
         super();
-        this.behaviors = reduceBehaviors(this.styles);
+        this.behaviors = reduceBehaviors(styles);
     }
 
     public addStylesTo(target: StyleTarget): void {
