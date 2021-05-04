@@ -55,6 +55,14 @@ export interface DesignToken<T extends { createCSS?(): string }> extends CSSDire
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
+interface DesignTokenSubscriber {
+    handleChange(
+        token: DesignToken<any>,
+        element: HTMLElement,
+        operation: "set" | "delete"
+    ): void;
+}
+
 /**
  * Implementation of {@link (DesignToken:interface)}
  */
