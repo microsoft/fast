@@ -172,7 +172,6 @@ export class Controller extends PropertyChangeNotifier {
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): Controller;
     get isConnected(): boolean;
-    set isConnected(value: boolean);
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
