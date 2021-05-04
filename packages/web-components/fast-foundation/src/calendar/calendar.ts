@@ -99,4 +99,16 @@ export class Calendar extends FASTElement {
      * @internal
      */
     private today: Date = new Date();
+
+    /**
+     * An evaluation of whether or not the calendar is rendered as RTL
+     * @internal
+     */
+    private isRTL: boolean;
+
+    /**
+     * String repesentation of the full locale including market, calendar type and numbering system
+     * @internal
+     */
+    private locale: string;
 }
