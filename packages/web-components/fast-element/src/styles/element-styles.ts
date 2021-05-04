@@ -224,14 +224,12 @@ export class StyleElementStyles extends ElementStyles {
     public removeStylesFrom(target: StyleTarget): void {
         target = this.normalizeTarget(target);
 
-        if (this.styleSheets.length > 0) {
-            const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
-                `.${this.styleClass}`
-            );
+        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
+            `.${this.styleClass}`
+        );
 
-            for (let i = 0, ii = styles.length; i < ii; ++i) {
-                target.removeChild(styles[i]);
-            }
+        for (let i = 0, ii = styles.length; i < ii; ++i) {
+            target.removeChild(styles[i]);
         }
 
         super.removeStylesFrom(target);
