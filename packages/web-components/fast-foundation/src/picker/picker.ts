@@ -407,14 +407,36 @@ export class Picker extends FASTElement {
 
     public disconnectedCallback() {
         super.disconnectedCallback();
-        this.toggleMenu(false);
+        this.toggleFlyout(false);
         this.inputElement.removeEventListener("input", this.handleTextInput);
         this.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
+    protected toggleFlyout(open: boolean): void {
+        if (this.flyoutOpen === open) {
+            return;
+        }
+
+        if (open && document.activeElement === this.inputElement) {
+            this.flyoutOpen = open;
+            DOM.queueUpdate(()=>{
+                if (this.menuElement !== undefined) {
+                    this.setFocusedOption(0);
+                } else {
+                    this.disableMenu();
+                }
+            });
+            return;
+        }
+
+        this.flyoutOpen = false;
+        this.disableMenu();
+        return;
+    }
+
     protected handleTextInput(e: InputEvent): void {}
 
-    protected handleInputClick = (e: MouseEvent): void => {
+    public handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
 
@@ -432,7 +454,7 @@ export class Picker extends FASTElement {
         switch (e.key) {
             case "Home": {
                 if (!this.flyoutOpen){
-                    this.toggleMenu(true);
+                    this.toggleFlyout(true);
                 } else {
                     if (this.menuElement.optionElements.length > 0) {
                         this.setFocusedOption(0);
@@ -443,7 +465,7 @@ export class Picker extends FASTElement {
 
             case "ArrowDown": {
                     if (!this.flyoutOpen){
-                        this.toggleMenu(true);
+                        this.toggleFlyout(true);
                     } else {
                         const nextFocusOptionIndex = this.flyoutOpen
                         ? Math.min(
@@ -458,7 +480,7 @@ export class Picker extends FASTElement {
 
             case "ArrowUp": {
                     if (!this.flyoutOpen){
-                        this.toggleMenu(true);
+                        this.toggleFlyout(true);
                     } else {
                         const previousFocusOptionIndex = this.flyoutOpen
                         ? Math.max(this.menuFocusIndex - 1, 0)
@@ -470,10 +492,10 @@ export class Picker extends FASTElement {
 
             case "End": {
                 if (!this.flyoutOpen){
-                    this.toggleMenu(true);
+                    this.toggleFlyout(true);
                 } else {
                     if (this.menuElement.optionElements.length > 0) {
-                        this.toggleMenu(true);
+                        this.toggleFlyout(true);
                         this.setFocusedOption(this.menuElement.optionElements.length - 1);
                     }
                 }
@@ -481,7 +503,7 @@ export class Picker extends FASTElement {
             }
 
             case "Escape": {
-                this.toggleMenu(false);
+                this.toggleFlyout(false);
                 return false;
             }
 
@@ -524,7 +546,7 @@ export class Picker extends FASTElement {
                         this.selection = this.selectedOptions
                         .slice(0, this.selectedOptions.length - 1)
                         .toString();
-                        this.toggleMenu(false);
+                        this.toggleFlyout(false);
                         return false;
                     }
                     // let text deletion proceed
@@ -549,7 +571,7 @@ export class Picker extends FASTElement {
                 return true;
             }
         }
-        this.toggleMenu(true);
+        this.toggleFlyout(true);
         return true;
     };
 
@@ -565,7 +587,7 @@ export class Picker extends FASTElement {
             this.menuElement === undefined ||
             !this.menuElement.contains(e.relatedTarget as Element)
         ) {
-            this.toggleMenu(false);
+            this.toggleFlyout(false);
         }
 
         if (!this.contains(document.activeElement)) {
@@ -580,7 +602,7 @@ export class Picker extends FASTElement {
             return false;
         }
         this.selection = `${this.selection}${this.selection === "" ? "" : ","}${value}`;
-        this.toggleMenu(false);
+        this.toggleFlyout(false);
         this.inputElement.value = "";
         return false;
     };
@@ -628,7 +650,7 @@ export class Picker extends FASTElement {
         });
     };
 
-    protected handleSelectionChange(): void {
+    public handleSelectionChange(): void {
         if (this.selectedOptions.toString() === this.selection) {
             return;
         }
@@ -742,26 +764,4 @@ export class Picker extends FASTElement {
 
         this.menuElement.scrollTo(0, focusedOption.offsetTop);
     };
-
-    protected toggleMenu(open: boolean): void {
-        if (this.flyoutOpen === open) {
-            return;
-        }
-
-        if (open && document.activeElement === this.inputElement) {
-            this.flyoutOpen = open;
-            DOM.queueUpdate(()=>{
-                if (this.menuElement !== undefined) {
-                    this.setFocusedOption(0);
-                } else {
-                    this.disableMenu();
-                }
-            });
-            return;
-        }
-
-        this.flyoutOpen = false;
-        this.disableMenu();
-        return;
-    }
 }

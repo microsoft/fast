@@ -188,22 +188,17 @@ export class PeoplePicker extends Picker {
         super.disconnectedCallback();
     }
 
-    protected handleSelectionChange(): void {
-        super.handleSelectionChange();
-    }
-
     protected handleTextInput = (e: InputEvent): void => {
-        super.handleTextInput(e);
-
         this.startSearch();
+        super.handleTextInput(e);
     };
 
-    protected toggleMenu(open: boolean): void {
+    protected toggleFlyout(open: boolean): void {
         if (open && !this.flyoutOpen) {
             this.showLoading = true;
             this.startSearch();
         }
-        super.toggleMenu(open);
+        super.toggleFlyout(open);
     }
 
     private startSearch = (): void => {
