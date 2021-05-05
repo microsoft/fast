@@ -9,8 +9,6 @@ The 'picker' component enables users to select a list of items from a searchable
 - Choosing a list of recipients for an e-mail.
 - Choosing a list of pizza toppings.
 
-### Non-goals
-
 ### Prior Art/Examples
 
 - Outlook.com mail recipient picker 
@@ -23,7 +21,9 @@ The 'picker' component is actually composed of three web components:
 - The 'picker-list' component which hosts a text input box and displays the items that have already been selected.
 - The 'picker-menu' component which displays the available options based on current user input.
 
-Most end-user developers will simply deal with the top level 'picker'  (ie. "people-picker", "topping-picker", etc...) and the 'picker-list' and 'picker-menu' sub-components should mostly only be a concern for developers creating these derived types. 
+Most end-user developers will simply deal with the top level 'picker'  (ie. "people-picker", "topping-picker", etc...) and the 'picker-list' and 'picker-menu' sub-components should mostly only be a concern for developers creating these derived types.
+
+Management of loading states is largely left to the derived types
 
 ### API
 
@@ -87,6 +87,7 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 *Events*
 - `optionsupdated`: Emitted when the available options change.
 
-
-
 ## Implementation
+
+### Accessibility
+Picker should apply all the appropriate aria attributes and roles to properly support assistive technologies.
