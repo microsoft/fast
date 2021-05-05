@@ -1,6 +1,6 @@
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
-    DesignSystem,
+    FASTDesignSystem,
     neutralLayerCard,
     neutralLayerCardContainer,
     neutralLayerFloating,
@@ -10,18 +10,15 @@ import {
     neutralLayerL4,
     palette,
     PaletteType,
-} from "@microsoft/fast-components-styles-msft";
+    StandardLuminance,
+} from "@microsoft/fast-components";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { connect } from "react-redux";
 import { Background } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import {
-    ColorRecipe,
-    Swatch,
-} from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
-import { StandardLuminance } from "@microsoft/fast-components-styles-msft";
+import { ColorRecipe, Swatch } from "@microsoft/fast-components/dist/esm/color/common";
 import { AppState } from "./state";
 import { ControlPane } from "./control-pane";
 import ColorBlocks from "./color-blocks";
@@ -96,9 +93,7 @@ class App extends React.Component<AppProps, {}> {
                                 </Row>
                             </Container>
                         </Canvas>
-                        <Background value={neutralLayerL4}>
-                            <ControlPane />
-                        </Background>
+                        <ControlPane />
                     </Row>
                 </Container>
                 <Footer />
@@ -176,9 +171,13 @@ class App extends React.Component<AppProps, {}> {
     private resolveRecipes = (
         luminance: number
     ): Array<{ color: string; title: string }> => {
-        const designSystem: DesignSystem = Object.assign({}, this.props.designSystem, {
-            baseLayerLuminance: luminance,
-        });
+        const designSystem: FASTDesignSystem = Object.assign(
+            {},
+            this.props.designSystem,
+            {
+                baseLayerLuminance: luminance,
+            }
+        );
         return this.backgroundRecipes
             .map((conf: [ColorRecipe<string>, string]): {
                 color: string;
