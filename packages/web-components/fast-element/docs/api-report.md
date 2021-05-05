@@ -105,6 +105,7 @@ export class BindingBehavior implements Behavior {
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
     disconnect(): void;
     observe(source: TSource, context: ExecutionContext): TReturn;
+    records(): IterableIterator<ObservationRecord>;
 }
 
 // @public
@@ -170,7 +171,7 @@ export class Controller extends PropertyChangeNotifier {
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): Controller;
-    readonly isConnected: boolean;
+    get isConnected(): boolean;
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
@@ -235,7 +236,6 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     abstract readonly behaviors: ReadonlyArray<Behavior> | null;
     static readonly create: ElementStyleFactory;
-    static find(key: string): ElementStyles | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
@@ -243,7 +243,6 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior[]): this;
-    withKey(key: string): this;
 }
 
 // @public
@@ -401,6 +400,12 @@ export const Observable: Readonly<{
 
 // @public
 export function observable(target: {}, nameOrAccessor: string | Accessor): void;
+
+// @public
+export interface ObservationRecord {
+    propertyName: string;
+    propertySource: any;
+}
 
 // @public
 export interface PartialFASTElementDefinition {

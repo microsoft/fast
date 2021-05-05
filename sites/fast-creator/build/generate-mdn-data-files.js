@@ -16,10 +16,15 @@ const comment = `/**
 // A subset of the MDN properties to be used in the Creator
 const subsetOfProperties = [
     "display",
-    "overflow",
     "padding",
     "margin",
     "background-color",
+    "justify-content",
+    "justify-items",
+    "flex-direction",
+    "align-content",
+    "align-items",
+    "flex",
 ];
 // a subset of CSS generated from the list of properties above
 const subsetOfCSSProperties = Object.entries(mdnCSS.properties).reduce(
