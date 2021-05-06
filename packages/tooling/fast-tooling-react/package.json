@@ -111,7 +111,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "^1.20.6",
+    "@microsoft/fast-components": "1.20.5",
     "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
