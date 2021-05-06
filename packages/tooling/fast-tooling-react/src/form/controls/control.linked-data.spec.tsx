@@ -7,6 +7,7 @@ import {
     keyCodeArrowDown,
     keyCodeArrowUp,
     keyCodeEnter,
+    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import { LinkedDataControl } from "./control.linked-data";
 import { LinkedDataControlProps } from "./control.linked-data.props";
@@ -169,7 +170,41 @@ describe("LinkedDataControl", () => {
 
         expect(renderedWithOneChild.find("DragItem")).toHaveLength(1);
     });
-    test("should fire a callback to update the data when the value is an exact match", () => {
+    test("should not update the value to match when there are multiple matching values", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <LinkedDataFormControlWithDragAndDrop
+                {...linkedDataProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
+        const targetValue: any = { value: "a" };
+        const input: any = rendered.find("input");
+        input.simulate("change", { target: targetValue });
+        input.simulate("keydown", { keyCode: keyCodeTab });
+
+        expect(input.getDOMNode().value).toEqual("a");
+        expect(callback).not.toHaveBeenCalled();
+    });
+    test("should update the value to match when there is a single matching value", () => {
+        const callback: any = jest.fn();
+        const rendered: any = mount(
+            <LinkedDataFormControlWithDragAndDrop
+                {...linkedDataProps}
+                onChange={callback}
+                managedClasses={managedClasses}
+            />
+        );
+        const targetValue: any = { value: "ome" };
+        const input: any = rendered.find("input");
+        input.simulate("change", { target: targetValue });
+        input.simulate("keydown", { keyCode: keyCodeTab });
+
+        expect(input.getDOMNode().value).toEqual("omega");
+        expect(callback).not.toHaveBeenCalled();
+    });
+    test("should fire a callback to update the data when the value is an exact match and enter has been pressed", () => {
         const callback: any = jest.fn();
         const rendered: any = mount(
             <LinkedDataFormControlWithDragAndDrop
@@ -181,6 +216,7 @@ describe("LinkedDataControl", () => {
         const targetValue: any = { value: "omega" };
         const input: any = rendered.find("input");
         input.simulate("change", { target: targetValue });
+        input.simulate("keydown", { keyCode: keyCodeEnter });
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual({

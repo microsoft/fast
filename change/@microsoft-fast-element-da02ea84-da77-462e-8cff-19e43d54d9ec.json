@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "perf: improve startup time and reduce library size",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

@@ -352,9 +352,22 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (
     context: ExecutionContext<TParent>
 ) => TReturn;
 
-interface SubscriptionRecord {
+/**
+ * A record of observable property access.
+ * @public
+ */
+export interface ObservationRecord {
+    /**
+     * The source object with an observable property that was accessed.
+     */
     propertySource: any;
+
+    /**
+     * The name of the observable property on {@link ObservationRecord.propertySource} that was accessed.
+     */
     propertyName: string;
+}
+interface SubscriptionRecord extends ObservationRecord {
     notifier: Notifier;
     next: SubscriptionRecord | undefined;
 }
@@ -377,6 +390,12 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
      * Unsubscribe from all dependent observables of the binding.
      */
     disconnect(): void;
+
+    /**
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
+     * is observing.
+     */
+    records(): IterableIterator<ObservationRecord>;
 }
 
 class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
@@ -471,5 +490,28 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
             this.needsQueue = true;
             this.notify(this);
         }
+    }
+
+    public records(): IterableIterator<ObservationRecord> {
+        let next = this.first;
+
+        return {
+            next: () => {
+                const current = next;
+
+                if (current === undefined) {
+                    return { value: void 0, done: true };
+                } else {
+                    next = next.next!;
+                    return {
+                        value: current,
+                        done: false,
+                    };
+                }
+            },
+            [Symbol.iterator]: function () {
+                return this;
+            },
+        };
     }
 }

@@ -4,7 +4,7 @@
 The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.
 
 ## What is a Design Token
-A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [https://github.com/design-tokens/community-group#design-tokens](the Design Tokens Community Group) for more information on Design Tokens themselves.
+A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [the Design Tokens Community Group](https://github.com/design-tokens/community-group#design-tokens) for more information on Design Tokens themselves.
 
 ## Using Design Tokens in FAST
 This usage guide walks through creating and using a Design Token *background-color*, which is represented in code as a hexadecimal color string.
@@ -54,23 +54,7 @@ A default value can be set for a token, so that the default value is returned fr
 fillColor.withDefault("#FFFFFF");
 ```
 ### 6. Emit a token to a CSS Custom Property
-A Design Token can be made available in CSS through CSS custom properties. The custom property value will be set to the token's value for the supplied target element.
-
-```ts
-fillColor.addCustomPropertyFor(descendent); // --fill-color: #FFFFFF;
-```
-
-If the value of the token *changes* for the target element, the CSS custom property will be updated to the new value:
-
-```ts
-fillColor.setValueFor(descendent, "#F7F7F7"); // --fill-color: #F7F7F7;
-```
-
-The CSS custom property can also be removed through a parallel method:
-
-```ts
-fillColor.removeCustomPropertyFor(descendent);
-```
+DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a (derived value)[#derived-design-token-values], the CSS custom property will also be emitted when any dependent tokens change.
 
 #### Values with a 'createCSS' method
 It is sometimes useful to be able to set a token to a complex object but still use that value in CSS. If a DesignToken is assigned a value with a `createCSS` method on it, the product of that method will be used when emitting to a CSS custom property instead of the Design Token value itself:
@@ -92,7 +76,6 @@ const value = {
     }
 }
 fancyFillColor.setValueFor(descendent, value)
-fancyFillColor.addCustomPropertyFor(descendent); // --fancy-fill-color: rgb(255, 0, 0);
 ```
 
 ## Using Design Tokens in CSS

@@ -9,11 +9,12 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 ```html live
 <fast-design-system-provider use-defaults>
-  <fast-combobox id="shirt-size">
-    <fast-option value="s">Small</fast-option>
-    <fast-option value="m">Medium</fast-option>
-    <fast-option value="l">Large</fast-option>
-    <fast-option value="xl">Extra Large</fast-option>
+  <fast-combobox id="combobox-with-both-autocomplete" autocomplete="both">
+    <fast-option>Christopher Eccleston</fast-option>
+    <fast-option>David Tenant</fast-option>
+    <fast-option>Matt Smith</fast-option>
+    <fast-option>Peter Capaldi</fast-option>
+    <fast-option>Jodie Whittaker</fast-option>
   </fast-combobox>
 </fast-design-system-provider>
 ```
