@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --config=./webpack.prod.js",
+    "convert:mdn-data": "node -r esm ./build/generate-mdn-data-files.js",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
@@ -69,9 +70,9 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.20.2",
-    "@microsoft/fast-tooling": "^0.18.0",
-    "@microsoft/fast-tooling-react": "^2.8.2",
+    "@microsoft/fast-components": "^1.20.6",
+    "@microsoft/fast-tooling": "^0.19.0",
+    "@microsoft/fast-tooling-react": "^2.8.6",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0"
   }

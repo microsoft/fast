@@ -458,18 +458,19 @@ export function isDefault<T>(value: T | void, defaultValue: T | void): boolean {
 function getCategoryStateFromCategoryDictionary(
     categoryDictionary: FormCategoryDictionary,
     dataDictionary: DataDictionary<unknown>,
+    dictionaryId: string,
     dataLocation: string
 ): CategoryState[] {
     return categoryDictionary &&
-        categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId] &&
-        categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId][dataLocation]
-        ? categoryDictionary[dataDictionary[0][dataDictionary[1]].schemaId][
-              dataLocation
-          ].map(category => {
-              return {
-                  expanded: !!(category.expandByDefault !== false),
-              };
-          })
+        categoryDictionary[dataDictionary[0][dictionaryId].schemaId] &&
+        categoryDictionary[dataDictionary[0][dictionaryId].schemaId][dataLocation]
+        ? categoryDictionary[dataDictionary[0][dictionaryId].schemaId][dataLocation].map(
+              category => {
+                  return {
+                      expanded: !!(category.expandByDefault !== false),
+                  };
+              }
+          )
         : [];
 }
 
@@ -511,6 +512,7 @@ export function updateControlSectionState(
                 : getCategoryStateFromCategoryDictionary(
                       props.categories,
                       props.dataDictionary,
+                      props.dictionaryId,
                       props.dataLocation
                   ),
     };

@@ -1,19 +1,40 @@
-# Change Log
+# Change Log - @microsoft/fast-creator
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
 
-# [0.7.0](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.6.1...@microsoft/fast-creator@0.7.0) (2021-04-06)
+<!-- Start content -->
 
+## 0.7.0
 
-### Features
+Sun, 02 May 2021 07:18:00 GMT
 
-* add design system ui to creator ([#4474](https://github.com/Microsoft/fast/issues/4474)) ([c486489](https://github.com/Microsoft/fast/commit/c486489562a9f90a05fb331ee3658cc99ae575d2))
-* adds a listener and handler for postMessage on the window to catch arbitrary messages and update the data dictionary ([#4500](https://github.com/Microsoft/fast/issues/4500)) ([5736aec](https://github.com/Microsoft/fast/commit/5736aec4f8a88add81376e17c45cbffdb41457c5))
+### Patches
 
+- Bump @microsoft/fast-tooling-react to v2.8.6 (44823142+williamw2@users.noreply.github.com)
 
+## 0.7.0
 
+Thu, 29 Apr 2021 07:19:40 GMT
 
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.5 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Sun, 25 Apr 2021 07:21:02 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.20.4 (nicholasrice@users.noreply.github.com)
+
+## 0.7.0
+
+Thu, 22 Apr 2021 07:21:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.20.3 (chhol@microsoft.com)
 
 ## [0.6.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-creator@0.6.0...@microsoft/fast-creator@0.6.1) (2021-03-18)
 
