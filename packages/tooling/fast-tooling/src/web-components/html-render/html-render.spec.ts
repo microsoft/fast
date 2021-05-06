@@ -59,13 +59,29 @@ async function setup() {
     );
     const message = new MessageSystem({
         webWorker: fastMessageSystemWorker,
+    });
+
+    const messageSystemCallback = {
+        onMessage: e => {
+            // This function is used for monitoring to ensure the initialization is called
+            // and provided in the return to await any further messages
+        },
+    };
+
+    message.add(messageSystemCallback);
+
+    await messageSystemCallback.onMessage;
+
+    message.postMessage({
+        type: MessageSystemType.initialize,
         dataDictionary: dataDictionaryConfig as any,
         schemaDictionary,
     });
+
     element.markupDefinitions = Object.values(nativeElementDefinitions);
     element.messageSystem = message;
 
-    return { element, connect, disconnect, message };
+    return { element, messageSystemCallback, connect, disconnect, message };
 }
 
 describe("HTMLRender", () => {
@@ -305,9 +321,16 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send click activity to layers when nagivation message recieved", async () => {
-        const { element, connect, disconnect, message } = await setup();
+        const {
+            element,
+            connect,
+            disconnect,
+            message,
+            messageSystemCallback,
+        } = await setup();
         await connect();
         await DOM.nextUpdate();
+        await messageSystemCallback.onMessage;
 
         message.postMessage({
             type: MessageSystemType.navigation,
