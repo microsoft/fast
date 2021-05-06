@@ -100,6 +100,12 @@ module.exports = function (config) {
                             },
                         ],
                     },
+                    {
+                        test: /message\-system\.min\.js/,
+                        use: {
+                            loader: "worker-loader",
+                        },
+                    },
                 ],
             },
         },

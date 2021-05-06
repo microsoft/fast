@@ -192,3 +192,19 @@ const handler = {
 
 bindingObserver.subscribe(handler);
 ```
+
+### Records 
+
+To inspect which observable objects and properties were accessed from a `BindingObserver`, you can get the observation records from `BindingObserver.records()` after observing the binding.
+
+**Example: Getting observation records**
+```ts
+const binding = (x: MyClass) => x.someBoolean ? x.valueA : x.valueB;
+const bindingObserver = Observable.binding(binding);
+const value = bindingObserver.observe({}, defaultExecutionContext);
+
+for (const record of bindingObserver.records()) {
+  // Do something with the binding's observable dependencies
+  console.log(record.propertySource, record.propertyName)
+}
+```
