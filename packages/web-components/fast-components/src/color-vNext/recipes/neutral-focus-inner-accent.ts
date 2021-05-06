@@ -1,9 +1,9 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { Swatch } from "../swatch";
 import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 export function neutralFocusInnerAccent(
-    palette: Palette,
+    palette: PaletteRGB,
     reference: Swatch,
     focusColor: Swatch
 ) {

@@ -1,4 +1,4 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { Swatch } from "../swatch";
 
 /**
@@ -12,7 +12,7 @@ import { Swatch } from "../swatch";
  * @internal
  */
 export function neutralFill(
-    palette: Palette,
+    palette: PaletteRGB,
     reference: Swatch,
     restDelta: number,
     hoverDelta: number,

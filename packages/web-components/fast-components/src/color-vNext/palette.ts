@@ -1,5 +1,6 @@
 import {
     clamp,
+    ColorRGBA64,
     ComponentStateColorPalette,
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
@@ -25,7 +26,7 @@ export interface Palette<T extends Swatch = Swatch> {
         contrast: number,
         initialIndex?: number,
         direction?: 1 | -1
-    ): Swatch;
+    ): T;
 
     /**
      * Returns the index of the palette that most closely matches
@@ -40,11 +41,19 @@ export interface Palette<T extends Swatch = Swatch> {
     get(index: number): T;
 }
 
+export type PaletteRGB = Palette<SwatchRGB>;
+
+export const PaletteRGB = Object.freeze({
+    create(source: SwatchRGB): PaletteRGB {
+        return PaletteRGBImpl.from(source);
+    },
+});
+
 /**
  * A {@link Palette} representing RGB swatch values.
  * @public
  */
-export class PaletteRGB implements Palette<SwatchRGB> {
+class PaletteRGBImpl implements Palette<SwatchRGB> {
     /**
      * {@inheritdoc Palette.source}
      */
@@ -130,14 +139,14 @@ export class PaletteRGB implements Palette<SwatchRGB> {
      * @returns
      */
     static from(source: SwatchRGB): PaletteRGB {
-        return new PaletteRGB(
+        return new PaletteRGBImpl(
             source,
             Object.freeze(
                 new ComponentStateColorPalette({
-                    baseColor: source,
+                    baseColor: ColorRGBA64.fromObject(source)!,
                 }).palette.map(x => {
                     const _x = parseColorHexRGB(x.toStringHexRGB())!;
-                    return new SwatchRGB(_x.r, _x.g, _x.b);
+                    return SwatchRGB.create(_x.r, _x.g, _x.b);
                 })
             )
         );

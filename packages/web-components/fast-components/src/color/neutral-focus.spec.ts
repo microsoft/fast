@@ -24,7 +24,7 @@ describe("neutralFocus", (): void => {
     });
     describe("ensure parity between old and new recipe implementation", () => {
         const color = (parseColorHexRGB(neutralBaseColor)!)
-        const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+        const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
         palette.swatches.forEach(( newSwatch, index ) => {
                 it(`should be the same for ${newSwatch}`, () => {
                     expect(neutralFocus({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralFocusNew( palette, newSwatch).toColorString().toUpperCase())
@@ -36,8 +36,8 @@ describe("neutralFocus", (): void => {
 describe("neutralFocusInnerAccent", () => {
     describe("ensure parity between old and new recipe implementation", () => {
         const neutralBase = (parseColorHexRGB(neutralBaseColor)!)
-        const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralBase.r, neutralBase.g, neutralBase.b));
-        const accentPalette = PaletteRGB.from(accentBase);
+        const neutralPalette = PaletteRGB.create(SwatchRGB.create(neutralBase.r, neutralBase.g, neutralBase.b));
+        const accentPalette = PaletteRGB.create(accentBase);
         neutralPalette.swatches.forEach(( newSwatch, index ) => {
                 const neutralFocusColor = neutralFocusNew(neutralPalette, newSwatch);
                 it(`should be the same for ${newSwatch}`, () => {

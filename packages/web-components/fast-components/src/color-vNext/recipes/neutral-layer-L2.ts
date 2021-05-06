@@ -1,8 +1,8 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 export function neutralLayerL2Index(
-    palette: Palette,
+    palette: PaletteRGB,
     luminance: number,
     cardDelta: number,
     fillRestDelta: number,
@@ -18,7 +18,7 @@ export function neutralLayerL2Index(
 }
 
 export function neutralLayerL2(
-    palette: Palette,
+    palette: PaletteRGB,
     luminance: number,
     cardDelta: number,
     fillRestDelta: number,

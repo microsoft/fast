@@ -1,8 +1,8 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { neutralLayerL2Index } from "./neutral-layer-L2";
 
 export function neutralLayerL4(
-    palette: Palette,
+    palette: PaletteRGB,
     luminance: number,
     cardDelta: number,
     fillRestDelta: number,

@@ -1,11 +1,11 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 /**
  * @internal
  */
 export function neutralLayerCard(
-    palette: Palette,
+    palette: PaletteRGB,
     relativeLuminance: number,
     cardDelta: number
 ) {

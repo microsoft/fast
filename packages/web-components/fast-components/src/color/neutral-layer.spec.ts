@@ -81,7 +81,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerL1(lightModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.LightMode).toColorString().toUpperCase())
             expect(neutralLayerL1(darkModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.DarkMode).toColorString().toUpperCase())
         })
@@ -112,7 +112,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerL2(lightModeDesignSystem)).to.equal(neutralLayerL2New(
                 palette,
                 StandardLuminance.LightMode,
@@ -157,7 +157,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerL3(lightModeDesignSystem)).to.equal(neutralLayerL3New(
                 palette,
                 StandardLuminance.LightMode,
@@ -202,7 +202,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerL4(lightModeDesignSystem)).to.equal(neutralLayerL4New(
                 palette,
                 StandardLuminance.LightMode,
@@ -242,7 +242,7 @@ describe("neutralLayer", (): void => {
         
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerFloating(lightModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
             expect(neutralLayerFloating(darkModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })
@@ -284,7 +284,7 @@ describe("neutralLayer", (): void => {
         });
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
             expect(neutralLayerCard(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
             expect(neutralLayerCard(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })

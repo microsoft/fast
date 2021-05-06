@@ -5,7 +5,7 @@ import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-
 import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
 import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
 import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
-import { Swatch as SwatchRGB } from "./color-vNext/swatch";
+import { SwatchRGB } from "./color-vNext/swatch";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
@@ -214,10 +214,10 @@ export const typeRampPlus6LineHeight = create<string>(
 ).withDefault("72px");
 
 export const neutralPalette = create<PaletteRGB>("neutral-palette").withDefault(
-    PaletteRGB.from(middleGrey)
+    PaletteRGB.create(middleGrey)
 );
 export const accentPalette = create<PaletteRGB>("accent-palette").withDefault(
-    PaletteRGB.from(accentBase)
+    PaletteRGB.create(accentBase)
 );
 export const fillColor = create<SwatchRGB>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);

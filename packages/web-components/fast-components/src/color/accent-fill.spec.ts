@@ -98,9 +98,9 @@ describe("accentFill", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const neutralColor = (parseColorHexRGB(neutralBaseColor)!)
-    const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralColor.r, neutralColor.g, neutralColor.b));
+    const neutralPalette = PaletteRGB.create(SwatchRGB.create(neutralColor.r, neutralColor.g, neutralColor.b));
     const accentColor = (parseColorHexRGB(accentBaseColor)!)
-    const accentPalette = PaletteRGB.from(new SwatchRGB(accentColor.r, accentColor.g, accentColor.b));
+    const accentPalette = PaletteRGB.create(SwatchRGB.create(accentColor.r, accentColor.g, accentColor.b));
     neutralPalette.swatches.forEach(( newSwatch, index ) => {
         const {
             accentFillHoverDelta,

@@ -13,7 +13,7 @@ A concrete implementation of `Swatch`, it is a swatch with red, green, and blue 
 ```ts
 import { SwatchRGB } from "@microsoft/fast-components";
 
-const red = new SwatchRGB(1, 0, 0);
+const red = SwatchRGB.create(1, 0, 0);
 ```
 
 ## Palette
@@ -24,5 +24,5 @@ An implementation of `Palette` of `SwatchRGB` instances.
 
 ```ts
 // Create a palette from the red swatch
-const palette = PaletteRGB.from(red):
+const palette = PaletteRGB.create(red):
 ```
