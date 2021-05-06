@@ -61,33 +61,61 @@ async function setup() {
         webWorker: fastMessageSystemWorker,
     });
 
+    let hasBeenCalled = false;
+    let intervalInstance;
+
+    async function messageSystemHasBeenCalled() {
+        return new Promise(resolve => {
+            // Continue checking to see if a message has been set
+            intervalInstance = window.setInterval(() => {
+                if (hasBeenCalled) {
+                    resolve(true);
+                    hasBeenCalled = false;
+                    window.clearInterval(intervalInstance);
+                }
+            }, 5);
+        });
+    }
+
     const messageSystemCallback = {
         onMessage: e => {
-            // This function is used for monitoring to ensure the initialization is called
+            // This function is used for monitoring to ensure
+            // the initialization (or other message) is called
             // and provided in the return to await any further messages
+            hasBeenCalled = true;
         },
     };
 
     message.add(messageSystemCallback);
 
-    await messageSystemCallback.onMessage;
-
-    message.postMessage({
-        type: MessageSystemType.initialize,
-        dataDictionary: dataDictionaryConfig as any,
-        schemaDictionary,
-    });
+    /**
+     * Give this a set timeout so initialize can always happen after
+     * component connect has been checked
+     */
+    window.setTimeout(() => {
+        message.postMessage({
+            type: MessageSystemType.initialize,
+            dataDictionary: dataDictionaryConfig as any,
+            schemaDictionary,
+        });
+    }, 20);
 
     element.markupDefinitions = Object.values(nativeElementDefinitions);
     element.messageSystem = message;
 
-    return { element, messageSystemCallback, connect, disconnect, message };
+    return { element, messageSystemHasBeenCalled, connect, disconnect, message };
 }
 
 describe("HTMLRender", () => {
     it("should initialize and render", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+        } = await setup();
         await connect();
+        await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
         expect(element.layers).to.not.be.null;
@@ -98,10 +126,13 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send navigation on click", async () => {
-        const { element, connect, disconnect, message } = await setup();
-        await connect();
-        await DOM.nextUpdate();
-
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+            message,
+        } = await setup();
         let messageSent: boolean = false;
 
         message.add({
@@ -116,6 +147,11 @@ describe("HTMLRender", () => {
                 }
             },
         });
+
+        await connect();
+        await messageSystemHasBeenCalled();
+        await DOM.nextUpdate();
+
         const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
         expect(el).to.not.be.null;
         el.click();
@@ -126,10 +162,13 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send navigation on tab", async () => {
-        const { element, connect, disconnect, message } = await setup();
-        await connect();
-        await DOM.nextUpdate();
-
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+            message,
+        } = await setup();
         let messageSent: string = "";
 
         message.add({
@@ -143,6 +182,11 @@ describe("HTMLRender", () => {
                 }
             },
         });
+
+        await connect();
+        await messageSystemHasBeenCalled();
+        await DOM.nextUpdate();
+
         const container = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
@@ -191,10 +235,13 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send clear navigation on container click", async () => {
-        const { element, connect, disconnect, message } = await setup();
-        await connect();
-        await DOM.nextUpdate();
-
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+            message,
+        } = await setup();
         let messageSent: boolean = false;
 
         message.add({
@@ -209,6 +256,11 @@ describe("HTMLRender", () => {
                 }
             },
         });
+
+        await connect();
+        await messageSystemHasBeenCalled();
+        await DOM.nextUpdate();
+
         const container = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
@@ -220,8 +272,14 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send click / clear activity to layers", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+        } = await setup();
         await connect();
+        await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
         const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
@@ -257,8 +315,14 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should send hover / blur activity to layers", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+        } = await setup();
         await connect();
+        await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
         const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
@@ -296,8 +360,14 @@ describe("HTMLRender", () => {
         await disconnect();
     });
     it("should not send hover activity on clicked elements to layers", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+        } = await setup();
         await connect();
+        await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
         const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
@@ -326,18 +396,22 @@ describe("HTMLRender", () => {
             connect,
             disconnect,
             message,
-            messageSystemCallback,
+            messageSystemHasBeenCalled,
         } = await setup();
         await connect();
+        await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
-        await messageSystemCallback.onMessage;
 
-        message.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: "root",
-            activeNavigationConfigId: "foo",
-        });
+        window.setTimeout(() => {
+            message.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: "root",
+                activeNavigationConfigId: "foo",
+            });
+        }, 20);
+
+        await messageSystemHasBeenCalled();
 
         await DOM.nextUpdate();
         const activity: ActivityResult = (element.querySelector(
