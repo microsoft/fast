@@ -259,11 +259,14 @@ export const accentForegroundCutLarge = create<SwatchRGB>(
 });
 
 // Accent Fill
-const accentFillByContrast = (contrast: number) => (element: HTMLElement) => {
+const accentFillByContrast = (contrast: number) => (
+    element: HTMLElement,
+    fill?: SwatchRGB
+) => {
     return accentFillAlgorithm(
         accentPalette.getValueFor(element),
         neutralPalette.getValueFor(element),
-        fillColor.getValueFor(element.parentElement || element),
+        fill || fillColor.getValueFor(element),
         accentForegroundCut.getValueFor(element),
         contrast,
         accentFillHoverDelta.getValueFor(element),
@@ -276,7 +279,7 @@ const accentFillByContrast = (contrast: number) => (element: HTMLElement) => {
     );
 };
 export const AccentFill = DI.createInterface<
-    (element: HTMLElement) => ReturnType<typeof accentFillAlgorithm>
+    (element: HTMLElement, fill?: SwatchRGB) => ReturnType<typeof accentFillAlgorithm>
 >("accent-fill", builder =>
     builder.instance(accentFillByContrast(ContrastTarget.normal))
 );
@@ -371,16 +374,16 @@ export const neutralDivider = create<SwatchRGB>("neutral-divider").withDefault(e
 );
 
 // Neutral Fill Card
-export const NeutralFillCard = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
-    "neutral-fill-card",
-    builder =>
-        builder.instance((element: HTMLElement) =>
-            neutralFillCardAlgorithm(
-                neutralPalette.getValueFor(element),
-                fillColor.getValueFor(element.parentElement || element),
-                neutralFillCardDelta.getValueFor(element)
-            )
+export const NeutralFillCard = DI.createInterface<
+    (element: HTMLElement, fill?: SwatchRGB) => SwatchRGB
+>("neutral-fill-card", builder =>
+    builder.instance((element: HTMLElement, fill?: SwatchRGB) =>
+        neutralFillCardAlgorithm(
+            neutralPalette.getValueFor(element),
+            fill || fillColor.getValueFor(element),
+            neutralFillCardDelta.getValueFor(element)
         )
+    )
 );
 export const neutralFillCard = create<SwatchRGB>(
     "neutral-fill-card"
@@ -390,12 +393,15 @@ export const neutralFillCard = create<SwatchRGB>(
 
 // Neutral Fill Input
 export const NeutralFillInput = DI.createInterface<
-    (element: HTMLElement) => ReturnType<typeof NeutralFillInputAlgorithm>
+    (
+        element: HTMLElement,
+        fill?: SwatchRGB
+    ) => ReturnType<typeof NeutralFillInputAlgorithm>
 >("neutral-fill-input", builder =>
-    builder.instance((element: HTMLElement) => {
+    builder.instance((element: HTMLElement, fill?: SwatchRGB) => {
         return NeutralFillInputAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element.parentElement || element),
+            fill || fillColor.getValueFor(element),
             neutralFillInputRestDelta.getValueFor(element),
             neutralFillInputHoverDelta.getValueFor(element),
             neutralFillInputActiveDelta.getValueFor(element),
@@ -439,12 +445,15 @@ export const neutralFillInputSelected = create<SwatchRGB>(
 
 // Neutral Fill Stealth
 export const NeutralFillStealth = DI.createInterface<
-    (element: HTMLElement) => ReturnType<typeof neutralFillStealthAlgorithm>
+    (
+        element: HTMLElement,
+        fill?: SwatchRGB
+    ) => ReturnType<typeof neutralFillStealthAlgorithm>
 >("neutral-fill-stealth", builder =>
-    builder.instance((element: HTMLElement) =>
+    builder.instance((element: HTMLElement, fill?: SwatchRGB) =>
         neutralFillStealthAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element.parentElement || element),
+            fill || fillColor.getValueFor(element),
             neutralFillStealthRestDelta.getValueFor(element),
             neutralFillStealthHoverDelta.getValueFor(element),
             neutralFillStealthActiveDelta.getValueFor(element),
@@ -494,12 +503,15 @@ export const neutralFillStealthSelected = create<SwatchRGB>(
 // Neutral Fill Toggle
 // TODO: none of these are actually used, do we need them?
 export const NeutralFillToggle = DI.createInterface<
-    (element: HTMLElement) => ReturnType<typeof neutralFillToggleAlgorithm>
+    (
+        element: HTMLElement,
+        fill?: SwatchRGB
+    ) => ReturnType<typeof neutralFillToggleAlgorithm>
 >("neutral-fill-toggle", builder =>
-    builder.instance((element: HTMLElement) =>
+    builder.instance((element: HTMLElement, fill?: SwatchRGB) =>
         neutralFillToggleAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element.parentElement || element),
+            fill || fillColor.getValueFor(element),
             neutralFillToggleRestDelta.getValueFor(element),
             neutralFillToggleHoverDelta.getValueFor(element),
             neutralFillToggleActiveDelta.getValueFor(element),
@@ -537,12 +549,12 @@ export const neutralFillToggleFocus = create<SwatchRGB>(
 );
 // Neutral Fill
 export const NeutralFill = DI.createInterface<
-    (element: HTMLElement) => ReturnType<typeof neutralFillAlgorithm>
+    (element: HTMLElement, fill?: SwatchRGB) => ReturnType<typeof neutralFillAlgorithm>
 >("neutral-fill", builder =>
-    builder.instance((element: HTMLElement) =>
+    builder.instance((element: HTMLElement, fill?: SwatchRGB) =>
         neutralFillAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element.parentElement || element),
+            fill || fillColor.getValueFor(element),
             neutralFillRestDelta.getValueFor(element),
             neutralFillHoverDelta.getValueFor(element),
             neutralFillActiveDelta.getValueFor(element),
