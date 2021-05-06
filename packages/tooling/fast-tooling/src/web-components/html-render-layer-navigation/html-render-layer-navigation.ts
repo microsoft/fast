@@ -46,10 +46,10 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
         return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
     }
 
-    private handleSelect(datadictionaryId: string, elementRef: HTMLElement) {
+    private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
         const title =
             this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][datadictionaryId].schemaId]
+                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
                       .title
                 : null;
         this.clickPosition = this.GetPositionFromElement(elementRef);
@@ -58,10 +58,10 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
         this.hoverLayerActive = false;
     }
 
-    private handleHighlight(datadictionaryId: string, elementRef: HTMLElement) {
+    private handleHighlight(dataDictionaryId: string, elementRef: HTMLElement) {
         const title =
             this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][datadictionaryId].schemaId]
+                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
                       .title
                 : null;
         this.hoverPosition = this.GetPositionFromElement(elementRef);
@@ -80,18 +80,18 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
 
     public elementActivity(
         activityType: ActivityType,
-        datadictionaryId: string,
+        dataDictionaryId: string,
         elementRef: HTMLElement
     ) {
         switch (activityType) {
             case ActivityType.hover:
-                this.handleHighlight(datadictionaryId, elementRef);
+                this.handleHighlight(dataDictionaryId, elementRef);
                 break;
             case ActivityType.blur:
                 this.handleUnHighlight();
                 break;
             case ActivityType.click:
-                this.handleSelect(datadictionaryId, elementRef);
+                this.handleSelect(dataDictionaryId, elementRef);
                 break;
             case ActivityType.clear:
                 this.handleClear();

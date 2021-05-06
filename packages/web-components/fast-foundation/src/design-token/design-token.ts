@@ -20,7 +20,17 @@ const defaultElement = document.body;
  * Describes a DesignToken instance.
  * @alpha
  */
-export interface DesignToken<T extends { createCSS?(): string }> extends CSSDirective {
+export interface DesignToken<
+    T extends
+        | string
+        | number
+        | boolean
+        | BigInteger
+        | null
+        | Array<any>
+        | symbol
+        | { createCSS?(): string }
+> extends CSSDirective {
     readonly name: string;
 
     /**
