@@ -7,43 +7,40 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundRest,
+    neutralLayerFloating,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { elevation } from "../styles/elevation";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundFocusBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const selectStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         font-family: ${bodyFont};
         height: calc(${heightNumber} * 1px);
         position: relative;
@@ -55,8 +52,8 @@ export const selectStyles = (context, definition) =>
 
     .listbox {
         ${elevation}
-        background: ${neutralLayerFloatingBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
+        background: ${neutralLayerFloating};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
         border-radius: calc(${cornerRadius} * 1px);
         box-sizing: border-box;
         display: inline-flex;
@@ -88,22 +85,20 @@ export const selectStyles = (context, definition) =>
     }
 
     :host(:not([disabled]):hover) {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${accentFillHover};
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${neutralFocusBehavior.var};
+        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${neutralFocus};
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
-        neutralFocusInnerAccentBehavior.var
-    };
-        border-color: ${neutralFocusBehavior.var};
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
+        border-color: ${neutralFocus};
+        background: ${accentFillHover};
+        color: ${accentForegroundCut};
     }
 
     :host([disabled]) {
@@ -117,14 +112,14 @@ export const selectStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        background: ${neutralFillStealthRestBehavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillStealthRest};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${neutralFillInputActive};
+        border-color: ${accentFillActive};
     }
 
     :host([open][position="above"]) .listbox,
@@ -197,11 +192,6 @@ export const selectStyles = (context, definition) =>
     }
 
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
-        accentForegroundFocusBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host(:not([disabled]):hover),
@@ -262,13 +252,5 @@ export const selectStyles = (context, definition) =>
                 fill: currentcolor;
             }
         `
-        ),
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFocusBehavior,
-        neutralFocusInnerAccentBehavior,
-        neutralForegroundRestBehavior,
-        neutralLayerFloatingBehavior,
-        neutralOutlineRestBehavior
+        )
     );

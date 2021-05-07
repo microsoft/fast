@@ -1,5 +1,5 @@
 import { Swatch } from "../swatch";
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 
 /**
  * The neutralForegroundHint color recipe
@@ -8,6 +8,6 @@ import { Palette } from "../palette";
  *
  * @internal
  */
-export function neutralForegroundHint(palette: Palette, reference: Swatch) {
+export function neutralForegroundHint(palette: PaletteRGB, reference: Swatch) {
     return palette.colorContrast(reference, 4.5);
 }

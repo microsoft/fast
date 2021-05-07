@@ -7,33 +7,26 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     cornerRadius,
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralForegroundHint,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    heightNumber,
-    neutralFillActiveBehavior,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles";
+import { heightNumber } from "../styles";
 
 export const tabStyles = (context, definition) =>
     css`
@@ -44,7 +37,7 @@ export const tabStyles = (context, definition) =>
         line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
         padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
-        color: ${neutralForegroundHintBehavior.var};
+        color: ${neutralForegroundHint};
         fill: currentcolor;
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${outlineWidth} * 1px) solid transparent;
@@ -55,12 +48,12 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(:hover) {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:active) {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
@@ -70,33 +63,33 @@ export const tabStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundHintBehavior.var};
-        background: ${neutralFillStealthRestBehavior.var};
+        color: ${neutralForegroundHint};
+        background: ${neutralFillStealthRest};
     }
 
     :host([aria-selected="true"]) {
-        background: ${neutralFillRestBehavior.var};
-        color: ${accentForegroundRestBehavior.var};
+        background: ${neutralFillRest};
+        color: ${accentForegroundRest};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:hover) {
-        background: ${neutralFillHoverBehavior.var};
-        color: ${accentForegroundHoverBehavior.var};
+        background: ${neutralFillHover};
+        color: ${accentForegroundHover};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:active) {
-        background: ${neutralFillActiveBehavior.var};
-        color: ${accentForegroundActiveBehavior.var};
+        background: ${neutralFillActive};
+        color: ${accentForegroundActive};
         fill: currentcolor;
     }
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
         box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocusBehavior.var};
+            ${neutralFocus};
     }
 
     :host(:focus) {
@@ -113,31 +106,16 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(.vertical:hover) {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:active) {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        accentForegroundActiveBehavior,
-        accentForegroundHoverBehavior,
-        accentForegroundRestBehavior,
-        neutralFillActiveBehavior,
-        neutralFillHoverBehavior,
-        neutralFillRestBehavior,
-        neutralFillStealthRestBehavior,
-        neutralFocusBehavior,
-        neutralForegroundHintBehavior,
-        neutralForegroundActiveBehavior,
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host {
