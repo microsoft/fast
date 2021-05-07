@@ -105,7 +105,7 @@ describe("neutralFill", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta } = fastDesignSystemDefaults;
         const oldValues = neutralFill({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});

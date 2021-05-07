@@ -2,17 +2,15 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillRestBehavior,
-    heightNumber,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const tabsStyles = (context, definition) =>
     css`
@@ -21,7 +19,7 @@ export const tabsStyles = (context, definition) =>
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForegroundRestBehavior.var};
+            color: ${neutralForegroundRest};
             grid-template-columns: auto 1fr auto;
             grid-template-rows: auto 1fr;
         }
@@ -48,7 +46,7 @@ export const tabsStyles = (context, definition) =>
             width: 100%;
             height: 5px;
             justify-self: center;
-            background: ${accentFillRestBehavior.var};
+            background: ${accentFillRest};
             margin-top: 10px;
             border-radius: calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0 0;
         }
@@ -100,7 +98,7 @@ export const tabsStyles = (context, definition) =>
             height: 100%;
             margin-inline-end: 10px;
             align-self: center;
-            background: ${accentFillRestBehavior.var};
+            background: ${accentFillRest};
             margin-top: 0;
             border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
         }
@@ -109,8 +107,6 @@ export const tabsStyles = (context, definition) =>
             transition: transform 0.2s linear;
         }
     `.withBehaviors(
-        accentFillRestBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .activeIndicator,

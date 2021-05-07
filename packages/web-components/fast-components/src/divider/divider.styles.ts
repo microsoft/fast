@@ -1,7 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { designUnit, outlineWidth } from "../design-tokens";
-import { neutralDividerRestBehavior } from "../styles/index";
+import { designUnit, neutralDivider, outlineWidth } from "../design-tokens";
 
 export const dividerStyles = (context, definition) =>
     css`
@@ -10,7 +9,6 @@ export const dividerStyles = (context, definition) =>
             height: 0;
             margin: calc(${designUnit} * 1px) 0;
             border: none;
-            border-top: calc(${outlineWidth} * 1px) solid
-                ${neutralDividerRestBehavior.var};
+            border-top: calc(${outlineWidth} * 1px) solid ${neutralDivider};
         }
-    `.withBehaviors(neutralDividerRestBehavior);
+    `;

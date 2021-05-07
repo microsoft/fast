@@ -1,5 +1,5 @@
-import { inRange } from "lodash";
-import { Palette } from "../palette";
+import { inRange } from "lodash-es";
+import { PaletteRGB } from "../palette";
 import { Swatch } from "../swatch";
 import { isDark } from "../utilities/is-dark";
 
@@ -7,8 +7,8 @@ import { isDark } from "../utilities/is-dark";
  * @internal
  */
 export function accentFill(
-    palette: Palette,
-    neutralPalette: Palette,
+    palette: PaletteRGB,
+    neutralPaletteRGB: PaletteRGB,
     reference: Swatch,
     textColor: Swatch,
     contrastTarget: number,
@@ -21,7 +21,7 @@ export function accentFill(
     neutralFillActiveDelta: number
 ) {
     const accent = palette.source;
-    const referenceIndex = neutralPalette.closestIndexOf(reference);
+    const referenceIndex = neutralPaletteRGB.closestIndexOf(reference);
     const swapThreshold = Math.max(
         neutralFillRestDelta,
         neutralFillHoverDelta,
