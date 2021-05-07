@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
-    "@microsoft/fast-tooling": "0.18.2",
+    "@microsoft/fast-tooling": "latest",
     "@storybook/addons": "^6.1.17",
     "@storybook/html": "^6.1.17",
     "@storybook/theming": "^6.1.17",
