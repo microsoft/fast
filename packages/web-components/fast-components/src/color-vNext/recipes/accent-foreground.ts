@@ -1,4 +1,4 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { Swatch } from "../swatch";
 import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
@@ -6,7 +6,7 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark";
  * @internal
  */
 export function accentForeground(
-    palette: Palette,
+    palette: PaletteRGB,
     reference: Swatch,
     contrastTarget: number,
     restDelta: number,

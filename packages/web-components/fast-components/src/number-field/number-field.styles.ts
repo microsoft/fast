@@ -7,27 +7,25 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillHover,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    heightNumber,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const numberFieldStyles = (context, definition) =>
     css`
@@ -42,10 +40,10 @@ export const numberFieldStyles = (context, definition) =>
         position: relative;
         display: flex;
         flex-direction: row;
-        color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        color: ${neutralForegroundRest};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
     }
 
@@ -78,7 +76,7 @@ export const numberFieldStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -110,11 +108,11 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     .step-up:before {
-        border-bottom-color: ${neutralForegroundRestBehavior.var};
+        border-bottom-color: ${neutralForegroundRest};
     }
 
     .step-down:before {
-        border-top-color: ${neutralForegroundRestBehavior.var};
+        border-top-color: ${neutralForegroundRest};
     }
 
     ::slotted(svg) {
@@ -134,18 +132,18 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host(:hover:not([disabled])) .root {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${accentFillHover};
     }
 
     :host(:active:not([disabled])) .root {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${accentFillActive};
     }
 
     :host(:focus-within:not([disabled])) .root {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 1px ${neutralFocus} inset;
     }
 
     :host(:hover:not([disabled])) .controls,
@@ -154,11 +152,11 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host([appearance="filled"]) .root {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
     }
 
     :host([appearance="filled"]:hover:not([disabled])) .root {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
     }
 
     :host([disabled]) .label,
@@ -173,19 +171,9 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     :host([disabled]) .control {
-        border-color: ${neutralOutlineRestBehavior.var};
+        border-color: ${neutralOutlineRest};
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        neutralFillHoverBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFillRestBehavior,
-        neutralFocusBehavior,
-        neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .root,

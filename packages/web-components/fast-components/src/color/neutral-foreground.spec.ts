@@ -133,7 +133,7 @@ describe("neutralForeground", (): void => {
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
             it(`should be the same for ${newSwatch}`, () => {
                 expect(neutralForegroundRest({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralForeground( palette, newSwatch).toColorString().toUpperCase())

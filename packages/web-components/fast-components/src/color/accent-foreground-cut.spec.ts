@@ -35,7 +35,7 @@ describe("Cut text", (): void => {
 });
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(accentBaseColor)!)
-    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     it(
         `should be the same for ${palette.source}`,
         () => {
