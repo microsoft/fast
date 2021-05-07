@@ -6,28 +6,26 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     cornerRadius,
     designUnit,
     disabledOpacity,
+    neutralFillHover,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    heightNumber,
-    neutralFillHoverBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const textAreaStyles = (context, definition) =>
     css`
@@ -40,10 +38,10 @@ export const textAreaStyles = (context, definition) =>
     .control {
         box-sizing: border-box;
         position: relative;
-        color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        color: ${neutralForegroundRest};
+        background: ${neutralFillInputRest};
         border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: ${typeRampBaseFontSize};
@@ -54,13 +52,13 @@ export const textAreaStyles = (context, definition) =>
     }
 
     .control:hover:enabled {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${accentFillHover};
     }
 
     .control:active:enabled {
-        background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${neutralFillInputActive};
+        border-color: ${accentFillActive};
     }
 
     .control:hover,
@@ -71,16 +69,16 @@ export const textAreaStyles = (context, definition) =>
     }
 
     :host(:focus-within) .control {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
+        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 1px ${neutralFocus} inset;
     }
 
     :host([appearance="filled"]) .control {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
     }
 
     :host([appearance="filled"]:hover:not([disabled])) .control {
-        background: ${neutralFillHoverBehavior.var};
+        background: ${neutralFillHover};
     }
 
     :host([resize="both"]) .control {
@@ -97,7 +95,7 @@ export const textAreaStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -119,20 +117,9 @@ export const textAreaStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
     :host([disabled]) .control {
-        border-color: ${neutralOutlineRestBehavior.var};
+        border-color: ${neutralOutlineRest};
     }
  `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        neutralFillHoverBehavior,
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFillRestBehavior,
-        neutralFocusBehavior,
-        neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {

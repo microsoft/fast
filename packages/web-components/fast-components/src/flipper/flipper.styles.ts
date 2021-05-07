@@ -6,19 +6,21 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { disabledOpacity, focusOutlineWidth, outlineWidth } from "../design-tokens";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    heightNumber,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundCut,
+    disabledOpacity,
+    focusOutlineWidth,
+    neutralFillStealthRest,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundRest,
+    neutralOutlineRest,
+    outlineWidth,
+} from "../design-tokens";
+import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
 
 export const flipperStyles = (context, definition) =>
     css`
@@ -30,7 +32,7 @@ export const flipperStyles = (context, definition) =>
         margin: 0;
         position: relative;
         fill: currentcolor;
-        color: ${accentForegroundCutRestBehavior.var};
+        color: ${accentForegroundCut};
         background: transparent;
         outline: none;
         border: none;
@@ -39,8 +41,8 @@ export const flipperStyles = (context, definition) =>
 
     :host::before {
         content: "";
-        background: ${accentFillRestBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -65,24 +67,24 @@ export const flipperStyles = (context, definition) =>
         opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
         fill: currentcolor;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled])::before,
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
-        background: ${neutralFillStealthRestBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
+        background: ${neutralFillStealthRest};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
     }
 
     :host(:hover)::before {
-        background: ${accentFillHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
     }
 
     :host(:active)::before {
-        background: ${accentFillActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
     }
 
     :host(:${focusVisible}) {
@@ -90,25 +92,14 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
-        neutralFocusInnerAccentBehavior.var
-    };
-        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
+        border-color: ${neutralFocus};
     }
 
     :host::-moz-focus-inner {
         border: 0;
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
-        neutralFillStealthRestBehavior,
-        neutralFocusBehavior,
-        neutralFocusInnerAccentBehavior,
-        neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host {

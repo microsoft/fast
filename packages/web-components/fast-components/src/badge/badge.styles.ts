@@ -1,13 +1,14 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
+    accentForegroundRest,
     bodyFont,
     cornerRadius,
     designUnit,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
-import { accentForegroundRestBehavior, heightNumber } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const badgeStyles = (context, definition) =>
     css`
@@ -21,7 +22,7 @@ export const badgeStyles = (context, definition) =>
     .control {
         border-radius: calc(${cornerRadius} * 1px);
         padding: calc(${designUnit} * 0.5px) calc(${designUnit} * 1px);
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
         font-weight: 600;
     }
 
@@ -41,4 +42,4 @@ export const badgeStyles = (context, definition) =>
         justify-content: center;
         box-sizing: border-box;
     }
-`.withBehaviors(accentForegroundRestBehavior);
+`;

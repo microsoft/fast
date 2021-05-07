@@ -9,7 +9,7 @@ import { neutralFillToggle } from "./neutral-fill-toggle";
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralFillToggleHoverDelta, neutralFillToggleActiveDelta, neutralFillToggleFocusDelta} = fastDesignSystemDefaults;
         const oldValues = neutralFillToggle({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});

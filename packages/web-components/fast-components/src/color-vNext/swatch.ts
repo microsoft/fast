@@ -10,11 +10,23 @@ export interface Swatch extends RelativeLuminance {
     contrast(target: RelativeLuminance): number;
 }
 
+export interface SwatchRGB extends Swatch {
+    r: number;
+    g: number;
+    b: number;
+}
+
+export const SwatchRGB = Object.freeze({
+    create(r: number, g: number, b: number): SwatchRGB {
+        return new SwatchRGBImpl(r, g, b);
+    },
+});
+
 /**
  * A RGB implementation of {@link Swatch}
  * @public
  */
-export class SwatchRGB extends ColorRGBA64 implements Swatch {
+class SwatchRGBImpl extends ColorRGBA64 implements Swatch {
     readonly relativeLuminance: number;
 
     /**
@@ -30,4 +42,9 @@ export class SwatchRGB extends ColorRGBA64 implements Swatch {
 
     public toColorString = this.toStringHexRGB;
     public contrast = contrast.bind(null, this);
+    public createCSS = this.toColorString;
+
+    static fromObject(obj: { r: number; g: number; b: number }) {
+        return new SwatchRGBImpl(obj.r, obj.g, obj.b);
+    }
 }

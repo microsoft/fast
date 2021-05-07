@@ -6,19 +6,17 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     focusOutlineWidth,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    heightNumber,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const breadcrumbItemStyles = (context, definition) =>
     css`
@@ -46,7 +44,7 @@ export const breadcrumbItemStyles = (context, definition) =>
     .control {
         align-items: center;
         box-sizing: border-box;
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
         cursor: pointer;
         display: flex;
         fill: inherit;
@@ -56,11 +54,11 @@ export const breadcrumbItemStyles = (context, definition) =>
     }
 
     .control:hover {
-        color: ${accentForegroundHoverBehavior.var};
+        color: ${accentForegroundHover};
     }
 
     .control:active {
-        color: ${accentForegroundActiveBehavior.var};
+        color: ${accentForegroundActive};
     }
 
     .control .content {
@@ -79,20 +77,20 @@ export const breadcrumbItemStyles = (context, definition) =>
     }
 
     .control:hover .content::before {
-        background: ${accentForegroundHoverBehavior.var};
+        background: ${accentForegroundHover};
     }
 
     .control:active .content::before {
-        background: ${accentForegroundActiveBehavior.var};
+        background: ${accentForegroundActive};
     }
 
     .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
         height: calc(${focusOutlineWidth} * 1px);
     }
 
     .control:not([href]) {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: default;
     }
 
@@ -121,11 +119,6 @@ export const breadcrumbItemStyles = (context, definition) =>
         margin-inline-start: 6px;
     }
 `.withBehaviors(
-        accentForegroundRestBehavior,
-        accentForegroundHoverBehavior,
-        accentForegroundActiveBehavior,
-        accentForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .control:hover .content::before {
