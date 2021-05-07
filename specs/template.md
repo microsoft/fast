@@ -10,7 +10,7 @@
 
 ### Use Cases
 
-*Primary use cases for this component. These should be based on typical patterns seen in the industry, requests from customers (internal and external), and feedback from tooling.*
+*Primary use cases for this component. These should be based on typical patterns seen in the industry, requests from customers and feedback from tooling.*
 
 ### Non-goals
 
