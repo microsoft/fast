@@ -1,5 +1,13 @@
 # Spec Title
 
+## Process
+
+- [ ] **Checkpoint 1** - Schedule a spec review meeting to cover the Overview section before proceeding to work on the Design section. Be sure to include relevant stakeholders such as members of the tools team.
+
+- [ ] **Checkpoint 2** - Schedule a spec review meeting before beginning the implementation work. Be sure to invite relevant stakeholders such as design system owners.
+
+- [ ] **Checkpoint 3** - Submit the component PR and schedule a component code review meeting or present the component in one of our Engineering Open Mic sessions. Address feedback from the review, obtain final approvals through GitHub, and merge.
+
 ## Overview
 
 *The name of the component, along with a high-level description.*
@@ -10,7 +18,7 @@
 
 ### Use Cases
 
-*Primary use cases for this component. These should be based on typical patterns seen in the industry, requests from customers and feedback from tooling.*
+*Primary use cases for this component. These should be based on typical patterns seen in the industry and requests from customers.*
 
 ### Non-goals
 
@@ -111,7 +119,7 @@ Outline the component structure with a diagram of its visual tree (shadow dom). 
 
 ### Test Plan
 
-*What is the plan for testing the component, if different from the normal path? Note that the normal plan includes unit tests for basic state/behavior as well as e2e tests to validate the specific user stories described above.*
+*What is the plan for testing the component, if different from the normal path? Note that the normal plan includes unit tests for basic state/behavior as well as end-to-end tests to validate the specific user stories described above.*
 
 ### Tooling
 
@@ -122,16 +130,7 @@ Outline the component structure with a diagram of its visual tree (shadow dom). 
 *What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
 
 ---
-
-## Process
-
-### Checkpoints
-
-- [ ] **Checkpoint 1** - Schedule a spec review meeting to cover the Overview section before proceeding to work on the Design section. Be sure to include relevant stakeholders such as members of the tools team.
-
-- [ ] **Checkpoint 2** - Schedule a spec review meeting before beginning the implementation work. Be sure to invite relevant stakeholders such as design system owners.
-
-- [ ] **Checkpoint 3** - Submit the component PR and schedule a component code review meeting or present the component in one of our Engineering Open Mic sessions. Address feedback from the review, obtain final approvals through GitHub, and merge.
+## Appendix
 
 ### Resources
 
