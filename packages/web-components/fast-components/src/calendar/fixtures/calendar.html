@@ -1,0 +1,55 @@
+<style>
+    fast-calendar {
+        --cell-border: 0;
+    }
+
+    .long-days {
+        --cell-width: 100px;
+    }
+
+    .events {
+        --cell-width: 160px;
+        --cell-height: 80px;
+    }
+</style>
+<h1>Calendar</h1>
+
+<h2>Default</h2>
+
+<fast-calendar></fast-calendar>
+
+<h2>Calendar for April 2020</h2>
+<fast-calendar month="4" year="2020"></fast-calendar>
+
+<h2>Expanded weekday labels</h2>
+<fast-calendar class="long-days" weekdayFormat="long"></fast-calendar>
+
+<h2>Shortened month and weekday labels</h2>
+<fast-calendar month="12" monthFormat="short" weekdayFormat="narrow"></fast-calendar>
+
+<h2>German calendar</h2>
+<fast-calendar locale="de-DE"></fast-calendar>
+
+<h2>Thai calendar</h2>
+<fast-calendar locale="th-TH-u-ca-thai-nu-thai"></fast-calendar>
+
+<h2>Calendar with events</h2>
+<fast-calendar class="events" month="1" year="2021">
+    <div slot="1-1-2021">New Year's Day</div>
+    <div slot="1-5-2021">National Bird Day</div>
+    <div slot="1-10-2021">Houseplant Appreciation Day</div>
+    <div slot="1-13-2021">National Take the Stairs Day</div>
+    <div slot="1-18-2021">Martin Luther King Jr. Birthday</div>
+    <div slot="1-26-2021">Spouse's Day</div>
+</fast-calendar>
+
+<h2>Calendar click handler</h2>
+<fast-calendar id="click"></fast-calendar>
+<script>
+    const click = event => {
+        const { target } = event;
+        alert(target.getDateClicked(event));
+    };
+    const calendar = document.getElementById("click");
+    calendar.addEventListener("click", click);
+</script>
