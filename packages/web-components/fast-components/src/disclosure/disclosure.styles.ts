@@ -1,19 +1,17 @@
 import { css } from "@microsoft/fast-element";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundCut,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     cornerRadius,
     outlineWidth,
     typeRampBaseFontSize,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-} from "../styles/recipes";
 
 export const disclosureStyles = css`
     .disclosure {
@@ -29,8 +27,8 @@ export const disclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker {
-        background: ${accentFillRestBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${accentFillRest};
+        color: ${accentForegroundCut};
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
         border-radius: calc(${cornerRadius} * 1px);
@@ -42,16 +40,16 @@ export const disclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker:active {
-        background: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
     }
 
     :host([appearance="accent"]) .invoker:hover {
-        background: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
     }
 
     :host([appearance="lightweight"]) .invoker {
         background: transparent;
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
         border-bottom: calc(${outlineWidth} * 1px) solid var(--accent-foreground-rest);
         cursor: pointer;
         width: max-content;
@@ -59,11 +57,11 @@ export const disclosureStyles = css`
     }
 
     :host([appearance="lightweight"]) .invoker:active {
-        border-bottom-color: ${accentForegroundActiveBehavior.var};
+        border-bottom-color: ${accentForegroundActive};
     }
 
     :host([appearance="lightweight"]) .invoker:hover {
-        border-bottom-color: ${accentForegroundHoverBehavior.var};
+        border-bottom-color: ${accentForegroundHover};
     }
 
     .disclosure[open] .invoker ~ * {
@@ -78,12 +76,4 @@ export const disclosureStyles = css`
             opacity: 1;
         }
     }
-`.withBehaviors(
-    accentFillRestBehavior,
-    accentForegroundRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentFillHoverBehavior,
-    accentFillActiveBehavior
-);
+`;

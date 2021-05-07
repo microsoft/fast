@@ -2,11 +2,11 @@ import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRestBehavior,
-    heightNumber,
-    neutralFillRestBehavior,
-    neutralForegroundHintBehavior,
-} from "../styles";
+    accentForegroundRest,
+    neutralFillRest,
+    neutralForegroundHint,
+} from "../design-tokens";
+import { heightNumber } from "../styles";
 
 export const progressRingStyles = (context, defintion) =>
     css`
@@ -24,13 +24,13 @@ export const progressRingStyles = (context, defintion) =>
         }
 
         .background {
-            stroke: ${neutralFillRestBehavior.var};
+            stroke: ${neutralFillRest};
             fill: none;
             stroke-width: 2px;
         }
 
         .determinate {
-            stroke: ${accentForegroundRestBehavior.var};
+            stroke: ${accentForegroundRest};
             fill: none;
             stroke-width: 2px;
             stroke-linecap: round;
@@ -40,7 +40,7 @@ export const progressRingStyles = (context, defintion) =>
         }
 
         .indeterminate-indicator-1 {
-            stroke: ${accentForegroundRestBehavior.var};
+            stroke: ${accentForegroundRest};
             fill: none;
             stroke-width: 2px;
             stroke-linecap: round;
@@ -52,11 +52,11 @@ export const progressRingStyles = (context, defintion) =>
 
         :host([paused]) .indeterminate-indicator-1 {
             animation-play-state: paused;
-            stroke: ${neutralFillRestBehavior.var};
+            stroke: ${neutralFillRest};
         }
 
         :host([paused]) .determinate {
-            stroke: ${neutralForegroundHintBehavior.var};
+            stroke: ${neutralForegroundHint};
         }
 
         @keyframes spin-infinite {
@@ -74,9 +74,6 @@ export const progressRingStyles = (context, defintion) =>
             }
         }
     `.withBehaviors(
-        accentForegroundRestBehavior,
-        neutralFillRestBehavior,
-        neutralForegroundHintBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .indeterminate-indicator-1,

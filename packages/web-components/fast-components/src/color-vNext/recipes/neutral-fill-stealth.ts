@@ -1,11 +1,11 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { Swatch } from "../swatch";
 
 /**
  * @internal
  */
 export function neutralFillStealth(
-    palette: Palette,
+    palette: PaletteRGB,
     reference: Swatch,
     restDelta: number,
     hoverDelta: number,

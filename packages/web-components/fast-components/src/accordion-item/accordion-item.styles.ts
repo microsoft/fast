@@ -6,23 +6,17 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     density,
     designUnit,
     focusOutlineWidth,
+    neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
-import {
-    accentFillRestBehavior,
-    neutralDividerRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const accordionItemStyles = (context, definition) =>
@@ -58,17 +52,17 @@ export const accordionItemStyles = (context, definition) =>
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-family: inherit;
     }
 
     .button:hover {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button:active {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button::before {
@@ -84,9 +78,9 @@ export const accordionItemStyles = (context, definition) =>
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
         box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocusBehavior.var};
+            ${neutralFocus};
     }
 
     :host([expanded]) .region {
@@ -104,7 +98,7 @@ export const accordionItemStyles = (context, definition) =>
 
     slot[name="expanded-icon"],
     slot[name="collapsed-icon"] {
-        fill: ${accentFillRestBehavior.var};
+        fill: ${accentFillRest};
     }
 
     slot[name="collapsed-icon"] {
@@ -140,13 +134,6 @@ export const accordionItemStyles = (context, definition) =>
         z-index: 2;
     }
 `.withBehaviors(
-        accentFillRestBehavior,
-        neutralDividerRestBehavior,
-        neutralForegroundActiveBehavior,
-        neutralForegroundFocusBehavior,
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
-        neutralFocusBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .button:${focusVisible}::before {
