@@ -5,7 +5,7 @@
   "title": "Design System",
   "description": "The FAST design system provider element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-design-system-provider",
   "properties": {
     "use-defaults": {
@@ -260,6 +260,7 @@
       "type": "number"
     },
     "neutral-fill-rest-delta": {
+      "default": 7,
       "title": "Neutral fill delta (rest)",
       "mapsToAttribute": "neutral-fill-rest-delta",
       "type": "number"

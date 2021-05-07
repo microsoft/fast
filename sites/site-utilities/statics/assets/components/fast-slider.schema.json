@@ -5,7 +5,7 @@
   "title": "Slider",
   "description": "The FAST slider element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-slider",
   "properties": {
     "value": {
