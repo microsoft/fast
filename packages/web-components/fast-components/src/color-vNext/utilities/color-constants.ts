@@ -1,10 +1,23 @@
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { SwatchRGB } from "../swatch";
 
 /**
  * @internal
  */
-export const white = new SwatchRGB(1, 1, 1);
+export const white = SwatchRGB.create(1, 1, 1);
 /**
  * @internal
  */
-export const black = new SwatchRGB(0, 0, 0);
+export const black = SwatchRGB.create(0, 0, 0);
+
+/**
+ * @internal
+ */
+export const middleGrey = SwatchRGB.create(0.5, 0.5, 0.5);
+
+/**
+ * @internal
+ */
+
+const base = parseColorHexRGB("#DA1A5F")!;
+export const accentBase = SwatchRGB.create(base.r, base.g, base.b);

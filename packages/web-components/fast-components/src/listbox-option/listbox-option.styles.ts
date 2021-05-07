@@ -7,29 +7,22 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentForegroundCut,
     bodyFont,
     cornerRadius,
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
+    neutralFillHover,
+    neutralFocus,
+    neutralFocusInnerAccent,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillSelectedBehavior,
-    accentForegroundCutRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFillStealthSelectedBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL1Behavior,
-} from "../styles/recipes";
+import { neutralFocusInnerAccentBehavior } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const optionStyles = (context, definition) =>
@@ -40,7 +33,7 @@ export const optionStyles = (context, definition) =>
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${focusOutlineWidth} * 1px) solid transparent;
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
@@ -55,32 +48,30 @@ export const optionStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${
-        neutralFocusInnerAccentBehavior.var
-    };
-        border-color: ${neutralFocusBehavior.var};
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
+        border-color: ${neutralFocus};
+        background: ${accentFillHover};
+        color: ${accentForegroundCut};
     }
 
     :host([aria-selected="true"]) {
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${accentFillHover};
+        color: ${accentForegroundCut};
     }
 
     :host(:active) {
-        background: ${accentFillActiveBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${accentFillActive};
+        color: ${accentForegroundCut};
     }
 
     :host(:not([aria-selected="true"]):hover) {
-        background: ${neutralFillHoverBehavior.var};
-        color: ${neutralForegroundHoverBehavior.var};
+        background: ${neutralFillHover};
+        color: ${neutralForegroundRest};
     }
 
     :host(:not([aria-selected="true"]):active) {
-        background: ${neutralFillHoverBehavior.var};
-        color: ${neutralForegroundHoverBehavior.var};
+        background: ${neutralFillHover};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
@@ -122,10 +113,6 @@ export const optionStyles = (context, definition) =>
     }
 
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillSelectedBehavior,
-        accentForegroundCutRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host {
@@ -149,14 +136,5 @@ export const optionStyles = (context, definition) =>
                     opacity: 1;
                 }
             `
-        ),
-        neutralFillHoverBehavior,
-        neutralFillStealthHoverBehavior,
-        neutralFillStealthRestBehavior,
-        neutralFillStealthSelectedBehavior,
-        neutralFocusBehavior,
-        neutralFocusInnerAccentBehavior,
-        neutralForegroundHoverBehavior,
-        neutralForegroundRestBehavior,
-        neutralLayerL1Behavior
+        )
     );
