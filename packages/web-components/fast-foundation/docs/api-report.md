@@ -247,8 +247,10 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 // @public
 export const buttonTemplate: (context: any, definition: any) => ViewTemplate<Button>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "Card" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
 // @public
-export class Card extends FASTElement {
+export class Card extends FoundationElement {
 }
 
 // @public
