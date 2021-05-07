@@ -235,6 +235,60 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 // @public
 export const ButtonTemplate: ViewTemplate<Button>;
 
+// @public (undocumented)
+export class Calendar extends FASTElement {
+    formatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
+    getCalendarInfo(year?: number, month?: number): {
+        month: number;
+        year: number;
+        start: number;
+        length: number;
+        previous: {
+            month: number;
+            year: number;
+            length: number;
+        };
+        next: {
+            month: number;
+            year: number;
+        };
+    };
+    // (undocumented)
+    getDays(info?: {
+        month: number;
+        year: number;
+        start: number;
+        length: number;
+        previous: {
+            month: number;
+            year: number;
+            length: number;
+        };
+        next: {
+            month: number;
+            year: number;
+        };
+    }): any;
+    getLocaleDay(day?: number): string;
+    getLocaleMonth(month?: number): string;
+    getLocaleWeekDays(): string[];
+    getLocaleYear(year?: number): string;
+    // @internal
+    isRTL(): boolean;
+    isToday(year: number, month: number, day: number): boolean;
+    locale: string;
+    month: number;
+    monthFormat: DateStyle;
+    weekdayFormat: DateStyle;
+    year: number;
+}
+
+// @public (undocumented)
+export const CalendarTemplate: ViewTemplate<Calendar>;
+
+// @public (undocumented)
+export type CalendarType = "buddhist" | "chinese" | "coptic" | "ethiopia" | "ethiopic" | "gregory" | "hebrew" | "indian" | "islamic" | "iso8601" | " japanese" | "persian" | "roc";
+
 // @public
 export class Card extends FASTElement {
 }
@@ -638,6 +692,9 @@ export enum DataGridRowTypes {
     // (undocumented)
     stickyHeader = "sticky-header"
 }
+
+// @public (undocumented)
+export type DateStyle = "long" | "narrow" | "short";
 
 // @public
 export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
@@ -1447,6 +1504,9 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 
 // @public
 export const NumberFieldTemplate: ViewTemplate<NumberField>;
+
+// @public (undocumented)
+export type NumberingSystem = "arab" | "arabext" | "bali" | "beng" | "deva" | "fullwide" | "gujr" | "guru" | "hanidec" | "khmr" | "knda" | "laoo" | "latn" | "limb" | "mlym" | "mong" | "mymr" | "orya" | "tamldec" | "telu" | "thai" | "tibt";
 
 // @alpha
 export const optional: (key: any) => any;
