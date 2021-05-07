@@ -171,7 +171,7 @@ export const AccentButtonStyles = css`
         color: ${accentForegroundCutRestBehavior.var};
     }
 
-    :host([appearance="accent"]:hover:) {
+    :host([appearance="accent"]:hover) {
         background: ${accentFillHoverBehavior.var};
     }
 

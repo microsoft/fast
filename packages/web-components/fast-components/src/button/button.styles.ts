@@ -67,7 +67,6 @@ export const ButtonStyles = css`
     appearanceBehavior(
         "lightweight",
         css`
-            :host([appearance="lightweight"][disabled]),
             :host([appearance="lightweight"][disabled]:hover),
             :host([appearance="lightweight"][disabled]:active) {
                 background-color: transparent;

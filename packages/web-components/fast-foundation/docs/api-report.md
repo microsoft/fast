@@ -819,7 +819,7 @@ export interface DesignSystemRegistrationContext {
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
-export interface DesignToken<T extends {
+export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
     createCSS?(): string;
 }> extends CSSDirective {
     readonly cssCustomProperty: string;

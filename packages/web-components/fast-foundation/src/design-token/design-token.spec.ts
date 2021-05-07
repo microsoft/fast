@@ -22,6 +22,16 @@ function removeElement(...els: HTMLElement[]) {
 }
 
 describe("A DesignToken", () => {
+    it("should support declared types", () => {
+        const number: DesignToken<number> = DesignToken.create<number>('number');
+        const nil: DesignToken<null> = DesignToken.create<null>('number');
+        const bool: DesignToken<boolean> = DesignToken.create<boolean>("bool");
+        const arr: DesignToken<number[]> = DesignToken.create<number[]>("arr");
+        const obj: DesignToken<{}> = DesignToken.create<{}>("obj");
+        class Foo {}
+        const _class: DesignToken<Foo> = DesignToken.create<Foo>("class");
+        const sym: DesignToken<symbol> = DesignToken.create<symbol>("symbol")
+    })
     it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
         expect(DesignToken.create<number>("implicit").createCSS()).to.equal("var(--implicit)");
     });
