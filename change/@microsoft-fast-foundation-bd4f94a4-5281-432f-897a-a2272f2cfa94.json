@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "update card to extend foundation",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
