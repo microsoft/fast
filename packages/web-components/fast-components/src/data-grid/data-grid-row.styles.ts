@@ -1,7 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { outlineWidth } from "../design-tokens";
-import { neutralDividerRestBehavior, neutralFillRestBehavior } from "../styles/recipes";
+import { neutralFillRest, outlineWidth } from "../design-tokens";
 
 export const DataGridRowStyles = css`
     :host {
@@ -16,17 +14,8 @@ export const DataGridRowStyles = css`
     }
 
     :host(.sticky-header) {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
         position: sticky;
         top: 0;
     }
-`.withBehaviors(
-    neutralDividerRestBehavior,
-    neutralFillRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host {
-            }
-        `
-    )
-);
+`;

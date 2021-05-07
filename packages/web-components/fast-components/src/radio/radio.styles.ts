@@ -7,28 +7,26 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundCut,
     bodyFont,
     designUnit,
     disabledOpacity,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineActive,
+    neutralOutlineHover,
+    neutralOutlineRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    heightNumber,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const radioStyles = (context, definition) =>
     css`
@@ -54,15 +52,15 @@ export const radioStyles = (context, definition) =>
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
         border-radius: 999px;
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRestBehavior.var};
-        background: ${neutralFillInputRestBehavior.var};
+        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+        background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
     }
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -89,48 +87,44 @@ export const radioStyles = (context, definition) =>
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        background: ${accentForegroundCutRestBehavior.var};
-        fill: ${accentForegroundCutRestBehavior.var};
+        background: ${accentForegroundCut};
+        fill: ${accentForegroundCut};
         opacity: 0;
         pointer-events: none;
     }
 
     :host(:not([disabled])) .control:hover{
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${neutralOutlineHover};
     }
 
     :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${neutralOutlineActiveBehavior.var};
+        background: ${neutralFillInputActive};
+        border-color: ${neutralOutlineActive};
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        border-color: ${neutralFocus};
     }
 
     :host([aria-checked="true"]) .control {
-        background: ${accentFillRestBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHoverBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
-        background: ${accentFillActiveBehavior.var};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        border: calc(${outlineWidth} * 1px) solid ${accentFillActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
         border-color: transparent;
     }
 
@@ -149,18 +143,6 @@ export const radioStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        accentForegroundCutRestBehavior,
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFocusBehavior,
-        neutralForegroundRestBehavior,
-        neutralOutlineActiveBehavior,
-        neutralOutlineHoverBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .control,

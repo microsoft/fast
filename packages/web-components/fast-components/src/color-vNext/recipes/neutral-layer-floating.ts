@@ -1,11 +1,11 @@
-import { Palette } from "../palette";
+import { PaletteRGB } from "../palette";
 import { neutralLayerCard } from "./neutral-layer-card";
 
 /**
  * @internal
  */
 export function neutralLayerFloating(
-    palette: Palette,
+    palette: PaletteRGB,
     relativeLuminance: number,
     cardDelta: number
 ) {

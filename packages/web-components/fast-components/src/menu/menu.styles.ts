@@ -1,18 +1,19 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { cornerRadius, designUnit, outlineWidth } from "../design-tokens";
 import {
-    elevation,
-    neutralDividerRestBehavior,
-    neutralLayerFloatingBehavior,
-} from "../styles/index";
+    cornerRadius,
+    designUnit,
+    neutralLayerFloating,
+    outlineWidth,
+} from "../design-tokens";
+import { elevation } from "../styles/index";
 
 export const menuStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             --elevation: 11;
-            background: ${neutralLayerFloatingBehavior.var};
+            background: ${neutralLayerFloating};
             border: calc(${outlineWidth} * 1px) solid transparent;
             ${elevation}
             margin: 0;
@@ -35,8 +36,6 @@ export const menuStyles = (context, definition) =>
             border-top: calc(${outlineWidth} * 1px) solid var(--neutral-divider-rest);
         }
     `.withBehaviors(
-        neutralLayerFloatingBehavior,
-        neutralDividerRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host {

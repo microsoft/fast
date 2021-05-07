@@ -131,8 +131,8 @@ describe("ensure parity between old and new recipe implementation", () => {
     const neutralBase = parseColorHexRGB(neutralBaseColor)!;
     const accentBase = parseColorHexRGB(accentBaseColor)!;
 
-    const neutralPalette = PaletteRGB.from(new SwatchRGB(neutralBase.r, neutralBase.g, neutralBase.b));
-    const accentPalette = PaletteRGB.from(new SwatchRGB(accentBase.r, accentBase.g, accentBase.b));
+    const neutralPalette = PaletteRGB.create(SwatchRGB.create(neutralBase.r, neutralBase.g, neutralBase.b));
+    const accentPalette = PaletteRGB.create(SwatchRGB.create(accentBase.r, accentBase.g, accentBase.b));
     
     neutralPalette.swatches.forEach((newSwatch, index) => {
         const {

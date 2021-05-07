@@ -105,7 +105,7 @@ describe("neutralOutline", (): void => {
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
-    const palette = PaletteRGB.from(new SwatchRGB(color.r, color.g, color.b));
+    const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralOutlineRestDelta, neutralOutlineHoverDelta, neutralOutlineFocusDelta, neutralOutlineActiveDelta } = fastDesignSystemDefaults;
         const oldValues = neutralOutline({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});

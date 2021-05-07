@@ -3,23 +3,13 @@ import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     cornerRadius,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
     outlineWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
 
 export const tooltipStyles = (context, definition) =>
     css`
@@ -33,10 +23,10 @@ export const tooltipStyles = (context, definition) =>
         .tooltip {
             box-sizing: border-box;
             border-radius: calc(${cornerRadius} * 1px);
-            border: calc(${outlineWidth} * 1px) solid ${neutralFocusBehavior.var};
-            box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
-            background: ${neutralFillRestBehavior.var};
-            color: ${neutralForegroundRestBehavior.var};
+            border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
+            box-shadow: 0 0 0 1px ${neutralFocus} inset;
+            background: ${neutralFillRest};
+            color: ${neutralForegroundRest};
             padding: 4px;
             height: fit-content;
             width: fit-content;
@@ -78,17 +68,6 @@ export const tooltipStyles = (context, definition) =>
             margin-left: 4px;
         }
     `.withBehaviors(
-        accentFillActiveBehavior,
-        accentFillHoverBehavior,
-        accentFillRestBehavior,
-        neutralFillHoverBehavior,
-        neutralFillInputActiveBehavior,
-        neutralFillInputHoverBehavior,
-        neutralFillInputRestBehavior,
-        neutralFillRestBehavior,
-        neutralFocusBehavior,
-        neutralForegroundRestBehavior,
-        neutralOutlineRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {

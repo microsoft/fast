@@ -1,12 +1,12 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { designUnit } from "../design-tokens";
 import {
-    accentForegroundRestBehavior,
-    neutralFillRestBehavior,
-    neutralForegroundHintBehavior,
-} from "../styles";
+    accentForegroundRest,
+    designUnit,
+    neutralFillRest,
+    neutralForegroundHint,
+} from "../design-tokens";
 
 export const progressStyles = (context, definition) =>
     css`
@@ -18,7 +18,7 @@ export const progressStyles = (context, definition) =>
         }
 
         .progress {
-            background-color: ${neutralFillRestBehavior.var};
+            background-color: ${neutralFillRest};
             border-radius: calc(${designUnit} * 1px);
             width: 100%;
             height: 100%;
@@ -28,7 +28,7 @@ export const progressStyles = (context, definition) =>
         }
 
         .determinate {
-            background-color: ${accentForegroundRestBehavior.var};
+            background-color: ${accentForegroundRest};
             border-radius: calc(${designUnit} * 1px);
             height: 100%;
             transition: all 0.2s ease-in-out;
@@ -48,7 +48,7 @@ export const progressStyles = (context, definition) =>
             position: absolute;
             opacity: 0;
             height: 100%;
-            background-color: ${accentForegroundRestBehavior.var};
+            background-color: ${accentForegroundRest};
             border-radius: calc(${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 40%;
@@ -59,7 +59,7 @@ export const progressStyles = (context, definition) =>
             position: absolute;
             opacity: 0;
             height: 100%;
-            background-color: ${accentForegroundRestBehavior.var};
+            background-color: ${accentForegroundRest};
             border-radius: calc(${designUnit} * 1px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
             width: 60%;
@@ -69,11 +69,11 @@ export const progressStyles = (context, definition) =>
         :host([paused]) .indeterminate-indicator-1,
         :host([paused]) .indeterminate-indicator-2 {
             animation-play-state: paused;
-            background-color: ${neutralFillRestBehavior.var};
+            background-color: ${neutralFillRest};
         }
 
         :host([paused]) .determinate {
-            background-color: ${neutralForegroundHintBehavior.var};
+            background-color: ${neutralForegroundHint};
         }
 
         @keyframes indeterminate-1 {
@@ -112,9 +112,6 @@ export const progressStyles = (context, definition) =>
             }
         }
     `.withBehaviors(
-        accentForegroundRestBehavior,
-        neutralFillRestBehavior,
-        neutralForegroundHintBehavior,
         forcedColorsStylesheetBehavior(
             css`
                 .progress {
