@@ -111,7 +111,6 @@ function throwErrorForMissingDefinition(
     secondDefinitionSet,
     secondDefinitionSetDisplayName
 ) {
-    console.log("firstDefinitionSet", firstDefinitionSet);
     throw new Error(
         chalk.red(
             `The following components have ${firstDefinitionSetDisplayName} definitions but no ${secondDefinitionSetDisplayName} definition:\n> ${firstDefinitionSet
