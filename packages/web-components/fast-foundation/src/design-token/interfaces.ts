@@ -21,6 +21,7 @@ export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignToken
 
 /**
  * Describes a {@link (DesignToken:interface)} configuration
+ * @alpha
  */
 export interface DesignTokenConfiguration {
     /**

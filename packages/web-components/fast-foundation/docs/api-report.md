@@ -841,6 +841,12 @@ export const DesignToken: Readonly<{
 }>;
 
 // @alpha
+export interface DesignTokenConfiguration {
+    cssCustomPropertyName?: string | null;
+    name: string;
+}
+
+// @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
