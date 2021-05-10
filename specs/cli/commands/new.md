@@ -19,7 +19,7 @@ FAST New (`fast new`) is a command that is used to scaffold a new FAST project.
 
 **Usage**:
 ```
-$ fast new [arg-1] [arg-2]
+$ fast new [arg-1]
  ```
  
 **Available commands**:
@@ -29,34 +29,97 @@ $ fast new [arg-1] [arg-2]
 
 ### Project Generator
 ```
-$ fast new [project-Name] [destination]
+$ fast new [project-Name]
 ```
 
 #### Arguments
 | Argument         | Type              | Required | Default        |
 |------------------|-------------------|----------|----------------|
-|`project-name`    | User Input        | Yes      | `my-project` |
-|`destination`     | User Input        | No       | `./`           |
+|`project-name`    | User Input        | Yes      | `my-project`   |
 
 #### Interactive Input Questions
-
+```js
+module.exports = [
+  {
+    name: 'project-name',
+    message: 'What would you like to call your project?',
+    default: 'my-project',
+    required: true,
+  },
+  {
+    name: 'What kind of project would you like to build today?',
+    choices: [
+      {value: 'app', title: 'App', description: 'Build a starter FAST Application'},
+      {value: 'design-system', title: 'Design System', description: 'Build a new design system'},
+    ],
+  },
+  {
+    message: 'What JavaScript transpiler would you like to use?',
+    choices: [
+      {value: 'typescript', title: 'TypeScript (Recommended)', description: 'This is the most robust '},
+      {value: 'babel', title: 'Babel'},
+    ],
+  },
+  {
+    message: 'What you to include all components?',
+    choices: [
+      {value: 'all-components', title: 'Yes'},
+      {value: 'select-components', title: 'No'},
+    ],
+  },
+  {
+    if: 'select-components',
+    multiple: true,
+    message: 'Select components',
+    choices: [
+      {value: 'button', title: 'Button'},
+      {value: 'card', title: 'Card'},
+      ...
+    ],
+  },
+  {
+    message: 'Would you like to install dependencies now?',
+    choices: [
+      {value: 'install-deps', title: 'Yes'},
+      {value: 'no-install-deps', title: 'No'},
+    ],
+  },
+]
 ```
+<!-- ```
 $ What would you like to name your project [Input]?: (my-project)
+$ What kind of project?
+    - App
+      Build a starter application
+    - Design System
+      Build a starter design system
+$ Would you
 $ Select components [Multi-select]: (All)
     - All
     - [*Component list*]
-$ Would you like to define a Design System Provider [multiple-choice]?
-    - Define a new one
-    - Extend from an existing one
-```
+``` -->
 
 #### Generated files and folders
+
+*Design System Scaffold*
 ```
 ├── my-project/
+|   └── __test__/
+|       └── fixtures
+|           ├── iife.html
+|           ├── index.html
 |   ├── .storybook/
-|   ├── docs/
+|   └── build
+|       ├── clean.js
+|       ├── generate-default-palettes.js
+|       ├── generate-open-ui-definition.js
+|       ├── transform-fragments.js
 |   └── src/
-|       ├── __test__
+|       └── __test__/
+|           ├── component.schema.json
+|           ├── README.md
+|           ├── setup-browser.ts
+|           ├── setup-node.ts
 |       ├── component-1/
 |       ├── component-2/
 |       ├── ...
@@ -79,4 +142,28 @@ $ Would you like to define a Design System Provider [multiple-choice]?
 |   ├── README.md
 |   ├── rollup.config.js
 |   └── tsconfig.json
+```
+
+*Application Scaffold*
+```
+├── my-project/
+|   └── __test__/
+|       └── fixtures
+|           ├── iife.html
+|           ├── index.html
+|   ├── .storybook/
+|   └── src/
+|       ├── components.ts
+|       ├── main.ts
+|       ├── styles.ts   
+|   ├── .gitignore
+|   ├── .mocharc.json
+|   ├── .npmignore
+|   ├── .npmrc
+|   ├── CHANGELOG.md
+|   ├── karma.conf.js
+|   ├── package.json
+|   ├── README.md
+|   ├── tsconfig.json
+|   └── webpack.config.js
 ```

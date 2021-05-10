@@ -3,10 +3,8 @@
 ## Overview
 FAST CLI is a set of tools used for creating, building and developing FAST projects.
 
-FAST CLI will have an independent code base and will be packaged and installable on any operating system.
-
 ## Use Cases
-- A user can use FAST CLI to generate a new FAST design system project with a single command
+- A user can use FAST CLI to generate a new FAST project based on user input
 - A user can generate a new component file structure in FAST using a single command in FAST CLI
 
 ## Features
@@ -27,7 +25,7 @@ FAST CLI will have an independent code base and will be packaged and installable
 
 **Usage**:
 ```
-$ fast [command] [arg-2] [--flag-1/-f] [--flag-2/-f]
+$ fast [command] [arg-1] [--flag-1/-f] [--flag-2/-f]
  ```
 ## Commands
 
