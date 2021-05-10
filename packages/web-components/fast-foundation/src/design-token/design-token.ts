@@ -52,7 +52,8 @@ export interface DesignToken<
 }
 
 /**
- * A {@link DesignToken:interface} that emits a CSS custom property.
+ * A {@link (DesignToken:interface)} that emits a CSS custom property.
+ * @alpha
  */
 export interface CSSDesignToken<
     T extends
