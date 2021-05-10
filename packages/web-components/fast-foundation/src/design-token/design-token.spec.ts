@@ -40,7 +40,20 @@ describe("A DesignToken", () => {
         it("should have a readonly cssCustomProperty property that is the name formatted as a CSS custom property", () => {
             expect(DesignToken.create<number>("implicit").cssCustomProperty).to.equal("--implicit");
         });
-    })
+        it("should have a cssCustomProperty property that aligns with a provided cssCustomPropertyName configuration", () => {
+            expect(DesignToken.create<number>({name: "name", cssCustomPropertyName: "css-custom-property"}).cssCustomProperty).to.equal("--css-custom-property")
+        });
+    });
+
+    describe("that is not a CSSDesignToken", () => {
+        it("should not have a cssCustomProperty property", () => {
+            expect("cssCustomProperty" in DesignToken.create<number>({name: "test", cssCustomPropertyName: null})).to.equal(false);
+        });
+        it("should not have a cssVar property", () => {
+            expect("cssVar" in DesignToken.create<number>({name: "test", cssCustomPropertyName: null})).to.equal(false);
+        });
+    });
+
 
     describe("getting and setting a simple value", () => {
         it("should throw if the token value has never been set on the element or it's any ancestors", () => {

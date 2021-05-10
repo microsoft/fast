@@ -83,8 +83,8 @@ interface DesignTokenSubscriber {
 class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
     public readonly name: string;
-    public readonly cssCustomProperty: string | null = null;
-    private cssVar: string | null = null;
+    public readonly cssCustomProperty: string | undefined;
+    private cssVar: string | undefined;
     private subscribers = new Set<DesignTokenSubscriber>();
     private setFor = new Set<HTMLElement>();
 
