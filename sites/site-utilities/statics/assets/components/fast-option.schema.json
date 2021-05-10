@@ -5,7 +5,7 @@
   "title": "Option",
   "description": "The FAST option element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-option",
   "properties": {
     "disabled": {
