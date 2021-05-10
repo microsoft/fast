@@ -9,6 +9,7 @@
         "module": "ESNext",
         "allowJs": true,
         "importHelpers": true,
+        "resolveJsonModule": true,
         "types": [
             "node",
             "mocha",

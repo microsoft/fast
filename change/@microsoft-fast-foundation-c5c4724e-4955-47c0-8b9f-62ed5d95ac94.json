@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove incorrect role from horizontal-scroll element",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

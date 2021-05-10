@@ -4,6 +4,7 @@
         "src/**/*"
     ],
     "compilerOptions": {
+        "baseUrl": "./",
         "declaration": false,
         "outDir": "dist/esm",
         "resolveJsonModule": true,
@@ -17,7 +18,12 @@
             "ESNext",
             "ES2015",
             "ES2016.Array.Include"
-        ]
+        ],
+        "paths": {
+            "@microsoft/fast-components": ["./node_modules/@microsoft/fast-components"],
+            "@microsoft/fast-foundation": ["./node_modules/@microsoft/fast-foundation"],
+            "@microsoft/fast-element": ["./node_modules/@microsoft/fast-element"],
+        }
     },
     "exclude": [
         "app",

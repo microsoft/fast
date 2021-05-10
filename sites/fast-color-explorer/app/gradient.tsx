@@ -1,7 +1,7 @@
 import React from "react";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { isEqual } from "lodash-es";
-import { DesignSystemDefaults, isDarkMode } from "@microsoft/fast-components-styles-msft";
+import { fastDesignSystemDefaults, isDarkMode } from "@microsoft/fast-components";
 
 const styles: any = {
     gradient: {
@@ -68,7 +68,7 @@ class BaseGradient extends React.Component<GradientProps, {}> {
                     style={{
                         background: this.props.colors[index],
                         color: isDarkMode(
-                            Object.assign({}, DesignSystemDefaults, {
+                            Object.assign({}, fastDesignSystemDefaults, {
                                 backgroundColor: this.props.colors[index],
                             })
                         )

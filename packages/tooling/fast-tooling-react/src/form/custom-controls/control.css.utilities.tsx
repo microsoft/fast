@@ -13,7 +13,7 @@ import {
     FASTSelect,
     FASTTextField,
 } from "@microsoft/fast-components";
-import { FASTColorPicker } from "./css";
+import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */

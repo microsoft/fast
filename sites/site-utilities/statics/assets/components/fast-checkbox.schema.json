@@ -5,7 +5,7 @@
   "title": "Checkbox",
   "description": "The FAST checkbox element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-checkbox",
   "properties": {
     "checked": {

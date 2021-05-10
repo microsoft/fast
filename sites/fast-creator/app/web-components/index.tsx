@@ -10,6 +10,7 @@ import {
     FASTTabPanel,
     FASTTabs,
 } from "@microsoft/fast-components";
+import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -19,15 +20,19 @@ import {
 } from "@microsoft/fast-tooling-react";
 
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
+import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
+import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { FormId } from "../creator.props";
+import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
 FASTButton;
+FASTColorPicker;
 FASTSlider;
 FASTSliderLabel;
 FASTTab;
@@ -81,6 +86,39 @@ export function renderDeviceSelect(
             {renderDeviceOptions()}
         </fast-select>
     );
+}
+
+function getColorPickerControl(
+    id: string,
+    updateHandler: (updatedData: { [key: string]: unknown }) => void
+): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id,
+        context: ControlContext.fill,
+        control: (config: ControlConfig): React.ReactNode => {
+            return (
+                <color-picker
+                    value={config.value || config.default}
+                    events={{
+                        change: (e: React.ChangeEvent<HTMLInputElement>): void => {
+                            updateHandler({
+                                [config.dataLocation]: e.target.value,
+                            });
+                        },
+                    }}
+                ></color-picker>
+            );
+        },
+    });
+}
+
+export function getColorPickerControls(
+    updateHandler: (updatedData: { [key: string]: unknown }) => void
+): StandardControlPlugin[] {
+    return [
+        getColorPickerControl("background-color", updateHandler),
+        getColorPickerControl("accent-base-color", updateHandler),
+    ];
 }
 
 function getSliderLabels(positions: number[]): React.ReactNode {
@@ -153,6 +191,21 @@ export function getSliderControls(
     ];
 }
 
+function getCSSControls(): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id: "style",
+        context: ControlContext.fill,
+        control: (config: ControlConfig): React.ReactNode => {
+            return (
+                <CSSControl
+                    css={(CSSProperties as unknown) as CSSPropertiesDictionary}
+                    {...config}
+                />
+            );
+        },
+    });
+}
+
 export function renderFormTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -183,7 +236,7 @@ export function renderFormTabs(
                 <ModularForm
                     key={FormId.component}
                     messageSystem={fastMessageSystem}
-                    controls={[linkedDataControl]}
+                    controls={[linkedDataControl, getCSSControls()]}
                     categories={componentCategories}
                 />
             </fast-tab-panel>
@@ -195,6 +248,8 @@ export function renderFormTabs(
                     controls={[
                         linkedDataControl,
                         ...getSliderControls(handleDesignSystemChange),
+                        ...getColorPickerControls(handleDesignSystemChange),
+                        getCSSControls(),
                     ]}
                     categories={componentCategories}
                 />
