@@ -48,8 +48,8 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
-    "@types/mocha": "^7.0.2",
     "@types/lodash-es": "^4.17.4",
+    "@types/mocha": "^7.0.2",
     "@types/node": "^9.6.7",
     "ajv": "^6.10.0",
     "chai": "^4.2.0",
@@ -61,6 +61,8 @@
     "html-webpack-plugin": "^3.2.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
     "karma": "^5.0.4",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
@@ -72,8 +74,6 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
-    "jsdom": "^16.2.2",
-    "jsdom-global": "3.0.2",
     "mdn-data": "^2.0.11",
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^7.1.2",
@@ -93,9 +93,10 @@
     "lodash-es": "^4.0.0"
   },
   "dependencies": {
+    "@microsoft/fast-colors": "^5.1.3",
     "@microsoft/fast-components": "latest",
-    "@microsoft/fast-foundation": "latest",
     "@microsoft/fast-element": "latest",
+    "@microsoft/fast-foundation": "latest",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "vscode-html-languageservice": "^3.1.3"
   }
