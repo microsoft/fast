@@ -5,7 +5,7 @@
   "title": "Tooltip",
   "description": "The FAST tooltip element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-tooltip",
   "properties": {
     "visible": {

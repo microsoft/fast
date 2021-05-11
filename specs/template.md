@@ -1,5 +1,13 @@
 # Spec Title
 
+## Process
+
+- [ ] **Checkpoint 1** - Schedule a spec review meeting to cover the Overview section before proceeding to work on the Design section. Be sure to include relevant stakeholders such as members of the tools team.
+
+- [ ] **Checkpoint 2** - Schedule a spec review meeting before beginning the implementation work. Be sure to invite relevant stakeholders such as design system owners.
+
+- [ ] **Checkpoint 3** - Submit the component PR and schedule a component code review meeting or present the component in one of our Engineering Open Mic sessions. Address feedback from the review, obtain final approvals through GitHub, and merge.
+
 ## Overview
 
 *The name of the component, along with a high-level description.*
@@ -10,11 +18,11 @@
 
 ### Use Cases
 
-*Primary use cases for this component.*
+*Primary use cases for this component. These should be based on typical patterns seen in the industry and requests from customers.*
 
 ### Non-goals
 
-*A list of use cases, features, or functionality which are **not** goals for the component*
+*A list of use cases, features, or functionality which are **not** goals for the component.*
   
 ### Features
 
@@ -49,14 +57,20 @@
 
 *Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
 
-### Anatomy and Appearance
+### Anatomy 
 
-*Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
+Outline the component structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
 
 - *Slot Names*
 - *Host Classes*
 - *Slotted Content/Slotted Classes*
 - *CSS Parts*
+
+*Work closely with the visual design partner to co-develop the API and anatomy along side the visual design.
+
+### Visual Appearance
+
+*Provide Figma files and other design assets. Be sure to account for the various component states, including hover, active, etc. as well as validity, and appearance variants. Focus primarily on the officially supported design system as well as known community scenarios as appropriate. Consider other popular design systems during this process and, where possible, ensure that common design features that may not be part of the officially supported design system can be accommodated. Work closely with engineering to co-develop the visual design along side the API and anatomy.*
 
 ---
 
@@ -105,7 +119,7 @@
 
 ### Test Plan
 
-*What is the plan for testing the component, if different from the normal path?*
+*What is the plan for testing the component, if different from the normal path? Note that the normal plan includes unit tests for basic state/behavior as well as end-to-end tests to validate the specific user stories described above.*
 
 ### Tooling
 
@@ -116,11 +130,12 @@
 *What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
 
 ---
+## Appendix
 
-## Resources
+### Resources
 
 *Any related resource links such as web standards, discussion threads, diagrams, etc.*
 
-## Next Steps
+### Next Steps
 
 *What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*

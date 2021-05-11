@@ -38,21 +38,22 @@ The file can have as many `template` elements as needed as long as the `title` a
 
 Each component must have a **definition** written in the [VSCode customData](https://github.com/microsoft/vscode-custom-data) format. This is used in @microsoft/fast-tooling, and for integration with the Monaco editor.
 
-First create a `.ts` (typescript) file using spinal-case. This should be the name of your component, append with `.definition`:
+First create a `.json` (JSON) file using spinal-case. This should be the name of your component, append with `.vscode.definition`:
 
 ```text
 my-component/
   └─ fixtures/
   └─ index.ts
-  └─ my-component.definition.ts <--
+  └─ my-component.vscode.definition.json <--
   └─ my-component.stories.ts
   └─ my-component.styles.ts
 ```
 
-Next add your file's export to [./src/component-definitions.ts](./src/component-definitions.ts):
+Next add your file's export to [./src/component-definitions.ts](./src/component-definitions.ts), prepend the export with `fast` and append it with `Definition`:
 
 ```js
-export * from "./my-component/my-component.definition"
+import fastMyComponentDefinition from "./my-component/my-component.vscode.definition.json";
+export { fastMyComponentDefinition };
 ```
 
 ### Open UI Definition
@@ -65,8 +66,8 @@ In addition to a component definition file each component must have an [Open UI 
 my-component/
   └─ fixtures/
   └─ index.ts
-  └─ my-component.definition.ts 
-  └─ my-component.open-ui.definition.ts <--
+  └─ my-component.vscode.definition.json 
+  └─ my-component.open-ui.definition.json <--
   └─ my-component.stories.ts
   └─ my-component.styles.ts
 ```
