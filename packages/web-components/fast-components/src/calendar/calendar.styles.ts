@@ -5,57 +5,51 @@ import {
     accentForegroundHoverBehavior,
     accentForegroundRestBehavior,
     heightNumber,
+    neutralFillRestBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
 export const CalendarStyles = css`
     :host {
         display: inline-block;
-        --cell-width: calc(${heightNumber} * 1px);
         --cell-height: calc(${heightNumber} * 1px);
         --current-day: ${accentForegroundRestBehavior.var};
+        --weekday-color: #2b2b2b;
     }
-    :host .title {
+    .title {
         font-size: 1.5em;
         text-align: center;
+        padding: 5px 0;
     }
 
-    :host .week-day {
-        float: left;
-        border: var(--cell-border);
-        border-bottom: 0;
-        overflow: hidden;
-    }
-
-    :host .week-day div {
-        width: var(--cell-width);
-        display: inline-block;
-        text-align: center;
-        padding: 10px 0;
-        background: var(--weekday-background);
-    }
-
-    :host .week {
+    .days {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         border-left: var(--cell-border);
-        text-align: center;
+        border-top: var(--cell-border);
     }
 
-    :host .day {
-        float: left;
-        width: var(--cell-width);
+    .week-day {
+        background-color: var(--weekday-color);
+        text-align: center;
+        padding: 5px 0;
+    }
+
+    .day {
         height: var(--cell-height);
         box-sizing: border-box;
         border-right: var(--cell-border);
         border-bottom: var(--cell-border);
         vertical-align: top;
         text-align: left;
+        padding: 5px;
     }
 
-    :host .day.off {
+    .day.off {
         color: #666;
     }
 
-    :host .day.today {
+    .today {
         color: var(--current-day);
     }
 `.withBehaviors(

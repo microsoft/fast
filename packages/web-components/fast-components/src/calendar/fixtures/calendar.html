@@ -1,21 +1,21 @@
 <style>
     fast-calendar {
-        --cell-border: 0;
+        --cell-border: 1px solid #444;
+        width: 600px;
     }
 
     .long-days {
-        --cell-width: 100px;
+        width: 800px;
     }
 
     .events {
-        --cell-width: 160px;
         --cell-height: 80px;
+        width: 1000px;
     }
 </style>
 <h1>Calendar</h1>
 
 <h2>Default</h2>
-
 <fast-calendar></fast-calendar>
 
 <h2>Calendar for April 2020</h2>
@@ -27,15 +27,10 @@
 <h2>Shortened month and weekday labels</h2>
 <fast-calendar month="12" monthFormat="short" weekdayFormat="narrow"></fast-calendar>
 
-<h2>German calendar</h2>
-<fast-calendar locale="de-DE"></fast-calendar>
-
-<h2>Thai calendar</h2>
-<fast-calendar locale="th-TH-u-ca-thai-nu-thai"></fast-calendar>
-
 <h2>Calendar with events</h2>
 <fast-calendar class="events" month="1" year="2021">
     <div slot="1-1-2021">New Year's Day</div>
+    <div slot="1-1-2021">Hangover Day</div>
     <div slot="1-5-2021">National Bird Day</div>
     <div slot="1-10-2021">Houseplant Appreciation Day</div>
     <div slot="1-13-2021">National Take the Stairs Day</div>
@@ -43,13 +38,35 @@
     <div slot="1-26-2021">Spouse's Day</div>
 </fast-calendar>
 
-<h2>Calendar click handler</h2>
+<h2>Calendar with click handler</h2>
 <fast-calendar id="click"></fast-calendar>
 <script>
-    const click = event => {
+    let click = event => {
         const { target } = event;
-        alert(target.getDateClicked(event));
+        const date = target.getDateClicked(event);
+        if (date) alert(`Date clicked: ${date}`);
     };
-    const calendar = document.getElementById("click");
+    let calendar = document.getElementById("click");
     calendar.addEventListener("click", click);
 </script>
+
+<h2>German calendar</h2>
+<fast-calendar class="long-days" weekdayFormat="long" locale="de-DE"></fast-calendar>
+
+<h2>Thai calendar</h2>
+<fast-calendar locale="th-TH-u-ca-buddhist-nu-thai"></fast-calendar>
+
+<h2>Indian calendar</h2>
+<fast-calendar month="3" locale="hi-IN-u-ca-indian"></fast-calendar>
+
+<h2>Arabic calendar</h2>
+<fast-calendar
+    style="direction: rtl;"
+    class="events"
+    locale="ar-XE-u-ca-islamic-nu-arab"
+    month="1"
+    year="2021"
+>
+    <div slot="1-1-2021">January 1</div>
+    <div slot="1-2-2021">January 2</div>
+</fast-calendar>
