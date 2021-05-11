@@ -250,4 +250,48 @@ describe("FASTSelect", function () {
             expect(await element.evaluate(node => node.value)).to.equal("3");
         });
     });
+
+    describe("when opened", function () {
+        it("should scroll the selected option into view", async function () {
+            const element = (await this.page.waitForSelector(
+                "fast-select"
+            )) as ElementHandle<FASTSelect>;
+
+            await element.evaluate(element => {
+                element.innerHTML = "";
+                for (let i = 0; i < 50; i++) {
+                    const option = document.createElement("fast-option") as FASTOption;
+                    option.value = `${i}`;
+                    option.textContent = `option ${i}`;
+                    element.appendChild(option);
+                }
+            });
+
+            const selectedOption = (await element.$(".listbox")) as ElementHandle<
+                FASTOption
+            >;
+
+            await element.evaluate(node => (node.selectedIndex = 35));
+
+            expect(
+                await element.evaluate(node => node.firstSelectedOption.value)
+            ).to.equal("35");
+
+            await element.click();
+
+            await selectedOption.waitForElementState("visible");
+
+            expect(
+                await selectedOption.evaluate(node => node.scrollTop)
+            ).to.be.closeTo(811, 16);
+
+            await element.evaluate(node => (node.selectedIndex = 0));
+
+            await element.waitForElementState("stable");
+
+            expect(
+                await selectedOption.evaluate(node => node.scrollTop)
+            ).to.be.closeTo(6, 16);
+        });
+    });
 });
