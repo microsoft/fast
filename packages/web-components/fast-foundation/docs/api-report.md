@@ -1132,6 +1132,7 @@ export class HorizontalScroll extends FASTElement {
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollItems: HTMLElement[];
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1210,6 +1211,8 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
+    // @internal
+    mousedownHandler(e: MouseEvent): boolean | void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
