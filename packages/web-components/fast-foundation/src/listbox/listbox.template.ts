@@ -15,6 +15,7 @@ export const ListboxTemplate: ViewTemplate<Listbox> = html`
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+        @mousedown="${(x, c) => x.mousedownHandler(c.event as MouseEvent)}"
     >
         <slot
             ${slotted({
