@@ -5,7 +5,7 @@
   "title": "Radio group",
   "description": "The FAST radio-group element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-radio-group",
   "properties": {
     "value": {

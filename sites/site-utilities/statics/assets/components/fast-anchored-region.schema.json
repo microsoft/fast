@@ -5,7 +5,7 @@
   "title": "Anchored region",
   "description": "The FAST anchored region element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-anchored-region",
   "properties": {
     "anchor": {
