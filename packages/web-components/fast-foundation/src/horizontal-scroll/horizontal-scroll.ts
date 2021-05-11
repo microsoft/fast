@@ -79,6 +79,13 @@ export class HorizontalScroll extends FASTElement {
     private scrollTimeout?: number | void;
 
     /**
+     * Flag indicating that the items are being updated
+     *
+     * @internal
+     */
+    private updatingItems: boolean = false;
+
+    /**
      * Speed of scroll in pixels per second
      * @public
      */
@@ -145,9 +152,7 @@ export class HorizontalScroll extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        DOM.queueUpdate(this.setStops.bind(this));
         this.initializeResizeDetector();
-        this.startObservers();
     }
 
     public disconnectedCallback(): void {
@@ -157,29 +162,26 @@ export class HorizontalScroll extends FASTElement {
     }
 
     /**
-     * Starts observers
-     * @internal
+     * Updates scroll stops and flippers when scroll items change
+     * @param previous - current scroll items
+     * @param next - new updated scroll items
+     * @public
      */
-    private startObservers = (): void => {
-        this.stopObservers();
-        this.resizeDetector?.observe(this);
-    };
-
-    /**
-     * Stops observers
-     * @internal
-     */
-    private stopObservers = (): void => {
-        this.resizeDetector?.disconnect();
-    };
+    public scrollItemsChanged(previous, next) {
+        if (next && !this.updatingItems) {
+            this.setStops();
+        }
+    }
 
     /**
      * destroys the instance's resize observer
      * @internal
      */
     private disconnectResizeDetector(): void {
-        this.stopObservers();
-        this.resizeDetector = null;
+        if (this.resizeDetector) {
+            this.resizeDetector.disconnect();
+            this.resizeDetector = null;
+        }
     }
 
     /**
@@ -191,6 +193,7 @@ export class HorizontalScroll extends FASTElement {
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
             this.handleResize.bind(this)
         );
+        this.resizeDetector.observe(this);
     }
 
     /**
@@ -210,6 +213,7 @@ export class HorizontalScroll extends FASTElement {
      * @internal
      */
     private updateScrollStops(): void {
+        this.updatingItems = true;
         let updatedItems: HTMLElement[] = [];
 
         this.scrollItems.forEach(item => {
@@ -223,6 +227,7 @@ export class HorizontalScroll extends FASTElement {
         });
 
         this.scrollItems = updatedItems;
+        this.updatingItems = false;
     }
 
     /**

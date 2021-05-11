@@ -1132,6 +1132,7 @@ export class HorizontalScroll extends FASTElement {
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollItems: HTMLElement[];
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
