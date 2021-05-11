@@ -15,6 +15,20 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
+        alias: {
+            "@microsoft/fast-components": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-components"
+            ),
+            "@microsoft/fast-foundation": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-foundation"
+            ),
+            "@microsoft/fast-element": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-element"
+            ),
+        },
     },
     output: {
         path: outDir,
@@ -73,7 +87,7 @@ module.exports = {
         new MonacoWebpackPlugin({
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
-            features: ["format", "coreCommands", "codeAction"]
-        })
+            features: ["format", "coreCommands", "codeAction"],
+        }),
     ],
 };

@@ -35,6 +35,7 @@
     "eslint": "eslint . --ext .ts",
     "generate-default-palettes": "node -r esm build/generate-default-palettes.js",
     "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node -r esm build/generate-open-ui-definition",
+    "validate-component-definitions": "node -r esm build/validate-component-definitions",
     "prepare": "yarn clean:dist && yarn build",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
@@ -56,11 +57,10 @@
     "test-pw:full": "yarn clean:test && yarn build:pw && yarn test-pw",
     "test-pw": "mocha --config ./__test__/.mocharc.json ./__test__/**/*.spec.js",
     "test-webkit:pw": "cross-env PLAYWRIGHT_BROWSER=webkit && yarn test-pw:full",
-    "test": "yarn test-chrome:verbose && yarn doc:ci"
+    "test": "yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
-    "@microsoft/fast-tooling": "0.18.2",
     "@storybook/addons": "^6.1.17",
     "@storybook/html": "^6.1.17",
     "@storybook/theming": "^6.1.17",
@@ -115,7 +115,8 @@
     "@microsoft/fast-element": "^1.0.2",
     "@microsoft/fast-foundation": "^1.20.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
-    "tslib": "^1.13.0"
+    "tslib": "^1.13.0",
+    "vscode-html-languageservice": "^4.0.3"
   },
   "peerDependencies": {
     "lodash-es": "^4.0.0"

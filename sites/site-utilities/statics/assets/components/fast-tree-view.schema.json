@@ -5,7 +5,7 @@
   "title": "Tree view",
   "description": "The FAST tree view element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-tree-view",
   "properties": {
     "render-collapsed-nodes": {

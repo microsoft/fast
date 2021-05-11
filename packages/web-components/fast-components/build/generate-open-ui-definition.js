@@ -4,10 +4,10 @@ import glob from "glob";
 import chalk from "chalk";
 import Ajv from "ajv";
 import openUISchema from "../src/__test__/component.schema.json";
-import webComponentDefinitionSchema from "@microsoft/fast-tooling/dist/esm/schemas/web-component.schema";
+import vsCodeCustomDataSchema from "vscode-html-languageservice/docs/customData.schema.json";
 
 const ajv = new Ajv();
-ajv.addSchema(webComponentDefinitionSchema);
+ajv.addSchema(vsCodeCustomDataSchema);
 const validate = ajv.compile(openUISchema);
 const openUIDisplayName = "Open UI";
 const webComponentDisplayName = "Web Component";
@@ -83,8 +83,9 @@ const dictionaryOfOpenUIDefinitionLocations = getDefinitionLocations(
  */
 const webComponentDefinitionLocationPattern = path.resolve(
     __dirname,
-    "../temp/**/*.definition.js"
+    "../temp/**/*.vscode.definition.json"
 );
+
 const allWebComponentDefinitionLocations = glob.sync(
     webComponentDefinitionLocationPattern
 );

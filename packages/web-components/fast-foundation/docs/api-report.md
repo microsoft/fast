@@ -819,17 +819,14 @@ export interface DesignSystemRegistrationContext {
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
-export interface DesignToken<T extends {
+export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
     createCSS?(): string;
 }> extends CSSDirective {
-    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
     readonly cssCustomProperty: string;
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     // (undocumented)
     readonly name: string;
-    // (undocumented)
-    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
@@ -2200,7 +2197,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:56:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:46:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

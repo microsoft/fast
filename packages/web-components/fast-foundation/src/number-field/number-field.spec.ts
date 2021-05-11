@@ -519,6 +519,31 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+
+        it("should fire an input event when incrementing or decrementing", async () => {
+            const { element, connect, disconnect } = await setup();
+            let wasInput: boolean = false;
+
+            element.addEventListener("input", e => {
+                e.preventDefault();
+
+                wasInput = true;
+            });
+
+            await connect();
+
+            element.stepUp();
+
+            expect(wasInput).to.equal(true);
+
+            wasInput = false;
+
+            element.stepDown();
+
+            expect(wasInput).to.equal(true);
+
+            await disconnect();
+        })
     });
 
     describe("when the owning form's reset() method is invoked", () => {

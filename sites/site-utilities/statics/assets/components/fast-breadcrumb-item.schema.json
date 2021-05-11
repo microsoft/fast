@@ -5,7 +5,7 @@
   "title": "Breadcrumb item",
   "description": "The FAST breadcrumb item element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-breadcrumb-item",
   "properties": {
     "href": {
