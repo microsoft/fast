@@ -5,7 +5,7 @@
   "title": "Accordion",
   "description": "The FAST accordion element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-accordion",
   "properties": {
     "expand-mode": {
