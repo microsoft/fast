@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "adds fast-colors as a dependency",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
