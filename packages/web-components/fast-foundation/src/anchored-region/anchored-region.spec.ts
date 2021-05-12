@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { AnchoredRegion, AnchoredRegionTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 
 @customElement({
