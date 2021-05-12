@@ -7,7 +7,7 @@ import {
     keyCodeEnd,
     keyCodeHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItem, MenuItemRole } from "../menu-item/index";
+import { MenuItem, MenuItemColumnCount, MenuItemRole } from "../menu-item/index";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -195,10 +195,46 @@ export class Menu extends FoundationElement {
             this.focusIndex = 0;
         }
 
+        let indent: MenuItemColumnCount;
+
+        function elementIndent(el: HTMLElement): MenuItemColumnCount {
+            if (!(el instanceof MenuItem)) {
+                return 1;
+            }
+            if (
+                el.role !== MenuItemRole.menuitem &&
+                el.querySelector("[slot=start]") === null
+            ) {
+                return 1;
+            } else if (
+                el.role === MenuItemRole.menuitem &&
+                el.querySelector("[slot=start]") !== null
+            ) {
+                return 1;
+            } else if (
+                el.role !== MenuItemRole.menuitem &&
+                el.querySelector("[slot=start]") !== null
+            ) {
+                return 2;
+            } else {
+                return 0;
+            }
+        }
+
+        indent = menuItems.reduce((accum, current) => {
+            const elementValue = elementIndent(current);
+
+            return accum > elementValue ? accum : elementValue;
+        }, 0);
+
         menuItems.forEach((item: HTMLElement, index: number) => {
             item.setAttribute("tabindex", index === 0 ? "0" : "-1");
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
+
+            if (item instanceof MenuItem) {
+                item.startColumnCount = indent;
+            }
         });
     };
 

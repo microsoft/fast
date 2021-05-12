@@ -7,6 +7,8 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 The menu is a widget that offers a list of choices to the user, such as a set of actions or functions. While any DOM content is permissible as a child of the menu, only `fast-menu-item`'s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
 
+`fast-menu` applies `fast-menu-item`'s `startColumnCount` property based on an evaluation of all of the `fast-menu-items` so the content text vertically aligns across all `fast-menu-items`. If any `fast-menu-item` does not have a roll of `checkbox` or `radio` or the `start` slot is not passed, `startColumnCount` is set to 0 which applies a `indent-0` class to all the `fast-menu-item`s. If any `fast-menu-item` has a roll of `checkbox` or `radio` or the `start` slot exists, `startColumnCount` is set to 1 which applies a `indent-1` class to all the `fast-menu-item`s. Or if any `fast-menu-item` has a roll of `checkbox` or `radio` and the `start` slot exists, `startColumnCount` is set to 2 which applies a `indent-2` class to all the `fast-menu-item`s.
+
 ## Usage
 
 ```html live
