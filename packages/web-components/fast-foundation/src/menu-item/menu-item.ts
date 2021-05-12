@@ -17,7 +17,7 @@ import { MenuItemRole } from "./menu-item.options";
 export { MenuItemRole };
 
 /**
- * Types of button appearance.
+ * Types of menu item column count.
  * @public
  */
 export type MenuItemColumnCount = 0 | 1 | 2;

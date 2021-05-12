@@ -152,9 +152,9 @@ export const menuItemStyles = (context, definition) =>
         fill: ${neutralForegroundRest};
     }
 
-    :host(:not(.indent-2)[aria-haspopup="menu"]),
-    :host(:not(.indent-2)[role="menuitemcheckbox"]),
-    :host(:not(.indent-2)[role="menuitemradio"]) {
+    :host(.indent-1[aria-haspopup="menu"]),
+    :host(.indent-1[role="menuitemcheckbox"]),
+    :host(.indent-1[role="menuitemradio"]) {
         display: grid;
         grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
         align-items: center;
@@ -174,12 +174,6 @@ export const menuItemStyles = (context, definition) =>
     :host([role="menuitemcheckbox"]) .input-container,
     :host([role="menuitemradio"]) .input-container {
         display: grid;
-        margin-inline-end: 10px;
-    }
-
-    :host(:not(.indent-2)[role="menuitemcheckbox"]) .start,
-    :host(:not(.indent-2)[role="menuitemradio"]) .start {
-        grid-column-start: 2;
         margin-inline-end: 10px;
     }
 
