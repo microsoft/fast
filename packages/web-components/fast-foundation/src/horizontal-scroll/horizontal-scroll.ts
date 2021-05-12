@@ -364,6 +364,11 @@ export class HorizontalScroll extends FASTElement {
             return;
         }
 
+        if (this.speed < 1) {
+            this.scrollContainer.scrollLeft = newPosition;
+            return;
+        }
+
         this.scrolling = true;
 
         const steps: number[] = [];
