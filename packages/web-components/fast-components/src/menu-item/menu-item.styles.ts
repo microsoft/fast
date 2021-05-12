@@ -134,7 +134,15 @@ export const menuItemStyles = (context, definition) =>
         display: flex;
         justify-content: center;
     }
-    
+
+    ::slotted(svg) {
+        ${
+            /* Glyph size and margin-left is temporary - 
+            replace when adaptive typography is figured out */ ""
+        } width: 16px;
+        height: 16px;
+    }
+
     :host(:hover) .start,
     :host(:hover) .end,
     :host(:hover)::slotted(svg),
