@@ -2,11 +2,13 @@ import { attr, FASTElement } from "@microsoft/fast-element";
 
 /**
  * enum representing the different month and weekday formats
+ * @public
  */
 export type DateStyle = "long" | "narrow" | "short";
 
 /**
  * Information about a month
+ * @public
  */
 export type MonthInfo = {
     month: number;
@@ -18,12 +20,17 @@ export type MonthInfo = {
 /**
  * Calendar information needed for rendering
  * including the next and previous months
+ * @public
  */
 export type CalendarInfo = MonthInfo & {
     previous: MonthInfo;
     next: MonthInfo;
 };
 
+/**
+ * Calendar component
+ * @public
+ */
 export class Calendar extends FASTElement {
     /**
      * Today's date

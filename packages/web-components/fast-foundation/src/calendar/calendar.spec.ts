@@ -163,6 +163,29 @@ describe("Calendar", () => {
     });
 
     describe("Localization", () => {
+        it("Should be mai for the month May in French", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021" locale="fr-FR"></fast-calendar>
+            `);
+
+            await connect();
+
+            const month = (element as Calendar).getLocaleMonth();
+            expect(month).to.equal("mai");
+        });
+
+        it("Should have French weekday labels for the fr-FR market", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021" locale="fr-FR"></fast-calendar>
+            `);
+
+            await connect();
+
+            const frenchWeekdays = [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ];
+            const weekdays = (element as Calendar).getLocaleWeekDays();
+            const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
+            expect(matchedDays.length).to.equal(7);
+        });
         it("Should be 1943 for the year 2021 for the Hindu calendar", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
                 <fast-calendar month="6" year="2021" locale="hi-IN-u-ca-indian"></fast-calendar>
@@ -184,17 +207,6 @@ describe("Calendar", () => {
             const year = (element as Calendar).getLocaleYear();
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
-        });
-
-        it("Should be mai for the month May in French", async () => {
-            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
-                <fast-calendar month="5" year="2021" locale="fr-FR"></fast-calendar>
-            `);
-
-            await connect();
-
-            const month = (element as Calendar).getLocaleMonth();
-            expect(month).to.equal("mai");
         });
     });
 });

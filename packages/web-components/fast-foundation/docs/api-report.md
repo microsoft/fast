@@ -235,7 +235,7 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 // @public
 export const ButtonTemplate: ViewTemplate<Button>;
 
-// @public (undocumented)
+// @public
 export class Calendar extends FASTElement {
     formatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
     getDateClicked(mouseEvent: any): string | null | undefined;
