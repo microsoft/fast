@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Adding instant scroll to horizontal-scroll component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
