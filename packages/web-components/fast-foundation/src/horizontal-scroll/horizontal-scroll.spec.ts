@@ -181,6 +181,8 @@ describe("HorizontalScroll", () => {
 
             await timeout();
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true)
+
+            await disconnect();
         });
 
         it("should re-enable the next flipper when its scrolled back from the end", async () => {
@@ -200,6 +202,7 @@ describe("HorizontalScroll", () => {
 
             await timeout();
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+            await disconnect();
         });
     });
 
