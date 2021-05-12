@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "selected option is not visible when dropdown is opened in fast-select",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
