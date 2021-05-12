@@ -1,6 +1,6 @@
 import { customElement, FASTElement } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import type { CSSCustomPropertyDefinition } from "./behavior";
 import {
     ConstructableStylesCustomPropertyManager,

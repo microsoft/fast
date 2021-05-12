@@ -5,7 +5,7 @@
   "title": "Button",
   "description": "The FAST button element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-button",
   "properties": {
     "appearance": {

@@ -5,7 +5,7 @@
   "title": "Data grid",
   "description": "The FAST data grid element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-data-grid",
   "properties": {
     "generate-header": {
