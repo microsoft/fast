@@ -1,4 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable } from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowLeft,
@@ -15,6 +15,12 @@ import { applyMixins } from "../utilities/apply-mixins";
 import { MenuItemRole } from "./menu-item.options";
 
 export { MenuItemRole };
+
+/**
+ * Types of menu item column count.
+ * @public
+ */
+export type MenuItemColumnCount = 0 | 1 | 2;
 
 /**
  * A Switch Custom HTML Element.
@@ -55,6 +61,12 @@ export class MenuItem extends FoundationElement {
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
+
+    /**
+     * @internal
+     */
+    @observable
+    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -121,6 +133,10 @@ export class MenuItem extends FoundationElement {
         DOM.queueUpdate(() => {
             this.updateSubmenu();
         });
+
+        if (!this.startColumnCount) {
+            this.startColumnCount = 1;
+        }
 
         this.observer = new MutationObserver(this.updateSubmenu);
     }

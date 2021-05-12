@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "feat: styling and text alignment for menu",
+  "packageName": "@microsoft/fast-components",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
