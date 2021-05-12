@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement, DOM } from "@microsoft/fast-element";
 import { ListboxOption } from "./listbox-option";
 import { ListboxOptionTemplate } from "../listbox-option/listbox-option.template";

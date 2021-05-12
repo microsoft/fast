@@ -1,6 +1,6 @@
 import { customElement, DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { NumberField, NumberFieldTemplate as template } from "./index";
 
 @customElement({

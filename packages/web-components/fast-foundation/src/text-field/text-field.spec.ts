@@ -1,6 +1,6 @@
 import { customElement } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
 import { TextFieldType } from "./text-field";
 
