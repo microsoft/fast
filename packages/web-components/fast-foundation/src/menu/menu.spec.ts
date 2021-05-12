@@ -225,6 +225,73 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should not set indent class on non-menu items", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        const hr = document.createElement("hr");
+
+        element.insertBefore(hr, menuItem2);
+
+        hr.setAttribute("id", "hrid");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("hrid")?.className).to.not.contain("indent");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 0 columns", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-0");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 1 column", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-1");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 2 columns", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        const startSlot = document.createElement("div");
+
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+
+        startSlot.setAttribute("slot", "start");
+
+        menuItem3.appendChild(startSlot);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-2");
+
+        await disconnect();
+    });
+
+
     it("should navigate the menu on arrow up/down keys", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
 
