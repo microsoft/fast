@@ -16,6 +16,7 @@ export {
     StyleTarget,
 } from "./styles/element-styles";
 export { css } from "./styles/css";
+export { cssPartial } from "./styles/css-partial";
 export { CSSDirective } from "./styles/css-directive";
 export * from "./templating/view";
 export * from "./observation/observable";

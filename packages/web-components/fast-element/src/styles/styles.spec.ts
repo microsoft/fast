@@ -8,6 +8,9 @@ import {
 import { DOM } from "../dom";
 import { CSSDirective } from "./css-directive";
 import { css } from "./css";
+import { cssPartial } from "./css-partial";
+import type { Behavior } from "../observation/behavior";
+import { defaultExecutionContext } from "../observation/observable";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStyles", () => {
@@ -244,4 +247,50 @@ describe("css", () => {
             expect(styles.behaviors?.includes(behavior)).to.equal(true)
         });
     })
+});
+
+describe("cssPartial", () => {
+    it("should have a createCSS method that is the CSS string interpolated with the createCSS product of any CSSDirectives", () => {
+        const partial = cssPartial`color: ${{createCSS() { return "red"}, createBehavior() { return undefined}}}`;
+        expect (partial.createCSS()).to.equal("color: red");
+    });
+
+    it("Should add behaviors from interpolated CSS directives when bound to an element", () => {
+        const behavior = {
+            bind() {},
+            unbind() {},
+        }
+
+        const behavior2 = {...behavior};
+
+        const directive = {
+            createCSS() {
+                return ""
+            },
+            createBehavior() {
+                return behavior;
+            }
+        }
+
+        const directive2 = {
+            createCSS() {
+                return ""
+            },
+            createBehavior() {
+                return behavior2;
+            }
+        }
+
+        const partial = cssPartial`${directive}${directive2}`;
+        const el = {
+            $fastController: {
+                addBehaviors(behaviors: Behavior[]) {
+                    expect(behaviors[0]).to.equal(behavior);
+                    expect(behaviors[1]).to.equal(behavior2);
+                }
+            }
+        }
+
+        partial.createBehavior()?.bind(el, defaultExecutionContext)
+    });
 })

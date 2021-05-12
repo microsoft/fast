@@ -128,6 +128,71 @@ Rather than simply concatenating CSS strings, the `css` helper understands that 
 You can also pass a CSS `string` or a [CSSStyleSheet](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet) instance directly to the element definition, or even a mixed array of `string`, `CSSStyleSheet`, or `ElementStyles`.
 :::
 
+### Partial CSS
+There are times when you may want to create reusable blocks of *partial* CSS, where the abstraction is not valid CSS in and of itself, such a groups of CSS properties or a complex value. To do that, you can use the `cssPartial` tagged template literal: 
+
+```ts
+import { css, cssPartial } from "@microsoft/fast-element";
+
+const partial = cssPartial`color: red;`;
+const styles = css`:host{ ${cssPartial} }`;
+```
+
+`cssPartial` can also be interpolated with [`CSSDirective` instances](#CSSDirective), providing even greater flexibility.
+
+## CSSDirective
+The `CSSDirective` allows binding behavior to an element via `ElementStyles`. To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`:
+
+```ts
+import { CSSDirective }  from "@microsoft/fast-element"
+
+class RandomWidth extends CSSDirective {}
+```
+
+A CSS directive has two key methods that you can leverage to add dynamic behavior via CSS:
+
+### createCSS
+`CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`:
+
+```ts
+class RandomWidth extends CSSDirective {
+  createCSS() {
+    return "width: var(--random-width);"
+  }
+}
+```
+
+### createBehavior
+The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`:
+
+
+```ts
+class RandomWidth extends CSSDirective {
+  private property = "--random-width";
+  createCSS() {
+    return `width: var(${this.property});`
+  }
+
+  createBehavior() {
+    return {
+      bind(el) {
+        el.style.setProperty(this.property, Math.random() * 100)
+      }
+      unbind(el) {
+        el.style.removeProperty(this.property);
+      }
+    }
+  }
+}
+```
+
+### Usage in ElementStyles
+The `CSSDirective` can then be used in an `ElementStyles`, where the CSS string from `createCSS()` will be interpolated into the stylesheet, and the behavior returned from `createBehavior()` will get bound to the element using the stylesheet:
+
+```ts
+const styles = css`:host {${new RandomWidth()}}`;
+```
+
 ## Shadow DOM styling
 
 You may have noticed the `:host` selector we used in our `name-tag` styles. This selector allows us to apply styles directly to our custom element. Here are a few things to consider always configuring for your host element:
