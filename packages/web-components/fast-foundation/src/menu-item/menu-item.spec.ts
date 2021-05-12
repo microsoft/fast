@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { MenuItem, MenuItemTemplate as template } from "./index";
 import { fixture } from "../fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
-import { MenuItemRole } from "./menu-item";
+import { MenuItemColumnCount, MenuItemRole } from "./menu-item";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 @customElement({
@@ -66,6 +66,19 @@ describe("Menu item", () => {
         await connect();
 
         expect(element.getAttribute("role")).to.equal(MenuItemRole.menuitem);
+
+        await disconnect();
+    });
+
+    it("should apply a class of `indent-2` when startColumnCount is set to 2", async () => {
+        const { element, connect, disconnect } = await setup();
+        const columnCount = 2;
+
+        element.startColumnCount = columnCount;
+
+        await connect();
+
+        expect(element.getAttribute("class")).to.contain("indent-2");
 
         await disconnect();
     });

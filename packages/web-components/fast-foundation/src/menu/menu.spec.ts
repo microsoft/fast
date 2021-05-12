@@ -194,6 +194,75 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should not set indent class on non-menu items", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <fast-menu-item>Foo</fast-menu-item>
+                <fast-menu-item>Bar</fast-menu-item>
+                <hr id="id1"></hr>
+                <fast-menu-item>Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("id1")?.className).to.not.contain("indent");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 0 columns", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item>Bar</fast-menu-item>
+                <fast-menu-item>Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("id1")?.className).to.contain("indent-0");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 1 column", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item>Bar</fast-menu-item>
+                <fast-menu-item role="menuitemradio">Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("id1")?.className).to.contain("indent-1");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 2 columns", async () => {
+        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
+            <fast-menu>
+                <fast-menu-item id="id1">Foo</fast-menu-item>
+                <fast-menu-item>Bar</fast-menu-item>
+                <fast-menu-item role="menuitemradio"><div slot="start">Foo</div>Baz</fast-menu-item>
+            </fast-menu>
+        `);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("id1")?.className).to.contain("indent-2");
+
+        await disconnect();
+    });
+
     it("should navigate the menu on arrow up/down keys", async () => {
         const { element, connect, disconnect } = await fixture(html<FASTMenu>`
             <fast-menu>

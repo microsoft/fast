@@ -16,6 +16,12 @@ import { MenuItemRole } from "./menu-item.options";
 export { MenuItemRole };
 
 /**
+ * Types of button appearance.
+ * @public
+ */
+export type MenuItemColumnCount = 0 | 1 | 2;
+
+/**
  * A Switch Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
  *
@@ -54,6 +60,12 @@ export class MenuItem extends FASTElement {
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
+
+    /**
+     * @internal
+     */
+    @observable
+    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -120,6 +132,10 @@ export class MenuItem extends FASTElement {
         DOM.queueUpdate(() => {
             this.updateSubmenu();
         });
+
+        if (!this.startColumnCount) {
+            this.startColumnCount = 1;
+        }
 
         this.observer = new MutationObserver(this.updateSubmenu);
     }
