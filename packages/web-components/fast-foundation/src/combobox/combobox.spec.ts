@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { customElement, DOM } from "@microsoft/fast-element";
 import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { Combobox, ComboboxTemplate } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 

@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
+import { nextMacroTask } from "../test-utilities/macrotask";
 import { customElement, DOM, html, ref } from "@microsoft/fast-element";
 import { Disclosure, DisclosureTemplate as template } from "./index";
 
@@ -17,13 +18,7 @@ async function createDisclosure() {
     return { element, connect, disconnect };
 }
 
-async function macrotask() {
-    return new Promise((resolve, reject) => {
-        window.setTimeout(() => {
-            resolve(void 0);
-        })
-    })
-}
+
 
 describe("Disclosure", () => {
     describe("User interaction", () => {
@@ -31,7 +26,7 @@ describe("Disclosure", () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.toggle();
-            await macrotask();
+            await nextMacroTask();
             expect(element.expanded).to.equal(true);
             await disconnect();
         });
@@ -40,10 +35,10 @@ describe("Disclosure", () => {
             const { element, connect, disconnect } = await createDisclosure();
             await connect();
             element.show();
-            await macrotask();
+            await nextMacroTask();
             expect(element.expanded).to.equal(true);
             element.hide();
-            await macrotask();
+            await nextMacroTask();
             expect(element.expanded).to.equal(false);
             await disconnect();
         });

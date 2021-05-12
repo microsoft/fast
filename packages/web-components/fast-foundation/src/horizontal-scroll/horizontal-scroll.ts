@@ -1,4 +1,10 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    DOM,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
@@ -89,7 +95,7 @@ export class HorizontalScroll extends FASTElement {
      * Speed of scroll in pixels per second
      * @public
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public speed: number = 600;
 
     /**
