@@ -16,6 +16,7 @@ import {
     focusOutlineWidth,
     neutralFillStealthRest,
     neutralFocus,
+    neutralForegroundHint,
     neutralForegroundRest,
     neutralLayerL2,
     neutralLayerL3,
@@ -23,7 +24,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralLayerL3Behavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const menuItemStyles = (context, definition) =>
     css`
@@ -48,6 +49,33 @@ export const menuItemStyles = (context, definition) =>
         line-height: ${typeRampBaseLineHeight};
         border-radius: calc(${cornerRadius} * 1px);
         border: calc(${focusOutlineWidth} * 1px) solid transparent;
+    }
+
+    :host(.indent-0) {
+        grid-template-columns: auto 1fr minmax(42px, auto);
+    }
+    :host(.indent-0) .content {
+        grid-column: 1;
+        grid-row: 1;
+        margin-inline-start: 10px;
+    }
+    :host(.indent-2) {
+        grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
+    }
+    :host(.indent-2) .content {
+        grid-column: 3;
+        grid-row: 1;
+        margin-inline-start: 10px;
+    }
+    :host(.indent-2) .expand-collapse-glyph-container {
+        grid-column: 5;
+        grid-row: 1;
+    }
+    :host(.indent-2) .start {
+        grid-column: 2;
+    }
+    :host(.indent-2) .end {
+        grid-column: 4;
     }
 
     :host(:${focusVisible}) {
@@ -91,7 +119,6 @@ export const menuItemStyles = (context, definition) =>
             replace when glyph-size var is added */ ""
         } width: 16px;
         height: 16px;
-        transition: transform 0.1s linear;
         fill: currentcolor;
     }
 
@@ -107,7 +134,7 @@ export const menuItemStyles = (context, definition) =>
         display: flex;
         justify-content: center;
     }
-    
+
     ::slotted(svg) {
         ${
             /* Glyph size and margin-left is temporary - 
@@ -125,13 +152,17 @@ export const menuItemStyles = (context, definition) =>
         fill: ${neutralForegroundRest};
     }
 
-    :host([aria-haspopup="menu"]),
-    :host([role="menuitemcheckbox"]),
-    :host([role="menuitemradio"]) {
+    :host(.indent-1[aria-haspopup="menu"]),
+    :host(.indent-1[role="menuitemcheckbox"]),
+    :host(.indent-1[role="menuitemradio"]) {
         display: grid;
-        grid-template-columns: auto auto 1fr minmax(42px, auto);
+        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
         align-items: center;
         min-height: 32px;
+    }
+
+    :host(.indent-2:not([aria-haspopup="menu"])) .end {
+        grid-column: 5;
     }
 
     :host .input-container,
@@ -143,13 +174,6 @@ export const menuItemStyles = (context, definition) =>
     :host([role="menuitemcheckbox"]) .input-container,
     :host([role="menuitemradio"]) .input-container {
         display: grid;
-        margin-inline-end: 10px;
-    }
-
-    :host([aria-haspopup="menu"]) .start,
-    :host([role="menuitemcheckbox"]) .start,
-    :host([role="menuitemradio"]) .start {
-        grid-column-start: 2;
         margin-inline-end: 10px;
     }
 
@@ -205,6 +229,11 @@ export const menuItemStyles = (context, definition) =>
     ::slotted([slot="radio-indicator"]),
     ::slotted([slot="expand-collapse-indicator"]) {
         display: none;
+    }
+
+    ::slotted([slot="end"]:not(svg)) {
+        margin-inline-end: 10px;
+        color: ${neutralForegroundHint}
     }
 
     :host([aria-checked="true"]) .checkbox-indicator,
@@ -328,16 +357,10 @@ export const menuItemStyles = (context, definition) =>
                 .expand-collapse-glyph {
                     transform: rotate(0deg);
                 }
-                :host([expanded="true"]) .expand-collapse-glyph {
-                    transform: rotate(45deg);
-                }
             `,
             css`
                 .expand-collapse-glyph {
                     transform: rotate(180deg);
-                }
-                :host([expanded="true"]) .expand-collapse-glyph {
-                    transform: rotate(135deg);
                 }
             `
         )
