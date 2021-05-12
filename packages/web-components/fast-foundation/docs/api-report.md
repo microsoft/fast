@@ -98,6 +98,8 @@ export class AnchoredRegion extends FoundationElement {
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    contentRendered: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
     fixedPlacement: boolean;

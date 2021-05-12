@@ -366,7 +366,7 @@ export class AnchoredRegion extends FoundationElement {
      * @internal
      */
     @observable
-    public regionVisible: boolean = false;
+    public contentRendered: boolean = false;
 
     /**
      * indicates the current horizontal position of the region
@@ -513,7 +513,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     private setInitialState(): void {
         this.initialLayoutComplete = false;
-        this.regionVisible = false;
+        this.contentRendered = false;
         this.translateX = 0;
         this.translateY = 0;
 
@@ -946,8 +946,8 @@ export class AnchoredRegion extends FoundationElement {
             return;
         }
 
-        if (!this.regionVisible) {
-            this.regionVisible = true;
+        if (!this.contentRendered) {
+            this.contentRendered = true;
             this.style.removeProperty("pointer-events");
             this.style.removeProperty("opacity");
             this.classList.toggle("loaded", true);

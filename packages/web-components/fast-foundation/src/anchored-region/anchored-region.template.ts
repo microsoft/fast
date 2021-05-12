@@ -10,7 +10,7 @@ export const anchoredRegionTemplate: (
     context,
     definition
 ) => ViewTemplate<AnchoredRegion> = (context, definition) => html`
-    <template class="${x => (x.regionVisible ? "loaded" : "")}">
+    <template class="${x => (x.contentRendered ? "loaded" : "")}">
         ${when(
             x => x.initialLayoutComplete,
             html<AnchoredRegion>`
