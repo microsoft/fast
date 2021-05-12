@@ -1463,6 +1463,8 @@ export class MenuItem extends FoundationElement {
     hasSubmenu: boolean;
     role: MenuItemRole;
     // @internal (undocumented)
+    startColumnCount: MenuItemColumnCount;
+    // @internal (undocumented)
     submenu: Element | undefined;
     // @internal (undocumented)
     submenuLoaded: () => void;
@@ -1473,6 +1475,9 @@ export class MenuItem extends FoundationElement {
 // @internal
 export interface MenuItem extends StartEnd {
 }
+
+// @public
+export type MenuItemColumnCount = 0 | 1 | 2;
 
 // @public
 export enum MenuItemRole {
