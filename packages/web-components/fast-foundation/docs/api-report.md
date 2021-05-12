@@ -238,41 +238,13 @@ export const ButtonTemplate: ViewTemplate<Button>;
 // @public (undocumented)
 export class Calendar extends FASTElement {
     formatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
-    getCalendarInfo(year?: number, month?: number): {
-        month: number;
-        year: number;
-        start: number;
-        length: number;
-        previous: {
-            month: number;
-            year: number;
-            length: number;
-        };
-        next: {
-            month: number;
-            year: number;
-        };
-    };
-    // (undocumented)
-    getDays(info?: {
-        month: number;
-        year: number;
-        start: number;
-        length: number;
-        previous: {
-            month: number;
-            year: number;
-            length: number;
-        };
-        next: {
-            month: number;
-            year: number;
-        };
-    }): any;
-    getLocaleDay(day?: number): string;
+    getDateClicked(mouseEvent: any): string | null | undefined;
+    getDays(info?: CalendarInfo): any;
+    getLocaleDay(month?: number, day?: number, year?: number): string;
     getLocaleMonth(month?: number): string;
     getLocaleWeekDays(): string[];
     getLocaleYear(year?: number): string;
+    getMonthInfo(year?: number, month?: number): CalendarInfo;
     // @internal
     isRTL(): boolean;
     isToday(year: number, month: number, day: number): boolean;
@@ -283,11 +255,14 @@ export class Calendar extends FASTElement {
     year: number;
 }
 
-// @public (undocumented)
-export const CalendarTemplate: ViewTemplate<Calendar>;
+// @public
+export type CalendarInfo = MonthInfo & {
+    previous: MonthInfo;
+    next: MonthInfo;
+};
 
 // @public (undocumented)
-export type CalendarType = "buddhist" | "chinese" | "coptic" | "ethiopia" | "ethiopic" | "gregory" | "hebrew" | "indian" | "islamic" | "iso8601" | " japanese" | "persian" | "roc";
+export const CalendarTemplate: ViewTemplate<Calendar>;
 
 // @public
 export class Card extends FASTElement {
@@ -693,7 +668,7 @@ export enum DataGridRowTypes {
     stickyHeader = "sticky-header"
 }
 
-// @public (undocumented)
+// @public
 export type DateStyle = "long" | "narrow" | "short";
 
 // @public
@@ -1455,6 +1430,14 @@ export const MenuItemTemplate: ViewTemplate<MenuItem>;
 // @public
 export const MenuTemplate: ViewTemplate<Menu>;
 
+// @public
+export type MonthInfo = {
+    month: number;
+    year: number;
+    length: number;
+    start: number;
+};
+
 // @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;
 
@@ -1504,9 +1487,6 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 
 // @public
 export const NumberFieldTemplate: ViewTemplate<NumberField>;
-
-// @public (undocumented)
-export type NumberingSystem = "arab" | "arabext" | "bali" | "beng" | "deva" | "fullwide" | "gujr" | "guru" | "hanidec" | "khmr" | "knda" | "laoo" | "latn" | "limb" | "mlym" | "mong" | "mymr" | "orya" | "tamldec" | "telu" | "thai" | "tibt";
 
 // @alpha
 export const optional: (key: any) => any;

@@ -133,13 +133,6 @@ export class Calendar extends FASTElement {
         if (typeof date === "string") {
             date = new Date(date);
         } else if (Array.isArray(date)) {
-            if (date[1] == 31)
-                console.log(
-                    date,
-                    new Date(
-                        date.reduce((dt, val) => `${dt}${dt !== "" ? "-" : ""}${val}`, "")
-                    )
-                );
             date = new Date(
                 date.reduce((dt, val) => `${dt}${dt !== "" ? "-" : ""}${val}`, "")
             );
@@ -212,17 +205,16 @@ export class Calendar extends FASTElement {
     }
 
     /**
-     * A matrix of calendar days
+     * A list of calendar days
      * @param info - an object containing the information needed to render a calendar month
-     * @returns a matrix of days
+     * @returns a list of days in a calendar month
      */
     public getDays(info: CalendarInfo = this.getMonthInfo()) {
         const { start, length, previous, next } = info;
-        const days: any = [[]];
-        const lastWeek = () => days[days.length - 1];
+        const days: any = [];
         let day = 1 - start;
 
-        while (day < length || lastWeek().length < 7 || days.length < 6) {
+        while (days.length < 42) {
             const { month, year } = day < 1 ? previous : day > length ? next : info;
             const date = {
                 day: day < 1 ? previous.length + day : day > length ? day - length : day,
@@ -230,11 +222,7 @@ export class Calendar extends FASTElement {
                 year,
             };
 
-            if (lastWeek().length > 6) {
-                days.push([]);
-            }
-
-            lastWeek().push(date);
+            days.push(date);
             day++;
         }
 
