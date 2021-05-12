@@ -53,8 +53,20 @@ A default value can be set for a token, so that the default value is returned fr
 ```ts
 fillColor.withDefault("#FFFFFF");
 ```
-### 6. Emit a token to a CSS Custom Property
-DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a (derived value)[#derived-design-token-values], the CSS custom property will also be emitted when any dependent tokens change.
+### 6. CSS Custom Property emission
+Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a (derived value)[#derived-design-token-values], the CSS custom property will also be emitted when any dependent tokens change.
+
+A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration with `cssCustomPropertyName` set to `null` during creation:
+
+```ts
+DesignToken.create<number>({name: "my-token", cssCustomPropertyName: null});
+```
+
+A DesignToken can also be configured to emit to a CSS custom property that is different than the provided name by providing a CSS custom property name to the configuration:
+
+```ts
+DesignToken.create<number>({name: "my-token", cssCustomPropertyName: "my-css-custom-property-name"}); // Emits to --my-css-custom-property-name
+```
 
 #### Values with a 'createCSS' method
 It is sometimes useful to be able to set a token to a complex object but still use that value in CSS. If a DesignToken is assigned a value with a `createCSS` method on it, the product of that method will be used when emitting to a CSS custom property instead of the Design Token value itself:

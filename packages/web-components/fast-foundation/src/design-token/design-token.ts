@@ -10,6 +10,7 @@ import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
+    DesignTokenConfiguration,
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
@@ -21,24 +22,9 @@ const defaultElement = document.body;
  * @alpha
  */
 export interface DesignToken<
-    T extends
-        | string
-        | number
-        | boolean
-        | BigInteger
-        | null
-        | Array<any>
-        | symbol
-        | { createCSS?(): string }
-> extends CSSDirective {
+    T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
+> {
     readonly name: string;
-
-    /**
-     * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
-     * configured to write a CSS custom property, otherwise empty string;
-     */
-    readonly cssCustomProperty: string;
-
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
@@ -65,6 +51,28 @@ export interface DesignToken<
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
+/**
+ * A {@link (DesignToken:interface)} that emits a CSS custom property.
+ * @alpha
+ */
+export interface CSSDesignToken<
+    T extends
+        | string
+        | number
+        | boolean
+        | BigInteger
+        | null
+        | Array<any>
+        | symbol
+        | { createCSS?(): string }
+> extends DesignToken<T>, CSSDirective {
+    /**
+     * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
+     * configured to write a CSS custom property.
+     */
+    readonly cssCustomProperty: string;
+}
+
 interface DesignTokenSubscriber {
     handleChange(token: DesignToken<any>, element: HTMLElement): void;
 }
@@ -74,22 +82,46 @@ interface DesignTokenSubscriber {
  */
 class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
-    private cssVar: string;
+    public readonly name: string;
+    public readonly cssCustomProperty: string | undefined;
+    private cssVar: string | undefined;
     private subscribers = new Set<DesignTokenSubscriber>();
     private setFor = new Set<HTMLElement>();
 
-    constructor(public readonly name: string) {
+    public static from<T>(
+        nameOrConfig: string | DesignTokenConfiguration
+    ): DesignTokenImpl<T> {
+        return new DesignTokenImpl<T>({
+            name: typeof nameOrConfig === "string" ? nameOrConfig : nameOrConfig.name,
+            cssCustomPropertyName:
+                typeof nameOrConfig === "string"
+                    ? nameOrConfig
+                    : nameOrConfig.cssCustomPropertyName === void 0
+                    ? nameOrConfig.name
+                    : nameOrConfig.cssCustomPropertyName,
+        });
+    }
+
+    public static isCSSDesignToken<T>(
+        token: DesignToken<T> | CSSDesignToken<T>
+    ): token is CSSDesignToken<T> {
+        return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
+    }
+
+    constructor(configuration: Required<DesignTokenConfiguration>) {
         super();
 
-        this.cssCustomProperty = `--${name}`;
-        this.cssVar = `var(${this.cssCustomProperty})`;
+        this.name = configuration.name;
+
+        if (configuration.cssCustomPropertyName !== null) {
+            this.cssCustomProperty = `--${configuration.cssCustomPropertyName}`;
+            this.cssVar = `var(${this.cssCustomProperty})`;
+        }
     }
 
     public createCSS(): string {
-        return this.cssVar;
+        return this.cssVar || "";
     }
-
-    public readonly cssCustomProperty: string;
 
     public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
         const node = DesignTokenNode.for(this, element);
@@ -180,7 +212,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     @observable
     public useCSSCustomProperty = false;
-    private useCSSCustomPropertyChanged(prev: undefined | boolean, next: boolean) {
+    private useCSSCustomPropertyChanged?(prev: undefined | boolean, next: boolean) {
         if (next) {
             Observable.getNotifier(this).subscribe(
                 this.cssCustomPropertySubscriber,
@@ -198,7 +230,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     constructor(
-        public readonly token: DesignToken<T>,
+        public readonly token: DesignToken<T> | CSSDesignToken<T>,
         public readonly target: HTMLElement | (HTMLElement & FASTElement)
     ) {
         if (nodeCache.has(target) && nodeCache.get(target)!.has(token)) {
@@ -210,6 +242,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         const container = DI.getOrCreateDOMContainer(this.target);
         const channel = DesignTokenNode.channel(token);
         container.register(Registration.instance(channel, this));
+
+        if (!DesignTokenImpl.isCSSDesignToken(token)) {
+            delete this.useCSSCustomPropertyChanged;
+        }
 
         if (target instanceof FASTElement) {
             (target as FASTElement).$fastController.addBehaviors([this]);
@@ -316,14 +352,14 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         handleChange: () => {
             CustomPropertyManager.addTo(
                 this.target,
-                this.token,
+                this.token as CSSDesignToken<T>,
                 this.resolveCSSValue(this.value)
             );
         },
         dispose: () => {
             CustomPropertyManager.removeFrom(
                 this.target,
-                this.token,
+                this.token as CSSDesignToken<T>,
                 this.resolveCSSValue(this.value)
             );
         },
@@ -463,11 +499,23 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 }
 
-function create<T extends Function>(name: string): never;
-function create<T extends undefined | void>(name: string): never;
-function create<T>(name: string): DesignToken<T>;
-function create<T>(name: string): any {
-    return new DesignTokenImpl<T>(name);
+function create<T extends Function>(
+    nameOrConfig: string | DesignTokenConfiguration
+): never;
+function create<T extends undefined | void>(
+    nameOrConfig: string | DesignTokenConfiguration
+): never;
+function create<T>(nameOrConfig: string): CSSDesignToken<T>;
+function create<T>(
+    nameOrConfig:
+        | Omit<DesignTokenConfiguration, "cssCustomPropertyName">
+        | (DesignTokenConfiguration & Record<"cssCustomPropertyName", string>)
+): CSSDesignToken<T>;
+function create<T>(
+    nameOrConfig: DesignTokenConfiguration & Record<"cssCustomPropertyName", null>
+): DesignToken<T>;
+function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
+    return DesignTokenImpl.from(nameOrConfig);
 }
 
 /**
