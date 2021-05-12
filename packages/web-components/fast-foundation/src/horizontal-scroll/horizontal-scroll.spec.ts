@@ -1,7 +1,7 @@
 import { css, customElement, DOM, FASTElement, html } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { nextMacroTask } from "../test-utilities/macrotask";
+import { timeout } from "../test-utilities/timeout";
 import { HorizontalScroll, HorizontalScrollTemplate as template } from "./index";
 
 const styles = css`
@@ -59,7 +59,7 @@ const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; he
  */
 const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
 
-describe("HorinzontalScroll", () => {
+describe("HorizontalScroll", () => {
 
     it("should disable next flipper when resize bigger", async () => {
         const { element, connect, disconnect} = await fixture(html<FASTHorizontalScroll>`
@@ -73,7 +73,7 @@ describe("HorinzontalScroll", () => {
         expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
         
         element.style.width = "1000px";
-        await DOM.nextUpdate();
+        await timeout(element['frameTime'] + 20);
 
         expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
@@ -144,7 +144,7 @@ describe("HorinzontalScroll", () => {
             await DOM.nextUpdate();
             element.scrollToNext();
 
-            await nextMacroTask();
+            await timeout();
             expect(element.previousFlipper.classList.contains("disabled")).to.be.false;
             await disconnect();
         });
@@ -160,7 +160,7 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToPrevious();
 
-            await nextMacroTask();
+            await timeout();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
             await disconnect();
@@ -179,7 +179,7 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
 
-            await nextMacroTask();
+            await timeout();
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true)
         });
 
@@ -198,7 +198,7 @@ describe("HorinzontalScroll", () => {
             element.scrollToPrevious();
 
 
-            await nextMacroTask();
+            await timeout();
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
         });
     });
@@ -228,7 +228,7 @@ describe("HorinzontalScroll", () => {
             await DOM.nextUpdate();
             element.scrollToNext();
 
-            await nextMacroTask();
+            await timeout();
             const position: number = getXPosition(element) || 0;
             const cardsFit = (horizontalScrollWidth - horizontalScrollWidth % cardSpace) / cardSpace;
             const cardStart = cardSpace * (cardsFit - 1);
@@ -250,7 +250,7 @@ describe("HorinzontalScroll", () => {
             await DOM.nextUpdate();
             element.scrollToPrevious();
 
-            await nextMacroTask();
+            await timeout();
             const scrollPosition: number | null = getXPosition(element);
 
             expect(scrollPosition !== null && scrollPosition >= 0).to.equal(true);
@@ -274,7 +274,7 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
 
-            await nextMacroTask();
+            await timeout();
             let cardViewWidth: number = cardSpace * 5 * -1;
             const scrollPosition: number | null = getXPosition(element);
 
@@ -294,14 +294,14 @@ describe("HorinzontalScroll", () => {
             const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             element.scrollToNext();
-            await nextMacroTask();
+            await timeout();
             const firstXPos: number | null = getXPosition(scrollContent);
             element.scrollToPrevious();
 
             element.style.width = `${horizontalScrollWidth}px`;
             element.scrollToNext();
 
-            await nextMacroTask();
+            await timeout();
             const secondXPos: number | null = getXPosition(scrollContent);
 
             expect(firstXPos === secondXPos).to.equal(false);
