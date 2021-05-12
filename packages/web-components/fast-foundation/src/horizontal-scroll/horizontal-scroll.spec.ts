@@ -134,6 +134,7 @@ describe("HorizontalScroll", () => {
             await disconnect();
         });
 
+        // TODO: https://github.com/microsoft/fast/issues/4707
         xit("should enable the previous flipper when content is scrolled", async () => {
             const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
                 <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
@@ -166,6 +167,7 @@ describe("HorizontalScroll", () => {
             await disconnect();
         });
 
+        // TODO: https://github.com/microsoft/fast/issues/4707
         xit("should disable the next flipper when it reaches the end of the content", async () => {
             const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
                 <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
@@ -221,6 +223,7 @@ describe("HorizontalScroll", () => {
             await disconnect();
         });
 
+        // TODO: https://github.com/microsoft/fast/issues/4707
         xit("should scroll to the beginning of the last element in full view", async () => {
             const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
                 <fast-horizontal-scroll style="width: ${horizontalScrollWidth}px" speed="-1">
@@ -286,6 +289,7 @@ describe("HorizontalScroll", () => {
             await disconnect();
         });
         
+        // TODO: https://github.com/microsoft/fast/issues/4707
         xit("should change scroll stop on resize", async () => {
             const { element, connect, disconnect }: { element: FASTHorizontalScroll, connect: () => Promise<void>, disconnect: () => Promise<void>} = await fixture(html<FASTHorizontalScroll>`
                 <fast-horizontal-scroll style="width: ${horizontalScrollWidth * 2}px" speed="-1">
