@@ -5,7 +5,7 @@
   "title": "Combobox",
   "description": "The FAST combobox element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-combobox",
   "properties": {
     "autocomplete": {

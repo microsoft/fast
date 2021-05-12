@@ -819,16 +819,16 @@ export interface DesignSystemRegistrationContext {
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
-export interface DesignToken<T> extends CSSDirective {
-    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
+export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
+    createCSS?(): string;
+}> extends CSSDirective {
     readonly cssCustomProperty: string;
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     // (undocumented)
     readonly name: string;
-    // (undocumented)
-    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
+    withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
 // @alpha
@@ -1132,6 +1132,7 @@ export class HorizontalScroll extends FASTElement {
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollItems: HTMLElement[];
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1210,6 +1211,8 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
+    // @internal
+    mousedownHandler(e: MouseEvent): boolean | void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
@@ -2196,7 +2199,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:50:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:46:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

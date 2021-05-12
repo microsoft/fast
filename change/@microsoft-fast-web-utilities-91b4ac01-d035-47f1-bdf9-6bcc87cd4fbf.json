@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: convert Jest tests to Karma/Mocha/Chai",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

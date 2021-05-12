@@ -61,6 +61,20 @@ module.exports = function (config) {
                 extensions: [".js", ".json"],
                 modules: ["node_modules"],
                 mainFields: ["module", "main"],
+                alias: {
+                    "@microsoft/fast-components": path.resolve(
+                        __dirname,
+                        "./node_modules/@microsoft/fast-components"
+                    ),
+                    "@microsoft/fast-foundation": path.resolve(
+                        __dirname,
+                        "./node_modules/@microsoft/fast-foundation"
+                    ),
+                    "@microsoft/fast-element": path.resolve(
+                        __dirname,
+                        "./node_modules/@microsoft/fast-element"
+                    ),
+                },
             },
             devtool: "inline-source-map",
             performance: {
@@ -100,6 +114,12 @@ module.exports = function (config) {
                             },
                         ],
                     },
+                    {
+                        test: /message\-system\.min\.js/,
+                        use: {
+                            loader: "worker-loader",
+                        },
+                    },
                 ],
             },
         },
@@ -133,10 +153,11 @@ module.exports = function (config) {
     if (config.coverage) {
         options.webpack.module.rules.push({
             enforce: "post",
-            exclude: /(fast-web-utilities|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
+            exclude: /(message-system\.service\.[tj]s|monaco-adapter\.service\.[tj]s|shortcuts\.service\.[tj]s|ajv-validation\.service\.[tj]s|monaco-adapter\.service\.[tj]s|__tests__|testing|node_modules|web-worker\.[tj]s|\.spec\.[tj]s$)/,
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
+            include: path.resolve(__dirname, "./dist/"),
         });
         options.reporters = ["coverage-istanbul", ...options.reporters];
         options.coverageIstanbulReporter = {
@@ -146,10 +167,10 @@ module.exports = function (config) {
             thresholds: {
                 emitWarning: false,
                 global: {
-                    statements: 100,
-                    lines: 100,
-                    branches: 100,
-                    functions: 100,
+                    statements: 90,
+                    lines: 90,
+                    branches: 90,
+                    functions: 90,
                 },
             },
         };

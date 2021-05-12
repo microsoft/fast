@@ -5,7 +5,7 @@
   "title": "Tree item",
   "description": "The FAST tree item element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-tree-item",
   "properties": {
     "expanded": {

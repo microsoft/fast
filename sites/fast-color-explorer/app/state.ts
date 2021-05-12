@@ -1,7 +1,7 @@
 import { Action, createStore } from "redux";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { createColorPalette } from "@microsoft/fast-components-styles-msft";
-import { Swatch } from "@microsoft/fast-components-styles-msft/dist/utilities/color/common";
+import { createColorPalette } from "@microsoft/fast-components";
+import { Swatch } from "@microsoft/fast-components/dist/esm/color";
 import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
 import { defaultNeutralColor } from "./colors";
 

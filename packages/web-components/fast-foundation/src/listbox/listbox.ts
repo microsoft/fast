@@ -160,18 +160,41 @@ export class Listbox extends FASTElement {
     protected focusAndScrollOptionIntoView(): void {
         if (this.contains(document.activeElement) && this.firstSelectedOption) {
             this.firstSelectedOption.focus();
-            this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+            requestAnimationFrame(() => {
+                this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+            });
         }
     }
+
+    /**
+     * A standard `click` event creates a `focus` event before firing, so a
+     * `mousedown` event is used to skip that initial focus.
+     *
+     * @internal
+     */
+    private shouldSkipFocus: boolean = false;
 
     /**
      * @internal
      */
     public focusinHandler(e: FocusEvent): void {
-        if (e.target === e.currentTarget) {
+        if (!this.shouldSkipFocus && e.target === e.currentTarget) {
             this.setSelectedOptions();
             this.focusAndScrollOptionIntoView();
         }
+
+        this.shouldSkipFocus = false;
+    }
+
+    /**
+     * Prevents `focusin` events from firing before `click` events when the
+     * element is unfocused.
+     *
+     * @internal
+     */
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        this.shouldSkipFocus = !this.contains(document.activeElement);
+        return true;
     }
 
     /**
@@ -302,6 +325,8 @@ export class Listbox extends FASTElement {
         if (this.disabled) {
             return true;
         }
+
+        this.shouldSkipFocus = false;
 
         const key = e.key;
 

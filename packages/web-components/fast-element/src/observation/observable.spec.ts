@@ -606,6 +606,28 @@ describe("The Observable", () => {
 
             expect(wasCalled).to.equal(false);
         });
+
+
+        it("allows inspection of subscription records of used observables after observation", () => {
+            const observed = [{}, {}, {}].map(( x: any, i ) => {
+                Observable.defineProperty(x, "value");
+                x.value = i
+                return x;
+            });
+
+            function binding() {
+                return observed[0].value + observed[1].value + observed[2].value
+            }
+
+            const bindingObserver = Observable.binding(binding);
+            bindingObserver.observe({}, defaultExecutionContext);
+
+            let i = 0;
+            for (const record of bindingObserver.records()) {
+                expect(record.propertySource).to.equal(observed[i]);
+                i++;
+            }
+        });
     });
 
     context("DefaultObservableAccessor", () => {
