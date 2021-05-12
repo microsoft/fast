@@ -132,7 +132,7 @@ export class Calendar extends FASTElement {
      * @param options - elements to format and timezone
      * @returns a localized string for requested element
      */
-    public formatter(
+    public localeFormatter(
         date: Date | string | number[] = [this.month, 1, this.year],
         options: Intl.DateTimeFormatOptions,
         locale: string = this.locale
@@ -156,7 +156,7 @@ export class Calendar extends FASTElement {
      * @public
      */
     public getLocaleMonth(month: number = this.month): string {
-        return this.formatter([month, 1, this.year], { month: this.monthFormat });
+        return this.localeFormatter([month, 1, this.year], { month: this.monthFormat });
     }
 
     /**
@@ -166,7 +166,7 @@ export class Calendar extends FASTElement {
      * @public
      */
     public getLocaleYear(year: number = this.year): string {
-        return this.formatter([this.month, 1, year], { year: "numeric" });
+        return this.localeFormatter([this.month, 1, year], { year: "numeric" });
     }
 
     /**
@@ -180,7 +180,7 @@ export class Calendar extends FASTElement {
         day: number = this.today.getDate(),
         year: number = this.year
     ): string {
-        return this.formatter([month, day, year], { day: "numeric" });
+        return this.localeFormatter([month, day, year], { day: "numeric" });
     }
 
     /**
@@ -192,7 +192,7 @@ export class Calendar extends FASTElement {
         return Array(7)
             .fill(null)
             .map((_, day) =>
-                this.formatter([1, day + 1, 2017], { weekday: this.weekdayFormat })
+                this.localeFormatter([1, day + 1, 2017], { weekday: this.weekdayFormat })
             );
     }
 

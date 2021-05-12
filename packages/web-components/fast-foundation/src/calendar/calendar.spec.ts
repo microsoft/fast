@@ -1,6 +1,6 @@
 import { css, customElement, DOM, FASTElement, html } from "@microsoft/fast-element";
-import { expect, assert } from "chai";
-import { fixture } from "../fixture";
+import { expect } from "chai";
+import { fixture } from "../test-utilities/fixture";
 import { Calendar, CalendarTemplate as template } from "./index";
 
 /**
@@ -46,6 +46,18 @@ describe("Calendar", () => {
 
             expect((element as Calendar).getDays().length).to.equal(42);
         });
+
+        it("Should highlight the current date", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar></fast-calendar>
+            `);
+
+            await connect();
+
+            const today = new Date();
+
+            expect((element as Calendar).isToday(today.getFullYear(), today.getMonth() + 1, today.getDate())).to.equal(true);
+        })
     });
 
     describe("Month info", () => {
