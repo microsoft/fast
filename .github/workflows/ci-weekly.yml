@@ -94,7 +94,7 @@ jobs:
     - name: Testing Prettier format
       run: yarn format:check
       
-      - name: Prepare workspaces
+    - name: Prepare workspaces
       run: yarn prepare
 
     - name: Testing unit tests
