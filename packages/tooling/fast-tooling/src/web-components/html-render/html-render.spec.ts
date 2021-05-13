@@ -1,5 +1,5 @@
 import { customElement, DOM, html } from "@microsoft/fast-element";
-import { fixture } from "@microsoft/fast-foundation/dist/esm/fixture";
+import { fixture } from "../fixture";
 import { expect } from "chai";
 import {
     MessageSystem,
@@ -152,7 +152,7 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();
@@ -187,7 +187,7 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const container = element.shadowRoot?.querySelector(".html-render");
+        const container: HTMLElement = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
@@ -261,7 +261,7 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const container = element.shadowRoot?.querySelector(".html-render");
+        const container: HTMLElement = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.focus();
         container.click();
@@ -282,7 +282,7 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();
@@ -297,7 +297,7 @@ describe("HTMLRender", () => {
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
 
-        const container = element.shadowRoot?.querySelector(".html-render");
+        const container: HTMLElement = element.shadowRoot?.querySelector(".html-render");
         expect(container).to.not.be.null;
         container.click();
         await DOM.nextUpdate();
@@ -331,7 +331,7 @@ describe("HTMLRender", () => {
             composedPath: () => {
                 return [el];
             },
-        });
+        } as any);
         await DOM.nextUpdate();
 
         let activity: ActivityResult = (element.querySelector(
@@ -344,7 +344,7 @@ describe("HTMLRender", () => {
             "[role=htmlrenderlayer]"
         ) as HTMLRenderLayerTest).lastActivity = null;
 
-        element.blurHandler({});
+        element.blurHandler({} as any);
         await DOM.nextUpdate();
 
         activity = (element.querySelector(
@@ -370,7 +370,7 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();
@@ -379,7 +379,7 @@ describe("HTMLRender", () => {
             composedPath: () => {
                 return [el];
             },
-        });
+        } as any);
         await DOM.nextUpdate();
         const activity: ActivityResult = (element.querySelector(
             "[role=htmlrenderlayer]"

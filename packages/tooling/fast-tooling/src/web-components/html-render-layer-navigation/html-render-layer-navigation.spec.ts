@@ -1,5 +1,5 @@
 import { DOM } from "@microsoft/fast-element";
-import { fixture } from "@microsoft/fast-foundation/dist/esm/fixture";
+import { fixture } from "../fixture";
 import { expect } from "chai";
 import { MessageSystem, MessageSystemType } from "../../message-system";
 import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-config";

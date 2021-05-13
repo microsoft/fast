@@ -1,5 +1,5 @@
 import { customElement } from "@microsoft/fast-element";
-import { fixture } from "@microsoft/fast-foundation/dist/esm/fixture";
+import { fixture } from "../fixture";
 import { expect } from "chai";
 import { ColorPickerTemplate as template } from "./color-picker.template";
 import { FASTColorPicker as ColorPicker } from "./";
