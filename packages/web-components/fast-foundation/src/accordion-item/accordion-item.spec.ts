@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { AccordionItem, AccordionItemTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement } from "@microsoft/fast-element";
 
 @customElement({

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customElement, DOM, html } from "@microsoft/fast-element";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { FlipperDirection } from "./flipper.options";
 import { Flipper, FlipperTemplate as template } from "./index";
 
