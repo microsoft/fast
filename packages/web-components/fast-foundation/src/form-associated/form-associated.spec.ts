@@ -1,6 +1,6 @@
 import { FormAssociated } from "./form-associated";
 import { assert, expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`

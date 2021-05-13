@@ -1,7 +1,7 @@
 import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import type { Container } from "../di";
-import { uniqueElementName } from "../fixture";
+import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
 
 describe("DesignSystem", () => {
