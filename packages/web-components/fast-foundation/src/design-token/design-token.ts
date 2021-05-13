@@ -25,6 +25,9 @@ export interface DesignToken<
     T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
 > {
     readonly name: string;
+
+    readonly setFor: HTMLElement[];
+
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
@@ -112,7 +115,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         HTMLElement | this,
         Set<DesignTokenSubscriber<T>>
     >();
-    private setFor = new Set<HTMLElement>();
+    private _setFor = new Set<HTMLElement>();
+    public get setFor() {
+        return [...this._setFor];
+    }
 
     public static from<T>(
         nameOrConfig: string | DesignTokenConfiguration
@@ -168,7 +174,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         element: HTMLElement,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
-        this.setFor.add(element);
+        this._setFor.add(element);
         if (value instanceof DesignTokenImpl) {
             const _value = value;
             value = ((_element: HTMLElement) =>
@@ -184,7 +190,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public deleteValueFor(element: HTMLElement): this {
-        this.setFor.delete(element);
+        this._setFor.delete(element);
         DesignTokenNode.for(this, element).delete();
         return this;
     }
@@ -452,7 +458,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     private tokenDependencySubscriber = {
         handleChange: (record: DesignTokenChangeRecord<T>) => {
             const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(record.token, record.target);
+            const target = DesignTokenNode.for(this.token, record.target);
 
             // Only act on downstream nodes
             if (
@@ -504,12 +510,16 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         if (this.bindingObserver) {
             const records = this.bindingObserver.records();
 
-            for (const dep of records) {
+            for (const record of records) {
                 if (
-                    dep.propertySource instanceof DesignTokenNode &&
-                    dep.propertySource.token instanceof DesignTokenImpl
+                    record.propertySource instanceof DesignTokenNode &&
+                    record.propertySource.token instanceof DesignTokenImpl
                 ) {
-                    dep.propertySource.token.subscribe(this.tokenDependencySubscriber);
+                    const { token } = record.propertySource;
+                    token.subscribe(this.tokenDependencySubscriber);
+                    token.setFor.forEach(target =>
+                        this.tokenDependencySubscriber.handleChange({ token, target })
+                    );
                 }
             }
         }
