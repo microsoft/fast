@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customElement, DOM, html } from "@microsoft/fast-element";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { createTooltipTemplate, Tooltip } from "./index";
 import { TooltipPosition } from "./tooltip";
 

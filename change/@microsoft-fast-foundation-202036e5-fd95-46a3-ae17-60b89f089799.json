@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adds feature to DesignToken to prevent emission to CSS",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

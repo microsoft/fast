@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { TreeView, TreeViewTemplate as template } from "./index";
 import { TreeItem, TreeItemTemplate as itemTemplate } from "../tree-item";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 
 @customElement({
