@@ -18,3 +18,20 @@ export type StaticDesignTokenValue<T> = T extends Function ? never : T;
  * @alpha
  */
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
+
+/**
+ * Describes a {@link (DesignToken:interface)} configuration
+ * @alpha
+ */
+export interface DesignTokenConfiguration {
+    /**
+     * The name of the {@link (DesignToken:interface)}.
+     */
+    name: string;
+
+    /**
+     * The name of the CSS custom property to associate to the {@link (DesignToken:interface)}, or null
+     * if not CSS custom property should be associated.
+     */
+    cssCustomPropertyName?: string | null;
+}
