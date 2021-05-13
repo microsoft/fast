@@ -49,6 +49,17 @@ export interface DesignToken<
      * Associates a default value to the token
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
+
+    /**
+     * Subscribes a subscriber to change records for a token. If an element is provided, only
+     * change records for that element will be emitted.
+     */
+    subscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void;
+
+    /**
+     * Unsubscribes a subscriber from change records for a token.
+     */
+    unsubscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void;
 }
 
 /**
@@ -73,8 +84,20 @@ export interface CSSDesignToken<
     readonly cssCustomProperty: string;
 }
 
-interface DesignTokenSubscriber {
-    handleChange(token: DesignToken<any>, element: HTMLElement): void;
+export interface DesignTokenChangeRecord<T> {
+    /**
+     * The element for which the value was changed
+     */
+    target: HTMLElement;
+
+    /**
+     * The token that was changed
+     */
+    token: DesignToken<T>;
+}
+
+interface DesignTokenSubscriber<T> {
+    handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
 /**
@@ -85,7 +108,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
     private cssVar: string | undefined;
-    private subscribers = new Set<DesignTokenSubscriber>();
+    private subscribers = new WeakMap<
+        HTMLElement | this,
+        Set<DesignTokenSubscriber<T>>
+    >();
     private setFor = new Set<HTMLElement>();
 
     public static from<T>(
@@ -106,6 +132,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         token: DesignToken<T> | CSSDesignToken<T>
     ): token is CSSDesignToken<T> {
         return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
+    }
+
+    private getOrCreateSubscriberSet(
+        target: HTMLElement | this = this
+    ): Set<DesignTokenSubscriber<T>> {
+        return (
+            this.subscribers.get(target) ||
+            (this.subscribers.set(target, new Set()) && this.subscribers.get(target)!)
+        );
     }
 
     constructor(configuration: Required<DesignTokenConfiguration>) {
@@ -141,7 +176,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
                     .value) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
-        this.subscribers.forEach(x => x.handleChange(this, element));
+        [
+            ...this.getOrCreateSubscriberSet(this),
+            ...this.getOrCreateSubscriberSet(element),
+        ].forEach(x => x.handleChange({ token: this, target: element }));
         return this;
     }
 
@@ -157,23 +195,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return this;
     }
 
-    /**
-     * Subscribe a subscriber to set and delete operations.
-     * On initial subscription, the subscriber will be invoked for every
-     * element the token has been set for.
-     */
-    public subscribe(subscriber: DesignTokenSubscriber): void {
-        if (!this.subscribers.has(subscriber)) {
-            this.subscribers.add(subscriber);
-            this.setFor.forEach(x => subscriber.handleChange(this, x));
+    public subscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void {
+        const subscriberSet = this.getOrCreateSubscriberSet(target);
+        if (!subscriberSet.has(subscriber)) {
+            subscriberSet.add(subscriber);
         }
     }
 
-    /**
-     * Unsubscribe a subscribe to set and delete operations.
-     */
-    public unsubscribe(subscriber: DesignTokenSubscriber): void {
-        this.subscribers.delete(subscriber);
+    public unsubscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void {
+        this.getOrCreateSubscriberSet(target).delete(subscriber);
     }
 }
 
@@ -420,9 +450,9 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     private tokenDependencySubscriber = {
-        handleChange: (token: DesignToken<any>, element: HTMLElement) => {
+        handleChange: (record: DesignTokenChangeRecord<T>) => {
             const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(this.token, element);
+            const target = DesignTokenNode.for(record.token, record.target);
 
             // Only act on downstream nodes
             if (
