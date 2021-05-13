@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add toolbar component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}

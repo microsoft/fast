@@ -749,6 +749,19 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAToolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAToolbar {
+    ariaLabel: string;
+    ariaLabelledby: string;
+}
+
+// @internal
+export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
+}
+
 // @alpha
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
@@ -2072,6 +2085,40 @@ export enum TextFieldType {
     text = "text",
     url = "url"
 }
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class Toolbar extends FASTElement {
+    // @internal
+    get activeIndex(): number;
+    set activeIndex(value: number);
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    direction: Direction;
+    // @internal
+    focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    orientation: Orientation;
+    // @internal
+    slottedItems: HTMLElement[];
+    // @internal
+    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void;
+    // @internal
+    slottedLabel: HTMLElement[];
+}
+
+// @internal (undocumented)
+export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
+}
+
+// @public
+export const ToolbarTemplate: ViewTemplate<Toolbar>;
 
 // @public
 export class Tooltip extends FASTElement {

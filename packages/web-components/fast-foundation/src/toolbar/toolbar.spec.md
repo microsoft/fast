@@ -1,10 +1,11 @@
 # Toolbar
 
 ## Overview
+
 As defined by the W3C:
 
 > A toolbar is a container for grouping a set of controls, such as buttons, menubuttons, or checkboxes.
-> 
+>
 > When a set of controls is visually presented as a group, the toolbar role can be used to communicate the presence and purpose of the grouping to screen reader users. Grouping controls into toolbars can also be an effective way of reducing the number of tab stops in the keyboard interface.
 
 Based on the above definition, it appears that as it currently stands, all elements within a toolbar _should_ be interactive controls. This includes support for [disabled controls](#disabled-controls).
@@ -16,6 +17,7 @@ Used anywhere someone may want to visually and structurally group related intera
 - Tom is reading his favorite internet newspaper. Upon finishing an article, he notices that it has accrued nearly one thousand comments. Tom decides to read the comments and he ends up writing a response to someone he disagrees with. As he gets ready to submit, he realizes it will be easier for others to read his comment if he formats it. Tom sees a toolbar with formatting options and is able to bold all the words he deems important. He submits his comment and waits to see what happens next.
 
 ### Prior Art/Examples
+
 - [Fluent UI](https://fluentsite.z22.web.core.windows.net/components/toolbar/definition)
 - [Material UI](https://material-ui.com/api/toolbar/)
 - [WAI-ARIA](https://w3c.github.io/aria-practices/examples/toolbar/toolbar.html)
@@ -25,20 +27,24 @@ Used anywhere someone may want to visually and structurally group related intera
 ### API
 
 *Component name:*
+
 - `fast-toolbar`
 
 *Attributes:*
+
 - `orientation`: an enum
-    - horizontal (default)
-    - vertical
+  - horizontal (default)
+  - vertical
 
 *Slots:*
+
 - `default`
 - `label` - slot for the label
 
 ### Anatomy and Appearance
 
 *Template:*
+
 ```html
 <template
     role="toolbar"
@@ -52,47 +58,34 @@ Used anywhere someone may want to visually and structurally group related intera
 ## Implementation
 
 **With visible label:**
+
 ```html
 <h3 id="label">Toolbar visible label</h3>
-<fast-toolbar
-    orientation="horizontal" 
-    aria-labelledby="label"
->
-    <div>
-        <fast-button>Bold</fast-button>
-        <fast-button>Italic</fast-button>
-        <fast-button>Underline</fast-button>
-    </div>
-    <select>
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 2</option>
-    </select>
-    <div>
-        <fast-button>More</fast-button>
-    </div>
+<fast-toolbar aria-labelledby="label">
+    <fast-button>A button</fast-button>
+    <fast-checkbox>A checkbox</fast-checkbox>
+    <fast-checkbox>Another checkbox</fast-checkbox>
+</fast-toolbar>
+```
+
+**With slotted label:**
+
+```html
+<fast-toolbar>
+    <label slot="label">Toolbar slotted label</label>
+    <fast-button>A button</fast-button>
+    <fast-checkbox>A checkbox</fast-checkbox>
+    <fast-checkbox>Another checkbox</fast-checkbox>
 </fast-toolbar>
 ```
 
 **With invisible label:**
+
 ```html
-<fast-toolbar
-    orientation="horizontal" 
-    aria-label="Toolbar label"
->
-    <div>
-        <fast-button>Bold</fast-button>
-        <fast-button>Italic</fast-button>
-        <fast-button>Underline</fast-button>
-    </div>
-    <select>
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 2</option>
-    </select>
-    <div>
-        <fast-button>More</fast-button>
-    </div>
+<fast-toolbar aria-label="Toolbar label">
+    <fast-button>A button</fast-button>
+    <fast-checkbox>A checkbox</fast-checkbox>
+    <fast-checkbox>Another checkbox</fast-checkbox>
 </fast-toolbar>
 ```
 
@@ -125,5 +118,6 @@ Following the "flexible" principle of FAST, I think we should support an API whi
 ```
 
 #### Labels
+
 A label is required for toolbars.
 > If the toolbar has a visible label, it is referenced by aria-labelledby on the toolbar element. Otherwise, the toolbar element has a label provided by aria-label.
