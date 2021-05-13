@@ -73,7 +73,7 @@ describe("HorizontalScroll", () => {
         expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
         
         element.style.width = "1000px";
-        await DOM.nextUpdate();
+        await timeout(element['frameTime'] + 20);
 
         expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
 
@@ -300,6 +300,8 @@ describe("HorizontalScroll", () => {
             element.scrollToPrevious();
 
             element.style.width = `${horizontalScrollWidth}px`;
+            await timeout(element['frameTime'] + 20);
+
             element.scrollToNext();
 
             await DOM.nextUpdate();
