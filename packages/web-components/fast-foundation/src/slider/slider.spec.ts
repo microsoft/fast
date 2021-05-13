@@ -1,7 +1,7 @@
 import { expect, assert } from "chai";
 import { Slider, SliderTemplate as template } from "./index";
 import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 

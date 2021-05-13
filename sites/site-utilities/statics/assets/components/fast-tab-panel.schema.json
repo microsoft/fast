@@ -5,7 +5,7 @@
   "title": "Tab panel",
   "description": "The FAST tab-panel element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-tab-panel",
   "properties": {
     "Slot": {

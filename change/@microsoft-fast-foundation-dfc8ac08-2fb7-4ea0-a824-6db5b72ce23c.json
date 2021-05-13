@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Addresses significant performance issues with DesignToken implmentation. This change removes several alpha APIs on DesignToken.",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "moved disabled selectors out of the common button styles and add them into the button styles file",
+  "packageName": "@microsoft/fast-components",
+  "email": "khamu@microsoft.com",
+  "dependentChangeType": "patch"
+}

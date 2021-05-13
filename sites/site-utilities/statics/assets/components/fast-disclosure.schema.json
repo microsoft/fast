@@ -5,7 +5,7 @@
   "title": "Disclosure",
   "description": "The FAST disclosure element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-disclosure",
   "properties": {
     "expanded": {

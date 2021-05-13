@@ -104,4 +104,44 @@ fast-card > fast-button {
 }
 ```
 
+If you are using the .NET CLI, you can run your project with the following command from the project folder:
+
+```shell
+dotnet watch run
+```
+
 Congratulations! You're now set up to use FAST with Blazor!
+
+## Using the FluentUI Web Components
+
+FAST has special Blazor support for Microsoft's FluentUI Web Components. To leverage the FluentUI Design System, you'll need to make a few modifications to your project.
+
+First, update the script tag to point to the FluentUI Web Components.
+
+```html
+<script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
+```
+
+Second, change the `fast-` prefix to `fluent-` in any CSS selectors and for the design system provider.
+
+Third, you will want to install [the official Nuget package for FluentUI](https://www.nuget.org/packages/Microsoft.Fast.Components.FluentUI/). You can use the following command:
+
+```shell
+dotnet add package Microsoft.Fast.Components.FluentUI
+```
+
+With this package installed, you can switch the HTML over to Blazor components. Here's an example:
+
+```html
+@page "/"
+@using Microsoft.Fast.Components.FluentUI
+
+<FluentCard>
+  <h2>Hello World!</h2>
+  <FluentButton Appearance="@Appearance.Accent">
+    Click Me
+  </FluentButton>
+</FluentCard>
+```
+
+To report issues or provide feedback on `Microsoft.Fast.Components.FluentUI`, please visit [the microsoft/fast-blazor repository](https://github.com/microsoft/fast-blazor).
