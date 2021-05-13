@@ -4,7 +4,7 @@
 FAST `generate` is a command that is used to generate new FAST design system resources such as new components. The initial release will focus on component generation. Future iterations will include the ability to generate other resources.
 
 ## Use Cases
-- A users can generate a new component file structure in FAST using a single command in FAST CLI
+- A user can generate a new component file structure in FAST using a single command in FAST CLI
 
 ## Features
 - Resource generator based name string argument

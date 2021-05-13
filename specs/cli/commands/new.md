@@ -61,7 +61,7 @@ module.exports = [
     ],
   },
   {
-    message: 'What you to include all components?',
+    message: 'Would you like to include all components?',
     choices: [
       {value: 'all-components', title: 'Yes'},
       {value: 'select-components', title: 'No'},
