@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { Switch, SwitchTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 

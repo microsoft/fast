@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { createDataGridCellTemplate, DataGridCell } from "./index";
 import { newDataRow } from "./data-grid.spec";
 import { DataGridCellTypes } from "./data-grid.options";
