@@ -129,7 +129,7 @@ You can also pass a CSS `string` or a [CSSStyleSheet](https://developer.mozilla.
 :::
 
 ### Partial CSS
-There are times when you may want to create reusable blocks of *partial* CSS, where the abstraction is not valid CSS in and of itself, such a groups of CSS properties or a complex value. To do that, you can use the `cssPartial` tagged template literal: 
+There are times when you may want to create reusable blocks of *partial* CSS, where the abstraction is not valid CSS in and of itself, such as groups of CSS properties or a complex value. To do that, you can use the `cssPartial` tagged template literal: 
 
 ```ts
 import { css, cssPartial } from "@microsoft/fast-element";
