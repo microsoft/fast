@@ -143,3 +143,26 @@ export const keyCodeTilde: number = 192;
 export const keyCodeWindowsLeft: number = 91;
 export const keyCodeWindowsOpera: number = 219; // Opera
 export const keyCodeWindowsRight: number = 92;
+
+/**
+ * String values for use with KeyboardEvent.key
+ */
+export const keyArrowDown: "ArrowDown" = "ArrowDown";
+export const keyArrowLeft: "ArrowLeft" = "ArrowLeft";
+export const keyArrowRight: "ArrowRight" = "ArrowRight";
+export const keyArrowUp: "ArrowUp" = "ArrowUp";
+export const keyEnter: "Enter" = "Enter";
+export const keyEscape: "Escape" = "Escape";
+export const keyHome: "Home" = "Home";
+export const keyEnd: "End" = "End";
+export const keySpace: " " = " ";
+export const keyTab: "Tab" = "Tab";
+
+export const ArrowKeys = {
+    ArrowDown: keyArrowDown,
+    ArrowLeft: keyArrowLeft,
+    ArrowRight: keyArrowRight,
+    ArrowUp: keyArrowUp,
+} as const;
+
+export type ArrowKeys = typeof ArrowKeys[keyof typeof ArrowKeys];
