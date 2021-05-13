@@ -1,6 +1,6 @@
 import { customElement, DOM, html } from "@microsoft/fast-element";
-import { fixture } from "../fixture";
 import { expect } from "chai";
+import { fixture } from "../fixture";
 import {
     MessageSystem,
     MessageSystemNavigationTypeAction,
@@ -152,7 +152,9 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector(
+            "[data-datadictionaryid=root]"
+        );
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();
@@ -282,7 +284,9 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector(
+            "[data-datadictionaryid=root]"
+        );
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();
@@ -370,7 +374,9 @@ describe("HTMLRender", () => {
         await messageSystemHasBeenCalled();
         await DOM.nextUpdate();
 
-        const el: HTMLElement = element.shadowRoot?.querySelector("[data-datadictionaryid=root]");
+        const el: HTMLElement = element.shadowRoot?.querySelector(
+            "[data-datadictionaryid=root]"
+        );
         expect(el).to.not.be.null;
         el.click();
         await DOM.nextUpdate();

@@ -3673,6 +3673,34 @@
     "@microsoft/fast-jss-utilities" "^4.8.0"
     "@microsoft/fast-web-utilities" "^4.6.0"
 
+"@microsoft/fast-components@latest":
+  version "1.20.7"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-1.20.7.tgz#3aa9fd8e64cc4162a038d1f4f5fbe6b22ae306d0"
+  integrity sha512-wkeAWBz989zrXcD+r1uuC0XOP2khJoKnaiwOPvKOXuFFF01DAMyc1x2lIDd5ARbnTcQz8GNDalugL4yflZsiKA==
+  dependencies:
+    "@microsoft/fast-colors" "^5.1.3"
+    "@microsoft/fast-element" "^1.1.0"
+    "@microsoft/fast-foundation" "^1.21.0"
+    "@microsoft/fast-web-utilities" "^4.7.3"
+    tslib "^1.13.0"
+    vscode-html-languageservice "^4.0.3"
+
+"@microsoft/fast-element@latest":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.1.0.tgz#13cafbbe42057ca370ac4219942c76613d64ff10"
+  integrity sha512-ihbxhKpD5U3/wUlT8CkdNQTCzRf+ukyktDipipIC5ZbLZtUa4exyaRvS8kIBKaRZK/M7OCUFaFfo2XdWD/fbpg==
+
+"@microsoft/fast-foundation@latest":
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-1.21.0.tgz#3498a94ccf6ddf2149d4433688494b2206420fd5"
+  integrity sha512-2wmN2R51LlPkOD3jy8HE/P/pPHU7XbyzDRe5kK2TT9A0XyRTjlFBs0B5AFR0l0iSm0VfTY6nrNoC/NUL/2588g==
+  dependencies:
+    "@microsoft/fast-element" "^1.1.0"
+    "@microsoft/fast-web-utilities" "^4.7.3"
+    "@microsoft/tsdoc-config" "^0.13.4"
+    tabbable "^4.0.0"
+    tslib "^1.13.0"
+
 "@microsoft/fast-jss-manager-react@^4.8.0":
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-jss-manager-react/-/fast-jss-manager-react-4.8.0.tgz#0694b18e9250a26a443ad0d6ab5938bbca2147ca"

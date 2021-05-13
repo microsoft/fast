@@ -2,12 +2,12 @@ import { expect } from "chai";
 import {
     attr,
     customElement,
+    DOM,
     FASTElement,
     html,
-    DOM,
     observable,
 } from "@microsoft/fast-element";
-import { uniqueElementName, fixture } from "./fixture";
+import { fixture, uniqueElementName } from "./fixture";
 
 describe("The fixture helper", () => {
     const name = uniqueElementName();
