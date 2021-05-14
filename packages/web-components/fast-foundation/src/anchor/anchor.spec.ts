@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Anchor, AnchorTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement } from "@microsoft/fast-element";
 
 @customElement({

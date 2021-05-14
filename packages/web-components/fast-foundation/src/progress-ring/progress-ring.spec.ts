@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { BaseProgress as Progress } from "../progress";
 import { ProgressRingTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
 
 @customElement({
