@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adds subscribe and unsubscribe methods to DesignToken",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
