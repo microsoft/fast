@@ -65,7 +65,7 @@ import { FASTElement, customElement, observable, html, when } from '@microsoft/f
 const template = html<MyApp>`
   <h1>My App</h1>
 
-  ${when(x => x.ready, x => x.dataTemplate}
+  ${when(x => x.ready, x => x.dataTemplate)}
 `;
 ```
 

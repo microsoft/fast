@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs: add missing closing parenthesis to when directive example",
+  "packageName": "@microsoft/fast-element",
+  "email": "zjffun@gmail.com",
+  "dependentChangeType": "none"
+}

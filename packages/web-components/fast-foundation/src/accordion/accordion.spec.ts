@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Accordion, AccordionTemplate as template } from "./index";
 import { AccordionItem, AccordionItemTemplate as itemTemplate } from "../accordion-item";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement, DOM, elements } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "./accordion";
 

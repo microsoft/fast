@@ -1,6 +1,6 @@
 import { customElement, DOM } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { ListboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
 import { Listbox, ListboxTemplate as template } from "./index";

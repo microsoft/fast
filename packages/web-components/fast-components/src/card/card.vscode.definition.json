@@ -1,0 +1,37 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-card",
+            "title": "Card",
+            "description": "The FAST card element",
+            "attributes": [
+                {
+                    "name": "background-color",
+                    "title": "Background color",
+                    "description":
+                        "A color value from the neutral palette - sets the background color, but does not reset the design system palette",
+                    "type": "string",
+                    "default": "",
+                    "required": false
+                },
+                {
+                    "name": "card-background-color",
+                    "title": "Card background color",
+                    "description":
+                        "Background color for the card, which resets the neutral palette and context for the design system",
+                    "type": "string",
+                    "default": "",
+                    "required": false
+                }
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The content of the card"
+                }
+            ]
+        }
+    ]
+}

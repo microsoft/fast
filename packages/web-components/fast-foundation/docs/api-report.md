@@ -512,6 +512,13 @@ export interface CSSCustomPropertyTarget {
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
 
+// @alpha
+export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
+    createCSS?(): string;
+}> extends DesignToken<T>, CSSDirective {
+    readonly cssCustomProperty: string;
+}
+
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
@@ -819,17 +826,11 @@ export interface DesignSystemRegistrationContext {
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
-export interface DesignToken<T extends {
-    createCSS?(): string;
-}> extends CSSDirective {
-    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
-    readonly cssCustomProperty: string;
+export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     // (undocumented)
     readonly name: string;
-    // (undocumented)
-    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
@@ -838,6 +839,12 @@ export interface DesignToken<T extends {
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
+
+// @alpha
+export interface DesignTokenConfiguration {
+    cssCustomPropertyName?: string | null;
+    name: string;
+}
 
 // @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
@@ -1135,6 +1142,7 @@ export class HorizontalScroll extends FASTElement {
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollItems: HTMLElement[];
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1213,6 +1221,8 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
+    // @internal
+    mousedownHandler(e: MouseEvent): boolean | void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
@@ -2199,7 +2209,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:56:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:54:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: fast-number-field does not fire input event when buttons pressed",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
