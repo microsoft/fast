@@ -57,12 +57,12 @@ export interface DesignToken<
      * Subscribes a subscriber to change records for a token. If an element is provided, only
      * change records for that element will be emitted.
      */
-    subscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void;
+    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 
     /**
      * Unsubscribes a subscriber from change records for a token.
      */
-    unsubscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void;
+    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 }
 
 /**
@@ -87,7 +87,7 @@ export interface CSSDesignToken<
     readonly cssCustomProperty: string;
 }
 
-export interface DesignTokenChangeRecord<T> {
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     /**
      * The element for which the value was changed
      */
@@ -96,10 +96,10 @@ export interface DesignTokenChangeRecord<T> {
     /**
      * The token that was changed
      */
-    token: DesignToken<T>;
+    token: T;
 }
 
-export interface DesignTokenSubscriber<T> {
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
@@ -113,7 +113,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     private cssVar: string | undefined;
     private subscribers = new WeakMap<
         HTMLElement | this,
-        Set<DesignTokenSubscriber<T>>
+        Set<DesignTokenSubscriber<this>>
     >();
     private _setFor = new Set<HTMLElement>();
     public get setFor() {
@@ -142,7 +142,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
     private getOrCreateSubscriberSet(
         target: HTMLElement | this = this
-    ): Set<DesignTokenSubscriber<T>> {
+    ): Set<DesignTokenSubscriber<this>> {
         return (
             this.subscribers.get(target) ||
             (this.subscribers.set(target, new Set()) && this.subscribers.get(target)!)
@@ -201,14 +201,20 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return this;
     }
 
-    public subscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void {
+    public subscribe(
+        subscriber: DesignTokenSubscriber<this>,
+        target?: HTMLElement
+    ): void {
         const subscriberSet = this.getOrCreateSubscriberSet(target);
         if (!subscriberSet.has(subscriber)) {
             subscriberSet.add(subscriber);
         }
     }
 
-    public unsubscribe(subscriber: DesignTokenSubscriber<T>, target?: HTMLElement): void {
+    public unsubscribe(
+        subscriber: DesignTokenSubscriber<this>,
+        target?: HTMLElement
+    ): void {
         this.getOrCreateSubscriberSet(target).delete(subscriber);
     }
 }
@@ -456,7 +462,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     private tokenDependencySubscriber = {
-        handleChange: (record: DesignTokenChangeRecord<T>) => {
+        handleChange: (record: DesignTokenChangeRecord<DesignToken<any>>) => {
             const rawValue = this.resolveRawValue();
             const target = DesignTokenNode.for(this.token, record.target);
 

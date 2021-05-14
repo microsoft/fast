@@ -3,7 +3,7 @@ import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element
 import { expect } from "chai";
 import { DesignSystem } from "../design-system";
 import { FoundationElement } from "../foundation-element";
-import { DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
+import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
 
 new DesignSystem().register(
     FoundationElement.compose({ type: class extends FoundationElement { }, template: html`<slot></slot>`, baseName: "custom-element" })()
@@ -534,8 +534,8 @@ describe("A DesignToken", () => {
             const token = DesignToken.create<number>("test");
             const spy = new Map<HTMLElement, boolean>([[ancestor, false], [parent, false], [ target, false ]]);
 
-            const subscriber: DesignTokenSubscriber<number>  = {
-                handleChange(record: DesignTokenChangeRecord<number>) {
+            const subscriber: DesignTokenSubscriber<typeof token>  = {
+                handleChange(record: DesignTokenChangeRecord<typeof token>) {
                     spy.set(record.target, true)
                 }
             }
@@ -563,70 +563,83 @@ describe("A DesignToken", () => {
 
             removeElement(ancestor);
         });
-    });
-    it("should notify a target-subscriber if the value is changed for a the provided target", () => {
+        it("should notify a target-subscriber if the value is changed for a the provided target", () => {
+                let invoked = false;
+                const parent = addElement();
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+
+                const subscriber: DesignTokenSubscriber<typeof token>  = {
+                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
+                        invoked = true;
+                    }
+                }
+
+                token.subscribe(subscriber, target);
+
+                token.setValueFor(parent, 12);
+                expect(invoked).to.be.false;
+
+                token.setValueFor(target, 14);
+                expect(invoked).to.be.true;
+
+                removeElement(parent);
+        });
+        it("should not notify a target-subscriber if the value is changed for a different target", () => {
+                let invoked = false;
+                const ancestor = addElement();
+                const parent = addElement(ancestor);
+                const target = addElement(parent);
+                const token = DesignToken.create<number>("test");
+
+                const subscriber: DesignTokenSubscriber<typeof token>  = {
+                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
+                        invoked = true;
+                    }
+                }
+
+                token.subscribe(subscriber, target);
+
+                token.setValueFor(ancestor, 12);
+                expect(invoked).to.be.false;
+
+                token.setValueFor(parent, 14);
+                expect(invoked).to.be.false;
+
+                removeElement(ancestor);
+        });
+
+        it("should not notify a subscriber after unsubscribing", () => {
             let invoked = false;
-            const parent = addElement();
-            const target = addElement(parent);
+            const target = addElement();
             const token = DesignToken.create<number>("test");
 
-            const subscriber: DesignTokenSubscriber<number>  = {
-                handleChange(record: DesignTokenChangeRecord<number>) {
+            const subscriber: DesignTokenSubscriber<typeof token>  = {
+                handleChange(record: DesignTokenChangeRecord<typeof token>) {
                     invoked = true;
                 }
             }
 
-            token.subscribe(subscriber, target);
+            token.subscribe(subscriber);
+            token.unsubscribe(subscriber);
 
-            token.setValueFor(parent, 12);
+            token.setValueFor(target, 12);
             expect(invoked).to.be.false;
 
-            token.setValueFor(target, 14);
-            expect(invoked).to.be.true;
+            removeElement(target);
+        });
 
-            removeElement(parent);
-    });
-    it("should not notify a target-subscriber if the value is changed for a different target", () => {
-            let invoked = false;
-            const ancestor = addElement();
-            const parent = addElement(ancestor);
-            const target = addElement(parent);
-            const token = DesignToken.create<number>("test");
+        it("should infer DesignToken and CSSDesignToken token types on subscription record", () => {
+            type AssertCSSDesignToken<T> = T extends CSSDesignToken<any> ? T : never;
+            DesignToken.create<number>("css").subscribe({handleChange(record) {
+                const test: AssertCSSDesignToken<typeof record.token> = record.token;
+            }});
 
-            const subscriber: DesignTokenSubscriber<number>  = {
-                handleChange(record: DesignTokenChangeRecord<number>) {
-                    invoked = true;
-                }
-            }
+            type AssertDesignToken<T> = T extends CSSDesignToken<any> ? never : T;
 
-            token.subscribe(subscriber, target);
-
-            token.setValueFor(ancestor, 12);
-            expect(invoked).to.be.false;
-
-            token.setValueFor(parent, 14);
-            expect(invoked).to.be.false;
-
-            removeElement(ancestor);
-    });
-
-    it("should not notify a subscriber after unsubscribing", () => {
-        let invoked = false;
-        const target = addElement();
-        const token = DesignToken.create<number>("test");
-
-        const subscriber: DesignTokenSubscriber<number>  = {
-            handleChange(record: DesignTokenChangeRecord<number>) {
-                invoked = true;
-            }
-        }
-
-        token.subscribe(subscriber);
-        token.unsubscribe(subscriber);
-
-        token.setValueFor(target, 12);
-        expect(invoked).to.be.false;
-
-        removeElement(target);
+            DesignToken.create<number>({name: "no-css", cssCustomPropertyName: null}).subscribe({handleChange(record) {
+                const test: AssertDesignToken<typeof record.token> = record.token;
+            }})
+        })
     });
 });
