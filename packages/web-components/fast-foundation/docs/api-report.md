@@ -237,7 +237,6 @@ export const ButtonTemplate: ViewTemplate<Button>;
 
 // @public
 export class Calendar extends FASTElement {
-    formatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
     getDateClicked(mouseEvent: any): string | null | undefined;
     getDays(info?: CalendarInfo): any;
     getLocaleDay(month?: number, day?: number, year?: number): string;
@@ -249,6 +248,7 @@ export class Calendar extends FASTElement {
     isRTL(): boolean;
     isToday(year: number, month: number, day: number): boolean;
     locale: string;
+    localeFormatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
     month: number;
     monthFormat: DateStyle;
     weekdayFormat: DateStyle;
