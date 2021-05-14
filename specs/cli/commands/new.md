@@ -23,7 +23,7 @@ $ fast new [arg-1]
  ```
  
 **Available commands**:
-- `new [project-name]`: Starts the workflow to create new project
+- `new [project-name]`: Starts the workflow to create a new project
 
 ## Design
 
