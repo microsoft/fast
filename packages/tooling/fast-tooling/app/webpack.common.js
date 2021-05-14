@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./");
 const outDir = path.resolve(__dirname, "../www");
@@ -88,6 +89,14 @@ module.exports = {
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
             features: ["format", "coreCommands", "codeAction"],
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, "./server.js"),
+                    to: path.resolve(__dirname, "../www/"),
+                },
+            ],
         }),
     ],
 };
