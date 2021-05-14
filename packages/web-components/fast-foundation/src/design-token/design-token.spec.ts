@@ -3,7 +3,7 @@ import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element
 import { expect } from "chai";
 import { DesignSystem } from "../design-system";
 import { FoundationElement } from "../foundation-element";
-import { DesignToken } from "./design-token";
+import { DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
 
 new DesignSystem().register(
     FoundationElement.compose({ type: class extends FoundationElement { }, template: html`<slot></slot>`, baseName: "custom-element" })()
@@ -53,7 +53,6 @@ describe("A DesignToken", () => {
             expect("cssVar" in DesignToken.create<number>({name: "test", cssCustomPropertyName: null})).to.equal(false);
         });
     });
-
 
     describe("getting and setting a simple value", () => {
         it("should throw if the token value has never been set on the element or it's any ancestors", () => {
@@ -525,5 +524,109 @@ describe("A DesignToken", () => {
             expect(token.getValueFor(target)).to.equal(4);
             removeElement(target)
         });
-    })
+    });
+
+    describe("with subscribers", () => {
+        it("should notify an un-targeted subscriber when the value changes for any element", () => {
+            const ancestor = addElement();
+            const parent = addElement(ancestor);
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+            const spy = new Map<HTMLElement, boolean>([[ancestor, false], [parent, false], [ target, false ]]);
+
+            const subscriber: DesignTokenSubscriber<number>  = {
+                handleChange(record: DesignTokenChangeRecord<number>) {
+                    spy.set(record.target, true)
+                }
+            }
+
+            token.subscribe(subscriber);
+
+            expect(spy.get(ancestor)).to.be.false;
+            expect(spy.get(parent)).to.be.false;
+            expect(spy.get(target)).to.be.false;
+
+            token.setValueFor(ancestor, 12);
+            expect(spy.get(ancestor)).to.be.true;
+            expect(spy.get(parent)).to.be.false;
+            expect(spy.get(target)).to.be.false;
+
+            token.setValueFor(parent, 14);
+            expect(spy.get(ancestor)).to.be.true;
+            expect(spy.get(parent)).to.be.true;
+            expect(spy.get(target)).to.be.false;
+
+            token.setValueFor(target, 16);
+            expect(spy.get(target)).to.be.true;
+            expect(spy.get(parent)).to.be.true;
+            expect(spy.get(target)).to.be.true;
+
+            removeElement(ancestor);
+        });
+    });
+    it("should notify a target-subscriber if the value is changed for a the provided target", () => {
+            let invoked = false;
+            const parent = addElement();
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+
+            const subscriber: DesignTokenSubscriber<number>  = {
+                handleChange(record: DesignTokenChangeRecord<number>) {
+                    invoked = true;
+                }
+            }
+
+            token.subscribe(subscriber, target);
+
+            token.setValueFor(parent, 12);
+            expect(invoked).to.be.false;
+
+            token.setValueFor(target, 14);
+            expect(invoked).to.be.true;
+
+            removeElement(parent);
+    });
+    it("should not notify a target-subscriber if the value is changed for a different target", () => {
+            let invoked = false;
+            const ancestor = addElement();
+            const parent = addElement(ancestor);
+            const target = addElement(parent);
+            const token = DesignToken.create<number>("test");
+
+            const subscriber: DesignTokenSubscriber<number>  = {
+                handleChange(record: DesignTokenChangeRecord<number>) {
+                    invoked = true;
+                }
+            }
+
+            token.subscribe(subscriber, target);
+
+            token.setValueFor(ancestor, 12);
+            expect(invoked).to.be.false;
+
+            token.setValueFor(parent, 14);
+            expect(invoked).to.be.false;
+
+            removeElement(ancestor);
+    });
+
+    it("should not notify a subscriber after unsubscribing", () => {
+        let invoked = false;
+        const target = addElement();
+        const token = DesignToken.create<number>("test");
+
+        const subscriber: DesignTokenSubscriber<number>  = {
+            handleChange(record: DesignTokenChangeRecord<number>) {
+                invoked = true;
+            }
+        }
+
+        token.subscribe(subscriber);
+        token.unsubscribe(subscriber);
+
+        token.setValueFor(target, 12);
+        expect(invoked).to.be.false;
+
+        removeElement(target);
+    });
 });

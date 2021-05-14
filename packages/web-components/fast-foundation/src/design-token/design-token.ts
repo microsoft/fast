@@ -99,7 +99,7 @@ export interface DesignTokenChangeRecord<T> {
     token: DesignToken<T>;
 }
 
-interface DesignTokenSubscriber<T> {
+export interface DesignTokenSubscriber<T> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
