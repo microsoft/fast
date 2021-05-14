@@ -24,8 +24,14 @@ const defaultElement = document.body;
 export interface DesignToken<
     T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
 > {
+    /**
+     * The name of the token
+     */
     readonly name: string;
 
+    /**
+     * A list of elements for which the DesignToken has a value set
+     */
     readonly setFor: HTMLElement[];
 
     /**
@@ -87,6 +93,9 @@ export interface CSSDesignToken<
     readonly cssCustomProperty: string;
 }
 
+/**
+ * @alpha
+ */
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     /**
      * The element for which the value was changed
@@ -99,6 +108,9 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     token: T;
 }
 
+/**
+ * @alpha
+ */
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
 }
