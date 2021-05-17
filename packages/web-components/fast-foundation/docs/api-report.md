@@ -827,10 +827,10 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
+    readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     readonly name: string;
-    readonly setFor: HTMLElement[];
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
     subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
