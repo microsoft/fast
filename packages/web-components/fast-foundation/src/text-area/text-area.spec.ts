@@ -1,6 +1,6 @@
 import { expect, assert } from "chai";
 import { TextArea, TextAreaTemplate as template } from "./index";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { customElement } from "@microsoft/fast-element";
 
 @customElement({
