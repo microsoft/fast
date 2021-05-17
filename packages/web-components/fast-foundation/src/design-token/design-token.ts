@@ -32,7 +32,7 @@ export interface DesignToken<
     /**
      * A list of elements for which the DesignToken has a value set
      */
-    readonly setFor: HTMLElement[];
+    readonly appliedTo: HTMLElement[];
 
     /**
      * Get the token value for an element.
@@ -127,9 +127,9 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         HTMLElement | this,
         Set<DesignTokenSubscriber<this>>
     >();
-    private _setFor = new Set<HTMLElement>();
-    public get setFor() {
-        return [...this._setFor];
+    private _appliedTo = new Set<HTMLElement>();
+    public get appliedTo() {
+        return [...this._appliedTo];
     }
 
     public static from<T>(
@@ -186,7 +186,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         element: HTMLElement,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
-        this._setFor.add(element);
+        this._appliedTo.add(element);
         if (value instanceof DesignTokenImpl) {
             const _value = value;
             value = ((_element: HTMLElement) =>
@@ -202,7 +202,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public deleteValueFor(element: HTMLElement): this {
-        this._setFor.delete(element);
+        this._appliedTo.delete(element);
         DesignTokenNode.for(this, element).delete();
         return this;
     }
@@ -535,7 +535,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                 ) {
                     const { token } = record.propertySource;
                     token.subscribe(this.tokenDependencySubscriber);
-                    token.setFor.forEach(target =>
+                    token.appliedTo.forEach(target =>
                         this.tokenDependencySubscriber.handleChange({ token, target })
                     );
                 }
