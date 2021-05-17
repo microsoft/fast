@@ -33,11 +33,11 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Prepare workspaces
-      run: yarn prepare
-
     - name: Testing Prettier format
       run: yarn format:check
+
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
@@ -90,12 +90,12 @@ jobs:
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
-
-    - name: Prepare workspaces
-      run: yarn prepare
-
+    
     - name: Testing Prettier format
       run: yarn format:check
+      
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
@@ -128,13 +128,13 @@ jobs:
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts
+      run: yarn install --network-timeout=36000 --frozen-lockfile --ignore-scripts
     
-    - name: Prepare workspaces
-      run: yarn prepare
-
     - name: Testing Prettier format
       run: yarn format:check
+
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing unit tests
       run: yarn lerna run test --stream

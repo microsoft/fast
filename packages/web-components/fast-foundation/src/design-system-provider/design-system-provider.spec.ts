@@ -1,7 +1,7 @@
 import { DOM, Observable } from "@microsoft/fast-element";
 import { assert, expect } from "chai";
 import { ConstructableStylesCustomPropertyManager } from "../custom-properties";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import {
     defineDesignSystemProvider,
     designSystemProperty,

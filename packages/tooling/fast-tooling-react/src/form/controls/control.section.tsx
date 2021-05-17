@@ -265,10 +265,10 @@ class SectionControl extends React.Component<
             this.state.categories &&
             this.props.categories &&
             this.props.categories[
-                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+                this.props.dataDictionary[0][this.props.dictionaryId].schemaId
             ] &&
             this.props.categories[
-                this.props.dataDictionary[0][this.props.dataDictionary[1]].schemaId
+                this.props.dataDictionary[0][this.props.dictionaryId].schemaId
             ][this.props.dataLocation]
         ) {
             const formControls: React.ReactNode[] = [];
@@ -277,8 +277,7 @@ class SectionControl extends React.Component<
             this.state.categories.forEach(
                 (categoryItem: CategoryState, index: number) => {
                     const category = this.props.categories[
-                        this.props.dataDictionary[0][this.props.dataDictionary[1]]
-                            .schemaId
+                        this.props.dataDictionary[0][this.props.dictionaryId].schemaId
                     ][this.props.dataLocation][index];
                     formControls.push(
                         <fieldset

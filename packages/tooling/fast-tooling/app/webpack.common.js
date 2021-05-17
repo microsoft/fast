@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const appDir = path.resolve(__dirname, "./");
 const outDir = path.resolve(__dirname, "../www");
@@ -15,6 +16,20 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
+        alias: {
+            "@microsoft/fast-components": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-components"
+            ),
+            "@microsoft/fast-foundation": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-foundation"
+            ),
+            "@microsoft/fast-element": path.resolve(
+                __dirname,
+                "../node_modules/@microsoft/fast-element"
+            ),
+        },
     },
     output: {
         path: outDir,
@@ -73,7 +88,15 @@ module.exports = {
         new MonacoWebpackPlugin({
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
-            features: ["format", "coreCommands", "codeAction"]
-        })
+            features: ["format", "coreCommands", "codeAction"],
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, "./server.js"),
+                    to: path.resolve(__dirname, "../www/"),
+                },
+            ],
+        }),
     ],
 };

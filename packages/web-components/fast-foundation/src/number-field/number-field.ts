@@ -158,13 +158,11 @@ export class NumberField extends FormAssociatedNumberField {
 
         if (nextValue === "" || isNaN(numb)) {
             out = "";
-        } else if (this.min !== undefined && numb < this.min) {
-            out = this.min;
-        } else if (this.max !== undefined && numb > this.max) {
-            out = this.max;
+        } else {
+            out = this.getValidValue(numb);
         }
 
-        this.value = out.toString();
+        this.value = out;
 
         if (this.proxy instanceof HTMLElement) {
             this.proxy.value = this.value;
@@ -172,23 +170,45 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
+     * Ensures that the value is between the min and max values
+     *
+     * @param value - number to evaluate
+     * @returns - a string repesentation
+     *
+     * @internal
+     */
+    private getValidValue(value: number): string {
+        if (this.min !== undefined && value < this.min) {
+            value = this.min;
+        } else if (this.max !== undefined && value > this.max) {
+            value = this.max;
+        }
+
+        return parseFloat(value.toPrecision(12)).toString();
+    }
+
+    /**
      * Increments the value using the step value
+     *
+     * @public
      */
     public stepUp(): void {
-        const steppedValue = parseFloat(this.value) + this.step;
-        const nextValue =
-            this.max !== undefined && steppedValue > this.max ? this.max : steppedValue;
-        this.value = parseFloat(nextValue.toPrecision(12)).toString();
+        const stepUpValue = this.step + parseFloat(this.value);
+        this.value = this.getValidValue(stepUpValue);
+
+        this.$emit("input");
     }
 
     /**
      * Decrements the value using the step value
+     *
+     * @public
      */
     public stepDown(): void {
-        const steppedValue = parseFloat(this.value) - this.step;
-        const nextValue =
-            this.min !== undefined && steppedValue < this.min ? this.min : steppedValue;
-        this.value = parseFloat(nextValue.toPrecision(12)).toString();
+        const stepDownValue = parseFloat(this.value) - this.step;
+        this.value = this.getValidValue(stepDownValue);
+
+        this.$emit("input");
     }
 
     /**

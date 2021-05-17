@@ -34,6 +34,24 @@
         height: 300px;
     }
 </style>
+<script>
+    function setCards(container, count = 12) {
+        const card = idx => {
+            const c = document.createElement("fast-card");
+            c.innerHTML = `Card item ${idx + 1}`;
+            return c;
+        };
+        for (let i = 0; i < count; i++) {
+            container.appendChild(card(i));
+        }
+    }
+    setTimeout(() => {
+        const container = document.getElementById("late-load");
+        if (container) {
+            setCards(container);
+        }
+    }, 2000);
+</script>
 
 <h2>Default</h2>
 <fast-horizontal-scroll>
@@ -103,6 +121,12 @@
         Card number 16
         <fast-button>A button</fast-button>
     </fast-card>
+</fast-horizontal-scroll>
+
+<h2>Delay loaded content</h2>
+<fast-horizontal-scroll id="late-load">
+    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
+    <fast-flipper slot="next-flipper"></fast-flipper>
 </fast-horizontal-scroll>
 
 <h2>Full width cards</h2>
