@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "duplicate fixture file to fix build break",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
