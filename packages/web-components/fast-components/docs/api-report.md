@@ -13,6 +13,7 @@ import { BaseProgress } from '@microsoft/fast-foundation';
 import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button } from '@microsoft/fast-foundation';
+import { Calendar } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { Combobox } from '@microsoft/fast-foundation';
@@ -232,6 +233,9 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 export const ButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export const CalendarStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const CardStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -305,6 +309,10 @@ export class FASTButton extends Button {
     // (undocumented)
     connectedCallback(): void;
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+}
+
+// @public
+export class FASTCalendar extends Calendar {
 }
 
 // @public
