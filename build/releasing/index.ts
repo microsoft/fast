@@ -11,6 +11,7 @@ export const config: BeachballConfig = {
                 "packages/utilities/*",
                 "packages/web-components/*",
             ],
+            exclude: ["packages/tooling/fast-tooling"],
             disallowedChangeTypes: ["major"],
         },
     ],
