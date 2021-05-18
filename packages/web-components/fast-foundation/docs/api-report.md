@@ -827,11 +827,13 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
+    readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
-    // (undocumented)
     readonly name: string;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
+    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
@@ -840,10 +842,22 @@ export const DesignToken: Readonly<{
     create: typeof create;
 }>;
 
+// @alpha (undocumented)
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
+    target: HTMLElement;
+    token: T;
+}
+
 // @alpha
 export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
     name: string;
+}
+
+// @alpha (undocumented)
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
+    // (undocumented)
+    handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
 // @alpha
@@ -2209,7 +2223,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:54:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
