@@ -16,6 +16,7 @@ import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // Warning: (ae-incompatible-release-tags) The symbol "Accordion" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
@@ -53,6 +54,14 @@ export class AccordionItem extends FoundationElement {
 // @internal
 export interface AccordionItem extends StartEnd {
 }
+
+// Warning: (ae-incompatible-release-tags) The symbol "AccordionItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public (undocumented)
+export type AccordionItemOptions = FoundationElementDefinition & {
+    expandedIcon?: string | SyntheticViewTemplate;
+    collapsedIcon?: string | SyntheticViewTemplate;
+};
 
 // @public
 export const accordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;

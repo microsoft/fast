@@ -1,7 +1,16 @@
-import { attr, nullableNumberConverter } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import {
+    attr,
+    nullableNumberConverter,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+
+export type AccordionItemOptions = FoundationElementDefinition & {
+    expandedIcon?: string | SyntheticViewTemplate;
+    collapsedIcon?: string | SyntheticViewTemplate;
+};
 
 /**
  * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
