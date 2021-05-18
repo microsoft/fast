@@ -195,25 +195,25 @@ describe("HTMLRender", () => {
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("span");
+        expect(messageSent).to.equal("root");
         messageSent = "";
 
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("root");
+        expect(messageSent).to.equal("span");
 
         container.dispatchEvent(
             new KeyboardEvent("keyup", { key: "Tab", shiftKey: true })
         );
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("span");
+        expect(messageSent).to.equal("root");
 
         container.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab" }));
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("span");
+        expect(messageSent).to.equal("root");
 
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "Tab" }));
         await DOM.nextUpdate();
@@ -227,12 +227,12 @@ describe("HTMLRender", () => {
         );
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("root");
+        expect(messageSent).to.equal("span");
 
         container.dispatchEvent(new KeyboardEvent("keyup", { key: "a" }));
         await DOM.nextUpdate();
 
-        expect(messageSent).to.equal("root");
+        expect(messageSent).to.equal("span");
 
         await disconnect();
     });
