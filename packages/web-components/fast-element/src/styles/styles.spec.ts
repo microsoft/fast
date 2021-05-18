@@ -7,8 +7,7 @@ import {
 } from "./element-styles";
 import { DOM } from "../dom";
 import { CSSDirective } from "./css-directive";
-import { css } from "./css";
-import { cssPartial } from "./css-partial";
+import { css, cssPartial } from "./css";
 import type { Behavior } from "../observation/behavior";
 import { defaultExecutionContext } from "../observation/observable";
 
@@ -251,7 +250,12 @@ describe("css", () => {
 
 describe("cssPartial", () => {
     it("should have a createCSS method that is the CSS string interpolated with the createCSS product of any CSSDirectives", () => {
-        const partial = cssPartial`color: ${{createCSS() { return "red"}, createBehavior() { return undefined}}}`;
+        class myDirective extends CSSDirective {
+            createCSS() { return "red" };
+            createBehavior() { return undefined; }
+        }
+        
+        const partial = cssPartial`color: ${new myDirective}`;
         expect (partial.createCSS()).to.equal("color: red");
     });
 
@@ -263,25 +267,16 @@ describe("cssPartial", () => {
 
         const behavior2 = {...behavior};
 
-        const directive = {
-            createCSS() {
-                return ""
-            },
-            createBehavior() {
-                return behavior;
-            }
+        class directive extends CSSDirective {
+            createCSS() { return "" };
+            createBehavior() { return behavior; }
+        }
+        class directive2 extends CSSDirective {
+            createCSS() { return "" };
+            createBehavior() { return behavior2; }
         }
 
-        const directive2 = {
-            createCSS() {
-                return ""
-            },
-            createBehavior() {
-                return behavior2;
-            }
-        }
-
-        const partial = cssPartial`${directive}${directive2}`;
+        const partial = cssPartial`${new directive}${new directive2}`;
         const el = {
             $fastController: {
                 addBehaviors(behaviors: Behavior[]) {
