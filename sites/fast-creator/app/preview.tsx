@@ -3,36 +3,34 @@ import Foundation from "@microsoft/fast-components-foundation-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
-    htmlResolver,
     InitializeMessageOutgoing,
-    mapDataDictionary,
+    MessageSystem,
+    MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import {
-    WebComponentDefinition,
-    WebComponentDefinitionTag,
-} from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
+import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
-    previewDirection,
-    previewTheme,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { previewAccentColor } from "./creator";
-import { dataSetDictionaryId, htmlMapper } from "./utilities";
-import { createWrapper } from "./utilities/wrapper";
+import { HTMLRenderReact } from "./web-components";
 
 // Prevent tree shaking
 FASTComponents;
+
+const style: HTMLStyleElement = document.createElement("style");
+style.innerText =
+    "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
+document.head.appendChild(style);
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -42,17 +40,22 @@ export interface PreviewState {
     schemaDictionary: SchemaDictionary;
     theme: FASTComponents.StandardLuminance;
     designSystemDataDictionary: DataDictionary<unknown>;
+    htmlRenderMessageSystem: MessageSystem;
+    htmlRenderReady: boolean;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
     private ref: React.RefObject<HTMLDivElement>;
+    private renderRef: React.RefObject<HTMLRenderReact>;
     private activeDictionaryItemWrapperRef: React.RefObject<HTMLDivElement>;
+    private htmlRenderMessageSystemWorker = new FASTMessageSystemWorker();
 
     constructor(props: {}) {
         super(props);
         const designSystemLinkedDataId: string = "design-system";
 
         this.ref = React.createRef();
+        this.renderRef = React.createRef();
         this.activeDictionaryItemWrapperRef = React.createRef();
 
         this.state = {
@@ -79,12 +82,17 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 },
                 designSystemLinkedDataId,
             ],
+            //            htmlRenderMessageSystemWorker: new FASTMessageSystemWorker(),
+            htmlRenderMessageSystem: new MessageSystem({
+                webWorker: this.htmlRenderMessageSystemWorker,
+            }),
+            htmlRenderReady: false,
         };
+        this.state.htmlRenderMessageSystem.add({
+            onMessage: this.handleHtmlMessageSystem,
+        });
 
         window.addEventListener("message", this.handleMessage);
-        document.body.addEventListener("load", this.attachActiveDictionaryIdWrapper, {
-            capture: true,
-        });
     }
 
     public render(): React.ReactNode {
@@ -96,6 +104,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             return (
                 <React.Fragment>
                     <div className="preview" dir={direction} ref={this.ref}>
+                        <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
                     <div ref={this.activeDictionaryItemWrapperRef}>
@@ -119,20 +128,25 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         );
     }
 
-    public componentWillUnmount(): void {
-        document.body.removeEventListener("load", this.attachActiveDictionaryIdWrapper, {
-            capture: true,
-        });
-    }
-
     /**
      * Sets up the DOM with quick exit cases
      * if another request is performed.
      */
     private attachMappedComponents(): void {
-        if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
-            const designSystemProvider = document.createElement(
-                "fast-design-system-provider"
+        if (this.renderRef.current !== null && !this.state.htmlRenderReady) {
+            (this.renderRef.current
+                .renderRef as any).messageSystem = this.state.htmlRenderMessageSystem;
+            (this.renderRef.current.renderRef as any).markupDefinitions = {
+                ...fastComponentDefinitions,
+                ...nativeElementDefinitions,
+            };
+            this.setState({ htmlRenderReady: true });
+        }
+
+        if (this.state.dataDictionary !== undefined && this.renderRef.current !== null) {
+            const designSystemProvider: any = this.renderRef.current.designRef;
+            [...designSystemProvider.attributes].forEach(attr =>
+                designSystemProvider.removeAttribute(attr.name)
             );
 
             Object.entries(
@@ -152,59 +166,38 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             designSystemProvider.setAttribute(
                 "style",
-                "background: var(--background-color); height: 100vh;"
+                "background: var(--background-color); height: 100%;"
             );
 
-            designSystemProvider.appendChild(
-                mapDataDictionary({
-                    dataDictionary: this.state.dataDictionary,
-                    schemaDictionary: this.state.schemaDictionary,
-                    mapper: htmlMapper({
-                        version: 1,
-                        tags: Object.entries({
-                            ...fastComponentDefinitions,
-                            ...nativeElementDefinitions,
-                        }).reduce(
-                            (
-                                previousValue: WebComponentDefinitionTag[],
-                                currentValue: [string, WebComponentDefinition]
-                            ) => {
-                                if (Array.isArray(currentValue[1].tags)) {
-                                    return previousValue.concat(currentValue[1].tags);
-                                }
-
-                                return previousValue;
-                            },
-                            []
-                        ),
-                    }),
-                    resolver: htmlResolver,
-                })
-            );
-
-            if (this.ref.current.lastChild) {
-                this.ref.current.replaceChild(
-                    designSystemProvider,
-                    this.ref.current.lastChild
-                );
-            }
-            this.attachActiveDictionaryIdWrapper();
+            this.state.htmlRenderMessageSystem.postMessage({
+                type: MessageSystemType.initialize,
+                dataDictionary: this.state.dataDictionary,
+                schemaDictionary: this.state.schemaDictionary,
+            });
+        }
+    }
+    private handleNavigation(): void {
+        if (this.renderRef.current !== null) {
+            this.state.htmlRenderMessageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: this.state.activeDictionaryId,
+                activeNavigationConfigId: "preview",
+            });
         }
     }
 
     private updateDOM(messageData: MessageSystemOutgoing): () => void {
+        switch (messageData.type) {
+            case MessageSystemType.initialize:
+            case MessageSystemType.data:
+            case MessageSystemType.custom:
+                return this.attachMappedComponents;
+            case MessageSystemType.navigation:
+                return this.handleNavigation;
+        }
         return this.attachMappedComponents;
     }
-
-    private attachActiveDictionaryIdWrapper = (): void => {
-        const activeElement = this.ref.current?.querySelector(
-            `[${dataSetDictionaryId}="${this.state.activeDictionaryId}"]`
-        );
-
-        if (activeElement) {
-            createWrapper(this.activeDictionaryItemWrapperRef, activeElement);
-        }
-    };
 
     private handleMessage = (message: MessageEvent): void => {
         if (message.origin === location.origin) {
@@ -273,6 +266,25 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         }
                         break;
                 }
+            }
+        }
+    };
+
+    private handleHtmlMessageSystem = (message: MessageEvent): void => {
+        if (message.data) {
+            if (
+                message.data.type === MessageSystemType.navigation &&
+                message.data.action === MessageSystemNavigationTypeAction.update &&
+                message.data.activeNavigationConfigId === "fast-tooling::html-renderer"
+            ) {
+                window.postMessage(
+                    {
+                        type: MessageSystemType.custom,
+                        action: ViewerCustomAction.call,
+                        value: message.data.activeDictionaryId,
+                    },
+                    "*"
+                );
             }
         }
     };

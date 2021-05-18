@@ -130,7 +130,6 @@ html::-webkit-scrollbar-thumb {
 
 .preview {
     grid-row-start: 1;
-    overflow: auto;
     position: relative;
 }
 

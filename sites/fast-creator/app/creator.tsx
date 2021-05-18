@@ -5,6 +5,7 @@ import React from "react";
 import {
     CustomMessageIncomingOutgoing,
     DataType,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -316,7 +317,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<CreatorState> = {};
-
         if (
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
@@ -334,6 +334,16 @@ class Creator extends Editor<{}, CreatorState> {
                 });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
+            } else {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: e.data.value === "" ? "root" : e.data.value,
+                    activeNavigationConfigId: "",
+                    options: {
+                        originatorId: "fast-tooling::html-renderer",
+                    },
+                });
             }
         }
 

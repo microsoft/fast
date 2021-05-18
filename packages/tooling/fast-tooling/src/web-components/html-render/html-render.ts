@@ -85,6 +85,8 @@ export class HTMLRender extends FASTElement {
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
+                this.currentElement = null;
+                this.updateLayers(ActivityType.clear, "", null);
                 this.renderMarkup();
             }
             if (
@@ -119,17 +121,30 @@ export class HTMLRender extends FASTElement {
 
     /// Mouse Handlers
 
+    private getTargetElementFromMouseEvent(e: MouseEvent) {
+        let pathIndex = 0;
+        let el: HTMLElement = e.composedPath()[pathIndex] as HTMLElement;
+        let dataId = el.getAttribute(this.dataDictionaryAttr);
+        while (dataId === null && pathIndex < e.composedPath().length) {
+            el = e.composedPath()[pathIndex++] as HTMLElement;
+            if (el.getAttribute) {
+                dataId = el.getAttribute(this.dataDictionaryAttr);
+            }
+        }
+        return { dataId, el };
+    }
+
     public hoverHandler(e: MouseEvent): boolean {
-        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
-        const dataId = el.getAttribute(this.dataDictionaryAttr);
+        const targetEl = this.getTargetElementFromMouseEvent(e);
         if (
-            dataId !== null &&
+            targetEl.dataId !== null &&
             !(
                 this.currentElement &&
-                dataId === this.currentElement.getAttribute(this.dataDictionaryAttr)
+                targetEl.dataId ===
+                    this.currentElement.getAttribute(this.dataDictionaryAttr)
             )
         ) {
-            this.updateLayers(ActivityType.hover, dataId, el);
+            this.updateLayers(ActivityType.hover, targetEl.dataId, targetEl.el);
         }
         return false;
     }
@@ -162,10 +177,9 @@ export class HTMLRender extends FASTElement {
     }
 
     public clickHandler(e: MouseEvent): boolean {
-        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
-        const dataId = el.getAttribute(this.dataDictionaryAttr);
-        if (dataId !== null) {
-            this.selectElement(el, dataId);
+        const targetEl = this.getTargetElementFromMouseEvent(e);
+        if (targetEl.dataId !== null) {
+            this.selectElement(targetEl.el, targetEl.dataId);
             e.stopPropagation();
             return false;
         }
@@ -176,9 +190,9 @@ export class HTMLRender extends FASTElement {
             const currTab: number = this.currentElement
                 ? Number(this.currentElement.getAttribute("taborder"))
                 : e.shiftKey
-                ? this.tabCounter
-                : 0;
-            const nextTab: number = e.shiftKey ? currTab - 1 : currTab + 1;
+                ? 0
+                : this.tabCounter;
+            const nextTab: number = e.shiftKey ? currTab + 1 : currTab - 1;
 
             if (nextTab > 0 && nextTab < this.tabCounter) {
                 const tabElements: Array<Element> = Array.from(
