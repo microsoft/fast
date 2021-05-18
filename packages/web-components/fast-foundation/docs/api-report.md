@@ -1537,7 +1537,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     // @internal
     initialValue: string;
     // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => void;
+    keypressHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     readOnly: boolean;
     }
