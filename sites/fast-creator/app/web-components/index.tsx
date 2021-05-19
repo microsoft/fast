@@ -265,21 +265,22 @@ export function renderFormTabs(
 export class HTMLRenderReact extends React.Component {
     public designRef: React.RefObject<HTMLDivElement>;
     public renderRef: React.RefObject<HTMLDivElement>;
+
+    private setDesignRef = el => {
+        this.designRef = el;
+    };
+
+    private setRenderRef = el => {
+        this.renderRef = el;
+    };
+
     constructor(props) {
         super(props);
     }
     render() {
         return (
-            <fast-design-system-provider
-                ref={el => {
-                    this.designRef = el;
-                }}
-            >
-                <fast-tooling-html-render
-                    ref={el => {
-                        this.renderRef = el;
-                    }}
-                >
+            <fast-design-system-provider ref={this.setDesignRef}>
+                <fast-tooling-html-render ref={this.setRenderRef}>
                     <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
                 </fast-tooling-html-render>
             </fast-design-system-provider>
