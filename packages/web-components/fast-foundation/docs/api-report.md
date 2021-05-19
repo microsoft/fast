@@ -1678,8 +1678,15 @@ export class RadioGroup extends FoundationElement {
 // @public
 export const radioGroupTemplate: (context: any, definition: any) => ViewTemplate<RadioGroup>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "RadioOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const radioTemplate: (context: any, definition: any) => ViewTemplate<Radio>;
+export type RadioOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const radioTemplate: (context: any, definition: RadioOptions) => ViewTemplate<Radio>;
 
 // @alpha (undocumented)
 export type RegisterSelf<T extends Constructable> = {
@@ -1821,6 +1828,13 @@ export class Select extends FormAssociatedSelect {
 export interface Select extends StartEnd, DelegatesARIASelect {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SelectOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type SelectOptions = FoundationElementDefinition & {
+    indicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export enum SelectPosition {
     // (undocumented)
@@ -1836,7 +1850,7 @@ export enum SelectRole {
 }
 
 // @public
-export const selectTemplate: (context: any, definition: any) => ViewTemplate<Select>;
+export const selectTemplate: (context: any, definition: SelectOptions) => ViewTemplate<Select>;
 
 // @alpha (undocumented)
 export interface ServiceLocator {
@@ -1983,8 +1997,15 @@ export enum SliderMode {
     singleValue = "single-value"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SliderOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const sliderTemplate: (context: any, definition: any) => ViewTemplate<Slider>;
+export type SliderOptions = FoundationElementDefinition & {
+    thumb?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const sliderTemplate: (context: any, definition: SliderOptions) => ViewTemplate<Slider>;
 
 // @public
 export class StartEnd {
@@ -2045,8 +2066,15 @@ export class Switch extends FormAssociatedSwitch {
     readOnly: boolean;
     }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SwitchOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const switchTemplate: (context: any, definition: any) => ViewTemplate<Switch>;
+export type SwitchOptions = FoundationElementDefinition & {
+    switch?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const switchTemplate: (context: any, definition: SwitchOptions) => ViewTemplate<Switch>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Tab" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //

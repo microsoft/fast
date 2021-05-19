@@ -1,5 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import { Slider, sliderTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Slider,
+    SliderOptions,
+    sliderTemplate as template,
+} from "@microsoft/fast-foundation";
 import { sliderStyles as styles } from "./slider.styles";
 
 /**
