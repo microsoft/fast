@@ -1,4 +1,8 @@
-import { Slider, sliderTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Slider,
+    SliderOptions,
+    sliderTemplate as template,
+} from "@microsoft/fast-foundation";
 import { sliderStyles as styles } from "./slider.styles";
 
 /**
@@ -10,10 +14,13 @@ import { sliderStyles as styles } from "./slider.styles";
  * @remarks
  * HTML Element: \<fast-slider\>
  */
-export const fastSlider = Slider.compose({
+export const fastSlider = Slider.compose<SliderOptions>({
     baseName: "slider",
     template,
     styles,
+    thumb: `
+        <div class="thumb-cursor"></div>
+    `,
 });
 
 /**

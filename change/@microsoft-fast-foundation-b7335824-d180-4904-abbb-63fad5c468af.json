@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "add API support for setting default slotted content as part of component composition",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
