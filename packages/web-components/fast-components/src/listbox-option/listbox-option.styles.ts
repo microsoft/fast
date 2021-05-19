@@ -22,7 +22,6 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { neutralFocusInnerAccentBehavior } from "../styles/recipes";
 import { heightNumber } from "../styles/size";
 
 export const optionStyles = (context, definition) =>

@@ -6,7 +6,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../size";
-import { neutralFocusInnerAccentBehavior } from "../recipes";
 import {
     accentFillActive,
     accentFillHover,
@@ -436,13 +435,10 @@ export const StealthButtonStyles = css`
     :host([appearance="stealth"]:active) {
         background: ${neutralFillStealthActive};
     }
-<<<<<<< HEAD
-=======
 
     :host([appearance="stealth"][disabled]) {
         background: ${neutralFillStealthRest};
     }
->>>>>>> adding neutral-fill-stealth
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
         css`
