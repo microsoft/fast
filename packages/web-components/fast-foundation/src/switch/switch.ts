@@ -1,6 +1,15 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedSwitch } from "./switch.form-associated";
+
+/**
+ * Switch configuration options
+ * @public
+ */
+export type SwitchOptions = FoundationElementDefinition & {
+    switch?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Switch Custom HTML Element.
