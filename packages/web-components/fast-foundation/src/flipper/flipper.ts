@@ -1,8 +1,17 @@
-import { attr, booleanConverter } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import { attr, booleanConverter, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import { FlipperDirection } from "./flipper.options";
 
 export { FlipperDirection };
+
+/**
+ * Flipper configuration options
+ * @public
+ */
+export type FlipperOptions = FoundationElementDefinition & {
+    next?: string | SyntheticViewTemplate;
+    previous?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Flipper Custom HTML Element.
