@@ -137,7 +137,7 @@ class CSSPartial extends CSSDirective implements Behavior {
  */
 export function cssPartial(
     strings: TemplateStringsArray,
-    ...values: (string | CSSDirective)[]
+    ...values: (ComposableStyles | CSSDirective)[]
 ): CSSDirective {
     const { styles, behaviors } = collectStyles(strings, values);
 
