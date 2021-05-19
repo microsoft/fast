@@ -1,14 +1,17 @@
 import { css } from "@microsoft/fast-element";
 import {
     cssCustomPropertyBehaviorFactory,
-    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
+import {
+    DirectionalStyleSheetBehavior,
+    heightNumber,
+    neutralFocusInnerAccentBehavior,
+} from "../styles/index";
 import {
     neutralFillStealthHover as neutralFillStealthHoverRecipe,
     neutralFillStealthSelected as neutralFillStealthSelectedRecipe,
