@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "menu should not reset tabindex unnecessarily",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
