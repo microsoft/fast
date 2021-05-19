@@ -119,7 +119,7 @@ To update navigation, use the dictionary ID and the navigation config ID. Using 
 }
 ```
 
-And if you wanted to navigate to the `disabled` property, you would do:
+To navigate to the `disabled` property:
 
 ```js
 {
