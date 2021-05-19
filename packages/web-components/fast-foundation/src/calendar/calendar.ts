@@ -235,19 +235,4 @@ export class Calendar extends FASTElement {
 
         return days;
     }
-
-    /**
-     * Helper function that can extract the date that was clicked on a calendar
-     * @param mouseEvent - a mouse click event
-     * @returns the date clicked
-     */
-    public getDateClicked(mouseEvent: any): string | null | undefined {
-        if (mouseEvent && mouseEvent.path) {
-            const day: HTMLElement = mouseEvent
-                .composedPath()
-                .find(node => node.className && node.className.indexOf("day") >= 0);
-
-            return day.getAttribute("data-date");
-        }
-    }
 }

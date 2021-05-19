@@ -12,7 +12,7 @@
                     "description":
                         "Month of the calendar to render. The default will be the current month.",
                     "type": "number",
-                    "default": 0,
+                    "default": 5,
                     "required": false
                 },
                 {
@@ -20,8 +20,8 @@
                     "title": "Year",
                     "description":
                         "Year of the calendar to render. The default will be the current year.",
-                    "type": 0,
-                    "default": "",
+                    "type": "number",
+                    "default": 2021,
                     "required": false
                 },
                 {
@@ -29,7 +29,7 @@
                     "title": "Locale",
                     "description":
                         "Locale information for the calendar. This will include language, country, calendar type and numbering type. Defaults to browser locale.",
-                    "type": 0,
+                    "type": "string",
                     "default": "",
                     "required": false
                 },
@@ -38,7 +38,7 @@
                     "title": "Weekday format",
                     "description":
                         "The rendering style for the weekday labels. Values include short, long and narrow.",
-                    "type": 0,
+                    "type": "string",
                     "default": "short",
                     "required": false
                 },
@@ -47,7 +47,7 @@
                     "title": "Month format",
                     "description":
                         "The rendering style for the month name. Values include short, long and narrow.",
-                    "type": 0,
+                    "type": "string",
                     "default": "long",
                     "required": false
                 }

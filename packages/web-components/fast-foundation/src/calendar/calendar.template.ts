@@ -1,14 +1,19 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import { endTemplate, startTemplate } from "../patterns/start-end";
 import type { Calendar } from "./calendar";
 
 /**
+ * The template for the {@link @microsoft/fast-foundation#(Calendar:class)} component.
  * @public
  */
 export const CalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
-        <div class="title">${x => x.getLocaleMonth()} ${x => x.getLocaleYear()}</div>
-        <div class="days">
+        ${startTemplate}
+        <div class="title" part="title">
+            ${x => x.getLocaleMonth()} ${x => x.getLocaleYear()}
+        </div>
+        <div class="days" part="days">
             ${repeat(
                 x => x.getLocaleWeekDays(),
                 html`
@@ -22,8 +27,11 @@ export const CalendarTemplate: ViewTemplate<Calendar> = html`
                         `${str}
                     <div class="day${day.month !== x.month ? ` off` : ``}${
                             x.isToday(day.year, day.month, day.day) ? ` today` : ``
-                        }" data-date="${day.month}-${day.day}-${day.year}">
+                        }" data-year="${day.year}" data-month="${
+                            day.month - 1
+                        }" data-day="${day.day}">
                         <div>${getLocaleDay(day.month, day.day, day.year)}</div>
+                        ${x.isToday(day.year, day.month, day.day) ? `<slot></slot>` : ``}
                         <slot name="${day.month}-${day.day}-${day.year}"></slot>
                     </div>
                     `,
@@ -35,5 +43,6 @@ export const CalendarTemplate: ViewTemplate<Calendar> = html`
                 `;
             }}
         </div>
+        ${endTemplate}
     </template>
 `;

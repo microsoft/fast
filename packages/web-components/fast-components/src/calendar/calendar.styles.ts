@@ -1,61 +1,65 @@
 import { css } from "@microsoft/fast-element";
+import { display } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
     heightNumber,
-    neutralFillRestBehavior,
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
 export const CalendarStyles = css`
-    :host {
-        display: inline-block;
+    ${display("block")} :host {
         --cell-height: calc(${heightNumber} * 1px);
-        --current-day: ${accentForegroundRestBehavior.var};
-        --weekday-color: #2b2b2b;
+        --weekday-background: transparent;
+        --weekday-color: inherit;
+        --current-day: ${accentForegroundActiveBehavior.var};
+        --current-day-border: none;
+        --current-day-background: none;
+        --inactive-day-color: ${SystemColors.GrayText};
     }
+
     .title {
         font-size: 1.5em;
-        text-align: center;
         padding: 5px 0;
+        text-align: center;
     }
 
     .days {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         border-left: var(--cell-border);
         border-top: var(--cell-border);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 
     .week-day {
-        background-color: var(--weekday-color);
-        text-align: center;
+        background-color: var(--weekday-background);
+        border-bottom: var(--cell-border);
+        color: var(--weekday-color);
         padding: 5px 0;
+        text-align: center;
+    }
+
+    .week-day:nth-child(7) {
+        border-right: var(--cell-border);
     }
 
     .day {
-        height: var(--cell-height);
         box-sizing: border-box;
-        border-right: var(--cell-border);
         border-bottom: var(--cell-border);
-        vertical-align: top;
-        text-align: left;
+        border-right: var(--cell-border);
+        height: var(--cell-height);
         padding: 5px;
+        vertical-align: top;
     }
 
     .day.off {
-        color: #666;
+        color: var(--inactive-day-color);
     }
 
     .today {
+        background: var(--current-day-background);
         color: var(--current-day);
+        outline: var(--current-day-border);
+        outline-offset: -1px;
     }
-`.withBehaviors(
-    accentForegroundRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior
-);
+`.withBehaviors(accentForegroundActiveBehavior, neutralForegroundRestBehavior);

@@ -1,6 +1,5 @@
 <style>
     fast-calendar {
-        --cell-border: 1px solid #444;
         width: 600px;
     }
 
@@ -12,7 +11,67 @@
         --cell-height: 80px;
         width: 1000px;
     }
+
+    .borders {
+        --cell-border: 1px solid #666;
+        --weekday-background: #024;
+        --weekday-color: #fff;
+        --current-day: orange;
+        --current-day-border: 1px solid;
+        color: lightskyblue;
+        --inactive-day-color: transparent;
+        text-align: center;
+        width: 700px;
+        --cell-height: 100px;
+    }
+
+    .light-borders {
+        --cell-border: 1px solid #333;
+        --weekday-background: #333;
+    }
+
+    .compact {
+        width: 280px;
+        text-align: center;
+    }
+
+    #click-output {
+        background: #fff;
+        width: 400px;
+        height: 20px;
+        padding: 10px;
+        font-family: Arial;
+        transition: none;
+    }
+
+    #click-output.loaded {
+        background: #333;
+        transition: all ease-out 1s;
+    }
+
+    .calendar-change {
+        position: relative;
+        margin: 20px 40px;
+    }
+
+    .calendar-change fast-flipper {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        transform: translateX(-50%);
+    }
+
+    .calendar-change fast-flipper#next {
+        right: 0;
+        left: auto;
+        transform: translateX(50%);
+    }
 </style>
+<script>
+    const bindScript = (id, script) => {
+        document.getElementById(id).addEventListener("click", script);
+    };
+</script>
 <h1>Calendar</h1>
 
 <h2>Default</h2>
@@ -25,10 +84,18 @@
 <fast-calendar class="long-days" weekdayFormat="long"></fast-calendar>
 
 <h2>Shortened month and weekday labels</h2>
-<fast-calendar month="12" monthFormat="short" weekdayFormat="narrow"></fast-calendar>
+<fast-calendar
+    class="compact"
+    month="12"
+    monthFormat="short"
+    weekdayFormat="narrow"
+></fast-calendar>
+
+<h2>With borders</h2>
+<fast-calendar class="borders"></fast-calendar>
 
 <h2>Calendar with events</h2>
-<fast-calendar class="events" month="1" year="2021">
+<fast-calendar class="events light-borders" month="1" year="2021">
     <div slot="1-1-2021">New Year's Day</div>
     <div slot="1-1-2021">Hangover Day</div>
     <div slot="1-5-2021">National Bird Day</div>
@@ -39,15 +106,56 @@
 </fast-calendar>
 
 <h2>Calendar with click handler</h2>
-<fast-calendar id="click"></fast-calendar>
+<fast-calendar class="events light-borders" id="click" month="1" year="2021">
+    <div slot="1-13-2021">Another test slot</div>
+    <div slot="1-4-2021">Test slot</div>
+    <div slot="1-29-2021">Test slot</div>
+    <div slot="1-29-2021">Second slot</div>
+</fast-calendar>
+<div class="click-out">
+    <h3>Click output:</h3>
+    <div id="click-output"></div>
+</div>
 <script>
-    let click = event => {
-        const { target } = event;
-        const date = target.getDateClicked(event);
-        if (date) alert(`Date clicked: ${date}`);
-    };
     let calendar = document.getElementById("click");
-    calendar.addEventListener("click", click);
+    const calendarClick = evt => {
+        const { path } = evt;
+        const output = document.getElementById("click-output");
+        output.className = "";
+        output.innerHTML = "";
+        for (let i = 0; i < path.length; i++) {
+            const target = path[i];
+            if (target.slot) {
+                output.innerHTML = `Clicked on a slot with text '${target.innerHTML}'`;
+                break;
+            }
+            if (target.classList?.contains("day")) {
+                const { day, month, year } = target.dataset;
+                output.innerHTML = `${parseInt(month) + 1}-${day}-${year} was clicked`;
+                break;
+            }
+        }
+        setTimeout(() => (output.className = "loaded"), 1);
+    };
+    calendar.addEventListener("click", calendarClick);
+</script>
+
+<h2>Changing calendar</h2>
+<fast-calendar class="light-borders calendar-change">
+    <fast-flipper slot="end" id="previous" direction="previous"></fast-flipper>
+    <fast-flipper slot="end" id="next"></fast-flipper>
+</fast-calendar>
+
+<script>
+    const changeCalendar = (direction, event) => {
+        const calendar = event.target.parentNode;
+        const { month, year } = calendar;
+        const nextMonth = month + direction;
+        calendar.year = year + (nextMonth > 12 ? 1 : nextMonth < 1 ? -1 : 0);
+        calendar.month = nextMonth < 1 ? 12 : nextMonth > 12 ? 1 : nextMonth;
+    };
+    bindScript("previous", changeCalendar.bind(this, -1));
+    bindScript("next", changeCalendar.bind(this, 1));
 </script>
 
 <h2>German calendar</h2>
