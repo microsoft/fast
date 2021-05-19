@@ -1,5 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import { MenuItem, menuItemTemplate as template } from "@microsoft/fast-foundation";
+import {
+    MenuItem,
+    MenuItemOptions,
+    menuItemTemplate as template,
+} from "@microsoft/fast-foundation";
 import { menuItemStyles as styles } from "./menu-item.styles";
 
 /**

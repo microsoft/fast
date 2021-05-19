@@ -1,5 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import { Flipper, flipperTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Flipper,
+    FlipperOptions,
+    flipperTemplate as template,
+} from "@microsoft/fast-foundation";
 import { flipperStyles as styles } from "./flipper.styles";
 
 /**
@@ -22,7 +26,7 @@ export const fastFlipper = Flipper.compose<FlipperOptions>({
             />
         </svg>
     `,
-    prevoius: html`
+    previous: html`
         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M11.273 15.977L3.29 8 11.273.023l.704.704L4.71 8l7.266 7.273-.704.704z"

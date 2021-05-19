@@ -1072,8 +1072,16 @@ export enum FlipperDirection {
     previous = "previous"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "FlipperOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const flipperTemplate: (context: any, definition: any) => ViewTemplate<Flipper>;
+export type FlipperOptions = FoundationElementDefinition & {
+    next?: string | SyntheticViewTemplate;
+    previous?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const flipperTemplate: (context: any, definition: FlipperOptions) => ViewTemplate<Flipper>;
 
 // @public
 export const focusVisible: string;
@@ -1486,6 +1494,15 @@ export interface MenuItem extends StartEnd {
 // @public
 export type MenuItemColumnCount = 0 | 1 | 2;
 
+// Warning: (ae-incompatible-release-tags) The symbol "MenuItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type MenuItemOptions = FoundationElementDefinition & {
+    checkboxIndicator?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    radioIndicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export enum MenuItemRole {
     menuitem = "menuitem",
@@ -1494,7 +1511,7 @@ export enum MenuItemRole {
 }
 
 // @public
-export const menuItemTemplate: (context: any, definition: any) => ViewTemplate<MenuItem>;
+export const menuItemTemplate: (context: any, definition: MenuItemOptions) => ViewTemplate<MenuItem>;
 
 // @public
 export const menuTemplate: (context: any, definition: any) => ViewTemplate<Menu>;
