@@ -1585,11 +1585,26 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 // @alpha (undocumented)
 export type ParentLocator = (owner: any) => Container | null;
 
+// Warning: (ae-incompatible-release-tags) The symbol "ProgressOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type ProgressOptions = FoundationElementDefinition & {
+    indeterminateIndicator1?: string | SyntheticViewTemplate;
+    indeterminateIndicator2?: string | SyntheticViewTemplate;
+};
+
+// Warning: (ae-incompatible-release-tags) The symbol "ProgressRingOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type ProgressRingOptions = FoundationElementDefinition & {
+    indeterminateIndicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export const progressRingTemplate: (context: any, definition: any) => ViewTemplate<BaseProgress>;
 
 // @public
-export const progressTemplate: (context: any, defintion: any) => ViewTemplate<BaseProgress>;
+export const progressTemplate: (context: any, defintion: ProgressOptions) => ViewTemplate<BaseProgress>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {
