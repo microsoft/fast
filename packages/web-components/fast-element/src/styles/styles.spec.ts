@@ -288,4 +288,22 @@ describe("cssPartial", () => {
 
         partial.createBehavior()?.bind(el, defaultExecutionContext)
     });
+
+    it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
+        const styles = css`:host {color: blue; }`;
+        const partial = cssPartial`${styles}`;
+        let called = false;
+        const el = {
+            $fastController: {
+                addStyles(style: ElementStyles) {
+                    expect(style.styles.includes(styles)).to.be.true;
+                    called = true;
+                }
+            }
+        }
+
+        partial.createBehavior()?.bind(el, defaultExecutionContext)
+
+        expect(called).to.be.true;
+    })
 })
