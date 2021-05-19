@@ -82,7 +82,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 },
                 designSystemLinkedDataId,
             ],
-            //            htmlRenderMessageSystemWorker: new FASTMessageSystemWorker(),
             htmlRenderMessageSystem: new MessageSystem({
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),

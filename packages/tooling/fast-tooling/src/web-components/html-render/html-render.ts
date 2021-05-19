@@ -123,10 +123,11 @@ export class HTMLRender extends FASTElement {
 
     private getTargetElementFromMouseEvent(e: MouseEvent) {
         let pathIndex = 0;
-        let el: HTMLElement = e.composedPath()[pathIndex] as HTMLElement;
+        let path: EventTarget[] = e.composedPath();
+        let el: HTMLElement = path[pathIndex] as HTMLElement;
         let dataId = el.getAttribute(this.dataDictionaryAttr);
-        while (dataId === null && pathIndex < e.composedPath().length) {
-            el = e.composedPath()[pathIndex++] as HTMLElement;
+        while (dataId === null && pathIndex < path.length) {
+            el = path[pathIndex++] as HTMLElement;
             if (el.getAttribute) {
                 dataId = el.getAttribute(this.dataDictionaryAttr);
             }
