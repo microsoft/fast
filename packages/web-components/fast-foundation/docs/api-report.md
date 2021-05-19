@@ -16,6 +16,7 @@ import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // Warning: (ae-incompatible-release-tags) The symbol "Accordion" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
@@ -54,8 +55,16 @@ export class AccordionItem extends FoundationElement {
 export interface AccordionItem extends StartEnd {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "AccordionItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const accordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;
+export type AccordionItemOptions = FoundationElementDefinition & {
+    expandedIcon?: string | SyntheticViewTemplate;
+    collapsedIcon?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const accordionItemTemplate: (context: any, definition: AccordionItemOptions) => ViewTemplate<AccordionItem>;
 
 // @public
 export const accordionTemplate: (context: any, definition: any) => ViewTemplate<Accordion>;
@@ -211,8 +220,15 @@ export class BreadcrumbItem extends Anchor {
 export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "BreadcrumbItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const breadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;
+export type BreadcrumbItemOptions = FoundationElementDefinition & {
+    separator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const breadcrumbItemTemplate: (context: any, definition: BreadcrumbItemOptions) => ViewTemplate<BreadcrumbItem>;
 
 // @public
 export const breadcrumbTemplate: (context: any, definition: any) => ViewTemplate<Breadcrumb>;
@@ -280,8 +296,16 @@ export class Checkbox extends FormAssociatedCheckbox {
     readOnly: boolean;
     }
 
+// Warning: (ae-incompatible-release-tags) The symbol "CheckboxOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const checkboxTemplate: (context: any, definition: any) => ViewTemplate<Checkbox>;
+export type CheckboxOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const checkboxTemplate: (context: any, definition: CheckboxOptions) => ViewTemplate<Checkbox>;
 
 // @public
 export interface ColumnDefinition {
@@ -369,8 +393,15 @@ export enum ComboboxAutocomplete {
     none = "none"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "ComboboxOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const comboboxTemplate: (context: any, definition: any) => ViewTemplate<Combobox>;
+export type ComboboxOptions = FoundationElementDefinition & {
+    indicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const comboboxTemplate: (context: any, definition: ComboboxOptions) => ViewTemplate<Combobox>;
 
 // @alpha
 export interface ComponentPresentation {
@@ -1041,8 +1072,16 @@ export enum FlipperDirection {
     previous = "previous"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "FlipperOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const flipperTemplate: (context: any, definition: any) => ViewTemplate<Flipper>;
+export type FlipperOptions = FoundationElementDefinition & {
+    next?: string | SyntheticViewTemplate;
+    previous?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const flipperTemplate: (context: any, definition: FlipperOptions) => ViewTemplate<Flipper>;
 
 // @public
 export const focusVisible: string;
@@ -1455,6 +1494,15 @@ export interface MenuItem extends StartEnd {
 // @public
 export type MenuItemColumnCount = 0 | 1 | 2;
 
+// Warning: (ae-incompatible-release-tags) The symbol "MenuItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type MenuItemOptions = FoundationElementDefinition & {
+    checkboxIndicator?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    radioIndicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export enum MenuItemRole {
     menuitem = "menuitem",
@@ -1463,7 +1511,7 @@ export enum MenuItemRole {
 }
 
 // @public
-export const menuItemTemplate: (context: any, definition: any) => ViewTemplate<MenuItem>;
+export const menuItemTemplate: (context: any, definition: MenuItemOptions) => ViewTemplate<MenuItem>;
 
 // @public
 export const menuTemplate: (context: any, definition: any) => ViewTemplate<Menu>;
@@ -1515,8 +1563,16 @@ export class NumberField extends FormAssociatedNumberField {
 export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "NumberFieldOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const numberFieldTemplate: (context: any, definition: any) => ViewTemplate<NumberField>;
+export type NumberFieldOptions = FoundationElementDefinition & {
+    stepDownGlyph?: string | SyntheticViewTemplate;
+    stepUpGlyph?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const numberFieldTemplate: (context: any, definition: NumberFieldOptions) => ViewTemplate<NumberField>;
 
 // @alpha
 export const optional: (key: any) => any;
@@ -1529,11 +1585,26 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 // @alpha (undocumented)
 export type ParentLocator = (owner: any) => Container | null;
 
+// Warning: (ae-incompatible-release-tags) The symbol "ProgressOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type ProgressOptions = FoundationElementDefinition & {
+    indeterminateIndicator1?: string | SyntheticViewTemplate;
+    indeterminateIndicator2?: string | SyntheticViewTemplate;
+};
+
+// Warning: (ae-incompatible-release-tags) The symbol "ProgressRingOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type ProgressRingOptions = FoundationElementDefinition & {
+    indeterminateIndicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export const progressRingTemplate: (context: any, definition: any) => ViewTemplate<BaseProgress>;
 
 // @public
-export const progressTemplate: (context: any, defintion: any) => ViewTemplate<BaseProgress>;
+export const progressTemplate: (context: any, defintion: ProgressOptions) => ViewTemplate<BaseProgress>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {
@@ -1607,8 +1678,15 @@ export class RadioGroup extends FoundationElement {
 // @public
 export const radioGroupTemplate: (context: any, definition: any) => ViewTemplate<RadioGroup>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "RadioOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const radioTemplate: (context: any, definition: any) => ViewTemplate<Radio>;
+export type RadioOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const radioTemplate: (context: any, definition: RadioOptions) => ViewTemplate<Radio>;
 
 // @alpha (undocumented)
 export type RegisterSelf<T extends Constructable> = {
@@ -1750,6 +1828,13 @@ export class Select extends FormAssociatedSelect {
 export interface Select extends StartEnd, DelegatesARIASelect {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SelectOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type SelectOptions = FoundationElementDefinition & {
+    indicator?: string | SyntheticViewTemplate;
+};
+
 // @public
 export enum SelectPosition {
     // (undocumented)
@@ -1765,7 +1850,7 @@ export enum SelectRole {
 }
 
 // @public
-export const selectTemplate: (context: any, definition: any) => ViewTemplate<Select>;
+export const selectTemplate: (context: any, definition: SelectOptions) => ViewTemplate<Select>;
 
 // @alpha (undocumented)
 export interface ServiceLocator {
@@ -1912,8 +1997,15 @@ export enum SliderMode {
     singleValue = "single-value"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SliderOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const sliderTemplate: (context: any, definition: any) => ViewTemplate<Slider>;
+export type SliderOptions = FoundationElementDefinition & {
+    thumb?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const sliderTemplate: (context: any, definition: SliderOptions) => ViewTemplate<Slider>;
 
 // @public
 export class StartEnd {
@@ -1974,8 +2066,15 @@ export class Switch extends FormAssociatedSwitch {
     readOnly: boolean;
     }
 
+// Warning: (ae-incompatible-release-tags) The symbol "SwitchOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const switchTemplate: (context: any, definition: any) => ViewTemplate<Switch>;
+export type SwitchOptions = FoundationElementDefinition & {
+    switch?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const switchTemplate: (context: any, definition: SwitchOptions) => ViewTemplate<Switch>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Tab" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //
@@ -2241,8 +2340,15 @@ export class TreeItem extends FoundationElement {
 export interface TreeItem extends StartEnd {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "TreeItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const treeItemTemplate: (context: any, definition: any) => ViewTemplate<TreeItem>;
+export type TreeItemOptions = FoundationElementDefinition & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const treeItemTemplate: (context: any, definition: TreeItemOptions) => ViewTemplate<TreeItem>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "TreeView" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //

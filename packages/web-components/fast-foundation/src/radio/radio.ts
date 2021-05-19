@@ -1,5 +1,6 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedRadio } from "./radio.form-associated";
 
 /**
@@ -10,6 +11,14 @@ export type RadioControl = Pick<
     HTMLInputElement,
     "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
 >;
+
+/**
+ * Radio configuration options
+ * @public
+ */
+export type RadioOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Radio Custom HTML Element.
