@@ -1,4 +1,10 @@
-import { attr, Notifier, observable, Observable } from "@microsoft/fast-element";
+import {
+    attr,
+    Notifier,
+    observable,
+    Observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -11,7 +17,7 @@ import {
 import { StartEnd } from "../patterns/start-end";
 import type { TreeView } from "../tree-view";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 /**
  * check if the item is a tree item
@@ -22,6 +28,14 @@ import { FoundationElement } from "../foundation-element";
 export function isTreeItemElement(el: Element): el is HTMLElement {
     return isHTMLElement(el) && (el.getAttribute("role") as string) === "treeitem";
 }
+
+/**
+ * Tree Item configuration options
+ * @public
+ */
+export type TreeItemOptions = FoundationElementDefinition & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Tree item Custom HTML Element.

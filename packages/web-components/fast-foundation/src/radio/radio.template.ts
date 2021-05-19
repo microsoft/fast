@@ -1,14 +1,14 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Radio } from "./radio";
+import type { Radio, RadioOptions } from "./radio";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Radio:class)} component.
  * @public
  */
-export const radioTemplate: (context, definition) => ViewTemplate<Radio> = (
+export const radioTemplate: (context, definition: RadioOptions) => ViewTemplate<Radio> = (
     context,
-    definition
+    definition: RadioOptions
 ) => html`
     <template
         role="radio"
@@ -23,7 +23,7 @@ export const radioTemplate: (context, definition) => ViewTemplate<Radio> = (
     >
         <div part="control" class="control">
             <slot name="checked-indicator">
-                <div part="checked-indicator" class="checked-indicator"></div>
+                ${definition.checkedIndicator || ""}
             </slot>
         </div>
         <label
