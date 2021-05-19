@@ -3,7 +3,7 @@ Application for UI testing and development.
 
 ## Overview
 
-The Creator is a React application that allows for the editing web components and native HTML elements live. To accomplish this, the Creator utilizes the web worker Message System from the `@microsoft/fast-tooling` package and a series of components and services provided by both the `@microsoft/fast-tooling` and `@microsoft/fast-tooling-react` packages.
+The Creator is a React application that allows for editing web components and native HTML elements with a live preview. To accomplish this, the Creator utilizes the web worker Message System from the `@microsoft/fast-tooling` package and a series of components and services provided by both the `@microsoft/fast-tooling` and `@microsoft/fast-tooling-react` packages.
 
 Each component or service registers itself with the Message System and sends navigation and data updates to allow all services and components to remain in sync.
 
