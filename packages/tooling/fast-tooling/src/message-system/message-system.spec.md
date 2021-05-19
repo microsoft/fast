@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Message System controls the navigation, data, data schemas (JSON schemas) and history of messages it recieves. It can also be used to pass custom messages between services that are registered to it.
+The Message System controls the navigation, data, data schemas (JSON schemas), and history of messages it receives. It can also be used to pass custom messages between services that are registered to it.
 
 ## Lifecycle
 
