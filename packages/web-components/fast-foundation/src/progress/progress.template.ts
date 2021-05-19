@@ -1,15 +1,15 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress } from "./base-progress";
+import type { BaseProgress, ProgressOptions } from "./base-progress";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const progressTemplate: (context, defintion) => ViewTemplate<BaseProgress> = (
+export const progressTemplate: (
     context,
-    defintion
-) => html`
+    defintion: ProgressOptions
+) => ViewTemplate<BaseProgress> = (context, defintion: ProgressOptions) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -34,14 +34,8 @@ export const progressTemplate: (context, defintion) => ViewTemplate<BaseProgress
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="indeterminate">
                     <slot class="indeterminate" name="indeterminate">
-                        <span
-                            class="indeterminate-indicator-1"
-                            part="indeterminate-indicator-1"
-                        ></span>
-                        <span
-                            class="indeterminate-indicator-2"
-                            part="indeterminate-indicator-2"
-                        ></span>
+                        ${defintion.indeterminateIndicator1 || ""}
+                        ${defintion.indeterminateIndicator2 || ""}
                     </slot>
                 </div>
             `

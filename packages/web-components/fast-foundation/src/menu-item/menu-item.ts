@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowLeft,
@@ -7,7 +7,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import type { Menu } from "../menu/menu";
 import { StartEnd } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
@@ -21,6 +21,16 @@ export { MenuItemRole };
  * @public
  */
 export type MenuItemColumnCount = 0 | 1 | 2;
+
+/**
+ * Menu Item configuration options
+ * @public
+ */
+export type MenuItemOptions = FoundationElementDefinition & {
+    checkboxIndicator?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    radioIndicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Switch Custom HTML Element.

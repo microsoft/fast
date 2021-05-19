@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add support for default slotted content for components with visual indicators",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
