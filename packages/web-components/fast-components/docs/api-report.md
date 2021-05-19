@@ -10,6 +10,7 @@ import { Anchor as Anchor_2 } from '@microsoft/fast-foundation';
 import { AnchoredRegion } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { BaseProgress } from '@microsoft/fast-foundation';
+import { Behavior } from '@microsoft/fast-element';
 import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
@@ -24,6 +25,8 @@ import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
+import { ElementStyles } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
 import { Flipper } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
@@ -279,6 +282,15 @@ export const dataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const dialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export class DirectionalStyleSheetBehavior implements Behavior {
+    constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
+    // @internal (undocumented)
+    bind(source: FASTElement & HTMLElement): void;
+    // @internal (undocumented)
+    unbind(source: FASTElement & HTMLElement): void;
+}
 
 // Warning: (ae-internal-missing-underscore) The name "Disclosure" should be prefixed with an underscore because the declaration is marked as @internal
 //

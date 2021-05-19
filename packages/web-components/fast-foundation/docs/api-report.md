@@ -925,15 +925,6 @@ export class Dialog extends FoundationElement {
 export const dialogTemplate: (context: any, definition: any) => ViewTemplate<Dialog>;
 
 // @public
-export class DirectionalStyleSheetBehavior implements Behavior {
-    constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
-    // @internal (undocumented)
-    bind(source: FASTElement & HTMLElement): void;
-    // @internal (undocumented)
-    unbind(source: FASTElement & HTMLElement): void;
-}
-
-// @public
 export const disabledCursor = "not-allowed";
 
 // Warning: (ae-incompatible-release-tags) The symbol "Disclosure" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
