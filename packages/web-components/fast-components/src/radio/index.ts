@@ -1,4 +1,9 @@
-import { Radio, radioTemplate as template } from "@microsoft/fast-foundation";
+import { html } from "@microsoft/fast-element";
+import {
+    Radio,
+    RadioOptions,
+    radioTemplate as template,
+} from "@microsoft/fast-foundation";
 import { radioStyles as styles } from "./radio.styles";
 
 /**
@@ -10,10 +15,13 @@ import { radioStyles as styles } from "./radio.styles";
  * @remarks
  * HTML Element: \<fast-radio\>
  */
-export const fastRadio = Radio.compose({
+export const fastRadio = Radio.compose<RadioOptions>({
     baseName: "radio",
     template,
     styles,
+    checkedIndicator: html`
+        <div part="checked-indicator" class="checked-indicator"></div>
+    `,
 });
 
 /**
