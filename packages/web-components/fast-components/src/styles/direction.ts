@@ -2,7 +2,7 @@ import {
     Behavior,
     ElementStyles,
     FASTElement,
-    Subscriber,
+    Subscriber
 } from "@microsoft/fast-element";
 import { DesignTokenChangeRecord } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
