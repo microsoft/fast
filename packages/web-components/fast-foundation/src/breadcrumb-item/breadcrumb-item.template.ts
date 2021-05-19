@@ -10,7 +10,7 @@ import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
  */
 export const breadcrumbItemTemplate: (
     context,
-    definition
+    definition: BreadcrumbItemOptions
 ) => ViewTemplate<BreadcrumbItem> = (context, definition: BreadcrumbItemOptions) => html`
     <div role="listitem" class="listitem" part="listitem">
         ${when(

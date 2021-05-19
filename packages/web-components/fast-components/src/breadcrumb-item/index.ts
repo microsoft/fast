@@ -1,5 +1,6 @@
 import {
     BreadcrumbItem,
+    BreadcrumbItemOptions,
     breadcrumbItemTemplate as template,
 } from "@microsoft/fast-foundation";
 import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
@@ -13,7 +14,7 @@ import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
  * @remarks
  * HTML Element: \<fast-breadcrumb-item\>
  */
-export const fastBreadcrumbItem = BreadcrumbItem.compose({
+export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>({
     baseName: "breadcrumb-item",
     template,
     styles,

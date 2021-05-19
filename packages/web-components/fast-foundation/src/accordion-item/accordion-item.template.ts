@@ -9,7 +9,7 @@ import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
  */
 export const accordionItemTemplate: (
     context,
-    definition
+    definition: AccordionItemOptions
 ) => ViewTemplate<AccordionItem> = (context, definition: AccordionItemOptions) => html`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"

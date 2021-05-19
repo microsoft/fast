@@ -1,6 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import {
     AccordionItem,
+    AccordionItemOptions,
     accordionItemTemplate as template,
 } from "@microsoft/fast-foundation";
 import { accordionItemStyles as styles } from "./accordion-item.styles";
@@ -14,7 +15,7 @@ import { accordionItemStyles as styles } from "./accordion-item.styles";
  * @remarks
  * HTML Element: \<fast-accordion-item\>
  */
-export const fastAccordionItem = AccordionItem.compose({
+export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
     baseName: "accordion-item",
     template,
     styles,

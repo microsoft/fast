@@ -64,7 +64,7 @@ export type AccordionItemOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const accordionItemTemplate: (context: any, definition: any) => ViewTemplate<AccordionItem>;
+export const accordionItemTemplate: (context: any, definition: AccordionItemOptions) => ViewTemplate<AccordionItem>;
 
 // @public
 export const accordionTemplate: (context: any, definition: any) => ViewTemplate<Accordion>;
@@ -228,7 +228,7 @@ export type BreadcrumbItemOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const breadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;
+export const breadcrumbItemTemplate: (context: any, definition: BreadcrumbItemOptions) => ViewTemplate<BreadcrumbItem>;
 
 // @public
 export const breadcrumbTemplate: (context: any, definition: any) => ViewTemplate<Breadcrumb>;
@@ -296,8 +296,16 @@ export class Checkbox extends FormAssociatedCheckbox {
     readOnly: boolean;
     }
 
+// Warning: (ae-incompatible-release-tags) The symbol "CheckboxOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const checkboxTemplate: (context: any, definition: any) => ViewTemplate<Checkbox>;
+export type CheckboxOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const checkboxTemplate: (context: any, definition: CheckboxOptions) => ViewTemplate<Checkbox>;
 
 // @public
 export interface ColumnDefinition {
