@@ -86,6 +86,26 @@ describe("Data grid", () => {
         await disconnect();
     });
 
+    it("should have a tabIndex of -1 when a cell is focused and 0 when focus moves out of the grid", async () => {
+        const { element, connect, disconnect } = await setup();
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal("0");
+
+        const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
+        const cells: Element[] = Array.from(rows[0].querySelectorAll(cellQueryString));
+
+        (cells[0] as HTMLElement).focus();
+
+        expect(element.getAttribute("tabindex")).to.equal("-1");
+
+        document.documentElement.focus();
+
+        expect(element.getAttribute("tabindex")).to.equal("0");
+
+        await disconnect();
+    });
+
     it("should generate basic column definitions when generateColumns is called", async () => {
         const columns: ColumnDefinition[] = DataGrid.generateColumns(newDataRow("test"));
         expect(columns.length).to.equal(6);
