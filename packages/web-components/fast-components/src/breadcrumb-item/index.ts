@@ -17,6 +17,7 @@ export const fastBreadcrumbItem = BreadcrumbItem.compose({
     baseName: "breadcrumb-item",
     template,
     styles,
+    separator: "/",
     shadowOptions: {
         delegatesFocus: true,
     },

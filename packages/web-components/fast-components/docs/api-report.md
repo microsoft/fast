@@ -333,10 +333,14 @@ export const fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-fo
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    collapsedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    expandedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
 }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AccordionItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    collapsedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
+    expandedIcon: import("@microsoft/fast-element").ViewTemplate<any, any>;
 }, typeof AccordionItem>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
@@ -396,6 +400,7 @@ export const fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-f
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    separator: string;
     shadowOptions: {
         delegatesFocus: true;
     };
@@ -403,6 +408,7 @@ export const fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-f
     baseName: string;
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<BreadcrumbItem, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    separator: string;
     shadowOptions: {
         delegatesFocus: true;
     };

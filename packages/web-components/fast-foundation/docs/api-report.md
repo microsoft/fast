@@ -57,7 +57,7 @@ export interface AccordionItem extends StartEnd {
 
 // Warning: (ae-incompatible-release-tags) The symbol "AccordionItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
 //
-// @public (undocumented)
+// @public
 export type AccordionItemOptions = FoundationElementDefinition & {
     expandedIcon?: string | SyntheticViewTemplate;
     collapsedIcon?: string | SyntheticViewTemplate;
@@ -219,6 +219,13 @@ export class BreadcrumbItem extends Anchor {
 // @internal
 export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
+
+// Warning: (ae-incompatible-release-tags) The symbol "BreadcrumbItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type BreadcrumbItemOptions = FoundationElementDefinition & {
+    separator?: string | SyntheticViewTemplate;
+};
 
 // @public
 export const breadcrumbItemTemplate: (context: any, definition: any) => ViewTemplate<BreadcrumbItem>;

@@ -7,6 +7,10 @@ import { FoundationElement, FoundationElementDefinition } from "../foundation-el
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 
+/**
+ * Accordion Item configuration options
+ * @public
+ */
 export type AccordionItemOptions = FoundationElementDefinition & {
     expandedIcon?: string | SyntheticViewTemplate;
     collapsedIcon?: string | SyntheticViewTemplate;
