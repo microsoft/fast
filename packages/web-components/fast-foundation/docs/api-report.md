@@ -393,8 +393,15 @@ export enum ComboboxAutocomplete {
     none = "none"
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "ComboboxOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const comboboxTemplate: (context: any, definition: any) => ViewTemplate<Combobox>;
+export type ComboboxOptions = FoundationElementDefinition & {
+    indicator?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const comboboxTemplate: (context: any, definition: ComboboxOptions) => ViewTemplate<Combobox>;
 
 // @alpha
 export interface ComponentPresentation {
