@@ -1563,8 +1563,16 @@ export class NumberField extends FormAssociatedNumberField {
 export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "NumberFieldOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const numberFieldTemplate: (context: any, definition: any) => ViewTemplate<NumberField>;
+export type NumberFieldOptions = FoundationElementDefinition & {
+    stepDownGlyph?: string | SyntheticViewTemplate;
+    stepUpGlyph?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const numberFieldTemplate: (context: any, definition: NumberFieldOptions) => ViewTemplate<NumberField>;
 
 // @alpha
 export const optional: (key: any) => any;
