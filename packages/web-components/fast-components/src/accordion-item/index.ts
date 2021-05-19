@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     AccordionItem,
     AccordionItemOptions,
@@ -19,7 +18,7 @@ export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
     baseName: "accordion-item",
     template,
     styles,
-    collapsedIcon: html`
+    collapsedIcon: `
         <svg
             width="20"
             height="20"
@@ -33,7 +32,7 @@ export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
             />
         </svg>
     `,
-    expandedIcon: html`
+    expandedIcon: `
         <svg
             width="20"
             height="20"

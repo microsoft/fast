@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     Switch,
     SwitchOptions,
@@ -19,7 +18,7 @@ export const fastSwitch = Switch.compose<SwitchOptions>({
     baseName: "switch",
     template,
     styles,
-    switch: html`
+    switch: `
         <span class="checked-indicator" part="checked-indicator"></span>
     `,
 });

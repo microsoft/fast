@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     BaseProgress as Progress,
     ProgressRingOptions,
@@ -19,7 +18,7 @@ export const fastProgressRing = Progress.compose<ProgressRingOptions>({
     baseName: "progress-ring",
     template,
     styles,
-    indeterminateIndicator: html`
+    indeterminateIndicator: `
         <svg class="progress" part="progress" viewBox="0 0 16 16">
             <circle
                 class="background"

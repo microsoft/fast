@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     Slider,
     SliderOptions,
@@ -19,7 +18,7 @@ export const fastSlider = Slider.compose<SliderOptions>({
     baseName: "slider",
     template,
     styles,
-    thumb: html`
+    thumb: `
         <div class="thumb-cursor"></div>
     `,
 });

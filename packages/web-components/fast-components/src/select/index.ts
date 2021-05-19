@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     Select,
     SelectOptions,
@@ -20,7 +19,7 @@ export const fastSelect = Select.compose<SelectOptions>({
     baseName: "select",
     template,
     styles,
-    indicator: html`
+    indicator: `
         <svg
             class="select-indicator"
             part="select-indicator"

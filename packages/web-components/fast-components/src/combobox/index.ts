@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     Combobox,
     ComboboxOptions,
@@ -19,7 +18,7 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
     baseName: "combobox",
     template,
     styles,
-    indicator: html`
+    indicator: `
         <svg
             class="select-indicator"
             part="select-indicator"

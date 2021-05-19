@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     BaseProgress as Progress,
     ProgressOptions,
@@ -19,10 +18,10 @@ export const fastProgress = Progress.compose<ProgressOptions>({
     baseName: "progress",
     template,
     styles,
-    indeterminateIndicator1: html`
+    indeterminateIndicator1: `
         <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
     `,
-    indeterminateIndicator2: html`
+    indeterminateIndicator2: `
         <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
     `,
 });

@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     treeItemTemplate as template,
     TreeItem,
@@ -20,7 +19,7 @@ export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
     baseName: "tree-item",
     template,
     styles,
-    expandCollapseGlyph: html`
+    expandCollapseGlyph: `
         <svg
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"

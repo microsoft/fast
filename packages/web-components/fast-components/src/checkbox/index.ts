@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     Checkbox,
     CheckboxOptions,
@@ -19,7 +18,7 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
     baseName: "checkbox",
     template,
     styles,
-    checkedIndicator: html`
+    checkedIndicator: `
         <svg
             aria-hidden="true"
             part="checked-indicator"
@@ -34,7 +33,7 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
             />
         </svg>
     `,
-    indeterminateIndicator: html`
+    indeterminateIndicator: `
         <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
     `,
 });
