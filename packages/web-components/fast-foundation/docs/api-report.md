@@ -2340,8 +2340,15 @@ export class TreeItem extends FoundationElement {
 export interface TreeItem extends StartEnd {
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "TreeItemOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
 // @public
-export const treeItemTemplate: (context: any, definition: any) => ViewTemplate<TreeItem>;
+export type TreeItemOptions = FoundationElementDefinition & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const treeItemTemplate: (context: any, definition: TreeItemOptions) => ViewTemplate<TreeItem>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "TreeView" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //
