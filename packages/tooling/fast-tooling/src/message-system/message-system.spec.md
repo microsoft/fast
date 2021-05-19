@@ -108,7 +108,7 @@ Navigation config example:
 ]
 ```
 
-You can assume that to update a navigation you can use the dicionary ID and the navigation config ID, which for the above example if you wanted to navigate to the root of the button would be:
+To update navigation, use the dictionary ID and the navigation config ID. Using the data provided above as an example, to navigate to the root of the button, send the following message to the message system:
 
 ```js
 {
