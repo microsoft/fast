@@ -70,7 +70,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.20.7",
+    "@microsoft/fast-components": "^1.20.8",
     "@microsoft/fast-tooling": "^0.19.0",
     "@microsoft/fast-tooling-react": "^2.8.6",
     "monaco-editor": "^0.21.2",

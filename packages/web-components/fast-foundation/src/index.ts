@@ -14,7 +14,12 @@ export * from "./custom-properties/index";
 export * from "./data-grid/index";
 export * from "./design-system/index";
 export * from "./design-system-provider/index";
-export { DesignToken, CSSDesignToken } from "./design-token/design-token";
+export {
+    DesignToken,
+    CSSDesignToken,
+    DesignTokenChangeRecord,
+    DesignTokenSubscriber,
+} from "./design-token/design-token";
 export {
     StaticDesignTokenValue,
     DerivedDesignTokenValue,
