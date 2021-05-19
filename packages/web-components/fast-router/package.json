@@ -83,6 +83,6 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.0.2"
+    "@microsoft/fast-element": "^1.2.0"
   }
 }
