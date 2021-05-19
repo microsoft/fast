@@ -138,7 +138,7 @@ const partial = cssPartial`color: red;`;
 const styles = css`:host{ ${cssPartial} }`;
 ```
 
-`cssPartial` can also be interpolated with [`CSSDirective` instances](#CSSDirective), providing even greater flexibility.
+`cssPartial` can also compose all structures that `css` can compose, providing even greater flexibility.
 
 ## CSSDirective
 The `CSSDirective` allows binding behavior to an element via `ElementStyles`. To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`:
