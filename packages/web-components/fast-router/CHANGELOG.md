@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-router
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Wed, 19 May 2021 23:37:36 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 0.2.2
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.3.0 (nicholasrice@users.noreply.github.com)
 
 ## [0.2.1](https://github.com/Microsoft/fast/compare/@microsoft/fast-router@0.2.0...@microsoft/fast-router@0.2.1) (2021-04-06)
 
