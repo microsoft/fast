@@ -94,24 +94,25 @@ export const numberFieldStyles = (context, definition) =>
         fill: currentcolor;
     }
 
-    .step-up,
-    .step-down {
+    .step-up-glyph,
+    .step-down-glyph {
+        display: block;
         padding: 4px 10px;
         cursor: pointer;
     }
 
-    .step-up:before,
-    .step-down:before {
+    .step-up-glyph:before,
+    .step-down-glyph:before {
         content: '';
         display: block;
         border: solid transparent 6px;
     }
 
-    .step-up:before {
+    .step-up-glyph:before {
         border-bottom-color: ${neutralForegroundRest};
     }
 
-    .step-down:before {
+    .step-down-glyph:before {
         border-top-color: ${neutralForegroundRest};
     }
 

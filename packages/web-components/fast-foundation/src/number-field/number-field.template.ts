@@ -1,16 +1,16 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import type { NumberField } from "./number-field";
+import type { NumberField, NumberFieldOptions } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const numberFieldTemplate: (context, definition) => ViewTemplate<NumberField> = (
+export const numberFieldTemplate: (
     context,
-    definition
-) => html`
+    definition: NumberFieldOptions
+) => ViewTemplate<NumberField> = (context, definition: NumberFieldOptions) => html`
     <template class="${x => (x.readOnly ? "readonly" : "")}">
         <label
             part="label"
@@ -70,16 +70,20 @@ export const numberFieldTemplate: (context, definition) => ViewTemplate<NumberFi
                 x => !x.hideStep,
                 html`
                     <div class="controls" part="controls">
-                        <div
-                            class="step-up"
-                            part="step-up"
-                            @click="${x => x.stepUp()}"
-                        ></div>
+                        <div class="step-up" part="step-up" @click="${x => x.stepUp()}">
+                            <slot name="step-up-glyph">
+                                ${definition.stepUpGlyph || ""}
+                            </slot>
+                        </div>
                         <div
                             class="step-down"
                             part="step-down"
                             @click="${x => x.stepDown()}"
-                        ></div>
+                        >
+                            <slot name="step-down-glyph">
+                                ${definition.stepDownGlyph || ""}
+                            </slot>
+                        </div>
                     </div>
                 `
             )}
