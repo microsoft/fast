@@ -2,12 +2,19 @@
 
 ## Overview
 
-The 'picker' component enables users to select a list of items from a searchable list of options.  A basic implemetation could be selecting  pizza toppings from a relatively short local list, while a more advanced one could be selecting recients for an e-mail by querying a large directory of recipients as the user types.
+The 'picker' component enables users to select a list of items from a searchable list of options.  A basic implemetation could be selecting  pizza toppings from a relatively short local list, while a more advanced one could be selecting recients for an e-mail by querying a large directory of recipients on a remote server as the user types.
+
+### Background
+
+The picker component 
 
 ### Use Cases
 
 - Choosing a list of recipients for an e-mail.
 - Choosing a list of pizza toppings.
+
+### Non-goals
+- Managing asynchronous data loading: Managing loading states and updating data should be left to components derived from `picker`.  The component should enable the display of loading states to make it easy for derived components to do create good experiences around async data loading, but otherwise not involved.
 
 ### Prior Art/Examples
 
