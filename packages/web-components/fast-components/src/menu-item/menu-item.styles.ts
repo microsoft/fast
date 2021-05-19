@@ -1,6 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import {
-    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
     focusVisible,
@@ -24,7 +23,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
 export const menuItemStyles = (context, definition) =>
     css`
