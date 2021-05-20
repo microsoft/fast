@@ -67,6 +67,7 @@ const DEFAULT_OPTIONS: PointerGestureOptions = {
     swipeVelocityThreshold: SWIPE_VELOCITY_THRESHOLD,
     touchMoveThreshold: TOUCH_MOVE_THRESHOLD,
     translationDirection: PointerTranslationDirection.Cardinal,
+    shouldSetFocusOnActiveElement: false,
 };
 
 /**
@@ -429,14 +430,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     private handlePointerStart = (e: PointerEvent): void => {
-        // Only capture the event if target is not a link, button, or input
-        if (
-            this.isHtmlElement(this.target) &&
-            this.isHtmlElement(e.target) &&
-            e.target.tagName.toLowerCase() !== "a" &&
-            e.target.tagName.toLowerCase() !== "button" &&
-            e.target.tagName.toLowerCase() !== "input"
-        ) {
+        if ( this.isHtmlElement(this.target) && this.isHtmlElement(e.target)) {
             this.activePointer = this.updatePointerInfo(e);
 
             // If there is a primary pointer, ensure it's set as the active pointer
@@ -454,10 +448,13 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             this.activePointer.yInitial = this.activePointer.y;
             this.activePointer.screenXInitial = e.screenX;
             this.activePointer.screenYInitial = e.screenY;
-            this.target.setPointerCapture(this.activePointer.id);
 
             if (this.shouldDetectGesture[PointerGestureFeature.LongPress]) {
                 this.startLongPress();
+            }
+
+            if (this.options.shouldSetFocusOnActiveElement && this.target.tabIndex) {
+                this.target.tabIndex = -1;
             }
 
             this.emit(PointerGesture.Start, this.activePointer, true);
@@ -506,6 +503,11 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             }
 
             if (isDrag) {
+                // Set target as the capture element to prevent other listeners to capture future pointer events.
+                if (this.isHtmlElement(this.target)) {
+                    this.target.setPointerCapture(this.activePointer.id);
+                }
+
                 // Stop detecting long press when dragging.
                 if (this.shouldDetectGesture[PointerGestureFeature.LongPress]) {
                     this.stopLongPress();
@@ -576,6 +578,10 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                 this.doubleTapIsWaiting = false;
                 this.activePointer.gestureType = PointerGesture.DoubleTap;
                 this.emit(PointerGesture.DoubleTap, this.activePointer);
+
+                if (this.target && this.options.shouldSetFocusOnActiveElement) {
+                    this.target.focus();
+                }
             }
 
             // Otherwise
@@ -605,6 +611,10 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                 ) {
                     this.activePointer.gestureType = PointerGesture.Tap;
                     this.emit(PointerGesture.Tap, this.activePointer);
+
+                    if (this.target && this.options.shouldSetFocusOnActiveElement) {
+                        this.target.focus();
+                    }
                 }
             }
         }
@@ -678,6 +688,10 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             this.activePointer.isLongPressComplete = true;
             this.activePointer.gestureType = PointerGesture.LongPressComplete;
             this.emit(PointerGesture.LongPressComplete, this.activePointer, true);
+
+            if (this.target && this.options.shouldSetFocusOnActiveElement) {
+                this.target.focus();
+            }
         } else {
             this.emit(PointerGesture.LongPressProgress, this.activePointer, true);
             this.longPressRAFId = window.requestAnimationFrame(this.handleLongPress);

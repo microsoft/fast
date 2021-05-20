@@ -56,6 +56,8 @@ export interface IPointerGestureOptions {
     // (undocumented)
     rotationAngleThreshold?: number;
     // (undocumented)
+    shouldSetFocusOnActiveElement?: boolean;
+    // (undocumented)
     singleTapTime?: number;
     // (undocumented)
     swipeThresholdX?: number;

@@ -17,4 +17,5 @@ export interface PointerGestureOptions {
     rotationAngleThreshold?: number;
     translationDirection?: PointerTranslationDirection;
     coordinateType?: PointerCoordinateType;
+    shouldSetFocusOnActiveElement?: boolean;
 }
