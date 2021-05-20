@@ -53,6 +53,7 @@ export * from "./tab/index";
 export * from "./tabs/index";
 export * from "./text-area/index";
 export * from "./text-field/index";
+export * from "./toolbar/index";
 export * from "./tooltip/index";
 export * from "./tree-item/index";
 export * from "./tree-view/index";

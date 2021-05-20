@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 19 May 2021 23:37:36 GMT and should not be manually modified.
+This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add toolbar component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v4.8.0 (john.kreitlow@microsoft.com)
 
 ## 1.23.0
 
