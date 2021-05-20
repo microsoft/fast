@@ -1,7 +1,7 @@
 name: CI - FAST Validation
 
 on:
-  push: 
+  push:
     branches:
     - master
   pull_request:
@@ -9,11 +9,11 @@ on:
     - master
   schedule:
     - cron: 0 7 * * 3
-  
+
 jobs:
   linux_cross-platform_cross-browser:
     runs-on: [ubuntu-latest]
-    
+
     steps:
     - uses: actions/checkout@v2
 
@@ -22,10 +22,13 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
@@ -97,20 +100,23 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
-    
+
     - name: Testing Prettier format
       run: yarn format:check
-      
+
     - name: Prepare workspaces
       run: yarn prepare
 
@@ -153,17 +159,20 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
       run: yarn install --network-timeout=36000 --frozen-lockfile --ignore-scripts
-    
+
     - name: Testing Prettier format
       run: yarn format:check
 
