@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "remove webpack aliases from packages that don't exist",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
