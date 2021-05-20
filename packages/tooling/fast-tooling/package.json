@@ -97,9 +97,9 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "latest",
-    "@microsoft/fast-element": "latest",
-    "@microsoft/fast-foundation": "latest",
+    "@microsoft/fast-components": "^1.20.7",
+    "@microsoft/fast-element": "^1.1.0",
+    "@microsoft/fast-foundation": "^1.21.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "vscode-html-languageservice": "^3.1.3"
   }

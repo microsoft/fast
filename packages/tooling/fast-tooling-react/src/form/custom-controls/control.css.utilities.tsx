@@ -13,16 +13,19 @@ import {
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
+import { DesignSystem } from "@microsoft/fast-foundation";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle.
  */
-fastCheckbox;
-fastNumberField;
-fastOption;
-fastSelect;
-fastTextField;
 FASTColorPicker;
+DesignSystem.getOrCreate().register(
+    fastCheckbox(),
+    fastNumberField(),
+    fastOption(),
+    fastSelect(),
+    fastTextField()
+);
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
     return renderTextInput(config);
