@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add cssPartial template function to facilitate partial CSS abstractions.",
+  "packageName": "@microsoft/fast-element",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
