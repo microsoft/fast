@@ -237,7 +237,6 @@ export const ButtonTemplate: ViewTemplate<Button>;
 
 // @public
 export class Calendar extends FASTElement {
-    getDateClicked(mouseEvent: any): string | null | undefined;
     getDays(info?: CalendarInfo): any;
     getLocaleDay(month?: number, day?: number, year?: number): string;
     getLocaleMonth(month?: number): string;
@@ -261,7 +260,7 @@ export type CalendarInfo = MonthInfo & {
     next: MonthInfo;
 };
 
-// @public (undocumented)
+// @public
 export const CalendarTemplate: ViewTemplate<Calendar>;
 
 // @public
