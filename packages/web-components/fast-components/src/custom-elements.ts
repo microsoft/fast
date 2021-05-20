@@ -36,5 +36,6 @@ export { fastTabs, fastTab, fastTabPanel } from "./tabs/index";
 export { fastTextArea } from "./text-area/index";
 export { fastTextField } from "./text-field/index";
 export { fastTooltip } from "./tooltip/index";
+export { fastToolbar } from "./toolbar/index";
 export { fastTreeView } from "./tree-view/index";
 export { fastTreeItem } from "./tree-item/index";
