@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-web-utilities_v4.8.0",
+      "version": "4.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add key string constants",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Apr 2021 01:19:08 GMT",
       "tag": "@microsoft/fast-web-utilities_v4.7.3",
       "version": "4.7.3",

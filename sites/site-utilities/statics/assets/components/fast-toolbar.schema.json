@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-toolbar",
+  "id": "fast-toolbar",
+  "title": "Toolbar",
+  "description": "The FAST toolbar element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-toolbar",
+  "properties": {
+    "orientation": {
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "title": "Orientation",
+      "description": "The orientation of the toolbar",
+      "mapsToAttribute": "orientation",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The toolbar content",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotLabel": {
+      "title": "Label slot",
+      "description": "The visual label for the toolbar",
+      "mapsToSlot": "label",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the contents of the toolbar",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the contents of the toolbar",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
