@@ -29,6 +29,22 @@ import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-u
 import { ControlContext } from "../../src/form/templates/types";
 import { CSSStandardControlPlugin } from "../../src/form/custom-controls/css";
 import { CSSControlConfig } from "../../src/form/custom-controls/css/css.template.control.standard.props";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import {
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastTextField,
+} from "@microsoft/fast-components";
+
+DesignSystem.getOrCreate().register(
+    fastCheckbox(),
+    fastNumberField(),
+    fastOption(),
+    fastSelect(),
+    fastTextField()
+);
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
