@@ -86,22 +86,23 @@ describe("Data grid", () => {
         await disconnect();
     });
 
-    it("should have a tabIndex of -1 when a cell is focused and 0 when focus moves out of the grid", async () => {
-        const { element, connect, disconnect } = await setup();
+    it("should have a tabIndex of -1 when a cell is focused", async () => {
+        const { document, element, connect, disconnect } = await setup();
+
+        element.rowsData = newDataSet(2);
+
         await connect();
 
-        expect(element.getAttribute("tabindex")).to.equal("0");
+        await DOM.nextUpdate();
 
         const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
+        expect(rows.length).to.equal(3);
         const cells: Element[] = Array.from(rows[0].querySelectorAll(cellQueryString));
+        expect(cells.length).to.equal(6);
 
         (cells[0] as HTMLElement).focus();
 
         expect(element.getAttribute("tabindex")).to.equal("-1");
-
-        document.documentElement.focus();
-
-        expect(element.getAttribute("tabindex")).to.equal("0");
 
         await disconnect();
     });
