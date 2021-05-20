@@ -919,12 +919,6 @@ export class FASTToolbar extends Toolbar {
 }
 
 // @public
-export const inlineEndBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public
-export const inlineStartBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
