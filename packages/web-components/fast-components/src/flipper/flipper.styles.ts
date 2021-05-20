@@ -20,7 +20,7 @@ import {
     neutralOutlineRest,
     outlineWidth,
 } from "../design-tokens";
-import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const flipperStyles = (context, definition) =>
     css`
