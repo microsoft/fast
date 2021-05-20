@@ -27,9 +27,7 @@ export const BreadcrumbItemTemplate: ViewTemplate<BreadcrumbItem> = html`
         ${when(
             x => x.separator,
             html<BreadcrumbItem>`
-                <span class="separator" part="separator" aria-hidden="true">
-                    <slot name="separator">/</slot>
-                </span>
+                ${x => x.generateBreadcrumbItemSeparator()}
             `
         )}
     </div>

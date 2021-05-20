@@ -1,7 +1,14 @@
-import { observable } from "@microsoft/fast-element";
+import { html, observable, ViewTemplate } from "@microsoft/fast-element";
 import { DelegatesARIALink, Anchor } from "../anchor";
+import type { Breadcrumb } from "../breadcrumb";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+
+const breadcrumbItemSeparatorTemplate: ViewTemplate<HTMLElement> = html`
+    <span class="separator" part="separator" aria-hidden="true">
+        <slot name="separator">/</slot>
+    </span>
+`;
 
 /**
  * A Breadcrumb Item Custom HTML Element.
@@ -14,6 +21,17 @@ export class BreadcrumbItem extends Anchor {
      */
     @observable
     public separator: boolean = true;
+
+    public generateBreadcrumbItemSeparator(): ViewTemplate {
+        if (
+            this.parentNode &&
+            typeof (this.parentNode as Breadcrumb).generateBreadcrumbSeparator ===
+                "function"
+        ) {
+            (this.parentNode as Breadcrumb).generateBreadcrumbSeparator();
+        }
+        return breadcrumbItemSeparatorTemplate;
+    }
 }
 
 /**

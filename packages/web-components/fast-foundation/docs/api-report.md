@@ -180,6 +180,8 @@ export class BaseProgress extends FASTElement {
 
 // @public
 export class Breadcrumb extends FASTElement {
+    // (undocumented)
+    generateBreadcrumbSeparator(): ViewTemplate;
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
@@ -191,6 +193,8 @@ export class Breadcrumb extends FASTElement {
 //
 // @public
 export class BreadcrumbItem extends Anchor {
+    // (undocumented)
+    generateBreadcrumbItemSeparator(): ViewTemplate;
     // @internal (undocumented)
     separator: boolean;
 }

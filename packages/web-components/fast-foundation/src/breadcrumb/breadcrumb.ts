@@ -1,5 +1,19 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, html, observable, ViewTemplate } from "@microsoft/fast-element";
 import { BreadcrumbItem } from "../breadcrumb-item";
+
+const breadcrumbSeparatorTemplate: ViewTemplate<HTMLElement> = html`
+    <svg
+        slot="breadcrumb-separator"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M6.10056 2L10.6592 6.55866H0V9.62011H10.6592L6.10056 14.1899H9.91061L16 8.08939L9.91061 2H6.10056Z"
+        />
+    </svg>
+`;
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -25,6 +39,12 @@ export class Breadcrumb extends FASTElement {
                 this.slottedBreadcrumbItems.length - 1
             ];
 
+            this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
+                if (item instanceof BreadcrumbItem) {
+                    (item as BreadcrumbItem).generateBreadcrumbItemSeparator = this.generateBreadcrumbSeparator;
+                }
+            });
+
             this.setItemSeparator(lastNode);
             this.setLastItemAriaCurrent(lastNode);
         }
@@ -39,6 +59,10 @@ export class Breadcrumb extends FASTElement {
         if (lastNode instanceof BreadcrumbItem) {
             (lastNode as BreadcrumbItem).separator = false;
         }
+    }
+
+    public generateBreadcrumbSeparator(): ViewTemplate {
+        return breadcrumbSeparatorTemplate;
     }
 
     /**
