@@ -65,17 +65,15 @@ export const expandCollapseButtonSize =
 const expandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
     "tree-item-expand-collapse-hover"
 ).withDefault((target: HTMLElement) => {
-    const color = neutralFillStealthHover.getValueFor(target);
     const recipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
-    return recipe(target, color).hover;
+    return recipe(target, recipe(target).hover).hover;
 });
 
 const selectedExpandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
     "tree-item-expand-collapse-selected-hover"
 ).withDefault((target: HTMLElement) => {
-    const color = neutralFillStealthHover.getValueFor(target);
     const recipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
-    return recipe(target, color).selected;
+    return recipe(target, recipe(target).hover).selected;
 });
 
 export const treeItemStyles = (context, definition) =>
