@@ -1,6 +1,7 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
+import { FoundationElement } from "../foundation-element";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -39,7 +40,7 @@ const ToolbarArrowKeyMap = Object.freeze({
  *
  * @public
  */
-export class Toolbar extends FASTElement {
+export class Toolbar extends FoundationElement {
     /**
      * The internal index of the currently focused element.
      *
