@@ -27,7 +27,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber, neutralFocusInnerAccentBehavior } from "../styles/index";
+import { heightNumber } from "../styles/index";
 
 export const checkboxStyles = (context, definition) =>
     css`
@@ -145,7 +145,6 @@ export const checkboxStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
 `.withBehaviors(
-        neutralFocusInnerAccentBehavior,
         forcedColorsStylesheetBehavior(
             css`
             .control {
