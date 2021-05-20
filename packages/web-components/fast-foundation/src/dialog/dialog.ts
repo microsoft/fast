@@ -1,6 +1,6 @@
 import { attr, DOM, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import tabbable from "tabbable";
+import { tabbable } from "tabbable";
 
 /**
  * A Switch Custom HTML Element.
@@ -74,7 +74,7 @@ export class Dialog extends FASTElement {
      */
     public dialog: HTMLDivElement;
 
-    private tabbableElements: HTMLElement[];
+    private tabbableElements: Array<HTMLElement | SVGElement>;
 
     private observer: MutationObserver;
 

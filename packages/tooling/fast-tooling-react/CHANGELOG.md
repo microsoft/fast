@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
+This log was last generated on Wed, 19 May 2021 23:37:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.7
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- fixes an issue where submitting a new linked data item would occur without keyboard input (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.6
 

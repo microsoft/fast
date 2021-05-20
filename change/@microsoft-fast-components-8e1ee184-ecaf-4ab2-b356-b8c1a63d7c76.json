@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "selected option is not visible when dropdown is opened in fast-select",
+  "type": "minor",
+  "comment": "add toolbar component",
   "packageName": "@microsoft/fast-components",
   "email": "john.kreitlow@microsoft.com",
   "dependentChangeType": "patch"
