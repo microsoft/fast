@@ -56,19 +56,25 @@ jobs:
       run: yarn workspace @microsoft/fast-components build:pw
 
     - name: Test Playwright (chromium)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: chromium
-      run: yarn workspace @microsoft/fast-components test-pw
 
     - name: Test Playwright (firefox)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: firefox
-      run: yarn workspace @microsoft/fast-components test-pw
 
     - name: Test Playwright (webkit)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: webkit
-      run: yarn workspace @microsoft/fast-components test-pw
 
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
@@ -135,16 +141,22 @@ jobs:
 
     - name: Test Playwright (chromium)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: chromium
 
     - name: Test Playwright (firefox)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: firefox
 
     - name: Test Playwright (webkit)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: webkit
 
@@ -194,15 +206,21 @@ jobs:
 
     - name: Test Playwright (chromium)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: chromium
 
     - name: Test Playwright (firefox)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: firefox
 
     - name: Test Playwright (webkit)
       run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
       env:
         PLAYWRIGHT_BROWSER: webkit
