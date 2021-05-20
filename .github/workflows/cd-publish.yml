@@ -45,3 +45,14 @@ jobs:
       env:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: yarn publish-ci -n $NPM_SECRET_TOKEN
+    
+    - name: send notification message on failure
+      if: failure()
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.WEBHOOK_ID }}
+        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+        username: "GitHub Automated notification"
+        message: "FAST publishing failed"
+
+        

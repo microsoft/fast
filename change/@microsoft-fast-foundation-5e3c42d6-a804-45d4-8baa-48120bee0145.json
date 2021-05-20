@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "remove await setTimeout in favor of nextMacroTask. disable broken tests",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

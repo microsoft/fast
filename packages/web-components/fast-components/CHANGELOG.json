@@ -2,6 +2,94 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-components_v1.21.0",
+      "version": "1.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add toolbar component",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.8.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-components_v1.20.9",
+      "version": "1.20.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hover typo on accent button style",
+            "author": "khamu@microsoft.com",
+            "commit": "9614e6783c9a1db787d74028f413073dc2e098c3",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "menu should not reset tabindex unnecessarily",
+            "author": "scomea@microsoft.com",
+            "commit": "90362fca45c9959992ef09bd09c0b7054a0aca49",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "moved disabled selectors out of the common button styles and add them into the button styles file",
+            "author": "khamu@microsoft.com",
+            "commit": "2824af42decf2387beef23c293d10855411909a8",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "selected option is not visible when dropdown is opened in fast-select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2c4732a17e4091b1dddecc25138370a1a3565bfb",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: update scrolling with delay loaded content",
+            "author": "robarb@microsoft.com",
+            "commit": "604390a124630a9fe3f2d785d8e7058d10fd142f",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "tie the component definitions to the VS code custom data format",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6974d89f1d21f72dd08726c0d4d961bdb41c6774",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "update dependencies to remove circular dependencies and fix component import",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "27d445fff897aa782cfffbf6df1ca3da1380c49f",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "ensure fast-tooling is pulling FAST assets from npm registry depdnencies",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "afb7dc1b4fae096699b5b89ae817539ea27a4817",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 02 May 2021 07:18:00 GMT",
       "tag": "@microsoft/fast-components_v1.20.6",
       "version": "1.20.6",

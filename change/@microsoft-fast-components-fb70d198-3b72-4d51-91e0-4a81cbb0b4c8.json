@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: update scrolling with delay loaded content",
-  "packageName": "@microsoft/fast-components",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}

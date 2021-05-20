@@ -1,0 +1,39 @@
+{
+  "name": "@microsoft/fast-element",
+  "entries": [
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-element_v1.3.0",
+      "version": "1.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "a433b6bcab871f24ccbe828b2023c256942d40af",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "fix: ensure that custom events are cancelable by default",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b825576094c81128257b27b708611851069624c4",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "perf: improve startup time and reduce library size",
+            "author": "roeisenb@microsoft.com",
+            "commit": "6965c7d74dbb8063086d34918de0458c1e37220a",
+            "package": "@microsoft/fast-element"
+          }
+        ],
+        "none": [
+          {
+            "comment": "docs: add missing closing parenthesis to when directive example",
+            "author": "zjffun@gmail.com",
+            "commit": "c94ad896dda3d4c806585d1d0bbfb37abdc3d758",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    }
+  ]
+}
