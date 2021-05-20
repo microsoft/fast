@@ -5,13 +5,15 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
+    accentForegroundRest,
+    neutralFillRest,
+    neutralFillStealthRest,
+} from "../design-tokens";
+import {
     AccentButtonStyles,
-    accentFillRestBehavior,
-    accentForegroundRestBehavior,
     BaseButtonStyles,
     LightweightButtonStyles,
-    neutralFillRestBehavior,
-    neutralFillStealthRestBehavior,
     OutlineButtonStyles,
     StealthButtonStyles,
 } from "../styles/index";
@@ -23,7 +25,7 @@ export const buttonStyles = (context, definition) =>
         :host([disabled]:hover),
         :host([disabled]:active) {
             opacity: var(--disabled-opacity);
-            background-color: ${neutralFillRestBehavior.var};
+            background-color: ${neutralFillRest};
             cursor: ${disabledCursor};
         }
 
@@ -48,7 +50,7 @@ export const buttonStyles = (context, definition) =>
                 :host([appearance="accent"][disabled]),
                 :host([appearance="accent"][disabled]:hover),
                 :host([appearance="accent"][disabled]:active) {
-                    background: ${accentFillRestBehavior.var};
+                    background: ${accentFillRest};
                 }
 
                 ${AccentButtonStyles}
@@ -71,7 +73,7 @@ export const buttonStyles = (context, definition) =>
                 :host([appearance="lightweight"][disabled]:hover),
                 :host([appearance="lightweight"][disabled]:active) {
                     background-color: transparent;
-                    color: ${accentForegroundRestBehavior.var};
+                    color: ${accentForegroundRest};
                 }
 
                 :host([appearance="lightweight"][disabled]) .content::before,
@@ -105,7 +107,7 @@ export const buttonStyles = (context, definition) =>
                 :host([appearance="outline"][disabled]:hover),
                 :host([appearance="outline"][disabled]:active) {
                     background: transparent;
-                    border-color: ${accentFillRestBehavior.var};
+                    border-color: ${accentFillRest};
                 }
 
                 ${OutlineButtonStyles}
@@ -125,7 +127,7 @@ export const buttonStyles = (context, definition) =>
                 :host([appearance="stealth"][disabled]),
                 :host([appearance="stealth"][disabled]:hover),
                 :host([appearance="stealth"][disabled]:active) {
-                    background: ${neutralFillStealthRestBehavior.var};
+                    background: ${neutralFillStealthRest};
                 }
 
                 ${StealthButtonStyles}
