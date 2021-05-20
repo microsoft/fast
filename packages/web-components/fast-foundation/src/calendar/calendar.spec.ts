@@ -1,21 +1,14 @@
-import { css, customElement, DOM, FASTElement, html } from "@microsoft/fast-element";
+import { customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { Calendar, CalendarTemplate as template } from "./index";
-
-/**
- * Basic styles needed to render a calendar
- */
-const styles = css`
-`;
 
 /**
  * initialization of the custome <fast-calendar/> element
  */
 @customElement({
     name: "fast-calendar",
-    template,
-    styles
+    template
 })
 class FASTCalendar extends Calendar {}
 

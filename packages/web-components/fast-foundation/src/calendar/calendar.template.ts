@@ -11,6 +11,7 @@ export const CalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
         ${startTemplate}
         <div class="title" part="title">
+            <slot></slot>
             ${x => x.getLocaleMonth()} ${x => x.getLocaleYear()}
         </div>
         <div class="days" part="days">
@@ -31,7 +32,6 @@ export const CalendarTemplate: ViewTemplate<Calendar> = html`
                             day.month - 1
                         }" data-day="${day.day}">
                         <div>${getLocaleDay(day.month, day.day, day.year)}</div>
-                        ${x.isToday(day.year, day.month, day.day) ? `<slot></slot>` : ``}
                         <slot name="${day.month}-${day.day}-${day.year}"></slot>
                     </div>
                     `,
