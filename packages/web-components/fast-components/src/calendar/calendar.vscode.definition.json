@@ -56,7 +56,17 @@
                 {
                     "name": "",
                     "title": "Default slot",
-                    "description": "The content of the calendar"
+                    "description": "The content of the calendar added to the beginning of the title container"
+                },
+                {
+                    "name": "start",
+                    "title": "Start slot",
+                    "description": "Contents of the start slot are positioned before the calendar"
+                },
+                {
+                    "name": "end",
+                    "title": "End slot",
+                    "description": "Contents of the end slot are positioned after the calendar"
                 }
             ]
         }

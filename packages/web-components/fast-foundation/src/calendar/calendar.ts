@@ -33,12 +33,6 @@ export type CalendarInfo = MonthInfo & {
  */
 export class Calendar extends FASTElement {
     /**
-     * Today's date
-     * @internal
-     */
-    private today: Date = new Date();
-
-    /**
      * String repesentation of the full locale including market, calendar type and numbering system
      * @public
      */
@@ -50,14 +44,14 @@ export class Calendar extends FASTElement {
      * @public
      */
     @attr
-    public month: number = this.today.getMonth() + 1;
+    public month: number = new Date().getMonth() + 1;
 
     /**
      * Year of the month to display
      * @public
      */
     @attr
-    public year: number = this.today.getFullYear();
+    public year: number = new Date().getFullYear();
 
     /**
      * Format style for the week day labels
@@ -177,7 +171,7 @@ export class Calendar extends FASTElement {
      */
     public getLocaleDay(
         month: number = this.month,
-        day: number = this.today.getDate(),
+        day: number = new Date().getDate(),
         year: number = this.year
     ): string {
         return this.localeFormatter([month, day, year], { day: "numeric" });
@@ -204,10 +198,11 @@ export class Calendar extends FASTElement {
      * @returns true if the date is the current date otherwise returns false
      */
     public isToday(year: number, month: number, day: number): boolean {
+        const today = new Date();
         return (
-            day == this.today.getDate() &&
-            month == this.today.getMonth() + 1 &&
-            year == this.today.getFullYear()
+            day == today.getDate() &&
+            month == today.getMonth() + 1 &&
+            year == today.getFullYear()
         );
     }
 

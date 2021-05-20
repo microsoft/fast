@@ -28,7 +28,7 @@ export const CalendarStyles = css`
         border-left: var(--cell-border);
         border-top: var(--cell-border);
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: repeat(7, 1fr);
     }
 
     .week-day {
