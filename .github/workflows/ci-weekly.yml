@@ -13,6 +13,8 @@ on:
 jobs:
   linux_cross-platform_cross-browser:
     runs-on: [ubuntu-latest]
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -82,6 +84,8 @@ jobs:
 
   windows_cross-platform_cross-browser:
     runs-on: [windows-latest]
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - name: Set git to use LF
@@ -150,6 +154,8 @@ jobs:
 
   macos_cross-platform_cross-browser:
     runs-on: [macos-latest]
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
