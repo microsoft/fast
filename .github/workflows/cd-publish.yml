@@ -54,3 +54,5 @@ jobs:
         webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
         username: "GitHub Automated notification"
         message: "A new cd-publish has failed"
+
+        
