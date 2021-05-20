@@ -135,7 +135,7 @@ There are times when you may want to create reusable blocks of *partial* CSS, wh
 import { css, cssPartial } from "@microsoft/fast-element";
 
 const partial = cssPartial`color: red;`;
-const styles = css`:host{ ${cssPartial} }`;
+const styles = css`:host{ ${partial} }`;
 ```
 
 `cssPartial` can also compose all structures that `css` can compose, providing even greater flexibility.
