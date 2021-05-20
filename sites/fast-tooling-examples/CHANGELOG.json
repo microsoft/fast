@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-tooling-examples",
   "entries": [
     {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.19.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "7fadbeb59267e4dc976cd9f56ee5b61f26e4ae20",
+            "package": "@microsoft/fast-tooling-examples"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.8.7",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "653bb537e44c365a63b5cbefd74774a0a4be1d08",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "653bb537e44c365a63b5cbefd74774a0a4be1d08",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 02 May 2021 07:18:00 GMT",
       "tag": "@microsoft/fast-tooling-examples_v0.4.19",
       "version": "0.4.19",
