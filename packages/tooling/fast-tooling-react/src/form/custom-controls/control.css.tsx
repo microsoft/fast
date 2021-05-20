@@ -38,6 +38,28 @@ import { CSSStandardControlPlugin } from "./css";
  */
 
 /**
+ * This is currently experimental, any use of the CSS control must include the following
+ * imports and register with the DesignSystem
+ *
+ * import { DesignSystem } from "@microsoft/fast-foundation";
+ * import {
+ *    fastCheckbox,
+ *    fastNumberField,
+ *    fastOption,
+ *    fastSelect,
+ *    fastTextField,
+ *} from "@microsoft/fast-components";
+ *
+ * DesignSystem.getOrCreate().register(
+ *    fastCheckbox(),
+ *    fastNumberField(),
+ *    fastOption(),
+ *    fastSelect(),
+ *    fastTextField()
+ *);
+ */
+
+/**
  * Custom form control definition for CSS
  */
 class CSSControl extends React.Component<
