@@ -2240,10 +2240,11 @@ export enum TextFieldType {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-incompatible-release-tags) The symbol "Toolbar" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
 //
 // @public
-export class Toolbar extends FASTElement {
+export class Toolbar extends FoundationElement {
     // @internal
     get activeIndex(): number;
     set activeIndex(value: number);
@@ -2271,7 +2272,7 @@ export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 }
 
 // @public
-export const ToolbarTemplate: ViewTemplate<Toolbar>;
+export const toolbarTemplate: (context: any, definition: any) => ViewTemplate<Toolbar>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "Tooltip" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
 //

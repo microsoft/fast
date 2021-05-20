@@ -8,7 +8,10 @@ import type { Toolbar } from "./toolbar";
  *
  * @public
  */
-export const ToolbarTemplate: ViewTemplate<Toolbar> = html`
+export const toolbarTemplate: (context, definition) => ViewTemplate<Toolbar> = (
+    context,
+    definition
+) => html`
     <template
         aria-label="${x => x.ariaLabel}"
         aria-labelledby="${x => x.ariaLabelledby}"
