@@ -1,6 +1,6 @@
 import { attr, DOM, FASTElement } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import tabbable from "tabbable";
+import { tabbable } from "tabbable";
 
 /**
  * A Switch Custom HTML Element.
@@ -74,7 +74,7 @@ export class Dialog extends FASTElement {
      */
     public dialog: HTMLDivElement;
 
-    private tabbableElements: HTMLElement[];
+    private tabbableElements: (HTMLElement | SVGElement)[];
 
     private observer: MutationObserver;
 
@@ -140,14 +140,14 @@ export class Dialog extends FASTElement {
 
     private onChildListChange = (mutations: MutationRecord[]): void => {
         if (mutations.length) {
-            this.tabbableElements = tabbable(this);
+            this.tabbableElements = tabbable(this, { getShadowRoot: () => true });
         }
     };
 
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
             // store references to tabbable elements
-            this.tabbableElements = tabbable(this as Element);
+            this.tabbableElements = tabbable(this, { getShadowRoot: () => true });
 
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
@@ -188,6 +188,11 @@ export class Dialog extends FASTElement {
             return;
         }
 
+        const tabbableShadow: (HTMLElement | SVGElement)[] = tabbable(this, {
+            getShadowRoot: () => true,
+        });
+        const tabbableReg: (HTMLElement | SVGElement)[] = tabbable(this);
+
         const tabbableElementCount: number = this.tabbableElements.length;
 
         if (tabbableElementCount === 0) {
@@ -196,12 +201,12 @@ export class Dialog extends FASTElement {
             return;
         }
 
-        if (e.shiftKey && e.target === this.tabbableElements[0]) {
+        if (e.shiftKey && document.activeElement === this.tabbableElements[0]) {
             this.tabbableElements[tabbableElementCount - 1].focus();
             e.preventDefault();
         } else if (
             !e.shiftKey &&
-            e.target === this.tabbableElements[tabbableElementCount - 1]
+            document.activeElement === this.tabbableElements[tabbableElementCount - 1]
         ) {
             this.tabbableElements[0].focus();
             e.preventDefault();

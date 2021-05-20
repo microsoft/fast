@@ -7,30 +7,35 @@ import type { Dialog } from "./dialog";
  * @public
  */
 export const DialogTemplate: ViewTemplate<Dialog> = html`
-    <div class="positioning-region" part="positioning-region">
-        ${when(
-            x => x.modal,
-            html<Dialog>`
-                <div
-                    class="overlay"
-                    part="overlay"
-                    role="presentation"
-                    tabindex="-1"
-                    @click="${x => x.dismiss()}"
-                ></div>
-            `
-        )}
-        <div
-            role="dialog"
-            class="control"
-            part="control"
-            aria-modal="${x => x.modal}"
-            aria-describedby="${x => x.ariaDescribedby}"
-            aria-labelledby="${x => x.ariaLabelledby}"
-            aria-label="${x => x.ariaLabel}"
-            ${ref("dialog")}
-        >
-            <slot></slot>
+    <template>
+        <div class="positioning-region" part="positioning-region">
+            ${when(
+                x => x.modal,
+                html<Dialog>`
+                    <div
+                        class="overlay"
+                        part="overlay"
+                        role="presentation"
+                        tabindex="-1"
+                        @click="${x => x.dismiss()}"
+                    ></div>
+                `
+            )}
+            <div
+                role="dialog"
+                class="control"
+                part="control"
+                aria-modal="${x => x.modal}"
+                aria-describedby="${x => x.ariaDescribedby}"
+                aria-labelledby="${x => x.ariaLabelledby}"
+                aria-label="${x => x.ariaLabel}"
+                ${ref("dialog")}
+            >
+                <button>Shadow One</button>
+                <slot></slot>
+                <button>Shadow two</button>
+                <fast-button tabindex="0">Shadow three</fast-button>
+            </div>
         </div>
-    </div>
+    </template>
 `;

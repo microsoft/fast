@@ -15,6 +15,10 @@ import { DialogStyles as styles } from "./dialog.styles";
     name: "fast-dialog",
     template,
     styles,
+    shadowOptions: {
+        mode: "open",
+        delegatesFocus: true,
+    },
 })
 export class FASTDialog extends Dialog {}
 
