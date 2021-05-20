@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "migrate tree-item recipes to design tokens",
+  "packageName": "@microsoft/fast-components",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
