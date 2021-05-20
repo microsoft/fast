@@ -41,6 +41,18 @@ import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-de
 import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import {
+    fastBadge,
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+    fastTextField,
+} from "@microsoft/fast-components";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
 import { linkedDataExamples } from "./configs";
 import { divTag } from "./configs/library.native.tags";
@@ -53,6 +65,18 @@ import {
     renderFormTabs,
 } from "./web-components";
 import { Device } from "./web-components/devices";
+
+DesignSystem.getOrCreate().register(
+    fastBadge(),
+    fastCheckbox(),
+    fastNumberField(),
+    fastOption(),
+    fastSelect(),
+    fastTabs(),
+    fastTab(),
+    fastTabPanel(),
+    fastTextField()
+);
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
