@@ -92,7 +92,7 @@
     "@microsoft/fast-element": "^1.3.0",
     "@microsoft/fast-web-utilities": "^4.7.3",
     "@microsoft/tsdoc-config": "^0.13.4",
-    "tabbable": "^4.0.0",
+    "tabbable": "^5.2.0",
     "tslib": "^1.13.0"
   }
 }
