@@ -46,9 +46,9 @@ import { SwitchOptions } from '@microsoft/fast-foundation';
 import { Tab } from '@microsoft/fast-foundation';
 import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
-import { Toolbar } from '@microsoft/fast-foundation';
 import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
 import { TextField as TextField_2 } from '@microsoft/fast-foundation';
+import { Toolbar as Toolbar_2 } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
@@ -878,6 +878,25 @@ export const fastTextField: (overrideDefinition?: import("@microsoft/fast-founda
     };
 }, typeof TextField>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+//
+// @public
+export const fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Toolbar_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<Toolbar_2, any>;
+    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: {
+        delegatesFocus: true;
+    };
+}, typeof Toolbar>;
+
 // @public
 export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -912,10 +931,6 @@ export const flipperStyles: (context: any, definition: any) => import("@microsof
 export class HorizontalScroll extends HorizontalScroll_2 {
     // @public (undocumented)
     connectedCallback(): void;
-}
-
-// @public
-export class FASTToolbar extends Toolbar {
 }
 
 // @public
@@ -1440,8 +1455,16 @@ export type TextFieldAppearance = "filled" | "outline";
 // @public
 export const textFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class Toolbar extends Toolbar_2 {
+    // (undocumented)
+    connectedCallback(): void;
+}
+
 // @public
-export const ToolbarStyles: ElementStyles;
+export const toolbarStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const treeItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;

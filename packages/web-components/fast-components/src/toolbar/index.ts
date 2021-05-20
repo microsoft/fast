@@ -1,6 +1,25 @@
-import { customElement } from "@microsoft/fast-element";
-import { Toolbar, ToolbarTemplate } from "@microsoft/fast-foundation";
-import { ToolbarStyles } from "./toolbar.styles";
+import {
+    DI,
+    Toolbar as FoundationToolbar,
+    toolbarTemplate as template,
+} from "@microsoft/fast-foundation";
+import { fillColor, NeutralFillCard } from "../design-tokens";
+import { ToolbarStyles as styles } from "./toolbar.styles";
+
+/**
+ * @internal
+ */
+export class Toolbar extends FoundationToolbar {
+    connectedCallback() {
+        super.connectedCallback();
+        fillColor.setValueFor(this, (target: HTMLElement) => {
+            return DI.findResponsibleContainer(target).get(NeutralFillCard)(
+                target,
+                fillColor.getValueFor(this.parentElement!)
+            );
+        });
+    }
+}
 
 /**
  * The FAST toolbar Custom Element. Implements {@link @microsoft/fast-foundation#Toolbar},
@@ -11,18 +30,16 @@ import { ToolbarStyles } from "./toolbar.styles";
  * HTML Element: `<fast-toolbar>`
  *
  */
-@customElement({
-    name: "fast-toolbar",
-    template: ToolbarTemplate,
-    styles: ToolbarStyles,
+export const fastToolbar = Toolbar.compose({
+    baseName: "toolbar",
+    template,
+    styles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTToolbar extends Toolbar {}
-
+});
 /**
  * Styles for Toolbar.
  * @public
  */
-export { ToolbarStyles };
+export const toolbarStyles = styles;
