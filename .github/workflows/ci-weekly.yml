@@ -42,14 +42,31 @@ jobs:
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-    - name: Test Playwright
+    - name: Build Playwright tests
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
-      
+        yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+      run: |
+        yarn playwright install chromium
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (firefox)
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+      run: |
+        yarn playwright install firefox
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (webkit)
+      env:
+        PLAYWRIGHT_BROWSER: webkit
+      run: |
+        yarn playwright install webkit
+        yarn workspace @microsoft/fast-components test-pw
+
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: github/codeql-action/init@v1
@@ -99,14 +116,31 @@ jobs:
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
-     
-    - name: Test Playwright
+
+    - name: Build Playwright tests
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
+        yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+      run: |
+        yarn playwright install chromium
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (firefox)
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+      run: |
+        yarn playwright install firefox
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (webkit)
+      env:
+        PLAYWRIGHT_BROWSER: webkit
+      run: |
+        yarn playwright install webkit
+        yarn workspace @microsoft/fast-components test-pw
 
   macos_cross-platform_cross-browser:
     runs-on: [macos-latest]
@@ -139,10 +173,27 @@ jobs:
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-    - name: Test Playwright
+    - name: Build Playwright tests
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
+        yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+      run: |
+        yarn playwright install chromium
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (firefox)
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+      run: |
+        yarn playwright install firefox
+        yarn workspace @microsoft/fast-components test-pw
+
+    - name: Test Playwright (webkit)
+      env:
+        PLAYWRIGHT_BROWSER: webkit
+      run: |
+        yarn playwright install webkit
+        yarn workspace @microsoft/fast-components test-pw
