@@ -14,6 +14,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { HTMLView } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -180,24 +181,35 @@ export class BaseProgress extends FASTElement {
 
 // @public
 export class Breadcrumb extends FASTElement {
-    // (undocumented)
-    generateBreadcrumbSeparator(): ViewTemplate;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultSeparatorTemplate: ViewTemplate;
+    separatorTemplate: ViewTemplate;
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
     slottedBreadcrumbItemsChanged(): void;
-}
+    }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "BreadcrumbItem" because one of its declarations is marked as @internal
 //
 // @public
 export class BreadcrumbItem extends Anchor {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    defaultItemSeparatorTemplate: ViewTemplate;
     // (undocumented)
-    generateBreadcrumbItemSeparator(): ViewTemplate;
+    defaultItemSeparatorTemplateChange(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     // @internal (undocumented)
     separator: boolean;
-}
+    // (undocumented)
+    separatorView: HTMLView | null;
+    }
 
 // @internal
 export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {

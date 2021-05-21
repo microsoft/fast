@@ -30,6 +30,13 @@
     <fast-breadcrumb-item>Breadcrumb item 5</fast-breadcrumb-item>
 </fast-breadcrumb>
 
+<h2>Custom separator</h2>
+<fast-breadcrumb id="breadcrumbId">
+    <fast-breadcrumb-item href="#">Breadcrumb item 1</fast-breadcrumb-item>
+    <fast-breadcrumb-item href="#">Breadcrumb item 2</fast-breadcrumb-item>
+    <fast-breadcrumb-item>Breadcrumb item 3</fast-breadcrumb-item>
+</fast-breadcrumb>
+
 <h2>With an SVG separator</h2>
 <fast-breadcrumb>
     <fast-breadcrumb-item href="#">
@@ -177,17 +184,6 @@
 
 <h2>Adding breadcrumb-items</h2>
 <fast-breadcrumb id="mybreadcrumb">
-    <svg
-        slot="separator"
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            d="M6.10056 2L10.6592 6.55866H0V9.62011H10.6592L6.10056 14.1899H9.91061L16 8.08939L9.91061 2H6.10056Z"
-        />
-    </svg>
     <fast-breadcrumb-item href="#">
         Breadcrumb item 1
     </fast-breadcrumb-item>
@@ -198,6 +194,6 @@
         Breadcrumb item 3
     </fast-breadcrumb-item>
 </fast-breadcrumb>
-<fast-button id="add-button" appearance="accent">
+<fast-button id="add-button" appearance="accent" style="margin-inline-start: 20px;">
     Add Breadcrumb item
 </fast-button>

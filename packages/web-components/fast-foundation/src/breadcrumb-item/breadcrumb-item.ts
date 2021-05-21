@@ -1,14 +1,7 @@
-import { html, observable, ViewTemplate } from "@microsoft/fast-element";
+import { DOM, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import { DelegatesARIALink, Anchor } from "../anchor";
-import type { Breadcrumb } from "../breadcrumb";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
-
-const breadcrumbItemSeparatorTemplate: ViewTemplate<HTMLElement> = html`
-    <span class="separator" part="separator" aria-hidden="true">
-        <slot name="separator">/</slot>
-    </span>
-`;
 
 /**
  * A Breadcrumb Item Custom HTML Element.
@@ -16,21 +9,61 @@ const breadcrumbItemSeparatorTemplate: ViewTemplate<HTMLElement> = html`
  * @public
  */
 export class BreadcrumbItem extends Anchor {
+    @observable
+    public separatorView: HTMLView | null = null;
+
+    /**
+     * @internal
+     */
+    @observable
+    public defaultItemSeparatorTemplate: ViewTemplate;
+    public defaultItemSeparatorTemplateChange() {
+        if (this.$fastController.isConnected) {
+            this.updateSeparatorView();
+        }
+    }
+
     /**
      * @internal
      */
     @observable
     public separator: boolean = true;
 
-    public generateBreadcrumbItemSeparator(): ViewTemplate {
-        if (
-            this.parentNode &&
-            typeof (this.parentNode as Breadcrumb).generateBreadcrumbSeparator ===
-                "function"
-        ) {
-            (this.parentNode as Breadcrumb).generateBreadcrumbSeparator();
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        DOM.queueUpdate(() => {
+            this.updateSeparatorView();
+        });
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        this.disconnectSeparatorView();
+    }
+
+    private updateSeparatorView(): void {
+        this.disconnectSeparatorView();
+
+        //TODO: find children that has a slot with a separator name, and just return it.
+
+        if (this.defaultItemSeparatorTemplate !== undefined) {
+            this.separatorView = this.defaultItemSeparatorTemplate.render(this, this);
         }
-        return breadcrumbItemSeparatorTemplate;
+    }
+
+    private disconnectSeparatorView(): void {
+        if (this.separatorView !== null) {
+            this.separatorView.dispose();
+            this.separatorView = null;
+        }
     }
 }
 

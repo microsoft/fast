@@ -1,19 +1,11 @@
-import { FASTElement, html, observable, ViewTemplate } from "@microsoft/fast-element";
+import {
+    DOM,
+    FASTElement,
+    html,
+    observable,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import { BreadcrumbItem } from "../breadcrumb-item";
-
-const breadcrumbSeparatorTemplate: ViewTemplate<HTMLElement> = html`
-    <svg
-        slot="breadcrumb-separator"
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            d="M6.10056 2L10.6592 6.55866H0V9.62011H10.6592L6.10056 14.1899H9.91061L16 8.08939L9.91061 2H6.10056Z"
-        />
-    </svg>
-`;
 
 /**
  * A Breadcrumb Custom HTML Element.
@@ -22,38 +14,64 @@ const breadcrumbSeparatorTemplate: ViewTemplate<HTMLElement> = html`
  */
 export class Breadcrumb extends FASTElement {
     /**
+     * The default separator template.  Set by the component templates.
+     * @internal
+     */
+    @observable
+    public defaultSeparatorTemplate: ViewTemplate;
+    private defaultSeparatorTemplateChange() {
+        if (this.$fastController.isConnected) {
+            this.updateItems();
+        }
+    }
+
+    /**
+     * The separator template.  Set by the component templates.
+     * @public
+     */
+    @observable
+    public separatorTemplate: ViewTemplate;
+    private separatorTemplateChange() {
+        if (this.$fastController.isConnected) {
+            this.updateItems();
+        }
+    }
+
+    /**
      * @internal
      */
     @observable
     public slottedBreadcrumbItems: HTMLElement[];
     public slottedBreadcrumbItemsChanged() {
         if (this.$fastController.isConnected) {
-            if (
-                this.slottedBreadcrumbItems === undefined ||
-                this.slottedBreadcrumbItems.length === 0
-            ) {
-                return;
-            }
-
-            const lastNode: HTMLElement = this.slottedBreadcrumbItems[
-                this.slottedBreadcrumbItems.length - 1
-            ];
-
-            this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
-                if (item instanceof BreadcrumbItem) {
-                    (item as BreadcrumbItem).generateBreadcrumbItemSeparator = this.generateBreadcrumbSeparator;
-                }
-            });
-
-            this.setItemSeparator(lastNode);
-            this.setLastItemAriaCurrent(lastNode);
+            this.updateItems();
         }
+    }
+
+    private updateItems(): void {
+        if (
+            this.slottedBreadcrumbItems === undefined ||
+            this.slottedBreadcrumbItems.length === 0
+        ) {
+            return;
+        }
+
+        const lastNode: HTMLElement = this.slottedBreadcrumbItems[
+            this.slottedBreadcrumbItems.length - 1
+        ];
+
+        this.setItemSeparator(lastNode);
+        this.setLastItemAriaCurrent(lastNode);
     }
 
     private setItemSeparator(lastNode: HTMLElement): void {
         this.slottedBreadcrumbItems.forEach((item: HTMLElement) => {
             if (item instanceof BreadcrumbItem) {
                 (item as BreadcrumbItem).separator = true;
+                (item as BreadcrumbItem).defaultItemSeparatorTemplate =
+                    this.separatorTemplate !== undefined
+                        ? this.separatorTemplate
+                        : this.defaultSeparatorTemplate;
             }
         });
         if (lastNode instanceof BreadcrumbItem) {
@@ -61,8 +79,15 @@ export class Breadcrumb extends FASTElement {
         }
     }
 
-    public generateBreadcrumbSeparator(): ViewTemplate {
-        return breadcrumbSeparatorTemplate;
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        DOM.queueUpdate(() => {
+            this.updateItems();
+        });
     }
 
     /**

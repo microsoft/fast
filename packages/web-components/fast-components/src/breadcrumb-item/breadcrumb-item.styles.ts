@@ -32,6 +32,7 @@ export const BreadcrumbItemStyles = css`
     }
 
     .separator {
+        display: flex;
         margin: 0 6px;
     }
 
