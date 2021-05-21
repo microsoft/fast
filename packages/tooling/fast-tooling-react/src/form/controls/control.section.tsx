@@ -148,7 +148,8 @@ class SectionControl extends React.Component<
             case MessageSystemType.custom:
                 if (
                     e.data.action === SchemaSetValidationAction.response &&
-                    e.data.id === this.oneOfAnyOfValidationRequestId
+                    e.data.id === this.oneOfAnyOfValidationRequestId &&
+                    this.state.oneOfAnyOf !== null
                 ) {
                     this.setState({
                         oneOfAnyOf: {

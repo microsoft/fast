@@ -4,7 +4,10 @@ import { HTMLRenderLayerNavgation } from "./html-render-layer-navigation";
 export const HTMLRenderLayerNavigationTemplate = html<HTMLRenderLayerNavgation>`
     <div class="navigation-region">
         <div
-            class="${x => (x.clickLayerActive ? "click-layer active" : "click-layer")}"
+            class="${x =>
+                x.clickLayerActive && !x.clickLayerHide
+                    ? "click-layer active"
+                    : "click-layer"}"
             style="top:${x => x.clickPosition.top}px;left:${x =>
                 x.clickPosition.left}px;width:${x =>
                 x.clickPosition.width}px;height:${x => x.clickPosition.height}px"
