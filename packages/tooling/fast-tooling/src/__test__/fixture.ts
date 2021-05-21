@@ -1,9 +1,19 @@
 import {
+    Constructable,
     defaultExecutionContext,
     ExecutionContext,
     HTMLView,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    DesignSystem,
+    DesignSystemRegistrationContext,
+    DI,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementDefinition,
+    FoundationElementRegistry,
+} from "@microsoft/fast-foundation";
 
 /**
  * Options used to customize the creation of the test fixture.
@@ -32,6 +42,11 @@ export interface FixtureOptions {
      * @defaultValue {@link @microsoft/fast-element#defaultExecutionContext}
      */
     context?: ExecutionContext;
+
+    /**
+     * A pre-configured design system instance used in setting up the fixture.
+     */
+    designSystem?: DesignSystem;
 }
 
 export interface Fixture<TElement = HTMLElement> {
@@ -99,28 +114,59 @@ export function uniqueElementName(): string {
     return `fast-unique-${Math.random().toString(36).substring(7)}`;
 }
 
+function isElementRegistry<T>(
+    obj: any
+): obj is FoundationElementRegistry<FoundationElementDefinition, any> {
+    return typeof obj.register === "function";
+}
+
 /**
  * Creates a test fixture suitable for testing custom elements, templates, and bindings.
- * @param templateOrElementName An HTML template or single element name to create the fixture for.
+ * @param templateNameOrRegistry An HTML template or single element name to create the fixture for.
  * @param options Enables customizing fixture creation behavior.
  * @remarks
  * Yields control to the caller one Microtask later, in order to
  * ensure that the DOM has settled.
  */
 export async function fixture<TElement = HTMLElement>(
-    templateOrElementName: ViewTemplate | string,
+    templateNameOrRegistry:
+        | ViewTemplate
+        | string
+        | FoundationElementRegistry<FoundationElementDefinition, Constructable<TElement>>
+        | [
+              FoundationElementRegistry<
+                  FoundationElementDefinition,
+                  Constructable<TElement>
+              >,
+              ...FoundationElementRegistry<FoundationElementDefinition, Constructable>[]
+          ],
     options: FixtureOptions = {}
 ): Promise<Fixture<TElement>> {
-    if (typeof templateOrElementName === "string") {
-        const html = `<${templateOrElementName}></${templateOrElementName}>`;
-        templateOrElementName = new ViewTemplate(html, []);
-    }
-
-    const view = templateOrElementName.create();
     const document = options.document || globalThis.document;
     const parent = options.parent || document.createElement("div");
     const source = options.source || {};
     const context = options.context || defaultExecutionContext;
+
+    if (typeof templateNameOrRegistry === "string") {
+        const html = `<${templateNameOrRegistry}></${templateNameOrRegistry}>`;
+        templateNameOrRegistry = new ViewTemplate(html, []);
+    } else if (isElementRegistry(templateNameOrRegistry)) {
+        templateNameOrRegistry = [templateNameOrRegistry];
+    }
+
+    if (Array.isArray(templateNameOrRegistry)) {
+        const first = templateNameOrRegistry[0];
+        (options.designSystem || DesignSystem.getOrCreate(parent)).register(
+            templateNameOrRegistry
+        );
+        const container = DI.getOrCreateDOMContainer(parent);
+        const context = container.get(DesignSystemRegistrationContext);
+        const elementName = `${context.elementPrefix}-${first.definition.baseName}`;
+        const html = `<${elementName}></${elementName}>`;
+        templateNameOrRegistry = new ViewTemplate(html, []);
+    }
+
+    const view = templateNameOrRegistry.create();
     const element = findElement(view) as any;
     let isConnected = false;
 
@@ -155,7 +201,7 @@ export async function fixture<TElement = HTMLElement>(
 
     return {
         document,
-        template: templateOrElementName,
+        template: templateNameOrRegistry,
         view,
         parent,
         element,

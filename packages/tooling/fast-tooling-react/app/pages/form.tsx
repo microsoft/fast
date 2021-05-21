@@ -37,13 +37,15 @@ import {
     fastSelect,
     fastTextField,
 } from "@microsoft/fast-components";
+import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 
 DesignSystem.getOrCreate().register(
     fastCheckbox(),
     fastNumberField(),
     fastOption(),
     fastSelect(),
-    fastTextField()
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" })
 );
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
