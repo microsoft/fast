@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update web components in fast-tooling package to use vNext api changes",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

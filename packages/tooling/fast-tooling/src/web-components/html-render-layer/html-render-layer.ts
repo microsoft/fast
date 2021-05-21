@@ -1,4 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     DataDictionary,
     MessageSystem,
@@ -13,7 +14,7 @@ export enum ActivityType {
     clear = "clear",
 }
 
-export abstract class HTMLRenderLayer extends FASTElement {
+export abstract class HTMLRenderLayer extends FoundationElement {
     public dataDictionary: DataDictionary<unknown>;
 
     public schemaDictionary: SchemaDictionary;

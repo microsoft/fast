@@ -9,14 +9,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { classNames } from "@microsoft/fast-web-utilities";
 import { CSSProperty } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import { CSSStandardControlPlugin } from "./css";
-
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
 
 /**
  * This is currently experimental, any use of the CSS control must include the following
@@ -29,15 +22,19 @@ FASTDesignSystemProvider;
  *    fastOption,
  *    fastSelect,
  *    fastTextField,
- *} from "@microsoft/fast-components";
+ * } from "@microsoft/fast-components";
+ * import {
+ *     fastToolingColorPicker,
+ * } from "@microsoft/fast-tooling/dist/esm/web-components";
  *
  * DesignSystem.getOrCreate().register(
  *    fastCheckbox(),
  *    fastNumberField(),
  *    fastOption(),
  *    fastSelect(),
- *    fastTextField()
- *);
+ *    fastTextField(),
+ *    fastToolingColorPicker({ prefix: "fast-tooling" }),
+ * );
  */
 
 /**
