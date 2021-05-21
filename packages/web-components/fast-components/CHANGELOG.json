@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-components_v1.21.1",
+      "version": "1.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix mismatched environment variable",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bf044d84294b41ca4a4eb31fa433cc2e1f992996",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-components_v1.21.0",
       "version": "1.21.0",

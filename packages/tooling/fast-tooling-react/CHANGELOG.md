@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.9
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- ensure oneOf and anyOf state in the Form component is not null before updating it after receiving a custom message (44823142+williamw2@users.noreply.github.com)
+- update tooling dependencies to use the carrot syntax for later than versions (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.8
 

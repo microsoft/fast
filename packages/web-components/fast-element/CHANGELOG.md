@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 19 May 2021 23:37:36 GMT and should not be manually modified.
+This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.4.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Minor changes
+
+- Add cssPartial template function to facilitate partial CSS abstractions. (nicholasrice@users.noreply.github.com)
 
 ## 1.3.0
 

@@ -1,8 +1,23 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.20.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Minor changes
+
+- add checks in the HTML render component for window scroll and resize events (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- update tooling dependencies to use the carrot syntax for later than versions (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-components to v1.21.1 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.4.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v1.24.1 (nicholasrice@users.noreply.github.com)
 
 ## 0.19.2
 

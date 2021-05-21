@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update tooling dependencies to use the carrot syntax for later than versions",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "07eaad7ba29abd423aa00165536aee10a29bdc58",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f56542a588c8b3535c249485987fc7e76e014a56",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add checks in the HTML render component for window scroll and resize events",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "217d5b38c1024ab86911505c992d2683f94bb222",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-tooling_v0.19.2",
       "version": "0.19.2",

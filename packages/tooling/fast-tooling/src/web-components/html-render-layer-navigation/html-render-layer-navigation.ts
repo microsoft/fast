@@ -36,14 +36,50 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     public clickLayerActive: boolean = false;
 
     @observable
+    public clickLayerHide: boolean = false;
+
+    @observable
     public clickPillContent: string = "";
 
     @observable
     public hoverPillContent: string = "";
 
+    private timeoutRef: number = null;
+    private currElementRef: HTMLElement = null;
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        window.addEventListener("scroll", this.handleWindowChange);
+        window.addEventListener("resize", this.handleWindowChange);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        window.removeEventListener("scroll", this.handleWindowChange);
+        window.removeEventListener("resize", this.handleWindowChange);
+    }
+
+    private handleWindowChange = () => {
+        if (this.hoverLayerActive) {
+            this.handleUnHighlight();
+        }
+        if (this.clickLayerActive) {
+            this.clickLayerHide = true;
+            if (this.timeoutRef !== null) {
+                window.clearTimeout(this.timeoutRef);
+            }
+            this.timeoutRef = window.setTimeout(() => {
+                this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                this.clickLayerHide = false;
+            }, 40);
+        }
+    };
+
     private GetPositionFromElement(target: HTMLElement): OverylayPosition {
-        const pos: DOMRectList = target.getClientRects();
-        return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
+        const pos: DOMRect = target.getBoundingClientRect();
+        return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
@@ -54,6 +90,7 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
                 : null;
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
+        this.currElementRef = elementRef;
         this.clickPillContent = title || "Untitled";
         this.hoverLayerActive = false;
     }
@@ -74,6 +111,7 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     }
 
     private handleClear() {
+        this.currElementRef = null;
         this.clickLayerActive = false;
         this.clickPillContent = "";
     }
