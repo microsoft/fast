@@ -1,4 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     DataDictionary,
     MessageSystem,
@@ -35,7 +36,7 @@ export interface HTMLRenderLayerCallbackType {
     (layerActivityId: string, activityType: ActivityType): void;
 }
 
-export abstract class HTMLRenderLayer extends FASTElement {
+export abstract class HTMLRenderLayer extends FoundationElement {
     public dataDictionary: DataDictionary<unknown>;
 
     public schemaDictionary: SchemaDictionary;
