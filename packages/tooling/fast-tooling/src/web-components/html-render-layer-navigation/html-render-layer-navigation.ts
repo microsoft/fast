@@ -1,7 +1,5 @@
-import { customElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
-import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
 
 class OverylayPosition {
     public top: number;
@@ -17,12 +15,7 @@ class OverylayPosition {
     }
 }
 
-@customElement({
-    name: "fast-tooling-html-render-layer-navigation",
-    template: HTMLRenderLayerNavigationTemplate,
-    styles: HTMLRenderLayerNavigationStyles,
-})
-export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
+export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     @observable
     public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 

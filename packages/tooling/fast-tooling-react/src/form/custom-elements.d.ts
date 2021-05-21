@@ -47,7 +47,7 @@ declare namespace JSX {
         > & {
             value?: string;
         };
-        "color-picker": React.DetailedHTMLProps<
+        "fast-tooling-color-picker": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
         > & {
