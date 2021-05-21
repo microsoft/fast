@@ -37,7 +37,6 @@ import {
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
@@ -47,11 +46,16 @@ import {
     fastNumberField,
     fastOption,
     fastSelect,
+    fastSlider,
+    fastSliderLabel,
     fastTab,
     fastTabPanel,
     fastTabs,
     fastTextField,
+    neutralLayerL1,
+    StandardLuminance,
 } from "@microsoft/fast-components";
+import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
 import { linkedDataExamples } from "./configs";
 import { divTag } from "./configs/library.native.tags";
@@ -71,10 +75,13 @@ DesignSystem.getOrCreate().register(
     fastNumberField(),
     fastOption(),
     fastSelect(),
+    fastSlider(),
+    fastSliderLabel(),
     fastTabs(),
     fastTab(),
     fastTabPanel(),
-    fastTextField()
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" })
 );
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
