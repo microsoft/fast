@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, cssPartial } from "@microsoft/fast-element";
 import {
     DesignToken,
     DI,
@@ -11,8 +11,10 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { SwatchRGB } from "../color-vNext/swatch";
 import {
     accentForegroundRest,
+    baseHeightMultiplier,
     bodyFont,
     cornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     focusOutlineWidth,
@@ -59,8 +61,7 @@ const rtl = css`
     }
 `;
 
-export const expandCollapseButtonSize =
-    "((var(--base-height-multiplier) / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)";
+export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
 const expandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
     "tree-item-expand-collapse-hover"
