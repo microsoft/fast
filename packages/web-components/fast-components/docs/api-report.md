@@ -13,6 +13,7 @@ import { Behavior } from '@microsoft/fast-element';
 import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItemOptions } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
+import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { ComboboxOptions } from '@microsoft/fast-foundation';
@@ -262,8 +263,14 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 // @public
 export const buttonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// @public (undocumented)
+export class Card extends Card_2 {
+    // (undocumented)
+    connectedCallback(): void;
+}
+
 // @public
-export const CardStyles: import("@microsoft/fast-element").ElementStyles;
+export const cardStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const checkboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -409,17 +416,15 @@ export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundatio
 }, typeof Button>;
 
 // @public
-export class FASTCard extends DesignSystemProvider implements Pick<FASTDesignSystem, "backgroundColor" | "neutralPalette"> {
-    // @internal (undocumented)
-    backgroundColor: string;
-    cardBackgroundColor: string;
-    // (undocumented)
-    connectedCallback(): void;
-    // @internal (undocumented)
-    handleChange(source: FASTDesignSystem, name: string): void;
-    // @internal
-    neutralPalette: string[];
-}
+export const fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: import("@microsoft/fast-element").ViewTemplate<Card_2, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: import("@microsoft/fast-element").ViewTemplate<Card_2, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof Card>;
 
 // @public
 export const fastCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<CheckboxOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<CheckboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;

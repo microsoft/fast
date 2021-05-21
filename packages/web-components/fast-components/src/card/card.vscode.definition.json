@@ -5,6 +5,7 @@
             "name": "fast-card",
             "title": "Card",
             "description": "The FAST card element",
+            "attributes": [],
             "slots": [
                 {
                     "name": "",
