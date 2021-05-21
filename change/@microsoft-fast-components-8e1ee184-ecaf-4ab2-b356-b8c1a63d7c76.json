@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add toolbar component",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

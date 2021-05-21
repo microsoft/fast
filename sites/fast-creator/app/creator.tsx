@@ -5,6 +5,7 @@ import React from "react";
 import {
     CustomMessageIncomingOutgoing,
     DataType,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -59,6 +60,7 @@ const schemaDictionary: SchemaDictionary = {
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
+export const defaultElementDataId: string = "root";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
@@ -97,7 +99,6 @@ class Creator extends Editor<{}, CreatorState> {
     constructor(props: {}) {
         super(props);
 
-        const componentLinkedDataId: string = "root";
         const designSystemLinkedDataId: string = "design-system";
 
         this.devices = this.getDevices();
@@ -123,7 +124,7 @@ class Creator extends Editor<{}, CreatorState> {
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
             accentColor: fastDesignSystemDefaults.accentBaseColor,
-            activeDictionaryId: componentLinkedDataId,
+            activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
             mobileFormVisible: false,
@@ -149,12 +150,12 @@ class Creator extends Editor<{}, CreatorState> {
             ],
             dataDictionary: [
                 {
-                    [componentLinkedDataId]: {
+                    [defaultElementDataId]: {
                         schemaId: divTag,
                         data: {},
                     },
                 },
-                componentLinkedDataId,
+                defaultElementDataId,
             ],
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
@@ -316,7 +317,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<CreatorState> = {};
-
         if (
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
@@ -334,6 +334,17 @@ class Creator extends Editor<{}, CreatorState> {
                 });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
+            } else {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId:
+                        e.data.value === "" ? defaultElementDataId : e.data.value,
+                    activeNavigationConfigId: "",
+                    options: {
+                        originatorId: "fast-tooling::html-renderer",
+                    },
+                });
             }
         }
 
