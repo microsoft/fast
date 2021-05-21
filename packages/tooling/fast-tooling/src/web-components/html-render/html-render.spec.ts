@@ -61,11 +61,9 @@ async function setup() {
             </fast-tooling-html-render>
         `,
         {
-            // Note: attempted to use .withPrefix("fast-tooling") but this did not work
-            designSystem: DesignSystem.getOrCreate().register(
-                fastToolingHTMLRender({ prefix: "fast-tooling" }),
-                fastToolingHTMLRenderLayerTest({ prefix: "fast-tooling" })
-            ),
+            designSystem: DesignSystem.getOrCreate()
+                .withPrefix("fast-tooling")
+                .register(fastToolingHTMLRender(), fastToolingHTMLRenderLayerTest()),
         }
     );
     const message = new MessageSystem({

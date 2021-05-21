@@ -11,12 +11,9 @@ import { nativeElementDefinitions } from "../../../src/definitions/";
 import dataDictionaryConfig from "../../../src/__test__/html-render/data-dictionary-config";
 import schemaDictionary from "../../../src/__test__/html-render/schema-dictionary";
 
-// Note: attempted to use .withPrefix("fast-tooling") but this did not work and
-// reverted back to "fast"
-DesignSystem.getOrCreate().register(
-    fastToolingHTMLRender({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" })
-);
+DesignSystem.getOrCreate()
+    .withPrefix("fast-tooling")
+    .register(fastToolingHTMLRender(), fastToolingHTMLRenderLayerNavigation());
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTMessageSystemWorker = require("../../../dist/message-system.min.js");
