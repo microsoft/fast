@@ -6,6 +6,9 @@ import {
 import { fillColor, NeutralFillCard } from "../design-tokens";
 import { CardStyles as styles } from "./card.styles";
 
+/**
+ * @internal
+ */
 export class Card extends FoundationCard {
     connectedCallback() {
         super.connectedCallback();
