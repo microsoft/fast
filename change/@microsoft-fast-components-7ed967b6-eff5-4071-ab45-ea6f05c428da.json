@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix mismatched environment variable",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}

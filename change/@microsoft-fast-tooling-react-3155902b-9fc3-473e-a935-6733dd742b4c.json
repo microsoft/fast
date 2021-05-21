@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ensure oneOf and anyOf state in the Form component is not null before updating it after receiving a custom message",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "44823142+williamw2@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

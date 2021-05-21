@@ -2,6 +2,7 @@ import {
     attr,
     Behavior,
     customElement,
+    DOM,
     FASTElement,
     observable,
     Observable,
@@ -19,8 +20,6 @@ import {
 } from "../custom-properties/manager";
 import { composedParent } from "../utilities/composed-parent";
 import type { DecoratorDesignSystemPropertyConfiguration } from "./design-system-property";
-
-const supportsAdoptedStylesheets = "adoptedStyleSheets" in window.ShadowRoot.prototype;
 
 /**
  * Defines a structure that consumes from a DesignSystemProvider
@@ -362,7 +361,7 @@ export class DesignSystemProvider extends FASTElement
         // to give authors opportunity to assign an initial value. In cases where adoptedStyleSheets are *un-supported*, the
         // property is assigned in the constructor to ensure the DesignSystemProvider initializes the property. The change handler
         // will then prevent any future assignment.
-        if (!supportsAdoptedStylesheets) {
+        if (!DOM.supportsAdoptedStyleSheets) {
             this.customPropertyManager = new StyleElementCustomPropertyManager(
                 document.createElement("style"),
                 this
