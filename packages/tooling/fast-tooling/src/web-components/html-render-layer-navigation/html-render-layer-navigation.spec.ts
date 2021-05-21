@@ -153,4 +153,49 @@ describe("HTMLRenderLayerNavgation", () => {
 
         await disconnect();
     });
+    it("should handle scroll", async () => {
+        const {
+            element,
+            connect,
+            messageSystemHasBeenCalled,
+            disconnect,
+            parent,
+        } = await setup();
+
+        await connect();
+        await messageSystemHasBeenCalled();
+        await DOM.nextUpdate();
+
+        const div = document.createElement("div");
+        parent.appendChild(div);
+
+        element.elementActivity(ActivityType.hover, "root", div);
+        await DOM.nextUpdate();
+
+        const hover = element.shadowRoot?.querySelector(".hover-layer");
+        expect(hover.classList.contains("active")).to.equal(true);
+
+        const scrollEvent = document.createEvent("CustomEvent"); // MUST be 'CustomEvent'
+        scrollEvent.initCustomEvent("scroll", false, false, null);
+
+        window.dispatchEvent(scrollEvent);
+        await DOM.nextUpdate();
+
+        const hoverBlur = element.shadowRoot?.querySelector(".hover-layer");
+        expect(hoverBlur.classList.contains("active")).to.equal(false);
+
+        element.elementActivity(ActivityType.click, "root", div);
+        await DOM.nextUpdate();
+
+        const select = element.shadowRoot?.querySelector(".click-layer");
+        expect(select.classList.contains("active")).to.equal(true);
+
+        window.dispatchEvent(scrollEvent);
+        await DOM.nextUpdate();
+
+        const selectScroll = element.shadowRoot?.querySelector(".click-layer");
+        expect(selectScroll.classList.contains("active")).to.equal(false);
+
+        await disconnect();
+    });
 });
