@@ -11,6 +11,8 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
+import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -38,6 +40,8 @@ FASTSliderLabel;
 FASTTab;
 FASTTabs;
 FASTTabPanel;
+HTMLRender;
+HTMLRenderLayerNavgation;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -256,4 +260,30 @@ export function renderFormTabs(
             </fast-tab-panel>
         </fast-tabs>
     );
+}
+
+export class HTMLRenderReact extends React.Component {
+    public designRef: React.RefObject<HTMLDivElement>;
+    public renderRef: React.RefObject<HTMLDivElement>;
+
+    private setDesignRef = el => {
+        this.designRef = el;
+    };
+
+    private setRenderRef = el => {
+        this.renderRef = el;
+    };
+
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <fast-design-system-provider ref={this.setDesignRef}>
+                <fast-tooling-html-render ref={this.setRenderRef}>
+                    <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                </fast-tooling-html-render>
+            </fast-design-system-provider>
+        );
+    }
 }
