@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update to Design System Provider to use dom.supportsAdoptedStyleSheets",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
