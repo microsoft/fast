@@ -1,16 +1,10 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import React from "react";
 import {
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
-
-/**
- * Ensure tree-shaking doesn't remove these components from the bundle.
- */
-FASTColorPicker;
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
     return renderTextInput(config);
@@ -32,6 +26,10 @@ function getInputChangeHandler(
         handleCheck(e.currentTarget.value);
     };
 }
+
+// TODO: is there a better way to retrieve design system context and use the tagFor?
+// this is currently an experimental component however this should be adjusted before
+// documentation and export
 
 export function renderTextInput(config: RenderRefControlConfig): React.ReactNode {
     return (
@@ -180,12 +178,12 @@ function getColorPickerChangeHandler(
 
 export function renderColorPicker(config: RenderRefControlConfig): React.ReactNode {
     return (
-        <color-picker
+        <fast-tooling-color-picker
             key={`${config.dictionaryId}::${config.dataLocation}`}
             value={config.value}
             events={{
                 change: getColorPickerChangeHandler(config.handleChange),
             }}
-        ></color-picker>
+        ></fast-tooling-color-picker>
     );
 }
