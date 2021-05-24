@@ -543,7 +543,7 @@ export interface CSSCustomPropertyTarget {
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
 
-// @alpha
+// @public
 export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
     createCSS?(): string;
 }> extends DesignToken<T>, CSSDirective {
@@ -888,24 +888,27 @@ export interface DesignSystemRegistrationContext {
 // @alpha (undocumented)
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
-// @alpha
+// @public
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
     readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
+    // Warning: (ae-incompatible-release-tags) The symbol "getValueFor" is marked as @public, but its signature references "StaticDesignTokenValue" which is marked as @alpha
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     readonly name: string;
+    // Warning: (ae-incompatible-release-tags) The symbol "setValueFor" is marked as @public, but its signature references "DesignTokenValue" which is marked as @alpha
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
     subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    // Warning: (ae-incompatible-release-tags) The symbol "withDefault" is marked as @public, but its signature references "DesignTokenValue" which is marked as @alpha
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
-// @alpha
+// @public
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
 
-// @alpha (undocumented)
+// @public
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     target: HTMLElement;
     token: T;
@@ -917,7 +920,7 @@ export interface DesignTokenConfiguration {
     name: string;
 }
 
-// @alpha (undocumented)
+// @public
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     // (undocumented)
     handleChange(record: DesignTokenChangeRecord<T>): void;
@@ -2439,7 +2442,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:94:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
