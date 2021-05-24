@@ -9,7 +9,9 @@ for inline editing of text.
 Inline text editing will be initiated when the user double-clicks on a text node. When this happens the `HTMLRenderLayerInlineEdit`
 control will create a `textarea` and attempt to match the size, position and style so that the `textarea` input is "invisible" against
 the background element with the exception of a thin border so that to the user it appears that they are typing directly into the container 
-element. While the user is typing within this area keyboard/mouse interactions will work normally (letters, numbers, special characters, 
+element. The text area will resize as the user types to match how the new text will be rendered (i.e. if the text would result in more or fewer lines)
+but will have a minimum size of one line in the case that all text is removed or if the target element did not already have any text.  
+While the user is typing within this area keyboard/mouse interactions will work normally (letters, numbers, special characters, 
 arrow key navigation, mouse click curser placement, highlighting, copy/paste etc.) with the exceptions of Tab, Enter and Esc. Tab and Enter 
 will perform a confirmation action which will remove the `textarea`, replace the text node with the new text and transmit a data message
 announcing the update. The Esc key will cancel the text edit, removing the `textarea` and restoring the text node to the original value.
@@ -30,4 +32,4 @@ removed.
 ## Out of scope
 Inline editing is not intended to be a full function text editing / formating experience (at this time) and will only allow for simple text 
 input. It is also not meant to be an HTML editor and any markup typed into the inline editor will be escaped so it appears as text. Markup
-editing can be accomplished in the Monico editor.
+editing can be accomplished in the Monaco editor.
