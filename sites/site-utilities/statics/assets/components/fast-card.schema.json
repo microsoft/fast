@@ -8,18 +8,6 @@
   "version": 1.1,
   "mapsToTagName": "fast-card",
   "properties": {
-    "background-color": {
-      "title": "Background color",
-      "description": "A color value from the neutral palette - sets the background color, but does not reset the design system palette",
-      "mapsToAttribute": "background-color",
-      "type": "string"
-    },
-    "card-background-color": {
-      "title": "Card background color",
-      "description": "Background color for the card, which resets the neutral palette and context for the design system",
-      "mapsToAttribute": "card-background-color",
-      "type": "string"
-    },
     "Slot": {
       "title": "Default slot",
       "description": "The content of the card",
