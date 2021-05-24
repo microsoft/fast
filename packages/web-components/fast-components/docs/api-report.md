@@ -263,7 +263,9 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 // @public
 export const buttonStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "Card" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export class Card extends Card_2 {
     // (undocumented)
     connectedCallback(): void;
@@ -415,6 +417,8 @@ export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundatio
     };
 }, typeof Button>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+//
 // @public
 export const fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
