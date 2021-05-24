@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-creator
 
-This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.20.0 (nicholasrice@users.noreply.github.com)
 
 ## 0.7.0
 
