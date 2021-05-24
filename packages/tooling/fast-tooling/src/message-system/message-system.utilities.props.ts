@@ -6,6 +6,12 @@ import { MessageSystemType } from "./types";
 import { ValidationError } from "./validation.props";
 import { History } from "./history.props";
 
+/**
+ * Note on nomenclature: incoming messages are being sent to, and recieved, by the message system
+ * while outgoing messages are being sent from the message system to any registered service. These
+ * terms are from the POV of the message system.
+ */
+
 export enum MessageSystemDataDictionaryTypeAction {
     get = "get",
     updateActiveId = "update-active-id",
@@ -56,6 +62,10 @@ interface ArbitraryMessageOutgoing<TConfig = {}> {
 
 /**
  * The message to initialize the message system
+ *
+ * A message system can be initialized without a data dictionary or schema dictionary
+ * if asynchronous services are being added to the message system and the initialization
+ * must happen at a later stage once the asynchronous services have initialized.
  */
 export interface InitializeMessageIncoming<TConfig = {}>
     extends ArbitraryMessageIncoming<TConfig> {
