@@ -21,6 +21,7 @@ export interface ElementDefinitionContext {
     readonly type: Constructable;
     readonly container: Container;
     readonly willDefine: boolean;
+    readonly shadowRootMode: ShadowRootMode | undefined;
     defineElement(definition?: ContextualElementDefinition): void;
     definePresentation(presentation: ComponentPresentation): void;
     tagFor(type: Constructable): string;
@@ -73,6 +74,7 @@ const elementTagsByType = new Map<Constructable, string>();
 export interface DesignSystem {
     register(...params: any[]): DesignSystem;
     withPrefix(prefix: string): DesignSystem;
+    withShadowRootMode(mode: ShadowRootMode): DesignSystem;
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
 }
 
@@ -85,7 +87,7 @@ const designSystemKey = DI.createInterface<DesignSystem>(x =>
             return owned;
         }
 
-        return new DefaultDesignSystem(element, handler);
+        return (new DefaultDesignSystem(element, handler) as any) as DesignSystem;
     })
 );
 
@@ -132,6 +134,7 @@ export const DesignSystem = Object.freeze({
 
 class DefaultDesignSystem implements DesignSystem {
     private prefix: string = "fast";
+    private shadowRootMode: ShadowRootMode | undefined = undefined;
     private disambiguate: ElementDisambiguationCallback = () => null;
     private context: DesignSystemRegistrationContext;
 
@@ -148,6 +151,11 @@ class DefaultDesignSystem implements DesignSystem {
         return this;
     }
 
+    public withShadowRootMode(mode: ShadowRootMode): DesignSystem {
+        this.shadowRootMode = mode;
+        return this;
+    }
+
     public withElementDisambiguation(
         callback: ElementDisambiguationCallback
     ): DesignSystem {
@@ -159,8 +167,9 @@ class DefaultDesignSystem implements DesignSystem {
         const container = this.container;
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
+        const shadowRootMode = this.shadowRootMode;
 
-        const context: DesignSystemRegistrationContext = (this.context = {
+        this.context = {
             elementPrefix: this.prefix,
             tryDefineElement(
                 name: string,
@@ -194,12 +203,13 @@ class DefaultDesignSystem implements DesignSystem {
                         container,
                         elementName || name,
                         type,
+                        shadowRootMode,
                         callback,
                         willDefine
                     )
                 );
             },
-        });
+        };
 
         container.register(...registrations);
 
@@ -222,6 +232,7 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         public readonly container: Container,
         public readonly name: string,
         public readonly type: Constructable,
+        public shadowRootMode: ShadowRootMode | undefined,
         public readonly callback: ElementDefinitionCallback,
         public readonly willDefine: boolean
     ) {}
