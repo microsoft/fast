@@ -86,7 +86,12 @@ export interface CSSDesignToken<
         | null
         | Array<any>
         | symbol
-        | { createCSS?(): string }
+        | {
+              /**
+               * Converts the token value to a string to be emitted to CSS.
+               */
+              createCSS?(): string;
+          }
 > extends DesignToken<T>, CSSDirective {
     /**
      * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
@@ -96,7 +101,7 @@ export interface CSSDesignToken<
 }
 
 /**
- * Describes a change operation for a {@link DesignToken}
+ * Describes a change operation for a {@link (DesignToken:interface)}
  *
  * @public
  */
@@ -114,6 +119,8 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 
 /**
  * A subscribe for {@link DesignTokenChangeRecord | DesignToken change records}
+ *
+ * @public
  */
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
