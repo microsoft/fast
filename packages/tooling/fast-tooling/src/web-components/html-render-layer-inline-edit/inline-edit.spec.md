@@ -21,8 +21,9 @@ When the `HTMLRender` component detects a `dblclick` event it determine if the e
 until it finds the containing element. It will then send a `ActivityType.DoubleClick` alert to all of the child layers. 
 The `HTMLRenderLayerInlineEdit` layer will respond to this alert by finding the position and styles (background color, font color, size, family etc)
 and will create a `textarea` input element with the same styles placed directly over the target location. It will also save a backup of the 
-text content in case the edit is canceled. As the users types within the `textarea` the text node "hidden" behind it will also be update and 
-the `textarea` size and position updated so that the user can see the results of text reflow as they type. 
+text content in case the edit is canceled. As the users types within the `textarea` the text node "hidden" behind it will also be updated. As the 
+text reflows the `textarea` size and position will be updated so that the user can see the results as they type. The `textarea` will always have 
+at least one row if all text is removed or if the target element did not have any text to begin with. 
 When the user is done, any event that causes the `textarea` to lose focus to include typing Tab or Enter, or clicking outside of the `textarea`
 will be considered a confirmation. The target text node's contents will be replaced with the contents of the `textarea` and the `textarea` input 
 will be removed. The Data Dictionary will be updated with the new content and a `data` message will be sent via the `MessageSystem`.
