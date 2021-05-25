@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-components_v1.21.2",
+      "version": "1.21.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix/add to data grid component explorer sample",
+            "author": "scomea@microsoft.com",
+            "commit": "05805c135def8a212652789ba3c3a8bc2927d333",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix data grid tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 May 2021 17:48:08 GMT",
       "tag": "@microsoft/fast-components_v1.21.1",
       "version": "1.21.1",

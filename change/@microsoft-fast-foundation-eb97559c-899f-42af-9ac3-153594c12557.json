@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix data grid tabbing",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
