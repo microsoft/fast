@@ -186,4 +186,66 @@ describe("DesignSystem", () => {
 
         expect(customElements.get(elementName)).to.equal(customElement);
     });
+
+    it("Should have an undefined shadow mode by default", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal(undefined);
+    });
+
+    it("Should pass through open shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode('open')
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal('open');
+    });
+
+    it("Should pass through closed shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode('closed')
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal('closed');
+    });
 });
