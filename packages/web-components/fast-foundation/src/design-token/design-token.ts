@@ -349,7 +349,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             current = childToParent.get(current);
         } while (current !== undefined);
 
-        // If there is no parent, resolve try to resolve parent and try again.
+        // If there is no parent, try to resolve parent and try again.
         if (!childToParent.has(this)) {
             const parent = this.findParentNode();
 
