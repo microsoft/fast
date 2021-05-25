@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix css custom property emission for dependent DesignToken properties",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
