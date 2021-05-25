@@ -20,7 +20,6 @@ class SingleLineControlTemplate extends ControlTemplateUtilities<
         SingleLineControlTemplateProps &
             ManagedClasses<SingleLineControlTemplateClassNameContract>
     > = {
-        softRemove: true,
         managedClasses: {},
     };
 
