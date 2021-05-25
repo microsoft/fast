@@ -820,6 +820,8 @@ export interface DesignSystem {
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
     // (undocumented)
     withPrefix(prefix: string): DesignSystem;
+    // (undocumented)
+    withShadowRootMode(mode: ShadowRootMode): DesignSystem;
 }
 
 // @alpha (undocumented)
@@ -1033,6 +1035,8 @@ export interface ElementDefinitionContext {
     definePresentation(presentation: ComponentPresentation): void;
     // (undocumented)
     readonly name: string;
+    // (undocumented)
+    readonly shadowRootMode: ShadowRootMode | undefined;
     // (undocumented)
     tagFor(type: Constructable): string;
     // (undocumented)
