@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "allow a float to be accurately represented when a step is a fraction",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
