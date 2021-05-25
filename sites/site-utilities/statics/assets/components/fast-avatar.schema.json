@@ -37,7 +37,7 @@
       "default": "circle",
       "description": "The shape attribute",
       "mapsToAttribute": "shape",
-      "type": "string"
+      "type": "DataType.string"
     },
     "SlotBadge": {
       "description": "The badge slot",
