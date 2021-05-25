@@ -14,13 +14,10 @@ import ControlPluginUtilities, {
 } from "../../templates/plugin.control.utilities";
 import { ControlType } from "../../index";
 import { dictionaryLink } from "@microsoft/fast-tooling";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 
 class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
     public static displayName: string = "ControlSwitch";
-
-    public static defaultProps: Partial<ControlSwitchProps> = {
-        softRemove: true,
-    };
 
     public render(): React.ReactNode {
         return <React.Fragment>{this.renderControl()}</React.Fragment>;
@@ -45,10 +42,58 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             );
         }
 
+        const controlType: XOR<ControlType, null> = this.getControlType();
+
+        switch (controlType) {
+            case ControlType.array:
+                return this.renderArray(
+                    control !== undefined ? control : this.props.controls.array
+                );
+            case ControlType.button:
+                return this.renderButton(
+                    control !== undefined ? control : this.props.controls.button
+                );
+            case ControlType.checkbox:
+                return this.renderCheckbox(
+                    control !== undefined ? control : this.props.controls.checkbox
+                );
+            case ControlType.display:
+                return this.renderDisplay(
+                    control !== undefined ? control : this.props.controls.display
+                );
+            case ControlType.linkedData:
+                return this.renderDataLink(
+                    control !== undefined ? control : this.props.controls.linkedData
+                );
+            case ControlType.numberField:
+                return this.renderNumberField(
+                    control !== undefined ? control : this.props.controls.numberField
+                );
+            case ControlType.section:
+            case ControlType.sectionLink:
+                return this.renderSectionLink(
+                    control !== undefined ? control : this.props.controls.sectionLink
+                );
+            case ControlType.select:
+                return this.renderSelect(
+                    control !== undefined ? control : this.props.controls.select
+                );
+            case ControlType.textarea:
+                return this.renderTextarea(
+                    control !== undefined ? control : this.props.controls.textarea
+                );
+        }
+
+        return null;
+    }
+
+    private getControlType(): XOR<ControlType, null> {
+        if (this.props.schema === false) {
+            return null;
+        }
+
         if (this.props.schema[dictionaryLink]) {
-            return this.renderDataLink(
-                control !== undefined ? control : this.props.controls.linkedData
-            );
+            return ControlType.linkedData;
         }
 
         const hasEnum: boolean = isSelect({ enum: this.props.schema.enum });
@@ -57,52 +102,30 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             isConst(this.props.schema) ||
             (hasEnum && this.props.schema.enum.length === 1)
         ) {
-            return this.renderDisplay(
-                control !== undefined ? control : this.props.controls.display
-            );
+            return ControlType.display;
         }
 
         if (hasEnum) {
-            return this.renderSelect(
-                control !== undefined ? control : this.props.controls.select
-            );
+            return ControlType.select;
         }
 
         if (this.props.schema.oneOf || this.props.schema.anyOf) {
-            return this.renderSectionLink(
-                control !== undefined ? control : this.props.controls.sectionLink
-            );
-        }
-
-        if (this.props.schema === false) {
-            return null;
+            return ControlType.sectionLink;
         }
 
         switch (this.props.schema.type) {
             case "boolean":
-                return this.renderCheckbox(
-                    control !== undefined ? control : this.props.controls.checkbox
-                );
+                return ControlType.checkbox;
             case "number":
-                return this.renderNumberField(
-                    control !== undefined ? control : this.props.controls.numberField
-                );
+                return ControlType.numberField;
             case "string":
-                return this.renderTextarea(
-                    control !== undefined ? control : this.props.controls.textarea
-                );
+                return ControlType.textarea;
             case "array":
-                return this.renderArray(
-                    control !== undefined ? control : this.props.controls.array
-                );
+                return ControlType.array;
             case "null":
-                return this.renderButton(
-                    control !== undefined ? control : this.props.controls.button
-                );
+                return ControlType.button;
             default:
-                return this.renderSectionLink(
-                    control !== undefined ? control : this.props.controls.sectionLink
-                );
+                return ControlType.sectionLink;
         }
     }
 
@@ -253,7 +276,7 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             displayValidationBrowserDefault: this.props.displayValidationBrowserDefault,
             displayValidationInline: this.props.displayValidationInline,
             onUpdateSection: this.props.onUpdateSection,
-            softRemove: this.props.softRemove,
+            softRemove: this.shouldBeSoftRemovable(type),
             component: this.props.controlComponents[type],
             controls: this.props.controls,
             controlComponents: this.props.controlComponents,
@@ -264,6 +287,19 @@ class ControlSwitch extends React.Component<ControlSwitchProps, {}> {
             messageSystemOptions: this.props.messageSystemOptions,
             categories: this.props.categories,
         };
+    }
+
+    /**
+     * Determine whether this control can be soft-removed
+     * which allows undo/redo for the last stored value
+     */
+    private shouldBeSoftRemovable(type: ControlType): boolean {
+        return ![
+            ControlType.button,
+            ControlType.checkbox,
+            ControlType.display,
+            ControlType.select,
+        ].includes(type);
     }
 }
 

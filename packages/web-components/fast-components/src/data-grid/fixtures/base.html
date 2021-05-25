@@ -1,9 +1,10 @@
 <h1>Data grid</h1>
 
 <h2>Default</h2>
-<fast-data-grid id="defaultGrid" style="max-height: 400px; overflow-y: auto;">
-    <!-- <fast-data-grid-row id="defaultGridRow"></fast-data-grid-row> -->
-</fast-data-grid>
+<fast-data-grid
+    id="defaultGrid"
+    style="max-height: 400px; overflow-y: auto;"
+></fast-data-grid>
 
 <h3 style="margin-bottom: 20px; margin-top: 20px;">Grid controls</h3>
 <fast-divider style="margin-bottom: 40px; margin-top: 20px;"></fast-divider>
@@ -69,3 +70,15 @@
 
 <h2>Header cell</h2>
 <fast-data-grid-cell id="headerCell" cell-type="columnheader"></fast-data-grid-cell>
+
+<h2>Manual grid</h2>
+<fast-data-grid id="manualGrid" grid-template-columns="1fr 1fr" generate-header="none">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">1.2</fast-data-grid-cell>
+    </fast-data-grid-row>
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">2.2</fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>

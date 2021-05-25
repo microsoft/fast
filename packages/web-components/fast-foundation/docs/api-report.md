@@ -563,6 +563,8 @@ export class DataGrid extends FASTElement {
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;

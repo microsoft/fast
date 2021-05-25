@@ -119,6 +119,7 @@ describe("StandardControlTemplate", () => {
             <StandardControlTemplate
                 {...props}
                 data={"foo"}
+                softRemove={true}
                 required={false}
                 onChange={handleChange}
                 managedClasses={managedClasses}
@@ -156,6 +157,7 @@ describe("StandardControlTemplate", () => {
             <StandardControlTemplate
                 {...props}
                 data={data}
+                softRemove={true}
                 onChange={handleChange}
                 managedClasses={managedClasses}
             />

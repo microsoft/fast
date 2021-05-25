@@ -10,8 +10,12 @@
                     "name": "generate-header",
                     "title": "Generate header",
                     "description": "Whether the grid should auto generate a header row",
-                    "type": "boolean",
-                    "default": true,
+                    "type": "string",
+                    "values": [
+                        { "name": "none" },
+                        { "name": "default" },
+                        { "name": "sticky" }
+                    ],
                     "required": false
                 },
                 {
@@ -20,11 +24,6 @@
                     "description":
                         "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
                     "type": "string",
-                    "values": [
-                        { "name": "none" },
-                        { "name": "default" },
-                        { "name": "sticky" }
-                    ],
                     "required": false
                 }
             ],
