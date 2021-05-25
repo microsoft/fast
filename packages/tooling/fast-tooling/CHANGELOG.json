@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.1",
+      "version": "0.20.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Adding markdown spec for inline edit render layer component",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "05a14422c82b149491b565c07442a05d8d905531",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.2",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 May 2021 07:17:34 GMT",
       "tag": "@microsoft/fast-tooling_v0.20.0",
       "version": "0.20.0",

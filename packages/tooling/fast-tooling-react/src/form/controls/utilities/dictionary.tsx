@@ -176,6 +176,17 @@ class Dictionary extends React.Component<
                                         this.props.displayValidationBrowserDefault
                                     }
                                     strings={this.props.strings}
+                                    type={this.props.type}
+                                    categories={this.props.categories}
+                                    untitled={this.props.untitled}
+                                    dictionaryId={this.props.dictionaryId}
+                                    dataDictionary={this.props.dataDictionary}
+                                    navigation={this.props.navigation}
+                                    navigationConfigId={this.props.navigationConfigId}
+                                    validationErrors={this.props.validationErrors}
+                                    schemaDictionary={this.props.schemaDictionary}
+                                    messageSystem={this.props.messageSystem}
+                                    messageSystemOptions={this.props.messageSystemOptions}
                                 />
                             </div>
                         </React.Fragment>
