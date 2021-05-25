@@ -320,11 +320,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     private resolveRealValue(): T {
         const rawValue = this.resolveRawValue();
 
-        if (rawValue === void 0) {
-            throw new Error(
-                `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
-            );
-        }
         if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
             if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
                 this.setupBindingObserver(rawValue);
@@ -340,7 +335,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
     }
 
-    private resolveRawValue(): DesignTokenValue<T> | undefined {
+    private resolveRawValue(): DesignTokenValue<T> {
         /* eslint-disable-next-line */
         let current: DesignTokenNode<T> | undefined = this;
 
@@ -353,6 +348,20 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
             current = childToParent.get(current);
         } while (current !== undefined);
+
+        // If there is no parent, resolve try to resolve parent and try again.
+        if (!childToParent.has(this)) {
+            const parent = this.findParentNode();
+
+            if (parent) {
+                parent.appendChild(this);
+                return this.resolveRawValue();
+            }
+        }
+
+        throw new Error(
+            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
+        );
     }
 
     private resolveCSSValue(value: T) {
@@ -493,20 +502,21 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      * The resolved value for a node.
      */
     public get value(): T {
-        try {
-            return this.resolveRealValue();
-        } catch (e) {
-            if (!childToParent.has(this)) {
-                const parent = this.findParentNode();
+        return this.resolveRealValue();
+        // try {
+        //     return this.resolveRealValue();
+        // } catch (e) {
+        //     if (!childToParent.has(this)) {
+        //         const parent = this.findParentNode();
 
-                if (parent) {
-                    parent.appendChild(this);
-                    return this.resolveRealValue();
-                }
-            }
+        //         if (parent) {
+        //             parent.appendChild(this);
+        //             return this.resolveRealValue();
+        //         }
+        //     }
 
-            throw e;
-        }
+        //     throw e;
+        // }
     }
 
     /**
