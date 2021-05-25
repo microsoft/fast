@@ -69,6 +69,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     /**
      * @internal
      */
+    public stepMultiplier: number;
+
+    /**
+     * @internal
+     */
     @observable
     public direction: Direction = Direction.ltr;
 
@@ -183,6 +188,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             this.proxy.step = `${this.step}`;
         }
 
+        this.updateStepMultiplier();
         this.validate();
     }
 
@@ -220,6 +226,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         this.proxy.setAttribute("type", "range");
 
         this.direction = getDirection(this);
+        this.updateStepMultiplier();
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
@@ -314,6 +321,18 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
                 ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
+    }
+
+    /**
+     * Update the step multiplier used to ensure rounding errors from steps that
+     * are not whole numbers
+     */
+    private updateStepMultiplier(): void {
+        const stepString: string = this.step + "";
+        const decimalPlacesOfStep: number = !!(this.step % 1)
+            ? stepString.length - stepString.indexOf(".") - 1
+            : 0;
+        this.stepMultiplier = Math.pow(10, decimalPlacesOfStep);
     }
 
     private setupTrackConstraints = (): void => {
@@ -455,16 +474,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
          * integer and then dividing it to get back to the correct number.
          */
         let constrainedValue: number = value - this.min;
-        let remainderValue: number = constrainedValue % Number(this.step);
-        const stepString: string = this.step + "";
-        const decimalPlacesOfStep: number = !!(this.step % 1)
-            ? stepString.length - stepString.indexOf(".") - 1
-            : 0;
         const roundedConstrainedValue: number = Math.round(constrainedValue / this.step);
-        const stepMultiplier: number = Math.pow(10, decimalPlacesOfStep);
-        remainderValue =
+        const remainderValue: number =
             constrainedValue -
-            (roundedConstrainedValue * (stepMultiplier * this.step)) / stepMultiplier;
+            (roundedConstrainedValue * (this.stepMultiplier * this.step)) /
+                this.stepMultiplier;
 
         constrainedValue =
             remainderValue >= Number(this.step) / 2
