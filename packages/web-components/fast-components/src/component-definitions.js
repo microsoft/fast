@@ -74,6 +74,8 @@ import fastTextAreaDefinition from "./text-area/text-area.vscode.definition.json
 export { fastTextAreaDefinition };
 import fastTextFieldDefinition from "./text-field/text-field.vscode.definition.json";
 export { fastTextFieldDefinition };
+import fastToolbarDefinition from "./toolbar/toolbar.vscode.definition.json";
+export { fastToolbarDefinition };
 import fastTooltipDefinition from "./tooltip/tooltip.vscode.definition.json";
 export { fastTooltipDefinition };
 import fastTreeItemDefinition from "./tree-item/tree-item.vscode.definition.json";

@@ -2,6 +2,165 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.1",
+      "version": "0.20.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Adding markdown spec for inline edit render layer component",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "05a14422c82b149491b565c07442a05d8d905531",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.2",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 May 2021 07:17:34 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add initial documentation for message system",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e137c09f4c12f3e3b224e95bc88a7c5e366597e",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update tooling dependencies to use the carrot syntax for later than versions",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "07eaad7ba29abd423aa00165536aee10a29bdc58",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f56542a588c8b3535c249485987fc7e76e014a56",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add checks in the HTML render component for window scroll and resize events",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "217d5b38c1024ab86911505c992d2683f94bb222",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-tooling_v0.19.2",
+      "version": "0.19.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-tooling_v0.19.1",
+      "version": "0.19.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "update the html render tests to reliably await message system messages before proceeding",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2648582e73e39b87b353d131bd84c427927641bc",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "remove webpack aliases from packages that don't exist",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "c3851cba889c2d24d7d4e9e56fb9d73423aa3039",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "ensure fast-tooling is pulling FAST assets from npm registry depdnencies",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "afb7dc1b4fae096699b5b89ae817539ea27a4817",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "pin FAST components dependency to facilitate upcoming breaking changes",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1edae31d0a1b06d52157ec2e9eeb89bda501e638",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "update dependencies to remove circular dependencies and fix component import",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "27d445fff897aa782cfffbf6df1ca3da1380c49f",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "add a script and files for running the manual testing app on a server",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "fc03cd370c2240dd50441198ea92aea4ae96a2d2",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "duplicate fixture file to fix build break",
+            "author": "chhol@microsoft.com",
+            "commit": "aa7485c44e1405966c05afe031cac86c0995daab",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.20.9",
+            "author": "khamu@microsoft.com",
+            "commit": "9614e6783c9a1db787d74028f413073dc2e098c3",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add missing dependency",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "7fadbeb59267e4dc976cd9f56ee5b61f26e4ae20",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 02 May 2021 07:18:00 GMT",
       "tag": "@microsoft/fast-tooling_v0.19.0",
       "version": "0.19.0",

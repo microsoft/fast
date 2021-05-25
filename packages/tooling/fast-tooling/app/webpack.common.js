@@ -16,20 +16,6 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
-        alias: {
-            "@microsoft/fast-components": path.resolve(
-                __dirname,
-                "../node_modules/@microsoft/fast-components"
-            ),
-            "@microsoft/fast-foundation": path.resolve(
-                __dirname,
-                "../node_modules/@microsoft/fast-foundation"
-            ),
-            "@microsoft/fast-element": path.resolve(
-                __dirname,
-                "../node_modules/@microsoft/fast-element"
-            ),
-        },
     },
     output: {
         path: outDir,

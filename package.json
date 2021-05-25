@@ -88,7 +88,7 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest" 
+      "^.+\\.js?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "!<rootDir>/node_modules/lodash-es",
@@ -112,12 +112,18 @@
     ]
   },
   "resolutions": {
-    "typescript": "^3.9.0",
     "@types/react": "*",
     "immer": "^8.0.1",
+    "is-svg": "^4.2.2",
     "jimp": "^0.16.1",
     "jpeg-js": "^0.4.3",
-    "node-notifier": "^9.0.0"
+    "js-yaml": "^3.13.1",
+    "node-notifier": "^9.0.0",
+    "trim": "^0.0.3",
+    "typescript": "^3.9.0",
+    "ua-parser-js": "^0.7.28",
+    "url-parse": "^1.5.0",
+    "xmlhttprequest-ssl": "^1.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

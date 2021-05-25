@@ -24,6 +24,7 @@ import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
+import { ElementStyles } from '@microsoft/fast-element';
 import { Flipper } from '@microsoft/fast-foundation';
 import { HorizontalScroll } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
@@ -43,6 +44,7 @@ import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
 import { TextArea } from '@microsoft/fast-foundation';
 import { TextField } from '@microsoft/fast-foundation';
+import { Toolbar } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
@@ -663,6 +665,10 @@ export class FASTTextField extends TextField {
 }
 
 // @public
+export class FASTToolbar extends Toolbar {
+}
+
+// @public
 export class FASTTooltip extends Tooltip {
 }
 
@@ -1166,6 +1172,9 @@ export type TextFieldAppearance = "filled" | "outline";
 
 // @public
 export const TextFieldStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const ToolbarStyles: ElementStyles;
 
 // @public
 export const TreeItemStyles: import("@microsoft/fast-element").ElementStyles;
