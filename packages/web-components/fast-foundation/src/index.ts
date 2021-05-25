@@ -13,11 +13,17 @@ export * from "./custom-properties/index";
 export * from "./data-grid/index";
 export * from "./design-system/index";
 export * from "./design-system-provider/index";
-export { DesignToken } from "./design-token/design-token";
+export {
+    DesignToken,
+    CSSDesignToken,
+    DesignTokenChangeRecord,
+    DesignTokenSubscriber,
+} from "./design-token/design-token";
 export {
     StaticDesignTokenValue,
     DerivedDesignTokenValue,
     DesignTokenValue,
+    DesignTokenConfiguration,
 } from "./design-token/interfaces";
 export * from "./di/index";
 export * from "./dialog/index";
@@ -47,6 +53,7 @@ export * from "./tab/index";
 export * from "./tabs/index";
 export * from "./text-area/index";
 export * from "./text-field/index";
+export * from "./toolbar/index";
 export * from "./tooltip/index";
 export * from "./tree-item/index";
 export * from "./tree-view/index";

@@ -512,6 +512,13 @@ export interface CSSCustomPropertyTarget {
     unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
 }
 
+// @alpha
+export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
+    createCSS?(): string;
+}> extends DesignToken<T>, CSSDirective {
+    readonly cssCustomProperty: string;
+}
+
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
 
@@ -555,6 +562,8 @@ export class DataGrid extends FASTElement {
     gridTemplateColumns: string;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
     // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
@@ -742,6 +751,19 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAToolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAToolbar {
+    ariaLabel: string;
+    ariaLabelledby: string;
+}
+
+// @internal
+export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
+}
+
 // @alpha
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
@@ -819,18 +841,14 @@ export interface DesignSystemRegistrationContext {
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
-export interface DesignToken<T extends {
-    createCSS?(): string;
-}> extends CSSDirective {
-    addCustomPropertyFor(element: HTMLElement & FASTElement): this;
-    readonly cssCustomProperty: string;
+export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
+    readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
-    // (undocumented)
     readonly name: string;
-    // (undocumented)
-    removeCustomPropertyFor(element: HTMLElement & FASTElement): this;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
+    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
@@ -838,6 +856,24 @@ export interface DesignToken<T extends {
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
+
+// @alpha (undocumented)
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
+    target: HTMLElement;
+    token: T;
+}
+
+// @alpha
+export interface DesignTokenConfiguration {
+    cssCustomPropertyName?: string | null;
+    name: string;
+}
+
+// @alpha (undocumented)
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
+    // (undocumented)
+    handleChange(record: DesignTokenChangeRecord<T>): void;
+}
 
 // @alpha
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
@@ -1135,6 +1171,7 @@ export class HorizontalScroll extends FASTElement {
     scrollContainer: HTMLDivElement;
     scrolled(): void;
     scrollItems: HTMLElement[];
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1213,6 +1250,8 @@ export class Listbox extends FASTElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     // (undocumented)
     get length(): number;
+    // @internal
+    mousedownHandler(e: MouseEvent): boolean | void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
@@ -1500,7 +1539,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     // @internal
     initialValue: string;
     // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => void;
+    keypressHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     readOnly: boolean;
     }
@@ -2049,6 +2088,40 @@ export enum TextFieldType {
     url = "url"
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class Toolbar extends FASTElement {
+    // @internal
+    get activeIndex(): number;
+    set activeIndex(value: number);
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    direction: Direction;
+    // @internal
+    focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    orientation: Orientation;
+    // @internal
+    slottedItems: HTMLElement[];
+    // @internal
+    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void;
+    // @internal
+    slottedLabel: HTMLElement[];
+}
+
+// @internal (undocumented)
+export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
+}
+
+// @public
+export const ToolbarTemplate: ViewTemplate<Toolbar>;
+
 // @public
 export class Tooltip extends FASTElement {
     anchor: string;
@@ -2199,7 +2272,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:56:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-web-utilities
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 4.8.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add key string constants (john.kreitlow@microsoft.com)
 
 ## [4.7.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-web-utilities@4.7.1...@microsoft/fast-web-utilities@4.7.3) (2021-02-08)
 

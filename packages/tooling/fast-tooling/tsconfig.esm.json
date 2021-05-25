@@ -4,6 +4,7 @@
         "src/**/*"
     ],
     "compilerOptions": {
+        "baseUrl": "./",
         "declaration": false,
         "outDir": "dist/esm",
         "resolveJsonModule": true,

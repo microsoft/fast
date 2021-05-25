@@ -1,0 +1,35 @@
+{
+  "name": "@microsoft/fast-router",
+  "entries": [
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-router_v0.2.3",
+      "version": "0.2.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-router_v0.2.2",
+      "version": "0.2.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.3.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "a433b6bcab871f24ccbe828b2023c256942d40af",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    }
+  ]
+}

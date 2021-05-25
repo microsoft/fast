@@ -100,6 +100,12 @@ module.exports = function (config) {
                             },
                         ],
                     },
+                    {
+                        test: /message\-system\.min\.js/,
+                        use: {
+                            loader: "worker-loader",
+                        },
+                    },
                 ],
             },
         },
@@ -137,7 +143,7 @@ module.exports = function (config) {
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
-            include: path.resolve(__dirname, './dist/')
+            include: path.resolve(__dirname, "./dist/"),
         });
         options.reporters = ["coverage-istanbul", ...options.reporters];
         options.coverageIstanbulReporter = {

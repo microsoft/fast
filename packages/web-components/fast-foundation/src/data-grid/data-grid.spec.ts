@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../test-utilities/fixture";
 import { createDataGridTemplate, DataGrid, DataGridRow } from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
@@ -82,6 +82,27 @@ describe("Data grid", () => {
         await connect();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
+
+        await disconnect();
+    });
+
+    it("should have a tabIndex of -1 when a cell is focused", async () => {
+        const { document, element, connect, disconnect } = await setup();
+
+        element.rowsData = newDataSet(2);
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        const rows: Element[] = Array.from(element.querySelectorAll('[role="row"]'));
+        expect(rows.length).to.equal(3);
+        const cells: Element[] = Array.from(rows[0].querySelectorAll(cellQueryString));
+        expect(cells.length).to.equal(6);
+
+        (cells[0] as HTMLElement).focus();
+
+        expect(element.getAttribute("tabindex")).to.equal("-1");
 
         await disconnect();
     });

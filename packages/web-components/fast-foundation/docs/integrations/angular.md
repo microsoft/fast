@@ -60,15 +60,13 @@ FASTTextField;
 This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, `<fast-button>` and `<fast-text-field>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the HTML template in your `app/app.component.html` file with the following markup:
 
 ```html
-<template>
-  <fast-design-system-provider use-defaults>
-    <fast-card>
-      <h2>{{title}}</h2>
-      <fast-text-field [(ngModel)]='exampleTextField' name='exampleTextField' ngDefaultControl placeholder="Enter Some Text"></fast-text-field>
-      <fast-button appearance="accent" (click)="onClick()">Click Me</fast-button>
-    </fast-card>
-  </fast-design-system-provider>
-</template>
+<fast-design-system-provider use-defaults>
+  <fast-card>
+    <h2>{{title}}</h2>
+    <fast-text-field [(ngModel)]='exampleTextField' name='exampleTextField' ngDefaultControl placeholder="Enter Some Text"></fast-text-field>
+    <fast-button appearance="accent" (click)="onClick()">Click Me</fast-button>
+  </fast-card>
+</fast-design-system-provider>
 ```
 
 Replace the code in your `app/app.component.ts` file contents with this:

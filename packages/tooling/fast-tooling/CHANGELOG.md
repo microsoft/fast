@@ -1,8 +1,63 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
+This log was last generated on Tue, 25 May 2021 07:27:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.20.1
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.2 (scomea@microsoft.com)
+
+## 0.20.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Minor changes
+
+- add checks in the HTML render component for window scroll and resize events (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- update tooling dependencies to use the carrot syntax for later than versions (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-components to v1.21.1 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.4.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v1.24.1 (nicholasrice@users.noreply.github.com)
+
+## 0.19.2
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.0 (john.kreitlow@microsoft.com)
+
+## 0.19.1
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- add missing dependency (nicholasrice@users.noreply.github.com)
+
+## 0.19.0
+
+Sun, 02 May 2021 07:18:00 GMT
+
+### Minor changes
+
+- adding html render web component to fast-tooling (44823142+williamw2@users.noreply.github.com)
+
+## 0.18.3
+
+Thu, 29 Apr 2021 07:19:40 GMT
+
+### Patches
+
+- fix an incorrect definition name which for default slots should be an empty string (7559015+janechu@users.noreply.github.com)
 
 ## 0.18.2
 

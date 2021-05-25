@@ -1,8 +1,55 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
+This log was last generated on Tue, 25 May 2021 07:27:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.2
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- fix data grid tabbing (scomea@microsoft.com)
+
+## 1.24.1
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- update to Design System Provider to use dom.supportsAdoptedStyleSheets (nicholasrice@users.noreply.github.com)
+
+## 1.24.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add toolbar component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v4.8.0 (john.kreitlow@microsoft.com)
+
+## 1.23.0
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Minor changes
+
+- Adds subscribe and unsubscribe methods to DesignToken (nicholasrice@users.noreply.github.com)
+- Adds feature to DesignToken to prevent emission to CSS (nicholasrice@users.noreply.github.com)
+- Addresses significant performance issues with DesignToken implmentation. This change removes several alpha APIs on DesignToken. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: update scrolling with delay loaded content (robarb@microsoft.com)
+- menu should not reset tabIndex unnecessarily (scomea@microsoft.com)
+- selected option is not visible when dropdown is opened in fast-select (john.kreitlow@microsoft.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- fix: fast-number-field does not fire input event when buttons pressed (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.3.0 (nicholasrice@users.noreply.github.com)
 
 ## 1.20.0
 

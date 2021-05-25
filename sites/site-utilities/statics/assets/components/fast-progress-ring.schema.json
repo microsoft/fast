@@ -5,7 +5,7 @@
   "title": "Progress ring",
   "description": "The FAST progress-ring element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-progress-ring",
   "properties": {
     "value": {

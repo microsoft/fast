@@ -5,7 +5,7 @@
   "title": "Radio",
   "description": "The FAST radio element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-radio",
   "properties": {
     "checked": {

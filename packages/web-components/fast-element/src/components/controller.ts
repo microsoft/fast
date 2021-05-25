@@ -2,11 +2,7 @@ import { DOM } from "../dom";
 import type { Mutable } from "../interfaces";
 import type { Behavior } from "../observation/behavior";
 import { PropertyChangeNotifier } from "../observation/notifier";
-import {
-    defaultExecutionContext,
-    Observable,
-    observable,
-} from "../observation/observable";
+import { defaultExecutionContext, Observable } from "../observation/observable";
 import type { ElementStyles, StyleTarget } from "../styles/element-styles";
 import type { ElementViewTemplate } from "../templating/template";
 import type { ElementView } from "../templating/view";
@@ -16,6 +12,7 @@ const shadowRoots = new WeakMap<HTMLElement, ShadowRoot>();
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
     composed: true,
+    cancelable: true,
 };
 
 function getShadowRoot(element: HTMLElement): ShadowRoot | null {
@@ -32,6 +29,7 @@ export class Controller extends PropertyChangeNotifier {
     private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
+    private _isConnected = false;
 
     /**
      * The element being controlled by this controller.
@@ -55,8 +53,15 @@ export class Controller extends PropertyChangeNotifier {
      * Indicates whether or not the custom element has been
      * connected to the document.
      */
-    @observable
-    public readonly isConnected: boolean = false;
+    public get isConnected(): boolean {
+        Observable.track(this, "isConnected");
+        return this._isConnected;
+    }
+
+    private setIsConnected(value: boolean) {
+        this._isConnected = value;
+        Observable.notify(this, "isConnected");
+    }
 
     /**
      * Gets/sets the template used to render the component.
@@ -210,7 +215,7 @@ export class Controller extends PropertyChangeNotifier {
             }
         }
 
-        if (this.isConnected) {
+        if (this._isConnected) {
             const element = this.element;
 
             for (let i = 0; i < behaviorsToBind.length; ++i) {
@@ -249,7 +254,7 @@ export class Controller extends PropertyChangeNotifier {
             }
         }
 
-        if (this.isConnected) {
+        if (this._isConnected) {
             const element = this.element;
 
             for (let i = 0; i < behaviorsToUnbind.length; ++i) {
@@ -262,7 +267,7 @@ export class Controller extends PropertyChangeNotifier {
      * Runs connected lifecycle behavior on the associated element.
      */
     public onConnectedCallback(): void {
-        if (this.isConnected) {
+        if (this._isConnected) {
             return;
         }
 
@@ -282,18 +287,18 @@ export class Controller extends PropertyChangeNotifier {
             }
         }
 
-        (this as Mutable<Controller>).isConnected = true;
+        this.setIsConnected(true);
     }
 
     /**
      * Runs disconnected lifecycle behavior on the associated element.
      */
     public onDisconnectedCallback(): void {
-        if (this.isConnected === false) {
+        if (!this._isConnected) {
             return;
         }
 
-        (this as Mutable<Controller>).isConnected = false;
+        this.setIsConnected(false);
 
         const view = this.view;
 
@@ -342,7 +347,7 @@ export class Controller extends PropertyChangeNotifier {
         detail?: any,
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
-        if (this.isConnected) {
+        if (this._isConnected) {
             return this.element.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
