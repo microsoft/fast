@@ -1810,6 +1810,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     readOnly: boolean;
     step: number;
     // @internal (undocumented)
+    stepMultiplier: number;
+    // @internal (undocumented)
     thumb: HTMLDivElement;
     // @internal (undocumented)
     track: HTMLDivElement;
