@@ -503,20 +503,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      */
     public get value(): T {
         return this.resolveRealValue();
-        // try {
-        //     return this.resolveRealValue();
-        // } catch (e) {
-        //     if (!childToParent.has(this)) {
-        //         const parent = this.findParentNode();
-
-        //         if (parent) {
-        //             parent.appendChild(this);
-        //             return this.resolveRealValue();
-        //         }
-        //     }
-
-        //     throw e;
-        // }
     }
 
     /**
