@@ -197,6 +197,7 @@ export class FoundationElementRegistry<
 
     public register(container: Container) {
         const definition = this.definition;
+        const overrideDefinition = this.overrideDefinition;
         const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
@@ -209,9 +210,33 @@ export class FoundationElementRegistry<
 
             x.definePresentation(presentation);
 
+            let shadowOptions = resolveOption(definition.shadowOptions, x, definition);
+
+            if (x.shadowRootMode) {
+                // If the design system has overridden the shadow root mode, we need special handling.
+
+                if (shadowOptions) {
+                    // If there are shadow options present in the definition, then
+                    // either the component itself has specified an option or the
+                    // registry function has overridden it.
+                    if (!overrideDefinition.shadowOptions) {
+                        // There were shadow options provided by the component and not overridden by
+                        // the registry.
+                        shadowOptions.mode = x.shadowRootMode;
+                    }
+                } else if (shadowOptions !== null) {
+                    // If the component author did not provide shadow options,
+                    // and did not null them out (light dom opt-in) then they
+                    // were relying on the FASTElement default. So, if the
+                    // design system provides a mode, we need to create the options
+                    // to override the default.
+                    shadowOptions = { mode: x.shadowRootMode };
+                }
+            }
+
             x.defineElement({
                 elementOptions: resolveOption(definition.elementOptions, x, definition),
-                shadowOptions: resolveOption(definition.shadowOptions, x, definition),
+                shadowOptions,
                 attributes: resolveOption(definition.attributes, x, definition),
             });
         });

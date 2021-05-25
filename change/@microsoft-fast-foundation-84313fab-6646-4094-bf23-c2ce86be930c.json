@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat(design-system): enable overriding the shadow root mode",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
