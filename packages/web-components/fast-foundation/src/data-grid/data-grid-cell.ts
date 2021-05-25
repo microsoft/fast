@@ -49,7 +49,7 @@ export class DataGridCell extends FoundationElement {
      * HTML Attribute: cell-type
      */
     @attr({ attribute: "cell-type" })
-    public cellType: DataGridCellTypes;
+    public cellType: DataGridCellTypes = DataGridCellTypes.default;
     private cellTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateCellView();
@@ -99,7 +99,6 @@ export class DataGridCell extends FoundationElement {
 
     private isActiveCell: boolean = false;
     private customCellView: HTMLView | null = null;
-    private isInternalFocused: boolean = false;
 
     /**
      * @internal
@@ -182,7 +181,6 @@ export class DataGridCell extends FoundationElement {
     public handleFocusout(e: FocusEvent): void {
         if (this !== document.activeElement && !this.contains(document.activeElement)) {
             this.isActiveCell = false;
-            this.isInternalFocused = false;
         }
     }
 
@@ -190,6 +188,7 @@ export class DataGridCell extends FoundationElement {
         if (
             e.defaultPrevented ||
             this.columnDefinition === null ||
+            this.columnDefinition === undefined ||
             (this.cellType === DataGridCellTypes.default &&
                 this.columnDefinition.cellInternalFocusQueue !== true) ||
             (this.cellType === DataGridCellTypes.columnHeader &&
@@ -201,7 +200,10 @@ export class DataGridCell extends FoundationElement {
         switch (e.key) {
             case keyEnter:
             case keyFunction2:
-                if (this.isInternalFocused || this.columnDefinition === undefined) {
+                if (
+                    this.contains(document.activeElement) &&
+                    document.activeElement !== this
+                ) {
                     return;
                 }
 
@@ -212,7 +214,6 @@ export class DataGridCell extends FoundationElement {
                                 this
                             );
                             if (focusTarget !== null) {
-                                this.isInternalFocused = true;
                                 focusTarget.focus();
                             }
                             e.preventDefault();
@@ -228,7 +229,6 @@ export class DataGridCell extends FoundationElement {
                                 this
                             );
                             if (focusTarget !== null) {
-                                this.isInternalFocused = true;
                                 focusTarget.focus();
                             }
                             e.preventDefault();
@@ -238,9 +238,11 @@ export class DataGridCell extends FoundationElement {
                 break;
 
             case keyEscape:
-                if (this.isInternalFocused) {
+                if (
+                    this.contains(document.activeElement) &&
+                    document.activeElement !== this
+                ) {
                     this.focus();
-                    this.isInternalFocused = false;
                     e.preventDefault();
                 }
                 break;
