@@ -213,4 +213,88 @@ describe("FoundationElement", () => {
             expect(customElements.get(overrideFullName)).to.equal(MyElement);
         });
     });
+
+    describe("shadow mode", () => {
+        it("should be open by default", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.instanceof(ShadowRoot);
+        });
+
+        it("can be overridden to closed by the design system", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: {
+                    mode: 'open'
+                }
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('closed')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.null;
+        });
+
+        it("can be be override to open by the design system", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: {
+                    mode: 'closed'
+                }
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('open')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.instanceof(ShadowRoot);
+        });
+
+        it("is not overridden when the component targets light DOM", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: null
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('open')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.null;
+        });
+    });
 });
