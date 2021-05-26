@@ -461,8 +461,14 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             return null;
         }
 
-        if (this.target !== document.body && this.target.parentNode) {
-            const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+        if (
+            (this.target !== document.body && this.target.parentElement) ||
+            this.target.parentNode instanceof ShadowRoot
+        ) {
+            const parent =
+                this.target.parentElement ||
+                ((this.target.parentNode as ShadowRoot).host as HTMLElement);
+            const container = DI.getOrCreateDOMContainer(parent);
 
             // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
             if (container.has(DesignTokenNode.channel(this.token), true)) {

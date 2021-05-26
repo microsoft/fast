@@ -1,6 +1,6 @@
 export { SiteBackgroundDesign } from "./background-design";
 export { SiteCardSection } from "./card-section";
-export { SiteColorSwatch } from "./color-swatch";
+export { siteColorSwatch } from "./color-swatch";
 export { SiteContentPlacement } from "./content-placement";
 export { SiteContentPlacementContainer } from "./content-placement-container";
 export { FastFrame } from "./fast-frame";

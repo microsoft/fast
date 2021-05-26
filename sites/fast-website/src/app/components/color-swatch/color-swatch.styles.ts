@@ -1,27 +1,30 @@
-import { css } from "@microsoft/fast-element";
 import {
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
+    bodyFont,
+    cornerRadius,
+    designUnit,
+    disabledOpacity,
+    neutralFillRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineHover,
+    outlineWidth,
 } from "@microsoft/fast-components";
 import { heightNumber } from "@microsoft/fast-components/dist/esm/styles/size";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import { css } from "@microsoft/fast-element";
 import {
-    display,
-    forcedColorsStylesheetBehavior,
-    focusVisible,
     disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
-import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const ColorSwatchStyles = css`
 ${display("inline-flex")} :host {
-    --input-size: calc((${heightNumber} / 2) + var(--design-unit));
+    --input-size: calc((${heightNumber} / 2) + ${designUnit});
     align-items: center;
     outline: none;
-    margin: calc(var(--design-unit) * 1px) 0;
+    margin: calc(${designUnit} * 1px) 0;
     ${
         /*
          * Chromium likes to select label text or the default slot when
@@ -38,8 +41,8 @@ ${display("inline-flex")} :host {
     width: calc(var(--input-size) * 1px);
     height: calc(var(--input-size) * 1px);
     box-sizing: border-box;
-    border-radius: calc(var(--corner-radius) * 1px);
-    border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+    border-radius: calc(${cornerRadius} * 1px);
+    border: calc(${outlineWidth} * 1px) solid ${neutralFillRest};
     outline: none;
     cursor: pointer;
 }
@@ -49,12 +52,12 @@ ${display("inline-flex")} :host {
 }
 
 .label {
-    font-family: var(--body-font);
-    color: ${neutralForegroundRestBehavior.var};
+    font-family: ${bodyFont};
+    color: ${neutralForegroundRest};
     ${
         /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-    } padding-inline-start: calc(var(--design-unit) * 2px + 2px);
-    margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+    } padding-inline-start: calc(${designUnit} * 2px + 2px);
+    margin-inline-end: calc(${designUnit} * 2px + 2px);
     cursor: pointer;
     ${
         /* Font size is temporary - replace when adaptive typography is figured out */ ""
@@ -67,21 +70,21 @@ ${display("inline-flex")} :host {
     left: -1px;
     right: -1px;
     bottom: -1px;
-    border-radius: calc(var(--corner-radius) * 1px);
+    border-radius: calc(${cornerRadius} * 1px);
     display: inline-block;
     flex-shrink: 0;
-    border: 1px solid ${neutralForegroundRestBehavior.var};
+    border: 1px solid ${neutralForegroundRest};
     opacity: 0;
     pointer-events: none;
 }
 
 .control:hover {
-    border-color: ${neutralOutlineHoverBehavior.var};
+    border-color: ${neutralOutlineHover}};
 }
 
 :host(:${focusVisible}) .control {
-    box-shadow: 0 0 0 1px ${neutralFocusBehavior.var} inset;
-    border-color: ${neutralFocusBehavior.var};
+    box-shadow: 0 0 0 1px ${neutralFocus} inset;
+    border-color: ${neutralFocus};
 }
 
 :host(.disabled) .label,
@@ -96,14 +99,9 @@ ${display("inline-flex")} :host {
 }
 
 :host(.disabled) {
-    opacity: var(--disabled-opacity);
+    opacity: ${disabledOpacity};
 }
 `.withBehaviors(
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
         .control, .control:hover, .control:active {

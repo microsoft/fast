@@ -1,3 +1,8 @@
+import {
+    cornerRadius,
+    designUnit,
+    typeRampPlus2FontSize,
+} from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
@@ -6,11 +11,11 @@ export const FeatureCardStyles = css`
         contain: layout;
         grid-template-columns: 1fr repeat(2, minmax(120px, 1fr));
         grid-template-areas: "header main main";
-        grid-column-gap: calc(var(--design-unit) * 3px);
+        grid-column-gap: calc(${designUnit} * 3px);
         color: inherit;
         box-sizing: border-box;
-        padding: calc(var(--design-unit) * 5px);
-        border-radius: calc(var(--corner-radius) * 1px);
+        padding: calc(${designUnit} * 5px);
+        border-radius: calc(${cornerRadius} * 1px);
         box-shadow: unset;
         position: relative;
     }
@@ -22,7 +27,7 @@ export const FeatureCardStyles = css`
         opacity: 0.5;
         position: absolute;
         height: 1px;
-        width: calc(100% - (var(--design-unit) * 10px));
+        width: calc(100% - (${designUnit} * 10px));
         left: 20px;
         top: 0;
     }
@@ -45,7 +50,7 @@ export const FeatureCardStyles = css`
     }
 
     ::slotted(h4) {
-        font-size: var(--type-ramp-plus-2-font-size);
+        font-size: ${typeRampPlus2FontSize};
         margin: 0;
     }
 

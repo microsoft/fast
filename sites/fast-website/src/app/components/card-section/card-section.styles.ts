@@ -1,6 +1,6 @@
+import { neutralFillHover } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { neutralFillHoverBehavior } from "@microsoft/fast-components";
 
 export const CardSectionStyles = css`
     :host {
@@ -21,7 +21,7 @@ export const CardSectionStyles = css`
     :host ::slotted(site-feature-card:focus-within) {
         cursor: pointer;
         color: currentColor;
-        background-color: ${neutralFillHoverBehavior.var};
+        background-color: ${neutralFillHover}
         filter: saturate(1);
     }
 
@@ -30,4 +30,4 @@ export const CardSectionStyles = css`
             --flow: column;
         }
     }
-`.withBehaviors(neutralFillHoverBehavior);
+`;

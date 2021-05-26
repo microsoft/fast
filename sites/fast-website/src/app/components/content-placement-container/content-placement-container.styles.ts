@@ -1,11 +1,16 @@
+import {
+    accentForegroundRest,
+    cornerRadius,
+    designUnit,
+    neutralFillFocus,
+    neutralForegroundRest,
+    typeRampBaseFontSize,
+    typeRampMinus1FontSize,
+    typeRampPlus2FontSize,
+} from "@microsoft/fast-components";
+import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
-import {
-    accentForegroundRestBehavior,
-    neutralFillFocusBehavior,
-    neutralForegroundRestBehavior,
-} from "@microsoft/fast-components";
 
 export const ContentPlacementContainerStyles = css`
     ${display("grid")}:host {
@@ -45,8 +50,8 @@ export const ContentPlacementContainerStyles = css`
     :host([section="feature"]) site-feature-card :first-child::before {
         display: block;
         content: counter(feature-counter, decimal-leading-zero);
-        font-size: var(--type-ramp-base-font-size);
-        margin-bottom: calc(var(--design-unit) * 2px);
+        font-size: ${typeRampBaseFontSize};
+        margin-bottom: calc(${designUnit} * 2px);
     }
 
     /* end */
@@ -65,8 +70,8 @@ export const ContentPlacementContainerStyles = css`
     :host site-content-placement:hover,
     :host site-content-placement:focus-within {
         --elevation: 16;
-        background: ${neutralFillFocusBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        background: ${neutralFillFocus};
+        border-radius: calc(${cornerRadius} * 1px);
         color: currentColor;
         opacity: 1;
         ${elevation}
@@ -80,29 +85,29 @@ export const ContentPlacementContainerStyles = css`
     :host([section="feature"]) site-feature-card:focus-within fast-anchor,
     :host([section="community"]) site-content-placement:hover ::part(content),
     :host([section="community"]) site-content-placement:focus-within ::part(content) {
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
     }
 
     :host([section="framework"]) site-content-placement:hover h3 .headerSubscript,
     :host([section="framework"]) site-content-placement:focus-within h3 .headerSubscript {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     fast-anchor::part(content)::before {
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
     }
 
     site-feature-card:hover fast-anchor::part(content)::before,
     site-feature-card:focus-within fast-anchor::part(content)::before,
     site-content-placement:hover fast-anchor::part(content)::before,
     site-content-placement:focus-within fast-anchor::part(content)::before {
-        background: ${accentForegroundRestBehavior.var};
+        background: ${neutralForegroundRest};
     }
 
     /* end */
 
     .headerSubscript {
-        font-size: var(--type-ramp-minus-1-font-size);
+        font-size: ${typeRampMinus1FontSize};
     }
 
     .icon {
@@ -112,8 +117,8 @@ export const ContentPlacementContainerStyles = css`
     }
 
     h3 {
-        margin: 0 0 calc(var(--design-unit) * 5px) 0;
-        font-size: var(--type-ramp-plus-2-font-size);
+        margin: 0 0 calc(${designUnit} * 5px) 0;
+        font-size: ${typeRampPlus2FontSize};
     }
 
     site-feature-card:not(:nth-of-type(4n)):hover + site-feature-card::before {
@@ -150,11 +155,7 @@ export const ContentPlacementContainerStyles = css`
         }
 
         :host([section="feature"]) site-feature-card :first-child::before {
-            color: ${accentForegroundRestBehavior.var};
+            color: ${accentForegroundRest};
         }
     }
-`.withBehaviors(
-    accentForegroundRestBehavior,
-    neutralFillFocusBehavior,
-    neutralForegroundRestBehavior
-);
+`;

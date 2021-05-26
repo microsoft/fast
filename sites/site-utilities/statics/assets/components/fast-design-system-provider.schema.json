@@ -416,28 +416,6 @@
       "mapsToAttribute": "neutral-outline-focus-delta",
       "type": "number"
     },
-    "neutral-contrast-fill-rest-delta": {
-      "title": "Neutral contrast fill delta (rest)",
-      "mapsToAttribute": "neutral-contrast-fill-rest-delta",
-      "type": "number"
-    },
-    "neutral-contrast-fill-hover-delta": {
-      "default": -3,
-      "title": "Neutral contrast fill delta (hover)",
-      "mapsToAttribute": "neutral-contrast-fill-hover-delta",
-      "type": "number"
-    },
-    "neutral-contrast-fill-active-delta": {
-      "default": 7,
-      "title": "Neutral contrast fill delta (active)",
-      "mapsToAttribute": "neutral-contrast-fill-active-delta",
-      "type": "number"
-    },
-    "neutral-contrast-fill-focus-delta": {
-      "title": "Neutral contrast fill delta (focus)",
-      "mapsToAttribute": "neutral-contrast-fill-focus-delta",
-      "type": "number"
-    },
     "Slot": {
       "title": "Default slot",
       "mapsToSlot": "",

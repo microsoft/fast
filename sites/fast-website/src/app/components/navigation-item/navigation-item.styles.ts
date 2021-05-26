@@ -1,4 +1,4 @@
-import { neutralForegroundRestBehavior } from "@microsoft/fast-components";
+import { neutralForegroundRest } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
@@ -16,7 +16,7 @@ export const NavigationItemStyles = css`
 
     fast-anchor:focus-within,
     fast-anchor:hover {
-        color: var(--neutral-foreground-rest);
+        color: ${neutralForegroundRest};
     }
 
     fast-anchor:not(:focus):hover::part(content)::before {
@@ -26,4 +26,4 @@ export const NavigationItemStyles = css`
     fast-anchor:focus::part(content)::before {
         background-color: currentColor;
     }
-`.withBehaviors(neutralForegroundRestBehavior);
+`;
