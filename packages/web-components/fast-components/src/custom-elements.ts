@@ -12,6 +12,7 @@ export { fastCard } from "./card/index";
 export { fastCheckbox } from "./checkbox/index";
 export { fastCombobox } from "./combobox/index";
 export { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
+export { fastDesignSystemProvider } from "./design-system-provider";
 export { fastDialog } from "./dialog/index";
 export { fastDisclosure } from "./disclosure/index";
 export { fastDivider } from "./divider/index";

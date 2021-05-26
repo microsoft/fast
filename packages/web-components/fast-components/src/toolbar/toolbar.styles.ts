@@ -6,7 +6,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { fillColor, neutralOutlineFocus } from "../design-tokens";
-import { neutralFillCardRestBehavior } from "../styles/recipes";
 
 /**
  * Styles for the {@link (FASTToolbar:class)|FASTToolbar component}.
@@ -65,7 +64,6 @@ export const ToolbarStyles: (context, definition) => ElementStyles = (
             height: 16px;
         }
     `.withBehaviors(
-        neutralFillCardRestBehavior,
         forcedColorsStylesheetBehavior(
             css`
             :host(:${focusVisible}) {

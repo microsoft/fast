@@ -505,34 +505,6 @@
                     "type": "number",
                     "default": 25,
                     "required": false
-                },
-                {
-                    "name": "neutral-contrast-fill-rest-delta",
-                    "title": "Neutral contrast fill delta (rest)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
-                },
-                {
-                    "name": "neutral-contrast-fill-hover-delta",
-                    "title": "Neutral contrast fill delta (hover)",
-                    "type": "number",
-                    "default": -3,
-                    "required": false
-                },
-                {
-                    "name": "neutral-contrast-fill-active-delta",
-                    "title": "Neutral contrast fill delta (active)",
-                    "type": "number",
-                    "default": 7,
-                    "required": false
-                },
-                {
-                    "name": "neutral-contrast-fill-focus-delta",
-                    "title": "Neutral contrast fill delta (focus)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
                 }
             ],
             "slots": [
