@@ -1137,6 +1137,13 @@ class DesignSystemProvider extends FoundationElement {
     public neutralOutlineFocusDelta: number;
 }
 
+/**
+ * The FAST Design System Provider Element.
+ *
+ * @public
+ * @remarks
+ * HTML Element: \<fast-design-system-provider\>
+ */
 export const fastDesignSystemProvider = DesignSystemProvider.compose({
     baseName: "design-system-provider",
     template: html`
