@@ -19,6 +19,7 @@ export * from "./design-tokens";
 export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
 export { Palette, PaletteRGB } from "./color-vNext/palette";
 export { Swatch, SwatchRGB } from "./color-vNext/swatch";
+export { StandardLuminance } from "./color";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";

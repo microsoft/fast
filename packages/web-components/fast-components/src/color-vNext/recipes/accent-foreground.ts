@@ -1,5 +1,5 @@
 import { PaletteRGB } from "../palette";
-import { Swatch } from "../swatch";
+import type { Swatch, SwatchRGB } from "../swatch";
 import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
@@ -13,7 +13,7 @@ export function accentForeground(
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number
-) {
+): Record<"rest" | "hover" | "active" | "focus", SwatchRGB> {
     const accent = palette.source;
     const accentIndex = palette.closestIndexOf(accent);
     const direction = directionByIsDark(reference);

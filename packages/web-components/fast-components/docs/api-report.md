@@ -1159,6 +1159,14 @@ export const sliderLabelStyles: (context: any, definition: any) => import("@micr
 export const sliderStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export enum StandardLuminance {
+    // (undocumented)
+    DarkMode = 0.23,
+    // (undocumented)
+    LightMode = 1
+}
+
+// @public
 export interface Swatch extends RelativeLuminance {
     // (undocumented)
     contrast(target: RelativeLuminance): number;
