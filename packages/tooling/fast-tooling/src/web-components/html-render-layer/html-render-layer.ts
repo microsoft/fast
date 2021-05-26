@@ -11,6 +11,21 @@ export enum ActivityType {
     blur = "blur",
     click = "click",
     clear = "clear",
+    doubleClick = "dblclick",
+}
+
+export class OverylayPosition {
+    public top: number;
+    public left: number;
+    public width: number;
+    public height: number;
+
+    constructor(top: number, left: number, width: number, height: number) {
+        this.top = top;
+        this.left = left;
+        this.width = width;
+        this.height = height;
+    }
 }
 
 export abstract class HTMLRenderLayer extends FASTElement {
