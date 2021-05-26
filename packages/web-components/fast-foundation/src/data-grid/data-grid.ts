@@ -135,7 +135,21 @@ export class DataGrid extends FoundationElement {
      */
     @attr({ attribute: "no-tabbing", mode: "boolean" })
     public noTabbing: boolean = false;
-    private noTabbingChangedChanged(): void {}
+    private noTabbingChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.noTabbing) {
+                this.setAttribute("tabIndex", "-1");
+            } else {
+                this.setAttribute(
+                    "tabIndex",
+                    this.contains(document.activeElement) ||
+                        this === document.activeElement
+                        ? "-1"
+                        : "0"
+                );
+            }
+        }
+    }
 
     /**
      *  Whether the grid should automatically generate a header row and its type

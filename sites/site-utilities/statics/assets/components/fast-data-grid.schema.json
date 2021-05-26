@@ -25,6 +25,12 @@
       "mapsToAttribute": "grid-template-columns",
       "type": "string"
     },
+    "no-tabbing": {
+      "title": "Disable tabbing",
+      "description": "When true the component will not add itself or its children to the tab queue",
+      "mapsToAttribute": "no-tabbing",
+      "type": "boolean"
+    },
     "Slot": {
       "title": "Default slot",
       "description": "The content as data grid rows",
