@@ -5,7 +5,7 @@ import {
 } from "../message-system";
 import { DataDictionary } from "../message-system";
 import { LinkedData, Parent } from "../";
-import { mapVSCodeParsedHTMLToDataDictionary } from "../data-utilities/mapping.vscode-html-languageservice";
+import { mapVSCodeHTMLAndDataDictionaryToDataDictionary } from "../data-utilities/mapping.vscode-html-languageservice";
 import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
 import {
     MessageSystemService,
@@ -195,10 +195,12 @@ export class MonacoAdapter extends MessageSystemService<
             .map((lineValue: string) => {
                 return lineValue.replace(/^\s*/g, "");
             });
-        const dataDictionary = mapVSCodeParsedHTMLToDataDictionary({
-            value: this.monacoModelValue,
-            schemaDictionary: this.schemaDictionary,
-        });
+        const dataDictionary = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            this.monacoModelValue.join("").replace(/\n/g, ""),
+            "text",
+            this.dataDictionary,
+            this.schemaDictionary
+        );
 
         this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(dataDictionary);
 

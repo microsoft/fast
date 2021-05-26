@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling",
   "description": "A set of utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "0.19.0",
+  "version": "0.21.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -19,6 +19,7 @@
   "types": "dist/dts/index.d.ts",
   "scripts": {
     "build": "yarn build:esm && yarn build:cjs && yarn build:message-system",
+    "build:app": "yarn build:message-system && webpack --progress --mode=production",
     "build:esm": "tsc -p ./tsconfig.esm.json",
     "build:cjs": "tsc -p ./tsconfig.cjs.json",
     "build:message-system": "webpack --config webpack.message-system.config.js",
@@ -48,19 +49,23 @@
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
-    "@types/mocha": "^7.0.2",
     "@types/lodash-es": "^4.17.4",
+    "@types/mocha": "^7.0.2",
     "@types/node": "^9.6.7",
     "ajv": "^6.10.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.0",
     "css-loader": "^4.2.0",
     "eslint-config-prettier": "^6.10.1",
+    "express": "4.17.1",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
     "karma": "^5.0.4",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^2.0.2",
@@ -72,8 +77,6 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
-    "jsdom": "^16.2.2",
-    "jsdom-global": "3.0.2",
     "mdn-data": "^2.0.11",
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^7.1.2",
@@ -94,10 +97,10 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "latest",
-    "@microsoft/fast-foundation": "latest",
-    "@microsoft/fast-element": "latest",
-    "@microsoft/fast-web-utilities": "^4.7.3",
+    "@microsoft/fast-components": "^1.21.3",
+    "@microsoft/fast-element": "^1.4.0",
+    "@microsoft/fast-foundation": "^1.24.3",
+    "@microsoft/fast-web-utilities": "^4.8.0",
     "vscode-html-languageservice": "^3.1.3"
   }
 }

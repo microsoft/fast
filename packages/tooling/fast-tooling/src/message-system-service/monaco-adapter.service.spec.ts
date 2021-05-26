@@ -275,6 +275,7 @@ xdescribe("MonacoAdapter", () => {
                 id: "div",
                 $id: "div",
                 type: "object",
+                properties: {},
                 mapsToTagName: "div",
             },
         };

@@ -130,6 +130,8 @@ Cards are a popular UI pattern but pose an interesting problem because they ofte
 To address this, the [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) exposes a [customPropertyManager](/docs/api/fast-foundation.designsystemprovider.custompropertymanager) property that can be assigned a [ConstructableStylesCustomPropertyManager](/docs/api/fast-foundation.constructablestylescustompropertymanager). This manager instance can be shared between like-provider instances, avoiding duplicate registration and evaluation of CSS custom properties.
 
 ```ts
+import { DOM } from "@microsoft/fast-element";
+
 // my-card.ts
 @designSystemProvider({
     name: "my-card",
@@ -146,7 +148,7 @@ export class MyCard extends FASTDesignSystemProvider {
         super();
 
         // If constructable stylesheets are supported
-        if ("adoptedStyleSheets" in window.ShadowRoot.prototype) {
+        if (DOM.supportsAdoptedStyleSheets) {
             /**
              * Simple memoization function based on parent provider and current background color. In non-memoized cases,
              * will return:

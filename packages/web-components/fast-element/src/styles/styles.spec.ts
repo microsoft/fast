@@ -7,7 +7,9 @@ import {
 } from "./element-styles";
 import { DOM } from "../dom";
 import { CSSDirective } from "./css-directive";
-import { css } from "./css";
+import { css, cssPartial } from "./css";
+import type { Behavior } from "../observation/behavior";
+import { defaultExecutionContext } from "../observation/observable";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStyles", () => {
@@ -243,5 +245,65 @@ describe("css", () => {
 
             expect(styles.behaviors?.includes(behavior)).to.equal(true)
         });
+    })
+});
+
+describe("cssPartial", () => {
+    it("should have a createCSS method that is the CSS string interpolated with the createCSS product of any CSSDirectives", () => {
+        class myDirective extends CSSDirective {
+            createCSS() { return "red" };
+            createBehavior() { return undefined; }
+        }
+        
+        const partial = cssPartial`color: ${new myDirective}`;
+        expect (partial.createCSS()).to.equal("color: red");
+    });
+
+    it("Should add behaviors from interpolated CSS directives when bound to an element", () => {
+        const behavior = {
+            bind() {},
+            unbind() {},
+        }
+
+        const behavior2 = {...behavior};
+
+        class directive extends CSSDirective {
+            createCSS() { return "" };
+            createBehavior() { return behavior; }
+        }
+        class directive2 extends CSSDirective {
+            createCSS() { return "" };
+            createBehavior() { return behavior2; }
+        }
+
+        const partial = cssPartial`${new directive}${new directive2}`;
+        const el = {
+            $fastController: {
+                addBehaviors(behaviors: Behavior[]) {
+                    expect(behaviors[0]).to.equal(behavior);
+                    expect(behaviors[1]).to.equal(behavior2);
+                }
+            }
+        }
+
+        partial.createBehavior()?.bind(el, defaultExecutionContext)
+    });
+
+    it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
+        const styles = css`:host {color: blue; }`;
+        const partial = cssPartial`${styles}`;
+        let called = false;
+        const el = {
+            $fastController: {
+                addStyles(style: ElementStyles) {
+                    expect(style.styles.includes(styles)).to.be.true;
+                    called = true;
+                }
+            }
+        }
+
+        partial.createBehavior()?.bind(el, defaultExecutionContext)
+
+        expect(called).to.be.true;
     })
 })

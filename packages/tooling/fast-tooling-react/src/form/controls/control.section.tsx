@@ -148,7 +148,8 @@ class SectionControl extends React.Component<
             case MessageSystemType.custom:
                 if (
                     e.data.action === SchemaSetValidationAction.response &&
-                    e.data.id === this.oneOfAnyOfValidationRequestId
+                    e.data.id === this.oneOfAnyOfValidationRequestId &&
+                    this.state.oneOfAnyOf !== null
                 ) {
                     this.setState({
                         oneOfAnyOf: {
@@ -184,7 +185,8 @@ class SectionControl extends React.Component<
         required: boolean,
         disabled: boolean,
         label: string,
-        invalidMessage: string | null
+        invalidMessage: string | null,
+        index: number
     ): React.ReactNode => {
         // if this is a root level object use it to generate the form and do not generate a link
         if (
@@ -227,11 +229,14 @@ class SectionControl extends React.Component<
                 messageSystem={this.props.messageSystem}
                 strings={this.props.strings}
                 messageSystemOptions={this.props.messageSystemOptions}
+                type={this.props.type}
+                categories={this.props.categories}
+                index={index}
             />
         );
     };
 
-    private getFormControl(item: string): React.ReactNode {
+    private getFormControl(item: string, index: number): React.ReactNode {
         const splitDataLocation: string[] = this.props.navigation[
             item
         ].relativeDataLocation.split(".");
@@ -254,7 +259,8 @@ class SectionControl extends React.Component<
             getErrorFromDataLocation(
                 this.props.navigation[item].relativeDataLocation,
                 this.props.validationErrors
-            )
+            ),
+            index
         );
     }
 
@@ -319,18 +325,23 @@ class SectionControl extends React.Component<
                                         .sectionControl_categoryContentRegion
                                 }
                             >
-                                {category.dataLocations.map((dataLocation: string) => {
-                                    if (
-                                        navigationItem.items.findIndex(
-                                            item => item === dataLocation
-                                        ) !== -1
-                                    ) {
-                                        categorizedControls.push(dataLocation);
-                                        return this.getFormControl(dataLocation);
-                                    }
+                                {category.dataLocations.map(
+                                    (dataLocation: string, index: number) => {
+                                        if (
+                                            navigationItem.items.findIndex(
+                                                item => item === dataLocation
+                                            ) !== -1
+                                        ) {
+                                            categorizedControls.push(dataLocation);
+                                            return this.getFormControl(
+                                                dataLocation,
+                                                index
+                                            );
+                                        }
 
-                                    return null;
-                                })}
+                                        return null;
+                                    }
+                                )}
                             </div>
                         </fieldset>
                     );
@@ -350,16 +361,16 @@ class SectionControl extends React.Component<
 
                         return accumulation;
                     }, [])
-                    .map(uncategorizedControl => {
-                        return this.getFormControl(uncategorizedControl);
+                    .map((uncategorizedControl: string, index: number) => {
+                        return this.getFormControl(uncategorizedControl, index);
                     }),
                 ...formControls,
             ];
         }
 
         return navigationItem.items.map(
-            (item: string): React.ReactNode => {
-                return this.getFormControl(item);
+            (item: string, index: number): React.ReactNode => {
+                return this.getFormControl(item, index);
             }
         );
     }
@@ -487,7 +498,8 @@ class SectionControl extends React.Component<
                         true,
                         this.props.disabled || this.state.schema.disabled,
                         "",
-                        invalidMessage
+                        invalidMessage,
+                        0
                     )}
                     {this.renderAdditionalProperties()}
                 </div>

@@ -1,8 +1,50 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
+This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.11
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- remove the soft remove from default controls that store a limited set of values (7559015+janechu@users.noreply.github.com)
+- fix missing error stylings for array and checkbox, removed the required from checkbox as the required attr is not the same as the json schema required (7559015+janechu@users.noreply.github.com)
+
+## 2.8.10
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.20.1 (scomea@microsoft.com)
+
+## 2.8.9
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- ensure oneOf and anyOf state in the Form component is not null before updating it after receiving a custom message (44823142+williamw2@users.noreply.github.com)
+- update tooling dependencies to use the carrot syntax for later than versions (7559015+janechu@users.noreply.github.com)
+
+## 2.8.8
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.19.2 (john.kreitlow@microsoft.com)
+
+## 2.8.7
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- fixes an issue where submitting a new linked data item would occur without keyboard input (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.6
 
