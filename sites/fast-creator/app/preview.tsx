@@ -283,7 +283,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
                 message.data.options &&
-                    message.data.options.originatorId === "fast-tooling::html-renderer"
+                message.data.options.originatorId === "fast-tooling::html-renderer"
             ) {
                 window.postMessage(
                     {
