@@ -10,12 +10,18 @@ export interface Swatch extends RelativeLuminance {
     contrast(target: RelativeLuminance): number;
 }
 
+/**
+ * @public
+ */
 export interface SwatchRGB extends Swatch {
     r: number;
     g: number;
     b: number;
 }
 
+/**
+ * @public
+ */
 export const SwatchRGB = Object.freeze({
     create(r: number, g: number, b: number): SwatchRGB {
         return new SwatchRGBImpl(r, g, b);

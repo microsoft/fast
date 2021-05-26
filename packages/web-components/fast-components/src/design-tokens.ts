@@ -26,199 +26,268 @@ import { StandardLuminance } from "./color";
 
 const { create } = DesignToken;
 
+/** @public */
 export const accentFillRestDelta = create<number>("accent-fill-rest-delta").withDefault(
     0
 );
+/** @public */
 export const accentFillHoverDelta = create<number>("accent-fill-hover-delta").withDefault(
     4
 );
+/** @public */
 export const accentFillActiveDelta = create<number>(
     "accent-fill-active-delta"
 ).withDefault(-5);
+/** @public */
 export const accentFillFocusDelta = create<number>("accent-fill-focus-delta").withDefault(
     0
 );
+/** @public */
 export const accentFillSelectedDelta = create<number>(
     "accent-fill-selected-delta"
 ).withDefault(12);
 
+/** @public */
 export const accentForegroundRestDelta = create<number>(
     "accent-foreground-rest-delta"
 ).withDefault(0);
+/** @public */
 export const accentForegroundHoverDelta = create<number>(
     "accent-foreground-hover-delta"
 ).withDefault(6);
+/** @public */
 export const accentForegroundActiveDelta = create<number>(
     "accent-foreground-active-delta"
 ).withDefault(-4);
+/** @public */
 export const accentForegroundFocusDelta = create<number>(
     "accent-foreground-focus-delta"
 ).withDefault(0);
 
+/** @public */
 export const bodyFont = create<string>("body-font").withDefault("Segoe UI, sans-serif");
+/** @public */
 export const baseHeightMultiplier = create<number>("base-height-multiplier").withDefault(
     10
 );
+/** @public */
 export const baseHorizontalSpacingMultiplier = create<number>(
     "base-horizontal-spacing-multiplier"
 ).withDefault(3);
+/** @public */
 export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(
     StandardLuminance.DarkMode
 );
+/** @public */
 export const cornerRadius = create<number>("corner-radius").withDefault(3);
+/** @public */
 export const density = create<number>("density").withDefault(0);
+/** @public */
 export const designUnit = create<number>("design-unit").withDefault(4);
+/** @public */
 export const direction = create<Direction>("direction").withDefault(Direction.ltr);
+/** @public */
 export const disabledOpacity = create<number>("disabled-opacity").withDefault(0.3);
+/** @public */
 export const focusOutlineWidth = create<number>("focus-outline-width").withDefault(2);
 
+/** @public */
 export const neutralDividerRestDelta = create<number>(
     "neutral-divider-rest-delta"
 ).withDefault(8);
 
+/** @public */
 export const neutralFillActiveDelta = create<number>(
     "neutral-fill-active-delta"
 ).withDefault(5);
+/** @public */
 export const neutralFillCardDelta = create<number>("neutral-fill-card-delta").withDefault(
     3
 );
+/** @public */
 export const neutralFillFocusDelta = create<number>(
     "neutral-fill-focus-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillHoverDelta = create<number>(
     "neutral-fill-hover-delta"
 ).withDefault(10);
+/** @public */
 export const neutralFillInputActiveDelta = create<number>(
     "neutral-fill-input-active-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillInputFocusDelta = create<number>(
     "neutral-fill-input-focus-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillInputHoverDelta = create<number>(
     "neutral-fill-input-hover-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillInputRestDelta = create<number>(
     "neutral-fill-input-rest-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillInputSelectedDelta = create<number>(
     "neutral-fill-input-selected-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillRestDelta = create<number>("neutral-fill-rest-delta").withDefault(
     7
 );
+/** @public */
 export const neutralFillSelectedDelta = create<number>(
     "neutral-fill-selected-delta"
 ).withDefault(7);
+/** @public */
 export const neutralFillStealthActiveDelta = create<number>(
     "neutral-fill-stealth-active-delta"
 ).withDefault(3);
+/** @public */
 export const neutralFillStealthFocusDelta = create<number>(
     "neutral-fill-stealth-focus-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillStealthHoverDelta = create<number>(
     "neutral-fill-stealth-hover-delta"
 ).withDefault(5);
+/** @public */
 export const neutralFillStealthRestDelta = create<number>(
     "neutral-fill-stealth-rest-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillStealthSelectedDelta = create<number>(
     "neutral-fill-stealth-selected-delta"
 ).withDefault(7);
+/** @public */
 export const neutralFillToggleRestDelta = create<number>(
     "neutral-fill-toggle-rest-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillToggleActiveDelta = create<number>(
     "neutral-fill-toggle-active-delta"
 ).withDefault(-5);
+/** @public */
 export const neutralFillToggleFocusDelta = create<number>(
     "neutral-fill-toggle-focus-delta"
 ).withDefault(0);
+/** @public */
 export const neutralFillToggleHoverDelta = create<number>(
     "neutral-fill-toggle-hover-delta"
 ).withDefault(8);
+/** @public */
 export const neutralForegroundActiveDelta = create<number>(
     "neutral-foreground-active-delta"
 ).withDefault(0);
+/** @public */
 export const neutralForegroundFocusDelta = create<number>(
     "neutral-foreground-focus-delta"
 ).withDefault(0);
+/** @public */
 export const neutralForegroundHoverDelta = create<number>(
     "neutral-foreground-hover-delta"
 ).withDefault(0);
+/** @public */
 export const neutralOutlineActiveDelta = create<number>(
     "neutral-outline-active-delta"
 ).withDefault(16);
+/** @public */
 export const neutralOutlineFocusDelta = create<number>(
     "neutral-outline-focus-delta"
 ).withDefault(25);
+/** @public */
 export const neutralOutlineHoverDelta = create<number>(
     "neutral-outline-hover-delta"
 ).withDefault(40);
+/** @public */
 export const neutralOutlineRestDelta = create<number>(
     "neutral-outline-rest-delta"
 ).withDefault(25);
+/** @public */
 export const outlineWidth = create<number>("outline-width").withDefault(1);
+/** @public */
 export const typeRampBaseFontSize = create<string>(
     "type-ramp-base-font-size"
 ).withDefault("14px");
+/** @public */
 export const typeRampBaseLineHeight = create<string>(
     "type-ramp-base-line-height"
 ).withDefault("20px");
+/** @public */
 export const typeRampMinus1FontSize = create<string>(
     "type-ramp-minus1-font-size"
 ).withDefault("12px");
+/** @public */
 export const typeRampMinus1LineHeight = create<string>(
     "type-ramp-minus1-line-height"
 ).withDefault("16px");
+/** @public */
 export const typeRampMinus2FontSize = create<string>(
     "type-ramp-minus2-font-size"
 ).withDefault("10px");
+/** @public */
 export const typeRampMinus2LineHeight = create<string>(
     "type-ramp-minus2-line-height"
 ).withDefault("16px");
+/** @public */
 export const typeRampPlus1FontSize = create<string>(
     "type-ramp-plus1-font-size"
 ).withDefault("16px");
+/** @public */
 export const typeRampPlus1LineHeight = create<string>(
     "type-ramp-plus1-line-height"
 ).withDefault("24px");
+/** @public */
 export const typeRampPlus2FontSize = create<string>(
     "type-ramp-plus2-font-size"
 ).withDefault("20px");
+/** @public */
 export const typeRampPlus2LineHeight = create<string>(
     "type-ramp-plus2-line-height"
 ).withDefault("28px");
+/** @public */
 export const typeRampPlus3FontSize = create<string>(
     "type-ramp-plus3-font-size"
 ).withDefault("28px");
+/** @public */
 export const typeRampPlus3LineHeight = create<string>(
     "type-ramp-plus3-line-height"
 ).withDefault("36px");
+/** @public */
 export const typeRampPlus4FontSize = create<string>(
     "type-ramp-plus4-font-size"
 ).withDefault("34px");
+/** @public */
 export const typeRampPlus4LineHeight = create<string>(
     "type-ramp-plus4-line-height"
 ).withDefault("44px");
+/** @public */
 export const typeRampPlus5FontSize = create<string>(
     "type-ramp-plus5-font-size"
 ).withDefault("46px");
+/** @public */
 export const typeRampPlus5LineHeight = create<string>(
     "type-ramp-plus5-line-height"
 ).withDefault("56px");
+/** @public */
 export const typeRampPlus6FontSize = create<string>(
     "type-ramp-plus6-font-size"
 ).withDefault("60px");
+/** @public */
 export const typeRampPlus6LineHeight = create<string>(
     "type-ramp-plus6-line-height"
 ).withDefault("72px");
 
+/** @public */
 export const neutralPalette = create<PaletteRGB>("neutral-palette").withDefault(
     PaletteRGB.create(middleGrey)
 );
+/** @public */
 export const accentPalette = create<PaletteRGB>("accent-palette").withDefault(
     PaletteRGB.create(accentBase)
 );
+/** @public */
 export const fillColor = create<SwatchRGB>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);
     return palette.get(palette.swatches.length - 5);
@@ -232,6 +301,7 @@ enum ContrastTarget {
 // Accent Foreground Cut
 const accentForegroundCutByContrast = (contrast: number) => (element: HTMLElement) =>
     accentForegroundCutAlgorithm(accentPalette.getValueFor(element).source, contrast);
+/** @public */
 export const AccentForegroundCut = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
 >("accent-foreground-cut", builder =>
@@ -239,6 +309,7 @@ export const AccentForegroundCut = DI.createInterface<
         accentForegroundCutByContrast(ContrastTarget.normal)(element)
     )
 );
+/** @public */
 export const AccentForegroundCutLarge = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
 >("accent-foreground-cut-large", builder =>
@@ -247,11 +318,13 @@ export const AccentForegroundCutLarge = DI.createInterface<
     )
 );
 
+/** @public */
 export const accentForegroundCut = create<SwatchRGB>("accent-foreground-cut").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentForegroundCut)(element);
     }
 );
+/** @public */
 export const accentForegroundCutLarge = create<SwatchRGB>(
     "accent-foreground-cut-large"
 ).withDefault((element: HTMLElement) => {
@@ -278,32 +351,38 @@ const accentFillByContrast = (contrast: number) => (
         neutralFillActiveDelta.getValueFor(element)
     );
 };
+/** @public */
 export const AccentFill = DI.createInterface<
     (element: HTMLElement, fill?: SwatchRGB) => ReturnType<typeof accentFillAlgorithm>
 >("accent-fill", builder =>
     builder.instance(accentFillByContrast(ContrastTarget.normal))
 );
 
+/** @public */
 export const accentFillRest = create<SwatchRGB>("accent-fill-rest").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).rest;
     }
 );
+/** @public */
 export const accentFillHover = create<SwatchRGB>("accent-fill-hover").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).hover;
     }
 );
+/** @public */
 export const accentFillActive = create<SwatchRGB>("accent-fill-active").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).active;
     }
 );
+/** @public */
 export const accentFillFocus = create<SwatchRGB>("accent-fill-focus").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).focus;
     }
 );
+/** @public */
 export const accentFillSelected = create<SwatchRGB>("accent-fill-selected").withDefault(
     (element: HTMLElement) => {
         return DI.getOrCreateDOMContainer(element).get(AccentFill)(element).selected;
@@ -325,12 +404,14 @@ const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) 
 /**
  * Accent Foreground
  */
+/** @public */
 export const AccentForeground = DI.createInterface<
     (element: HTMLElement) => ReturnType<typeof accentForegroundAlgorithm>
 >("accent-foreground", builder =>
     builder.instance(accentForegroundByContrast(ContrastTarget.normal))
 );
 
+/** @public */
 export const accentForegroundRest = create<SwatchRGB>(
     "accent-foreground-rest"
 ).withDefault(
@@ -338,18 +419,21 @@ export const accentForegroundRest = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).rest
 );
 
+/** @public */
 export const accentForegroundHover = create<SwatchRGB>(
     "accent-foreground-hover"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).hover
 );
+/** @public */
 export const accentForegroundActive = create<SwatchRGB>(
     "accent-foreground-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(AccentForeground)(element).active
 );
+/** @public */
 export const accentForegroundFocus = create<SwatchRGB>(
     "accent-foreground-focus"
 ).withDefault(
@@ -358,6 +442,7 @@ export const accentForegroundFocus = create<SwatchRGB>(
 );
 
 // Neutral Divider
+/** @public */
 export const NeutralDivider = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-divider",
     builder =>
@@ -369,11 +454,13 @@ export const NeutralDivider = DI.createInterface<(element: HTMLElement) => Swatc
             )
         )
 );
+/** @public */
 export const neutralDivider = create<SwatchRGB>("neutral-divider").withDefault(element =>
     DI.getOrCreateDOMContainer(element).get(NeutralDivider)(element)
 );
 
 // Neutral Fill Card
+/** @public */
 export const NeutralFillCard = DI.createInterface<
     (element: HTMLElement, fill?: SwatchRGB) => SwatchRGB
 >("neutral-fill-card", builder =>
@@ -385,6 +472,7 @@ export const NeutralFillCard = DI.createInterface<
         )
     )
 );
+/** @public */
 export const neutralFillCard = create<SwatchRGB>(
     "neutral-fill-card"
 ).withDefault((element: HTMLElement) =>
@@ -392,6 +480,7 @@ export const neutralFillCard = create<SwatchRGB>(
 );
 
 // Neutral Fill Input
+/** @public */
 export const NeutralFillInput = DI.createInterface<
     (
         element: HTMLElement,
@@ -411,12 +500,14 @@ export const NeutralFillInput = DI.createInterface<
     })
 );
 
+/** @public */
 export const neutralFillInputRest = create<SwatchRGB>(
     "neutral-fill-input-rest"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).rest
 );
+/** @public */
 export const neutralFillInputHover = create<SwatchRGB>(
     "neutral-fill-input-hover"
 ).withDefault(
@@ -424,18 +515,21 @@ export const neutralFillInputHover = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).hover
 );
 
+/** @public */
 export const neutralFillInputFocus = create<SwatchRGB>(
     "neutral-fill-input-focus"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).focus
 );
+/** @public */
 export const neutralFillInputActive = create<SwatchRGB>(
     "neutral-fill-input-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillInput)(element).active
 );
+/** @public */
 export const neutralFillInputSelected = create<SwatchRGB>(
     "neutral-fill-input-selected"
 ).withDefault(
@@ -444,6 +538,7 @@ export const neutralFillInputSelected = create<SwatchRGB>(
 );
 
 // Neutral Fill Stealth
+/** @public */
 export const NeutralFillStealth = DI.createInterface<
     (
         element: HTMLElement,
@@ -467,6 +562,7 @@ export const NeutralFillStealth = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralFillStealthRest = create<SwatchRGB>(
     "neutral-fill-stealth-rest"
 ).withDefault(
@@ -474,6 +570,7 @@ export const neutralFillStealthRest = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).rest
 );
 
+/** @public */
 export const neutralFillStealthHover = create<SwatchRGB>(
     "neutral-fill-stealth-hover"
 ).withDefault(
@@ -481,18 +578,21 @@ export const neutralFillStealthHover = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).hover
 );
 
+/** @public */
 export const neutralFillStealthActive = create<SwatchRGB>(
     "neutral-fill-stealth-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).active
 );
+/** @public */
 export const neutralFillStealthFocus = create<SwatchRGB>(
     "neutral-fill-stealth-focus"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFillStealth)(element).focus
 );
+/** @public */
 export const neutralFillStealthSelected = create<SwatchRGB>(
     "neutral-fill-stealth-selected"
 ).withDefault(
@@ -502,6 +602,7 @@ export const neutralFillStealthSelected = create<SwatchRGB>(
 
 // Neutral Fill Toggle
 // TODO: none of these are actually used, do we need them?
+/** @public */
 export const NeutralFillToggle = DI.createInterface<
     (
         element: HTMLElement,
@@ -520,6 +621,7 @@ export const NeutralFillToggle = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralFillToggleRest = create<SwatchRGB>(
     "neutral-fill-toggle-rest"
 ).withDefault(
@@ -527,6 +629,7 @@ export const neutralFillToggleRest = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).rest
 );
 
+/** @public */
 export const neutralFillToggleHover = create<SwatchRGB>(
     "neutral-fill-toggle-hover"
 ).withDefault(
@@ -534,6 +637,7 @@ export const neutralFillToggleHover = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).hover
 );
 
+/** @public */
 export const neutralFillToggleActive = create<SwatchRGB>(
     "neutral-fill-toggle-active"
 ).withDefault(
@@ -541,6 +645,7 @@ export const neutralFillToggleActive = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).active
 );
 
+/** @public */
 export const neutralFillToggleFocus = create<SwatchRGB>(
     "neutral-fill-toggle-focus"
 ).withDefault(
@@ -548,6 +653,7 @@ export const neutralFillToggleFocus = create<SwatchRGB>(
         DI.getOrCreateDOMContainer(element).get(NeutralFillToggle)(element).focus
 );
 // Neutral Fill
+/** @public */
 export const NeutralFill = DI.createInterface<
     (element: HTMLElement, fill?: SwatchRGB) => ReturnType<typeof neutralFillAlgorithm>
 >("neutral-fill", builder =>
@@ -563,28 +669,34 @@ export const NeutralFill = DI.createInterface<
         )
     )
 );
+/** @public */
 export const neutralFillRest = create<SwatchRGB>("neutral-fill-rest").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).rest
 );
+/** @public */
 export const neutralFillHover = create<SwatchRGB>("neutral-fill-hover").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).hover
 );
+/** @public */
 export const neutralFillActive = create<SwatchRGB>("neutral-fill-active").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).active
 );
+/** @public */
 export const neutralFillFocus = create<SwatchRGB>("neutral-fill-focus").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).focus
 );
+/** @public */
 export const neutralFillSelected = create<SwatchRGB>("neutral-fill-selected").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralFill)(element).selected
 );
 
 // Neutral Focus
+/** @public */
 export const NeutralFocus = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-focus",
     builder =>
@@ -595,6 +707,7 @@ export const NeutralFocus = DI.createInterface<(element: HTMLElement) => SwatchR
             )
         )
 );
+/** @public */
 export const neutralFocus = create<SwatchRGB>(
     "neutral-focus"
 ).withDefault((element: HTMLElement) =>
@@ -602,6 +715,7 @@ export const neutralFocus = create<SwatchRGB>(
 );
 
 // Neutral Focus Inner Accent
+/** @public */
 export const NeutralFocusInnerAccent = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
 >("neutral-focus-inner-accent", builder =>
@@ -614,6 +728,7 @@ export const NeutralFocusInnerAccent = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralFocusInnerAccent = create<SwatchRGB>(
     "neutral-focus-inner-accent"
 ).withDefault((element: HTMLElement) =>
@@ -621,6 +736,7 @@ export const neutralFocusInnerAccent = create<SwatchRGB>(
 );
 
 // Neutral Foreground Hint
+/** @public */
 export const NeutralForegroundHint = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
 >("neutral-foreground-hint", builder =>
@@ -632,6 +748,7 @@ export const NeutralForegroundHint = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralForegroundHint = create<SwatchRGB>(
     "neutral-foreground-hint"
 ).withDefault((element: HTMLElement) =>
@@ -639,6 +756,7 @@ export const neutralForegroundHint = create<SwatchRGB>(
 );
 
 // Neutral Foreground
+/** @public */
 export const NeutralForeground = DI.createInterface<
     (element: HTMLElement) => ReturnType<typeof neutralForegroundAlgorithm>
 >("neutral-foreground", builder =>
@@ -650,6 +768,7 @@ export const NeutralForeground = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralForegroundRest = create<SwatchRGB>(
     "neutral-foreground-rest"
 ).withDefault((element: HTMLElement) =>
@@ -657,6 +776,7 @@ export const neutralForegroundRest = create<SwatchRGB>(
 );
 
 // Neutral Outline
+/** @public */
 export const NeutralOutline = DI.createInterface<
     (element: HTMLElement) => ReturnType<typeof NeutralOutlineAlgorithm>
 >("neutral-outline", builder =>
@@ -672,26 +792,31 @@ export const NeutralOutline = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralOutlineRest = create<SwatchRGB>("neutral-outline-rest").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).rest
 );
+/** @public */
 export const neutralOutlineHover = create<SwatchRGB>("neutral-outline-hover").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).hover
 );
+/** @public */
 export const neutralOutlineActive = create<SwatchRGB>(
     "neutral-outline-active"
 ).withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).active
 );
+/** @public */
 export const neutralOutlineFocus = create<SwatchRGB>("neutral-outline-focus").withDefault(
     (element: HTMLElement) =>
         DI.getOrCreateDOMContainer(element).get(NeutralOutline)(element).focus
 );
 
 // Neutral Layer Floating
+/** @public */
 export const NeutralLayerFloating = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
 >("neutral-layer-floating", builder =>
@@ -704,6 +829,7 @@ export const NeutralLayerFloating = DI.createInterface<
     )
 );
 
+/** @public */
 export const neutralLayerFloating = create<SwatchRGB>(
     "neutral-layer-floating"
 ).withDefault((element: HTMLElement) =>
@@ -711,6 +837,7 @@ export const neutralLayerFloating = create<SwatchRGB>(
 );
 
 // Neutral Layer L1
+/** @public */
 export const NeutralLayerL1 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-layer-L1",
     builder =>
@@ -722,6 +849,7 @@ export const NeutralLayerL1 = DI.createInterface<(element: HTMLElement) => Swatc
         )
 );
 
+/** @public */
 export const neutralLayerL1 = create<SwatchRGB>(
     "neutral-layer-L1"
 ).withDefault((element: HTMLElement) =>
@@ -729,6 +857,7 @@ export const neutralLayerL1 = create<SwatchRGB>(
 );
 
 // Neutral Layer L2
+/** @public */
 export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-layer-L2",
     builder =>
@@ -744,6 +873,7 @@ export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => Swatc
         )
 );
 
+/** @public */
 export const neutralLayerL2 = create<SwatchRGB>(
     "neutral-layer-L2"
 ).withDefault((element: HTMLElement) =>
@@ -751,6 +881,7 @@ export const neutralLayerL2 = create<SwatchRGB>(
 );
 
 // Neutral Layer L3
+/** @public */
 export const NeutralLayerL3 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-layer-L3",
     builder =>
@@ -766,6 +897,7 @@ export const NeutralLayerL3 = DI.createInterface<(element: HTMLElement) => Swatc
         )
 );
 
+/** @public */
 export const neutralLayerL3 = create<SwatchRGB>(
     "neutral-layer-L3"
 ).withDefault((element: HTMLElement) =>
@@ -773,6 +905,7 @@ export const neutralLayerL3 = create<SwatchRGB>(
 );
 
 // Neutral Layer L4
+/** @public */
 export const NeutralLayerL4 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
     "neutral-layer-L4",
     builder =>
@@ -788,6 +921,7 @@ export const NeutralLayerL4 = DI.createInterface<(element: HTMLElement) => Swatc
         )
 );
 
+/** @public */
 export const neutralLayerL4 = create<SwatchRGB>(
     "neutral-layer-L4"
 ).withDefault((element: HTMLElement) =>
