@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 25 May 2021 07:27:43 GMT and should not be manually modified.
+This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.3
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- allow a float to be accurately represented when a step is a fraction (7559015+janechu@users.noreply.github.com)
+- fix css custom property emission for dependent DesignToken properties (nicholasrice@users.noreply.github.com)
 
 ## 1.24.2
 

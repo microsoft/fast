@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.3",
+      "version": "1.24.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "allow a float to be accurately represented when a step is a fraction",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix css custom property emission for dependent DesignToken properties",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e5c305740cc2399da80bea45da6b810eb98be1b1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 May 2021 07:27:43 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.2",
       "version": "1.24.2",

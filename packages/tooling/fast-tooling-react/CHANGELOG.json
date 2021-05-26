@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.11",
+      "version": "2.8.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove the soft remove from default controls that store a limited set of values",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "41e207e39a75e384e3c2da59d814c6b0e3b087a3",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "fix missing error stylings for array and checkbox, removed the required from checkbox as the required attr is not the same as the json schema required",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2377ba0925c5f92875ea991890eebecaf7e4f9eb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 May 2021 07:27:43 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.10",
       "version": "2.8.10",

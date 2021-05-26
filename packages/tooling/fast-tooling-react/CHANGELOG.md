@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Tue, 25 May 2021 07:27:43 GMT and should not be manually modified.
+This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.11
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- remove the soft remove from default controls that store a limited set of values (7559015+janechu@users.noreply.github.com)
+- fix missing error stylings for array and checkbox, removed the required from checkbox as the required attr is not the same as the json schema required (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.10
 

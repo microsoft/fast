@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Tue, 25 May 2021 07:27:43 GMT and should not be manually modified.
+This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.21.0
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Minor changes
+
+- use the new data dictionary mapper in the monaco service (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- fix improper pathing for required errors (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v1.24.3 (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-components to v1.21.3 (7559015+janechu@users.noreply.github.com)
 
 ## 0.20.1
 
