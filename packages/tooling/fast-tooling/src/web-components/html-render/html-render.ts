@@ -31,7 +31,7 @@ export class HTMLRender extends FASTElement {
 
     private schemaDictionary: SchemaDictionary;
 
-    private navigationConfigId: string = "fast-tooling::html-renderer";
+    private messageOriginatorId: string = "fast-tooling::html-renderer";
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 
@@ -88,10 +88,21 @@ export class HTMLRender extends FASTElement {
                 this.currentElement = null;
                 this.updateLayers(ActivityType.clear, "", null);
                 this.renderMarkup();
+                if(e.data.activeDictionaryId)
+                {
+                    const dataId: string = e.data.activeDictionaryId;
+                    const el: HTMLElement = this.shadowRoot.querySelector(
+                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
+                    );
+                    if (el) {
+                        this.currentElement = el;
+                        this.updateLayers(ActivityType.click, dataId, this.currentElement);
+                    }
+                }
             }
             if (
                 e.data.type === MessageSystemType.navigation &&
-                e.data.activeNavigationConfigId !== this.navigationConfigId
+                (!e.data.options || e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
                     const dataId: string = e.data.activeDictionaryId;
@@ -160,7 +171,10 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: dataId,
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = el;
         this.updateLayers(ActivityType.click, dataId, el);
@@ -171,7 +185,10 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: "",
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = null;
         this.updateLayers(ActivityType.clear, "", null);
@@ -181,6 +198,16 @@ export class HTMLRender extends FASTElement {
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (targetEl.dataId !== null) {
             this.selectElement(targetEl.el, targetEl.dataId);
+            e.stopPropagation();
+            return false;
+        }
+    }
+
+    public dblClickHandler(e: MouseEvent): boolean {
+        const targetEl = this.getTargetElementFromMouseEvent(e);
+        if (targetEl.dataId !== null) {
+            this.updateLayers(ActivityType.doubleClick, targetEl.dataId, targetEl.el);
+            e.preventDefault();
             e.stopPropagation();
             return false;
         }

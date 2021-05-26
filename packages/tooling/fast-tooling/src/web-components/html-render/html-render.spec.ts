@@ -140,7 +140,7 @@ describe("HTMLRender", () => {
                 if (
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
-                    e.data.activeNavigationConfigId === "fast-tooling::html-renderer" &&
+                    (e.data.options && e.data.options.originatorId === "fast-tooling::html-renderer") &&
                     e.data.activeDictionaryId === "root"
                 ) {
                     messageSent = true;
@@ -178,7 +178,7 @@ describe("HTMLRender", () => {
                 if (
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
-                    e.data.activeNavigationConfigId === "fast-tooling::html-renderer"
+                    (e.data.options && e.data.options.originatorId === "fast-tooling::html-renderer")
                 ) {
                     messageSent = e.data.activeDictionaryId;
                 }
@@ -251,7 +251,7 @@ describe("HTMLRender", () => {
                 if (
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
-                    e.data.activeNavigationConfigId === "fast-tooling::html-renderer" &&
+                    (e.data.options && e.data.options.originatorId === "fast-tooling::html-renderer") &&
                     e.data.activeDictionaryId === ""
                 ) {
                     messageSent = true;
@@ -413,7 +413,7 @@ describe("HTMLRender", () => {
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: "root",
-                activeNavigationConfigId: "foo",
+                activeNavigationConfigId: "",
             });
         }, 20);
 

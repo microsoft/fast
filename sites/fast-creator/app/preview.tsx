@@ -181,7 +181,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: this.state.activeDictionaryId,
-                activeNavigationConfigId: "preview",
+                options: {
+                    originatorId: "preview",
+                },
+                activeNavigationConfigId: "",
             });
         }
     }
@@ -233,6 +236,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.navigation:
+                        if(
+                            !(messageData as any).options ||
+                            ((messageData as any).options as any).originatorId !== "fast-tooling::html-renderer"
+                        )
                         this.setState(
                             {
                                 activeDictionaryId: (messageData as NavigationMessageOutgoing)
@@ -274,8 +281,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             if (
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
-                message.data.activeNavigationConfigId === "fast-tooling::html-renderer"
-            ) {
+                (message.data.options && message.data.options.originatorId === "fast-tooling::html-renderer") 
+                ) {
                 window.postMessage(
                     {
                         type: MessageSystemType.custom,

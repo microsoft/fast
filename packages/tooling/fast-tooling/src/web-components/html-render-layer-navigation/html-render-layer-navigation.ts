@@ -1,21 +1,7 @@
 import { customElement, observable } from "@microsoft/fast-element";
-import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
+import { ActivityType, HTMLRenderLayer, OverylayPosition } from "../html-render-layer/html-render-layer";
 import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
 import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
-
-class OverylayPosition {
-    public top: number;
-    public left: number;
-    public width: number;
-    public height: number;
-
-    constructor(top: number, left: number, width: number, height: number) {
-        this.top = top;
-        this.left = left;
-        this.width = width;
-        this.height = height;
-    }
-}
 
 @customElement({
     name: "fast-tooling-html-render-layer-navigation",
