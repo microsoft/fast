@@ -1,4 +1,4 @@
-import Ajv from "ajv";
+import Ajv, { DependenciesParams } from "ajv";
 import {
     MessageSystem,
     MessageSystemDataTypeAction,
@@ -187,8 +187,17 @@ export class AjvMapper {
             return [];
         } else {
             return this.ajv.errors.map((AjvError: Ajv.ErrorObject) => {
+                let ajvPath = AjvError.dataPath;
+
+                if (AjvError.keyword === "required") {
+                    ajvPath = [
+                        ajvPath,
+                        (AjvError.params as DependenciesParams).missingProperty,
+                    ].join(".");
+                }
+
                 return {
-                    dataLocation: this.normalizeAjvDataPath(AjvError.dataPath),
+                    dataLocation: this.normalizeAjvDataPath(ajvPath),
                     invalidMessage: AjvError.message,
                 };
             });

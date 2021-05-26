@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix missing error stylings for array and checkbox, removed the required from checkbox as the required attr is not the same as the json schema required",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
