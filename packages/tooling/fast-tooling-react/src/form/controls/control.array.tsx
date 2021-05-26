@@ -44,8 +44,7 @@ class ArrayControl extends React.Component<
                     ],
                     [
                         this.props.managedClasses.arrayControl__invalid,
-                        this.props.invalidMessage !== "" &&
-                            !!this.props.displayValidationInline,
+                        this.props.invalidMessage !== "",
                     ]
                 )}
             >
@@ -153,6 +152,10 @@ class ArrayControl extends React.Component<
                 </ul>
             );
         }
+
+        return (
+            <ul className={this.props.managedClasses.arrayControl_existingItemList}></ul>
+        );
     }
 
     /**

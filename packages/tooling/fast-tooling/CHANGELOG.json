@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.0",
+      "version": "0.21.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix improper pathing for required errors",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2377ba0925c5f92875ea991890eebecaf7e4f9eb",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "use the new data dictionary mapper in the monaco service",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "0cd59456efe851c1514e9c92e270a03e4dacfaac",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 May 2021 07:27:43 GMT",
       "tag": "@microsoft/fast-tooling_v0.20.1",
       "version": "0.20.1",
