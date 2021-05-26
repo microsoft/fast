@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fixing bugs in html renderer",
+  "comment": "fixing message system bugs in html renderer and creator integration",
   "packageName": "@microsoft/fast-tooling",
   "email": "44823142+williamw2@users.noreply.github.com",
   "dependentChangeType": "patch"

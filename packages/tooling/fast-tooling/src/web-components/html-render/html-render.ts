@@ -21,6 +21,8 @@ import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
+export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
+
 @customElement({
     name: "fast-tooling-html-render",
     template: HTMLRenderTemplate,
@@ -31,7 +33,7 @@ export class HTMLRender extends FASTElement {
 
     private schemaDictionary: SchemaDictionary;
 
-    private messageOriginatorId: string = "fast-tooling::html-renderer";
+    private messageOriginatorId: string = HTMLRenderOriginatorId;
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 

@@ -11,6 +11,7 @@ import {
     NavigationMessageOutgoing,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
@@ -239,7 +240,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         if (
                             !(messageData as any).options ||
                             ((messageData as any).options as any).originatorId !==
-                                "fast-tooling::html-renderer"
+                                HTMLRenderOriginatorId
                         )
                             this.setState(
                                 {
@@ -283,7 +284,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
                 message.data.options &&
-                message.data.options.originatorId === "fast-tooling::html-renderer"
+                message.data.options.originatorId === HTMLRenderOriginatorId
             ) {
                 window.postMessage(
                     {

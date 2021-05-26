@@ -10,7 +10,7 @@ import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-con
 import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { nativeElementDefinitions } from "../../definitions";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRender } from "./html-render";
+import { HTMLRender, HTMLRenderOriginatorId } from "./html-render";
 
 HTMLRender;
 HTMLRenderLayer;
@@ -141,7 +141,7 @@ describe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === "fast-tooling::html-renderer" &&
+                    e.data.options.originatorId === HTMLRenderOriginatorId &&
                     e.data.activeDictionaryId === "root"
                 ) {
                     messageSent = true;
@@ -180,7 +180,7 @@ describe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === "fast-tooling::html-renderer"
+                    e.data.options.originatorId === HTMLRenderOriginatorId
                 ) {
                     messageSent = e.data.activeDictionaryId;
                 }
@@ -254,7 +254,7 @@ describe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === "fast-tooling::html-renderer" &&
+                    e.data.options.originatorId === HTMLRenderOriginatorId &&
                     e.data.activeDictionaryId === ""
                 ) {
                     messageSent = true;
