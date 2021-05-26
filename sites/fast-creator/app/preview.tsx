@@ -236,17 +236,18 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.navigation:
-                        if(
+                        if (
                             !(messageData as any).options ||
-                            ((messageData as any).options as any).originatorId !== "fast-tooling::html-renderer"
+                            ((messageData as any).options as any).originatorId !==
+                                "fast-tooling::html-renderer"
                         )
-                        this.setState(
-                            {
-                                activeDictionaryId: (messageData as NavigationMessageOutgoing)
-                                    .activeDictionaryId,
-                            },
-                            this.updateDOM(messageData as MessageSystemOutgoing)
-                        );
+                            this.setState(
+                                {
+                                    activeDictionaryId: (messageData as NavigationMessageOutgoing)
+                                        .activeDictionaryId,
+                                },
+                                this.updateDOM(messageData as MessageSystemOutgoing)
+                            );
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
@@ -281,8 +282,9 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             if (
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
-                (message.data.options && message.data.options.originatorId === "fast-tooling::html-renderer") 
-                ) {
+                message.data.options &&
+                    message.data.options.originatorId === "fast-tooling::html-renderer"
+            ) {
                 window.postMessage(
                     {
                         type: MessageSystemType.custom,

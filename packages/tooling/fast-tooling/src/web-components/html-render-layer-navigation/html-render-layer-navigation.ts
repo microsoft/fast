@@ -1,5 +1,9 @@
 import { customElement, observable } from "@microsoft/fast-element";
-import { ActivityType, HTMLRenderLayer, OverylayPosition } from "../html-render-layer/html-render-layer";
+import {
+    ActivityType,
+    HTMLRenderLayer,
+    OverylayPosition,
+} from "../html-render-layer/html-render-layer";
 import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
 import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
 

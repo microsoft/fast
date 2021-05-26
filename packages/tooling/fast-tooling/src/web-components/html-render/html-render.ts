@@ -39,6 +39,8 @@ export class HTMLRender extends FASTElement {
 
     private currentElement: HTMLElement;
 
+    private activeDictionaryId: string = "";
+
     private renderLayers: HTMLRenderLayer[] = [];
 
     @observable
@@ -88,33 +90,50 @@ export class HTMLRender extends FASTElement {
                 this.currentElement = null;
                 this.updateLayers(ActivityType.clear, "", null);
                 this.renderMarkup();
-                if(e.data.activeDictionaryId)
-                {
-                    const dataId: string = e.data.activeDictionaryId;
-                    const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
-                    );
-                    if (el) {
-                        this.currentElement = el;
-                        this.updateLayers(ActivityType.click, dataId, this.currentElement);
-                    }
+                if (e.data.activeDictionaryId) {
+                    this.activeDictionaryId = e.data.activeDictionaryId;
+                    // give everything time to actually render
+                    window.setTimeout(this.selectActiveDictionaryId, 50);
                 }
             }
             if (
                 e.data.type === MessageSystemType.navigation &&
-                (!e.data.options || e.data.options.originatorId !== this.messageOriginatorId)
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
-                    const dataId: string = e.data.activeDictionaryId;
+                    this.activeDictionaryId = e.data.activeDictionaryId;
                     const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
+                        "[" +
+                            this.dataDictionaryAttr +
+                            "=" +
+                            this.activeDictionaryId +
+                            "]"
                     );
                     if (el) {
                         this.currentElement = el;
-                        this.updateLayers(ActivityType.click, dataId, el);
+                        this.updateLayers(
+                            ActivityType.click,
+                            this.activeDictionaryId,
+                            el
+                        );
                     }
                 }
             }
+        }
+    };
+
+    private selectActiveDictionaryId = () => {
+        const el: HTMLElement = this.shadowRoot.querySelector(
+            "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+        );
+        if (el) {
+            this.currentElement = el;
+            this.updateLayers(
+                ActivityType.click,
+                this.activeDictionaryId,
+                this.currentElement
+            );
         }
     };
 
@@ -198,16 +217,6 @@ export class HTMLRender extends FASTElement {
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (targetEl.dataId !== null) {
             this.selectElement(targetEl.el, targetEl.dataId);
-            e.stopPropagation();
-            return false;
-        }
-    }
-
-    public dblClickHandler(e: MouseEvent): boolean {
-        const targetEl = this.getTargetElementFromMouseEvent(e);
-        if (targetEl.dataId !== null) {
-            this.updateLayers(ActivityType.doubleClick, targetEl.dataId, targetEl.el);
-            e.preventDefault();
             e.stopPropagation();
             return false;
         }

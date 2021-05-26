@@ -11,7 +11,7 @@ export enum ActivityType {
     blur = "blur",
     click = "click",
     clear = "clear",
-    doubleClick = "dblclick"
+    doubleClick = "dblclick",
 }
 
 export class OverylayPosition {

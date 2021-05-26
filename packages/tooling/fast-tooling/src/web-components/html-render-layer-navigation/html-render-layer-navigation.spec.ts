@@ -14,7 +14,7 @@ const FASTMessageSystemWorker = require("../../../message-system.min.js");
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 
-const wait = () => new Promise(done => setTimeout(done,20));
+const wait = () => new Promise(done => setTimeout(done, 20));
 
 async function setup() {
     const { element, connect, disconnect, parent } = await fixture<
