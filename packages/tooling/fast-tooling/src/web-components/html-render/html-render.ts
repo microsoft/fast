@@ -224,6 +224,16 @@ export class HTMLRender extends FASTElement {
         }
     }
 
+    public dblClickHandler(e: MouseEvent): boolean {
+        const targetEl = this.getTargetElementFromMouseEvent(e);
+        if (targetEl.dataId !== null) {
+            this.updateLayers(ActivityType.doubleClick, targetEl.dataId, targetEl.el);
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }
+
     public keyUpHandler(e: KeyboardEvent): boolean {
         if (e.key === "Tab") {
             const currTab: number = this.currentElement
