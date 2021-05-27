@@ -13,10 +13,18 @@ export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
-export * from "./color/index";
-export * from "./data-grid/index";
+export {
+    StandardLuminance,
+    /** @deprecated */
+    createColorPalette,
+    /** @deprecated */
+    neutralLayerCardContainer,
+} from "./color";
 export * from "./design-system-provider/index";
 export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
+export * from "./design-tokens";
+export { SwatchRGB, Swatch } from "./color-vNext/swatch";
+export { PaletteRGB, Palette } from "./color-vNext/palette";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";

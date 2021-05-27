@@ -1,4 +1,5 @@
 import { PaletteRGB } from "../palette";
+import { SwatchRGB } from "../swatch";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 export function neutralLayerL2Index(
@@ -8,7 +9,7 @@ export function neutralLayerL2Index(
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
-) {
+): number {
     return Math.max(
         palette.closestIndexOf(baseLayerLuminanceSwatch(luminance)) + cardDelta,
         fillRestDelta,
@@ -24,7 +25,7 @@ export function neutralLayerL2(
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
-) {
+): SwatchRGB {
     return palette.get(
         neutralLayerL2Index(
             palette,
