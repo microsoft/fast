@@ -127,15 +127,22 @@ class Navigation extends Foundation<
         activeDictionaryId: string,
         activeNavigationConfigId: string
     ): Set<string> {
-        return this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined
-            ? new Set([activeNavigationConfigId])
-            : this.state.expandedNavigationConfigItems[activeDictionaryId].has(
-                  activeNavigationConfigId
-              )
-            ? this.state.expandedNavigationConfigItems[activeDictionaryId]
-            : this.state.expandedNavigationConfigItems[activeDictionaryId].add(
-                  activeNavigationConfigId
-              );
+        if (this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined) {
+            return new Set([activeNavigationConfigId]);
+        } else if (
+            this.state.expandedNavigationConfigItems[activeDictionaryId].has(
+                activeNavigationConfigId
+            )
+        ) {
+            this.state.expandedNavigationConfigItems[activeDictionaryId].delete(
+                activeNavigationConfigId
+            );
+            return this.state.expandedNavigationConfigItems[activeDictionaryId];
+        }
+
+        return this.state.expandedNavigationConfigItems[activeDictionaryId].add(
+            activeNavigationConfigId
+        );
     }
 
     /**
