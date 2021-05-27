@@ -13,11 +13,14 @@ import {
     inactiveTextColorName,
     L3OutlineColorName,
 } from "../../src/style";
+import { Data } from "@microsoft/fast-tooling";
+import { MessageSystemNavigationTypeAction } from "@microsoft/fast-tooling";
 
 export interface NavigationTestPageState {
     navigation: any;
     cssPropertyOverrides: boolean;
     types?: DataType[];
+    activeDictionaryId: string;
 }
 
 const CSSpropertyOverrides = {
@@ -55,6 +58,7 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
             navigation: null,
             cssPropertyOverrides: false,
             types: undefined,
+            activeDictionaryId: children[1],
         };
     }
 
@@ -137,6 +141,7 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
                     />
                     <label htmlFor={"allowNulls"}>Allow null</label>
                 </fieldset>
+                {this.renderAllLinkedData()}
                 <ModularNavigation
                     messageSystem={fastMessageSystem}
                     types={this.state.types}
@@ -147,6 +152,46 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
             </div>
         );
     }
+
+    private renderAllLinkedData(): React.ReactNode {
+        return (
+            <fieldset>
+                <legend>Linked data IDs</legend>
+                {this.renderLinkedDataItems()}
+            </fieldset>
+        );
+    }
+
+    private renderLinkedDataItems(): React.ReactNode {
+        return Object.entries(children[0]).map(
+            ([key, child]: [string, Data<unknown>], index: number) => {
+                return (
+                    <div key={key}>
+                        <label htmlFor={key}>{key}</label>
+                        <input
+                            id={key}
+                            name={"linked-data"}
+                            type={"radio"}
+                            onChange={this.handleLinkedDataNavigationOnChange(key)}
+                            value={key}
+                            checked={this.state.activeDictionaryId === key}
+                        />
+                    </div>
+                );
+            }
+        );
+    }
+
+    private handleLinkedDataNavigationOnChange = (linkedDataId: string): (() => void) => {
+        return () => {
+            fastMessageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: linkedDataId,
+                activeNavigationConfigId: "",
+            });
+        };
+    };
 
     private handleIncludeType = (
         type: DataType
@@ -178,6 +223,10 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
         if (e.data && e.data.type === MessageSystemType.initialize) {
             this.setState({
                 navigation: e.data.navigationDictionary,
+            });
+        } else if (e.data && e.data.type === MessageSystemType.navigation) {
+            this.setState({
+                activeDictionaryId: e.data.activeDictionaryId,
             });
         }
     };
