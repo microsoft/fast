@@ -106,7 +106,7 @@ async function setup() {
     return { element, messageSystemHasBeenCalled, connect, disconnect, message };
 }
 
-describe("HTMLRender", () => {
+xdescribe("HTMLRender", () => {
     it("should initialize and render", async () => {
         const {
             element,
