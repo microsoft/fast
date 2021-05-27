@@ -2,6 +2,7 @@ import {
     DI,
     Card as FoundationCard,
     CardTemplate as template,
+    composedParent,
 } from "@microsoft/fast-foundation";
 import { fillColor, NeutralFillCard } from "../design-tokens";
 import { CardStyles as styles } from "./card.styles";
@@ -13,12 +14,16 @@ export class Card extends FoundationCard {
     connectedCallback() {
         super.connectedCallback();
 
-        fillColor.setValueFor(this, (target: HTMLElement) => {
-            return DI.findParentContainer(target).get(NeutralFillCard)(
-                target,
-                fillColor.getValueFor(this.parentElement!)
-            );
-        });
+        const parent = composedParent(this);
+
+        if (parent) {
+            fillColor.setValueFor(this, (target: HTMLElement) => {
+                return DI.findParentContainer(target).get(NeutralFillCard)(
+                    target,
+                    fillColor.getValueFor(parent)
+                );
+            });
+        }
     }
 }
 
