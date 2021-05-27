@@ -126,22 +126,16 @@ class Navigation extends Foundation<
     private getActiveConfigIds(
         activeDictionaryId: string,
         activeNavigationConfigId: string
-    ): string[] {
-        return !Array.isArray(
-            this.state.expandedNavigationConfigItems[activeDictionaryId]
-        )
-            ? [activeNavigationConfigId]
-            : this.state.expandedNavigationConfigItems[activeDictionaryId].includes(
+    ): Set<string> {
+        return this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined
+            ? new Set([activeNavigationConfigId])
+            : this.state.expandedNavigationConfigItems[activeDictionaryId].has(
                   activeNavigationConfigId
               )
-            ? this.state.expandedNavigationConfigItems[activeDictionaryId].filter(
-                  (navigationConfigItem: string) => {
-                      return navigationConfigItem !== activeNavigationConfigId;
-                  }
-              )
-            : this.state.expandedNavigationConfigItems[activeDictionaryId].concat([
-                  activeNavigationConfigId,
-              ]);
+            ? this.state.expandedNavigationConfigItems[activeDictionaryId]
+            : this.state.expandedNavigationConfigItems[activeDictionaryId].add(
+                  activeNavigationConfigId
+              );
     }
 
     /**
@@ -181,6 +175,10 @@ class Navigation extends Foundation<
                 this.setState({
                     activeDictionaryId: e.data.activeDictionaryId,
                     activeNavigationConfigId: e.data.activeNavigationConfigId,
+                    expandedNavigationConfigItems: this.getUpdatedElementsExpanded(
+                        e.data.activeDictionaryId,
+                        e.data.activeNavigationConfigId
+                    ),
                 });
                 break;
         }
@@ -406,14 +404,12 @@ class Navigation extends Foundation<
             }
 
             return (
-                Array.isArray(
-                    this.state.expandedNavigationConfigItems[
-                        this.state.navigationDictionary[1]
-                    ]
-                ) &&
                 this.state.expandedNavigationConfigItems[
                     this.state.navigationDictionary[1]
-                ].includes(
+                ] !== undefined &&
+                this.state.expandedNavigationConfigItems[
+                    this.state.navigationDictionary[1]
+                ].has(
                     this.state.navigationDictionary[0][
                         this.state.navigationDictionary[1]
                     ][1]
@@ -422,11 +418,42 @@ class Navigation extends Foundation<
         }
 
         return (
-            Array.isArray(this.state.expandedNavigationConfigItems[dictionaryId]) &&
-            this.state.expandedNavigationConfigItems[dictionaryId].includes(
-                navigationConfigId
-            )
+            this.state.expandedNavigationConfigItems[dictionaryId] !== undefined &&
+            this.state.expandedNavigationConfigItems[dictionaryId].has(navigationConfigId)
         );
+    }
+
+    private getUpdatedElementsExpanded(
+        dictionaryId: string,
+        navigationConfigId: string
+    ): { [key: string]: Set<string> } {
+        return {
+            ...this.state.expandedNavigationConfigItems,
+            ...this.getParentElement(dictionaryId),
+        };
+    }
+
+    private getParentElement(dictionaryId: string): { [key: string]: Set<string> } {
+        if (this.state.dataDictionary[0][dictionaryId].parent) {
+            let parentDictionaryItem =
+                this.state.expandedNavigationConfigItems[dictionaryId] || new Set([""]);
+
+            const parentDictionaryId = this.state.dataDictionary[0][dictionaryId].parent
+                .id;
+            const parentDictionaryItemDataLocations: Set<string> = new Set(
+                this.state.dataDictionary[0][dictionaryId].parent.dataLocation.split(".")
+            );
+
+            return {
+                [parentDictionaryId]: new Set([
+                    ...parentDictionaryItemDataLocations,
+                    ...parentDictionaryItem,
+                ]),
+                ...this.getParentElement(parentDictionaryId),
+            };
+        }
+
+        return {};
     }
 
     private getDraggableItemClassName(
