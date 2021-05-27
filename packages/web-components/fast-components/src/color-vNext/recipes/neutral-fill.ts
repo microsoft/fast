@@ -1,5 +1,5 @@
 import { PaletteRGB } from "../palette";
-import { Swatch } from "../swatch";
+import { Swatch, SwatchRGB } from "../swatch";
 
 /**
  *
@@ -19,7 +19,7 @@ export function neutralFill(
     activeDelta: number,
     focusDelta: number,
     selectedDelta: number
-) {
+): Record<"rest" | "hover" | "active" | "focus" | "selected", SwatchRGB> {
     const referenceIndex = palette.closestIndexOf(reference);
     const threshold = Math.max(restDelta, hoverDelta, activeDelta, focusDelta);
     const direction = referenceIndex >= threshold ? -1 : 1;
