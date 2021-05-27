@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Merge branch 'master' into patch-1",
+  "packageName": "@microsoft/fast-components",
+  "email": "xavier@norival.dev",
+  "dependentChangeType": "none"
+}
