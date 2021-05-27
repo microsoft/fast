@@ -414,6 +414,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private cssCustomPropertySubscriber = {
         handleChange: () => {
+            CustomPropertyManager.removeFrom(
+                this.target,
+                this.token as CSSDesignToken<T>
+            );
             CustomPropertyManager.addTo(
                 this.target,
                 this.token as CSSDesignToken<T>,
@@ -423,8 +427,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         dispose: () => {
             CustomPropertyManager.removeFrom(
                 this.target,
-                this.token as CSSDesignToken<T>,
-                this.resolveCSSValue(this.value)
+                this.token as CSSDesignToken<T>
             );
         },
     };
