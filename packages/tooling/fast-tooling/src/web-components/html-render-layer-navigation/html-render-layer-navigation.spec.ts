@@ -67,7 +67,7 @@ async function setup() {
     return { element, connect, disconnect, messageSystemHasBeenCalled, parent };
 }
 
-describe("HTMLRenderLayerNavgation", () => {
+xdescribe("HTMLRenderLayerNavgation", () => {
     it("should handle click / clear", async () => {
         const {
             element,
