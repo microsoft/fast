@@ -22,10 +22,11 @@ import {
     SwatchResolver,
 } from "./recipes";
 import { Footer } from "./site-footer";
-import { AppState } from "./state";
+import { AppState, ComponentTypes } from "./state";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
+    componentType: ComponentTypes;
     neutralBaseColor: Swatch;
     accentBaseColor: Swatch;
     showOnlyRecommendedBackgrounds: boolean;
@@ -74,16 +75,7 @@ class App extends React.Component<AppProps, {}> {
                                         createAnchors={false}
                                     />
                                 </Row>
-                                <Row fill={true}>
-                                    <AutoSizer
-                                        onResize={
-                                            /* eslint-disable-next-line */
-                                            /* this lambda is intentional - it forces the pure component to re-render */ (): void => {}
-                                        }
-                                    >
-                                        {this.renderColorBlockList}
-                                    </AutoSizer>
-                                </Row>
+                                <Row fill={true}>{this.renderContents()}</Row>
                             </Container>
                         </Canvas>
                         <ControlPane />
@@ -98,6 +90,56 @@ class App extends React.Component<AppProps, {}> {
         if (this.colorBlockScrollerRef.current !== null) {
             this.colorBlockScrollerRef.current.scrollToItem(index, align);
         }
+    };
+
+    private renderContents = (): React.ReactNode => {
+        if (this.props.componentType === ComponentTypes.sample) {
+            return (
+                <div style={{ display: "flex", overflow: "auto" }}>
+                    {this.renderSampleApp()}
+                </div>
+            );
+        } else {
+            return (
+                <AutoSizer
+                    onResize={
+                        /* eslint-disable-next-line */
+                        /* this lambda is intentional - it forces the pure component to re-render */ (): void => {}
+                    }
+                >
+                    {this.renderColorBlockList}
+                </AutoSizer>
+            );
+        }
+    };
+
+    private renderSampleApp = (): React.ReactNode => {
+        return (
+            <app-palette-wrapper
+                neutral-base-color={this.props.neutralBaseColor}
+                accent-base-color={this.props.accentBaseColor}
+                style={{
+                    display: "flex",
+                    alignItems: "stretch",
+                    alignContent: "stretch",
+                    justifyContent: "center",
+                }}
+            >
+                <app-layer-background
+                    base-layer-luminance={StandardLuminance.LightMode}
+                    background-layer-recipe="L4"
+                    style={{ flexGrow: "1", padding: "100px" }}
+                >
+                    <app-sample-app></app-sample-app>
+                </app-layer-background>
+                <app-layer-background
+                    background-layer-recipe="L4"
+                    style={{ flexGrow: "1", padding: "100px" }}
+                >
+                    <app-sample-app></app-sample-app>
+                </app-layer-background>
+            </app-palette-wrapper>
+        );
     };
 
     private renderColorBlockList = (props: any): JSX.Element => {
@@ -220,6 +262,7 @@ class App extends React.Component<AppProps, {}> {
 function mapStateToProps(state: AppState): Partial<AppProps> {
     return {
         designSystem: state.designSystem,
+        componentType: state.componentType,
         neutralBaseColor: state.neutralBaseColor,
         accentBaseColor: state.accentBaseColor,
         showOnlyRecommendedBackgrounds: state.showOnlyRecommendedBackgrounds,

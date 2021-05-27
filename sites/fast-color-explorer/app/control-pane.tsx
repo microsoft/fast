@@ -74,6 +74,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         body: {
             fontFamily: '"Segoe UI", Arial, sans-serif',
             fontSize: "14px",
+            lineHeight: "20px",
             margin: "0",
         },
         ".sketch-picker": {
