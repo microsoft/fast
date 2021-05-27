@@ -120,7 +120,7 @@ export const accentFillSelectedDelta: import("@microsoft/fast-foundation").CSSDe
 
 // Warning: (ae-forgotten-export) The symbol "accentForeground" needs to be exported by the entry point index.d.ts
 //
-// @public
+// @public (undocumented)
 export const AccentForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof accentForeground>>;
 
 // @public (undocumented)
