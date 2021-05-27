@@ -9,6 +9,7 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import {
     ControlConfig,
     ControlType,
@@ -339,10 +340,10 @@ class Creator extends Editor<{}, CreatorState> {
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
                     activeDictionaryId:
-                        e.data.value === "" ? defaultElementDataId : e.data.value,
+                        e.data.value === "" ? this.state.dataDictionary[1] : e.data.value,
                     activeNavigationConfigId: "",
                     options: {
-                        originatorId: "fast-tooling::html-renderer",
+                        originatorId: HTMLRenderOriginatorId,
                     },
                 });
             }

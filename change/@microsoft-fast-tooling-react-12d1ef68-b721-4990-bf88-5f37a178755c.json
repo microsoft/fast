@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove the soft remove from default controls that store a limited set of values",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

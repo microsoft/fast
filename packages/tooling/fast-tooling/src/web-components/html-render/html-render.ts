@@ -21,6 +21,8 @@ import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
+export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
+
 @customElement({
     name: "fast-tooling-html-render",
     template: HTMLRenderTemplate,
@@ -31,13 +33,15 @@ export class HTMLRender extends FASTElement {
 
     private schemaDictionary: SchemaDictionary;
 
-    private navigationConfigId: string = "fast-tooling::html-renderer";
+    private messageOriginatorId: string = HTMLRenderOriginatorId;
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 
     private tabCounter: number = 1;
 
     private currentElement: HTMLElement;
+
+    private activeDictionaryId: string = "";
 
     private renderLayers: HTMLRenderLayer[] = [];
 
@@ -88,22 +92,50 @@ export class HTMLRender extends FASTElement {
                 this.currentElement = null;
                 this.updateLayers(ActivityType.clear, "", null);
                 this.renderMarkup();
+                if (e.data.activeDictionaryId) {
+                    this.activeDictionaryId = e.data.activeDictionaryId;
+                    // give everything time to actually render
+                    window.setTimeout(this.selectActiveDictionaryId, 50);
+                }
             }
             if (
                 e.data.type === MessageSystemType.navigation &&
-                e.data.activeNavigationConfigId !== this.navigationConfigId
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
-                    const dataId: string = e.data.activeDictionaryId;
+                    this.activeDictionaryId = e.data.activeDictionaryId;
                     const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
+                        "[" +
+                            this.dataDictionaryAttr +
+                            "=" +
+                            this.activeDictionaryId +
+                            "]"
                     );
                     if (el) {
                         this.currentElement = el;
-                        this.updateLayers(ActivityType.click, dataId, el);
+                        this.updateLayers(
+                            ActivityType.click,
+                            this.activeDictionaryId,
+                            el
+                        );
                     }
                 }
             }
+        }
+    };
+
+    private selectActiveDictionaryId = () => {
+        const el: HTMLElement = this.shadowRoot.querySelector(
+            "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+        );
+        if (el) {
+            this.currentElement = el;
+            this.updateLayers(
+                ActivityType.click,
+                this.activeDictionaryId,
+                this.currentElement
+            );
         }
     };
 
@@ -160,7 +192,10 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: dataId,
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = el;
         this.updateLayers(ActivityType.click, dataId, el);
@@ -171,7 +206,10 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: "",
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = null;
         this.updateLayers(ActivityType.clear, "", null);
