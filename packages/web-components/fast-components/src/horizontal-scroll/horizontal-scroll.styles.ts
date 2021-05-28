@@ -91,6 +91,14 @@ export const ActionsStyles = css`
         right: auto;
         top: 50%;
         transform: translate(-50%, -50%);
+        background: none;
+        border: 0;
+        display: inline;
+        z-index: 1;
+    }
+
+    .scroll-action:focus {
+        outline: 0;
     }
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 

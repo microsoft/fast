@@ -10,6 +10,29 @@ export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll> = html`
     <template class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">
+            ${when(
+                x => x.view !== "mobile",
+                html<HorizontalScroll>`
+                    <div
+                        class="scroll scroll-prev"
+                        part="scroll-prev"
+                        ${ref("previousFlipper")}
+                    >
+                        <button
+                            class="scroll-action"
+                            @click="${x => x.scrollToPrevious()}"
+                            tabindex="-1"
+                        >
+                            <slot name="previous-flipper">
+                                <fast-flipper
+                                    direction="previous"
+                                    aria-hidden="false"
+                                ></fast-flipper>
+                            </slot>
+                        </button>
+                    </div>
+                `
+            )}
             <div
                 class="scroll-view"
                 @scroll="${x => x.scrolled()}"
@@ -28,22 +51,19 @@ export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll> = html`
                 x => x.view !== "mobile",
                 html<HorizontalScroll>`
                     <div
-                        class="scroll scroll-prev"
-                        part="scroll-prev"
-                        ${ref("previousFlipper")}
-                    >
-                        <div class="scroll-action" @click="${x => x.scrollToPrevious()}">
-                            <slot name="previous-flipper"></slot>
-                        </div>
-                    </div>
-                    <div
                         class="scroll scroll-next"
                         part="scroll-next"
                         ${ref("nextFlipper")}
                     >
-                        <div class="scroll-action" @click="${x => x.scrollToNext()}">
-                            <slot name="next-flipper"></slot>
-                        </div>
+                        <button
+                            class="scroll-action"
+                            @click="${x => x.scrollToNext()}"
+                            tabindex="-1"
+                        >
+                            <slot name="next-flipper">
+                                <fast-flipper aria-hidden="false"></fast-flipper>
+                            </slot>
+                        </button>
                     </div>
                 `
             )}

@@ -48,13 +48,13 @@ export class HorizontalScroll extends FASTElement {
      * Reference to flipper to scroll to previous content
      * @public
      */
-    public previousFlipper: HTMLDivElement;
+    public previousFlipper: HTMLButtonElement;
 
     /**
      * Reference to flipper to scroll to the next content
      * @public
      */
-    public nextFlipper: HTMLDivElement;
+    public nextFlipper: HTMLButtonElement;
 
     /**
      * @internal
@@ -289,15 +289,16 @@ export class HorizontalScroll extends FASTElement {
         const position: number = this.scrollContainer.scrollLeft;
         if (this.previousFlipper) {
             this.previousFlipper.classList.toggle("disabled", position === 0);
+            this.previousFlipper.disabled = position === 0;
         }
         if (this.nextFlipper && this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipper.classList.toggle(
-                "disabled",
-                Math.abs(position) + this.width >= lastStop
-            );
+
+            const isDisabled = Math.abs(position) + this.width >= lastStop;
+            this.nextFlipper.classList.toggle("disabled", isDisabled);
+            this.nextFlipper.disabled = isDisabled;
         }
     }
 
