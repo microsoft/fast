@@ -7,6 +7,7 @@ import {
     Observable,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
+import { composedParent } from "../utilities";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
@@ -413,6 +414,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private cssCustomPropertySubscriber = {
         handleChange: () => {
+            CustomPropertyManager.removeFrom(
+                this.target,
+                this.token as CSSDesignToken<T>
+            );
             CustomPropertyManager.addTo(
                 this.target,
                 this.token as CSSDesignToken<T>,
@@ -422,8 +427,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         dispose: () => {
             CustomPropertyManager.removeFrom(
                 this.target,
-                this.token as CSSDesignToken<T>,
-                this.resolveCSSValue(this.value)
+                this.token as CSSDesignToken<T>
             );
         },
     };
@@ -470,8 +474,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             return null;
         }
 
-        if (this.target !== document.body && this.target.parentNode) {
-            const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+        const parent = composedParent(this.target);
+
+        if (this.target !== document.body && parent) {
+            const container = DI.getOrCreateDOMContainer(parent);
 
             // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
             if (container.has(DesignTokenNode.channel(this.token), true)) {

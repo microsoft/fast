@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "allow navigation through the message system to open the expanded state of all parent navigation items",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
