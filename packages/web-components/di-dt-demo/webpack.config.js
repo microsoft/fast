@@ -3,8 +3,6 @@ const path = require("path");
 module.exports = function (env, { mode }) {
     const production = mode === "production";
     return {
-        mode: "production",
-        devtool: "none", //production ? "source-maps" : "inline-source-map",
         entry: {
             app: ["./src/main.ts"],
         },

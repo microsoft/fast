@@ -1,22 +1,9 @@
-import {
-    fastCard,
-    fillColor,
-    NeutralFillCard,
-    NeutralForeground,
-    SwatchRGB,
-} from "@microsoft/fast-components";
+import { fillColor, NeutralForeground, neutralPalette } from "@microsoft/fast-components";
 import { DesignSystem, DI, Registration } from "@microsoft/fast-foundation";
+import { demoCardDefinition } from "./components/demo-card";
 
-DI.getOrCreateDOMContainer(document.getElementById("root")!).register(
-    Registration.instance(NeutralFillCard, (element: HTMLElement) => {
-        return SwatchRGB.create(1, 0, 0);
-    })
-);
+DI.getOrCreateDOMContainer().register(Registration.instance(NeutralForeground, () => {}));
 
-DI.getOrCreateDOMContainer().register(
-    Registration.instance(NeutralForeground, (target: HTMLElement) => {
-        return SwatchRGB.create(0, 0, 1);
-    })
-);
+fillColor.withDefault((target: HTMLElement) => neutralPalette.getValueFor(target).get(0));
 
-DesignSystem.getOrCreate().register(fastCard());
+DesignSystem.getOrCreate().withPrefix("fluent").register(demoCardDefinition());

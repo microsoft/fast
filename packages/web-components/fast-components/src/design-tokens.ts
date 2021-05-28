@@ -1,28 +1,28 @@
 import { DesignToken, DI } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
+import { StandardLuminance } from "./color";
 import { PaletteRGB } from "./color-vNext/palette";
 import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
 import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
 import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
-import { SwatchRGB } from "./color-vNext/swatch";
+import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
 import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
 import { neutralFillToggle as neutralFillToggleAlgorithm } from "./color-vNext/recipes/neutral-fill-toggle";
-import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
 import { neutralFocus as neutralFocusAlgorithm } from "./color-vNext/recipes/neutral-focus";
 import { neutralFocusInnerAccent as neutralFocusInnerAccentAlgorithm } from "./color-vNext/recipes/neutral-focus-inner-accent";
-import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes/neutral-outline";
-import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
+import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
 import { neutralLayerL1 as neutralLayerL1Algorithm } from "./color-vNext/recipes/neutral-layer-L1";
 import { neutralLayerL2 as neutralLayerL2Algorithm } from "./color-vNext/recipes/neutral-layer-L2";
 import { neutralLayerL3 as neutralLayerL3Algorithm } from "./color-vNext/recipes/neutral-layer-L3";
 import { neutralLayerL4 as neutralLayerL4Algorithm } from "./color-vNext/recipes/neutral-layer-L4";
+import { neutralOutline as NeutralOutlineAlgorithm } from "./color-vNext/recipes/neutral-outline";
+import { SwatchRGB } from "./color-vNext/swatch";
 import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
-import { StandardLuminance } from "./color";
 
 const { create } = DesignToken;
 
@@ -771,9 +771,14 @@ export const NeutralForeground = DI.createInterface<
 /** @public */
 export const neutralForegroundRest = create<SwatchRGB>(
     "neutral-foreground-rest"
-).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralForeground)(element)
-);
+).withDefault((element: HTMLElement) => {
+    const container = DI.getOrCreateDOMContainer(element);
+
+    console.log("getAll", container.getAll(NeutralForeground, true)); // Empty
+    console.log("get", container.get(NeutralForeground)); // A function
+
+    return container.get(NeutralForeground)(element);
+});
 
 // Neutral Outline
 /** @public */
