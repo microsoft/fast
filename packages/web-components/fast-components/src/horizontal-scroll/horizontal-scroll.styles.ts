@@ -96,10 +96,6 @@ export const ActionsStyles = css`
         display: inline;
         z-index: 1;
     }
-
-    .scroll-action:focus {
-        outline: 0;
-    }
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
 /**
