@@ -81,7 +81,7 @@ export const cssLayoutStyles = css`
     .control-radio-region > div {
         background: ${radioBackgroundColor};
         border-radius: ${borderRadius};
-        border: 3px solid var(--background-color);
+        border: 3px solid #1b1b1b;
         position: relative;
         height: 24px;
     }
