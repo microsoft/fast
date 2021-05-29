@@ -23,12 +23,7 @@ export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll> = html`
                             @click="${x => x.scrollToPrevious()}"
                             tabindex="-1"
                         >
-                            <slot name="previous-flipper">
-                                <fast-flipper
-                                    direction="previous"
-                                    aria-hidden="false"
-                                ></fast-flipper>
-                            </slot>
+                            <slot name="previous-flipper"></slot>
                         </button>
                     </div>
                 `
@@ -60,9 +55,7 @@ export const HorizontalScrollTemplate: ViewTemplate<HorizontalScroll> = html`
                             @click="${x => x.scrollToNext()}"
                             tabindex="-1"
                         >
-                            <slot name="next-flipper">
-                                <fast-flipper aria-hidden="false"></fast-flipper>
-                            </slot>
+                            <slot name="next-flipper"></slot>
                         </button>
                     </div>
                 `
