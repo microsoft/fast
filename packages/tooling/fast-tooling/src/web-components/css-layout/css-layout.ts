@@ -192,11 +192,19 @@ export class CSSLayout extends FormAssociatedCSSLayout {
                     CSSLayoutCSSPropertyName,
                     string
                 ]): string => {
-                    return `${propertyName}: ${propertyValue};`;
+                    if (propertyValue) {
+                        return `${propertyName}: ${propertyValue};`;
+                    }
+
+                    return "";
                 }
             )
             .reduce((previousValue: string, currentValue: string): string => {
-                return `${previousValue} ${currentValue}`;
+                if (currentValue) {
+                    return `${previousValue} ${currentValue}`;
+                }
+
+                return previousValue;
             }, "")
             .trimStart();
     }
