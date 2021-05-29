@@ -297,4 +297,25 @@ describe("FoundationElement", () => {
             expect(element.shadowRoot).to.be.null;
         });
     });
+
+    describe("subclasses", () => {
+        it("should be able to use the @customElement decorator", async () => {
+            class BaseClass extends FoundationElement {}
+
+            const name = `fast-${uniqueElementName()}`;
+            @customElement({
+                name,
+                template: html`test`
+            })
+            class Subclass extends BaseClass {}
+
+            const { element, parent, connect, disconnect } = await fixture<Subclass>(name);
+
+            await connect();
+
+            expect(element.shadowRoot!.innerHTML).to.equal('test');
+
+            await disconnect();
+        });
+    });
 });
