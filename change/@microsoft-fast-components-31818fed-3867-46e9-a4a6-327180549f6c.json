@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Adding tabbing to horizontal-scroll flippers",
+  "packageName": "@microsoft/fast-components",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
