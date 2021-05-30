@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-element_v1.4.0",
+      "version": "1.4.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 21 May 2021 17:48:08 GMT",
       "tag": "@microsoft/fast-element_v1.4.0",
       "version": "1.4.0",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Ensure stale Design Token custom property stylesheets are removed when token values change.",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

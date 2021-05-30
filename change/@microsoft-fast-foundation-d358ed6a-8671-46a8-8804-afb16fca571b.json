@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix bug caused by asserting parentElement was not null",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

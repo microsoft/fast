@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 27 May 2021 07:34:58 GMT and should not be manually modified.
+This log was last generated on Sun, 30 May 2021 07:42:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.13
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- allow navigation through the message system to open the expanded state of all parent navigation items (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.12
 

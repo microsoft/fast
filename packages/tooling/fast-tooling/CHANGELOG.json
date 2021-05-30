@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "disable tests that are causing intermitent CI failures",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "58a230232f1bd5a5ac8735ec486c20a31e99d1ed",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 27 May 2021 07:34:58 GMT",
       "tag": "@microsoft/fast-tooling_v0.21.1",
       "version": "0.21.1",

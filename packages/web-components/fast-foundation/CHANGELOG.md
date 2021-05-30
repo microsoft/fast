@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
+This log was last generated on Sun, 30 May 2021 07:42:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.4
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- Ensure stale Design Token custom property stylesheets are removed when token values change. (nicholasrice@users.noreply.github.com)
+- fix bug caused by asserting parentElement was not null (nicholasrice@users.noreply.github.com)
 
 ## 1.24.3
 
