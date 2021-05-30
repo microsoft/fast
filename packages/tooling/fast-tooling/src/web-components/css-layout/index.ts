@@ -15,12 +15,5 @@ import { CSSLayout } from "./css-layout";
     template,
     styles,
 })
-export class FASTToolingCSSLayout extends CSSLayout {
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-    }
-}
+export class FASTToolingCSSLayout extends CSSLayout {}
 export { cssLayoutCssProperties } from "./css-layout.css-properties";

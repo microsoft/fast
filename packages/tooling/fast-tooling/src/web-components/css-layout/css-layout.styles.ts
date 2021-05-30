@@ -7,7 +7,7 @@ const activeRadioBorderColor = "#282828";
 const borderRadius = "3px";
 
 export const cssLayoutStyles = css`
-    .root {
+    :host {
         display: flex;
         flex-direction: column;
         margin-bottom: 10px;

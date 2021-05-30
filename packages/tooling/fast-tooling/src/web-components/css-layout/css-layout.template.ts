@@ -535,243 +535,238 @@ const columnGap = html`
  */
 export const CSSLayoutTemplate = html<CSSLayout>`
     <template>
-        <div class="root">
+        <div class="control-region">
+            <fast-switch @change="${(x, c) => x.handleToggleCSSLayout()}">
+                Enable Flexbox
+            </fast-switch>
+        </div>
+        <div class="flexbox-controls${x => (x.flexEnabled ? ` active` : "")}">
             <div class="control-region">
-                <fast-switch @change="${(x, c) => x.handleToggleCSSLayout()}">
-                    Enable Flexbox
-                </fast-switch>
+                <label for="fast-tooling-css-flex-direction">Direction</label>
+                <div class="control-radio-region">
+                    ${repeat(
+                        x => x.flexDirectionOptions,
+                        html<string, CSSLayout>`
+                            <div
+                                class="${(x, c) => c.parent.flexDirectionName} ${x =>
+                                    x} ${(x, c) =>
+                                    x === c.parent.flexDirectionValue ? "active" : ""}"
+                            >
+                                ${x =>
+                                    x === "row"
+                                        ? flexDirectionRow
+                                        : x === "row-reverse"
+                                        ? flexDirectionRowReverse
+                                        : x === "column"
+                                        ? flexDirectionColumn
+                                        : flexDirectionColumnReverse}
+                                <input
+                                    type="radio"
+                                    aria-label="${x => x}"
+                                    name="${(x, c) => c.parent.flexDirectionName}"
+                                    value="${x => x}"
+                                    ?selected="${(x, c) =>
+                                        c.parent.flexDirectionValue === x}"
+                                    @change="${(x, c) =>
+                                        c.parent.handleCSSChange(
+                                            "flexDirectionValue",
+                                            c.event
+                                        )}"
+                                />
+                            </div>
+                        `
+                    )}
+                </div>
             </div>
-            <div class="flexbox-controls${x => (x.flexEnabled ? ` active` : "")}">
-                <div class="control-region">
-                    <label for="fast-tooling-css-flex-direction">Direction</label>
-                    <div class="control-radio-region">
-                        ${repeat(
-                            x => x.flexDirectionOptions,
-                            html<string, CSSLayout>`
-                                <div
-                                    class="${(x, c) => c.parent.flexDirectionName} ${x =>
-                                        x} ${(x, c) =>
-                                        x === c.parent.flexDirectionValue
-                                            ? "active"
-                                            : ""}"
-                                >
-                                    ${x =>
-                                        x === "row"
-                                            ? flexDirectionRow
-                                            : x === "row-reverse"
-                                            ? flexDirectionRowReverse
-                                            : x === "column"
-                                            ? flexDirectionColumn
-                                            : flexDirectionColumnReverse}
-                                    <input
-                                        type="radio"
-                                        aria-label="${x => x}"
-                                        name="${(x, c) => c.parent.flexDirectionName}"
-                                        value="${x => x}"
-                                        ?selected="${(x, c) =>
-                                            c.parent.flexDirectionValue === x}"
-                                        @change="${(x, c) =>
-                                            c.parent.handleCSSChange(
-                                                "flexDirectionValue",
-                                                c.event
-                                            )}"
-                                    />
-                                </div>
-                            `
-                        )}
-                    </div>
-                </div>
-                <div class="control-region">
-                    <label for="fast-tooling-css-justify-content">Justify Content</label>
-                    <div class="control-radio-region">
-                        ${repeat(
-                            x => x.justifyContentOptions,
-                            html<string, CSSLayout>`
-                                <div
-                                    class="${(x, c) => c.parent.justifyContentName} ${x =>
-                                        x} ${(x, c) =>
-                                        x === c.parent.justifyContentValue
-                                            ? "active"
-                                            : ""}"
-                                >
-                                    ${x =>
-                                        x === "flex-start"
-                                            ? justifyContentStart
-                                            : x === "flex-end"
-                                            ? justifyContentEnd
-                                            : x === "center"
-                                            ? justifyContentCenter
-                                            : x === "space-around"
-                                            ? justifyContentSpaceAround
-                                            : x === "space-between"
-                                            ? justifyContentSpaceBetween
-                                            : justifyContentSpaceEvenly}
-                                    <input
-                                        type="radio"
-                                        aria-label="${x => x}"
-                                        name="${(x, c) => c.parent.justifyContentName}"
-                                        value="${x => x}"
-                                        ?selected="${(x, c) =>
-                                            c.parent.justifyContentValue === x}"
-                                        @change="${(x, c) =>
-                                            c.parent.handleCSSChange(
-                                                "justifyContentValue",
-                                                c.event
-                                            )}"
-                                    />
-                                </div>
-                            `
-                        )}
-                    </div>
-                </div>
-                <div class="control-region">
-                    <label for="fast-tooling-css-align-content">Align Content</label>
-                    <div class="control-radio-region">
-                        ${repeat(
-                            x => x.alignContentOptions,
-                            html<string, CSSLayout>`
-                                <div
-                                    class="${(x, c) => c.parent.alignContentName} ${x =>
-                                        x} ${(x, c) =>
-                                        x === c.parent.alignContentValue ? "active" : ""}"
-                                >
-                                    ${x =>
-                                        x === "flex-start"
-                                            ? alignContentStart
-                                            : x === "flex-end"
-                                            ? alignContentEnd
-                                            : x === "center"
-                                            ? alignContentCenter
-                                            : x === "space-around"
-                                            ? alignContentSpaceAround
-                                            : x === "space-between"
-                                            ? alignContentSpaceBetween
-                                            : x === "space-evenly"
-                                            ? alignContentSpaceEvenly
-                                            : alignContentStretch}
-                                    <input
-                                        type="radio"
-                                        aria-label="${x => x}"
-                                        name="${(x, c) => c.parent.alignContentName}"
-                                        value="${x => x}"
-                                        ?selected="${(x, c) =>
-                                            c.parent.alignContentValue === x}"
-                                        @change="${(x, c) =>
-                                            c.parent.handleCSSChange(
-                                                "alignContentValue",
-                                                c.event
-                                            )}"
-                                    />
-                                </div>
-                            `
-                        )}
-                    </div>
-                </div>
-                <div class="control-region">
-                    <label for="fast-tooling-css-align-items">Align Items</label>
-                    <div class="control-radio-region">
-                        ${repeat(
-                            x => x.alignItemsOptions,
-                            html<string, CSSLayout>`
-                                <div
-                                    class="${(x, c) => c.parent.alignItemsName} ${x =>
-                                        x} ${(x, c) =>
-                                        x === c.parent.alignItemsValue ? "active" : ""}"
-                                >
-                                    ${x =>
-                                        x === "flex-start"
-                                            ? alignItemsStart
-                                            : x === "flex-end"
-                                            ? alignItemsEnd
-                                            : x === "center"
-                                            ? alignItemsCenter
-                                            : alignItemsStretch}
-                                    <input
-                                        type="radio"
-                                        aria-label="${x => x}"
-                                        name="${(x, c) => c.parent.alignItemsName}"
-                                        value="${x => x}"
-                                        ?selected="${(x, c) =>
-                                            c.parent.alignItemsValue === x}"
-                                        @change="${(x, c) =>
-                                            c.parent.handleCSSChange(
-                                                "alignItemsValue",
-                                                c.event
-                                            )}"
-                                    />
-                                </div>
-                            `
-                        )}
-                    </div>
-                </div>
-                <div class="control-region row">
-                    <div class="control-numberfield-region">
-                        <div>
-                            <label for="fast-tooling-css-row-gap">Row gap</label>
-                            <div class="numberfield-item">
-                                <div class="icon">
-                                    ${rowGap}
-                                </div>
+            <div class="control-region">
+                <label for="fast-tooling-css-justify-content">Justify Content</label>
+                <div class="control-radio-region">
+                    ${repeat(
+                        x => x.justifyContentOptions,
+                        html<string, CSSLayout>`
+                            <div
+                                class="${(x, c) => c.parent.justifyContentName} ${x =>
+                                    x} ${(x, c) =>
+                                    x === c.parent.justifyContentValue ? "active" : ""}"
+                            >
+                                ${x =>
+                                    x === "flex-start"
+                                        ? justifyContentStart
+                                        : x === "flex-end"
+                                        ? justifyContentEnd
+                                        : x === "center"
+                                        ? justifyContentCenter
+                                        : x === "space-around"
+                                        ? justifyContentSpaceAround
+                                        : x === "space-between"
+                                        ? justifyContentSpaceBetween
+                                        : justifyContentSpaceEvenly}
                                 <input
-                                    class="css-row-gap"
-                                    type="number"
-                                    id="fast-tooling-css-row-gap"
-                                    @input="${(x, c) =>
-                                        x.handleCSSChange("rowGapValue", c.event)}"
+                                    type="radio"
+                                    aria-label="${x => x}"
+                                    name="${(x, c) => c.parent.justifyContentName}"
+                                    value="${x => x}"
+                                    ?selected="${(x, c) =>
+                                        c.parent.justifyContentValue === x}"
+                                    @change="${(x, c) =>
+                                        c.parent.handleCSSChange(
+                                            "justifyContentValue",
+                                            c.event
+                                        )}"
                                 />
                             </div>
+                        `
+                    )}
+                </div>
+            </div>
+            <div class="control-region">
+                <label for="fast-tooling-css-align-content">Align Content</label>
+                <div class="control-radio-region">
+                    ${repeat(
+                        x => x.alignContentOptions,
+                        html<string, CSSLayout>`
+                            <div
+                                class="${(x, c) => c.parent.alignContentName} ${x =>
+                                    x} ${(x, c) =>
+                                    x === c.parent.alignContentValue ? "active" : ""}"
+                            >
+                                ${x =>
+                                    x === "flex-start"
+                                        ? alignContentStart
+                                        : x === "flex-end"
+                                        ? alignContentEnd
+                                        : x === "center"
+                                        ? alignContentCenter
+                                        : x === "space-around"
+                                        ? alignContentSpaceAround
+                                        : x === "space-between"
+                                        ? alignContentSpaceBetween
+                                        : x === "space-evenly"
+                                        ? alignContentSpaceEvenly
+                                        : alignContentStretch}
+                                <input
+                                    type="radio"
+                                    aria-label="${x => x}"
+                                    name="${(x, c) => c.parent.alignContentName}"
+                                    value="${x => x}"
+                                    ?selected="${(x, c) =>
+                                        c.parent.alignContentValue === x}"
+                                    @change="${(x, c) =>
+                                        c.parent.handleCSSChange(
+                                            "alignContentValue",
+                                            c.event
+                                        )}"
+                                />
+                            </div>
+                        `
+                    )}
+                </div>
+            </div>
+            <div class="control-region">
+                <label for="fast-tooling-css-align-items">Align Items</label>
+                <div class="control-radio-region">
+                    ${repeat(
+                        x => x.alignItemsOptions,
+                        html<string, CSSLayout>`
+                            <div
+                                class="${(x, c) => c.parent.alignItemsName} ${x => x} ${(
+                                    x,
+                                    c
+                                ) => (x === c.parent.alignItemsValue ? "active" : "")}"
+                            >
+                                ${x =>
+                                    x === "flex-start"
+                                        ? alignItemsStart
+                                        : x === "flex-end"
+                                        ? alignItemsEnd
+                                        : x === "center"
+                                        ? alignItemsCenter
+                                        : alignItemsStretch}
+                                <input
+                                    type="radio"
+                                    aria-label="${x => x}"
+                                    name="${(x, c) => c.parent.alignItemsName}"
+                                    value="${x => x}"
+                                    ?selected="${(x, c) =>
+                                        c.parent.alignItemsValue === x}"
+                                    @change="${(x, c) =>
+                                        c.parent.handleCSSChange(
+                                            "alignItemsValue",
+                                            c.event
+                                        )}"
+                                />
+                            </div>
+                        `
+                    )}
+                </div>
+            </div>
+            <div class="control-region row">
+                <div class="control-numberfield-region">
+                    <div>
+                        <label for="fast-tooling-css-row-gap">Row gap</label>
+                        <div class="numberfield-item">
+                            <div class="icon">
+                                ${rowGap}
+                            </div>
+                            <input
+                                class="css-row-gap"
+                                type="number"
+                                id="fast-tooling-css-row-gap"
+                                @input="${(x, c) =>
+                                    x.handleCSSChange("rowGapValue", c.event)}"
+                            />
                         </div>
-                        <div>
-                            <label for="fast-tooling-css-column-gap">Column gap</label>
-                            <div class="numberfield-item">
-                                <div class="icon">
-                                    ${columnGap}
-                                </div>
-                                <input
-                                    class="css-column-gap"
-                                    type="number"
-                                    id="fast-tooling-css-column-gap"
-                                    @input="${(x, c) =>
-                                        x.handleCSSChange("columnGapValue", c.event)}"
-                                />
+                    </div>
+                    <div>
+                        <label for="fast-tooling-css-column-gap">Column gap</label>
+                        <div class="numberfield-item">
+                            <div class="icon">
+                                ${columnGap}
                             </div>
+                            <input
+                                class="css-column-gap"
+                                type="number"
+                                id="fast-tooling-css-column-gap"
+                                @input="${(x, c) =>
+                                    x.handleCSSChange("columnGapValue", c.event)}"
+                            />
                         </div>
                     </div>
                 </div>
-                <div class="control-region">
-                    <label for="fast-tooling-css-flex-wrap">Wrap</label>
-                    <div class="control-radio-region">
-                        ${repeat(
-                            x => x.flexWrapOptions,
-                            html<string, CSSLayout>`
-                                <div
-                                    class="${(x, c) => c.parent.flexWrapName} ${x =>
-                                        x} ${(x, c) =>
-                                        x === c.parent.flexWrapValue ? "active" : ""}"
-                                >
-                                    ${x =>
-                                        x === "wrap"
-                                            ? flexWrapWrap
-                                            : x === "wrap-reverse"
-                                            ? flexWrapWrapReverse
-                                            : flexWrapNoWrap}
-                                    <input
-                                        type="radio"
-                                        aria-label="${x => x}"
-                                        name="${(x, c) => c.parent.flexWrapName}"
-                                        value="${x => x}"
-                                        ?selected="${(x, c) =>
-                                            c.parent.flexWrapValue === x}"
-                                        @change="${(x, c) =>
-                                            c.parent.handleCSSChange(
-                                                "flexWrapValue",
-                                                c.event
-                                            )}"
-                                    />
-                                </div>
-                            `
-                        )}
-                    </div>
+            </div>
+            <div class="control-region">
+                <label for="fast-tooling-css-flex-wrap">Wrap</label>
+                <div class="control-radio-region">
+                    ${repeat(
+                        x => x.flexWrapOptions,
+                        html<string, CSSLayout>`
+                            <div
+                                class="${(x, c) => c.parent.flexWrapName} ${x => x} ${(
+                                    x,
+                                    c
+                                ) => (x === c.parent.flexWrapValue ? "active" : "")}"
+                            >
+                                ${x =>
+                                    x === "wrap"
+                                        ? flexWrapWrap
+                                        : x === "wrap-reverse"
+                                        ? flexWrapWrapReverse
+                                        : flexWrapNoWrap}
+                                <input
+                                    type="radio"
+                                    aria-label="${x => x}"
+                                    name="${(x, c) => c.parent.flexWrapName}"
+                                    value="${x => x}"
+                                    ?selected="${(x, c) => c.parent.flexWrapValue === x}"
+                                    @change="${(x, c) =>
+                                        c.parent.handleCSSChange(
+                                            "flexWrapValue",
+                                            c.event
+                                        )}"
+                                />
+                            </div>
+                        `
+                    )}
                 </div>
             </div>
         </div>
