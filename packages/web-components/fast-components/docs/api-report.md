@@ -195,6 +195,11 @@ export const accordionItemStyles: (context: any, definition: any) => import("@mi
 // @public
 export const accordionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// Warning: (ae-internal-missing-underscore) The name "ambientShadow" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const ambientShadow = "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2 - var(--background-luminance, 1))))";
+
 // Warning: (ae-internal-missing-underscore) The name "Anchor" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -285,6 +290,11 @@ export const dialogStyles: (context: any, definition: any) => import("@microsoft
 // @public (undocumented)
 export const direction: import("@microsoft/fast-foundation").CSSDesignToken<Direction>;
 
+// Warning: (ae-internal-missing-underscore) The name "directionalShadow" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const directionalShadow = "0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13 * (2 - var(--background-luminance, 1))))";
+
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
     constructor(ltr: ElementStyles | null, rtl: ElementStyles | null);
@@ -321,6 +331,9 @@ export const disclosureStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const dividerStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const elevation: string;
 
 // @public
 export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
