@@ -1453,6 +1453,7 @@ export interface SwatchRGB extends Swatch {
 // @public (undocumented)
 export const SwatchRGB: Readonly<{
     create(r: number, g: number, b: number): SwatchRGB;
+    fromObject(obj: Record<"r" | "g" | "b", number>): SwatchRGB;
 }>;
 
 // @public

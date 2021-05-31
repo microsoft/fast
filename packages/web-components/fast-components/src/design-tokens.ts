@@ -772,12 +772,7 @@ export const NeutralForeground = DI.createInterface<
 export const neutralForegroundRest = create<SwatchRGB>(
     "neutral-foreground-rest"
 ).withDefault((element: HTMLElement) => {
-    const container = DI.getOrCreateDOMContainer(element);
-
-    console.log("getAll", container.getAll(NeutralForeground, true)); // Empty
-    console.log("get", container.get(NeutralForeground)); // A function
-
-    return container.get(NeutralForeground)(element);
+    return DI.getOrCreateDOMContainer(element).get(NeutralForeground)(element);
 });
 
 // Neutral Outline

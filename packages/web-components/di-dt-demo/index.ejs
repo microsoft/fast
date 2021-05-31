@@ -5,16 +5,27 @@
         <title>Adaptive UI v2</title>
     </head>
     <style>
+        body, html {
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
         body {
             background-color: var(--fill-color);
             color: var(--neutral-foreground-rest);
             font-family: var(--body-font);
         }
+
+        #root {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
     </style>
     <body>
         <div id="root">
-            <fluent-demo-card>Foobar</fluent-demo-card>
+            <fluent-demo-card><h2 slot="heading">Some Heading</h2></fluent-demo-card>
         </div>
-        <script src="dist/bundle.js"></script>
     </body>
 </html>
