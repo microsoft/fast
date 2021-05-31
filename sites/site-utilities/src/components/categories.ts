@@ -24,7 +24,7 @@ import fastTextFieldDefinition from "@microsoft/fast-components/dist/esm/text-fi
 import fastTooltipDefinition from "@microsoft/fast-components/dist/esm/tooltip/tooltip.vscode.definition.json";
 import fastDesignSystemProviderDefinition from "@microsoft/fast-components/dist/esm/design-system-provider/design-system-provider.vscode.definition.json";
 
-export const componentCategories: FormCategoryDictionary = {
+const componentCategories: FormCategoryDictionary = {
     [fastAccordionItemDefinition.tags[0].name]: {
         "": [
             {
@@ -330,3 +330,13 @@ export const componentCategories: FormCategoryDictionary = {
         ],
     },
 };
+
+/**
+ * Duplicate categories for Fluent UI components
+ */
+Object.keys(componentCategories).forEach((componentName: string) => {
+    componentCategories[componentName.replace("fast", "fluent")] =
+        componentCategories[componentName];
+});
+
+export { componentCategories };

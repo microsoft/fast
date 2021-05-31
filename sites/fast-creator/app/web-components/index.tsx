@@ -3,6 +3,7 @@
 import React from "react";
 import {
     FASTButton,
+    FASTOption,
     FASTSelect,
     FASTSlider,
     FASTSliderLabel,
@@ -29,6 +30,7 @@ import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilit
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
 import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
+import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { FormId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
@@ -38,6 +40,8 @@ import { defaultDevices, Device } from "./devices";
  */
 FASTButton;
 FASTColorPicker;
+FASTOption;
+FASTSelect;
 FASTSlider;
 FASTSliderLabel;
 FASTTab;
@@ -45,6 +49,7 @@ FASTTabs;
 FASTTabPanel;
 HTMLRender;
 HTMLRenderLayerNavgation;
+FASTToolingCSSLayout;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -271,6 +276,22 @@ export function renderFormTabs(
                 />
             </fast-tab-panel>
         </fast-tabs>
+    );
+}
+
+export function renderComponentLibrarySelect(
+    handleUpdateComponentLibrary: (e: React.ChangeEvent<HTMLSelectElement>) => void
+): React.ReactNode {
+    return (
+        <fast-select
+            events={{
+                change: handleUpdateComponentLibrary,
+            }}
+            style={{ width: "100%", minWidth: "150px" }}
+        >
+            <fast-option value={"fast"}>FAST components</fast-option>
+            <fast-option value={"fluent"}>Fluent components</fast-option>
+        </fast-select>
     );
 }
 

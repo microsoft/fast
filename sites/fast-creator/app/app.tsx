@@ -11,7 +11,11 @@ export default class App extends React.Component<{}, {}> {
     public render(): React.ReactNode {
         return (
             <BrowserRouter>
-                <fast-design-system-provider use-defaults density="-2">
+                <fast-design-system-provider
+                    use-defaults
+                    density="-2"
+                    style={{ height: "100%" }}
+                >
                     <Route component={Creator} exact={true} path="/" />
                     <Route component={Preview} exact={true} path="/preview" />
                 </fast-design-system-provider>

@@ -1,9 +1,14 @@
 import { SchemaDictionary } from "@microsoft/fast-tooling";
 import textSchema from "./text.schema";
-import { fastComponentSchemas, nativeElementSchemas } from "./definition-mapper";
+import {
+    fastComponentSchemas,
+    fluentComponentSchemas,
+    nativeElementSchemas,
+} from "./definition-mapper";
 
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
+    ...fluentComponentSchemas,
     ...nativeElementSchemas,
     [textSchema.id]: textSchema,
 };

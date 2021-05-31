@@ -4,6 +4,7 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
+    DataDictionary,
     DataType,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
@@ -31,12 +32,14 @@ import {
     DirectionSwitch,
     Editor,
     fastComponentExtendedSchemas,
+    fluentComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
+import { DesignSystemDefaults as fluentDesignSystemDefaults } from "@fluentui/web-components";
 import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
@@ -46,6 +49,7 @@ import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
 import {
+    renderComponentLibrarySelect,
     renderDeviceSelect,
     renderDevToolToggle,
     renderFormTabs,
@@ -54,20 +58,39 @@ import { Device } from "./web-components/devices";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
-const schemaDictionary: SchemaDictionary = {
+// TODO: swap & reinitialize schema dictionary with FAST/Fluent when selection occurs in
+// handleUpdateComponentLibrary method
+const fastSchemaDictionary: SchemaDictionary = {
     ...fastComponentExtendedSchemas,
+    ...nativeElementExtendedSchemas,
+    [textSchema.id]: textSchema,
+};
+const fluentSchemaDictionary: SchemaDictionary = {
+    ...fluentComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
     [textSchema.id]: textSchema,
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
+export const designSystemLinkedDataId: string = "design-system";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
 
     public viewerContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
     public editorContainerRef: React.RefObject<HTMLDivElement> = React.createRef();
+    private schemaDictionary: SchemaDictionary = fastSchemaDictionary;
+    private initialDataDictionary: DataDictionary<any> = [
+        {
+            [defaultElementDataId]: {
+                schemaId: divTag,
+                data: {},
+            },
+        },
+        defaultElementDataId,
+    ];
+    private designSystemDefaults: any = fastDesignSystemDefaults;
     private windowResizing: number;
     private devices: Device[];
     private linkedDataControl = new StandardControlPlugin({
@@ -100,8 +123,6 @@ class Creator extends Editor<{}, CreatorState> {
     constructor(props: {}) {
         super(props);
 
-        const designSystemLinkedDataId: string = "design-system";
-
         this.devices = this.getDevices();
 
         if ((window as any).Worker) {
@@ -124,40 +145,15 @@ class Creator extends Editor<{}, CreatorState> {
             deviceId: this.devices[0].id,
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            accentColor: this.designSystemDefaults.accentBaseColor,
             activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
             mobileFormVisible: false,
             mobileNavigationVisible: false,
             activeFormId: FormId.component,
-            designSystemDataDictionary: [
-                {
-                    [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
-                        data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
-                            direction: Direction.ltr,
-                            "background-color": neutralLayerL1(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance: StandardLuminance.LightMode,
-                                })
-                            ),
-                        },
-                    },
-                },
-                designSystemLinkedDataId,
-            ],
-            dataDictionary: [
-                {
-                    [defaultElementDataId]: {
-                        schemaId: divTag,
-                        data: {},
-                    },
-                },
-                defaultElementDataId,
-            ],
+            designSystemDataDictionary: this.getInitialDesignSystemDataDictionary("fast"),
+            dataDictionary: this.initialDataDictionary,
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
         };
@@ -182,7 +178,12 @@ class Creator extends Editor<{}, CreatorState> {
                         title={"Creator"}
                         version={"ALPHA"}
                     />
-                    <div style={{ height: "calc(100% - 48px)" }}>
+                    <div style={{ height: "calc(100% - 88px)" }}>
+                        <div style={{ maxHeight: "40px", padding: "4px" }}>
+                            {renderComponentLibrarySelect(
+                                this.handleUpdateComponentLibrary
+                            )}
+                        </div>
                         <ModularNavigation
                             messageSystem={this.fastMessageSystem}
                             types={[DataType.object]}
@@ -240,7 +241,8 @@ class Creator extends Editor<{}, CreatorState> {
                                         accentBaseColor={
                                             accentColor !== undefined
                                                 ? accentColor
-                                                : fastDesignSystemDefaults.accentBaseColor
+                                                : this.designSystemDefaults
+                                                      .accentBaseColor
                                         }
                                         onAccentColorPickerChange={
                                             this.handleAccentColorPickerChange
@@ -301,6 +303,67 @@ class Creator extends Editor<{}, CreatorState> {
         );
     }
 
+    private getInitialDesignSystemDataDictionary(
+        componentPrefix: string
+    ): DataDictionary<any> {
+        return [
+            {
+                [designSystemLinkedDataId]: {
+                    schemaId: `${componentPrefix}-design-system-provider`,
+                    data: {
+                        "use-defaults": true,
+                        "accent-base-color": this.designSystemDefaults.accentBaseColor,
+                        direction: Direction.ltr,
+                        "background-color": neutralLayerL1(
+                            Object.assign({}, this.designSystemDefaults, {
+                                baseLayerLuminance: StandardLuminance.LightMode,
+                            })
+                        ),
+                    },
+                },
+            },
+            designSystemLinkedDataId,
+        ];
+    }
+
+    private handleUpdateComponentLibrary = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ): void => {
+        this.schemaDictionary =
+            e.target.value === "fast" ? fastSchemaDictionary : fluentSchemaDictionary;
+        this.designSystemDefaults =
+            e.target.value === "fast"
+                ? fastDesignSystemDefaults
+                : fluentDesignSystemDefaults;
+
+        this.setState(
+            {
+                dataDictionary: this.initialDataDictionary,
+                activeDictionaryId: defaultElementDataId,
+                accentColor:
+                    e.target.value === "fast"
+                        ? fastDesignSystemDefaults.accentBaseColor
+                        : fluentDesignSystemDefaults.accentBaseColor,
+                designSystemDataDictionary: this.getInitialDesignSystemDataDictionary(
+                    e.target.value
+                ),
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    dataDictionary: this.state.dataDictionary,
+                    schemaDictionary: this.schemaDictionary,
+                });
+                this.updateDesignSystemDataDictionaryState(
+                    this.state.designSystemDataDictionary[0][
+                        this.state.designSystemDataDictionary[1]
+                    ].data as any
+                );
+                this.updateEditorContent(this.state.dataDictionary);
+            }
+        );
+    };
+
     private handleFormVisibility = (formId): void => {
         this.setState({
             activeFormId: formId,
@@ -326,12 +389,12 @@ class Creator extends Editor<{}, CreatorState> {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: this.schemaDictionary,
                 });
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: this.schemaDictionary,
                 });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
@@ -370,7 +433,7 @@ class Creator extends Editor<{}, CreatorState> {
     };
 
     private handleWindowMessage = (e: MessageEvent): void => {
-        if (e.data) {
+        if (typeof e.data === "string") {
             try {
                 const messageData = JSON.parse(e.data);
 
@@ -378,7 +441,7 @@ class Creator extends Editor<{}, CreatorState> {
                     this.fastMessageSystem.postMessage({
                         type: MessageSystemType.initialize,
                         data: messageData.data,
-                        schemaDictionary,
+                        schemaDictionary: this.schemaDictionary,
                     });
                 }
             } catch (e) {
@@ -392,7 +455,7 @@ class Creator extends Editor<{}, CreatorState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: projectFile.dataDictionary,
-                schemaDictionary,
+                schemaDictionary: this.schemaDictionary,
             })
         );
     };
@@ -525,7 +588,7 @@ class Creator extends Editor<{}, CreatorState> {
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: this.schemaDictionary,
                 });
             }
         );
@@ -556,7 +619,7 @@ class Creator extends Editor<{}, CreatorState> {
 
         this.updateDesignSystemDataDictionaryState({
             "background-color": neutralLayerL1(
-                Object.assign({}, fastDesignSystemDefaults, {
+                Object.assign({}, this.designSystemDefaults, {
                     baseLayerLuminance: updatedTheme,
                 })
             ),

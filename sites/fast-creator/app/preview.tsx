@@ -16,10 +16,12 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
+    fluentComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
+import * as FluentComponents from "@fluentui/web-components";
 import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
@@ -27,6 +29,7 @@ import { HTMLRenderReact } from "./web-components";
 
 // Prevent tree shaking
 FASTComponents;
+FluentComponents;
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
@@ -103,7 +106,12 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             return (
                 <React.Fragment>
-                    <div className="preview" dir={direction} ref={this.ref}>
+                    <div
+                        className="preview"
+                        dir={direction}
+                        ref={this.ref}
+                        style={{ height: "100%" }}
+                    >
                         <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
@@ -138,6 +146,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 .renderRef as any).messageSystem = this.state.htmlRenderMessageSystem;
             (this.renderRef.current.renderRef as any).markupDefinitions = {
                 ...fastComponentDefinitions,
+                ...fluentComponentDefinitions,
                 ...nativeElementDefinitions,
             };
             this.setState({ htmlRenderReady: true });
