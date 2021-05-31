@@ -47,3 +47,4 @@ export * from "./toolbar/index";
 export * from "./tooltip/index";
 export * from "./tree-view/index";
 export * from "./tree-item/index";
+export * from "./custom-elements";
