@@ -39,6 +39,7 @@ export * from "./skeleton/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
 export * from "./styles/direction";
+export * from "./styles/elevation";
 export * from "./switch/index";
 export * from "./tabs/index";
 export * from "./text-area/index";
