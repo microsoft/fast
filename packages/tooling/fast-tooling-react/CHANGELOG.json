@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Mon, 31 May 2021 07:44:04 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.14",
+      "version": "2.8.14",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove a redundant design system provider",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "aef1629295c1ab4c8dbfef5b12a77c1dffda5c53",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 May 2021 07:42:30 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.13",
       "version": "2.8.13",

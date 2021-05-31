@@ -59,8 +59,8 @@
   "dependencies": {
     "@microsoft/fast-components": "^1.21.3",
     "@microsoft/fast-foundation": "^1.24.4",
-    "@microsoft/fast-tooling": "^0.21.1",
-    "@microsoft/fast-tooling-react": "^2.8.13",
+    "@microsoft/fast-tooling": "^0.22.0",
+    "@microsoft/fast-tooling-react": "^2.8.14",
     "@skatejs/val": "^0.5.0",
     "monaco-editor": "^0.21.2",
     "vscode-html-languageservice": "^3.1.3"

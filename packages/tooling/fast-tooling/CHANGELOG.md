@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 27 May 2021 07:34:58 GMT and should not be manually modified.
+This log was last generated on Mon, 31 May 2021 07:44:04 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.22.0
+
+Mon, 31 May 2021 07:44:04 GMT
+
+### Minor changes
+
+- add a layout web component for css properties (7559015+janechu@users.noreply.github.com)
 
 ## 0.21.1
 
