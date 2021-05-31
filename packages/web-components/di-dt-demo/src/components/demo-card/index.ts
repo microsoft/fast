@@ -1,15 +1,11 @@
-import { Card } from "@microsoft/fast-components";
-import { template } from "./template";
 import { styles } from "./styles";
+import { template } from "./template";
+import { DemoCard, DemoCardDefinitionOptions } from "./demo-card";
 
-export class DemoCard extends Card {
-    constructor() {
-        super();
-    }
-}
-
-export const demoCardDefinition = DemoCard.compose({
+export const demoCardDefinition = DemoCard.compose<DemoCardDefinitionOptions>({
     baseName: "demo-card",
     template,
     styles,
 });
+
+export * from "./demo-card";

@@ -1,16 +1,5 @@
-import {
-    baseLayerLuminance,
-    fastButton,
-    fillColor,
-    NeutralFillCard,
-    neutralFillCard,
-    neutralPalette,
-    PaletteRGB,
-    StandardLuminance,
-    SwatchRGB,
-} from "@microsoft/fast-components";
-import { elements } from "@microsoft/fast-element";
-import { DesignSystem, DesignToken, DI, Registration } from "@microsoft/fast-foundation";
+import { fastButton } from "@microsoft/fast-components";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import { DemoCard, demoCardDefinition } from "./components/demo-card";
 
 const root = document.getElementById("root")!;
