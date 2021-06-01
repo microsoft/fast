@@ -5,6 +5,10 @@ import {
     fillColor,
     neutralForegroundRest,
     typeRampBaseFontSize,
+    typeRampPlus1FontSize,
+    typeRampPlus1LineHeight,
+    typeRampPlus2FontSize,
+    typeRampPlus2LineHeight,
 } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { DesignToken, display } from "@microsoft/fast-foundation";
@@ -37,8 +41,9 @@ export const demoCardStyles = css`
 
     slot[name="heading"]::slotted(*) {
         color: ${neutralForegroundRest};
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseFontSize};
+        font-size: ${typeRampPlus2FontSize};
+        line-height: ${typeRampPlus2LineHeight};
+        font-weight: 400;
     }
 
     fluent-button::part(control) {
