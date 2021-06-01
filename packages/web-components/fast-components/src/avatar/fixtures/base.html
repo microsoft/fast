@@ -4,13 +4,18 @@
         --avatar-fill-accent-secondary: #0078d4;
         --avatar-color-foo: hsl(0, 0%, 100%);
         --avatar-color-bar: grey;
-        --avatar-text-ratio: 2.5;
+        --avatar-text-ratio: 3;
         --badge-fill-primary: var(--accent-fill-rest);
     }
 
     fast-badge {
         right: 0px;
         bottom: 0px;
+    }
+
+    fast-badge::part(control) {
+        min-width: 8px;
+        height: 8px;
     }
 </style>
 <h1>Avatar</h1>
@@ -19,7 +24,7 @@
 
 <h3>Circle avatar with image</h3>
 <fast-avatar
-    src="https://via.placeholder.com/80"
+    src="https://via.placeholder.com/32"
     alt="Annie's profile image"
     link="#"
     name="Annie Lennox"
@@ -40,14 +45,14 @@
 
 <h3>Circle avatar with image and badge</h3>
 <fast-avatar
-    src="https://via.placeholder.com/80"
+    src="https://via.placeholder.com/32"
     alt="Harper's profile image"
     link="#"
     name="Harper Lewis"
     shape="circle"
     fill="accent-primary"
 >
-    <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    <fast-badge slot="badge" fill="primary" circular></fast-badge>
 </fast-avatar>
 
 <h3>Circle avatar with initials and badge</h3>
@@ -58,14 +63,14 @@
     shape="circle"
     fill="accent-secondary"
 >
-    <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    <fast-badge slot="badge" fill="primary" circular></fast-badge>
 </fast-avatar>
 
 <h2>Square shaped avatar</h2>
 
 <h3>Square avatar with image</h3>
 <fast-avatar
-    src="https://via.placeholder.com/80"
+    src="https://via.placeholder.com/32"
     alt="Fang's profile image"
     link="#"
     name="Fang Law"
@@ -84,14 +89,14 @@
 
 <h3>Square avatar with image and badge</h3>
 <fast-avatar
-    src="https://via.placeholder.com/80"
+    src="https://via.placeholder.com/32"
     alt="Albert's profile image"
     link="#"
     name="Albert Wilbur"
     shape="square"
     fill="accent-secondary"
 >
-    <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    <fast-badge slot="badge" fill="primary" circular></fast-badge>
 </fast-avatar>
 
 <h3>Square avatar with initials and badge</h3>
@@ -102,5 +107,5 @@
     shape="square"
     fill="accent-secondary"
 >
-    <fast-badge slot="badge" fill="primary" circular>&nbsp</fast-badge>
+    <fast-badge slot="badge" fill="primary" circular></fast-badge>
 </fast-avatar>
