@@ -1,6 +1,6 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import tabbable from "tabbable";
+import { tabbable } from "tabbable";
 
 /**
  * A Switch Custom HTML Element.
@@ -193,7 +193,7 @@ export class Dialog extends FASTElement {
             return;
         }
 
-        const bounds: HTMLElement[] = this.getTabQueueBounds();
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
 
         if (bounds.length === 0) {
             return;
@@ -217,7 +217,7 @@ export class Dialog extends FASTElement {
         return;
     };
 
-    private getTabQueueBounds = (): HTMLElement[] => {
+    private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
         if (this.tabQueueStart === undefined) {
             return tabbable(this);
         }
@@ -263,7 +263,7 @@ export class Dialog extends FASTElement {
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        const bounds: HTMLElement[] = this.getTabQueueBounds();
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
 
         if (bounds.length > 0) {
             bounds[0].focus();
