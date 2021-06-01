@@ -1,4 +1,4 @@
-import { styles } from "./styles";
+import { demoCardStyles as styles } from "./styles";
 import { template } from "./template";
 import { DemoCard, DemoCardDefinitionOptions } from "./demo-card";
 

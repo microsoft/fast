@@ -6,18 +6,14 @@ import {
     neutralForegroundRest,
     typeRampBaseFontSize,
 } from "@microsoft/fast-components";
-import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    DesignToken,
-    display,
-    ElementDefinitionContext,
-} from "@microsoft/fast-foundation";
+import { css } from "@microsoft/fast-element";
+import { DesignToken, display } from "@microsoft/fast-foundation";
 
 export const cardCornerRadius = DesignToken.create<number>(
     "card-corner-radius"
 ).withDefault(cornerRadius);
 
-export const styles = (context: ElementDefinitionContext): ElementStyles => css`
+export const demoCardStyles = css`
     ${display("grid")} :host {
         --elevation: 4;
         grid-template-rows: calc(${designUnit} * 39px) 1fr auto calc(${designUnit} * 2px);
