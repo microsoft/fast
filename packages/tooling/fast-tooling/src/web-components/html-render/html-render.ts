@@ -84,7 +84,7 @@ export class HTMLRender extends FASTElement {
     }
 
     // Messaging
-
+    private selectTimeout = null;
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
             if (
@@ -101,7 +101,11 @@ export class HTMLRender extends FASTElement {
                 if (e.data.activeDictionaryId) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
                     // give everything time to actually render
-                    window.setTimeout(this.selectActiveDictionaryId, 50);
+                    if(this.selectTimeout)
+                    {
+                        window.clearTimeout(this.selectTimeout);
+                    }
+                    this.selectTimeout = window.setTimeout(this.selectActiveDictionaryId, 50);
                 }
             }
             if (
@@ -111,32 +115,29 @@ export class HTMLRender extends FASTElement {
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
-                    const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" +
-                            this.dataDictionaryAttr +
-                            "=" +
-                            this.activeDictionaryId +
-                            "]"
-                    );
-                    if (el) {
-                        this.currentElement = el;
-                        this.updateLayers(
-                            this.layerActivityId, 
-                            ActivityType.click,
-                            this.activeDictionaryId,
-                            el,
-                            null
-                        );
+                    if(this.selectTimeout)
+                    {
+                        window.clearTimeout(this.selectTimeout);
                     }
+                    this.selectTimeout = window.setTimeout(this.selectActiveDictionaryId, 50);
                 }
             }
         }
     };
 
     private selectActiveDictionaryId = () => {
-        const el: HTMLElement = this.shadowRoot.querySelector(
+        this.selectTimeout = null;
+        const foo: string = this.activeDictionaryId;
+        let el: HTMLElement = this.shadowRoot.querySelector(
             "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
         );
+        while(!el && this.dataDictionary[0][this.activeDictionaryId].parent)
+        {
+            this.activeDictionaryId = this.dataDictionary[0][this.activeDictionaryId].parent.id;
+            el = this.shadowRoot.querySelector(
+                "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+            );
+        }
         if (el) {
             this.currentElement = el;
             this.updateLayers(
@@ -214,6 +215,7 @@ export class HTMLRender extends FASTElement {
             },
             activeNavigationConfigId: "",
         });
+        this.activeDictionaryId = dataId;
         this.currentElement = el;
         this.updateLayers(this.layerActivityId, ActivityType.click, dataId, el, null);
     }
@@ -228,6 +230,7 @@ export class HTMLRender extends FASTElement {
             },
             activeNavigationConfigId: "",
         });
+        this.activeDictionaryId = null;
         this.currentElement = null;
         this.updateLayers(this.layerActivityId, ActivityType.clear, "", null, null);
     }

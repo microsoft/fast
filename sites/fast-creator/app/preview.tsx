@@ -182,9 +182,25 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 dataDictionary: this.state.dataDictionary,
                 schemaDictionary: this.state.schemaDictionary,
             });
+            if(this.state.activeDictionaryId)
+            {
+                this.state.htmlRenderMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: this.state.activeDictionaryId,
+                    options: {
+                        originatorId: "preview",
+                    },
+                    activeNavigationConfigId: "",
+                });
+            }
         }
     }
 
+    private attachComponentsAndData(): void
+    {
+        this.attachMappedComponents();
+    }
 
     private handleNavigation(): void {
         if (this.renderRef.current !== null) {
@@ -222,7 +238,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 return;
             }
 
-            if (messageData !== undefined) {
+            if (messageData !== undefined &&
+                (!(messageData as any).options ||
+                ((messageData as any).options as any).originatorId !==
+                    "preview")) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
                         this.setState(
@@ -289,6 +308,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     };
 
     private handleHtmlMessageSystem = (message: MessageEvent): void => {
+
         if (message.data) {
             if (
                 message.data.type === MessageSystemType.navigation &&
@@ -296,6 +316,9 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.options &&
                 message.data.options.originatorId === HTMLRenderOriginatorId
             ) {
+                this.setState({
+                    activeDictionaryId: message.data.activeDictionaryId
+                });
                 window.postMessage(
                     {
                         type: MessageSystemType.custom,

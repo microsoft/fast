@@ -71,7 +71,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     {
         if(this.currentDataId === datadictionaryId)
         {
-            this.commitEdit();
+            this.cancelEdit();
         }
         this.currentDataId = datadictionaryId;
         this.currentTarget = elementRef;
@@ -88,7 +88,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     {
         const newValue = this.textAreaRef.value;
         this.textAreaActive = false;
-
+        this.textValue = "";
         // update the data dictionary
         // send the data update message
         this.messageSystem.postMessage({
@@ -99,15 +99,6 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
             options: {
                 originatorId: HTMLRenderOriginatorId,
             },
-        });
-        this.messageSystem.postMessage({
-            type: MessageSystemType.navigation,
-            action: MessageSystemNavigationTypeAction.update,
-            activeDictionaryId: this.dataDictionary[0][this.currentDataId].parent.id,
-            options: {
-                originatorId: HTMLRenderOriginatorId,
-            },
-            activeNavigationConfigId: "",
         });
         this.currentDataId = null;
         this.currentTarget = null;
