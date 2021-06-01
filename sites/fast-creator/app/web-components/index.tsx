@@ -290,7 +290,7 @@ export function renderComponentLibrarySelect(
             style={{ width: "100%", minWidth: "150px" }}
         >
             <fast-option value={"fast"}>FAST components</fast-option>
-            <fast-option value={"fluent"}>Fluent components</fast-option>
+            <fast-option value={"fluent"}>Fluent UI components</fast-option>
         </fast-select>
     );
 }

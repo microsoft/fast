@@ -175,7 +175,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             designSystemProvider.setAttribute(
                 "style",
-                "background: var(--background-color); height: 100%;"
+                "background: var(--background-color); min-height: 100%;"
             );
 
             this.state.htmlRenderMessageSystem.postMessage({
