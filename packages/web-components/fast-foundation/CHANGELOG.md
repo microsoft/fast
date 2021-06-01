@@ -1,8 +1,42 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+This log was last generated on Sun, 30 May 2021 07:42:30 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.4
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- Ensure stale Design Token custom property stylesheets are removed when token values change. (nicholasrice@users.noreply.github.com)
+- fix bug caused by asserting parentElement was not null (nicholasrice@users.noreply.github.com)
+
+## 1.24.3
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- allow a float to be accurately represented when a step is a fraction (7559015+janechu@users.noreply.github.com)
+- fix css custom property emission for dependent DesignToken properties (nicholasrice@users.noreply.github.com)
+
+## 1.24.2
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- fix data grid tabbing (scomea@microsoft.com)
+
+## 1.24.1
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- update to Design System Provider to use dom.supportsAdoptedStyleSheets (nicholasrice@users.noreply.github.com)
 
 ## 1.24.0
 

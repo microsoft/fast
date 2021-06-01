@@ -323,6 +323,20 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
                 removeElement(parent);
             });
+
+            it("should revert a CSS custom property back to a previous value when the Design Token value is reverted", () => {
+                const token = DesignToken.create<number>("test");
+                const target = addElement();
+
+                token.setValueFor(target, 12);
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('12');
+
+                token.setValueFor(target, 14);
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('14');
+
+                token.setValueFor(target, 12);
+                expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('12');
+            })
         });
 
         describe("that is not a CSSDesignToken", () => {

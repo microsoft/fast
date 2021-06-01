@@ -252,10 +252,6 @@
             </fast-button>
         </p>
 
-        <p>
-            <fast-data-grid id="samplegrid"></fast-data-grid>
-        </p>
-
         <p></p>
         <h1>Column widths</h1>
         <h2>Each row of a data grid is rendered using css grid layout</h2>
@@ -282,4 +278,36 @@
         </h2>
     </div>
 </template>
-a
+<template title="Manual grid">
+    <div>
+        <fast-data-grid
+            id="samplegrid"
+            grid-template-columns="1fr 1fr"
+            generate-header="none"
+        >
+            <fast-data-grid-row row-type="header">
+                <fast-data-grid-cell grid-column="1" cell-type="columnheader">
+                    Column 1
+                </fast-data-grid-cell>
+                <fast-data-grid-cell grid-column="2" cell-type="columnheader">
+                    Column 2
+                </fast-data-grid-cell>
+            </fast-data-grid-row>
+            <fast-data-grid-row>
+                <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+                <fast-data-grid-cell grid-column="2">1.2</fast-data-grid-cell>
+            </fast-data-grid-row>
+            <fast-data-grid-row>
+                <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
+                <fast-data-grid-cell grid-column="2">2.2</fast-data-grid-cell>
+            </fast-data-grid-row>
+        </fast-data-grid>
+        <p></p>
+        <h1>Manual grid</h1>
+        <h2>Grids can also be defined with html</h2>
+        <h2>
+            Authors will need to define the 'grid-template-columns' of manual grids as
+            well as assign each cell to a 'grid-column'.
+        </h2>
+    </div>
+</template>

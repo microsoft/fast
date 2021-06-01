@@ -2,6 +2,171 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Mon, 31 May 2021 07:44:04 GMT",
+      "tag": "@microsoft/fast-tooling_v0.22.0",
+      "version": "0.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add a layout web component for css properties",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "aef1629295c1ab4c8dbfef5b12a77c1dffda5c53",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "disable tests that are causing intermitent CI failures",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "58a230232f1bd5a5ac8735ec486c20a31e99d1ed",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 27 May 2021 07:34:58 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing message system bugs in html renderer and creator integration",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "67c4d4a194619fea80efc3d8b8f43d36096fcb7e",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.0",
+      "version": "0.21.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix improper pathing for required errors",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2377ba0925c5f92875ea991890eebecaf7e4f9eb",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "use the new data dictionary mapper in the monaco service",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "0cd59456efe851c1514e9c92e270a03e4dacfaac",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.1",
+      "version": "0.20.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Adding markdown spec for inline edit render layer component",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "05a14422c82b149491b565c07442a05d8d905531",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.2",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 May 2021 07:17:34 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add initial documentation for message system",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e137c09f4c12f3e3b224e95bc88a7c5e366597e",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-tooling_v0.20.0",
+      "version": "0.20.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update tooling dependencies to use the carrot syntax for later than versions",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "07eaad7ba29abd423aa00165536aee10a29bdc58",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f56542a588c8b3535c249485987fc7e76e014a56",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add checks in the HTML render component for window scroll and resize events",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "217d5b38c1024ab86911505c992d2683f94bb222",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-tooling_v0.19.2",
       "version": "0.19.2",

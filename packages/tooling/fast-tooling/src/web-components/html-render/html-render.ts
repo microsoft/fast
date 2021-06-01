@@ -21,6 +21,8 @@ import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
+export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
+
 @customElement({
     name: "fast-tooling-html-render",
     template: HTMLRenderTemplate,
@@ -31,13 +33,15 @@ export class HTMLRender extends FASTElement {
 
     private schemaDictionary: SchemaDictionary;
 
-    private navigationConfigId: string = "fast-tooling::html-renderer";
+    private messageOriginatorId: string = HTMLRenderOriginatorId;
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 
     private tabCounter: number = 1;
 
     private currentElement: HTMLElement;
+
+    private activeDictionaryId: string = "";
 
     private renderLayers: HTMLRenderLayer[] = [];
 
@@ -85,23 +89,53 @@ export class HTMLRender extends FASTElement {
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
+                this.currentElement = null;
+                this.updateLayers(ActivityType.clear, "", null);
                 this.renderMarkup();
+                if (e.data.activeDictionaryId) {
+                    this.activeDictionaryId = e.data.activeDictionaryId;
+                    // give everything time to actually render
+                    window.setTimeout(this.selectActiveDictionaryId, 50);
+                }
             }
             if (
                 e.data.type === MessageSystemType.navigation &&
-                e.data.activeNavigationConfigId !== this.navigationConfigId
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
-                    const dataId: string = e.data.activeDictionaryId;
+                    this.activeDictionaryId = e.data.activeDictionaryId;
                     const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" + this.dataDictionaryAttr + "=" + dataId + "]"
+                        "[" +
+                            this.dataDictionaryAttr +
+                            "=" +
+                            this.activeDictionaryId +
+                            "]"
                     );
                     if (el) {
                         this.currentElement = el;
-                        this.updateLayers(ActivityType.click, dataId, el);
+                        this.updateLayers(
+                            ActivityType.click,
+                            this.activeDictionaryId,
+                            el
+                        );
                     }
                 }
             }
+        }
+    };
+
+    private selectActiveDictionaryId = () => {
+        const el: HTMLElement = this.shadowRoot.querySelector(
+            "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+        );
+        if (el) {
+            this.currentElement = el;
+            this.updateLayers(
+                ActivityType.click,
+                this.activeDictionaryId,
+                this.currentElement
+            );
         }
     };
 
@@ -119,17 +153,31 @@ export class HTMLRender extends FASTElement {
 
     /// Mouse Handlers
 
+    private getTargetElementFromMouseEvent(e: MouseEvent) {
+        let pathIndex = 0;
+        const path: EventTarget[] = e.composedPath();
+        let el: HTMLElement = path[pathIndex] as HTMLElement;
+        let dataId = el.getAttribute(this.dataDictionaryAttr);
+        while (dataId === null && pathIndex < path.length) {
+            el = path[pathIndex++] as HTMLElement;
+            if (el.getAttribute) {
+                dataId = el.getAttribute(this.dataDictionaryAttr);
+            }
+        }
+        return { dataId, el };
+    }
+
     public hoverHandler(e: MouseEvent): boolean {
-        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
-        const dataId = el.getAttribute(this.dataDictionaryAttr);
+        const targetEl = this.getTargetElementFromMouseEvent(e);
         if (
-            dataId !== null &&
+            targetEl.dataId !== null &&
             !(
                 this.currentElement &&
-                dataId === this.currentElement.getAttribute(this.dataDictionaryAttr)
+                targetEl.dataId ===
+                    this.currentElement.getAttribute(this.dataDictionaryAttr)
             )
         ) {
-            this.updateLayers(ActivityType.hover, dataId, el);
+            this.updateLayers(ActivityType.hover, targetEl.dataId, targetEl.el);
         }
         return false;
     }
@@ -144,7 +192,10 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: dataId,
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = el;
         this.updateLayers(ActivityType.click, dataId, el);
@@ -155,17 +206,19 @@ export class HTMLRender extends FASTElement {
             type: MessageSystemType.navigation,
             action: MessageSystemNavigationTypeAction.update,
             activeDictionaryId: "",
-            activeNavigationConfigId: this.navigationConfigId,
+            options: {
+                originatorId: this.messageOriginatorId,
+            },
+            activeNavigationConfigId: "",
         });
         this.currentElement = null;
         this.updateLayers(ActivityType.clear, "", null);
     }
 
     public clickHandler(e: MouseEvent): boolean {
-        const el: HTMLElement = e.composedPath()[0] as HTMLElement;
-        const dataId = el.getAttribute(this.dataDictionaryAttr);
-        if (dataId !== null) {
-            this.selectElement(el, dataId);
+        const targetEl = this.getTargetElementFromMouseEvent(e);
+        if (targetEl.dataId !== null) {
+            this.selectElement(targetEl.el, targetEl.dataId);
             e.stopPropagation();
             return false;
         }
@@ -176,9 +229,9 @@ export class HTMLRender extends FASTElement {
             const currTab: number = this.currentElement
                 ? Number(this.currentElement.getAttribute("taborder"))
                 : e.shiftKey
-                ? this.tabCounter
-                : 0;
-            const nextTab: number = e.shiftKey ? currTab - 1 : currTab + 1;
+                ? 0
+                : this.tabCounter;
+            const nextTab: number = e.shiftKey ? currTab + 1 : currTab - 1;
 
             if (nextTab > 0 && nextTab < this.tabCounter) {
                 const tabElements: Array<Element> = Array.from(

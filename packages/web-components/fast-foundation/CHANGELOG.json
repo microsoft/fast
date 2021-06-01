@@ -2,6 +2,92 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.4",
+      "version": "1.24.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Ensure stale Design Token custom property stylesheets are removed when token values change.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e1664c07d73aabe154d927cdc97dacf7e726426b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix bug caused by asserting parentElement was not null",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d63476d95e1e83616396eda9f5c5916eb4154221",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.3",
+      "version": "1.24.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "allow a float to be accurately represented when a step is a fraction",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix css custom property emission for dependent DesignToken properties",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e5c305740cc2399da80bea45da6b810eb98be1b1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.2",
+      "version": "1.24.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix data grid tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.1",
+      "version": "1.24.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update to Design System Provider to use dom.supportsAdoptedStyleSheets",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f56542a588c8b3535c249485987fc7e76e014a56",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.0",
       "version": "1.24.0",

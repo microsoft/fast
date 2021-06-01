@@ -194,6 +194,9 @@ export class CSSDirective {
 }
 
 // @public
+export function cssPartial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
+
+// @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
 
 // @public

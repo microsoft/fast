@@ -591,6 +591,8 @@ export class DataGrid extends FASTElement {
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
@@ -1846,6 +1848,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     position: string;
     readOnly: boolean;
     step: number;
+    // @internal (undocumented)
+    stepMultiplier: number;
     // @internal (undocumented)
     thumb: HTMLDivElement;
     // @internal (undocumented)

@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 4/29/2021
+ * Last modified: 5/28/2021
  */
 export const properties = {
     "align-content": {
@@ -132,6 +132,34 @@ export const properties = {
             multiplier: null,
         },
     },
+    "column-gap": {
+        name: "column-gap",
+        appliesTo: "multiColumnElementsFlexContainersGridContainers",
+        syntax: {
+            mapsToProperty: "column-gap",
+            percentages: "referToDimensionOfContentArea",
+            ref: [
+                {
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "<length-percentage>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "syntax",
+        },
+    },
     display: {
         name: "display",
         appliesTo: "allElements",
@@ -196,56 +224,6 @@ export const properties = {
             type: "mixed",
         },
     },
-    flex: {
-        name: "flex",
-        appliesTo: "flexItemsAndInFlowPseudos",
-        syntax: {
-            mapsToProperty: "flex",
-            percentages: "no",
-            ref: [
-                {
-                    ref: "none",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: [
-                        {
-                            ref: "<'flex-grow'>",
-                            type: "property",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                        {
-                            ref: "<'flex-shrink'>",
-                            type: "property",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                        {
-                            ref: "<'flex-basis'>",
-                            type: "property",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                    ],
-                    refCombinatorType: "juxtaposition",
-                    type: "group",
-                    prepend: null,
-                    multiplier: null,
-                },
-            ],
-            refCombinatorType: "exactlyOne",
-            multiplier: null,
-            prepend: null,
-            type: "property",
-        },
-    },
     "flex-direction": {
         name: "flex-direction",
         appliesTo: "flexContainers",
@@ -276,6 +254,41 @@ export const properties = {
                 },
                 {
                     ref: "column-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+            ],
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
+    },
+    "flex-wrap": {
+        name: "flex-wrap",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "flex-wrap",
+            percentages: "no",
+            ref: [
+                {
+                    ref: "nowrap",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "wrap",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
+                {
+                    ref: "wrap-reverse",
                     type: "value",
                     refCombinatorType: "none",
                     prepend: null,
@@ -362,12 +375,12 @@ export const properties = {
             type: "mixed",
         },
     },
-    "justify-items": {
-        name: "justify-items",
-        appliesTo: "allElements",
+    "row-gap": {
+        name: "row-gap",
+        appliesTo: "multiColumnElementsFlexContainersGridContainers",
         syntax: {
-            mapsToProperty: "justify-items",
-            percentages: "no",
+            mapsToProperty: "row-gap",
+            percentages: "referToDimensionOfContentArea",
             ref: [
                 {
                     ref: "normal",
@@ -377,83 +390,9 @@ export const properties = {
                     multiplier: null,
                 },
                 {
-                    ref: "stretch",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "<baseline-position>",
+                    ref: "<length-percentage>",
                     type: "syntax",
                     refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: [
-                        {
-                            ref: "<overflow-position>",
-                            type: "syntax",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: {
-                                type: "zeroOrOne",
-                            },
-                        },
-                        {
-                            ref: [
-                                {
-                                    ref: "<self-position>",
-                                    type: "syntax",
-                                    refCombinatorType: "none",
-                                    prepend: null,
-                                    multiplier: null,
-                                },
-                                {
-                                    ref: "left",
-                                    type: "value",
-                                    refCombinatorType: "none",
-                                    prepend: null,
-                                    multiplier: null,
-                                },
-                                {
-                                    ref: "right",
-                                    type: "value",
-                                    refCombinatorType: "none",
-                                    prepend: null,
-                                    multiplier: null,
-                                },
-                            ],
-                            refCombinatorType: "juxtaposition",
-                            type: "group",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                        {
-                            ref: "legacy",
-                            type: "value",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                        {
-                            ref: "legacy",
-                            type: "value",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                        {
-                            ref: "[ left right center ]",
-                            type: "group",
-                            refCombinatorType: "none",
-                            prepend: null,
-                            multiplier: null,
-                        },
-                    ],
-                    refCombinatorType: "juxtaposition",
-                    type: "group",
                     prepend: null,
                     multiplier: null,
                 },
@@ -461,76 +400,7 @@ export const properties = {
             refCombinatorType: "exactlyOne",
             multiplier: null,
             prepend: null,
-            type: "mixed",
-        },
-    },
-    margin: {
-        name: "margin",
-        appliesTo: "allElementsExceptTableDisplayTypes",
-        syntax: {
-            mapsToProperty: "margin",
-            percentages: "referToWidthOfContainingBlock",
-            ref: [
-                {
-                    ref: "<length>",
-                    type: "type",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "<percentage>",
-                    type: "type",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "auto",
-                    type: "value",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-            ],
-            refCombinatorType: "exactlyOne",
-            type: "group",
-            prepend: null,
-            multiplier: {
-                type: "atLeastATimesAtMostBTimes",
-                range: [1, 4],
-            },
-        },
-    },
-    padding: {
-        name: "padding",
-        appliesTo: "allElementsExceptInternalTableDisplayTypes",
-        syntax: {
-            mapsToProperty: "padding",
-            percentages: "referToWidthOfContainingBlock",
-            ref: [
-                {
-                    ref: "<length>",
-                    type: "type",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-                {
-                    ref: "<percentage>",
-                    type: "type",
-                    refCombinatorType: "none",
-                    prepend: null,
-                    multiplier: null,
-                },
-            ],
-            refCombinatorType: "exactlyOne",
-            type: "group",
-            prepend: null,
-            multiplier: {
-                type: "atLeastATimesAtMostBTimes",
-                range: [1, 4],
-            },
+            type: "syntax",
         },
     },
 };

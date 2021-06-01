@@ -2,6 +2,82 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-components_v1.21.3",
+      "version": "1.21.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-components_v1.21.3",
+      "version": "1.21.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-components_v1.21.2",
+      "version": "1.21.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix/add to data grid component explorer sample",
+            "author": "scomea@microsoft.com",
+            "commit": "05805c135def8a212652789ba3c3a8bc2927d333",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix data grid tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-components_v1.21.1",
+      "version": "1.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix mismatched environment variable",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bf044d84294b41ca4a4eb31fa433cc2e1f992996",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-components_v1.21.0",
       "version": "1.21.0",
