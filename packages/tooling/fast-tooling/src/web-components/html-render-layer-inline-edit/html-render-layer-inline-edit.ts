@@ -1,5 +1,7 @@
 import { customElement, observable } from "@microsoft/fast-element";
+import { MessageSystemDataTypeAction, MessageSystemNavigationTypeAction, MessageSystemType } from "../../message-system";;
 import { ActivityType, HTMLRenderLayer, OverylayPosition } from "../html-render-layer/html-render-layer";
+import { HTMLRenderOriginatorId } from "../html-render/html-render";
 import { HTMLRenderLayerInlineEditStyles } from "./html-render-layer-inline-edit.style";
 import { HTMLRenderLayerInlineEditTemplate } from "./html-render-layer-inline-edit.template";
 
@@ -9,6 +11,7 @@ import { HTMLRenderLayerInlineEditTemplate } from "./html-render-layer-inline-ed
     styles: HTMLRenderLayerInlineEditStyles,
 })
 export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
+    public layerActivityId: string = "InlineEditLayer";
 
     @observable
     public textAreaActive: boolean = false;
@@ -21,13 +24,24 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
 
     public textAreaRef: HTMLTextAreaElement;
 
-    private currentDataId: string;
+    private currentDataId: string = null;
     private currentTarget: HTMLElement;
+    private originalTextValue: string = null;
 
-    public handleTextInput(e: Event) {
+    public handleTextInput(e: InputEvent) {
+        if(e.inputType === "insertLineBreak")
+        {
+            this.commitEdit();
+            e.preventDefault();
+            return false;
+        }
         const inputVal = (e.composedPath()[0] as HTMLInputElement).value;
         this.currentTarget.innerText = inputVal;
         this.applySizeAndPositionToTextbox();
+        if(this.activityCallback)
+        {
+            this.activityCallback(this.layerActivityId);
+        }
     }
 
     private GetPositionFromElement(target: HTMLElement): OverylayPosition {
@@ -48,14 +62,12 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     {
         const styles: CSSStyleDeclaration = window.getComputedStyle(this.currentTarget);
         this.textAreaRef.style.font = styles.font;
-        this.textAreaRef.style.color = styles.color;
         this.textAreaRef.style.fontWeight = styles.fontWeight;
         this.textAreaRef.style.lineHeight = styles.lineHeight;
         this.textAreaRef.style.padding = styles.padding;
-        this.textAreaRef.style.background = styles.background;
     }
 
-    private startEdit(datadictionaryId: string, elementRef: HTMLElement)
+    private startEdit(datadictionaryId: string, elementRef: HTMLElement, event: MouseEvent)
     {
         if(this.currentDataId === datadictionaryId)
         {
@@ -64,25 +76,39 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.currentDataId = datadictionaryId;
         this.currentTarget = elementRef;
         this.textValue = elementRef.innerText;
-        this.textAreaRef.focus();
+        this.originalTextValue = this.textValue;
         // position, style and show the textarea
         this.applyStylesToTextbox();
         this.applySizeAndPositionToTextbox();
-        this.currentTarget.style.visibility = "hidden";
         this.textAreaActive = true;
+        window.setTimeout(()=>{this.textAreaRef.focus();},10);
     }
 
     private commitEdit()
     {
+        const newValue = this.textAreaRef.value;
         this.textAreaActive = false;
-        if(this.currentTarget)
-        {
-            this.currentTarget.style.visibility = "visible";
-        }
 
         // update the data dictionary
         // send the data update message
-
+        this.messageSystem.postMessage({
+            type: MessageSystemType.data,
+            action: MessageSystemDataTypeAction.update,
+            dataLocation: "",
+            data: newValue,
+            options: {
+                originatorId: HTMLRenderOriginatorId,
+            },
+        });
+        this.messageSystem.postMessage({
+            type: MessageSystemType.navigation,
+            action: MessageSystemNavigationTypeAction.update,
+            activeDictionaryId: this.dataDictionary[0][this.currentDataId].parent.id,
+            options: {
+                originatorId: HTMLRenderOriginatorId,
+            },
+            activeNavigationConfigId: "",
+        });
         this.currentDataId = null;
         this.currentTarget = null;
     }
@@ -92,37 +118,40 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         // undo everything
         if(this.currentTarget)
         {
-            this.currentTarget.style.visibility = "visible";
+            this.currentTarget.innerText = this.originalTextValue;
         }
-
         this.textAreaActive = false;
         this.currentDataId = null;
         this.currentTarget = null;
+        if(this.activityCallback)
+        {
+            this.activityCallback(this.layerActivityId);
+        }
     }
 
-    public elementActivity(activityType: ActivityType, datadictionaryId: string, elementRef: HTMLElement) {
-
+    public elementActivity(layerActivityId: string, activityType: ActivityType, datadictionaryId: string, elementRef: HTMLElement, event: Event) {
+        if(layerActivityId === this.layerActivityId)
+        {
+            return;
+        }
         switch(activityType)
         {
             case ActivityType.click:
-                console.log("click activity", datadictionaryId);
                 if(this.currentDataId !== null && this.currentDataId !== datadictionaryId)
                 {
                     // currently editing and something else was clicked
-                    // commit the current edit
-                    this.commitEdit();
+                    this.cancelEdit();
                 }
                 break;
             case ActivityType.clear:
-                console.log("clear activity");
                 if(this.currentDataId !== null)
                 {
-                    this.commitEdit();
+                    this.cancelEdit();
                 }
                 break;
             case ActivityType.doubleClick:
-                console.log("dblclick activity", datadictionaryId);
-                this.startEdit(datadictionaryId, elementRef);
+                this.cancelEdit();
+                this.startEdit(datadictionaryId, elementRef, event as MouseEvent);
                 break;
         }
 

@@ -38,9 +38,11 @@ export const HTMLRenderLayerNavigationTemplate = html<HTMLRenderLayerTest>`
     template: HTMLRenderLayerNavigationTemplate,
 })
 export class HTMLRenderLayerTest extends HTMLRenderLayer {
+    public layerActivityId: string = "testLayer";
     public lastActivity: ActivityResult = null;
 
     public elementActivity(
+        layerActivityId: string, 
         activityType: ActivityType,
         datadictionaryId: string,
         elementRef: HTMLElement

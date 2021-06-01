@@ -5,6 +5,7 @@ import {
     DataMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystem,
+    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
@@ -168,7 +169,14 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 "style",
                 "background: var(--background-color); height: 100%;"
             );
+        }
+    }
 
+    private attachComponentsAndInit(): void
+    {
+        this.attachMappedComponents();
+        if (this.state.dataDictionary !== undefined)
+        {
             this.state.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: this.state.dataDictionary,
@@ -176,6 +184,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             });
         }
     }
+
+
     private handleNavigation(): void {
         if (this.renderRef.current !== null) {
             this.state.htmlRenderMessageSystem.postMessage({
@@ -193,9 +203,9 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     private updateDOM(messageData: MessageSystemOutgoing): () => void {
         switch (messageData.type) {
             case MessageSystemType.initialize:
-            case MessageSystemType.data:
             case MessageSystemType.custom:
-                return this.attachMappedComponents;
+            case MessageSystemType.data:
+                return this.attachComponentsAndInit;
             case MessageSystemType.navigation:
                 return this.handleNavigation;
         }
@@ -294,6 +304,22 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                     },
                     "*"
                 );
+            } else if (
+                message.data.type === MessageSystemType.data &&
+                message.data.action === MessageSystemNavigationTypeAction.update &&
+                message.data.options &&
+                message.data.options.originatorId === HTMLRenderOriginatorId
+            )
+            {
+                window.postMessage(
+                    {
+                        type: MessageSystemType.custom,
+                        action: ViewerCustomAction.call,
+                        data: message.data.data
+                    },
+                    "*"
+                );
+
             }
         }
     };

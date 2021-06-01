@@ -23,6 +23,9 @@ export const HTMLRenderLayerInlineEditStyles = css`
         margin:0;
         border:none;
         padding:0;
+        background: transparent;
+        color: rgba(0,0,0,0);
+        caret-color: black;
     }
 
     .text-area.active

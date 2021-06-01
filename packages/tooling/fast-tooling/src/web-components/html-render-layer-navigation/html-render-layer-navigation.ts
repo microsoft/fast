@@ -13,6 +13,9 @@ import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigatio
     styles: HTMLRenderLayerNavigationStyles,
 })
 export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
+
+    public layerActivityId: string = "NavLayer";
+
     @observable
     public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 
@@ -106,11 +109,23 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
         this.clickPillContent = "";
     }
 
+    private handleUpdate() {
+        if(this.clickLayerActive)
+        {
+            this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+        }
+    }
+
     public elementActivity(
+        layerActivityId: string, 
         activityType: ActivityType,
         dataDictionaryId: string,
         elementRef: HTMLElement
     ) {
+        if(layerActivityId === this.layerActivityId)
+        {
+            return;
+        }
         switch (activityType) {
             case ActivityType.hover:
                 this.handleHighlight(dataDictionaryId, elementRef);
@@ -124,6 +139,8 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
             case ActivityType.clear:
                 this.handleClear();
                 break;
+            case ActivityType.update:
+                this.handleUpdate();
         }
     }
 }

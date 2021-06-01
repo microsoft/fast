@@ -17,7 +17,7 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
-import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
+import { ActivityType, HTMLRenderLayer, HTMLRenderLayerCallbackType } from "../html-render-layer/html-render-layer";
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
@@ -29,6 +29,9 @@ export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
     styles: HTMLRenderStyles,
 })
 export class HTMLRender extends FASTElement {
+
+    private layerActivityId: string = "HTMLRender";
+
     private dataDictionary: DataDictionary<unknown>;
 
     private schemaDictionary: SchemaDictionary;
@@ -60,6 +63,7 @@ export class HTMLRender extends FASTElement {
                 Array.from(this.children).forEach((value: HTMLRenderLayer) => {
                     if (this.isHtmlRenderLayer(value)) {
                         value.messageSystem = this.messageSystem;
+                        value.activityCallback = this.layerCallback;
                         this.renderLayers.push(value);
                     }
                 });
@@ -84,13 +88,15 @@ export class HTMLRender extends FASTElement {
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
             if (
-                e.data.type === MessageSystemType.initialize ||
-                e.data.type === MessageSystemType.data
+                (e.data.type === MessageSystemType.initialize ||
+                e.data.type === MessageSystemType.data) &&
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
                 this.currentElement = null;
-                this.updateLayers(ActivityType.clear, "", null);
+                this.updateLayers(this.layerActivityId, ActivityType.clear, "", null, null);
                 this.renderMarkup();
                 if (e.data.activeDictionaryId) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
@@ -115,9 +121,11 @@ export class HTMLRender extends FASTElement {
                     if (el) {
                         this.currentElement = el;
                         this.updateLayers(
+                            this.layerActivityId, 
                             ActivityType.click,
                             this.activeDictionaryId,
-                            el
+                            el,
+                            null
                         );
                     }
                 }
@@ -132,23 +140,32 @@ export class HTMLRender extends FASTElement {
         if (el) {
             this.currentElement = el;
             this.updateLayers(
+                this.layerActivityId, 
                 ActivityType.click,
                 this.activeDictionaryId,
-                this.currentElement
+                this.currentElement,
+                null
             );
         }
     };
 
     private updateLayers(
+        layerActivityId: string,
         activityType: ActivityType,
         dictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: HTMLElement,
+        event: Event
     ) {
         if (this.renderLayers) {
             this.renderLayers.forEach(value => {
-                value.elementActivity(activityType, dictionaryId, elementRef);
+                value.elementActivity(layerActivityId, activityType, dictionaryId, elementRef, event);
             });
         }
+    }
+
+    private layerCallback = (layerActivityId: string) =>
+    {
+        this.updateLayers(layerActivityId, ActivityType.update, "", null, null);
     }
 
     /// Mouse Handlers
@@ -177,13 +194,13 @@ export class HTMLRender extends FASTElement {
                     this.currentElement.getAttribute(this.dataDictionaryAttr)
             )
         ) {
-            this.updateLayers(ActivityType.hover, targetEl.dataId, targetEl.el);
+            this.updateLayers(this.layerActivityId, ActivityType.hover, targetEl.dataId, targetEl.el, null);
         }
         return false;
     }
 
     public blurHandler(e: MouseEvent): boolean {
-        this.updateLayers(ActivityType.blur, "", null);
+        this.updateLayers(this.layerActivityId, ActivityType.blur, "", null, null);
         return false;
     }
 
@@ -198,7 +215,7 @@ export class HTMLRender extends FASTElement {
             activeNavigationConfigId: "",
         });
         this.currentElement = el;
-        this.updateLayers(ActivityType.click, dataId, el);
+        this.updateLayers(this.layerActivityId, ActivityType.click, dataId, el, null);
     }
 
     private clearElement() {
@@ -212,7 +229,7 @@ export class HTMLRender extends FASTElement {
             activeNavigationConfigId: "",
         });
         this.currentElement = null;
-        this.updateLayers(ActivityType.clear, "", null);
+        this.updateLayers(this.layerActivityId, ActivityType.clear, "", null, null);
     }
 
     public clickHandler(e: MouseEvent): boolean {
@@ -226,8 +243,19 @@ export class HTMLRender extends FASTElement {
 
     public dblClickHandler(e: MouseEvent): boolean {
         const targetEl = this.getTargetElementFromMouseEvent(e);
-        if (targetEl.dataId !== null) {
-            this.updateLayers(ActivityType.doubleClick, targetEl.dataId, targetEl.el);
+        if (targetEl.dataId !== null && this.dataDictionary[0][targetEl.dataId].data["Slot"].length>0) {
+            const newDataId: string = this.dataDictionary[0][targetEl.dataId].data["Slot"][0].id;
+            this.messageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: newDataId,
+                options: {
+                    originatorId: this.messageOriginatorId,
+                },
+                activeNavigationConfigId: "",
+            });
+    
+            this.updateLayers(this.layerActivityId, ActivityType.doubleClick, newDataId, targetEl.el, e);
             e.preventDefault();
             e.stopPropagation();
             return false;
