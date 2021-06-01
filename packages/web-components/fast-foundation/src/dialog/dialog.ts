@@ -194,7 +194,7 @@ export class Dialog extends FoundationElement {
             return;
         }
 
-        const bounds: HTMLElement[] = this.getTabQueueBounds();
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
 
         if (bounds.length === 0) {
             return;
@@ -218,7 +218,7 @@ export class Dialog extends FoundationElement {
         return;
     };
 
-    private getTabQueueBounds = (): HTMLElement[] => {
+    private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
         if (this.tabQueueStart === undefined) {
             return tabbable(this);
         }
@@ -264,7 +264,7 @@ export class Dialog extends FoundationElement {
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        const bounds: HTMLElement[] = this.getTabQueueBounds();
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
 
         if (bounds.length > 0) {
             bounds[0].focus();
