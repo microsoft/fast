@@ -2,9 +2,8 @@ import { observable } from "@microsoft/fast-element";
 import {
     ActivityType,
     HTMLRenderLayer,
-    OverylayPosition
+    OverylayPosition,
 } from "../html-render-layer/html-render-layer";
-
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     @observable
