@@ -16,7 +16,7 @@ export const HTMLRenderLayerNavigationTemplate: (
                     x.clickPosition.left}px;width:${x =>
                     x.clickPosition.width}px;height:${x => x.clickPosition.height}px"
             >
-            <div class="pill">${x => x.clickPillContent}</div>
+                <div class="pill">${x => x.clickPillContent}</div>
             </div>
             <div
                 class="${x =>
