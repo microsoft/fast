@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Mon, 31 May 2021 07:44:04 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Jun 2021 07:47:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.15
+
+Wed, 02 Jun 2021 07:47:44 GMT
+
+### Patches
+
+- address an issue where the first character typed results in the cursor moving to the end of the text (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.14
 
