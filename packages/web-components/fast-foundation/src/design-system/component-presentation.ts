@@ -46,16 +46,16 @@ export const ComponentPresentation = Object.freeze({
         container.register(Registration.instance(key, presentation));
     },
 
-    forTag(tagName: string, element: HTMLElement): ComponentPresentation {
+    forTag(tagName: string, element: HTMLElement): ComponentPresentation | null {
         const key = presentationKeyFromTag(tagName);
         const existing = presentationRegistry.get(key);
 
-        if (!existing) {
+        if (existing === false) {
             const container = DI.findResponsibleContainer(element);
             return container.get<ComponentPresentation>(key);
         }
 
-        return existing;
+        return existing || null;
     },
 });
 

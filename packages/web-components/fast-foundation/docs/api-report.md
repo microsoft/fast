@@ -412,7 +412,7 @@ export interface ComponentPresentation {
 // @alpha
 export const ComponentPresentation: Readonly<{
     define(tagName: string, presentation: ComponentPresentation, container: Container): void;
-    forTag(tagName: string, element: HTMLElement): ComponentPresentation;
+    forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
 }>;
 
 // @public
@@ -1180,7 +1180,7 @@ export interface FormAssociatedProxy {
 
 // @alpha
 export class FoundationElement extends FASTElement {
-    protected get $presentation(): ComponentPresentation;
+    protected get $presentation(): ComponentPresentation | null;
     static compose<T extends FoundationElementDefinition = FoundationElementDefinition, K extends Constructable<FoundationElement> = Constructable<FoundationElement>>(this: K, elementDefinition: T): (overrideDefinition?: OverrideFoundationElementDefinition<T>) => FoundationElementRegistry<T, K>;
     connectedCallback(): void;
     styles: ElementStyles | void | null;
