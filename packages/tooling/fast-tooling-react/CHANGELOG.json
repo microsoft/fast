@@ -2,6 +2,86 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 02 Jun 2021 07:47:44 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.15",
+      "version": "2.8.15",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address an issue where the first character typed results in the cursor moving to the end of the text",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "a58982ce00128c30f64093c56e22cc95fd6e30bb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 May 2021 07:44:04 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.14",
+      "version": "2.8.14",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove a redundant design system provider",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "aef1629295c1ab4c8dbfef5b12a77c1dffda5c53",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.13",
+      "version": "2.8.13",
+      "comments": {
+        "patch": [
+          {
+            "comment": "allow navigation through the message system to open the expanded state of all parent navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2c9ab357b23e407f330a75c40d08af81deeeac6b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix typo in documentation",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.3",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.21.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "58a230232f1bd5a5ac8735ec486c20a31e99d1ed",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 27 May 2021 07:34:58 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.12",
+      "version": "2.8.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.21.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "67c4d4a194619fea80efc3d8b8f43d36096fcb7e",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 May 2021 07:33:37 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.11",
       "version": "2.8.11",

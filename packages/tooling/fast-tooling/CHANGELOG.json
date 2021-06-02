@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Mon, 31 May 2021 07:44:04 GMT",
+      "tag": "@microsoft/fast-tooling_v0.22.0",
+      "version": "0.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add a layout web component for css properties",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "aef1629295c1ab4c8dbfef5b12a77c1dffda5c53",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "disable tests that are causing intermitent CI failures",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "58a230232f1bd5a5ac8735ec486c20a31e99d1ed",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 27 May 2021 07:34:58 GMT",
+      "tag": "@microsoft/fast-tooling_v0.21.1",
+      "version": "0.21.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixing message system bugs in html renderer and creator integration",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "67c4d4a194619fea80efc3d8b8f43d36096fcb7e",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 May 2021 07:33:37 GMT",
       "tag": "@microsoft/fast-tooling_v0.21.0",
       "version": "0.21.0",

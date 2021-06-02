@@ -6,15 +6,17 @@ import { TextareaControlProps } from "./control.textarea.props";
 import { TextareaControlClassNameContract } from "./control.textarea.style";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { isDefault } from "./utilities/form";
-import { formId } from "../form";
-import { ajvValidationId } from "@microsoft/fast-tooling";
+
+export interface TextareaControlState {
+    isFocused: boolean;
+}
 
 /**
  * Form control definition
  */
 class TextareaControl extends React.Component<
     TextareaControlProps & ManagedClasses<TextareaControlClassNameContract>,
-    {}
+    TextareaControlState
 > {
     public static displayName: string = "TextareaControl";
 
@@ -23,6 +25,16 @@ class TextareaControl extends React.Component<
     > = {
         managedClasses: {},
     };
+
+    constructor(
+        props: TextareaControlProps & ManagedClasses<TextareaControlClassNameContract>
+    ) {
+        super(props);
+
+        this.state = {
+            isFocused: false,
+        };
+    }
 
     public render(): React.ReactNode {
         return (
@@ -45,8 +57,8 @@ class TextareaControl extends React.Component<
                 onChange={this.handleChange()}
                 disabled={this.props.disabled}
                 ref={this.props.elementRef as React.Ref<HTMLTextAreaElement>}
-                onFocus={this.props.reportValidity}
-                onBlur={this.props.updateValidity}
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
                 required={this.props.required}
             />
         );
@@ -58,11 +70,8 @@ class TextareaControl extends React.Component<
 
     private getValue(): string {
         // Return undefined to allow typing anywhere other than the end of the string
-        if (
-            this.props.messageSystemOptions &&
-            (this.props.messageSystemOptions.originatorId === formId ||
-                this.props.messageSystemOptions.originatorId === ajvValidationId)
-        ) {
+        // when the typing is occuring in the textarea
+        if (this.state.isFocused) {
             return;
         }
 
@@ -72,6 +81,22 @@ class TextareaControl extends React.Component<
             ? this.props.default
             : "";
     }
+
+    private handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>): void => {
+        this.props.reportValidity();
+
+        this.setState({
+            isFocused: true,
+        });
+    };
+
+    private handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>): void => {
+        this.props.updateValidity();
+
+        this.setState({
+            isFocused: false,
+        });
+    };
 
     private handleChange = (): ((e: React.ChangeEvent<HTMLTextAreaElement>) => void) => {
         return (e: React.ChangeEvent<HTMLTextAreaElement>): void => {

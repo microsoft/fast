@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><%= htmlWebpackPlugin.options.title %></title>
+        <style>
+            .content {
+                background-color: pink;
+                overflow: auto;
+                padding: 16px 0 0 16px;
+            }
+
+            .content + p {
+                margin-top: 8px;
+                margin-bottom: 32px;
+            }
+
+            .tall {
+                height: 800px;
+            }
+
+            .short {
+                height: 300px;
+            }
+
+            .wide {
+                width: 600px;
+            }
+
+            .narrow {
+                width: 300px;
+            }
+
+            .item {
+                min-width: 200px;
+                min-height: 75px;
+                border: solid 1px black;
+            }
+        </style>
+        <style id="custom"></style>
+    </head>
+    <body>
+        <div id="root">
+            <fast-design-system-provider use-defaults>
+                <css-layout id="css-layout-control"></css-layout>
+            </fast-design-system-provider>
+            <div class="content">
+                <div class="item">Item 1</div>
+                <div class="item">Item 2</div>
+                <div class="item">Item 3</div>
+                <div class="item">Item 4</div>
+                <div class="item">Item 5</div>
+                <div class="item">Item 6</div>
+            </div>
+            <p>Items with basic flex layout</p>
+
+            <div class="content wide tall">
+                <div class="item">Item 1</div>
+                <div class="item">Item 2</div>
+                <div class="item">Item 3</div>
+                <div class="item">Item 4</div>
+                <div class="item">Item 5</div>
+                <div class="item">Item 6</div>
+            </div>
+            <p>Items forced to wrap with an arbitrary height</p>
+
+            <div class="content narrow short">
+                <div class="item">Item 1</div>
+                <div class="item">Item 2</div>
+                <div class="item">Item 3</div>
+                <div class="item">Item 4</div>
+                <div class="item">Item 5</div>
+                <div class="item">Item 6</div>
+            </div>
+            <p>
+                Items showing how the scrollbar should be at the edge of the container,
+                not inset if the 16px padding were applied to the entire content.
+            </p>
+        </div>
+        <script>
+            const customStyleElement = document.getElementById("custom");
+            const cssLayoutControlElement = document.getElementById("css-layout-control");
+
+            cssLayoutControlElement.addEventListener("change", e => {
+                customStyleElement.innerText = ".content { " + e.target.value + " }";
+            });
+        </script>
+    </body>
+</html>

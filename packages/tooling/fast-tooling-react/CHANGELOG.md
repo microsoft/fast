@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Jun 2021 07:47:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.15
+
+Wed, 02 Jun 2021 07:47:44 GMT
+
+### Patches
+
+- address an issue where the first character typed results in the cursor moving to the end of the text (7559015+janechu@users.noreply.github.com)
+
+## 2.8.14
+
+Mon, 31 May 2021 07:44:04 GMT
+
+### Patches
+
+- remove a redundant design system provider (7559015+janechu@users.noreply.github.com)
+
+## 2.8.13
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- allow navigation through the message system to open the expanded state of all parent navigation items (7559015+janechu@users.noreply.github.com)
+
+## 2.8.12
+
+Thu, 27 May 2021 07:34:58 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.21.1 (44823142+williamw2@users.noreply.github.com)
 
 ## 2.8.11
 

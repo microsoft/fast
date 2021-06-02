@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-website
 
-This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Jun 2021 07:47:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.16
+
+Wed, 02 Jun 2021 07:47:44 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Mon, 31 May 2021 07:44:04 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 27 May 2021 07:34:58 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
 
 ## 1.3.16
 

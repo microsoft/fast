@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.4",
+      "version": "1.24.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Ensure stale Design Token custom property stylesheets are removed when token values change.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e1664c07d73aabe154d927cdc97dacf7e726426b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix bug caused by asserting parentElement was not null",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d63476d95e1e83616396eda9f5c5916eb4154221",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 May 2021 07:33:37 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.3",
       "version": "1.24.3",

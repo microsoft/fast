@@ -11,6 +11,7 @@ import {
     NavigationMessageOutgoing,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
@@ -181,7 +182,10 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
                 activeDictionaryId: this.state.activeDictionaryId,
-                activeNavigationConfigId: "preview",
+                options: {
+                    originatorId: "preview",
+                },
+                activeNavigationConfigId: "",
             });
         }
     }
@@ -233,13 +237,18 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         );
                         break;
                     case MessageSystemType.navigation:
-                        this.setState(
-                            {
-                                activeDictionaryId: (messageData as NavigationMessageOutgoing)
-                                    .activeDictionaryId,
-                            },
-                            this.updateDOM(messageData as MessageSystemOutgoing)
-                        );
+                        if (
+                            !(messageData as any).options ||
+                            ((messageData as any).options as any).originatorId !==
+                                HTMLRenderOriginatorId
+                        )
+                            this.setState(
+                                {
+                                    activeDictionaryId: (messageData as NavigationMessageOutgoing)
+                                        .activeDictionaryId,
+                                },
+                                this.updateDOM(messageData as MessageSystemOutgoing)
+                            );
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
@@ -274,7 +283,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             if (
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
-                message.data.activeNavigationConfigId === "fast-tooling::html-renderer"
+                message.data.options &&
+                message.data.options.originatorId === HTMLRenderOriginatorId
             ) {
                 window.postMessage(
                     {
