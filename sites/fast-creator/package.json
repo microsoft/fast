@@ -72,7 +72,7 @@
   "dependencies": {
     "@microsoft/fast-components": "^1.21.3",
     "@microsoft/fast-tooling": "^0.22.0",
-    "@microsoft/fast-tooling-react": "^2.8.14",
+    "@microsoft/fast-tooling-react": "^2.8.15",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0"
   }
