@@ -197,22 +197,10 @@ export class HorizontalScroll extends FASTElement {
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize.bind(this)
+            this.resized.bind(this)
         );
         this.resizeDetector.observe(this);
     }
-
-    /**
-     * Handle resize events
-     * @internal
-     */
-    private handleResize = (entries: ResizeObserverEntry[]): void => {
-        entries.forEach((entry: ResizeObserverEntry): void => {
-            if (entry.target === this) {
-                this.resized();
-            }
-        });
-    };
 
     /**
      * Looks for slots and uses child nodes instead
