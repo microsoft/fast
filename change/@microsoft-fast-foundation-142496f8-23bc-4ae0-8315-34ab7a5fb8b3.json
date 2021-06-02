@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix(foundation-element): enable subclassing with customElement decorator",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
