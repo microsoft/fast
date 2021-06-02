@@ -85,14 +85,14 @@ export type OverrideFoundationElementDefinition<
  * @alpha
  */
 export class FoundationElement extends FASTElement {
-    private _presentation: ComponentPresentation | null = null;
+    private _presentation: ComponentPresentation | null | undefined = void 0;
 
     /**
      * A property which resolves the ComponentPresentation instance
      * for the current component.
      */
-    protected get $presentation(): ComponentPresentation {
-        if (this._presentation === null) {
+    protected get $presentation(): ComponentPresentation | null {
+        if (this._presentation === void 0) {
             this._presentation = ComponentPresentation.forTag(this.tagName, this);
         }
 
@@ -132,7 +132,10 @@ export class FoundationElement extends FASTElement {
      * becomes connected to the document.
      */
     connectedCallback() {
-        this.$presentation.applyTo(this);
+        if (this.$presentation !== null) {
+            this.$presentation.applyTo(this);
+        }
+
         super.connectedCallback();
     }
 
