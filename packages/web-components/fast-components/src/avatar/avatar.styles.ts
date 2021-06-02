@@ -53,7 +53,8 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
             display: flex;
         }
 
-        .image {
+        .image,
+        ::slotted(img) {
             max-width: 100%;
             position: absolute;
             display: block;

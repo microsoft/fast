@@ -1,7 +1,7 @@
 import { attr, html, when } from "@microsoft/fast-element";
 import {
-    Avatar as FoundationAvatar,
     AvatarOptions,
+    Avatar as FoundationAvatar,
     avatarTemplate as template,
 } from "@microsoft/fast-foundation";
 import { avatarStyles as styles } from "./avatar.styles";
@@ -27,6 +27,15 @@ export class Avatar extends FoundationAvatar {
     @attr public alt: string;
 }
 
+export const imgTemplate = html<Avatar>`
+    ${when(
+        x => x.imgSrc,
+        html`
+            <img src="${x => x.imgSrc}" alt="${x => x.alt}" class="image" part="image" />
+        `
+    )}
+`;
+
 /**
  *  The FAST Avatar Element. Implements {@link @microsoft/fast-foundation#Avatar},
  *  {@link @microsoft/fast-foundation#AvatarTemplate}
@@ -40,19 +49,7 @@ export const fastAvatar = Avatar.compose<AvatarOptions>({
     baseName: "avatar",
     template,
     styles,
-    media: html<Avatar>`
-        ${when(
-            x => x.imgSrc,
-            html`
-                <img
-                    src="${x => x.imgSrc}"
-                    alt="${x => x.alt}"
-                    class="image"
-                    part="image"
-                />
-            `
-        )}
-    `,
+    media: imgTemplate,
     shadowOptions: {
         delegatesFocus: true,
     },

@@ -22,7 +22,7 @@ export const avatarTemplate: (
             href="${x => (x.link ? x.link : void 0)}"
             style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
         >
-            <slot>${definition.media || ""}</slot>
+            <slot name>${definition.media || ""}</slot>
             <span class="name" part="name">${x => x.initials}</span>
         </a>
     </div>
