@@ -7,7 +7,6 @@ import {
     designUnit,
     neutralForegroundRest,
     typeRampBaseFontSize,
-    typeRampPlus5LineHeight,
 } from "../design-tokens";
 
 export const avatarStyles = (context, definition: AvatarOptions) =>
@@ -30,7 +29,7 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
             text-decoration: none;
             color: ${neutralForegroundRest};
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             min-width: 100%;
@@ -65,8 +64,9 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
                 (var(--avatar-text-size) + var(--avatar-size, var(--avatar-size-default))) /
                     var(--avatar-text-ratio)
             );
-            line-height: ${typeRampPlus5LineHeight};
+            line-height: var(--avatar-size, var(--avatar-size-default));
             display: block;
+            min-height: var(--avatar-size, var(--avatar-size-default));
         }
 
         ::slotted(fast-badge) {
