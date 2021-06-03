@@ -4,6 +4,7 @@
 export { fastAccordion, fastAccordionItem } from "./accordion/index";
 export { fastAnchor } from "./anchor/index";
 export { fastAnchoredRegion } from "./anchored-region/index";
+export { fastAvatar } from "./avatar/index";
 export { fastBadge } from "./badge/index";
 export { fastBreadcrumb } from "./breadcrumb/index";
 export { fastBreadcrumbItem } from "./breadcrumb-item/index";
