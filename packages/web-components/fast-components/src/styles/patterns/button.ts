@@ -260,11 +260,15 @@ export const HypertextStyles = css`
         border-bottom: calc(var(--outline-width) * 1px) solid ${accentForegroundRestBehavior.var};
     }
 
+    :host([appearance="hypertext"]:hover),
     :host([appearance="hypertext"]) .control:hover {
+        background: transparent;
         border-bottom-color: ${accentForegroundHoverBehavior.var};
     }
 
+    :host([appearance="hypertext"]:active),
     :host([appearance="hypertext"]) .control:active {
+        background: transparent;
         border-bottom-color: ${accentForegroundActiveBehavior.var};
     }
 
@@ -312,10 +316,12 @@ export const LightweightButtonStyles = css`
     }
 
     :host([appearance="lightweight"]:hover) {
+        background: transparent;
         color: ${accentForegroundHoverBehavior.var};
     }
 
     :host([appearance="lightweight"]:active) {
+        background: transparent;
         color: ${accentForegroundActiveBehavior.var};
     }
 
