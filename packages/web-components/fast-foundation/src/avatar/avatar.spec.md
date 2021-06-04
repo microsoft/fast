@@ -12,6 +12,7 @@ A common use case would be to display an image or text (usually initials) of a u
 - A URL for an image can be passed to the component to be displayed in the coin
   - When no image is provided, the initials of the provided name will be displayed in the coin
 - Badge slot: Able to slot in a badge component
+- Media slot: Accepts an `img` or an `svg`
 - `shape`, a circle or square shape can be chosen. Any border radius for square shaped coins should be determined by the users design system values or stylesheet
 - `color`, a hexadecimal color can be provided to determine the coin background color
 - When a `link` is provided an `aria-link` attribute is added
@@ -41,36 +42,34 @@ A common use case would be to display an image or text (usually initials) of a u
 | `fill`    | Accepts a string that defines the `avatar-fill-*` post-fix for custom variable mapping.                | `string`                 |
 | `color`   | Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.                    | `string`                |
 
+#### Slots
+
+| Name  | Description               | Elements     |
+|-------|---------------------------|--------------|
+|`badge`| Slot for fast badge       | `fast-badge` |
+|`media`| Slot for images and icons | `img`, `svg` |
+
 ### Anatomy and Appearance
 
 *Template*
 ```js
-<template>
-  <div
-    class="coin ${x => (x.shape === "square" ? "square" : "circle")}"
+<div
+    class="coin ${x => x.shape}"
     part="coin"
     style="${x =>
-      x.fill || x.color
-        ? `background-color: var(--avatar-fill-${x.fill}); color: var(--avatar-color-${x.color});`
-        : void 0}"
-  >
-    <a class="link" part="link" href="${x => (x.link ? x.link : void 0)}">
-      ${when(
-        x => x.imgSrc,
-        html`
-          <img
-            src="${x => x.imgSrc}"
-            alt="${x => x.alt}"
-            tabindex="${x => (!x.link ? "0" : void 0)}"
-            class="image"
-          />
-        `
-      )}
-      <span class="name" part="name">${x => x.initials}</span>
+        x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
+>
+    <a
+        class="link"
+        part="link"
+        href="${x => (x.link ? x.link : void 0)}"
+        style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
+    >
+        <slot name="media" part="media">${definition.media || ""}</slot>
+        <span class="name" part="name">${x => x.initials}</span>
     </a>
-  </div>
-  <slot name="badge" part="badge"></slot>
-</template> 
+</div>
+<slot name="badge" part="badge"></slot>
 ```
 
 ---
