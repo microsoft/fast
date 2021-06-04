@@ -1,13 +1,6 @@
 import { get, values } from "lodash-es";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
-    neutralDividerRest,
-    neutralFillInputRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineRest,
-} from "@microsoft/fast-components";
-import {
     backgroundColor,
     cornerRadius,
 } from "@microsoft/fast-components/dist/esm/fast-design-system";
@@ -39,6 +32,13 @@ import {
     neutralColors,
 } from "./colors";
 import { bridge, ColorsDesignSystem } from "./design-system";
+import {
+    neutralDividerRest,
+    neutralFillInputRest,
+    neutralFocus,
+    neutralForegroundRest,
+    neutralOutlineRest,
+} from "./recipes";
 import {
     AppState,
     ComponentTypes,
@@ -112,9 +112,9 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         },
         ".sketch-picker input": {
             boxShadow: "none !important",
-            background: bridge(neutralFillInputRest),
-            color: bridge(neutralForegroundRest),
-            border: `1px solid ${bridge(neutralOutlineRest)} !important`,
+            background: neutralFillInputRest,
+            color: neutralForegroundRest,
+            border: format("1px solid {0} !important", neutralOutlineRest),
             height: bridge(height()),
             fontSize: "14px !important",
             borderRadius: format("{0} !important", toPx(cornerRadius)),
@@ -122,11 +122,11 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
             paddingBottom: "0 !important",
             "&:focus": {
                 outline: "none",
-                boxShadow: `0 0 0 2px ${bridge(neutralFocus)} inset !important`,
+                boxShadow: format("0 0 0 2px {0} inset !important", neutralFocus),
             },
         },
         ".sketch-picker .flexbox-fix span": {
-            color: `${bridge(neutralForegroundRest)} !important`,
+            color: format("{0} !important", neutralForegroundRest),
         },
     },
     controlPane: {
@@ -134,10 +134,10 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         zIndex: "1",
         padding: "12px",
         boxSizing: "border-box",
-        color: bridge(neutralForegroundRest),
+        color: neutralForegroundRest,
         height: "100%",
         maxWidth: "300px",
-        borderLeft: `1px solid ${bridge(neutralDividerRest)}`,
+        borderLeft: format("1px solid {0}", neutralDividerRest),
         background: backgroundColor,
         overflow: "auto",
     },

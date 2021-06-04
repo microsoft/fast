@@ -4,14 +4,14 @@ import manageJss, {
     DesignSystemConsumer,
 } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
-import { neutralForegroundHint, neutralOutlineRest } from "@microsoft/fast-components";
 import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/color";
 import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import { ColorRecipe, contrast } from "@microsoft/fast-components/dist/esm/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
 import { SwatchRecipe } from "@microsoft/fast-components/dist/esm/color/common";
 import { applyElevation } from "@microsoft/fast-components-styles-msft";
-import { bridge, ColorsDesignSystem } from "./design-system";
+import { ColorsDesignSystem } from "./design-system";
+import { neutralForegroundHint, neutralOutlineRest } from "./recipes";
 
 export enum SwatchTypes {
     fill = "fill",
@@ -72,7 +72,7 @@ const swatchTwoStyles: ComponentStyleSheet<
         width: "100%",
         padding: "4px 0",
         boxSizing: "border-box",
-        color: bridge(neutralForegroundHint),
+        color: neutralForegroundHint,
         fontSize: "12px",
         gridColumnGap: "16px",
         justifyItems: "start",
@@ -94,10 +94,7 @@ const swatchTwoStyles: ComponentStyleSheet<
     },
     swatch__foreground: {
         "& $swatch_icon": {
-            border: format<ColorsDesignSystem>(
-                "1px solid {0}",
-                bridge(neutralOutlineRest)
-            ),
+            border: format<ColorsDesignSystem>("1px solid {0}", neutralOutlineRest),
             "&::before": {
                 fontSize: "13px",
                 content: "'A'",

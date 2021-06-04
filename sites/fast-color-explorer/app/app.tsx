@@ -1,13 +1,6 @@
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import {
     FASTDesignSystem,
-    neutralLayerCard,
-    neutralLayerCardContainer,
-    neutralLayerFloating,
-    neutralLayerL1,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
     palette,
     PaletteType,
     StandardLuminance,
@@ -19,6 +12,14 @@ import { Background } from "@microsoft/fast-components-react-msft";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { ColorRecipe, Swatch } from "@microsoft/fast-components/dist/esm/color/common";
+import {
+    neutralLayerCardContainer,
+    neutralLayerFloating,
+    neutralLayerL1,
+    neutralLayerL2,
+    neutralLayerL3,
+    neutralLayerL4,
+} from "./recipes";
 import { AppState } from "./state";
 import { ControlPane } from "./control-pane";
 import ColorBlocks from "./color-blocks";
@@ -47,7 +48,6 @@ class App extends React.Component<AppProps, {}> {
 
     private backgroundRecipes: Array<[ColorRecipe<string>, string]> = [
         [neutralLayerFloating, "neutralLayerFloating"],
-        [neutralLayerCard, "neutralLayerCard"],
         [neutralLayerCardContainer, "neutralLayerCardContainer"],
         [neutralLayerL1, "neutralLayerL1"],
         [neutralLayerL2, "neutralLayerL2"],
@@ -171,7 +171,7 @@ class App extends React.Component<AppProps, {}> {
     private resolveRecipes = (
         luminance: number
     ): Array<{ color: string; title: string }> => {
-        const designSystem: FASTDesignSystem = Object.assign(
+        const designSystem: ColorsDesignSystem = Object.assign(
             {},
             this.props.designSystem,
             {
