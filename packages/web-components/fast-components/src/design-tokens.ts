@@ -213,12 +213,14 @@ export const typeRampPlus6LineHeight = create<string>(
     "type-ramp-plus6-line-height"
 ).withDefault("72px");
 
-export const neutralPalette = create<PaletteRGB>("neutral-palette").withDefault(
-    PaletteRGB.create(middleGrey)
-);
-export const accentPalette = create<PaletteRGB>("accent-palette").withDefault(
-    PaletteRGB.create(accentBase)
-);
+export const neutralPalette = create<PaletteRGB>({
+    name: "neutral-palette",
+    cssCustomPropertyName: null,
+}).withDefault(PaletteRGB.create(middleGrey));
+export const accentPalette = create<PaletteRGB>({
+    name: "accent-palette",
+    cssCustomPropertyName: null,
+}).withDefault(PaletteRGB.create(accentBase));
 export const fillColor = create<SwatchRGB>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);
     return palette.get(palette.swatches.length - 5);
