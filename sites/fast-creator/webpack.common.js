@@ -95,7 +95,7 @@ module.exports = {
         new MonacoWebpackPlugin({
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
-            features: ["format", "coreCommands", "codeAction"]
-        })
+            features: ["format", "coreCommands", "codeAction", "suggest"],
+        }),
     ],
 };
