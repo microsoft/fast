@@ -193,10 +193,12 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const stepUpValue = this.step + parseFloat(this.value);
-        this.value = this.getValidValue(stepUpValue);
+        if (!this.readOnly && !this.disabled) {
+            const stepUpValue = this.step + parseFloat(this.value);
+            this.value = this.getValidValue(stepUpValue);
 
-        this.$emit("input");
+            this.$emit("input");
+        }
     }
 
     /**
@@ -205,10 +207,12 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const stepDownValue = parseFloat(this.value) - this.step;
-        this.value = this.getValidValue(stepDownValue);
+        if (!this.readOnly && !this.disabled) {
+            const stepDownValue = parseFloat(this.value) - this.step;
+            this.value = this.getValidValue(stepDownValue);
 
-        this.$emit("input");
+            this.$emit("input");
+        }
     }
 
     /**

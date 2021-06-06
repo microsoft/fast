@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: it prevents to increment/decrement the value of a readonly or disabled number-field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "yeraycaballero@gmail.com",
+  "dependentChangeType": "patch"
+}

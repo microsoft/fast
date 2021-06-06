@@ -543,7 +543,61 @@ describe("NumberField", () => {
             expect(wasInput).to.equal(true);
 
             await disconnect();
-        })
+        });
+
+        it("should not fire an input event when incrementing or decrementing a read only number field", async () => {
+            const { element, connect, disconnect } = await setup();
+            let wasInput: boolean = false;
+
+            element.addEventListener("input", e => {
+                e.preventDefault();
+
+                wasInput = true;
+            });
+
+            element.readOnly = true;
+
+            await connect();
+
+            element.stepUp();
+
+            expect(wasInput).to.equal(false);
+
+            wasInput = false;
+
+            element.stepDown();
+
+            expect(wasInput).to.equal(false);
+
+            await disconnect();
+        });
+
+        it("should not fire an input event when incrementing or decrementing a disabled number field", async () => {
+            const { element, connect, disconnect } = await setup();
+            let wasInput: boolean = false;
+
+            element.addEventListener("input", e => {
+                e.preventDefault();
+
+                wasInput = true;
+            });
+
+            element.disabled = true;
+
+            await connect();
+
+            element.stepUp();
+
+            expect(wasInput).to.equal(false);
+
+            wasInput = false;
+
+            element.stepDown();
+
+            expect(wasInput).to.equal(false);
+
+            await disconnect();
+        });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
