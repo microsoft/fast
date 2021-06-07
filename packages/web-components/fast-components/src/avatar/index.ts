@@ -35,8 +35,8 @@ export const imgTemplate = html<Avatar>`
                 src="${x => x.imgSrc}"
                 alt="${x => x.alt}"
                 slot="media"
-                class="image"
-                part="image"
+                class="media"
+                part="media"
             />
         `
     )}

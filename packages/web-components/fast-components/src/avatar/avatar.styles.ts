@@ -65,7 +65,7 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
             display: flex;
         }
 
-        .image,
+        .media,
         ::slotted(img) {
             max-width: 100%;
             position: absolute;
