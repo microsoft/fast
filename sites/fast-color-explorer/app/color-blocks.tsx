@@ -13,11 +13,18 @@ import {
     TextField,
 } from "@microsoft/fast-components-react-msft";
 import React from "react";
+import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
+import classnames from "classnames";
+import { get, isEqual, uniqueId } from "lodash-es";
+import { DividerClassNameContract } from "@microsoft/fast-components-react-base";
+import { connect } from "react-redux";
+import { ColorsDesignSystem } from "./design-system";
+import { StealthIcon } from "./icons";
 import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentFillSelected,
     accentForegroundActive,
     accentForegroundCut,
     accentForegroundHover,
@@ -27,37 +34,20 @@ import {
     neutralFillHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralFillSelected,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralFillStealthSelected,
     neutralFillToggleActive,
     neutralFillToggleHover,
     neutralFillToggleRest,
     neutralFocus,
     neutralFocusInnerAccent,
-    neutralForegroundActive,
     neutralForegroundHint,
-    neutralForegroundHover,
     neutralForegroundRest,
     neutralOutlineActive,
     neutralOutlineHover,
     neutralOutlineRest,
-} from "@microsoft/fast-components";
-import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
-import {
-    neutralOutlineContrastActive,
-    neutralOutlineContrastHover,
-    neutralOutlineContrastRest,
-} from "@microsoft/fast-components-styles-msft";
-import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
-import classnames from "classnames";
-import { get, isEqual, uniqueId } from "lodash-es";
-import { DividerClassNameContract } from "@microsoft/fast-components-react-base";
-import { connect } from "react-redux";
-import { bridge, ColorsDesignSystem } from "./design-system";
-import { StealthIcon } from "./icons";
+} from "./recipes";
 import { AppState, ComponentTypes } from "./state";
 import { Swatch, SwatchProps, SwatchTypes } from "./swatch";
 
@@ -68,7 +58,7 @@ const styles: ComponentStyleSheet<ColorBlocksClassNameContract, ColorsDesignSyst
         flexGrow: "1",
         alignItems: "stretch",
         textAlign: "center",
-        color: bridge(neutralForegroundRest),
+        color: neutralForegroundRest,
         position: "relative",
         transition: "opacity .1s linear",
         height: "100%",
@@ -184,7 +174,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
     > = {
         caption: {
             margin: "20px 0 12px",
-            color: bridge(neutralForegroundRest),
+            color: neutralForegroundRest,
         },
     };
 
@@ -192,14 +182,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         ParagraphClassNameContract,
         ColorsDesignSystem
     > = {
-        paragraph: {
-            "&:hover": {
-                color: bridge(neutralForegroundHover),
-            },
-            "&:active": {
-                color: bridge(neutralForegroundActive),
-            },
-        },
+        paragraph: {},
     };
 
     private hintTextStyleOverrides: ComponentStyleSheet<
@@ -207,7 +190,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
         ColorsDesignSystem
     > = {
         caption: {
-            color: bridge(neutralForegroundHint),
+            color: neutralForegroundHint,
         },
     };
 
@@ -241,7 +224,7 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
             >
                 <Caption
                     className={this.props.managedClasses.colorBlocks_title}
-                    jssStyleSheet={{ caption: { color: bridge(neutralForegroundHint) } }}
+                    jssStyleSheet={{ caption: { color: neutralForegroundHint } }}
                 >
                     BACKGROUND {this.props.index} -{" "}
                     {this.state.designSystem.backgroundColor.toUpperCase()}
@@ -308,10 +291,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={accentFillActive}
                     recipeName="accentFillActive"
                 />
-                <AccentFillSwatch
-                    fillRecipe={accentFillSelected}
-                    recipeName="accentFillSelected"
-                />
                 <Swatch
                     type={SwatchTypes.foreground}
                     fillRecipe={accentFillRest}
@@ -321,8 +300,8 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 <Swatch
                     type={SwatchTypes.outline}
                     fillRecipe={neutralFocus}
-                    foregroundRecipe={neutralFocusInnerAccent(accentFillRest)}
-                    outlineRecipe={neutralFocusInnerAccent(accentFillRest)}
+                    foregroundRecipe={neutralFocusInnerAccent}
+                    outlineRecipe={neutralFocusInnerAccent}
                     recipeName="neutralFocusInnerAccent"
                 />
                 <FocusSwatch />
@@ -340,10 +319,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 <NeutralFillSwatch
                     fillRecipe={neutralFillActive}
                     recipeName="neutralFillActive"
-                />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillSelected}
-                    recipeName="neutralFillSelected"
                 />
                 <Swatch
                     type={SwatchTypes.foreground}
@@ -368,10 +343,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                 <NeutralFillSwatch
                     fillRecipe={neutralFillStealthActive}
                     recipeName="neutralFillStealthActive"
-                />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthSelected}
-                    recipeName="neutralFillStealthSelected"
                 />
                 <Swatch
                     type={SwatchTypes.outline}
@@ -424,10 +395,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={neutralFillStealthActive}
                     recipeName="neutralFillStealthActive"
                 />
-                <NeutralFillSwatch
-                    fillRecipe={neutralFillStealthSelected}
-                    recipeName="neutralFillStealthSelected"
-                />
                 <Swatch
                     type={SwatchTypes.foreground}
                     fillRecipe={backgroundColor}
@@ -452,18 +419,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
-                />
-                <Swatch
-                    type={SwatchTypes.foreground}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundHover}
-                    recipeName="neutralForegroundHover"
-                />
-                <Swatch
-                    type={SwatchTypes.foreground}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundActive}
-                    recipeName="neutralForegroundActive"
                 />
 
                 {this.renderExample(
@@ -575,27 +530,6 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     fillRecipe={neutralFillInputRest}
                     foregroundRecipe={neutralForegroundRest}
                     recipeName="neutralForegroundRest"
-                />
-                <Swatch
-                    type={SwatchTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineContrastRest}
-                    recipeName="neutralOutlineContrastRest"
-                />
-                <Swatch
-                    type={SwatchTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineContrastHover}
-                    recipeName="neutralOutlineContrastHover"
-                />
-                <Swatch
-                    type={SwatchTypes.outline}
-                    fillRecipe={backgroundColor}
-                    foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralOutlineContrastActive}
-                    recipeName="neutralOutlineContrastActive"
                 />
                 <FocusSwatch />
                 {this.renderExample(
