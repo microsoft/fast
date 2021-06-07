@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 26 May 2021 07:33:37 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Jun 2021 07:35:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.21.4
+
+Sun, 06 Jun 2021 07:35:11 GMT
+
+### Patches
+
+- add transparent background on hover and active states (khamu@microsoft.com)
 
 ## 1.21.3
 
