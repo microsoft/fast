@@ -11,8 +11,8 @@ export const avatarTemplate: (
     definition: AvatarOptions
 ) => ViewTemplate<Avatar> = (context, definition: AvatarOptions) => html`
     <div
-        class="coin ${x => x.shape}"
-        part="coin"
+        class="backplate ${x => x.shape}"
+        part="backplate"
         style="${x =>
             x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
     >

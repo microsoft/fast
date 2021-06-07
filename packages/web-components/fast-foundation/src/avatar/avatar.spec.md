@@ -9,12 +9,12 @@ An avatar is a graphical represention of a user or object.
 A common use case would be to display an image or text (usually initials) of a user or an object, such as in a user profile.
 
 ### Features
-- A URL for an image can be passed to the component to be displayed in the coin
-  - When no image is provided, the initials of the provided name will be displayed in the coin
+- A URL for an image can be passed to the component to be displayed in the backplate
+  - When no image is provided, the initials of the provided name will be displayed in the backplate
 - Badge slot: Able to slot in a badge component
 - Media slot: Accepts an `img` or an `svg`
-- `shape`, a circle or square shape can be chosen. Any border radius for square shaped coins should be determined by the users design system values or stylesheet
-- `color`, a hexadecimal color can be provided to determine the coin background color
+- `shape`, a circle or square shape can be chosen. Any border radius for square shaped backplates should be determined by the users design system values or stylesheet
+- `color`, a hexadecimal color can be provided to determine the backplate background color
 - When a `link` is provided an `aria-link` attribute is added
 
 ### Prior Art/Examples
@@ -34,11 +34,11 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `name`    | Accepts name string for coin display                        | `string`                            |
+| `name`    | Accepts name string for backplate display                        | `string`                            |
 | `src` | Accepts URL string of image to be displayed                 | `string`                            |
 | `alt`| Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
-| `shape`   | Determines the avatar coin shape. Default will be a circle. | `string: default | circle | square` |
+| `shape`   | Determines the avatar backplate shape. Default will be a circle. | `string: default | circle | square` |
 | `fill`    | Accepts a string that defines the `avatar-fill-*` post-fix for custom variable mapping.                | `string`                 |
 | `color`   | Accepts a string that defines the `avatar-color-*` post-fix for custom variable mapping.                    | `string`                |
 
@@ -54,8 +54,8 @@ A common use case would be to display an image or text (usually initials) of a u
 *Template*
 ```js
 <div
-    class="coin ${x => x.shape}"
-    part="coin"
+    class="backplate ${x => x.shape}"
+    part="backplate"
     style="${x =>
         x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
 >
@@ -96,13 +96,13 @@ With `fast-badge` Component:
 
 ### Accessibility
 
-It is important to ensure that when the contrast of text in the coin meets [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html).
+It is important to ensure that when the contrast of text in the backplate meets [1.4.3 Contrast (Minimum)](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html).
 
 If there is a link the component should have an `aria-link` attribute.
 
 ### Globalization
 
-If a badge is used it should appear on the appropriate side of the coin.
+If a badge is used it should appear on the appropriate side of the backplate.
 
 ---
 
