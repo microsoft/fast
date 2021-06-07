@@ -8,6 +8,19 @@ import {
     neutralForegroundRest,
     typeRampBaseFontSize,
 } from "../design-tokens";
+import { DirectionalStyleSheetBehavior } from "../styles";
+
+const rtl = css`
+    ::slotted(fast-badge) {
+        left: 0;
+    }
+`;
+
+const ltr = css`
+    ::slotted(fast-badge) {
+        right: 0;
+    }
+`;
 
 export const avatarStyles = (context, definition: AvatarOptions) =>
     css`
@@ -47,7 +60,7 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
             overflow: hidden;
         }
 
-        .coin {
+        .backplate {
             position: relative;
             display: flex;
         }
@@ -72,7 +85,5 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
         ::slotted(fast-badge) {
             position: absolute;
             display: block;
-            bottom: 0;
-            right: 0;
         }
-    `;
+    `.withBehaviors(new DirectionalStyleSheetBehavior(ltr, rtl));
