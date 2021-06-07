@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 06 Jun 2021 07:35:11 GMT",
+      "tag": "@microsoft/fast-components_v1.21.4",
+      "version": "1.21.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add transparent background on hover and active states",
+            "author": "khamu@microsoft.com",
+            "commit": "5552d245a55f319e9e0df5fef09ae56653eee491",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 May 2021 07:42:30 GMT",
       "tag": "@microsoft/fast-components_v1.21.3",
       "version": "1.21.3",
