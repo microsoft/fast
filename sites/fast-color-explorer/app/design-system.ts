@@ -1,12 +1,14 @@
 import {
+    createColorPalette,
     FASTDesignSystem,
     fastDesignSystemDefaults,
     Palette,
+    StandardLuminance,
 } from "@microsoft/fast-components";
-import { createColorPalette } from "@microsoft/fast-components";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { StandardLuminance } from "@microsoft/fast-components";
 import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import { PaletteRGB } from "@microsoft/fast-components/dist/esm/color-vNext/palette";
+import { SwatchRGB } from "@microsoft/fast-components/dist/esm/color-vNext/swatch";
 import { defaultAccentColor, defaultNeutralColor } from "./colors";
 
 const neutralPalette: Palette = createColorPalette(
@@ -28,6 +30,14 @@ export type ColorsDesignSystem = FASTDesignSystem & {
     contrast: number;
     neutralForegroundDarkIndex: number;
     neutralForegroundLightIndex: number;
+
+    neutralPaletteRGB: PaletteRGB;
+    accentPaletteRGB: PaletteRGB;
+};
+
+export const swatchToSwatchRGB = (swatch: string): SwatchRGB => {
+    const color = parseColorHexRGB(swatch) as ColorRGBA64;
+    return SwatchRGB.create(color.r, color.g, color.b);
 };
 
 export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
@@ -46,5 +56,8 @@ export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
             parseColorHexRGB(defaultAccentColor) as ColorRGBA64
         ),
         accentBaseColor: defaultAccentColor,
+
+        neutralPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultNeutralColor)),
+        accentPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultAccentColor)),
     }
 );

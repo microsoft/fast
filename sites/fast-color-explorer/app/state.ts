@@ -1,8 +1,13 @@
 import { Action, createStore } from "redux";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { createColorPalette } from "@microsoft/fast-components";
+import { PaletteRGB } from "@microsoft/fast-components/dist/esm/color-vNext/palette";
 import { Swatch } from "@microsoft/fast-components/dist/esm/color";
-import { ColorsDesignSystem, colorsDesignSystem } from "./design-system";
+import {
+    ColorsDesignSystem,
+    colorsDesignSystem,
+    swatchToSwatchRGB,
+} from "./design-system";
 import { defaultNeutralColor } from "./colors";
 
 export enum ComponentTypes {
@@ -50,16 +55,20 @@ export interface AppState {
  * Re-assign a palette value based on an input color reference
  */
 function setPalette(
-    palette: "accentPalette" | "neutralPalette"
+    palette: "accent" | "neutral"
 ): (state: AppState, value: ColorRGBA64) => AppState {
-    const baseColor: string =
-        palette === "accentPalette" ? "accentBaseColor" : "neutralBaseColor";
+    const paletteState: string = palette + "Palette";
+    const paletteStateRGB: string = palette + "PaletteRGB";
+    const baseColor: string = palette + "BaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
         const designSystem: ColorsDesignSystem = {
             ...state.designSystem,
-            [palette]: createColorPalette(value),
+            [paletteState]: createColorPalette(value),
+            [paletteStateRGB]: PaletteRGB.create(
+                swatchToSwatchRGB(value.toStringHexRGB())
+            ),
         };
-        if (palette === "accentPalette") {
+        if (palette === "accent") {
             designSystem.accentBaseColor = value.toStringHexRGB();
         }
 
@@ -71,8 +80,8 @@ function setPalette(
     };
 }
 
-const setAccentPalette: ReturnType<typeof setPalette> = setPalette("accentPalette");
-const setNeutralPalette: ReturnType<typeof setPalette> = setPalette("neutralPalette");
+const setAccentPalette: ReturnType<typeof setPalette> = setPalette("accent");
+const setNeutralPalette: ReturnType<typeof setPalette> = setPalette("neutral");
 
 function rootReducer(state: AppState, action: any): AppState {
     switch (action.type) {
