@@ -9,6 +9,7 @@ import {
 
 export const CalendarStyles = css`
     ${display("block")} :host {
+        --cell-border: none;
         --cell-height: calc(${heightNumber} * 1px);
         --weekday-background: transparent;
         --weekday-color: inherit;
@@ -18,17 +19,16 @@ export const CalendarStyles = css`
         --inactive-day-color: ${SystemColors.GrayText};
     }
 
+    .days > data-grid-row {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border-left: var(--cell-border);
+    }
+
     .title {
         font-size: 1.5em;
         padding: 5px 0;
         text-align: center;
-    }
-
-    .days {
-        border-left: var(--cell-border);
-        border-top: var(--cell-border);
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
     }
 
     .week-day {
@@ -45,11 +45,11 @@ export const CalendarStyles = css`
 
     .day {
         box-sizing: border-box;
-        border-bottom: var(--cell-border);
-        border-right: var(--cell-border);
         height: var(--cell-height);
         padding: 5px;
         vertical-align: top;
+        border-bottom: var(--cell-border);
+        border-right: var(--cell-border);
     }
 
     .day.off {

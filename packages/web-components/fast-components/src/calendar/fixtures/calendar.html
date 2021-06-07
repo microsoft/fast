@@ -1,6 +1,8 @@
 <style>
     fast-calendar {
         width: 600px;
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
     }
 
     .long-days {
@@ -23,6 +25,14 @@
         text-align: center;
         width: 700px;
         --cell-height: 100px;
+    }
+
+    .borders::part(days) {
+        background: #222;
+    }
+
+    .borders::part(title) {
+        color: orange;
     }
 
     .light-borders {
@@ -65,6 +75,21 @@
         right: 0;
         left: auto;
         transform: translateX(50%);
+    }
+
+    #year {
+        max-width: 1300px;
+    }
+
+    #year fast-calendar {
+        --inactive-day-color: transparent;
+        display: inline-block;
+        color: #aaa;
+        --weekday-color: #fff;
+    }
+
+    #year fast-calendar::part(title) {
+        color: #fff;
     }
 </style>
 <script>
@@ -175,3 +200,20 @@
     <div slot="1-1-2021">January 1</div>
     <div slot="1-2-2021">January 2</div>
 </fast-calendar>
+
+<h2>Year calendar view</h2>
+<div id="year"></div>
+<script>
+    (year => {
+        const container = document.getElementById("year");
+        const addMonth = (_, index) => {
+            const monthCalendar = document.createElement("fast-calendar");
+            monthCalendar.className = "compact";
+            monthCalendar.weekdayFormat = "narrow";
+            monthCalendar.month = index + 1;
+            if (year) monthCalendar.year = year;
+            container.appendChild(monthCalendar);
+        };
+        new Array(12).fill(null).forEach(addMonth);
+    })();
+</script>
