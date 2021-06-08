@@ -1,9 +1,20 @@
 import { ColorRGBA64, parseColor, parseColorHexRGB } from "@microsoft/fast-colors";
 import { PaletteRGB, StandardLuminance, SwatchRGB } from "@microsoft/fast-components";
+import { DesignSystemResolver } from "@microsoft/fast-components-styles-msft";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { defaultAccentColor, defaultNeutralColor } from "./colors";
 
-export interface FASTDesignSystem {
+export const swatchToSwatchRGB = (swatch: string): SwatchRGB => {
+    const color = parseColorHexRGB(swatch) as ColorRGBA64;
+    return SwatchRGB.create(color.r, color.g, color.b);
+};
+export interface ColorsDesignSystem {
+    contrast: number;
+    neutralForegroundDarkIndex: number;
+    neutralForegroundLightIndex: number;
+
+    neutralPaletteRGB: PaletteRGB;
+    accentPaletteRGB: PaletteRGB;
     /**
      * Type-ramp font-size and line-height values
      */
@@ -200,9 +211,20 @@ const accentPalette = PaletteRGB.create(
 /**
  * The default values for {@link FASTDesignSystem}
  * @public
- * @deprecated - Use DesignTokens
  */
-export const fastDesignSystemDefaults: FASTDesignSystem = {
+export const colorDesignSystemDefaults: ColorsDesignSystem = {
+    contrast: 0,
+    neutralForegroundDarkIndex: 0,
+    neutralForegroundLightIndex: 0,
+
+    baseHeightMultiplier: 8,
+    baseLayerLuminance: StandardLuminance.DarkMode,
+    neutralPalette,
+    accentPalette,
+    accentBaseColor: defaultAccentColor,
+
+    neutralPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultNeutralColor)),
+    accentPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultAccentColor)),
     typeRampMinus2FontSize: "10px",
     typeRampMinus2LineHeight: "16px",
     typeRampMinus1FontSize: "12px",
@@ -222,10 +244,7 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     typeRampPlus6FontSize: "60px",
     typeRampPlus6LineHeight: "72px",
 
-    accentBaseColor: "#DA1A5F",
-    accentPalette: accentPalette,
     backgroundColor: "#181818",
-    baseHeightMultiplier: 10,
     baseHorizontalSpacingMultiplier: 3,
     cornerRadius: 3,
     density: 0,
@@ -233,7 +252,6 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     direction: Direction.ltr,
     disabledOpacity: 0.3,
     focusOutlineWidth: 2,
-    neutralPalette: neutralPalette,
     outlineWidth: 1,
 
     /**
@@ -272,7 +290,6 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
     neutralFillToggleActiveDelta: -5,
     neutralFillToggleFocusDelta: 0,
 
-    baseLayerLuminance: -1,
     neutralFillCardDelta: 3,
 
     neutralForegroundHoverDelta: 0,
@@ -298,41 +315,15 @@ export const fastDesignSystemDefaults: FASTDesignSystem = {
  * @param recipe
  * @returns
  */
-export const bridge = (recipe: any): any => {
-    return (d?: FASTDesignSystem): any => recipe(d || fastDesignSystemDefaults);
-};
-
-export type ColorsDesignSystem = FASTDesignSystem & {
-    // Bring these back from the old DesignSystem for use with React components
-    contrast: number;
-    neutralForegroundDarkIndex: number;
-    neutralForegroundLightIndex: number;
-
-    neutralPaletteRGB: PaletteRGB;
-    accentPaletteRGB: PaletteRGB;
-};
-
-export const swatchToSwatchRGB = (swatch: string): SwatchRGB => {
-    const color = parseColorHexRGB(swatch) as ColorRGBA64;
-    return SwatchRGB.create(color.r, color.g, color.b);
+export const bridge = (recipe: DesignSystemResolver<string>): any => {
+    return (d?: ColorsDesignSystem): any =>
+        recipe(d || (colorDesignSystemDefaults as any));
 };
 
 export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
     {},
-    fastDesignSystemDefaults,
+    colorDesignSystemDefaults,
     {
         // These three are only for legacy React component support
-        contrast: 0,
-        neutralForegroundDarkIndex: 0,
-        neutralForegroundLightIndex: 0,
-
-        baseHeightMultiplier: 8,
-        baseLayerLuminance: StandardLuminance.DarkMode,
-        neutralPalette,
-        accentPalette,
-        accentBaseColor: defaultAccentColor,
-
-        neutralPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultNeutralColor)),
-        accentPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultAccentColor)),
     }
 );
