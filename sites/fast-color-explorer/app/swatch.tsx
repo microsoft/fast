@@ -1,17 +1,21 @@
-import React from "react";
+import { applyElevation } from "@microsoft/fast-components-styles-msft";
 import manageJss, {
     ComponentStyleSheet,
     DesignSystemConsumer,
 } from "@microsoft/fast-jss-manager-react";
-import classnames from "classnames";
-import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/color";
-import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
-import { ColorRecipe, contrast } from "@microsoft/fast-components/dist/esm/color/common";
 import { format } from "@microsoft/fast-jss-utilities";
-import { SwatchRecipe } from "@microsoft/fast-components/dist/esm/color/common";
-import { applyElevation } from "@microsoft/fast-components-styles-msft";
+import classnames from "classnames";
+import React from "react";
 import { ColorsDesignSystem } from "./design-system";
-import { neutralForegroundHint, neutralOutlineRest } from "./recipes";
+import {
+    backgroundColor,
+    ColorRecipe,
+    contrast,
+    DesignSystemResolver,
+    neutralForegroundHint,
+    neutralOutlineRest,
+    SwatchResolver,
+} from "./recipes";
 
 export enum SwatchTypes {
     fill = "fill",
@@ -32,7 +36,6 @@ export interface SwatchClassNameContract {
 export interface SwatchManagedClasses {
     managedClasses: SwatchClassNameContract;
 }
-
 interface SwatchBaseProps extends SwatchManagedClasses {
     /**
      * The type of recipe the swatch represents
@@ -47,17 +50,17 @@ interface SwatchBaseProps extends SwatchManagedClasses {
     /**
      * The recipe to derive the fill color of the swatch
      */
-    fillRecipe: SwatchRecipe;
+    fillRecipe: SwatchResolver;
 
     /**
      * The recipe to derive text over the control
      */
-    foregroundRecipe: SwatchRecipe;
+    foregroundRecipe: SwatchResolver;
 
     /**
      * The recipe to derive the outline
      */
-    outlineRecipe?: SwatchRecipe;
+    outlineRecipe?: SwatchResolver;
 }
 
 const swatchTwoStyles: ComponentStyleSheet<

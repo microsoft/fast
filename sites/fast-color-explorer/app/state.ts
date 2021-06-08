@@ -1,7 +1,7 @@
 import { Action, createStore } from "redux";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { PaletteRGB, SwatchRGB } from "@microsoft/fast-components";
-import { Swatch } from "@microsoft/fast-components/dist/esm/color";
+import { Swatch } from "./recipes";
 import {
     ColorsDesignSystem,
     colorsDesignSystem,

@@ -1,26 +1,28 @@
-import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
-import { FASTDesignSystem, StandardLuminance } from "@microsoft/fast-components";
+import { StandardLuminance } from "@microsoft/fast-components";
+import { Background } from "@microsoft/fast-components-react-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
+import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import React from "react";
 import { connect } from "react-redux";
-import { Background } from "@microsoft/fast-components-react-msft";
-import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { ColorRecipe, Swatch } from "@microsoft/fast-components/dist/esm/color/common";
+import { FixedSizeList } from "react-window";
+import ColorBlocks from "./color-blocks";
+import { ControlPane } from "./control-pane";
+import { ColorsDesignSystem } from "./design-system";
+import { Gradient } from "./gradient";
 import {
+    ColorRecipe,
     neutralLayerCardContainer,
     neutralLayerFloating,
     neutralLayerL1,
     neutralLayerL2,
     neutralLayerL3,
     neutralLayerL4,
+    Swatch,
+    SwatchResolver,
 } from "./recipes";
-import { AppState } from "./state";
-import { ControlPane } from "./control-pane";
-import ColorBlocks from "./color-blocks";
-import { Gradient } from "./gradient";
-import { ColorsDesignSystem } from "./design-system";
 import { Footer } from "./site-footer";
+import { AppState } from "./state";
 
 interface AppProps {
     designSystem: ColorsDesignSystem;
@@ -41,7 +43,7 @@ class App extends React.Component<AppProps, {}> {
         },
     };
 
-    private backgroundRecipes: Array<[ColorRecipe<string>, string]> = [
+    private backgroundRecipes: Array<[SwatchResolver, string]> = [
         [neutralLayerFloating, "neutralLayerFloating"],
         [neutralLayerCardContainer, "neutralLayerCardContainer"],
         [neutralLayerL1, "neutralLayerL1"],
