@@ -13,7 +13,7 @@ const target = (-0.1 + Math.sqrt(0.21)) / 2;
  * @param color - The color to check to mode of
  * @returns boolean
  *
- * @internal
+ * @public
  */
 export function isDark(color: Swatch): boolean {
     return color.relativeLuminance <= target;

@@ -1,3 +1,4 @@
+import { contrastRatio, parseColor } from "@microsoft/fast-colors";
 import { accentFill as accentFillAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-foreground";
 import { accentForegroundCut as accentForegroundCutAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-foreground-cut";
@@ -11,14 +12,58 @@ import { neutralFocus as neutralFocusAlgorithm } from "@microsoft/fast-component
 import { neutralFocusInnerAccent as neutralFocusInnerAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-focus-inner-accent";
 import { neutralForeground as neutralForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground";
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground-hint";
-import { neutralOutline as neutralOutlineAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-outline";
 import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-card-container";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-floating";
 import { neutralLayerL1 as neutralLayerL1Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L1";
 import { neutralLayerL2 as neutralLayerL2Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L2";
 import { neutralLayerL3 as neutralLayerL3Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L3";
 import { neutralLayerL4 as neutralLayerL4Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L4";
+import { neutralOutline as neutralOutlineAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-outline";
 import { ColorsDesignSystem, swatchToSwatchRGB } from "./design-system";
+
+export type Swatch = string;
+export type DesignSystemResolver<T, Y = ColorsDesignSystem> = (d: Y) => T;
+export type SwatchResolver = DesignSystemResolver<Swatch>;
+/**
+ * A function type that resolves a Swatch from a SwatchResolver
+ * and applies it to the backgroundColor property of the design system
+ * of the returned DesignSystemResolver
+ * @internal
+ */
+export type DesignSystemResolverFromSwatchResolver<T> = (
+    resolver: SwatchResolver
+) => DesignSystemResolver<T>;
+
+/**
+ * A function type that resolves a Swatch from a string literal
+ * and applies it to the backgroundColor property of the design system
+ * of the returned DesignSystemResolver
+ */
+export type DesignSystemResolverFromSwatch<T> = (
+    colorLiteral: string
+) => DesignSystemResolver<T>;
+
+/**
+ * The states that a swatch can have
+ * @internal
+ */
+export enum SwatchFamilyType {
+    rest = "rest",
+    hover = "hover",
+    active = "active",
+    focus = "focus",
+    selected = "selected",
+}
+
+/**
+ * A function that resolves a color when provided a design system
+ * or resolves a ColorRecipe when provided a SwatchResolver
+ */
+export type ColorRecipe<T> = DesignSystemResolver<T> &
+    DesignSystemResolverFromSwatchResolver<T> &
+    DesignSystemResolverFromSwatch<T>;
+
+export type SwatchRecipe = ColorRecipe<Swatch>;
 
 // This file exists as an interop between the new color recipes and the legacy design system support.
 
@@ -335,3 +380,16 @@ export const neutralLayerL4 = (d?: ColorsDesignSystem): string => {
         .toColorString()
         .toUpperCase();
 };
+
+export function backgroundColor(d?: ColorsDesignSystem): string {
+    return d?.backgroundColor || "#FFFFFF";
+}
+
+/**
+ * Returns the contrast value between two color strings.
+ * Supports #RRGGBB and rgb(r, g, b) formats.
+ * @internal
+ */
+export function contrast(a: string, b: string): number {
+    return contrastRatio(parseColor(a)!, parseColor(b)!);
+}

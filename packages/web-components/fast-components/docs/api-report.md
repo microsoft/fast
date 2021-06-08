@@ -943,6 +943,9 @@ export class HorizontalScroll extends HorizontalScroll_2 {
 }
 
 // @public
+export function isDark(color: Swatch): boolean;
+
+// @public
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
@@ -1015,7 +1018,7 @@ export const neutralFillActiveBehavior: import("@microsoft/fast-foundation").CSS
 // Warning: (ae-internal-missing-underscore) The name "neutralFillCard" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
+export function neutralFillCard(designSystem: FASTDesignSystem): Swatch_2;
 
 // Warning: (ae-forgotten-export) The symbol "SwatchResolver" needs to be exported by the entry point index.d.ts
 //
@@ -1100,7 +1103,7 @@ export const neutralFillStealth: ColorRecipe<FillSwatchFamily>;
 // Warning: (ae-internal-missing-underscore) The name "neutralFillStealthActive" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillStealthActive: ColorRecipe<Swatch>;
+export const neutralFillStealthActive: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralFillStealthActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1111,7 +1114,7 @@ export const neutralFillStealthFocusBehavior: import("@microsoft/fast-foundation
 // Warning: (ae-internal-missing-underscore) The name "neutralFillStealthHover" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillStealthHover: ColorRecipe<Swatch>;
+export const neutralFillStealthHover: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralFillStealthHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1119,7 +1122,7 @@ export const neutralFillStealthHoverBehavior: import("@microsoft/fast-foundation
 // Warning: (ae-internal-missing-underscore) The name "neutralFillStealthRest" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillStealthRest: ColorRecipe<Swatch>;
+export const neutralFillStealthRest: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralFillStealthRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1127,7 +1130,7 @@ export const neutralFillStealthRestBehavior: import("@microsoft/fast-foundation"
 // Warning: (ae-internal-missing-underscore) The name "neutralFillStealthSelected" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFillStealthSelected: ColorRecipe<Swatch>;
+export const neutralFillStealthSelected: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralFillStealthSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1167,7 +1170,7 @@ export const neutralFillToggleRestBehavior: import("@microsoft/fast-foundation")
 // Warning: (ae-internal-missing-underscore) The name "neutralFocus" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const neutralFocus: ColorRecipe<Swatch>;
+export const neutralFocus: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1248,7 +1251,7 @@ export const neutralForegroundToggleLargeBehavior: import("@microsoft/fast-found
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerCard" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerCard: ColorRecipe<Swatch>;
+export const neutralLayerCard: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1256,7 +1259,7 @@ export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSC
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerCardContainer" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerCardContainer: ColorRecipe<Swatch>;
+export const neutralLayerCardContainer: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerCardContainerBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1264,7 +1267,7 @@ export const neutralLayerCardContainerBehavior: import("@microsoft/fast-foundati
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerFloating" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerFloating: ColorRecipe<Swatch>;
+export const neutralLayerFloating: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1272,12 +1275,12 @@ export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL1" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerL1: ColorRecipe<Swatch>;
+export const neutralLayerL1: ColorRecipe<Swatch_2>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL1Alt" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerL1Alt: ColorRecipe<Swatch>;
+export const neutralLayerL1Alt: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerL1AltBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1288,7 +1291,7 @@ export const neutralLayerL1Behavior: import("@microsoft/fast-foundation").CSSCus
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL2" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerL2: ColorRecipe<Swatch>;
+export const neutralLayerL2: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1296,7 +1299,7 @@ export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCus
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL3" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerL3: ColorRecipe<Swatch>;
+export const neutralLayerL3: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1304,7 +1307,7 @@ export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCus
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL4" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const neutralLayerL4: ColorRecipe<Swatch>;
+export const neutralLayerL4: ColorRecipe<Swatch_2>;
 
 // @public
 export const neutralLayerL4Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
@@ -1362,12 +1365,30 @@ export const numberFieldStyles: (context: any, definition: any) => import("@micr
 export const optionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export type Palette = Swatch[];
+export interface Palette<T extends Swatch = Swatch> {
+    // Warning: (ae-forgotten-export) The symbol "RelativeLuminance" needs to be exported by the entry point index.d.ts
+    closestIndexOf(reference: RelativeLuminance): number;
+    colorContrast(reference: Swatch, contrast: number, initialIndex?: number, direction?: 1 | -1): T;
+    get(index: number): T;
+    // (undocumented)
+    readonly source: T;
+    // (undocumented)
+    readonly swatches: ReadonlyArray<T>;
+}
 
+// Warning: (ae-forgotten-export) The symbol "Palette" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "palette" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated
-export function palette(paletteType: PaletteType): DesignSystemResolver<Palette>;
+export function palette(paletteType: PaletteType): DesignSystemResolver<Palette_2>;
+
+// @public (undocumented)
+export type PaletteRGB = Palette<SwatchRGB>;
+
+// @public (undocumented)
+export const PaletteRGB: Readonly<{
+    create(source: SwatchRGB): PaletteRGB;
+}>;
 
 // @public @deprecated
 export enum PaletteType {
@@ -1419,6 +1440,29 @@ export enum StandardLuminance {
     // (undocumented)
     LightMode = 1
 }
+
+// @public
+export interface Swatch extends RelativeLuminance {
+    // (undocumented)
+    contrast(target: RelativeLuminance): number;
+    // (undocumented)
+    toColorString(): string;
+}
+
+// @public (undocumented)
+export interface SwatchRGB extends Swatch {
+    // (undocumented)
+    b: number;
+    // (undocumented)
+    g: number;
+    // (undocumented)
+    r: number;
+}
+
+// @public (undocumented)
+export const SwatchRGB: Readonly<{
+    create(r: number, g: number, b: number): SwatchRGB;
+}>;
 
 // @public
 export const switchStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;

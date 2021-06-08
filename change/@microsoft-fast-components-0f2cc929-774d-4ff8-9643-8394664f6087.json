@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "removes deprecated infrastructure from fast-color-explorer",
+  "packageName": "@microsoft/fast-components",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
