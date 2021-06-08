@@ -1,10 +1,5 @@
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
-import {
-    FASTDesignSystem,
-    palette,
-    PaletteType,
-    StandardLuminance,
-} from "@microsoft/fast-components";
+import { FASTDesignSystem, StandardLuminance } from "@microsoft/fast-components";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import React from "react";
 import { connect } from "react-redux";
@@ -64,9 +59,7 @@ class App extends React.Component<AppProps, {}> {
                             <Container jssStyleSheet={this.containerStyleOverrides}>
                                 <Row height={20} minHeight={20}>
                                     <Gradient
-                                        colors={palette(PaletteType.neutral)(
-                                            this.props.designSystem
-                                        )}
+                                        colors={this.props.designSystem.neutralPalette}
                                         markedColor={this.props.neutralBaseColor}
                                         createAnchors={true}
                                         scrollToItem={this.handleGradientScroll}
@@ -74,9 +67,7 @@ class App extends React.Component<AppProps, {}> {
                                 </Row>
                                 <Row height={20} minHeight={20}>
                                     <Gradient
-                                        colors={palette(PaletteType.accent)(
-                                            this.props.designSystem
-                                        )}
+                                        colors={this.props.designSystem.accentPalette}
                                         markedColor={this.props.accentBaseColor}
                                         createAnchors={false}
                                     />

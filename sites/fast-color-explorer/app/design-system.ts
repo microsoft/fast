@@ -1,19 +1,19 @@
 import {
-    createColorPalette,
     FASTDesignSystem,
     fastDesignSystemDefaults,
-    Palette,
     StandardLuminance,
 } from "@microsoft/fast-components";
-import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { DesignSystemResolver } from "@microsoft/fast-components/dist/esm/fast-design-system";
-import { PaletteRGB } from "@microsoft/fast-components/dist/esm/color-vNext/palette";
-import { SwatchRGB } from "@microsoft/fast-components/dist/esm/color-vNext/swatch";
+import { ColorRGBA64, parseColor, parseColorHexRGB } from "@microsoft/fast-colors";
+import { PaletteRGB, SwatchRGB } from "@microsoft/fast-components";
 import { defaultAccentColor, defaultNeutralColor } from "./colors";
 
-const neutralPalette: Palette = createColorPalette(
-    parseColorHexRGB(defaultNeutralColor) as ColorRGBA64
-);
+const neutralPalette = PaletteRGB.create(
+    SwatchRGB.create(0.5, 0.5, 0.5)
+).swatches.map((x: SwatchRGB) => x.toColorString());
+const accentColor = parseColor(defaultAccentColor)!;
+const accentPalette = PaletteRGB.create(
+    SwatchRGB.create(accentColor.r, accentColor.g, accentColor.b)
+).swatches.map((x: SwatchRGB) => x.toColorString());
 
 /**
  * Bridge recipes between React and web component implementations.
@@ -21,7 +21,7 @@ const neutralPalette: Palette = createColorPalette(
  * @param recipe
  * @returns
  */
-export const bridge = (recipe: DesignSystemResolver<string>): any => {
+export const bridge = (recipe: any): any => {
     return (d?: FASTDesignSystem): any => recipe(d || fastDesignSystemDefaults);
 };
 
@@ -52,9 +52,7 @@ export const colorsDesignSystem: ColorsDesignSystem = Object.assign(
         baseHeightMultiplier: 8,
         baseLayerLuminance: StandardLuminance.DarkMode,
         neutralPalette,
-        accentPalette: createColorPalette(
-            parseColorHexRGB(defaultAccentColor) as ColorRGBA64
-        ),
+        accentPalette,
         accentBaseColor: defaultAccentColor,
 
         neutralPaletteRGB: PaletteRGB.create(swatchToSwatchRGB(defaultNeutralColor)),

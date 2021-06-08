@@ -1,7 +1,6 @@
 import { Action, createStore } from "redux";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { createColorPalette } from "@microsoft/fast-components";
-import { PaletteRGB } from "@microsoft/fast-components/dist/esm/color-vNext/palette";
+import { PaletteRGB, SwatchRGB } from "@microsoft/fast-components";
 import { Swatch } from "@microsoft/fast-components/dist/esm/color";
 import {
     ColorsDesignSystem,
@@ -61,12 +60,13 @@ function setPalette(
     const paletteStateRGB: string = palette + "PaletteRGB";
     const baseColor: string = palette + "BaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
+        const pRGB: PaletteRGB = PaletteRGB.create(
+            swatchToSwatchRGB(value.toStringHexRGB())
+        );
         const designSystem: ColorsDesignSystem = {
             ...state.designSystem,
-            [paletteState]: createColorPalette(value),
-            [paletteStateRGB]: PaletteRGB.create(
-                swatchToSwatchRGB(value.toStringHexRGB())
-            ),
+            [paletteState]: pRGB.swatches.map((x: SwatchRGB) => x.toColorString()),
+            [paletteStateRGB]: pRGB,
         };
         if (palette === "accent") {
             designSystem.accentBaseColor = value.toStringHexRGB();
