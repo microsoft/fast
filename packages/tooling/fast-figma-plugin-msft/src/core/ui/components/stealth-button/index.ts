@@ -1,10 +1,11 @@
-import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
-    accentForegroundCutRestBehavior,
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
+    accentForegroundCut,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralOutlineRest,
 } from "@microsoft/fast-components";
+import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`
     <button>
@@ -30,33 +31,28 @@ const styles = css`
         height: 32px;
         border: none;
         border-radius: calc(var(--corner-radius) * 1px);
-        background: var(--neutral-fill-stealth-rest);
+        background: ${neutralFillStealthRest};
         fill: var(--neutral-foreground-rest);
         outline: none;
         font-size: inherit;
     }
 
     button:focus {
-        border-color: var(--neutral-outline-rest);
+        border-color: ${neutralOutlineRest};
     }
     button:hover {
-        background: var(--neutral-fill-stealth-hover);
+        background: ${neutralFillStealthHover};
     }
 
     button:active {
-        background: var(--neutral-fill-stealth-active);
+        background: ${neutralFillStealthActive};
     }
 
     :host([aria-expanded="true"]) button {
         background: #18a0fb;
-        fill: var(--accent-foreground-cut-rest);
+        fill: ${accentForegroundCut};
     }
-`.withBehaviors(
-    accentForegroundCutRestBehavior,
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior
-);
+`;
 
 @customElement({
     name: "td-stealth-button",

@@ -1,7 +1,7 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
-    neutralFillStealthHoverBehavior,
-    neutralForegroundHintBehavior,
+    neutralFillStealthHover,
+    neutralForegroundHint,
 } from "@microsoft/fast-components";
 
 const template = html`
@@ -26,7 +26,7 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        color: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHint};
     }
 
     .swatch {
@@ -97,14 +97,14 @@ const styles = css`
 
     :host(.interactive:hover) {
         cursor: pointer;
-        background: var(--neutral-fill-stealth-hover);
+        background: ${neutralFillStealthHover};
     }
 
     :host(.selected),
     :host(.selected:hover) {
         background: #daebf7;
     }
-`.withBehaviors(neutralFillStealthHoverBehavior, neutralForegroundHintBehavior);
+`;
 
 export enum SwatchTypes {
     background = "background",
