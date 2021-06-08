@@ -1,14 +1,10 @@
 import { get, values } from "lodash-es";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    backgroundColor,
-    cornerRadius,
-} from "@microsoft/fast-components/dist/esm/fast-design-system";
 import manageJss, {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
-import { format, toPx } from "@microsoft/fast-jss-utilities";
+import { format } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
 import classnames from "classnames";
 import {
@@ -33,6 +29,7 @@ import {
 } from "./colors";
 import { bridge, ColorsDesignSystem } from "./design-system";
 import {
+    backgroundColor,
     neutralDividerRest,
     neutralFillInputRest,
     neutralFocus,
@@ -104,7 +101,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
                         width: "24px !important",
                         height: "24px !important",
                         "& div": {
-                            borderRadius: format("{0} !important", toPx(cornerRadius)),
+                            borderRadius: "3px !important",
                         },
                     },
                 },
@@ -117,7 +114,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
             border: format("1px solid {0} !important", neutralOutlineRest),
             height: bridge(height()),
             fontSize: "14px !important",
-            borderRadius: format("{0} !important", toPx(cornerRadius)),
+            borderRadius: "3px !important",
             paddingTop: "0 !important",
             paddingBottom: "0 !important",
             "&:focus": {
