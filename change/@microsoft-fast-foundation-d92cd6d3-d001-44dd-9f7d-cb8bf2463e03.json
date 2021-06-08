@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "streamline horizontal scroll resize",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
