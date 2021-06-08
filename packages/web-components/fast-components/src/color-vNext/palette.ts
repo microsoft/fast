@@ -41,8 +41,10 @@ export interface Palette<T extends Swatch = Swatch> {
     get(index: number): T;
 }
 
+/** @public */
 export type PaletteRGB = Palette<SwatchRGB>;
 
+/** @public */
 export const PaletteRGB = Object.freeze({
     create(source: SwatchRGB): PaletteRGB {
         return PaletteRGBImpl.from(source);
