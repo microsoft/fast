@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 30 May 2021 07:42:30 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.5
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- streamline horizontal scroll resize (scomea@microsoft.com)
 
 ## 1.24.4
 
