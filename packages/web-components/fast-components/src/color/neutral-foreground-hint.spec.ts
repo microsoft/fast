@@ -5,8 +5,8 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    neutralForegroundHint,
-    neutralForegroundHintLarge,
+    neutralForegroundHint_DEPRECATED,
+    neutralForegroundHintLarge_DEPRECATED,
 } from "./neutral-foreground-hint";
 import { Palette } from "./palette";
 import { contrast, Swatch, SwatchRecipe } from "./common";
@@ -22,14 +22,14 @@ describe("neutralForegroundHint", (): void => {
 
     // test("should return a swatch when argument is a ")
     it("should implement design system defaults", (): void => {
-        expect(neutralForegroundHint(undefined as any)).to.equal("#838383");
+        expect(neutralForegroundHint_DEPRECATED(undefined as any)).to.equal("#838383");
     });
 
     neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
         it(`${swatch} should resolve a color from the neutral palette`, (): void => {
             expect(
                 neutralPalette.indexOf(
-                    neutralForegroundHint(
+                    neutralForegroundHint_DEPRECATED(
                         Object.assign({}, fastDesignSystemDefaults, {
                             backgroundColor: swatch,
                         })
@@ -42,12 +42,12 @@ describe("neutralForegroundHint", (): void => {
     it("should return the same color from both methods of setting the reference background", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             expect(
-                neutralForegroundHint(
+                neutralForegroundHint_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
-            ).to.equal(neutralForegroundHint(() => swatch)(fastDesignSystemDefaults));
+            ).to.equal(neutralForegroundHint_DEPRECATED(() => swatch)(fastDesignSystemDefaults));
         });
     });
 
@@ -62,13 +62,13 @@ describe("neutralForegroundHint", (): void => {
     neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
         it(`${swatch} should always be at least 4.5 : 1 against the background`, (): void => {
             expect(
-                retrieveContrast(swatch, neutralForegroundHint)
+                retrieveContrast(swatch, neutralForegroundHint_DEPRECATED)
                 // Because neutralForegroundHint follows the direction patterns of neutralForeground,
                 // a backgroundColor #777777 is impossible to hit 4.5 against.
             ).to.be.gte(swatch === "#777777" ? 4.48 : 4.5);
-            expect(retrieveContrast(swatch, neutralForegroundHint)).to.be.lessThan(5);
-            expect(retrieveContrast(swatch, neutralForegroundHintLarge)).to.be.gte(3);
-            expect(retrieveContrast(swatch, neutralForegroundHintLarge)).to.be.lessThan(
+            expect(retrieveContrast(swatch, neutralForegroundHint_DEPRECATED)).to.be.lessThan(5);
+            expect(retrieveContrast(swatch, neutralForegroundHintLarge_DEPRECATED)).to.be.gte(3);
+            expect(retrieveContrast(swatch, neutralForegroundHintLarge_DEPRECATED)).to.be.lessThan(
                 3.3
             );
         });
@@ -81,7 +81,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     palette.swatches.forEach(( newSwatch, index ) => {
         it(`should be the same for ${newSwatch}`, () => {
             expect(neutralForegroundHintNew(palette, newSwatch).toColorString().toUpperCase()).to.equal(
-                neutralForegroundHint({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
+                neutralForegroundHint_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
             )
         })
     })

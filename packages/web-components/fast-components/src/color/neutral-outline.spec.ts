@@ -6,11 +6,11 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    neutralOutline,
-    neutralOutlineActive,
-    neutralOutlineFocus,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralOutline_DEPRECATED,
+    neutralOutlineActive_DEPRECATED,
+    neutralOutlineFocus_DEPRECATED,
+    neutralOutlineHover_DEPRECATED,
+    neutralOutlineRest_DEPRECATED,
 } from "./neutral-outline";
 import { Palette } from "./palette";
 import { Swatch, SwatchFamily } from "./common";
@@ -25,10 +25,10 @@ describe("neutralOutline", (): void => {
 
     it("should return by default", (): void => {
         [
-            neutralOutlineActive,
-            neutralOutlineFocus,
-            neutralOutlineHover,
-            neutralOutlineRest,
+            neutralOutlineActive_DEPRECATED,
+            neutralOutlineFocus_DEPRECATED,
+            neutralOutlineHover_DEPRECATED,
+            neutralOutlineRest_DEPRECATED,
         ].forEach(fn => {
             expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
         });
@@ -38,7 +38,7 @@ describe("neutralOutline", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             expect(
                 isColorStringHexRGB(
-                    neutralOutlineRest(() => swatch)({} as FASTDesignSystem)
+                    neutralOutlineRest_DEPRECATED(() => swatch)({} as FASTDesignSystem)
                 )
             ).to.equal(true);
         });
@@ -46,29 +46,29 @@ describe("neutralOutline", (): void => {
 
     it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralOutlineRest(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralOutlineRest(
+            expect(neutralOutlineRest_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralOutlineRest_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineHover(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralOutlineHover(
+            expect(neutralOutlineHover_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralOutlineHover_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineActive(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralOutlineActive(
+            expect(neutralOutlineActive_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralOutlineActive_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralOutlineFocus(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralOutlineFocus(
+            expect(neutralOutlineFocus_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralOutlineFocus_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
@@ -79,19 +79,19 @@ describe("neutralOutline", (): void => {
 
     it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            const backplates: SwatchFamily = neutralOutline(() => swatch)(
+            const backplates: SwatchFamily = neutralOutline_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const rest: Swatch = neutralOutlineRest(() => swatch)(
+            const rest: Swatch = neutralOutlineRest_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const hover: Swatch = neutralOutlineHover(() => swatch)(
+            const hover: Swatch = neutralOutlineHover_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const active: Swatch = neutralOutlineActive(() => swatch)(
+            const active: Swatch = neutralOutlineActive_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const focus: Swatch = neutralOutlineFocus(() => swatch)(
+            const focus: Swatch = neutralOutlineFocus_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
 
@@ -108,7 +108,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralOutlineRestDelta, neutralOutlineHoverDelta, neutralOutlineFocusDelta, neutralOutlineActiveDelta } = fastDesignSystemDefaults;
-        const oldValues = neutralOutline({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = neutralOutline_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralOutlineNew(
             palette,
             newSwatch,
