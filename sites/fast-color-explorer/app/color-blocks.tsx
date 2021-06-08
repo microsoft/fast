@@ -13,7 +13,6 @@ import {
     TextField,
 } from "@microsoft/fast-components-react-msft";
 import React from "react";
-import { backgroundColor } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import manageJss, { ComponentStyleSheet } from "@microsoft/fast-jss-manager-react";
 import classnames from "classnames";
 import { get, isEqual, uniqueId } from "lodash-es";
@@ -29,6 +28,7 @@ import {
     accentForegroundCut,
     accentForegroundHover,
     accentForegroundRest,
+    backgroundColor,
     neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
