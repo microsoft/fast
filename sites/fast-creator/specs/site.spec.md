@@ -1,13 +1,13 @@
 # Creator specifications
 
-This file contains all specifications in regards to the Creator site's architecture and planning. Additional information may be referred to from supplemental markdown files.
+This file contains all specifications in regards to the Creator app's architecture and planning. Additional information may be referred to from supplemental markdown files.
 
 - [Projects](#projects)
     - [Web component libraries](#web-component-libraries)
 
 ## Projects
 
-Projects are the serializable data that users create and modify in the FAST Creator site. They consist of multi-page layouts representing sites.
+Projects are the serializable data that users create and modify in the FAST Creator app. They consist of multi-page layouts representing sites.
 
 ### Web component libraries
 
