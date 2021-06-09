@@ -1,5 +1,6 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
+    cornerRadius,
     neutralFillStealthHover,
     neutralForegroundHint,
 } from "@microsoft/fast-components";
@@ -33,7 +34,7 @@ const styles = css`
         box-sizing: border-box;
         width: 32px;
         height: 32px;
-        border-radius: calc(var(--corner-radius) * 2px);
+        border-radius: calc(${cornerRadius} * 2px);
         background: var(--swatch-value);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
         position: relative;
@@ -50,7 +51,7 @@ const styles = css`
         box-sizing: border-box;
         background: var(--background-color);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
-        border-radius: calc(var(--cornerRadius) * 2px);
+        border-radius: calc(${cornerRadius} * 2px);
     }
 
     .swatch::after {

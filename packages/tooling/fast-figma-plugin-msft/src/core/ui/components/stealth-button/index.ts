@@ -1,10 +1,13 @@
 import {
     accentForegroundCut,
+    cornerRadius,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralForegroundRest,
     neutralOutlineRest,
 } from "@microsoft/fast-components";
+import {} from "@microsoft/fast-components-styles-msft";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`
@@ -30,9 +33,9 @@ const styles = css`
         min-width: 32px;
         height: 32px;
         border: none;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         background: ${neutralFillStealthRest};
-        fill: var(--neutral-foreground-rest);
+        fill: ${neutralForegroundRest};
         outline: none;
         font-size: inherit;
     }
