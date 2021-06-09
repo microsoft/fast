@@ -53,7 +53,7 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
-    neutralLayerL1,
+    neutralLayerL1_DEPRECATED,
     StandardLuminance,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
@@ -172,7 +172,7 @@ class Creator extends Editor<{}, CreatorState> {
                             "use-defaults": true,
                             "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
                             direction: Direction.ltr,
-                            "background-color": neutralLayerL1(
+                            "background-color": neutralLayerL1_DEPRECATED(
                                 Object.assign({}, fastDesignSystemDefaults, {
                                     baseLayerLuminance: StandardLuminance.LightMode,
                                 })
@@ -598,7 +598,7 @@ class Creator extends Editor<{}, CreatorState> {
         });
 
         this.updateDesignSystemDataDictionaryState({
-            "background-color": neutralLayerL1(
+            "background-color": neutralLayerL1_DEPRECATED(
                 Object.assign({}, fastDesignSystemDefaults, {
                     baseLayerLuminance: updatedTheme,
                 })

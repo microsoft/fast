@@ -10,12 +10,12 @@ import {
 import { neutralBaseColor } from "./color-constants";
 import { clamp, FillSwatchFamily, Swatch } from "./common";
 import {
-    neutralFillInput,
-    neutralFillInputActive,
-    neutralFillInputFocus,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillInputSelected,
+    neutralFillInput_DEPRECATED,
+    neutralFillInputActive_DEPRECATED,
+    neutralFillInputFocus_DEPRECATED,
+    neutralFillInputHover_DEPRECATED,
+    neutralFillInputRest_DEPRECATED,
+    neutralFillInputSelected_DEPRECATED,
 } from "./neutral-fill-input";
 import { isDarkMode, Palette } from "./palette";
 import { neutralFillInput as neutralFillInputNew } from "../color-vNext/recipes/neutral-fill-input";
@@ -26,11 +26,11 @@ describe("neutralFillInput", (): void => {
 
     it("should operate on design system defaults", (): void => {
         [
-            neutralFillInputActive,
-            neutralFillInputFocus,
-            neutralFillInputHover,
-            neutralFillInputRest,
-            neutralFillInputSelected,
+            neutralFillInputActive_DEPRECATED,
+            neutralFillInputFocus_DEPRECATED,
+            neutralFillInputHover_DEPRECATED,
+            neutralFillInputRest_DEPRECATED,
+            neutralFillInputSelected_DEPRECATED,
         ].forEach(fn => {
             expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
         });
@@ -42,7 +42,7 @@ describe("neutralFillInput", (): void => {
                 backgroundColor: neutralPalette[index],
             } as FASTDesignSystem;
 
-            expect(neutralFillInputSelected(designSystem)).to.equal(
+            expect(neutralFillInputSelected_DEPRECATED(designSystem)).to.equal(
                 neutralPalette[
                     clamp(
                         index -
@@ -58,44 +58,44 @@ describe("neutralFillInput", (): void => {
 
     it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralFillInputRest(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillInputRest(
+            expect(neutralFillInputRest_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillInputRest_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillInputHover(() => swatch)(fastDesignSystemDefaults)
+                neutralFillInputHover_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillInputHover(
+                neutralFillInputHover_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillInputActive(() => swatch)(fastDesignSystemDefaults)
+                neutralFillInputActive_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillInputActive(
+                neutralFillInputActive_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillInputFocus(() => swatch)(fastDesignSystemDefaults)
+                neutralFillInputFocus_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillInputFocus(
+                neutralFillInputFocus_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillInputSelected(() => swatch)(fastDesignSystemDefaults)
+                neutralFillInputSelected_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillInputSelected(
+                neutralFillInputSelected_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
@@ -106,22 +106,22 @@ describe("neutralFillInput", (): void => {
 
     it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            const backplates: FillSwatchFamily = neutralFillInput(() => swatch)(
+            const backplates: FillSwatchFamily = neutralFillInput_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const rest: Swatch = neutralFillInputRest(() => swatch)(
+            const rest: Swatch = neutralFillInputRest_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const hover: Swatch = neutralFillInputHover(() => swatch)(
+            const hover: Swatch = neutralFillInputHover_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const active: Swatch = neutralFillInputActive(() => swatch)(
+            const active: Swatch = neutralFillInputActive_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const focus: Swatch = neutralFillInputFocus(() => swatch)(
+            const focus: Swatch = neutralFillInputFocus_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const selected: Swatch = neutralFillInputSelected(() => swatch)(
+            const selected: Swatch = neutralFillInputSelected_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
 
@@ -144,7 +144,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillInputFocusDelta,
             neutralFillInputSelectedDelta
         } = fastDesignSystemDefaults;
-        const oldValues = neutralFillInput({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = neutralFillInput_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillInputNew(
             palette,
             newSwatch,

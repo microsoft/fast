@@ -1,4 +1,4 @@
-import { Swatch } from "../swatch";
+import { Swatch, SwatchRGB } from "../swatch";
 import { PaletteRGB } from "../palette";
 
 /**
@@ -8,6 +8,6 @@ import { PaletteRGB } from "../palette";
  *
  * @internal
  */
-export function neutralForegroundHint(palette: PaletteRGB, reference: Swatch) {
+export function neutralForegroundHint(palette: PaletteRGB, reference: Swatch): SwatchRGB {
     return palette.colorContrast(reference, 4.5);
 }

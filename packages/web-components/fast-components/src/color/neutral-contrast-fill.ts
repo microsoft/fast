@@ -15,8 +15,9 @@ import { accessibleAlgorithm } from "./accessible-recipe";
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralContrastFill: SwatchFamilyResolver = colorRecipeFactory(
+export const neutralContrastFill_DEPRECATED: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(
         neutralPalette,
         14,
@@ -28,29 +29,33 @@ export const neutralContrastFill: SwatchFamilyResolver = colorRecipeFactory(
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralContrastFillRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralContrastFillRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    neutralContrastFill
+    neutralContrastFill_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralContrastFillHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralContrastFillHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    neutralContrastFill
+    neutralContrastFill_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralContrastFillActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralContrastFillActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    neutralContrastFill
+    neutralContrastFill_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralContrastFillFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralContrastFillFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    neutralContrastFill
+    neutralContrastFill_DEPRECATED
 );

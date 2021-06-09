@@ -5,15 +5,15 @@ import { neutralDivider } from "../color-vNext/recipes/neutral-divider";
 import { SwatchRGB } from "../color-vNext/swatch";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralBaseColor } from "./color-constants";
-import { neutralDividerRest } from "./neutral-divider";
+import { neutralDividerRest_DEPRECATED } from "./neutral-divider";
 
 describe("neutralDividerRest", (): void => {
     it("should return a string when invoked with an object", (): void => {
-        expect(typeof neutralDividerRest(fastDesignSystemDefaults)).to.equal("string");
+        expect(typeof neutralDividerRest_DEPRECATED(fastDesignSystemDefaults)).to.equal("string");
     });
 
     it("should return a function when invoked with a function", (): void => {
-        expect(typeof neutralDividerRest(() => "#FFF")).to.equal("function");
+        expect(typeof neutralDividerRest_DEPRECATED(() => "#FFF")).to.equal("function");
     });
 });
 
@@ -24,7 +24,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     palette.swatches.forEach(( newSwatch, index ) => {
         it(`should be the same for ${newSwatch}`, () => {
             expect(neutralDivider(palette, newSwatch, fastDesignSystemDefaults.neutralDividerRestDelta).toColorString().toUpperCase()).to.equal(
-                neutralDividerRest({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
+                neutralDividerRest_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
             )
         })
     })

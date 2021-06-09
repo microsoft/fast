@@ -17,7 +17,8 @@ const neutralDividerAlgorithm: SwatchResolver = (
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralDividerRest: SwatchRecipe = colorRecipeFactory<Swatch>(
+export const neutralDividerRest_DEPRECATED: SwatchRecipe = colorRecipeFactory<Swatch>(
     neutralDividerAlgorithm
 );
