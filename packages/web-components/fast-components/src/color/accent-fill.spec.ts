@@ -5,15 +5,15 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    accentFill,
-    accentFillActive,
-    accentFillHover,
-    accentFillLargeActive,
-    accentFillLargeHover,
-    accentFillLargeRest,
-    accentFillLargeSelected,
-    accentFillRest,
-    accentFillSelected,
+    accentFill_DEPRECATED,
+    accentFillActive_DEPRECATED,
+    accentFillHover_DEPRECATED,
+    accentFillLargeActive_DEPRECATED,
+    accentFillLargeHover_DEPRECATED,
+    accentFillLargeRest_DEPRECATED,
+    accentFillLargeSelected_DEPRECATED,
+    accentFillRest_DEPRECATED,
+    accentFillSelected_DEPRECATED,
 } from "./accent-fill";
 import { findClosestSwatchIndex, Palette } from "./palette";
 import { contrast, Swatch } from "./common";
@@ -23,7 +23,7 @@ import { PaletteRGB } from "../color-vNext/palette";
 import { SwatchRGB } from "../color-vNext/swatch";
 import { accentFill as accentFillNew } from "../color-vNext/recipes/accent-fill";
 import { accentForegroundCut as accentForegroundCutNew  } from '../color-vNext/recipes/accent-foreground-cut';
-import { accentForegroundCut } from "./accent-foreground-cut";
+import { accentForegroundCut_DEPRECATED } from "./accent-foreground-cut";
 
 describe("accentFill", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -36,23 +36,23 @@ describe("accentFill", (): void => {
 
     it("should operate on design system defaults", (): void => {
         [
-            accentFillActive,
-            accentFillHover,
-            accentFillLargeActive,
-            accentFillLargeHover,
-            accentFillLargeRest,
-            accentFillLargeSelected,
-            accentFillRest,
-            accentFillSelected,
+            accentFillActive_DEPRECATED,
+            accentFillHover_DEPRECATED,
+            accentFillLargeActive_DEPRECATED,
+            accentFillLargeHover_DEPRECATED,
+            accentFillLargeRest_DEPRECATED,
+            accentFillLargeSelected_DEPRECATED,
+            accentFillRest_DEPRECATED,
+            accentFillSelected_DEPRECATED,
         ].forEach(fn => {
             expect(accentPalette).to.include(fn({} as FASTDesignSystem));
         });
     });
 
     it("should accept a function that resolves a background swatch", (): void => {
-        expect(typeof accentFillRest(() => "#FFF")).to.equal("function");
+        expect(typeof accentFillRest_DEPRECATED(() => "#FFF")).to.equal("function");
         expect(accentPalette).to.include(
-            accentFillRest(() => "#000")({} as FASTDesignSystem)
+            accentFillRest_DEPRECATED(() => "#000")({} as FASTDesignSystem)
         );
     });
 
@@ -76,21 +76,21 @@ describe("accentFill", (): void => {
                     }
                 );
 
-                const accentForegroundCutColor: Swatch = accentForegroundCut(
+                const accentForegroundCutColor: Swatch = accentForegroundCut_DEPRECATED(
                     designSystem
                 );
 
                 expect(
-                    contrast(accentForegroundCutColor, accentFillRest(designSystem))
+                    contrast(accentForegroundCutColor, accentFillRest_DEPRECATED(designSystem))
                 ).to.be.gte(4.5);
                 expect(
-                    contrast(accentForegroundCutColor, accentFillHover(designSystem))
+                    contrast(accentForegroundCutColor, accentFillHover_DEPRECATED(designSystem))
                 ).to.be.gte(4.5);
                 expect(
-                    contrast(accentForegroundCutColor, accentFillLargeRest(designSystem))
+                    contrast(accentForegroundCutColor, accentFillLargeRest_DEPRECATED(designSystem))
                 ).to.be.gte(3);
                 expect(
-                    contrast(accentForegroundCutColor, accentFillLargeHover(designSystem))
+                    contrast(accentForegroundCutColor, accentFillLargeHover_DEPRECATED(designSystem))
                 ).to.be.gte(3);
             });
         });
@@ -112,7 +112,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillActiveDelta,
         } = fastDesignSystemDefaults;
            
-        const oldValues = accentFill({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = accentFill_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const textColor = accentForegroundCutNew(accentPalette.source, 4.5);
         const newValues = accentFillNew(
             accentPalette,

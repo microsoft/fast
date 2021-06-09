@@ -6,13 +6,13 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    accentForegroundActive,
-    accentForegroundHover,
-    accentForegroundLargeActive,
-    accentForegroundLargeHover,
-    accentForegroundLargeRest,
-    accentForegroundRest,
-    accentForeground
+    accentForegroundActive_DEPRECATED,
+    accentForegroundHover_DEPRECATED,
+    accentForegroundLargeActive_DEPRECATED,
+    accentForegroundLargeHover_DEPRECATED,
+    accentForegroundLargeRest_DEPRECATED,
+    accentForegroundRest_DEPRECATED,
+    accentForeground_DEPRECATED
 } from "./accent-foreground";
 import { Palette } from "./palette";
 import { contrast, Swatch } from "./common";
@@ -27,21 +27,21 @@ describe("accentForeground", (): void => {
 
     it("should operate on design system defaults", (): void => {
         [
-            accentForegroundActive,
-            accentForegroundHover,
-            accentForegroundLargeActive,
-            accentForegroundLargeHover,
-            accentForegroundLargeRest,
-            accentForegroundRest,
+            accentForegroundActive_DEPRECATED,
+            accentForegroundHover_DEPRECATED,
+            accentForegroundLargeActive_DEPRECATED,
+            accentForegroundLargeHover_DEPRECATED,
+            accentForegroundLargeRest_DEPRECATED,
+            accentForegroundRest_DEPRECATED,
         ].forEach(fn => {
             expect(accentPalette).to.include(fn({} as FASTDesignSystem));
         });
     });
 
     it("should accept a function that resolves a background swatch", (): void => {
-        expect(typeof accentForegroundRest(() => "#FFF")).to.equal("function");
+        expect(typeof accentForegroundRest_DEPRECATED(() => "#FFF")).to.equal("function");
         expect(accentPalette).to.include(
-            accentForegroundRest(() => "#000")({} as FASTDesignSystem)
+            accentForegroundRest_DEPRECATED(() => "#000")({} as FASTDesignSystem)
         );
     });
 
@@ -53,24 +53,24 @@ describe("accentForeground", (): void => {
 
         expect(
             contrast(
-                accentForegroundHover(fastDesignSystemDefaults),
+                accentForegroundHover_DEPRECATED(fastDesignSystemDefaults),
                 fastDesignSystemDefaults.backgroundColor
             )
         ).to.be.greaterThan(
             contrast(
-                accentForegroundRest(fastDesignSystemDefaults),
+                accentForegroundRest_DEPRECATED(fastDesignSystemDefaults),
                 fastDesignSystemDefaults.backgroundColor
             )
         );
 
         expect(
             contrast(
-                accentForegroundHover(darkDesignSystem),
+                accentForegroundHover_DEPRECATED(darkDesignSystem),
                 darkDesignSystem.backgroundColor
             )
         ).to.be.greaterThan(
             contrast(
-                accentForegroundRest(darkDesignSystem),
+                accentForegroundRest_DEPRECATED(darkDesignSystem),
                 darkDesignSystem.backgroundColor
             )
         );
@@ -108,18 +108,18 @@ describe("accentForeground", (): void => {
                     );
 
                     expect(
-                        contrast(swatch, accentForegroundRest(designSystem))
+                        contrast(swatch, accentForegroundRest_DEPRECATED(designSystem))
                         // There are a few states that are impossible to meet contrast on
                     ).to.be.gte(4.47);
                     expect(
-                        contrast(swatch, accentForegroundHover(designSystem))
+                        contrast(swatch, accentForegroundHover_DEPRECATED(designSystem))
                         // There are a few states that are impossible to meet contrast on
                     ).to.be.gte(3.7);
                     expect(
-                        contrast(swatch, accentForegroundLargeRest(designSystem))
+                        contrast(swatch, accentForegroundLargeRest_DEPRECATED(designSystem))
                     ).to.be.gte(3);
                     expect(
-                        contrast(swatch, accentForegroundLargeHover(designSystem))
+                        contrast(swatch, accentForegroundLargeHover_DEPRECATED(designSystem))
                     ).to.be.gte(3);
                 });
             }
@@ -141,7 +141,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             accentForegroundActiveDelta,
             accentForegroundHoverDelta
         } = fastDesignSystemDefaults;
-        const oldValues = accentForeground({
+        const oldValues = accentForeground_DEPRECATED({
             ...fastDesignSystemDefaults,
             backgroundColor: fastDesignSystemDefaults.neutralPalette[index],
         });

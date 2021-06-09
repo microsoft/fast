@@ -5,12 +5,12 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    neutralFill,
-    neutralFillActive,
-    neutralFillFocus,
-    neutralFillHover,
-    neutralFillRest,
-    neutralFillSelected,
+    neutralFill_DEPRECATED,
+    neutralFillActive_DEPRECATED,
+    neutralFillFocus_DEPRECATED,
+    neutralFillHover_DEPRECATED,
+    neutralFillRest_DEPRECATED,
+    neutralFillSelected_DEPRECATED,
 } from "./neutral-fill";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
@@ -26,11 +26,11 @@ describe("neutralFill", (): void => {
 
     it("should operate on design system defaults", (): void => {
         [
-            neutralFillActive,
-            neutralFillFocus,
-            neutralFillHover,
-            neutralFillRest,
-            neutralFillSelected,
+            neutralFillActive_DEPRECATED,
+            neutralFillFocus_DEPRECATED,
+            neutralFillHover_DEPRECATED,
+            neutralFillRest_DEPRECATED,
+            neutralFillSelected_DEPRECATED,
         ].forEach(fn => {
             expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
         });
@@ -38,36 +38,36 @@ describe("neutralFill", (): void => {
 
     it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            expect(neutralFillRest(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillRest(
+            expect(neutralFillRest_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillRest_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillHover(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillHover(
+            expect(neutralFillHover_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillHover_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillActive(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillActive(
+            expect(neutralFillActive_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillActive_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillFocus(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillFocus(
+            expect(neutralFillFocus_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillFocus_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
-            expect(neutralFillSelected(() => swatch)(fastDesignSystemDefaults)).to.equal(
-                neutralFillSelected(
+            expect(neutralFillSelected_DEPRECATED(() => swatch)(fastDesignSystemDefaults)).to.equal(
+                neutralFillSelected_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
@@ -78,20 +78,20 @@ describe("neutralFill", (): void => {
 
     it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            const backplates: FillSwatchFamily = neutralFill(() => swatch)(
+            const backplates: FillSwatchFamily = neutralFill_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const rest: Swatch = neutralFillRest(() => swatch)(fastDesignSystemDefaults);
-            const hover: Swatch = neutralFillHover(() => swatch)(
+            const rest: Swatch = neutralFillRest_DEPRECATED(() => swatch)(fastDesignSystemDefaults);
+            const hover: Swatch = neutralFillHover_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const active: Swatch = neutralFillActive(() => swatch)(
+            const active: Swatch = neutralFillActive_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const focus: Swatch = neutralFillFocus(() => swatch)(
+            const focus: Swatch = neutralFillFocus_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const selected: Swatch = neutralFillSelected(() => swatch)(
+            const selected: Swatch = neutralFillSelected_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
 
@@ -108,7 +108,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta } = fastDesignSystemDefaults;
-        const oldValues = neutralFill({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = neutralFill_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta );
             it(`should be the same for ${newSwatch}`, () => {
                 for (let key in oldValues) {

@@ -18,8 +18,9 @@ function neutralForegroundHintAlgorithm(
 /**
  * Hint text for normal sized text, less than 18pt normal weight
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralForegroundHint: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralForegroundHint_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
     colorRecipeFactory(neutralForegroundHintAlgorithm(4.5))
 );
@@ -27,8 +28,9 @@ export const neutralForegroundHint: SwatchRecipe = swatchFamilyToSwatchRecipeFac
 /**
  * Hint text for large sized text, greater than 18pt or 16pt and bold
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralForegroundHintLarge: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralForegroundHintLarge_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
     colorRecipeFactory(neutralForegroundHintAlgorithm(3))
 );

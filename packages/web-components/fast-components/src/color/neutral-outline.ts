@@ -43,35 +43,40 @@ const neutralOutlineAlgorithm: SwatchFamilyResolver = (
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralOutline: ColorRecipe<SwatchFamily> = colorRecipeFactory(
+export const neutralOutline_DEPRECATED: ColorRecipe<SwatchFamily> = colorRecipeFactory(
     neutralOutlineAlgorithm
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralOutlineRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralOutlineRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    neutralOutline
+    neutralOutline_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralOutlineHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralOutlineHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    neutralOutline
+    neutralOutline_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralOutlineActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralOutlineActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    neutralOutline
+    neutralOutline_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralOutlineFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralOutlineFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    neutralOutline
+    neutralOutline_DEPRECATED
 );

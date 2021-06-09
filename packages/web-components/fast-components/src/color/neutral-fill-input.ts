@@ -28,45 +28,51 @@ function neutralFillInputAlgorithm(
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInputRest: ColorRecipe<string> = colorRecipeFactory(
+export const neutralFillInputRest_DEPRECATED: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputRestDelta)
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInputHover: ColorRecipe<string> = colorRecipeFactory(
+export const neutralFillInputHover_DEPRECATED: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputHoverDelta)
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInputActive: ColorRecipe<string> = colorRecipeFactory(
+export const neutralFillInputActive_DEPRECATED: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputActiveDelta)
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInputFocus: ColorRecipe<string> = colorRecipeFactory(
+export const neutralFillInputFocus_DEPRECATED: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputFocusDelta)
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInputSelected: ColorRecipe<string> = colorRecipeFactory(
+export const neutralFillInputSelected_DEPRECATED: ColorRecipe<string> = colorRecipeFactory(
     neutralFillInputAlgorithm(neutralFillInputSelectedDelta)
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillInput: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
+export const neutralFillInput_DEPRECATED: ColorRecipe<FillSwatchFamily> = colorRecipeFactory(
     (designSystem: FASTDesignSystem): FillSwatchFamily => {
         return {
-            rest: neutralFillInputRest(designSystem),
-            hover: neutralFillInputHover(designSystem),
-            active: neutralFillInputActive(designSystem),
-            focus: neutralFillInputFocus(designSystem),
-            selected: neutralFillInputSelected(designSystem),
+            rest: neutralFillInputRest_DEPRECATED(designSystem),
+            hover: neutralFillInputHover_DEPRECATED(designSystem),
+            active: neutralFillInputActive_DEPRECATED(designSystem),
+            focus: neutralFillInputFocus_DEPRECATED(designSystem),
+            selected: neutralFillInputSelected_DEPRECATED(designSystem),
         };
     }
 );

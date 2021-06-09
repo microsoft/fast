@@ -72,7 +72,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                             "use-defaults": true,
                             "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
                             direction: Direction.ltr,
-                            "background-color": FASTComponents.neutralLayerL1(
+                            "background-color": FASTComponents.neutralLayerL1_DEPRECATED(
                                 Object.assign({}, fastDesignSystemDefaults, {
                                     baseLayerLuminance:
                                         FASTComponents.StandardLuminance.LightMode,

@@ -1,14 +1,13 @@
 import { expect } from "chai";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import {
-    neutralLayerCard,
-    neutralLayerCardContainer,
-    neutralLayerFloating,
-    neutralLayerL1,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
-    StandardLuminance,
+    neutralLayerCard_DEPRECATED,
+    neutralLayerCardContainer_DEPRECATED,
+    neutralLayerFloating_DEPRECATED,
+    neutralLayerL1_DEPRECATED,
+    neutralLayerL2_DEPRECATED,
+    neutralLayerL3_DEPRECATED,
+    neutralLayerL4_DEPRECATED,
 } from "./neutral-layer";
 import {
     neutralLayerFloating as neutralLayerFloatingNew
@@ -24,6 +23,7 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { neutralBaseColor } from "./color-constants";
 import { PaletteRGB } from "../color-vNext/palette";
 import { SwatchRGB } from "../color-vNext/swatch";
+import { StandardLuminance } from "../color-vNext/utilities/base-layer-luminance";
 
 const lightModeDesignSystem: FASTDesignSystem = Object.assign(
     {},
@@ -58,23 +58,23 @@ const enum NeutralPaletteDarkModeOffsets {
 describe("neutralLayer", (): void => {
     describe("L1", (): void => {
         it("should return values from L1 when in light mode", (): void => {
-            expect(neutralLayerL1(lightModeDesignSystem)).to.equal(
+            expect(neutralLayerL1_DEPRECATED(lightModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L1]
             );
         });
         it("should return values from L1 when in dark mode", (): void => {
-            expect(neutralLayerL1(darkModeDesignSystem)).to.equal(
+            expect(neutralLayerL1_DEPRECATED(darkModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L1]
             );
         });
         it("should operate on a provided background color", (): void => {
             expect(
-                neutralLayerL1((): string => "#000000")(fastDesignSystemDefaults)
+                neutralLayerL1_DEPRECATED((): string => "#000000")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L1]
             );
             expect(
-                neutralLayerL1((): string => "#FFFFFF")(fastDesignSystemDefaults)
+                neutralLayerL1_DEPRECATED((): string => "#FFFFFF")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L1]
             );
@@ -82,30 +82,30 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL1(lightModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.LightMode).toColorString().toUpperCase())
-            expect(neutralLayerL1(darkModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.DarkMode).toColorString().toUpperCase())
+            expect(neutralLayerL1_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.LightMode).toColorString().toUpperCase())
+            expect(neutralLayerL1_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.DarkMode).toColorString().toUpperCase())
         })
     });
 
     describe("L2", (): void => {
         it("should return values from L2 when in light mode", (): void => {
-            expect(neutralLayerL2(lightModeDesignSystem)).to.equal(
+            expect(neutralLayerL2_DEPRECATED(lightModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L2]
             );
         });
         it("should return values from L2 when in dark mode", (): void => {
-            expect(neutralLayerL2(darkModeDesignSystem)).to.equal(
+            expect(neutralLayerL2_DEPRECATED(darkModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L2]
             );
         });
         it("should operate on a provided background color", (): void => {
             expect(
-                neutralLayerL2((): string => "#000000")(fastDesignSystemDefaults)
+                neutralLayerL2_DEPRECATED((): string => "#000000")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L2]
             );
             expect(
-                neutralLayerL2((): string => "#FFFFFF")(fastDesignSystemDefaults)
+                neutralLayerL2_DEPRECATED((): string => "#FFFFFF")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L2]
             );
@@ -113,7 +113,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL2(lightModeDesignSystem)).to.equal(neutralLayerL2New(
+            expect(neutralLayerL2_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL2New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -121,7 +121,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL2(darkModeDesignSystem)).to.equal(neutralLayerL2New(
+            expect(neutralLayerL2_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL2New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
@@ -134,23 +134,23 @@ describe("neutralLayer", (): void => {
 
     describe("L3", (): void => {
         it("should return values from L3 when in light mode", (): void => {
-            expect(neutralLayerL3(lightModeDesignSystem)).to.equal(
+            expect(neutralLayerL3_DEPRECATED(lightModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L3]
             );
         });
         it("should return values from L3 when in dark mode", (): void => {
-            expect(neutralLayerL3(darkModeDesignSystem)).to.equal(
+            expect(neutralLayerL3_DEPRECATED(darkModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L3]
             );
         });
         it("should operate on a provided background color", (): void => {
             expect(
-                neutralLayerL3((): string => "#000000")(fastDesignSystemDefaults)
+                neutralLayerL3_DEPRECATED((): string => "#000000")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L3]
             );
             expect(
-                neutralLayerL3((): string => "#FFFFFF")(fastDesignSystemDefaults)
+                neutralLayerL3_DEPRECATED((): string => "#FFFFFF")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L3]
             );
@@ -158,7 +158,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL3(lightModeDesignSystem)).to.equal(neutralLayerL3New(
+            expect(neutralLayerL3_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL3New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -166,7 +166,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL3(darkModeDesignSystem)).to.equal(neutralLayerL3New(
+            expect(neutralLayerL3_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL3New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
@@ -179,23 +179,23 @@ describe("neutralLayer", (): void => {
 
     describe("L4", (): void => {
         it("should return values from L4 when in light mode", (): void => {
-            expect(neutralLayerL4(lightModeDesignSystem)).to.equal(
+            expect(neutralLayerL4_DEPRECATED(lightModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L4]
             );
         });
         it("should return values from L4 when in dark mode", (): void => {
-            expect(neutralLayerL4(darkModeDesignSystem)).to.equal(
+            expect(neutralLayerL4_DEPRECATED(darkModeDesignSystem)).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L4]
             );
         });
         it("should operate on a provided background color", (): void => {
             expect(
-                neutralLayerL4((): string => "#000000")(fastDesignSystemDefaults)
+                neutralLayerL4_DEPRECATED((): string => "#000000")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteDarkModeOffsets.L4]
             );
             expect(
-                neutralLayerL4((): string => "#FFFFFF")(fastDesignSystemDefaults)
+                neutralLayerL4_DEPRECATED((): string => "#FFFFFF")(fastDesignSystemDefaults)
             ).to.equal(
                 fastDesignSystemDefaults.neutralPalette[NeutralPaletteLightModeOffsets.L4]
             );
@@ -203,7 +203,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL4(lightModeDesignSystem)).to.equal(neutralLayerL4New(
+            expect(neutralLayerL4_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL4New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -211,7 +211,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL4(darkModeDesignSystem)).to.equal(neutralLayerL4New(
+            expect(neutralLayerL4_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL4New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
@@ -226,42 +226,42 @@ describe("neutralLayer", (): void => {
         it("should return a color from the neutral palette", (): void => {
             expect(
                 fastDesignSystemDefaults.neutralPalette.includes(
-                    neutralLayerFloating(fastDesignSystemDefaults)
+                    neutralLayerFloating_DEPRECATED(fastDesignSystemDefaults)
                 )
             ).to.be.ok;
         });
 
         it("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerFloating((): string => "#FFFFFF")(
+            const color: string = neutralLayerFloating_DEPRECATED((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 
-            expect(color).not.to.equal(neutralLayerFloating(fastDesignSystemDefaults));
+            expect(color).not.to.equal(neutralLayerFloating_DEPRECATED(fastDesignSystemDefaults));
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
         
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerFloating(lightModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
-            expect(neutralLayerFloating(darkModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerFloating_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerFloating_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerFloatingNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })
     });
     describe("neutralLayerCardContainer", (): void => {
         it("should return a color from the neutral palette", (): void => {
             expect(
                 fastDesignSystemDefaults.neutralPalette.includes(
-                    neutralLayerCardContainer(fastDesignSystemDefaults)
+                    neutralLayerCardContainer_DEPRECATED(fastDesignSystemDefaults)
                 )
             ).to.be.ok;
         });
         it("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerCardContainer((): string => "#FFFFFF")(
+            const color: string = neutralLayerCardContainer_DEPRECATED((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 
             expect(color).not.to.equal(
-                neutralLayerCardContainer(fastDesignSystemDefaults)
+                neutralLayerCardContainer_DEPRECATED(fastDesignSystemDefaults)
             );
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
@@ -270,23 +270,23 @@ describe("neutralLayer", (): void => {
         it("should return a color from the neutral palette", (): void => {
             expect(
                 fastDesignSystemDefaults.neutralPalette.includes(
-                    neutralLayerCard(fastDesignSystemDefaults)
+                    neutralLayerCard_DEPRECATED(fastDesignSystemDefaults)
                 )
             ).to.be.ok;
         });
         it("should operate on a provided background color", (): void => {
-            const color: string = neutralLayerCard((): string => "#FFFFFF")(
+            const color: string = neutralLayerCard_DEPRECATED((): string => "#FFFFFF")(
                 fastDesignSystemDefaults
             );
 
-            expect(color).not.to.equal(neutralLayerCard(fastDesignSystemDefaults));
+            expect(color).not.to.equal(neutralLayerCard_DEPRECATED(fastDesignSystemDefaults));
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerCard(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
-            expect(neutralLayerCard(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerCard_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
+            expect(neutralLayerCard_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
         })
     });
 });

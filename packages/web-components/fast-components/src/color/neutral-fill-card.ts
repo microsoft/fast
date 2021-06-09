@@ -20,18 +20,24 @@ const neutralCardFillAlgorithm: SwatchResolver = (
         neutralPalette(designSystem)
     );
 };
+
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export function neutralFillCard(designSystem: FASTDesignSystem): Swatch;
+export function neutralFillCard_DEPRECATED(designSystem: FASTDesignSystem): Swatch;
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
+export function neutralFillCard_DEPRECATED(
+    backgroundResolver: SwatchResolver
+): SwatchResolver;
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export function neutralFillCard(arg: any): any {
+export function neutralFillCard_DEPRECATED(arg: any): any {
     if (typeof arg === "function") {
         return (designSystem: FASTDesignSystem): Swatch => {
             return neutralCardFillAlgorithm(

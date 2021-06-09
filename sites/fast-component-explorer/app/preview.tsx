@@ -12,12 +12,11 @@ import {
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import * as FASTComponents from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components";
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
@@ -167,7 +166,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
             designSystemProvider.setAttribute("use-defaults", "");
             designSystemProvider.setAttribute(
                 "background-color",
-                neutralLayerL1(
+                FASTComponents.neutralLayerL1_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         baseLayerLuminance: this.state.theme,
                     })

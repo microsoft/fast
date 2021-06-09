@@ -12,7 +12,7 @@ import {
     neutralFillHoverDelta,
     neutralFillRestDelta,
 } from "../fast-design-system";
-import { accentForegroundCut } from "./accent-foreground-cut";
+import { accentForegroundCut_DEPRECATED } from "./accent-foreground-cut";
 import {
     colorRecipeFactory,
     contrast,
@@ -45,7 +45,7 @@ function accentFillAlgorithm(
         const palette: Palette = accentPalette(designSystem);
         const paletteLength: number = palette.length;
         const accent: Swatch = accentBaseColor(designSystem);
-        const textColor: Swatch = accentForegroundCut(
+        const textColor: Swatch = accentForegroundCut_DEPRECATED(
             Object.assign({}, designSystem, {
                 backgroundColor: accent,
             })
@@ -100,74 +100,74 @@ function accentFillAlgorithm(
 /**
  * @internal
  */
-export const accentFill: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
+export const accentFill_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
     accentFillAlgorithm(4.5)
 );
 
 /**
  * @internal
  */
-export const accentFillLarge: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
+export const accentFillLarge_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily> = colorRecipeFactory(
     accentFillAlgorithm(3)
 );
 
 /**
  * @internal
  */
-export const accentFillRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.rest, accentFill);
+>(SwatchFamilyType.rest, accentFill_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.hover, accentFill);
+>(SwatchFamilyType.hover, accentFill_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.active, accentFill);
+>(SwatchFamilyType.active, accentFill_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.focus, accentFill);
+>(SwatchFamilyType.focus, accentFill_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillSelected_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.selected, accentFill);
+>(SwatchFamilyType.selected, accentFill_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillLargeRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillLargeRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.rest, accentFillLarge);
+>(SwatchFamilyType.rest, accentFillLarge_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillLargeHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillLargeHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.hover, accentFillLarge);
+>(SwatchFamilyType.hover, accentFillLarge_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillLargeActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillLargeActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.active, accentFillLarge);
+>(SwatchFamilyType.active, accentFillLarge_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillLargeFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillLargeFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.focus, accentFillLarge);
+>(SwatchFamilyType.focus, accentFillLarge_DEPRECATED);
 /**
  * @internal
  */
-export const accentFillLargeSelected: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
+export const accentFillLargeSelected_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory<
     FillSwatchFamily
->(SwatchFamilyType.selected, accentFillLarge);
+>(SwatchFamilyType.selected, accentFillLarge_DEPRECATED);
