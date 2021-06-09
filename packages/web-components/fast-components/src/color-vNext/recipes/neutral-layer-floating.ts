@@ -1,4 +1,5 @@
 import { PaletteRGB } from "../palette";
+import { SwatchRGB } from "../swatch";
 import { neutralLayerCard } from "./neutral-layer-card";
 
 /**
@@ -8,7 +9,7 @@ export function neutralLayerFloating(
     palette: PaletteRGB,
     relativeLuminance: number,
     cardDelta: number
-) {
+): SwatchRGB {
     const cardIndex = palette.closestIndexOf(
         neutralLayerCard(palette, relativeLuminance, cardDelta)
     );

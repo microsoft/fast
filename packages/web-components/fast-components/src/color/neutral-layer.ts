@@ -17,16 +17,6 @@ import {
     Swatch,
 } from "./common";
 
-/**
- * Recommended values for light and dark mode for {@link @microsoft/fast-components#FASTDesignSystem.baseLayerLuminance}.
- *
- * @public
- */
-export enum StandardLuminance {
-    LightMode = 1,
-    DarkMode = 0.23,
-}
-
 function luminanceOrBackgroundColor(
     luminanceRecipe: DesignSystemResolver<string>,
     backgroundRecipe: DesignSystemResolver<string>
@@ -104,8 +94,9 @@ const darkNeutralLayerL4: DesignSystemResolver<number> = (
 /**
  * Used as the background color for floating layers like context menus and flyouts.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerFloating_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(subtract(neutralLayerCardIndex, neutralFillCardDelta), neutralPalette),
         swatchByMode(neutralPalette)(
@@ -118,8 +109,9 @@ export const neutralLayerFloating: ColorRecipe<Swatch> = colorRecipeFactory(
 /**
  * Used as the background color for cards. Pair with `neutralLayerCardContainer` for the container background.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerCard_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(neutralLayerCardIndex, neutralPalette),
         swatchByMode(neutralPalette)(
@@ -132,8 +124,9 @@ export const neutralLayerCard: ColorRecipe<Swatch> = colorRecipeFactory(
 /**
  * Used as the background color for card containers. Pair with `neutralLayerCard` for the card backgrounds.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerCardContainer_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(add(neutralLayerCardIndex, neutralFillCardDelta), neutralPalette),
         swatchByMode(neutralPalette)(
@@ -146,8 +139,9 @@ export const neutralLayerCardContainer: ColorRecipe<Swatch> = colorRecipeFactory
 /**
  * Used as the background color for the primary content layer (L1).
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerL1_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(baseLayerLuminanceIndex, neutralPalette),
         swatchByMode(neutralPalette)(
@@ -161,14 +155,16 @@ export const neutralLayerL1: ColorRecipe<Swatch> = colorRecipeFactory(
  * Alternate darker color for L1 surfaces. Currently the same as card container, but use
  * the most applicable semantic named recipe.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerL1Alt: ColorRecipe<Swatch> = neutralLayerCardContainer;
+export const neutralLayerL1Alt_DEPRECATED: ColorRecipe<Swatch> = neutralLayerCardContainer_DEPRECATED;
 
 /**
  * Used as the background for the top command surface, logically below L1.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerL2_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(neutralLayerL2Index, neutralPalette),
         swatchByMode(neutralPalette)(
@@ -181,8 +177,9 @@ export const neutralLayerL2: ColorRecipe<Swatch> = colorRecipeFactory(
 /**
  * Used as the background for secondary command surfaces, logically below L2.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerL3_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(add(neutralLayerL2Index, neutralFillCardDelta), neutralPalette),
         swatchByMode(neutralPalette)(
@@ -195,8 +192,9 @@ export const neutralLayerL3: ColorRecipe<Swatch> = colorRecipeFactory(
 /**
  * Used as the background for the lowest command surface or title bar, logically below L3.
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralLayerL4: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralLayerL4_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     luminanceOrBackgroundColor(
         getSwatch(
             add(neutralLayerL2Index, multiply(neutralFillCardDelta, 2)),

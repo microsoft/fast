@@ -1,7 +1,7 @@
 import { FASTDesignSystem } from "../fast-design-system";
 import { black, white } from "./color-constants";
 import { contrast, Swatch, SwatchRecipe, SwatchResolver } from "./common";
-import { neutralFillToggleRest } from "./neutral-fill-toggle";
+import { neutralFillToggleRest_DEPRECATED } from "./neutral-fill-toggle";
 
 /**
  * Function to derive neutralForegroundToggle from an input background and target contrast ratio
@@ -31,7 +31,7 @@ function neutralForegroundToggleFactory(targetContrast: number): SwatchRecipe {
                   );
               }
             : neutralForegroundToggleAlgorithm(
-                  neutralFillToggleRest(arg),
+                  neutralFillToggleRest_DEPRECATED(arg),
                   targetContrast
               );
     }
@@ -42,13 +42,17 @@ function neutralForegroundToggleFactory(targetContrast: number): SwatchRecipe {
 /**
  * Toggle text for normal sized text, less than 18pt normal weight
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralForegroundToggle: SwatchRecipe = neutralForegroundToggleFactory(4.5);
+export const neutralForegroundToggle_DEPRECATED: SwatchRecipe = neutralForegroundToggleFactory(
+    4.5
+);
 
 /**
  * Toggle text for large sized text, greater than 18pt or 16pt and bold
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralForegroundToggleLarge: SwatchRecipe = neutralForegroundToggleFactory(
+export const neutralForegroundToggleLarge_DEPRECATED: SwatchRecipe = neutralForegroundToggleFactory(
     3
 );

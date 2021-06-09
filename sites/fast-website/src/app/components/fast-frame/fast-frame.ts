@@ -4,7 +4,7 @@ import {
     FASTDesignSystem,
     fastDesignSystemDefaults,
     StandardLuminance,
-    neutralLayerCardContainer,
+    neutralLayerCardContainer_DEPRECATED,
 } from "@microsoft/fast-components";
 import { RadioGroup, Slider } from "@microsoft/fast-foundation";
 import {
@@ -154,7 +154,7 @@ export class FastFrame extends FASTElement {
             }
         );
 
-        this.backgroundColor = neutralLayerCardContainer(designSystem);
+        this.backgroundColor = neutralLayerCardContainer_DEPRECATED(designSystem);
     }
 
     public modeChange = (e: CustomEvent): void => {

@@ -137,6 +137,7 @@ export function colorRecipeFactory<T>(recipe: DesignSystemResolver<T>): ColorRec
  * the result of that function as background to the recipe. This is useful for applying text recipes to colors
  * other than the design system backgroundColor
  * 2. When provided a design system, the recipe will use that design-system to generate the color
+ *
  */
 export type SwatchRecipe = ColorRecipe<Swatch>;
 

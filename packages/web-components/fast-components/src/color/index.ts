@@ -2,122 +2,127 @@
  * Text exports
  */
 export {
-    neutralForeground,
-    neutralForegroundRest,
-    neutralForegroundHover,
-    neutralForegroundActive,
+    neutralForeground_DEPRECATED,
+    neutralForegroundRest_DEPRECATED,
+    neutralForegroundHover_DEPRECATED,
+    neutralForegroundActive_DEPRECATED,
 } from "./neutral-foreground";
 
 export {
-    neutralForegroundToggle,
-    neutralForegroundToggleLarge,
+    neutralForegroundToggle_DEPRECATED,
+    neutralForegroundToggleLarge_DEPRECATED,
 } from "./neutral-foreground-toggle";
 
-export { accentForegroundCut, accentForegroundCutLarge } from "./accent-foreground-cut";
+export {
+    accentForegroundCut_DEPRECATED,
+    accentForegroundCutLarge_DEPRECATED,
+} from "./accent-foreground-cut";
 
 export {
-    neutralForegroundHint,
-    neutralForegroundHintLarge,
+    neutralForegroundHint_DEPRECATED,
+    neutralForegroundHintLarge_DEPRECATED,
 } from "./neutral-foreground-hint";
 
 export {
-    accentForeground,
-    accentForegroundRest,
-    accentForegroundHover,
-    accentForegroundActive,
-    accentForegroundLarge,
-    accentForegroundLargeRest,
-    accentForegroundLargeHover,
-    accentForegroundLargeActive,
+    accentForeground_DEPRECATED,
+    accentForegroundRest_DEPRECATED,
+    accentForegroundHover_DEPRECATED,
+    accentForegroundActive_DEPRECATED,
+    accentForegroundLarge_DEPRECATED,
+    accentForegroundLargeRest_DEPRECATED,
+    accentForegroundLargeHover_DEPRECATED,
+    accentForegroundLargeActive_DEPRECATED,
 } from "./accent-foreground";
 
 /**
  * Fill exports
  */
 export {
-    neutralFill,
-    neutralFillRest,
-    neutralFillHover,
-    neutralFillActive,
-    neutralFillSelected,
+    neutralFill_DEPRECATED,
+    neutralFillRest_DEPRECATED,
+    neutralFillHover_DEPRECATED,
+    neutralFillActive_DEPRECATED,
+    neutralFillSelected_DEPRECATED,
 } from "./neutral-fill";
 
 export {
-    neutralFillStealth,
-    neutralFillStealthRest,
-    neutralFillStealthHover,
-    neutralFillStealthActive,
-    neutralFillStealthSelected,
+    neutralFillStealth_DEPRECATED,
+    neutralFillStealthRest_DEPRECATED,
+    neutralFillStealthHover_DEPRECATED,
+    neutralFillStealthActive_DEPRECATED,
+    neutralFillStealthSelected_DEPRECATED,
 } from "./neutral-fill-stealth";
 
 export {
-    neutralFillToggle,
-    neutralFillToggleRest,
-    neutralFillToggleHover,
-    neutralFillToggleActive,
+    neutralFillToggle_DEPRECATED,
+    neutralFillToggleRest_DEPRECATED,
+    neutralFillToggleHover_DEPRECATED,
+    neutralFillToggleActive_DEPRECATED,
 } from "./neutral-fill-toggle";
 
 export {
-    neutralFillInput,
-    neutralFillInputRest,
-    neutralFillInputHover,
-    neutralFillInputActive,
-    neutralFillInputSelected,
+    neutralFillInput_DEPRECATED,
+    neutralFillInputRest_DEPRECATED,
+    neutralFillInputHover_DEPRECATED,
+    neutralFillInputActive_DEPRECATED,
+    neutralFillInputSelected_DEPRECATED,
 } from "./neutral-fill-input";
 
 export {
-    accentFill,
-    accentFillRest,
-    accentFillHover,
-    accentFillActive,
-    accentFillSelected,
-    accentFillLarge,
-    accentFillLargeRest,
-    accentFillLargeHover,
-    accentFillLargeActive,
-    accentFillLargeSelected,
+    accentFill_DEPRECATED,
+    accentFillRest_DEPRECATED,
+    accentFillHover_DEPRECATED,
+    accentFillActive_DEPRECATED,
+    accentFillSelected_DEPRECATED,
+    accentFillLarge_DEPRECATED,
+    accentFillLargeRest_DEPRECATED,
+    accentFillLargeHover_DEPRECATED,
+    accentFillLargeActive_DEPRECATED,
+    accentFillLargeSelected_DEPRECATED,
 } from "./accent-fill";
 
 export {
-    neutralContrastFill,
-    neutralContrastFillRest,
-    neutralContrastFillHover,
-    neutralContrastFillActive,
+    neutralContrastFill_DEPRECATED,
+    neutralContrastFillRest_DEPRECATED,
+    neutralContrastFillHover_DEPRECATED,
+    neutralContrastFillActive_DEPRECATED,
 } from "./neutral-contrast-fill";
 
-export { neutralFillCard } from "./neutral-fill-card";
+export { neutralFillCard_DEPRECATED } from "./neutral-fill-card";
 
 /**
  * Border exports
  */
 export {
-    neutralOutline,
-    neutralOutlineRest,
-    neutralOutlineHover,
-    neutralOutlineActive,
+    neutralOutline_DEPRECATED,
+    neutralOutlineRest_DEPRECATED,
+    neutralOutlineHover_DEPRECATED,
+    neutralOutlineActive_DEPRECATED,
 } from "./neutral-outline";
 
-export { neutralDividerRest } from "./neutral-divider";
+export { neutralDividerRest_DEPRECATED } from "./neutral-divider";
 
 /**
  * App layer exports
  */
 export {
-    neutralLayerFloating,
-    neutralLayerCard,
-    neutralLayerCardContainer,
-    neutralLayerL1,
-    neutralLayerL1Alt,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
-    StandardLuminance,
+    neutralLayerFloating_DEPRECATED,
+    neutralLayerCard_DEPRECATED,
+    neutralLayerCardContainer_DEPRECATED,
+    neutralLayerL1_DEPRECATED,
+    neutralLayerL1Alt_DEPRECATED,
+    neutralLayerL2_DEPRECATED,
+    neutralLayerL3_DEPRECATED,
+    neutralLayerL4_DEPRECATED,
 } from "./neutral-layer";
 
 /**
  * Focus colors
  */
-export { neutralFocus, neutralFocusInnerAccent } from "./neutral-focus";
+export {
+    neutralFocus_DEPRECATED,
+    neutralFocusInnerAccent_DEPRECATED,
+} from "./neutral-focus";
 
 /**
  * Export supporting types
