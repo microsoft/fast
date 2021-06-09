@@ -27,6 +27,7 @@ export const NumberFieldTemplate: ViewTemplate<NumberField> = html`
                 id="control"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
+                @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
                 list="${x => x.list}"

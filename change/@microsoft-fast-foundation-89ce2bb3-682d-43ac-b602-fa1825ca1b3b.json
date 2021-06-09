@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: allow to increment/decrement the number-field value with arrow up/down keys",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "yeraycaballero@customerminds.com",
+  "dependentChangeType": "patch"
+}

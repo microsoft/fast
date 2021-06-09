@@ -1,4 +1,5 @@
 import { customElement, DOM } from "@microsoft/fast-element";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { NumberField, NumberFieldTemplate as template } from "./index";
@@ -16,6 +17,18 @@ async function setup() {
 
     return { element, connect, disconnect, parent };
 }
+
+const arrowUpEvent = new KeyboardEvent("keydown", {
+    key: "ArrowUp",
+    keyCode: KeyCodes.arrowUp,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const arrowDownEvent = new KeyboardEvent("keydown", {
+    key: "ArrowDown",
+    keyCode: KeyCodes.arrowDown,
+    bubbles: true,
+} as KeyboardEventInit);
 
 describe("NumberField", () => {
     it("should set the `autofocus` attribute on the internal control equal to the value provided", async () => {
@@ -543,7 +556,32 @@ describe("NumberField", () => {
             expect(wasInput).to.equal(true);
 
             await disconnect();
-        })
+        });
+
+        it("should fire an input event when incrementing or decrementing with arrow up/down keys", async () => {
+            const { element, connect, disconnect } = await setup();
+            let wasInput: boolean = false;
+
+            element.addEventListener("input", e => {
+                e.preventDefault();
+
+                wasInput = true;
+            });
+
+            await connect();
+
+            element.shadowRoot?.querySelector(".control")?.dispatchEvent(arrowUpEvent);
+
+            expect(wasInput).to.equal(true);
+
+            wasInput = false;
+
+            element.shadowRoot?.querySelector(".control")?.dispatchEvent(arrowDownEvent);
+
+            expect(wasInput).to.equal(true);
+
+            await disconnect();
+        });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
