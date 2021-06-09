@@ -199,7 +199,6 @@ export class FastFrame extends FASTElement {
         this.baseLayerLuminance = this.darkMode
             ? StandardLuminance.DarkMode
             : StandardLuminance.LightMode;
-        baseLayerLuminance.setValueFor(this, this.baseLayerLuminance);
         this.updateBackgroundColor();
     };
 

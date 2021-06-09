@@ -213,10 +213,8 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
             </fast-tabs>
-            <fast-design-system-provider
-                class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
-            >
-                <fast-design-system-provider class="responsive-expand-flipper">
+            <div class="${x => (x.expanded ? "preview preview-expanded" : "preview")}">
+                <div class="responsive-expand-flipper">
                     <fast-flipper
                         direction="${x => (x.expanded ? "next" : "previous")}"
                         aria-expanded="${x => x.expanded}"
@@ -226,7 +224,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         @click="${(x, c) =>
                             x.handleExpandKeypress(c.event as KeyboardEvent)}"
                     ></fast-flipper>
-                </fast-design-system-provider>
+                </div>
                 <fast-card>
                     <div class="image-container">
                         <fast-badge fill="primary" color="primary" class="badge">
@@ -330,7 +328,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-button>
                     </div>
                 </div>
-            </fast-design-system-provider>
+            </div>
         </div>
     </template>
 `;
