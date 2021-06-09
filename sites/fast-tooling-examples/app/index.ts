@@ -7,9 +7,10 @@ import {
     fastTabPanel,
     fastTabs,
     neutralLayerL1,
+    neutralLayerL1_DEPRECATED,
     StandardLuminance,
 } from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import { fastDesignSystemDefaults } from "@microsoft/fast-components";
 import "./style.css";
 import examples from "./registry";
 import toolingGuidance from "./.tmp/tooling-guidance";
@@ -130,7 +131,7 @@ function initialize() {
     if (designSystemProvider !== null) {
         designSystemProvider.setAttribute(
             "background-color",
-            neutralLayerL1(
+            neutralLayerL1_DEPRECATED(
                 Object.assign({}, fastDesignSystemDefaults, {
                     baseLayerLuminance: StandardLuminance.LightMode,
                 })

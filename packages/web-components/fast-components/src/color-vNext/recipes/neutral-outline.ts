@@ -1,5 +1,5 @@
 import { PaletteRGB } from "../palette";
-import { Swatch } from "../swatch";
+import { Swatch, SwatchRGB } from "../swatch";
 import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
@@ -12,7 +12,7 @@ export function neutralOutline(
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number
-) {
+): Record<"rest" | "hover" | "active" | "focus", SwatchRGB> {
     const referenceIndex = palette.closestIndexOf(reference);
     const direction = directionByIsDark(reference);
 
