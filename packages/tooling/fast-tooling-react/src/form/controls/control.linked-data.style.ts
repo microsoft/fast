@@ -65,7 +65,7 @@ const styles: ComponentStyles<LinkedDataControlClassNameContract, {}> = {
     linkedDataControl_linkedDataListInput: {
         ...selectInputStyle,
         "&::-webkit-calendar-picker-indicator": {
-            display: "none",
+            display: "none !important",
         },
     },
     linkedDataControl_linkedDataListInputRegion: {
