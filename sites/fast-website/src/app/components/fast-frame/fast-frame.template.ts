@@ -214,25 +214,9 @@ export const FastFrameTemplate = html<FastFrame>`
                 </fast-tab-panel>
             </fast-tabs>
             <fast-design-system-provider
-                use-defaults
                 class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
-                base-layer-luminance="${x => x.baseLayerLuminance}"
-                background-color="${x => x.backgroundColor}"
-                accent-base-color="${x => x.accentColor}"
-                density="${x => x.density}"
-                corner-radius="${x => x.borderRadius}"
-                outline-width="${x => x.outlineWidth}"
-                :accentPalette=${x =>
-                    Array.isArray(x.accentPalette) ? x.accentPalette : null}
-                :neutralPalette=${x =>
-                    Array.isArray(x.neutralPalette) ? x.neutralPalette : null}
             >
-                <fast-design-system-provider
-                    density="0"
-                    class="responsive-expand-flipper"
-                    base-height-multiplier="10"
-                    base-horizontal-spacing-multiplier="3"
-                >
+                <fast-design-system-provider class="responsive-expand-flipper">
                     <fast-flipper
                         direction="${x => (x.expanded ? "next" : "previous")}"
                         aria-expanded="${x => x.expanded}"
