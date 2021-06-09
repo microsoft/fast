@@ -1,5 +1,5 @@
-import { KeyCodes } from "@microsoft/fast-web-utilities";
 import { DOM } from "@microsoft/fast-element";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { NumberField, numberFieldTemplate as template } from "./index";
@@ -24,14 +24,12 @@ async function setup(props?: Partial<NumberField>) {
 }
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
-    key: "ArrowUp",
-    keyCode: KeyCodes.arrowUp,
+    key: keyArrowUp,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowDownEvent = new KeyboardEvent("keydown", {
-    key: "ArrowDown",
-    keyCode: KeyCodes.arrowDown,
+    key: keyArrowDown,
     bubbles: true,
 } as KeyboardEventInit);
 
@@ -446,7 +444,6 @@ describe("NumberField", () => {
 
             await disconnect();
         });
-<<<<<<< HEAD
 
         it("should fire an input event when incrementing or decrementing with arrow up/down keys", async () => {
             const { element, connect, disconnect } = await setup();
@@ -472,8 +469,6 @@ describe("NumberField", () => {
 
             await disconnect();
         });
-=======
->>>>>>> c1d594dc1 (fix: number-field range coercion and step constrols (#5289))
     });
 
     describe("when the owning form's reset() method is invoked", () => {
