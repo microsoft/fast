@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "address a CSS specificy issue that appeared recently and resulted in the native browser dropdown arrow appearing",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
