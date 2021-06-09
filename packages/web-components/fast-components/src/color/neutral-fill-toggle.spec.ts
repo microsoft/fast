@@ -5,14 +5,14 @@ import { neutralFillToggle as neutralFillToggleNew } from "../color-vNext/recipe
 import { SwatchRGB } from "../color-vNext/swatch";
 import { fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralBaseColor } from "./color-constants";
-import { neutralFillToggle } from "./neutral-fill-toggle";
+import { neutralFillToggle_DEPRECATED } from "./neutral-fill-toggle";
 
 describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralFillToggleHoverDelta, neutralFillToggleActiveDelta, neutralFillToggleFocusDelta} = fastDesignSystemDefaults;
-        const oldValues = neutralFillToggle({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = neutralFillToggle_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillToggleNew(
             palette,
             newSwatch,

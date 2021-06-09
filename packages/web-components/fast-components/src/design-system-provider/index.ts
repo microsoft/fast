@@ -9,12 +9,12 @@ import {
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
-import { neutralForegroundRest } from "../color";
+import { neutralForegroundRest_DEPRECATED } from "../color";
 import { DesignSystemProviderStyles as styles } from "./design-system-provider.styles";
 
 const color = new CSSCustomPropertyBehavior(
     "neutral-foreground-rest",
-    neutralForegroundRest,
+    neutralForegroundRest_DEPRECATED,
     (el: FASTDesignSystemProvider) => el
 );
 

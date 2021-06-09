@@ -5,12 +5,12 @@ import {
     neutralPalette as getNeutralPalette,
 } from "../fast-design-system";
 import {
-    neutralFillStealth,
-    neutralFillStealthActive,
-    neutralFillStealthFocus,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralFillStealthSelected,
+    neutralFillStealth_DEPRECATED,
+    neutralFillStealthActive_DEPRECATED,
+    neutralFillStealthFocus_DEPRECATED,
+    neutralFillStealthHover_DEPRECATED,
+    neutralFillStealthRest_DEPRECATED,
+    neutralFillStealthSelected_DEPRECATED,
 } from "./neutral-fill-stealth";
 import { Palette } from "./palette";
 import { FillSwatchFamily, Swatch } from "./common";
@@ -26,11 +26,11 @@ describe("neutralFillStealth", (): void => {
 
     it("should operate on design system defaults", (): void => {
         [
-            neutralFillStealthActive,
-            neutralFillStealthFocus,
-            neutralFillStealthHover,
-            neutralFillStealthRest,
-            neutralFillStealthSelected,
+            neutralFillStealthActive_DEPRECATED,
+            neutralFillStealthFocus_DEPRECATED,
+            neutralFillStealthHover_DEPRECATED,
+            neutralFillStealthRest_DEPRECATED,
+            neutralFillStealthSelected_DEPRECATED,
         ].forEach(fn => {
             expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
         });
@@ -39,45 +39,45 @@ describe("neutralFillStealth", (): void => {
     it("should return the same color from both implementations", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
             expect(
-                neutralFillStealthRest(() => swatch)(fastDesignSystemDefaults)
+                neutralFillStealthRest_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillStealthRest(
+                neutralFillStealthRest_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillStealthHover(() => swatch)(fastDesignSystemDefaults)
+                neutralFillStealthHover_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillStealthHover(
+                neutralFillStealthHover_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillStealthActive(() => swatch)(fastDesignSystemDefaults)
+                neutralFillStealthActive_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillStealthActive(
+                neutralFillStealthActive_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillStealthFocus(() => swatch)(fastDesignSystemDefaults)
+                neutralFillStealthFocus_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillStealthFocus(
+                neutralFillStealthFocus_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
                 )
             );
             expect(
-                neutralFillStealthSelected(() => swatch)(fastDesignSystemDefaults)
+                neutralFillStealthSelected_DEPRECATED(() => swatch)(fastDesignSystemDefaults)
             ).to.equal(
-                neutralFillStealthSelected(
+                neutralFillStealthSelected_DEPRECATED(
                     Object.assign({}, fastDesignSystemDefaults, {
                         backgroundColor: swatch,
                     })
@@ -88,22 +88,22 @@ describe("neutralFillStealth", (): void => {
 
     it("should have consistent return values", (): void => {
         neutralPalette.concat(accentPalette).forEach((swatch: Swatch): void => {
-            const backplates: FillSwatchFamily = neutralFillStealth(() => swatch)(
+            const backplates: FillSwatchFamily = neutralFillStealth_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const rest: Swatch = neutralFillStealthRest(() => swatch)(
+            const rest: Swatch = neutralFillStealthRest_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const hover: Swatch = neutralFillStealthHover(() => swatch)(
+            const hover: Swatch = neutralFillStealthHover_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const active: Swatch = neutralFillStealthActive(() => swatch)(
+            const active: Swatch = neutralFillStealthActive_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const focus: Swatch = neutralFillStealthFocus(() => swatch)(
+            const focus: Swatch = neutralFillStealthFocus_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
-            const selected: Swatch = neutralFillStealthSelected(() => swatch)(
+            const selected: Swatch = neutralFillStealthSelected_DEPRECATED(() => swatch)(
                 fastDesignSystemDefaults
             );
 
@@ -130,7 +130,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillActiveDelta,
             neutralFillFocusDelta
         } = fastDesignSystemDefaults;
-        const oldValues = neutralFillStealth({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
+        const oldValues = neutralFillStealth_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillStealthNew(
             palette,
             newSwatch,

@@ -15,8 +15,9 @@ import { accessibleAlgorithm } from "./accessible-recipe";
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
+export const neutralFillToggle_DEPRECATED: SwatchFamilyResolver = colorRecipeFactory(
     accessibleAlgorithm(
         neutralPalette,
         4.5,
@@ -29,29 +30,33 @@ export const neutralFillToggle: SwatchFamilyResolver = colorRecipeFactory(
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillToggleRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralFillToggleRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    neutralFillToggle
+    neutralFillToggle_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillToggleHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralFillToggleHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    neutralFillToggle
+    neutralFillToggle_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillToggleActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralFillToggleActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    neutralFillToggle
+    neutralFillToggle_DEPRECATED
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFillToggleFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const neutralFillToggleFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    neutralFillToggle
+    neutralFillToggle_DEPRECATED
 );

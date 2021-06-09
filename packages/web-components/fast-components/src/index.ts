@@ -20,6 +20,8 @@ export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system
 export { Swatch, SwatchRGB } from "./color-vNext/swatch";
 export { Palette, PaletteRGB } from "./color-vNext/palette";
 export { isDark } from "./color-vNext/utilities/is-dark";
+export { StandardLuminance } from "./color-vNext/utilities/base-layer-luminance";
+export * from "./design-tokens";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";

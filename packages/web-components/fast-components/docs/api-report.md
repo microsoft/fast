@@ -21,6 +21,7 @@ import { DataGrid } from '@microsoft/fast-foundation';
 import { DataGridCell } from '@microsoft/fast-foundation';
 import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystemProvider } from '@microsoft/fast-foundation';
+import { DesignToken } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
@@ -54,165 +55,244 @@ import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
+// Warning: (ae-forgotten-export) The symbol "accentFill" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const AccentFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof accentFill>>;
+
 // Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "FillSwatchFamily" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentFill" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFill: SwatchFamilyResolver<FillSwatchFamily>;
+export const accentFill_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily>;
+
+// @public (undocumented)
+export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentFillActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillActive: SwatchRecipe;
+export const accentFillActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const accentFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const accentFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const accentFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillHover" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentFillFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const accentFillHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentFillHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillHover: SwatchRecipe;
+export const accentFillHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillLarge" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentFillLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillLarge: SwatchFamilyResolver<FillSwatchFamily>;
+export const accentFillLarge_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily>;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFillLargeActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillLargeActive: SwatchRecipe;
+export const accentFillLargeActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillLargeActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public @deprecated
 export const accentFillLargeFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeHover" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFillLargeHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillLargeHover: SwatchRecipe;
+export const accentFillLargeHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillLargeHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeRest" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFillLargeRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillLargeRest: SwatchRecipe;
+export const accentFillLargeRest_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillLargeRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeSelected" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentFillLargeSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillLargeSelected: SwatchRecipe;
+export const accentFillLargeSelected_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillLargeSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillRest" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentFillRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillRest: SwatchRecipe;
+export const accentFillRest_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillSelected" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentFillRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const accentFillSelected: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentFillSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentFillSelected: SwatchRecipe;
+export const accentFillSelected_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentFillSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForeground" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentFillSelectedDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// Warning: (ae-forgotten-export) The symbol "accentForeground" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const AccentForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof accentForeground>>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForeground_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForeground: SwatchFamilyResolver;
+export const accentForeground_DEPRECATED: SwatchFamilyResolver;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundActive" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundActive: SwatchRecipe;
+export const accentForegroundActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundCut" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const AccentForegroundCut: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundCut_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const accentForegroundCut: SwatchRecipe;
+export const accentForegroundCut_DEPRECATED: SwatchRecipe;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundCutLarge" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const AccentForegroundCutLarge: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundCutLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export const accentForegroundCutLarge: SwatchRecipe;
+export const accentForegroundCutLarge_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundCutRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const accentForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const accentForegroundFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundHover" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentForegroundFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const accentForegroundHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundHover: SwatchRecipe;
+export const accentForegroundHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLarge" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentForegroundHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundLarge: SwatchFamilyResolver;
+export const accentForegroundLarge_DEPRECATED: SwatchFamilyResolver;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundLargeActive: SwatchRecipe;
+export const accentForegroundLargeActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundLargeActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public @deprecated
 export const accentForegroundLargeFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeHover" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundLargeHover: SwatchRecipe;
+export const accentForegroundLargeHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundLargeHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeRest" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundLargeRest: SwatchRecipe;
+export const accentForegroundLargeRest_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundLargeRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundRest" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "accentForegroundRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
-export const accentForegroundRest: SwatchRecipe;
+export const accentForegroundRest_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const accentForegroundRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const accentPalette: DesignToken<PaletteRGB>;
 
 // @public
 export const accordionItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -244,6 +324,18 @@ export const anchorStyles: (context: any, definition: any) => import("@microsoft
 
 // @public
 export const badgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const baseHeightMultiplier: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const baseHorizontalSpacingMultiplier: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const baseLayerLuminance: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const bodyFont: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
 // Warning: (ae-internal-missing-underscore) The name "Button" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -280,7 +372,10 @@ export const checkboxStyles: (context: any, definition: any) => import("@microso
 // @public
 export const comboboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
-// @public
+// @public (undocumented)
+export const cornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public @deprecated
 export function createColorPalette(baseColor: any): string[];
 
 // @public
@@ -292,8 +387,17 @@ export const dataGridRowStyles: import("@microsoft/fast-element").ElementStyles;
 // @public
 export const dataGridStyles: import("@microsoft/fast-element").ElementStyles;
 
+// @public (undocumented)
+export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const designUnit: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
 // @public
 export const dialogStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const direction: import("@microsoft/fast-foundation").CSSDesignToken<Direction>;
 
 // @public
 export class DirectionalStyleSheetBehavior implements Behavior {
@@ -303,6 +407,9 @@ export class DirectionalStyleSheetBehavior implements Behavior {
     // @internal (undocumented)
     unbind(source: FASTElement & HTMLElement): void;
 }
+
+// @public (undocumented)
+export const disabledOpacity: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // Warning: (ae-internal-missing-underscore) The name "Disclosure" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -931,8 +1038,14 @@ export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundat
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 }, typeof TreeView>;
 
+// @public (undocumented)
+export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
 // @public
 export const flipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const focusOutlineWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -945,7 +1058,7 @@ export class HorizontalScroll extends HorizontalScroll_2 {
 // @public
 export function isDark(color: Swatch): boolean;
 
-// @public
+// @public @deprecated
 export function isDarkMode(designSystem: FASTDesignSystem): boolean;
 
 // @public
@@ -957,393 +1070,642 @@ export const menuItemStyles: (context: any, definition: any) => import("@microso
 // @public
 export const menuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFill" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralContrastFill: SwatchFamilyResolver;
+// @internal @deprecated (undocumented)
+export const neutralContrastFill_DEPRECATED: SwatchFamilyResolver;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralContrastFillActive: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralContrastFillActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralContrastFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public @deprecated
 export const neutralContrastFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillHover" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralContrastFillHover: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralContrastFillHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralContrastFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillRest" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralContrastFillRest: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralContrastFillRest_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralContrastFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public @deprecated
 export const neutralContrastForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralDividerRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralDividerRest: SwatchRecipe;
+// @public (undocumented)
+export const NeutralDivider: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralDividerRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralDividerRest_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralDividerRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
+// @public (undocumented)
+export const neutralDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// Warning: (ae-forgotten-export) The symbol "neutralFill" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const NeutralFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFill>>;
+
 // Warning: (ae-forgotten-export) The symbol "ColorRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralFill" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralFill: ColorRecipe<FillSwatchFamily>;
+// @internal @deprecated (undocumented)
+export const neutralFill_DEPRECATED: ColorRecipe<FillSwatchFamily>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillActive" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralFillActive: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralFillActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
+// @public (undocumented)
+export const neutralFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const NeutralFillCard: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralFillCard: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
 // Warning: (ae-forgotten-export) The symbol "Swatch" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralFillCard" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralFillCard_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export function neutralFillCard(designSystem: FASTDesignSystem): Swatch_2;
+// @internal @deprecated (undocumented)
+export function neutralFillCard_DEPRECATED(designSystem: FASTDesignSystem): Swatch_2;
 
 // Warning: (ae-forgotten-export) The symbol "SwatchResolver" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
-export function neutralFillCard(backgroundResolver: SwatchResolver): SwatchResolver;
+// @internal @deprecated (undocumented)
+export function neutralFillCard_DEPRECATED(backgroundResolver: SwatchResolver): SwatchResolver;
 
-// @public
+// @public (undocumented)
+export const neutralFillCardDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public @deprecated
 export const neutralFillCardRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const neutralFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillHover" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillHover: SwatchRecipe;
+// @public (undocumented)
+export const neutralFillFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillHover_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillInput" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillInput: ColorRecipe<FillSwatchFamily>;
+// @public (undocumented)
+export const neutralFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillInputActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-forgotten-export) The symbol "neutralFillInput" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
-export const neutralFillInputActive: ColorRecipe<string>;
+// @public (undocumented)
+export const NeutralFillInput: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillInput>>;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "neutralFillInput_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillInput_DEPRECATED: ColorRecipe<FillSwatchFamily>;
+
+// @public (undocumented)
+export const neutralFillInputActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillInputActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillInputActive_DEPRECATED: ColorRecipe<string>;
+
+// @public @deprecated
 export const neutralFillInputActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralFillInputActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillInputFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const neutralFillInputFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillInputHover" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillInputHover: ColorRecipe<string>;
+// @public (undocumented)
+export const neutralFillInputFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillInputHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillInputHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillInputHover_DEPRECATED: ColorRecipe<string>;
+
+// @public @deprecated
 export const neutralFillInputHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillInputRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillInputRest: ColorRecipe<string>;
+// @public (undocumented)
+export const neutralFillInputHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillInputRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillInputRest_DEPRECATED: ColorRecipe<string>;
+
+// @public @deprecated
 export const neutralFillInputRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillInputSelected" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillInputSelected: ColorRecipe<string>;
+// @public (undocumented)
+export const neutralFillInputRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillInputSelected: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillInputSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillInputSelected_DEPRECATED: ColorRecipe<string>;
+
+// @public @deprecated
 export const neutralFillInputSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillRest: SwatchRecipe;
+// @public (undocumented)
+export const neutralFillInputSelectedDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillRest_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillSelected" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillSelected: SwatchRecipe;
+// @public (undocumented)
+export const neutralFillRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillSelected: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillSelected_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealth" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillStealth: ColorRecipe<FillSwatchFamily>;
+// @public (undocumented)
+export const neutralFillSelectedDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-forgotten-export) The symbol "neutralFillStealth" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
-export const neutralFillStealthActive: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralFillStealth: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillStealth>>;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "neutralFillStealth_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillStealth_DEPRECATED: ColorRecipe<FillSwatchFamily>;
+
+// @public (undocumented)
+export const neutralFillStealthActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillStealthActive_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralFillStealthActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralFillStealthActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillStealthFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const neutralFillStealthFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthHover" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillStealthHover: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const neutralFillStealthFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillStealthHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillStealthHover_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralFillStealthHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillStealthRest: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const neutralFillStealthHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillStealthRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillStealthRest_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralFillStealthRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthSelected" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillStealthSelected: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const neutralFillStealthRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillStealthSelected: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillStealthSelected_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralFillStealthSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillToggle" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillToggle: SwatchFamilyResolver;
+// @public (undocumented)
+export const neutralFillStealthSelectedDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-forgotten-export) The symbol "neutralFillToggle" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
-export const neutralFillToggleActive: SwatchRecipe;
+// @public (undocumented)
+export const NeutralFillToggle: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillToggle>>;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "neutralFillToggle_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillToggle_DEPRECATED: SwatchFamilyResolver;
+
+// @public (undocumented)
+export const neutralFillToggleActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillToggleActive_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillToggleActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralFillToggleActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillToggleFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const neutralFillToggleFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleHover" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillToggleHover: SwatchRecipe;
+// @public (undocumented)
+export const neutralFillToggleFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillToggleHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillToggleHover_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillToggleHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFillToggleRest: SwatchRecipe;
+// @public (undocumented)
+export const neutralFillToggleHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralFillToggleRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFillToggleRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFillToggleRest_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralFillToggleRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFocus" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralFocus: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const neutralFillToggleRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const NeutralFocus: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralFocus_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralFocus_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-forgotten-export) The symbol "DesignSystemResolver" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralFocusInnerAccent" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function neutralFocusInnerAccent(accentFillColor: DesignSystemResolver<string>): DesignSystemResolver<string>;
+// @public (undocumented)
+export const NeutralFocusInnerAccent: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralFocusInnerAccent: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-forgotten-export) The symbol "DesignSystemResolver" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-missing-underscore) The name "neutralFocusInnerAccent_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export function neutralFocusInnerAccent_DEPRECATED(accentFillColor: DesignSystemResolver<string>): DesignSystemResolver<string>;
+
+// @public @deprecated
 export const neutralFocusInnerAccentBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForeground" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-forgotten-export) The symbol "neutralForeground" needs to be exported by the entry point index.d.ts
 //
-// @internal (undocumented)
-export const neutralForeground: SwatchFamilyResolver;
+// @public (undocumented)
+export const NeutralForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralForeground>>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundActive" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralForeground_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralForegroundActive: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralForeground_DEPRECATED: SwatchFamilyResolver;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralForegroundActive_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralForegroundActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public @deprecated
 export const neutralForegroundFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHint" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralForegroundHint: SwatchRecipe;
+// @public (undocumented)
+export const neutralForegroundFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const NeutralForegroundHint: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHint_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralForegroundHint_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralForegroundHintBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHintLarge" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHintLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal
-export const neutralForegroundHintLarge: SwatchRecipe;
+// @internal @deprecated
+export const neutralForegroundHintLarge_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralForegroundHintLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHover" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralForegroundHover: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralForegroundHover_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralForegroundRest: SwatchRecipe;
+// @public (undocumented)
+export const neutralForegroundHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralForegroundRest_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundToggle" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundToggle_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal
-export const neutralForegroundToggle: SwatchRecipe;
+// @internal @deprecated
+export const neutralForegroundToggle_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralForegroundToggleBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralForegroundToggleLarge" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralForegroundToggleLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal
-export const neutralForegroundToggleLarge: SwatchRecipe;
+// @internal @deprecated
+export const neutralForegroundToggleLarge_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralForegroundToggleLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerCard" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerCard_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal
-export const neutralLayerCard: ColorRecipe<Swatch_2>;
+// @internal @deprecated
+export const neutralLayerCard_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public
+// @public @deprecated
 export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerCardContainer" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerCardContainer_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal
-export const neutralLayerCardContainer: ColorRecipe<Swatch_2>;
+// @internal @deprecated
+export const neutralLayerCardContainer_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public
+// @public @deprecated
 export const neutralLayerCardContainerBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerFloating" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerFloating: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralLayerFloating: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerFloating_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerFloating_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerL1" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerL1: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralLayerL1: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerL1Alt" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerL1Alt: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerL1_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerL1_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerL1Alt_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerL1Alt_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralLayerL1AltBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public @deprecated
 export const neutralLayerL1Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerL2" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerL2: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralLayerL2: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerL2_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerL2_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerL3" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerL3: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralLayerL3: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerL3_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerL3_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralLayerL4" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const neutralLayerL4: ColorRecipe<Swatch_2>;
+// @public (undocumented)
+export const NeutralLayerL4: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
-// @public
+// @public (undocumented)
+export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralLayerL4_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated
+export const neutralLayerL4_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
 export const neutralLayerL4Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
+// Warning: (ae-forgotten-export) The symbol "neutralOutline" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const NeutralOutline: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralOutline>>;
+
 // Warning: (ae-forgotten-export) The symbol "SwatchFamily" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralOutline" should be prefixed with an underscore because the declaration is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "neutralOutline_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralOutline: ColorRecipe<SwatchFamily>;
+// @internal @deprecated (undocumented)
+export const neutralOutline_DEPRECATED: ColorRecipe<SwatchFamily>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralOutlineActive" should be prefixed with an underscore because the declaration is marked as @internal
+// @public (undocumented)
+export const neutralOutlineActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralOutlineActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @internal (undocumented)
-export const neutralOutlineActive: SwatchRecipe;
+// @internal @deprecated (undocumented)
+export const neutralOutlineActive_DEPRECATED: SwatchRecipe;
 
-// @public
+// @public @deprecated
 export const neutralOutlineActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public
+// @public (undocumented)
+export const neutralOutlineActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralOutlineFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public @deprecated
 export const neutralOutlineFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralOutlineHover" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralOutlineHover: SwatchRecipe;
+// @public (undocumented)
+export const neutralOutlineFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralOutlineHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralOutlineHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralOutlineHover_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralOutlineHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralOutlineRest" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const neutralOutlineRest: SwatchRecipe;
+// @public (undocumented)
+export const neutralOutlineHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public
+// @public (undocumented)
+export const neutralOutlineRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// Warning: (ae-internal-missing-underscore) The name "neutralOutlineRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
+export const neutralOutlineRest_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated
 export const neutralOutlineRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const neutralOutlineRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralPalette: DesignToken<PaletteRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "NumberField" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1363,6 +1725,9 @@ export const numberFieldStyles: (context: any, definition: any) => import("@micr
 
 // @public
 export const optionStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const outlineWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public
 export interface Palette<T extends Swatch = Swatch> {
@@ -1524,6 +1889,60 @@ export const treeItemStyles: (context: any, definition: any) => import("@microso
 
 // @public
 export const treeViewStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export const typeRampBaseFontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampBaseLineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampMinus1FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampMinus1LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampMinus2FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampMinus2LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus1FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus1LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus2FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus2LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus3FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus3LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus4FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus4LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus5FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus5LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus6FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
 
 // (No @packageDocumentation comment for this package)

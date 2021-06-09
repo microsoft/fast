@@ -32,8 +32,9 @@ const neutralFocusAlgorithm: SwatchResolver = swatchByContrast(backgroundColor)(
 );
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export const neutralFocus: ColorRecipe<Swatch> = colorRecipeFactory(
+export const neutralFocus_DEPRECATED: ColorRecipe<Swatch> = colorRecipeFactory(
     neutralFocusAlgorithm
 );
 
@@ -63,11 +64,12 @@ function neutralFocusInnerAccentDirectionResolver(
 
 /**
  * @internal
+ * @deprecated - to-be deleted
  */
-export function neutralFocusInnerAccent(
+export function neutralFocusInnerAccent_DEPRECATED(
     accentFillColor: DesignSystemResolver<string>
 ): DesignSystemResolver<string> {
-    return swatchByContrast(neutralFocus)(accentPalette)(
+    return swatchByContrast(neutralFocus_DEPRECATED)(accentPalette)(
         neutralFocusInnerAccentIndexResolver(accentFillColor)
     )(neutralFocusInnerAccentDirectionResolver)(neutralFocusContrastCondition);
 }

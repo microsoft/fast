@@ -100,70 +100,70 @@ function accentForegroundAlgorithm(
 /**
  * @internal
  */
-export const accentForeground: SwatchFamilyResolver = colorRecipeFactory(
+export const accentForeground_DEPRECATED: SwatchFamilyResolver = colorRecipeFactory(
     accentForegroundAlgorithm(4.5)
 );
 /**
  * @internal
  */
-export const accentForegroundLarge: SwatchFamilyResolver = colorRecipeFactory(
+export const accentForegroundLarge_DEPRECATED: SwatchFamilyResolver = colorRecipeFactory(
     accentForegroundAlgorithm(3)
 );
 
 /**
  * @internal
  */
-export const accentForegroundRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    accentForeground
+    accentForeground_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    accentForeground
+    accentForeground_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    accentForeground
+    accentForeground_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    accentForeground
+    accentForeground_DEPRECATED
 );
 
 /**
  * @internal
  */
-export const accentForegroundLargeRest: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundLargeRest_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.rest,
-    accentForegroundLarge
+    accentForegroundLarge_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundLargeHover: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundLargeHover_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.hover,
-    accentForegroundLarge
+    accentForegroundLarge_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundLargeActive: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundLargeActive_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.active,
-    accentForegroundLarge
+    accentForegroundLarge_DEPRECATED
 );
 /**
  * @internal
  */
-export const accentForegroundLargeFocus: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
+export const accentForegroundLargeFocus_DEPRECATED: SwatchRecipe = swatchFamilyToSwatchRecipeFactory(
     SwatchFamilyType.focus,
-    accentForegroundLarge
+    accentForegroundLarge_DEPRECATED
 );
