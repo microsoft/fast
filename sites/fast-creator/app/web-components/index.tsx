@@ -11,6 +11,7 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
@@ -45,6 +46,7 @@ FASTTabs;
 FASTTabPanel;
 HTMLRender;
 HTMLRenderLayerNavgation;
+FASTToolingCSSLayout;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
