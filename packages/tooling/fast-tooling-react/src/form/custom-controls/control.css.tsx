@@ -53,9 +53,7 @@ class CSSControl extends React.Component<
     public render(): React.ReactNode {
         return (
             <div className={classNames(this.props.managedClasses.css)}>
-                <fast-design-system-provider use-defaults>
-                    {this.renderCSSProperties()}
-                </fast-design-system-provider>
+                {this.renderCSSProperties()}
             </div>
         );
     }

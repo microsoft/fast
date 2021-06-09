@@ -52,6 +52,7 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
+    NeutralLayerL1,
     neutralLayerL1_DEPRECATED,
     StandardLuminance,
 } from "@microsoft/fast-components";
