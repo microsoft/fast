@@ -187,7 +187,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             if (messageData !== undefined) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
-                        console.log("initialize", messageData as any);
                         this.setState(
                             {
                                 dataDictionary: (messageData as InitializeMessageOutgoing)
@@ -225,7 +224,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
-                            console.log("what", (messageData as any).data);
                             const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
                                 this.state.designSystemDataDictionary &&
                                 (this.state.designSystemDataDictionary[0]["design-system"]

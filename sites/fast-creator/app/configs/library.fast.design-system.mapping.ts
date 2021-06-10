@@ -1,12 +1,12 @@
 import {
     accentPalette,
     baseLayerLuminance,
-    cornerRadius,
+    controlCornerRadius,
     disabledOpacity,
     fillColor,
-    focusOutlineWidth,
-    outlineWidth,
+    focusStrokeWidth,
     PaletteRGB,
+    strokeWidth,
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
@@ -45,13 +45,13 @@ export function mapFASTComponentsDesignSystem(
                 break;
             }
             case "control-corner-radius":
-                cornerRadius.setValueFor(element, value);
+                controlCornerRadius.setValueFor(element, value);
                 break;
             case "stroke-width":
-                outlineWidth.setValueFor(element, value);
+                strokeWidth.setValueFor(element, value);
                 break;
             case "focus-stroke-width":
-                focusOutlineWidth.setValueFor(element, value);
+                focusStrokeWidth.setValueFor(element, value);
                 break;
             case "disabled-opacity":
                 disabledOpacity.setValueFor(element, value);
