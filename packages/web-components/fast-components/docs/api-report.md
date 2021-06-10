@@ -30,6 +30,7 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FlipperOptions } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
+import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -818,18 +819,8 @@ export const fastDivider: (overrideDefinition?: import("@microsoft/fast-foundati
 // @public
 export const fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<FlipperOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "fastHorizontalScroll" is marked as @public, but its signature references "HorizontalScroll" which is marked as @internal
-//
 // @public
-export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-    baseName: string;
-    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<HorizontalScroll_2, any>;
-    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-    baseName: string;
-    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<HorizontalScroll_2, any>;
-    styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
-}, typeof HorizontalScroll>;
+export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
 export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
