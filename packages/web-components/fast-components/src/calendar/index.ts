@@ -9,10 +9,7 @@ import {
     DataGridRow,
 } from "@microsoft/fast-foundation";
 import { FASTCalendarTemplate as template } from "./calendar.template";
-import {
-    CalendarGridRowStyles as GridRowStyles,
-    CalendarStyles as styles,
-} from "./calendar.styles";
+import { CalendarStyles as styles } from "./calendar.styles";
 
 const gridTemplate: ViewTemplate = createDataGridTemplate("fast");
 const rowTemplate: ViewTemplate = createDataGridRowTemplate("fast");
@@ -55,7 +52,6 @@ export class FASTCalendardGrid extends DataGrid {}
 @customElement({
     name: "fast-calendar-grid-row",
     template: rowTemplate,
-    styles: GridRowStyles,
 })
 export class FASTCalendarGridRow extends DataGridRow {}
 
@@ -67,9 +63,3 @@ export class FASTCalendarGridRow extends DataGridRow {}
     template: cellTemplate,
 })
 export class FASTCalendarGridCell extends DataGridCell {}
-
-/**
- * Styles used for the calendar grid row
- * @public
- */
-export const CalendarGridRowStyles = GridRowStyles;

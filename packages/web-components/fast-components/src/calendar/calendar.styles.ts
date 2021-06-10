@@ -25,6 +25,8 @@ export const CalendarStyles = css`
 
     .days {
         border-left: var(--cell-border);
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
     }
 
     .title {
@@ -61,16 +63,3 @@ export const CalendarStyles = css`
         outline-offset: -1px;
     }
 `.withBehaviors(accentForegroundActiveBehavior, neutralForegroundRestBehavior);
-
-/**
- * Styles for a calendar grid row
- * @public
- */
-export const CalendarGridRowStyles = css`
-    :host {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        box-sizing: border-box;
-        width: 100%;
-    }
-`;

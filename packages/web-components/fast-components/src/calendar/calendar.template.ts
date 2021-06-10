@@ -36,6 +36,7 @@ const getWeeks = (calendar: Calendar): CalendarDateInfo[][] =>
  */
 const FASTCalendarWeekdayTemplate: ViewTemplate<Calendar, CalendarDateInfo[]> = html`
     <fast-calendar-grid-row
+        class="days"
         role="row"
         row-type="header"
         grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
