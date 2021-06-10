@@ -15,20 +15,20 @@ import {
     accentForegroundHover,
     accentForegroundRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     density,
     designUnit,
-    focusOutlineWidth,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundRest,
-    outlineWidth,
+    neutralForeground,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../../design-tokens";
@@ -45,8 +45,8 @@ export const BaseButtonStyles = css`
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         background-color: ${neutralFillRest};
-        color: ${neutralForegroundRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        color: ${neutralForeground};
+        border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
         cursor: pointer;
     }
@@ -63,7 +63,7 @@ export const BaseButtonStyles = css`
         white-space: nowrap;
         outline: none;
         text-decoration: none;
-        border: calc(${outlineWidth} * 1px) solid transparent;
+        border: calc(${strokeWidth} * 1px) solid transparent;
         color: inherit;
         border-radius: inherit;
         fill: inherit;
@@ -82,8 +82,8 @@ export const BaseButtonStyles = css`
     }
 
     .control:${focusVisible} {
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
-        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${neutralFocus};
+        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter};
     }
 
     .control::-moz-focus-inner {
@@ -136,7 +136,7 @@ export const BaseButtonStyles = css`
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
               border-color: ${SystemColors.ButtonText};
-              box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${SystemColors.ButtonText};
+              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText};
               color: ${SystemColors.HighlightText};
             }
 
@@ -181,7 +181,7 @@ export const AccentButtonStyles = css`
     }
 
     :host([appearance="accent"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -253,7 +253,7 @@ export const HypertextStyles = css`
     :host([appearance="hypertext"]) .control:visited {
         background: transparent;
         color: ${accentForegroundRest};
-        border-bottom: calc(${outlineWidth} * 1px) solid ${accentForegroundRest};
+        border-bottom: calc(${strokeWidth} * 1px) solid ${accentForegroundRest};
     }
 
     :host([appearance="hypertext"]) .control:hover {
@@ -265,8 +265,8 @@ export const HypertextStyles = css`
     }
 
     :host([appearance="hypertext"]) .control:${focusVisible} {
-        border-bottom: calc(${focusOutlineWidth} * 1px) solid ${neutralFocus};
-        margin-bottom: calc(calc(${outlineWidth} - ${focusOutlineWidth}) * 1px);
+        border-bottom: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        margin-bottom: calc(calc(${strokeWidth} - ${focusStrokeWidth}) * 1px);
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -318,7 +318,7 @@ export const LightweightButtonStyles = css`
     :host([appearance="lightweight"]) .content::before {
         content: "";
         display: block;
-        height: calc(${outlineWidth} * 1px);
+        height: calc(${strokeWidth} * 1px);
         position: absolute;
         top: calc(1em + 4px);
         width: 100%;
@@ -333,8 +333,8 @@ export const LightweightButtonStyles = css`
     }
 
     :host([appearance="lightweight"]) .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRest};
-        height: calc(${focusOutlineWidth} * 1px);
+        background: ${neutralForeground};
+        height: calc(${focusStrokeWidth} * 1px);
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -387,8 +387,8 @@ export const OutlineButtonStyles = css`
     }
 
     :host([appearance="outline"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${neutralFocus};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter};
+        border-color: ${focusStrokeOuter};
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -400,7 +400,7 @@ export const OutlineButtonStyles = css`
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
               border-color: ${SystemColors.ButtonText};
-              box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${SystemColors.ButtonText};
+              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText};
               color: ${SystemColors.HighlightText};
               fill: currentColor;
             }

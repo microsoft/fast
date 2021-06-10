@@ -142,7 +142,6 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillInputHoverDelta,
             neutralFillInputActiveDelta,
             neutralFillInputFocusDelta,
-            neutralFillInputSelectedDelta
         } = fastDesignSystemDefaults;
         const oldValues = neutralFillInput_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillInputNew(
@@ -151,8 +150,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillInputRestDelta,
             neutralFillInputHoverDelta,
             neutralFillInputActiveDelta,
-            neutralFillInputFocusDelta,
-            neutralFillInputSelectedDelta
+            neutralFillInputFocusDelta
         );
             it(`should be the same for ${newSwatch}`, () => {
                 for (let key in oldValues) {

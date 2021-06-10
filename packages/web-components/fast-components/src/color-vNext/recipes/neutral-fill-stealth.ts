@@ -11,12 +11,11 @@ export function neutralFillStealth(
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number,
-    selectedDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number,
     fillFocusDelta: number
-): Record<"rest" | "hover" | "active" | "focus" | "selected", SwatchRGB> {
+): Record<"rest" | "hover" | "active" | "focus", SwatchRGB> {
     const swapThreshold = Math.max(
         restDelta,
         hoverDelta,
@@ -36,6 +35,5 @@ export function neutralFillStealth(
         hover: palette.get(referenceIndex + direction * hoverDelta),
         active: palette.get(referenceIndex + direction * activeDelta),
         focus: palette.get(referenceIndex + direction * focusDelta),
-        selected: palette.get(referenceIndex + direction * selectedDelta),
     };
 }

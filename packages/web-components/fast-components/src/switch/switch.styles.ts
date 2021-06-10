@@ -12,18 +12,18 @@ import {
     accentFillRest,
     accentForegroundCut,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -66,44 +66,44 @@ export const switchStyles = (context, definition) =>
         width: calc(${heightNumber} * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         background: ${neutralFillInputRest};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     }
 
     .switch:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHover};
+        border-color: ${neutralStrokeHover};
         cursor: pointer;
     }
 
     host([disabled]) .switch:hover,
     host([readonly]) .switch:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHover};
+        border-color: ${neutralStrokeHover};
         cursor: ${disabledCursor};
     }
 
     :host(:not([disabled])) .switch:active {
         background: ${neutralFillInputActive};
-        border-color: ${neutralOutlineActive};
+        border-color: ${neutralStrokeActive};
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
+        border-color: ${focusStrokeOuter};
     }
 
     .checked-indicator {
         position: absolute;
         top: 5px;
         bottom: 5px;
-        background: ${neutralForegroundRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        background: ${neutralForeground};
+        border-radius: calc(${controlCornerRadius} * 1px);
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -115,7 +115,7 @@ export const switchStyles = (context, definition) =>
     }
 
     .label {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
 
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
@@ -156,7 +156,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
         border-color: transparent;
     }
 

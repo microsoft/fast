@@ -12,9 +12,6 @@ import {
 import {
     neutralLayerFloating as neutralLayerFloatingNew
 } from '../color-vNext/recipes/neutral-layer-floating';
-import {
-    neutralLayerCard as neutralLayerCardNew
-} from '../color-vNext/recipes/neutral-layer-card';
 import { neutralLayerL1 as neutralLayerL1New } from "../color-vNext/recipes/neutral-layer-L1";
 import { neutralLayerL2 as neutralLayerL2New } from "../color-vNext/recipes/neutral-layer-L2";
 import { neutralLayerL3 as neutralLayerL3New } from "../color-vNext/recipes/neutral-layer-L3";
@@ -282,11 +279,5 @@ describe("neutralLayer", (): void => {
             expect(color).not.to.equal(neutralLayerCard_DEPRECATED(fastDesignSystemDefaults));
             expect(fastDesignSystemDefaults.neutralPalette.includes(color)).to.be.ok;
         });
-        it("should have a new implementation that matches the old implementation", () => {
-             const color = (parseColorHexRGB(neutralBaseColor)!)
-            const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerCard_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.LightMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
-            expect(neutralLayerCard_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerCardNew(palette, StandardLuminance.DarkMode, lightModeDesignSystem.neutralFillCardDelta).toColorString().toUpperCase())
-        })
     });
 });

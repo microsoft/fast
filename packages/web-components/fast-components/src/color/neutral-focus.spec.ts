@@ -6,9 +6,8 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { neutralBaseColor } from "./color-constants";
 import { PaletteRGB } from "../color-vNext/palette";
 import { SwatchRGB } from "../color-vNext/swatch";
-import  {accentBase } from "../color-vNext/utilities/color-constants";
-import { neutralFocus as neutralFocusNew } from "../color-vNext/recipes/neutral-focus";
-import { neutralFocusInnerAccent as neutralFocusInnerAccentNew } from "../color-vNext/recipes/neutral-focus-inner-accent";
+import {accentBase } from "../color-vNext/utilities/color-constants";
+import { focusStrokeInner as focusStrokeInnerNew, focusStrokeOuter as focusStrokeOuterNew } from "../color-vNext/recipes/focus-stroke";
 
 describe("neutralFocus", (): void => {
     it("should return a string when invoked with an object", (): void => {
@@ -27,7 +26,7 @@ describe("neutralFocus", (): void => {
         const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
         palette.swatches.forEach(( newSwatch, index ) => {
                 it(`should be the same for ${newSwatch}`, () => {
-                    expect(neutralFocus_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(neutralFocusNew( palette, newSwatch).toColorString().toUpperCase())
+                    expect(neutralFocus_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(focusStrokeOuterNew( palette, newSwatch).toColorString().toUpperCase())
             });
         })
     })
@@ -39,10 +38,10 @@ describe("neutralFocusInnerAccent", () => {
         const neutralPalette = PaletteRGB.create(SwatchRGB.create(neutralBase.r, neutralBase.g, neutralBase.b));
         const accentPalette = PaletteRGB.create(accentBase);
         neutralPalette.swatches.forEach(( newSwatch, index ) => {
-                const neutralFocusColor = neutralFocusNew(neutralPalette, newSwatch);
+                const neutralFocusColor = focusStrokeOuterNew(neutralPalette, newSwatch);
                 it(`should be the same for ${newSwatch}`, () => {
                     expect(neutralFocusInnerAccent_DEPRECATED(accentBaseColor)({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]}))
-                    .to.be.equal(neutralFocusInnerAccentNew(
+                    .to.be.equal(focusStrokeInnerNew(
                         accentPalette,
                         newSwatch,
                         neutralFocusColor,

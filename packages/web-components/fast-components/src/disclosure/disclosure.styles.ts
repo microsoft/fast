@@ -8,8 +8,8 @@ import {
     accentForegroundHover,
     accentForegroundRest,
     bodyFont,
-    cornerRadius,
-    outlineWidth,
+    controlCornerRadius,
+    strokeWidth,
     typeRampBaseFontSize,
 } from "../design-tokens";
 
@@ -31,7 +31,7 @@ export const disclosureStyles = css`
         color: ${accentForegroundCut};
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         outline: none;
         cursor: pointer;
         margin: 16px 0;
@@ -50,7 +50,7 @@ export const disclosureStyles = css`
     :host([appearance="lightweight"]) .invoker {
         background: transparent;
         color: ${accentForegroundRest};
-        border-bottom: calc(${outlineWidth} * 1px) solid var(--accent-foreground-rest);
+        border-bottom: calc(${strokeWidth} * 1px) solid var(--accent-foreground-rest);
         cursor: pointer;
         width: max-content;
         margin: 16px 0;

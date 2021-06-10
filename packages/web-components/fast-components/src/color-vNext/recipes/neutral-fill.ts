@@ -17,9 +17,8 @@ export function neutralFill(
     restDelta: number,
     hoverDelta: number,
     activeDelta: number,
-    focusDelta: number,
-    selectedDelta: number
-): Record<"rest" | "hover" | "active" | "focus" | "selected", SwatchRGB> {
+    focusDelta: number
+): Record<"rest" | "hover" | "active" | "focus", SwatchRGB> {
     const referenceIndex = palette.closestIndexOf(reference);
     const threshold = Math.max(restDelta, hoverDelta, activeDelta, focusDelta);
     const direction = referenceIndex >= threshold ? -1 : 1;
@@ -29,6 +28,5 @@ export function neutralFill(
         hover: palette.get(referenceIndex + direction * hoverDelta),
         active: palette.get(referenceIndex + direction * activeDelta),
         focus: palette.get(referenceIndex + direction * focusDelta),
-        selected: palette.get(referenceIndex + direction * selectedDelta),
     };
 }

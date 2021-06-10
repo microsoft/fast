@@ -12,18 +12,18 @@ import {
     accentFillRest,
     accentForegroundCut,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -48,8 +48,8 @@ export const checkboxStyles = (context, definition) =>
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
         background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
@@ -57,7 +57,7 @@ export const checkboxStyles = (context, definition) =>
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -82,7 +82,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     .indeterminate-indicator {
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         background: ${accentForegroundCut};
         position: absolute;
         top: 50%;
@@ -95,36 +95,36 @@ export const checkboxStyles = (context, definition) =>
 
     :host(:not([disabled])) .control:hover {
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHover};
+        border-color: ${neutralStrokeHover};
     }
 
     :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActive};
-        border-color: ${neutralOutlineActive};
+        border-color: ${neutralStrokeActive};
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
+        border-color: ${focusStrokeOuter};
     }
 
     :host([aria-checked="true"]) .control {
         background: ${accentFillRest};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHover};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillHover};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActive};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillActive};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
         border-color: transparent;
     }
 

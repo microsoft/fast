@@ -12,20 +12,20 @@ import {
     accentFillRest,
     accentForegroundCut,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillStealthRest,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundRest,
+    neutralForeground,
     neutralLayerFloating,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -37,10 +37,10 @@ export const selectStyles = (context, definition) =>
     ${display("inline-flex")} :host {
         --elevation: 14;
         background: ${neutralFillInputRest};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         font-family: ${bodyFont};
         height: calc(${heightNumber} * 1px);
         position: relative;
@@ -53,8 +53,8 @@ export const selectStyles = (context, definition) =>
     .listbox {
         ${elevation}
         background: ${neutralLayerFloating};
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
         box-sizing: border-box;
         display: inline-flex;
         flex-direction: column;
@@ -90,13 +90,13 @@ export const selectStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocus};
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${neutralFocus};
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
         color: ${accentForegroundCut};
     }
@@ -113,7 +113,7 @@ export const selectStyles = (context, definition) =>
 
     :host([disabled]:hover) {
         background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
     }
 
@@ -201,7 +201,7 @@ export const selectStyles = (context, definition) =>
 
             :host(:not([disabled]):${focusVisible}) {
                 background-color: ${SystemColors.ButtonFace};
-                box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight};
                 color: ${SystemColors.ButtonText};
                 fill: currentcolor;
                 forced-color-adjust: none;
@@ -238,7 +238,7 @@ export const selectStyles = (context, definition) =>
             :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
