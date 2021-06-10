@@ -5,7 +5,7 @@ import "@microsoft/fast-website/src/app/css/root.css";
 import "@microsoft/fast-website/src/app/css/site-wrapper.css";
 import React from "react";
 
-export { fastAnchor, SiteNavigation } from "@microsoft/fast-website";
+export { SiteNavigation } from "@microsoft/fast-website";
 
 export class Footer extends React.Component<{}, {}> {
     render(): React.ReactNode {

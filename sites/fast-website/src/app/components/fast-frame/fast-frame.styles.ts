@@ -1,12 +1,19 @@
 import { css } from "@microsoft/fast-element";
 import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundRestBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundRestBehavior,
-    neutralFillCardRestBehavior,
+    bodyFont,
+    neutralForegroundRest,
+    fillColor,
+    cornerRadius,
+    neutralFillCard,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
+    neutralForegroundHint,
+    typeRampPlus3FontSize,
+    typeRampPlus3LineHeight,
+    designUnit,
+    accentFillRest,
+    typeRampMinus2FontSize,
 } from "@microsoft/fast-components";
 import { drawerBreakpoint } from "./fast-frame";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -14,13 +21,13 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 export const FastFrameStyles = css`
     ${display("block")} :host {
         flex-direction: column;
-        font-family: var(--body-font);
-        color: ${neutralForegroundRestBehavior.var};
+        font-family: ${bodyFont};
+        color: ${neutralForegroundRest};
         box-sizing: border-box;
         text-align: center;
         width: 100%;
-        background: var(--background-color);
-        border-radius: calc(var(--corner-radius) * 1px);
+        background: ${fillColor};
+        border-radius: calc(${cornerRadius} * 1px);
     }
 
     :host {
@@ -45,7 +52,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         width: 100%;
         text-align: start;
-        background: ${neutralFillCardRestBehavior.var};
+        background: ${neutralFillCard};
         padding: calc(var(--gutter) * 2px);
     }
 
@@ -70,9 +77,9 @@ export const FastFrameStyles = css`
 
     .content .content-badge {
         --design-unit: 0;
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
-        color: ${neutralForegroundHintBehavior.var};
+        font-size: ${typeRampMinus1FontSize};
+        line-height: ${typeRampMinus1LineHeight};
+        color: ${neutralForegroundHint};
         margin: 0;
         margin-bottom: 15px;
         font-weight: bold;
@@ -80,12 +87,12 @@ export const FastFrameStyles = css`
     }
 
     .content .content-badge .content-badge-highlight {
-        color: ${neutralForegroundHintBehavior.var};
+        color: ${neutralForegroundHint};
     }
 
     .content .heading {
-        font-size: var(--type-ramp-plus-3-font-size);
-        line-height: var(--type-ramp-plus-3-line-height);
+        font-size: ${typeRampPlus3FontSize};
+        line-height: ${typeRampPlus3LineHeight};
         margin: 0;
         margin-bottom: 10px;
         font-weight: bold;
@@ -97,7 +104,7 @@ export const FastFrameStyles = css`
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
         position: relative;
-        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px) 0;
+        border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
     }
 
     .image-container {
@@ -113,7 +120,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         padding: calc(var(--gutter) * 1px);
         text-align: start;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .badge {
@@ -140,14 +147,14 @@ export const FastFrameStyles = css`
     }
 
     .control-container p {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     .control-container-grid {
         display: grid;
         grid-template-columns: auto 1fr;
         text-align: start;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .checkbox {
@@ -174,24 +181,24 @@ export const FastFrameStyles = css`
     }
 
     .sample-control-text {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     .sample-control-icon {
         width: 21px;
         height: 21px;
-        background-color: ${accentFillRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        background-color: ${accentFillRest};
+        border-radius: calc(${cornerRadius} * 1px);
     }
 
     .saturation-slider-track {
         height: 100%;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
     }
 
     .hue-slider-track {
         height: 100%;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${cornerRadius} * 1px);
         background-image:
             linear-gradient(
                 to right,
@@ -241,7 +248,7 @@ export const FastFrameStyles = css`
     }
 
     fast-tab-panel {
-        background: ${neutralFillCardRestBehavior.var};
+        background: ${neutralFillCard};
         height: 100%;
     }
 
@@ -270,8 +277,8 @@ export const FastFrameStyles = css`
     }
 
     fast-slider-label {
-        font-size: var(--type-ramp-minus-2-font-size);
-        color: ${neutralForegroundHintBehavior.var};
+        font-size: ${typeRampMinus2FontSize};
+        color: ${neutralForegroundHint};
     }
 
     @media screen and (max-width: 1330px) {
@@ -285,7 +292,7 @@ export const FastFrameStyles = css`
 
         .preview {
             grid-template-columns: minMax(300px, auto);
-            border-radius: calc(var(--corner-radius) * 1px);
+            border-radius: calc(${cornerRadius} * 1px);
         }
 
     }
@@ -305,7 +312,7 @@ export const FastFrameStyles = css`
             width: 80%;
             transition: right .5s ease-in-out;
             align-self: center;
-            border-radius: calc(var(--corner-radius) * 1px);
+            border-radius: calc(${cornerRadius} * 1px);
         }
 
         .preview-expanded {
@@ -339,7 +346,7 @@ export const FastFrameStyles = css`
         .preview {
             right: -88%;
             width: 70%;
-            border-radius: calc(var(--corner-radius) * 1px);
+            border-radius: calc(${cornerRadius} * 1px);
         }
 
         .preview-expanded {
@@ -367,12 +374,6 @@ export const FastFrameStyles = css`
         }
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundRestBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundRestBehavior,
-    neutralFillCardRestBehavior,
     forcedColorsStylesheetBehavior(
         css`
             .text-container {
