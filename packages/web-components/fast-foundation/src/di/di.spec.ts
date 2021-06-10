@@ -12,6 +12,7 @@ import {
 } from "./di";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
+import { customElement, FASTElement, html, ref } from "@microsoft/fast-element";
 
 chai.use(spies);
 
@@ -47,6 +48,24 @@ describe(`The DI object`, function () {
 
             const parentContainer = DI.getOrCreateDOMContainer(parent);
             const childContainer = DI.getOrCreateDOMContainer(child);
+
+            expect(DI.findResponsibleContainer(child)).equal(parentContainer);
+        });
+
+        it(`finds the host for a shadowed element by default`, function () {
+
+            @customElement({name: "test-child"})
+            class TestChild extends FASTElement {}
+            @customElement({name: "test-parent", template: html`<test-child ${ref("child")}></test-child>`}) 
+            class TestParent extends FASTElement {
+                public child: TestChild;
+            }
+
+            const parent = document.createElement("test-parent") as TestParent;
+            document.body.appendChild(parent);
+            const child = parent.child;
+
+            const parentContainer = DI.getOrCreateDOMContainer(parent);
 
             expect(DI.findResponsibleContainer(child)).equal(parentContainer);
         });

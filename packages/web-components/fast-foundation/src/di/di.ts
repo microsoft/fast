@@ -1153,7 +1153,7 @@ export class ContainerImpl implements Container {
             owner.addEventListener(
                 DILocateParentEventType,
                 (e: CustomEvent<DOMParentLocatorEventDetail>) => {
-                    if (e.target !== this.owner) {
+                    if (e.composedPath()[0] !== this.owner) {
                         e.detail.container = this;
                         e.stopImmediatePropagation();
                     }
