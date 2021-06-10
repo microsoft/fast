@@ -1,40 +1,151 @@
 /**
  * Export all custom element definitions
  */
-export { fastAccordion, fastAccordionItem } from "./accordion/index";
-export { fastAnchor } from "./anchor/index";
-export { fastAnchoredRegion } from "./anchored-region/index";
-export { fastBadge } from "./badge/index";
-export { fastBreadcrumb } from "./breadcrumb/index";
-export { fastBreadcrumbItem } from "./breadcrumb-item/index";
-export { fastButton } from "./button/index";
-export { fastCard } from "./card/index";
-export { fastCheckbox } from "./checkbox/index";
-export { fastCombobox } from "./combobox/index";
-export { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
-export { fastDialog } from "./dialog/index";
-export { fastDisclosure } from "./disclosure/index";
-export { fastDivider } from "./divider/index";
-export { fastFlipper } from "./flipper/index";
-export { fastHorizontalScroll } from "./horizontal-scroll/index";
-export { fastListbox } from "./listbox/index";
-export { fastOption } from "./listbox-option/index";
-export { fastMenu } from "./menu/index";
-export { fastMenuItem } from "./menu-item/index";
-export { fastNumberField } from "./number-field/index";
-export { fastProgress } from "./progress/index";
-export { fastProgressRing } from "./progress-ring/index";
-export { fastRadio } from "./radio/index";
-export { fastRadioGroup } from "./radio-group/index";
-export { fastSelect } from "./select/index";
-export { fastSkeleton } from "./skeleton/index";
-export { fastSlider } from "./slider/index";
-export { fastSliderLabel } from "./slider-label/index";
-export { fastSwitch } from "./switch/index";
-export { fastTabs, fastTab, fastTabPanel } from "./tabs/index";
-export { fastTextArea } from "./text-area/index";
-export { fastTextField } from "./text-field/index";
-export { fastTooltip } from "./tooltip/index";
-export { fastToolbar } from "./toolbar/index";
-export { fastTreeView } from "./tree-view/index";
-export { fastTreeItem } from "./tree-item/index";
+import { fastAccordion, fastAccordionItem } from "./accordion/index";
+import { fastAnchor } from "./anchor/index";
+import { fastAnchoredRegion } from "./anchored-region/index";
+import { fastBadge } from "./badge/index";
+import { fastBreadcrumbItem } from "./breadcrumb-item/index";
+import { fastBreadcrumb } from "./breadcrumb/index";
+import { fastButton } from "./button/index";
+import { fastCard } from "./card/index";
+import { fastCheckbox } from "./checkbox/index";
+import { fastCombobox } from "./combobox/index";
+import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
+import { fastDialog } from "./dialog/index";
+import { fastDisclosure } from "./disclosure/index";
+import { fastDivider } from "./divider/index";
+import { fastFlipper } from "./flipper/index";
+import { fastHorizontalScroll } from "./horizontal-scroll/index";
+import { fastOption } from "./listbox-option/index";
+import { fastListbox } from "./listbox/index";
+import { fastMenuItem } from "./menu-item/index";
+import { fastMenu } from "./menu/index";
+import { fastNumberField } from "./number-field/index";
+import { fastProgressRing } from "./progress-ring/index";
+import { fastProgress } from "./progress/index";
+import { fastRadioGroup } from "./radio-group/index";
+import { fastRadio } from "./radio/index";
+import { fastSelect } from "./select/index";
+import { fastSkeleton } from "./skeleton/index";
+import { fastSliderLabel } from "./slider-label/index";
+import { fastSlider } from "./slider/index";
+import { fastSwitch } from "./switch/index";
+import { fastTab, fastTabPanel, fastTabs } from "./tabs/index";
+import { fastTextArea } from "./text-area/index";
+import { fastTextField } from "./text-field/index";
+import { fastToolbar } from "./toolbar/index";
+import { fastTooltip } from "./tooltip/index";
+import { fastTreeItem } from "./tree-item/index";
+import { fastTreeView } from "./tree-view/index";
+
+// Don't delete these. They're needed so that API-extractor doesn't add import types
+// with improper pathing
+import type { Anchor } from "./anchor/index";
+import type { Button } from "./button/index";
+import type { Card } from "./card/index";
+import type { Disclosure } from "./disclosure/index";
+import type { HorizontalScroll } from "./horizontal-scroll/index";
+import type { SliderLabel } from "./slider-label/index";
+import type { TextArea } from "./text-area/index";
+import type { TextField } from "./text-field/index";
+import type { Toolbar } from "./toolbar/index";
+
+// When adding new components, make sure to add the component to the `allComponents` object
+// in addition to exporting the component by name. Ideally we would be able to just add
+// `export * as allComponents from "./custom-elements" from  src/index.ts but API extractor
+// throws for `export * as` expressions. https://github.com/microsoft/rushstack/pull/1796S
+
+export {
+    fastAccordion,
+    fastAccordionItem,
+    fastAnchor,
+    fastAnchoredRegion,
+    fastBadge,
+    fastBreadcrumb,
+    fastBreadcrumbItem,
+    fastButton,
+    fastCard,
+    fastCheckbox,
+    fastCombobox,
+    fastDataGrid,
+    fastDataGridCell,
+    fastDataGridRow,
+    fastDialog,
+    fastDisclosure,
+    fastDivider,
+    fastFlipper,
+    fastHorizontalScroll,
+    fastListbox,
+    fastOption,
+    fastMenu,
+    fastMenuItem,
+    fastNumberField,
+    fastProgress,
+    fastProgressRing,
+    fastRadio,
+    fastRadioGroup,
+    fastSelect,
+    fastSkeleton,
+    fastSlider,
+    fastSliderLabel,
+    fastSwitch,
+    fastTabs,
+    fastTab,
+    fastTabPanel,
+    fastTextArea,
+    fastTextField,
+    fastTooltip,
+    fastToolbar,
+    fastTreeView,
+    fastTreeItem,
+};
+
+/**
+ * All Web Components
+ * @public
+ */
+export const allComponents = {
+    fastAccordion,
+    fastAccordionItem,
+    fastAnchor,
+    fastAnchoredRegion,
+    fastBadge,
+    fastBreadcrumb,
+    fastBreadcrumbItem,
+    fastButton,
+    fastCard,
+    fastCheckbox,
+    fastCombobox,
+    fastDataGrid,
+    fastDataGridCell,
+    fastDataGridRow,
+    fastDialog,
+    fastDisclosure,
+    fastDivider,
+    fastFlipper,
+    fastHorizontalScroll,
+    fastListbox,
+    fastOption,
+    fastMenu,
+    fastMenuItem,
+    fastNumberField,
+    fastProgress,
+    fastProgressRing,
+    fastRadio,
+    fastRadioGroup,
+    fastSelect,
+    fastSkeleton,
+    fastSlider,
+    fastSliderLabel,
+    fastSwitch,
+    fastTabs,
+    fastTab,
+    fastTabPanel,
+    fastTextArea,
+    fastTextField,
+    fastTooltip,
+    fastToolbar,
+    fastTreeView,
+    fastTreeItem,
+};

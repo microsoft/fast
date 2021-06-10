@@ -1,20 +1,21 @@
 import { FASTElement, attr, observable } from "@microsoft/fast-element";
 import {
-    createColorPalette,
-    FASTDesignSystem,
-    fastDesignSystemDefaults,
     StandardLuminance,
-    neutralLayerCardContainer_DEPRECATED,
+    PaletteRGB,
+    SwatchRGB,
+    NeutralLayerL1,
+    baseLayerLuminance,
+    neutralPalette,
+    accentPalette,
+    fillColor,
+    density,
+    baseHeightMultiplier,
+    baseHorizontalSpacingMultiplier,
+    cornerRadius,
+    outlineWidth,
 } from "@microsoft/fast-components";
-import { RadioGroup, Slider } from "@microsoft/fast-foundation";
-import {
-    ColorHSL,
-    ColorRGBA64,
-    hslToRGB,
-    parseColorHexRGB,
-    rgbToHSL,
-} from "@microsoft/fast-colors";
-import { SiteColorSwatch } from "../color-swatch";
+import { DI, RadioGroup, Slider } from "@microsoft/fast-foundation";
+import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-colors";
 
 export const drawerBreakpoint: string = "660px";
 
@@ -24,12 +25,24 @@ export class FastFrame extends FASTElement {
 
     @attr({ attribute: "background-color" })
     public backgroundColor: string;
+    backgroundColorChanged() {
+        const color = parseColorHexRGB(this.backgroundColor);
+
+        if (color) {
+            fillColor.setValueFor(this, SwatchRGB.create(color.r, color.g, color.b));
+        }
+    }
 
     @attr
     public darkMode: boolean = true;
 
     @attr
     public baseLayerLuminance: number = StandardLuminance.DarkMode;
+    baseLayerLuminanceChanged() {
+        if (typeof this.baseLayerLuminance === "number") {
+            baseLayerLuminance.setValueFor(this, this.baseLayerLuminance);
+        }
+    }
 
     @observable
     public previewNeutralPalette: string[] = [
@@ -52,19 +65,38 @@ export class FastFrame extends FASTElement {
     private mql: MediaQueryList = window.matchMedia(`(max-width: ${drawerBreakpoint})`);
 
     @observable
-    public neutralPalette: string[];
+    public neutralPalette: PaletteRGB;
+    neutralPaletteChanged() {
+        if (this.neutralPalette) {
+            neutralPalette.setValueFor(this, this.neutralPalette);
+        }
+    }
 
     @observable
-    public accentPalette: string[];
+    public accentPalette: PaletteRGB;
+    accentPaletteChanged() {
+        if (this.accentPalette) {
+            accentPalette.setValueFor(this, this.accentPalette);
+        }
+    }
 
     @observable
     public density: number = 0;
+    densityChanged() {
+        density.setValueFor(this, this.density);
+    }
 
     @observable
     public borderRadius: number = 3;
+    borderRadiusChanged() {
+        cornerRadius.setValueFor(this, this.borderRadius);
+    }
 
     @observable
     public outlineWidth: number = 1;
+    outlineWidthChanged() {
+        outlineWidth.setValueFor(this, this.outlineWidth);
+    }
 
     @observable
     public saturation: number;
@@ -89,15 +121,25 @@ export class FastFrame extends FASTElement {
             this.saturation = accentColorHSL.s;
             this.lightness = accentColorHSL.l;
             const parsedColor = parseColorHexRGB(this.accentColor);
-            this.accentPalette = createColorPalette(parsedColor as ColorRGBA64);
+
+            if (parsedColor) {
+                this.accentPalette = PaletteRGB.create(
+                    SwatchRGB.create(parsedColor.r, parsedColor.g, parsedColor.b)
+                );
+            }
         }
     };
 
     public neutralChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof RadioGroup) {
             const parsedColor = parseColorHexRGB(e.target.value);
-            this.neutralPalette = createColorPalette(parsedColor as ColorRGBA64);
-            this.updateBackgroundColor();
+
+            if (parsedColor) {
+                this.neutralPalette = PaletteRGB.create(
+                    SwatchRGB.create(parsedColor.r, parsedColor.g, parsedColor.b)
+                );
+                this.updateBackgroundColor();
+            }
         }
     };
 
@@ -141,20 +183,15 @@ export class FastFrame extends FASTElement {
         const accentHSL = new ColorHSL(this.hue, this.saturation, this.lightness);
         const accentRGB = hslToRGB(accentHSL);
         this.accentColor = accentRGB.toStringHexRGB();
-        this.accentPalette = createColorPalette(accentRGB);
+        this.accentPalette = PaletteRGB.create(
+            SwatchRGB.create(accentRGB.r, accentRGB.g, accentRGB.b)
+        );
     }
 
     private updateBackgroundColor(): void {
-        const designSystem: FASTDesignSystem = Object.assign(
-            {},
-            fastDesignSystemDefaults,
-            {
-                baseLayerLuminance: this.baseLayerLuminance,
-                neutralPalette: this.neutralPalette,
-            }
-        );
-
-        this.backgroundColor = neutralLayerCardContainer_DEPRECATED(designSystem);
+        this.backgroundColor = DI.getOrCreateDOMContainer(this)
+            .get(NeutralLayerL1)(this)
+            .toColorString();
     }
 
     public modeChange = (e: CustomEvent): void => {
@@ -190,5 +227,8 @@ export class FastFrame extends FASTElement {
         super.connectedCallback();
 
         this.updateBackgroundColor();
+        density.setValueFor(this, 0);
+        baseHeightMultiplier.setValueFor(this, 10);
+        baseHorizontalSpacingMultiplier.setValueFor(this, 3);
     }
 }
