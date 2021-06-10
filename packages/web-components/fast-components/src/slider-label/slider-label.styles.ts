@@ -5,8 +5,8 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
-    neutralForegroundRest,
-    neutralOutlineRest,
+    neutralForeground,
+    neutralStrokeRest,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
@@ -55,7 +55,7 @@ export const sliderLabelStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             font-family: ${bodyFont};
-            color: ${neutralForegroundRest};
+            color: ${neutralForeground};
             fill: currentcolor;
         }
         .root {
@@ -75,7 +75,7 @@ export const sliderLabelStyles = (context, definition) =>
         .mark {
             width: calc((${designUnit} / 4) * 1px);
             height: calc(${heightNumber} * 0.25 * 1px);
-            background: ${neutralOutlineRest};
+            background: ${neutralStrokeRest};
             justify-self: center;
         }
         :host(.disabled) {

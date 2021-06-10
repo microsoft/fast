@@ -10,15 +10,15 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccent,
     neutralFillStealthRest,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundRest,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeRest,
+    strokeWidth,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
@@ -32,7 +32,7 @@ export const flipperStyles = (context, definition) =>
         margin: 0;
         position: relative;
         fill: currentcolor;
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
         background: transparent;
         outline: none;
         border: none;
@@ -42,7 +42,7 @@ export const flipperStyles = (context, definition) =>
     :host::before {
         content: "";
         background: ${accentFillRest};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         border-radius: 50%;
         position: absolute;
         top: 0;
@@ -67,14 +67,14 @@ export const flipperStyles = (context, definition) =>
         opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
         fill: currentcolor;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host([disabled])::before,
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
         background: ${neutralFillStealthRest};
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     }
 
     :host(:hover)::before {
@@ -92,8 +92,8 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        border-color: ${focusStrokeOuter};
     }
 
     :host::-moz-focus-inner {

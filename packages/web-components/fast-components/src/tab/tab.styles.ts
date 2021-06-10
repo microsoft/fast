@@ -11,18 +11,18 @@ import {
     accentForegroundHover,
     accentForegroundRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthRest,
-    neutralFocus,
+    neutralForeground,
     neutralForegroundHint,
-    neutralForegroundRest,
-    outlineWidth,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -39,8 +39,8 @@ export const tabStyles = (context, definition) =>
         padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
         color: ${neutralForegroundHint};
         fill: currentcolor;
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
         grid-row: 1;
@@ -48,12 +48,12 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(:hover) {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
     }
 
     :host(:active) {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
     }
 
@@ -87,9 +87,9 @@ export const tabStyles = (context, definition) =>
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
-        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocus};
+        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+            ${focusStrokeOuter};
     }
 
     :host(:focus) {
@@ -106,11 +106,11 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(.vertical:hover) {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host(.vertical:active) {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {

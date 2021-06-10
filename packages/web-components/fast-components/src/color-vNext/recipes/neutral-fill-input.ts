@@ -11,9 +11,8 @@ export function neutralFillInput(
     restDelta: number,
     hoverDelta: number,
     activeDelta: number,
-    focusDelta: number,
-    selectedDelta: number
-): Record<"rest" | "hover" | "active" | "focus" | "selected", SwatchRGB> {
+    focusDelta: number
+): Record<"rest" | "hover" | "active" | "focus", SwatchRGB> {
     const direction = directionByIsDark(reference);
     const referenceIndex = palette.closestIndexOf(reference);
 
@@ -22,6 +21,5 @@ export function neutralFillInput(
         hover: palette.get(referenceIndex - direction * hoverDelta),
         active: palette.get(referenceIndex - direction * activeDelta),
         focus: palette.get(referenceIndex - direction * focusDelta),
-        selected: palette.get(referenceIndex - direction * selectedDelta),
     };
 }

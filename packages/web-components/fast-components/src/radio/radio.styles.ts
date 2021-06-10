@@ -10,19 +10,19 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     bodyFont,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
+    foregroundOnAccent,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineActive,
-    neutralOutlineHover,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -52,7 +52,7 @@ export const radioStyles = (context, definition) =>
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         box-sizing: border-box;
         border-radius: 999px;
-        border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
         background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
@@ -60,7 +60,7 @@ export const radioStyles = (context, definition) =>
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -87,44 +87,44 @@ export const radioStyles = (context, definition) =>
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        background: ${accentForegroundCut};
-        fill: ${accentForegroundCut};
+        background: ${foregroundOnAccent};
+        fill: ${foregroundOnAccent};
         opacity: 0;
         pointer-events: none;
     }
 
     :host(:not([disabled])) .control:hover{
         background: ${neutralFillInputHover};
-        border-color: ${neutralOutlineHover};
+        border-color: ${neutralStrokeHover};
     }
 
     :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActive};
-        border-color: ${neutralOutlineActive};
+        border-color: ${neutralStrokeActive};
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
+        border-color: ${focusStrokeOuter};
     }
 
     :host([aria-checked="true"]) .control {
         background: ${accentFillRest};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover {
         background: ${accentFillHover};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillHover};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActive};
-        border: calc(${outlineWidth} * 1px) solid ${accentFillActive};
+        border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${neutralFocus};
+        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
         border-color: transparent;
     }
 

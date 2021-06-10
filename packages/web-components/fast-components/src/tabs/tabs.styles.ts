@@ -4,9 +4,9 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
-    neutralForegroundRest,
+    neutralForeground,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -19,7 +19,7 @@ export const tabsStyles = (context, definition) =>
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForegroundRest};
+            color: ${neutralForeground};
             grid-template-columns: auto 1fr auto;
             grid-template-rows: auto 1fr;
         }
@@ -48,7 +48,8 @@ export const tabsStyles = (context, definition) =>
             justify-self: center;
             background: ${accentFillRest};
             margin-top: 10px;
-            border-radius: calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0 0;
+            border-radius: calc(${controlCornerRadius} * 1px)
+                calc(${controlCornerRadius} * 1px) 0 0;
         }
 
         .activeIndicatorTransition {
@@ -100,7 +101,8 @@ export const tabsStyles = (context, definition) =>
             align-self: center;
             background: ${accentFillRest};
             margin-top: 0;
-            border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
+            border-radius: 0 calc(${controlCornerRadius} * 1px)
+                calc(${controlCornerRadius} * 1px) 0;
         }
 
         :host([orientation="vertical"]) .activeIndicatorTransition {

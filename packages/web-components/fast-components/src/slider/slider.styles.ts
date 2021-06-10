@@ -7,13 +7,13 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    cornerRadius,
+    controlCornerRadius,
     density,
     designUnit,
     disabledOpacity,
-    neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
+    neutralForeground,
+    neutralStrokeHover,
+    neutralStrokeRest,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
@@ -34,7 +34,7 @@ export const sliderStyles = (context, definition) =>
         margin: calc(${designUnit} * 1px) 0;
         user-select: none;
         box-sizing: border-box;
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         outline: none;
         cursor: pointer;
     }
@@ -61,22 +61,22 @@ export const sliderStyles = (context, definition) =>
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: all 0.2s ease;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        background: ${neutralForegroundRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        background: ${neutralForeground};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
     .thumb-cursor:hover {
-        background: ${neutralForegroundRest};
-        border-color: ${neutralOutlineHover};
+        background: ${neutralForeground};
+        border-color: ${neutralStrokeHover};
     }
     .thumb-cursor:active {
-        background: ${neutralForegroundRest};
+        background: ${neutralForeground};
     }
     :host([orientation="horizontal"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));
@@ -102,9 +102,9 @@ export const sliderStyles = (context, definition) =>
         height: 100%;
     }
     .track {
-        background: ${neutralOutlineRest};
+        background: ${neutralStrokeRest};
         position: absolute;
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
     :host([orientation="vertical"]) {
         height: calc(var(--fast-slider-height) * 1px);

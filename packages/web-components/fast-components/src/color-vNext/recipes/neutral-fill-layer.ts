@@ -4,7 +4,7 @@ import { Swatch, SwatchRGB } from "../swatch";
 /**
  * @internal
  */
-export function neutralFillCard(
+export function neutralFillLayer(
     palette: PaletteRGB,
     reference: Swatch,
     delta: number

@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
-import { cornerRadius, neutralFillRest } from "../design-tokens";
+import { controlCornerRadius, neutralFillRest } from "../design-tokens";
 
 export const skeletonStyles = (context, definition) =>
     css`
@@ -22,7 +22,7 @@ export const skeletonStyles = (context, definition) =>
         }
 
         :host([shape="rect"]) {
-            border-radius: calc(${cornerRadius} * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
         }
 
         :host([shape="circle"]) {
