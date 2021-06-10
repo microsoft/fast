@@ -93,14 +93,14 @@ export interface ColorsDesignSystem {
     cornerRadius: number;
 
     /**
-     * The width of the standard outline applied to outline components in pixels.
+     * The width of the standard stroke applied to outline components in pixels.
      */
-    outlineWidth: number;
+    strokeWidth: number;
 
     /**
-     * The width of the standard focus outline in pixels.
+     * The width of the standard focus stroke in pixels.
      */
-    focusOutlineWidth: number;
+    focusStrokeWidth: number;
 
     /**
      * The opacity of a disabled control.
@@ -152,11 +152,11 @@ export interface ColorsDesignSystem {
     neutralFillStealthSelectedDelta: number;
 
     /**
-     * Configuration for the neutral-fill-toggle recipe.
+     * Configuration for the neutral-fill-strong recipe.
      */
-    neutralFillToggleHoverDelta: number;
-    neutralFillToggleActiveDelta: number;
-    neutralFillToggleFocusDelta: number;
+    neutralFillStrongHoverDelta: number;
+    neutralFillStrongActiveDelta: number;
+    neutralFillStrongFocusDelta: number;
 
     /**
      * The luminance value to base layer recipes on.
@@ -167,9 +167,9 @@ export interface ColorsDesignSystem {
     baseLayerLuminance: number; // 0...1
 
     /**
-     * Color swatch deltas for the neutral-fill-card recipe.
+     * Color swatch deltas for the neutral-fill-layer recipe.
      */
-    neutralFillCardDelta: number;
+    neutralFillLayerDelta: number;
 
     /**
      * Color swatch delta for neutral-foreground recipe.
@@ -184,12 +184,12 @@ export interface ColorsDesignSystem {
     neutralDividerRestDelta: number;
 
     /**
-     * Color swatch deltas for the neutral-outline recipe.
+     * Color swatch deltas for the neutral-stroke recipe.
      */
-    neutralOutlineRestDelta: number;
-    neutralOutlineHoverDelta: number;
-    neutralOutlineActiveDelta: number;
-    neutralOutlineFocusDelta: number;
+    neutralStrokeRestDelta: number;
+    neutralStrokeHoverDelta: number;
+    neutralStrokeActiveDelta: number;
+    neutralStrokeFocusDelta: number;
 
     /*
      * Color swatch deltas for the neutral-contrast-fill recipe.
@@ -251,8 +251,8 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
     designUnit: 4,
     direction: Direction.ltr,
     disabledOpacity: 0.3,
-    focusOutlineWidth: 2,
-    outlineWidth: 1,
+    focusStrokeWidth: 2,
+    strokeWidth: 1,
 
     /**
      * Recipe Deltas
@@ -286,11 +286,11 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
     neutralFillStealthFocusDelta: 0,
     neutralFillStealthSelectedDelta: 7,
 
-    neutralFillToggleHoverDelta: 8,
-    neutralFillToggleActiveDelta: -5,
-    neutralFillToggleFocusDelta: 0,
+    neutralFillStrongHoverDelta: 8,
+    neutralFillStrongActiveDelta: -5,
+    neutralFillStrongFocusDelta: 0,
 
-    neutralFillCardDelta: 3,
+    neutralFillLayerDelta: 3,
 
     neutralForegroundHoverDelta: 0,
     neutralForegroundActiveDelta: 0,
@@ -298,10 +298,10 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
 
     neutralDividerRestDelta: 8,
 
-    neutralOutlineRestDelta: 25,
-    neutralOutlineHoverDelta: 40,
-    neutralOutlineActiveDelta: 16,
-    neutralOutlineFocusDelta: 25,
+    neutralStrokeRestDelta: 25,
+    neutralStrokeHoverDelta: 40,
+    neutralStrokeActiveDelta: 16,
+    neutralStrokeFocusDelta: 25,
 
     neutralContrastFillRestDelta: 0,
     neutralContrastFillHoverDelta: -3,

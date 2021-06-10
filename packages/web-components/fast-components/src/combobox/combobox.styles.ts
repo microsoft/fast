@@ -1,7 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { disabledCursor, focusVisible } from "@microsoft/fast-foundation";
 import {
-    outlineWidth,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -27,7 +27,7 @@ export const comboboxStyles = (context, definition) => css`
         color: inherit;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
-        height: calc(100% - (${outlineWidth} * 1px));
+        height: calc(100% - (${strokeWidth} * 1px));
         margin: auto 0;
         width: 100%;
     }

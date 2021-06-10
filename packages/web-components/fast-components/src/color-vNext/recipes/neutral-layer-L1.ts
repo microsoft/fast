@@ -1,5 +1,5 @@
 import { PaletteRGB } from "../palette";
-import { Swatch, SwatchRGB } from "../swatch";
+import { SwatchRGB } from "../swatch";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 export function neutralLayerL1(

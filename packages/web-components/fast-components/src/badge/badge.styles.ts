@@ -3,7 +3,7 @@ import { display } from "@microsoft/fast-foundation";
 import {
     accentForegroundRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
@@ -20,7 +20,7 @@ export const badgeStyles = (context, definition) =>
     }
 
     .control {
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         padding: calc(${designUnit} * 0.5px) calc(${designUnit} * 1px);
         color: ${accentForegroundRest};
         font-weight: 600;

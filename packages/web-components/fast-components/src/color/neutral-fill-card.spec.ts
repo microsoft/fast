@@ -5,7 +5,7 @@ import { SwatchRGB } from "../color-vNext/swatch";
 import { FASTDesignSystem, fastDesignSystemDefaults } from "../fast-design-system";
 import { neutralBaseColor } from "./color-constants";
 import { neutralFillCard_DEPRECATED } from "./neutral-fill-card";
-import { neutralFillCard as neutralFillCardNew } from "../color-vNext/recipes/neutral-fill-card"
+import { neutralFillLayer as neutralFillLayerNew } from "../color-vNext/recipes/neutral-fill-layer"
 
 describe("neutralFillCard", (): void => {
     it("should operate on design system defaults", (): void => {
@@ -52,10 +52,10 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     const { neutralFillCardDelta } = fastDesignSystemDefaults;
     palette.swatches.forEach(( newSwatch, index ) => {
-            it(`should be the same for ${newSwatch}`, () => {
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 expect(
                     neutralFillCard_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
-                ).to.be.equal(neutralFillCardNew( palette, newSwatch, neutralFillCardDelta).toColorString().toUpperCase())
+                ).to.be.equal(neutralFillLayerNew( palette, newSwatch, neutralFillCardDelta).toColorString().toUpperCase())
         });
     })
 })

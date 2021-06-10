@@ -10,18 +10,18 @@ import {
     accentFillHover,
     accentFillRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     neutralFillHover,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -38,10 +38,10 @@ export const textAreaStyles = (context, definition) =>
     .control {
         box-sizing: border-box;
         position: relative;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         background: ${neutralFillInputRest};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 2px);
         font: inherit;
         font-size: ${typeRampBaseFontSize};
@@ -69,8 +69,8 @@ export const textAreaStyles = (context, definition) =>
     }
 
     :host(:focus-within) .control {
-        border-color: ${neutralFocus};
-        box-shadow: 0 0 0 1px ${neutralFocus} inset;
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
     }
 
     :host([appearance="filled"]) .control {
@@ -95,7 +95,7 @@ export const textAreaStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -117,7 +117,7 @@ export const textAreaStyles = (context, definition) =>
         opacity: ${disabledOpacity};
     }
     :host([disabled]) .control {
-        border-color: ${neutralOutlineRest};
+        border-color: ${neutralStrokeRest};
     }
  `.withBehaviors(
         forcedColorsStylesheetBehavior(

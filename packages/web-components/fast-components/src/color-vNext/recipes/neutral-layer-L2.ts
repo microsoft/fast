@@ -8,13 +8,13 @@ import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 export function neutralLayerL2Index(
     palette: PaletteRGB,
     luminance: number,
-    cardDelta: number,
+    layerDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
 ): number {
     return Math.max(
-        palette.closestIndexOf(baseLayerLuminanceSwatch(luminance)) + cardDelta,
+        palette.closestIndexOf(baseLayerLuminanceSwatch(luminance)) + layerDelta,
         fillRestDelta,
         fillHoverDelta,
         fillActiveDelta
@@ -27,7 +27,7 @@ export function neutralLayerL2Index(
 export function neutralLayerL2(
     palette: PaletteRGB,
     luminance: number,
-    cardDelta: number,
+    layerDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
@@ -36,7 +36,7 @@ export function neutralLayerL2(
         neutralLayerL2Index(
             palette,
             luminance,
-            cardDelta,
+            layerDelta,
             fillRestDelta,
             fillHoverDelta,
             fillActiveDelta

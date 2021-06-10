@@ -30,7 +30,6 @@ describe("neutralFill", (): void => {
             neutralFillFocus_DEPRECATED,
             neutralFillHover_DEPRECATED,
             neutralFillRest_DEPRECATED,
-            neutralFillSelected_DEPRECATED,
         ].forEach(fn => {
             expect(neutralPalette).to.include(fn({} as FASTDesignSystem));
         });
@@ -107,12 +106,14 @@ describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(neutralBaseColor)!)
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     palette.swatches.forEach(( newSwatch, index ) => {
-        const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta } = fastDesignSystemDefaults;
+        const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta } = fastDesignSystemDefaults;
         const oldValues = neutralFill_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
-        const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta, neutralFillSelectedDelta );
-            it(`should be the same for ${newSwatch}`, () => {
+        const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta );
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 for (let key in oldValues) {
-                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    if (key !== "selected") {
+                        expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    }
                 }
         });
     })

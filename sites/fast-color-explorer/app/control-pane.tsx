@@ -30,11 +30,11 @@ import {
 import { bridge, ColorsDesignSystem } from "./design-system";
 import {
     backgroundColor,
+    focusStrokeOuter,
     neutralDividerRest,
     neutralFillInputRest,
-    neutralFocus,
     neutralForegroundRest,
-    neutralOutlineRest,
+    neutralStrokeRest,
 } from "./recipes";
 import {
     AppState,
@@ -111,7 +111,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
             boxShadow: "none !important",
             background: neutralFillInputRest,
             color: neutralForegroundRest,
-            border: format("1px solid {0} !important", neutralOutlineRest),
+            border: format("1px solid {0} !important", neutralStrokeRest),
             height: bridge(height()),
             fontSize: "14px !important",
             borderRadius: "3px !important",
@@ -119,7 +119,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
             paddingBottom: "0 !important",
             "&:focus": {
                 outline: "none",
-                boxShadow: format("0 0 0 2px {0} inset !important", neutralFocus),
+                boxShadow: format("0 0 0 2px {0} inset !important", focusStrokeOuter),
             },
         },
         ".sketch-picker .flexbox-fix span": {

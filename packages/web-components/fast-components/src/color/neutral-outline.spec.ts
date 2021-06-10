@@ -17,7 +17,7 @@ import { Swatch, SwatchFamily } from "./common";
 import { neutralBaseColor } from "./color-constants";
 import { PaletteRGB } from "../color-vNext/palette";
 import { SwatchRGB } from "../color-vNext/swatch";
-import { neutralOutline as neutralOutlineNew } from "../color-vNext/recipes/neutral-outline"
+import { neutralStroke as neutralStrokeNew } from "../color-vNext/recipes/neutral-stroke"
 
 describe("neutralOutline", (): void => {
     const neutralPalette: Palette = getNeutralPalette(fastDesignSystemDefaults);
@@ -109,7 +109,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     palette.swatches.forEach(( newSwatch, index ) => {
         const { neutralOutlineRestDelta, neutralOutlineHoverDelta, neutralOutlineFocusDelta, neutralOutlineActiveDelta } = fastDesignSystemDefaults;
         const oldValues = neutralOutline_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
-        const newValues = neutralOutlineNew(
+        const newValues = neutralStrokeNew(
             palette,
             newSwatch,
             neutralOutlineRestDelta,
@@ -117,7 +117,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralOutlineActiveDelta,
             neutralOutlineFocusDelta,
         );
-            it(`should be the same for ${newSwatch}`, () => {
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 for (let key in oldValues) {
                     expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
                 }

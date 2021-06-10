@@ -9,16 +9,16 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
     accentFillHover,
-    accentForegroundCut,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccent,
     neutralFillHover,
-    neutralFocus,
-    neutralFocusInnerAccent,
-    neutralForegroundRest,
+    neutralForeground,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -29,10 +29,10 @@ export const optionStyles = (context, definition) =>
     ${display("inline-flex")} :host {
         align-items: center;
         font-family: ${bodyFont};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${focusOutlineWidth} * 1px) solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${focusStrokeWidth} * 1px) solid transparent;
         box-sizing: border-box;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         cursor: pointer;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
@@ -47,30 +47,30 @@ export const optionStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${neutralFocusInnerAccent};
-        border-color: ${neutralFocus};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host([aria-selected="true"]) {
         background: ${accentFillHover};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host(:active) {
         background: ${accentFillActive};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host(:not([aria-selected="true"]):hover) {
         background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host([disabled]) {
