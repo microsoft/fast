@@ -7,7 +7,6 @@ import {
     neutralForegroundRest,
     neutralOutlineRest,
 } from "@microsoft/fast-components";
-import {} from "@microsoft/fast-components-styles-msft";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`
