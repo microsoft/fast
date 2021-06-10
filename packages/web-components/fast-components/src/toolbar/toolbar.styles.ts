@@ -5,7 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { fillColor, neutralOutlineFocus } from "../design-tokens";
+import { fillColor, neutralStrokeFocus } from "../design-tokens";
 
 /**
  * Styles for the {@link (FASTToolbar:class)|FASTToolbar component}.
@@ -28,7 +28,7 @@ export const ToolbarStyles: (context, definition) => ElementStyles = (
         }
 
         :host(${focusVisible}) {
-            outline: calc(var(--outline-width) * 1px) solid ${neutralOutlineFocus};
+            outline: calc(var(--outline-width) * 1px) solid ${neutralStrokeFocus};
         }
 
         .positioning-region {

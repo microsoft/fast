@@ -11,17 +11,17 @@ import {
     accentFillHover,
     accentFillRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralForeground,
+    neutralStrokeRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -40,10 +40,10 @@ export const textFieldStyles = (context, definition) =>
         position: relative;
         display: flex;
         flex-direction: row;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         background: ${neutralFillInputRest};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${outlineWidth} * 1px) solid ${accentFillRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
     }
 
@@ -72,7 +72,7 @@ export const textFieldStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -117,8 +117,8 @@ export const textFieldStyles = (context, definition) =>
     }
 
     :host(:focus-within:not([disabled])) .root {
-        border-color: ${neutralFocus};
-        box-shadow: 0 0 0 1px ${neutralFocus} inset;
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
     }
 
     :host([appearance="filled"]) .root {
@@ -141,7 +141,7 @@ export const textFieldStyles = (context, definition) =>
     }
 
     :host([disabled]) .control {
-        border-color: ${neutralOutlineRest};
+        border-color: ${neutralStrokeRest};
     }
 `.withBehaviors(
         forcedColorsStylesheetBehavior(

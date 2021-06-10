@@ -9,17 +9,17 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRest,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillStealthRest,
-    neutralFocus,
+    neutralForeground,
     neutralForegroundHint,
-    neutralForegroundRest,
     neutralLayerL2,
     neutralLayerL3,
-    outlineWidth,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -41,13 +41,13 @@ export const menuItemStyles = (context, definition) =>
         padding: 0;
         margin: 0 calc(${designUnit} * 1px);
         white-space: nowrap;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
-        border-radius: calc(${cornerRadius} * 1px);
-        border: calc(${focusOutlineWidth} * 1px) solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${focusStrokeWidth} * 1px) solid transparent;
     }
 
     :host(.indent-0) {
@@ -78,21 +78,21 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocus};
+        border-color: ${focusStrokeOuter};
         background: ${neutralLayerL3};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host(:hover) {
         background: ${neutralLayerL3};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
         background: ${neutralLayerL2};
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     :host([disabled]) {
@@ -101,7 +101,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         fill: currentcolor;
         background: ${neutralFillStealthRest};
     }
@@ -109,7 +109,7 @@ export const menuItemStyles = (context, definition) =>
     :host([disabled]:hover) .start,
     :host([disabled]:hover) .end,
     :host([disabled]:hover)::slotted(svg) {
-        fill: ${neutralForegroundRest};
+        fill: ${neutralForeground};
     }
 
     .expand-collapse-glyph {
@@ -148,7 +148,7 @@ export const menuItemStyles = (context, definition) =>
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: ${neutralForegroundRest};
+        fill: ${neutralForeground};
     }
 
     :host(.indent-1[aria-haspopup="menu"]),
@@ -204,7 +204,7 @@ export const menuItemStyles = (context, definition) =>
 
     :host .checkbox,
     :host .radio {
-        border: calc(${outlineWidth} * 1px) solid ${neutralForegroundRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralForeground};
     }
 
     :host([aria-checked="true"]) .checkbox,
@@ -214,7 +214,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host .checkbox {
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host .radio {
@@ -240,7 +240,7 @@ export const menuItemStyles = (context, definition) =>
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRest};
+        fill: ${neutralForeground};
         pointer-events: none;
     }
 
@@ -252,7 +252,7 @@ export const menuItemStyles = (context, definition) =>
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRest};
+        background: ${neutralForeground};
         pointer-events: none;
     }
 
@@ -292,7 +292,7 @@ export const menuItemStyles = (context, definition) =>
             :host(:${focusVisible}) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 calc(${focusOutlineWidth} * 1px) inset ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }

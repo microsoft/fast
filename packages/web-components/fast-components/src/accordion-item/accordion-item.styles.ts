@@ -10,10 +10,10 @@ import {
     bodyFont,
     density,
     designUnit,
-    focusOutlineWidth,
-    neutralFocus,
-    neutralForegroundRest,
-    outlineWidth,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    neutralForeground,
+    strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
@@ -27,7 +27,7 @@ export const accordionItemStyles = (context, definition) =>
         flex-direction: column;
         font-size: ${typeRampMinus1FontSize};
         line-height: ${typeRampMinus1LineHeight};
-        border-bottom: calc(${outlineWidth} * 1px) solid var(--neutral-divider-rest);
+        border-bottom: calc(${strokeWidth} * 1px) solid var(--neutral-divider-rest);
     }
     
     .region {
@@ -52,17 +52,17 @@ export const accordionItemStyles = (context, definition) =>
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         cursor: pointer;
         font-family: inherit;
     }
 
     .button:hover {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     .button:active {
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
     }
 
     .button::before {
@@ -78,9 +78,9 @@ export const accordionItemStyles = (context, definition) =>
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
-        box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px)
-            ${neutralFocus};
+        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+            ${focusStrokeOuter};
     }
 
     :host([expanded]) .region {
@@ -138,7 +138,7 @@ export const accordionItemStyles = (context, definition) =>
             css`
             .button:${focusVisible}::before {
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 calc((${focusOutlineWidth} - ${outlineWidth}) * 1px) ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.Highlight};
             }
         `
         )

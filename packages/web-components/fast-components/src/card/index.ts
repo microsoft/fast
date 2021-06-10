@@ -1,10 +1,10 @@
 import {
+    composedParent,
     DI,
     Card as FoundationCard,
     CardTemplate as template,
-    composedParent,
 } from "@microsoft/fast-foundation";
-import { fillColor, NeutralFillCard } from "../design-tokens";
+import { fillColor, NeutralFillLayer } from "../design-tokens";
 import { CardStyles as styles } from "./card.styles";
 
 /**
@@ -18,7 +18,7 @@ export class Card extends FoundationCard {
 
         if (parent) {
             fillColor.setValueFor(this, (target: HTMLElement) => {
-                return DI.findParentContainer(target).get(NeutralFillCard)(
+                return DI.findParentContainer(target).get(NeutralFillLayer)(
                     target,
                     fillColor.getValueFor(parent)
                 );

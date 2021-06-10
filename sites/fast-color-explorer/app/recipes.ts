@@ -1,15 +1,17 @@
 import { contrastRatio, parseColor } from "@microsoft/fast-colors";
 import { accentFill as accentFillAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-foreground";
-import { accentForegroundCut as accentForegroundCutAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-foreground-cut";
+import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/foreground-on-accent";
 import { neutralDivider as neutralDividerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-divider";
 import { neutralFill as neutralFillAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill";
-import { neutralFillCard as neutralFillCardAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-card";
+import { neutralFillLayer as neutralFillLayerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-layer";
 import { neutralFillInput as neutralFillInputAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-input";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-stealth";
-import { neutralFillToggle as neutralFillToggleAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-toggle";
-import { neutralFocus as neutralFocusAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-focus";
-import { neutralFocusInnerAccent as neutralFocusInnerAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-focus-inner-accent";
+import { neutralFillContrast as neutralFillContrastAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-contrast";
+import {
+    focusStrokeInner as focusStrokeInnerAlgorithm,
+    focusStrokeOuter as focusStrokeOuterAlgorithm,
+} from "@microsoft/fast-components/dist/esm/color-vNext/recipes/focus-stroke";
 import { neutralForeground as neutralForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground";
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground-hint";
 import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-card-container";
@@ -18,7 +20,7 @@ import { neutralLayerL1 as neutralLayerL1Algorithm } from "@microsoft/fast-compo
 import { neutralLayerL2 as neutralLayerL2Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L2";
 import { neutralLayerL3 as neutralLayerL3Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L3";
 import { neutralLayerL4 as neutralLayerL4Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L4";
-import { neutralOutline as neutralOutlineAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-outline";
+import { neutralStroke as neutralStrokeAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-stroke";
 import { ColorsDesignSystem, swatchToSwatchRGB } from "./design-system";
 
 export type Swatch = string;
@@ -74,10 +76,7 @@ const accentFill = (d?: ColorsDesignSystem): any => {
         d?.accentPaletteRGB,
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
-        accentForegroundCutAlgorithm(
-            swatchToSwatchRGB(d?.backgroundColor as string),
-            4.5
-        ),
+        foregroundOnAccentAlgorithm(swatchToSwatchRGB(d?.backgroundColor as string), 4.5),
         4.5,
         d?.accentFillHoverDelta,
         d?.accentFillActiveDelta,
@@ -127,8 +126,8 @@ export const accentForegroundFocus = (d?: ColorsDesignSystem): string => {
     return accentForeground(d).focus.toColorString().toUpperCase();
 };
 
-export const accentForegroundCut = (d?: ColorsDesignSystem): string => {
-    return accentForegroundCutAlgorithm(swatchToSwatchRGB(accentFillHover(d)), 4.5)
+export const foregroundOnAccent = (d?: ColorsDesignSystem): string => {
+    return foregroundOnAccentAlgorithm(swatchToSwatchRGB(accentFillHover(d)), 4.5)
         .toColorString()
         .toUpperCase();
 };
@@ -168,11 +167,11 @@ export const neutralFillFocus = (d?: ColorsDesignSystem): string => {
     return neutralFill(d).focus.toColorString().toUpperCase();
 };
 
-export const neutralFillCardRest = (d?: ColorsDesignSystem): string => {
-    return neutralFillCardAlgorithm(
+export const neutralFillLayerRest = (d?: ColorsDesignSystem): string => {
+    return neutralFillLayerAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
-        d?.neutralFillCardDelta
+        d?.neutralFillLayerDelta
     )
         .toColorString()
         .toUpperCase();
@@ -228,32 +227,32 @@ export const neutralFillStealthFocus = (d?: ColorsDesignSystem): string => {
     return neutralFillStealth(d).focus.toColorString().toUpperCase();
 };
 
-const neutralFillToggle = (d?: ColorsDesignSystem): any => {
-    return neutralFillToggleAlgorithm(
+const neutralFillStrong = (d?: ColorsDesignSystem): any => {
+    return neutralFillContrastAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
         0,
-        d?.neutralFillToggleHoverDelta,
-        d?.neutralFillToggleActiveDelta,
-        d?.neutralFillToggleFocusDelta
+        d?.neutralFillStrongHoverDelta,
+        d?.neutralFillStrongActiveDelta,
+        d?.neutralFillStrongFocusDelta
     );
 };
 
-export const neutralFillToggleRest = (d?: ColorsDesignSystem): string => {
-    return neutralFillToggle(d).rest.toColorString().toUpperCase();
+export const neutralFillStrongRest = (d?: ColorsDesignSystem): string => {
+    return neutralFillStrong(d).rest.toColorString().toUpperCase();
 };
-export const neutralFillToggleHover = (d?: ColorsDesignSystem): string => {
-    return neutralFillToggle(d).hover.toColorString().toUpperCase();
+export const neutralFillStrongHover = (d?: ColorsDesignSystem): string => {
+    return neutralFillStrong(d).hover.toColorString().toUpperCase();
 };
-export const neutralFillToggleActive = (d?: ColorsDesignSystem): string => {
-    return neutralFillToggle(d).active.toColorString().toUpperCase();
+export const neutralFillStrongActive = (d?: ColorsDesignSystem): string => {
+    return neutralFillStrong(d).active.toColorString().toUpperCase();
 };
-export const neutralFillToggleFocus = (d?: ColorsDesignSystem): string => {
-    return neutralFillToggle(d).focus.toColorString().toUpperCase();
+export const neutralFillStrongFocus = (d?: ColorsDesignSystem): string => {
+    return neutralFillStrong(d).focus.toColorString().toUpperCase();
 };
 
-export const neutralFocus = (d?: ColorsDesignSystem): string => {
-    return neutralFocusAlgorithm(
+export const focusStrokeOuter = (d?: ColorsDesignSystem): string => {
+    return focusStrokeOuterAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string)
     )
@@ -261,11 +260,11 @@ export const neutralFocus = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-export const neutralFocusInnerAccent = (d?: ColorsDesignSystem): string => {
-    return neutralFocusInnerAccentAlgorithm(
+export const focusStrokeInner = (d?: ColorsDesignSystem): string => {
+    return focusStrokeInnerAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
-        neutralFocusAlgorithm(
+        focusStrokeOuterAlgorithm(
             d?.neutralPaletteRGB,
             swatchToSwatchRGB(d?.backgroundColor as string)
         )
@@ -292,35 +291,35 @@ export const neutralForegroundRest = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-const neutralOutline = (d?: ColorsDesignSystem): any => {
-    return neutralOutlineAlgorithm(
+const neutralStroke = (d?: ColorsDesignSystem): any => {
+    return neutralStrokeAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
-        d?.neutralOutlineRestDelta,
-        d?.neutralOutlineHoverDelta,
-        d?.neutralOutlineActiveDelta,
-        d?.neutralOutlineFocusDelta
+        d?.neutralStrokeRestDelta,
+        d?.neutralStrokeHoverDelta,
+        d?.neutralStrokeActiveDelta,
+        d?.neutralStrokeFocusDelta
     );
 };
 
-export const neutralOutlineRest = (d?: ColorsDesignSystem): string => {
-    return neutralOutline(d).rest.toColorString().toUpperCase();
+export const neutralStrokeRest = (d?: ColorsDesignSystem): string => {
+    return neutralStroke(d).rest.toColorString().toUpperCase();
 };
-export const neutralOutlineHover = (d?: ColorsDesignSystem): string => {
-    return neutralOutline(d).hover.toColorString().toUpperCase();
+export const neutralStrokeHover = (d?: ColorsDesignSystem): string => {
+    return neutralStroke(d).hover.toColorString().toUpperCase();
 };
-export const neutralOutlineActive = (d?: ColorsDesignSystem): string => {
-    return neutralOutline(d).active.toColorString().toUpperCase();
+export const neutralStrokeActive = (d?: ColorsDesignSystem): string => {
+    return neutralStroke(d).active.toColorString().toUpperCase();
 };
-export const neutralOutlineFocus = (d?: ColorsDesignSystem): string => {
-    return neutralOutline(d).focus.toColorString().toUpperCase();
+export const neutralStrokeFocus = (d?: ColorsDesignSystem): string => {
+    return neutralStroke(d).focus.toColorString().toUpperCase();
 };
 
 export const neutralLayerCardContainer = (d?: ColorsDesignSystem): string => {
     return neutralLayerCardContainerAlgorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
-        d?.neutralFillCardDelta
+        d?.neutralFillLayerDelta
     )
         .toColorString()
         .toUpperCase();
@@ -330,7 +329,7 @@ export const neutralLayerFloating = (d?: ColorsDesignSystem): string => {
     return neutralLayerFloatingAlgorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
-        d?.neutralFillCardDelta
+        d?.neutralFillLayerDelta
     )
         .toColorString()
         .toUpperCase();
@@ -346,7 +345,7 @@ export const neutralLayerL2 = (d?: ColorsDesignSystem): string => {
     return neutralLayerL2Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
-        d?.neutralFillCardDelta,
+        d?.neutralFillLayerDelta,
         d?.neutralFillRestDelta,
         d?.neutralFillHoverDelta,
         d?.neutralFillActiveDelta
@@ -359,7 +358,7 @@ export const neutralLayerL3 = (d?: ColorsDesignSystem): string => {
     return neutralLayerL3Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
-        d?.neutralFillCardDelta,
+        d?.neutralFillLayerDelta,
         d?.neutralFillRestDelta,
         d?.neutralFillHoverDelta,
         d?.neutralFillActiveDelta
@@ -372,7 +371,7 @@ export const neutralLayerL4 = (d?: ColorsDesignSystem): string => {
     return neutralLayerL4Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
-        d?.neutralFillCardDelta,
+        d?.neutralFillLayerDelta,
         d?.neutralFillRestDelta,
         d?.neutralFillHoverDelta,
         d?.neutralFillActiveDelta
