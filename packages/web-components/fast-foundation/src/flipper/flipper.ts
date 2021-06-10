@@ -49,24 +49,4 @@ export class Flipper extends FoundationElement {
      */
     @attr
     public direction: FlipperDirection = FlipperDirection.next;
-
-    /**
-     * Simulate a click event when the flipper has focus and the user hits enter or space keys
-     * Blur focus if the user hits escape key
-     * @param e - Keyboard event
-     * @public
-     */
-    public keyupHandler(e: Event & KeyboardEvent) {
-        if (!this.hiddenFromAT) {
-            const key = e.key;
-
-            if (key === "Enter") {
-                this.$emit("click", e);
-            }
-
-            if (key === "Escape") {
-                this.blur();
-            }
-        }
-    }
 }
