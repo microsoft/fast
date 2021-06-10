@@ -127,7 +127,7 @@ export function getColorPickerControls(
 ): StandardControlPlugin[] {
     return [
         getColorPickerControl("fill-color", updateHandler),
-        getColorPickerControl("accent-color", updateHandler),
+        getColorPickerControl("accent-base-color", updateHandler),
     ];
 }
 

@@ -19,19 +19,18 @@ import {
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
-import {
-    baseLayerLuminance,
-    fillColor,
-    neutralLayerL1,
-    StandardLuminance,
-} from "@microsoft/fast-components";
 import { HTMLRenderReact } from "./web-components";
-import { mapFASTComponentsDesignSystem } from "./configs/library.fast.design-system.mapping";
+import {
+    mapFASTComponentsDesignSystem,
+    setupFASTComponentDesignSystem,
+} from "./configs/library.fast.design-system.mapping";
+import { registerFASTComponents } from "./configs/library.fast.registry";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
 document.head.appendChild(style);
+registerFASTComponents();
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -39,7 +38,6 @@ export interface PreviewState {
     activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
-    theme: StandardLuminance;
     designSystemDataDictionary: DataDictionary<unknown> | void;
     htmlRenderMessageSystem: MessageSystem;
     htmlRenderReady: boolean;
@@ -53,24 +51,24 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     constructor(props: {}) {
         super(props);
-        const designSystemLinkedDataId: string = "design-system";
 
         this.ref = React.createRef();
         this.renderRef = React.createRef();
         this.activeDictionaryItemWrapperRef = React.createRef();
-        baseLayerLuminance.withDefault(StandardLuminance.LightMode);
-        fillColor.withDefault(neutralLayerL1);
+
         this.state = {
             activeDictionaryId: "",
             dataDictionary: void 0,
             schemaDictionary: {},
-            theme: StandardLuminance.LightMode,
             designSystemDataDictionary: void 0,
             htmlRenderMessageSystem: new MessageSystem({
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
             htmlRenderReady: false,
         };
+
+        setupFASTComponentDesignSystem(document.body);
+
         this.state.htmlRenderMessageSystem.add({
             onMessage: this.handleHtmlMessageSystem,
         });
@@ -80,7 +78,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            const direction: Direction =
+            const directionValue: Direction =
                 this.state.designSystemDataDictionary &&
                 (this.state.designSystemDataDictionary[0]["design-system"].data as any) &&
                 (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
@@ -92,7 +90,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             return (
                 <React.Fragment>
-                    <div className="preview" dir={direction} ref={this.ref}>
+                    <div className={"preview"} dir={directionValue} ref={this.ref}>
                         <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
@@ -138,6 +136,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 (this.state.designSystemDataDictionary[0]["design-system"].data as any)
             ) {
                 mapFASTComponentsDesignSystem(
+                    document.body,
                     this.state.designSystemDataDictionary[0]["design-system"].data as any
                 );
             }
@@ -188,6 +187,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             if (messageData !== undefined) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
+                        console.log("initialize", messageData as any);
                         this.setState(
                             {
                                 dataDictionary: (messageData as InitializeMessageOutgoing)
@@ -225,6 +225,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
+                            console.log("what", (messageData as any).data);
                             const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
                                 this.state.designSystemDataDictionary &&
                                 (this.state.designSystemDataDictionary[0]["design-system"]

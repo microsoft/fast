@@ -40,6 +40,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
+    baseLayerLuminance,
     fastBadge,
     fastCheckbox,
     fastNumberField,
@@ -51,7 +52,9 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
+    fillColor,
     StandardLuminance,
+    SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
@@ -80,6 +83,15 @@ DesignSystem.getOrCreate().register(
     fastTabPanel(),
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" })
+);
+baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
+fillColor.setValueFor(
+    document.body,
+    SwatchRGB.create(
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode
+    )
 );
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
@@ -167,9 +179,9 @@ class Creator extends Editor<{}, CreatorState> {
                     [designSystemLinkedDataId]: {
                         schemaId: "fastDesignTokens",
                         data: {
-                            "accent-color": "#DA1A5F",
+                            "accent-base-color": "#DA1A5F",
                             direction: Direction.ltr,
-                            "base-layer-luminance": StandardLuminance.LightMode,
+                            theme: StandardLuminance.LightMode,
                         },
                     },
                 },
@@ -192,7 +204,7 @@ class Creator extends Editor<{}, CreatorState> {
     public render(): React.ReactNode {
         const accentColor: string = (this.state.designSystemDataDictionary[0][
             "design-system"
-        ].data as any)["accent-color"];
+        ].data as any)["accent-base-color"];
         const direction: Direction = (this.state.designSystemDataDictionary[0][
             "design-system"
         ].data as any)["direction"];
@@ -359,6 +371,11 @@ class Creator extends Editor<{}, CreatorState> {
                     dataDictionary: this.state.designSystemDataDictionary,
                     schemaDictionary,
                 });
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    originatorId: "design-system",
+                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
             } else {
@@ -564,7 +581,7 @@ class Creator extends Editor<{}, CreatorState> {
         e: React.FormEvent<HTMLInputElement>
     ): void => {
         const value: string = e.currentTarget.value;
-        this.updateDesignSystemDataDictionaryState({ "accent-color": value });
+        this.updateDesignSystemDataDictionaryState({ "accent-base-color": value });
     };
 
     /**
@@ -581,9 +598,7 @@ class Creator extends Editor<{}, CreatorState> {
         });
 
         this.updateDesignSystemDataDictionaryState({
-            // TODO: this should update the fill color
-            // and any other design tokens that should
-            // react to switching between light mode and dark mode
+            theme: updatedTheme,
         });
     };
 

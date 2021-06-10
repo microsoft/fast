@@ -16,9 +16,9 @@
             "type": "number",
             "default": 0.23
         },
-        "accent-color": {
-            "formControlId": "accent-color",
-            "title": "Accent color",
+        "accent-base-color": {
+            "formControlId": "accent-base-color",
+            "title": "Accent base color",
             "description": "The accent palette base color",
             "type": "string",
             "default": "#DA1A5F"
@@ -58,6 +58,16 @@
                 "rtl"
             ],
             "default": "ltr"
+        },
+        "theme": {
+            "formControlId": "theme",
+            "title": "The dark or light theme",
+            "type": "number",
+            "enum": [
+                0.23,
+                1
+            ],
+            "default": "1"
         }
     }
 }

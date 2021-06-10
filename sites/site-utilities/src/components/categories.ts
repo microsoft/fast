@@ -52,7 +52,11 @@ export const componentCategories: FormCategoryDictionary = {
         "": [
             {
                 title: "Color",
-                dataLocations: ["base-layer-luminance", "fill-color", "accent-color"],
+                dataLocations: [
+                    "base-layer-luminance",
+                    "fill-color",
+                    "accent-base-color",
+                ],
             },
             {
                 title: "Style",
@@ -67,9 +71,8 @@ export const componentCategories: FormCategoryDictionary = {
                 title: "Advanced",
                 expandByDefault: false,
                 dataLocations: [
+                    "theme",
                     "design-unit",
-                    "no-paint",
-                    "use-defaults",
                     "direction",
                     "type-ramp-minus-2-font-size",
                     "type-ramp-minus-2-line-height",

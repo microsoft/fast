@@ -21,6 +21,7 @@ const headerStyle = {
     fontSize: "var(--type-ramp-base-font-size)",
     fontWeight: 600,
     lineHeight: "var(--type-ramp-base-line-height)",
+    color: "#FFFFFF",
 };
 const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };

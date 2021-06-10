@@ -11,22 +11,33 @@ import {
 } from "@microsoft/fast-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 
-export function mapFASTComponentsDesignSystem(designSystem: {
-    [key: string]: any;
-}): void {
+export function setupFASTComponentDesignSystem(element: HTMLElement) {
+    element.setAttribute(
+        "style",
+        `background-color: var(${fillColor.cssCustomProperty});`
+    );
+}
+
+export function mapFASTComponentsDesignSystem(
+    element: HTMLElement,
+    designSystem: {
+        [key: string]: any;
+    }
+): void {
     Object.entries(designSystem).forEach(([attribute, value]: [string, any]) => {
         switch (attribute) {
             case "fill-color":
-                fillColor.withDefault(value);
+                fillColor.setValueFor(element, value);
                 break;
             case "base-layer-luminance":
-                baseLayerLuminance.withDefault(value);
+                baseLayerLuminance.setValueFor(element, value);
                 break;
-            case "accent-color": {
+            case "accent-base-color": {
                 const base = parseColorHexRGB(value);
 
                 if (base) {
-                    accentPalette.withDefault(
+                    accentPalette.setValueFor(
+                        element,
                         PaletteRGB.create(SwatchRGB.create(base.r, base.g, base.b))
                     );
                 }
@@ -34,16 +45,20 @@ export function mapFASTComponentsDesignSystem(designSystem: {
                 break;
             }
             case "control-corner-radius":
-                cornerRadius.withDefault(value);
+                cornerRadius.setValueFor(element, value);
                 break;
             case "stroke-width":
-                outlineWidth.withDefault(value);
+                outlineWidth.setValueFor(element, value);
                 break;
             case "focus-stroke-width":
-                focusOutlineWidth.withDefault(value);
+                focusOutlineWidth.setValueFor(element, value);
                 break;
             case "disabled-opacity":
-                disabledOpacity.withDefault(value);
+                disabledOpacity.setValueFor(element, value);
+                break;
+            case "theme":
+                baseLayerLuminance.setValueFor(element, value);
+                fillColor.setValueFor(element, SwatchRGB.create(value, value, value));
                 break;
         }
     });
