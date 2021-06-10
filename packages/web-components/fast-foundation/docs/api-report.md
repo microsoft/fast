@@ -1081,8 +1081,7 @@ export class Flipper extends FoundationElement {
     direction: FlipperDirection;
     disabled: boolean;
     hiddenFromAT: boolean;
-    // (undocumented)
-    keydownHandler(e: Event & KeyboardEvent): void;
+    keyupHandler(e: Event & KeyboardEvent): void;
 }
 
 // @public
@@ -1243,6 +1242,7 @@ export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     easing: ScrollEasing;
+    keyupHandler(e: Event & KeyboardEvent): void;
     nextFlipper: HTMLDivElement;
     previousFlipper: HTMLDivElement;
     resized(): void;
