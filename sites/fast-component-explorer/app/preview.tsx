@@ -12,6 +12,7 @@ import {
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
+    baseLayerLuminance,
     direction,
     fastAccordion,
     fastAccordionItem,
@@ -55,6 +56,8 @@ import {
     fastTooltip,
     fastTreeItem,
     fastTreeView,
+    fillColor,
+    SwatchRGB,
 } from "@microsoft/fast-components";
 import {
     WebComponentDefinition,
@@ -143,6 +146,10 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
             theme: StandardLuminance.DarkMode,
         };
 
+        document.body.setAttribute(
+            "style",
+            `background-color: var(${fillColor.cssCustomProperty})`
+        );
         window.addEventListener("message", this.handleMessage);
     }
 
@@ -248,12 +255,13 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
 
             innerDiv.setAttribute("style", "padding: 20px;");
 
-            // TODO: switch the theme based on this.state.theme
-            // using the design tokens
-
             root.setAttribute("style", "min-height: 100vh; min-width: 100vw;");
 
             direction.withDefault(this.state.direction);
+            baseLayerLuminance.withDefault(this.state.theme);
+            fillColor.withDefault(
+                SwatchRGB.create(this.state.theme, this.state.theme, this.state.theme)
+            );
 
             root.appendChild(innerDiv);
 
