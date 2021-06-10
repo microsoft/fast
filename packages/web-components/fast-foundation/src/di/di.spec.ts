@@ -53,7 +53,6 @@ describe(`The DI object`, function () {
         });
 
         it(`finds the host for a shadowed element by default`, function () {
-
             @customElement({name: "test-child"})
             class TestChild extends FASTElement {}
             @customElement({name: "test-parent", template: html`<test-child ${ref("child")}></test-child>`}) 
