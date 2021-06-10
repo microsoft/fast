@@ -11,8 +11,51 @@ import {
 } from "@microsoft/fast-tooling";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import * as FASTComponents from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components";
+import {
+    direction,
+    fastAccordion,
+    fastAccordionItem,
+    fastAnchor,
+    fastAnchoredRegion,
+    fastBadge,
+    fastBreadcrumb,
+    fastBreadcrumbItem,
+    fastButton,
+    fastCard,
+    fastCheckbox,
+    fastCombobox,
+    fastDataGrid,
+    fastDataGridCell,
+    fastDataGridRow,
+    fastDialog,
+    fastDisclosure,
+    fastDivider,
+    fastFlipper,
+    fastHorizontalScroll,
+    fastListbox,
+    fastMenu,
+    fastMenuItem,
+    fastNumberField,
+    fastOption,
+    fastProgress,
+    fastProgressRing,
+    fastRadio,
+    fastRadioGroup,
+    fastSelect,
+    fastSkeleton,
+    fastSlider,
+    fastSliderLabel,
+    fastSwitch,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+    fastTextArea,
+    fastTextField,
+    fastToolbar,
+    fastTooltip,
+    fastTreeItem,
+    fastTreeView,
+} from "@microsoft/fast-components";
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
@@ -24,6 +67,7 @@ import {
     previewDirection,
     previewTheme,
 } from "@microsoft/site-utilities";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     PreviewProps,
     PreviewState,
@@ -32,8 +76,50 @@ import {
 } from "./preview.props";
 import style from "./preview.style";
 
-// Prevent tree shaking
-FASTComponents;
+DesignSystem.getOrCreate().register(
+    fastAccordion(),
+    fastAccordionItem(),
+    fastAnchor(),
+    fastAnchoredRegion(),
+    fastBadge(),
+    fastBreadcrumbItem(),
+    fastBreadcrumb(),
+    fastButton(),
+    fastCard(),
+    fastCheckbox(),
+    fastCombobox(),
+    fastDataGrid(),
+    fastDataGridCell(),
+    fastDataGridRow(),
+    fastDialog(),
+    fastDisclosure(),
+    fastDivider(),
+    fastFlipper(),
+    fastHorizontalScroll(),
+    fastListbox(),
+    fastMenuItem(),
+    fastMenu(),
+    fastNumberField(),
+    fastOption(),
+    fastProgressRing(),
+    fastProgress(),
+    fastRadioGroup(),
+    fastRadio(),
+    fastSwitch(),
+    fastSliderLabel(),
+    fastSlider(),
+    fastSkeleton(),
+    fastSelect(),
+    fastTreeView(),
+    fastTreeItem(),
+    fastTooltip(),
+    fastToolbar(),
+    fastTextField(),
+    fastTextArea(),
+    fastTabs(),
+    fastTabPanel(),
+    fastTab()
+);
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -63,7 +149,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
-                <fast-design-system-provider use-defaults>
+                <div>
                     <style>{style}</style>
                     <div
                         className={classNames("preview", [
@@ -74,7 +160,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
                     >
                         <div ref={this.ref} />
                     </div>
-                </fast-design-system-provider>
+                </div>
             );
         }
 
@@ -156,34 +242,20 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
 
     private attachMappedComponents(): void {
         if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
-            const designSystemProvider = document.createElement(
-                "fast-design-system-provider"
-            );
+            const root = document.createElement("div");
             const innerDiv = document.createElement("div");
             this.ref.current.innerHTML = "";
 
             innerDiv.setAttribute("style", "padding: 20px;");
-            designSystemProvider.setAttribute("use-defaults", "");
-            designSystemProvider.setAttribute(
-                "background-color",
-                FASTComponents.neutralLayerL1_DEPRECATED(
-                    Object.assign({}, fastDesignSystemDefaults, {
-                        baseLayerLuminance: this.state.theme,
-                    })
-                )
-            );
-            designSystemProvider.setAttribute(
-                "style",
-                "min-height: 100vh; min-width: 100vw;"
-            );
 
-            designSystemProvider.setAttribute("direction", this.state.direction);
+            // TODO: switch the theme based on this.state.theme
+            // using the design tokens
 
-            if (this.state.transparentBackground) {
-                designSystemProvider.setAttribute("no-paint", "");
-            }
+            root.setAttribute("style", "min-height: 100vh; min-width: 100vw;");
 
-            designSystemProvider.appendChild(innerDiv);
+            direction.withDefault(this.state.direction);
+
+            root.appendChild(innerDiv);
 
             innerDiv.appendChild(
                 mapDataDictionary({
@@ -211,7 +283,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
                     resolver: htmlResolver,
                 })
             );
-            this.ref.current.append(designSystemProvider);
+            this.ref.current.append(root);
         }
     }
 }
