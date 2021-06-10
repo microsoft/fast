@@ -192,22 +192,10 @@ export const accentForegroundActiveBehavior: import("@microsoft/fast-foundation"
 // @public (undocumented)
 export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public (undocumented)
-export const AccentForegroundCut: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
-
-// @public (undocumented)
-export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
 // Warning: (ae-internal-missing-underscore) The name "accentForegroundCut_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
 export const accentForegroundCut_DEPRECATED: SwatchRecipe;
-
-// @public (undocumented)
-export const AccentForegroundCutLarge: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
-
-// @public (undocumented)
-export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "accentForegroundCutLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1342,6 +1330,18 @@ export const focusStrokeOuter: import("@microsoft/fast-foundation").CSSDesignTok
 // @public (undocumented)
 export const focusStrokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+// @public (undocumented)
+export const ForegroundOnAccent: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const foregroundOnAccent: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const ForegroundOnAccentLarge: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const foregroundOnAccentLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -1439,10 +1439,7 @@ export const neutralFillActiveBehavior: import("@microsoft/fast-foundation").CSS
 // @public (undocumented)
 export const neutralFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public (undocumented)
-export const NeutralFillCard: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => SwatchRGB>;
-
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillCard: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-forgotten-export) The symbol "Swatch" needs to be exported by the entry point index.d.ts
@@ -1461,9 +1458,6 @@ export const neutralFillCardDelta: import("@microsoft/fast-foundation").CSSDesig
 
 // @public @deprecated
 export const neutralFillCardRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public (undocumented)
-export const neutralFillCardRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
@@ -1556,6 +1550,15 @@ export const neutralFillInputSelected_DEPRECATED: ColorRecipe<string>;
 
 // @public @deprecated
 export const neutralFillInputSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const NeutralFillLayer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralFillLayer: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const neutralFillLayerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;

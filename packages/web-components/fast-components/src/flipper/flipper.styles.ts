@@ -10,11 +10,11 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     disabledOpacity,
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccent,
     neutralFillStealthRest,
     neutralForeground,
     neutralStrokeRest,
@@ -32,7 +32,7 @@ export const flipperStyles = (context, definition) =>
         margin: 0;
         position: relative;
         fill: currentcolor;
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
         background: transparent;
         outline: none;
         border: none;

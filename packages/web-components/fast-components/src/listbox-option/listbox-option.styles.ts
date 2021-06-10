@@ -9,7 +9,6 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
     accentFillHover,
-    accentForegroundCut,
     bodyFont,
     controlCornerRadius,
     designUnit,
@@ -17,6 +16,7 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccent,
     neutralFillHover,
     neutralForeground,
     typeRampBaseFontSize,
@@ -50,17 +50,17 @@ export const optionStyles = (context, definition) =>
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host([aria-selected="true"]) {
         background: ${accentFillHover};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host(:active) {
         background: ${accentFillActive};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host(:not([aria-selected="true"]):hover) {

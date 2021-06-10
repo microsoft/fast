@@ -22,7 +22,7 @@ import { neutralBaseColor, accentBaseColor } from "./color-constants";
 import { PaletteRGB } from "../color-vNext/palette";
 import { SwatchRGB } from "../color-vNext/swatch";
 import { accentFill as accentFillNew } from "../color-vNext/recipes/accent-fill";
-import { accentForegroundCut as accentForegroundCutNew  } from '../color-vNext/recipes/accent-foreground-cut';
+import { foregroundOnAccent as foregroundOnAccentNew  } from '../color-vNext/recipes/foreground-on-accent';
 import { accentForegroundCut_DEPRECATED } from "./accent-foreground-cut";
 
 describe("accentFill", (): void => {
@@ -112,7 +112,7 @@ describe("ensure parity between old and new recipe implementation", () => {
         } = fastDesignSystemDefaults;
            
         const oldValues = accentFill_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
-        const textColor = accentForegroundCutNew(accentPalette.source, 4.5);
+        const textColor = foregroundOnAccentNew(accentPalette.source, 4.5);
         const newValues = accentFillNew(
             accentPalette,
             neutralPalette,

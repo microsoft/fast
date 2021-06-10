@@ -3,11 +3,11 @@ import { Direction } from "@microsoft/fast-web-utilities";
 import { PaletteRGB } from "./color-vNext/palette";
 import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
-import { accentForegroundCut as accentForegroundCutAlgorithm } from "./color-vNext/recipes/accent-foreground-cut";
+import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color-vNext/recipes/foreground-on-accent";
 import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
 import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
-import { neutralFillCard as neutralFillCardAlgorithm } from "./color-vNext/recipes/neutral-fill-card";
 import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
+import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color-vNext/recipes/neutral-fill-layer";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
 import { neutralFillContrast as neutralFillContrastAlgorithm } from "./color-vNext/recipes/neutral-fill-contrast";
 import {
@@ -105,11 +105,11 @@ export const neutralFillActiveDelta = create<number>(
     "neutral-fill-active-delta"
 ).withDefault(5);
 /** @public */
-export const neutralFillCardRestDelta = create<number>(
-    "neutral-fill-card-rest-delta"
+export const neutralFillLayerRestDelta = create<number>(
+    "neutral-fill-layer-rest-delta"
 ).withDefault(3);
 /** @public @deprecated */
-export const neutralFillCardDelta = neutralFillCardRestDelta;
+export const neutralFillCardDelta = neutralFillLayerRestDelta;
 /** @public */
 export const neutralFillFocusDelta = create<number>(
     "neutral-fill-focus-delta"
@@ -299,37 +299,37 @@ enum ContrastTarget {
     large = 7,
 }
 
-// Accent Foreground Cut
-const accentForegroundCutByContrast = (contrast: number) => (element: HTMLElement) =>
-    accentForegroundCutAlgorithm(accentPalette.getValueFor(element).source, contrast);
+// Foreground On Accent
+const foregroundOnAccentByContrast = (contrast: number) => (element: HTMLElement) =>
+    foregroundOnAccentAlgorithm(accentPalette.getValueFor(element).source, contrast);
 /** @public */
-export const AccentForegroundCut = DI.createInterface<
-    (element: HTMLElement) => SwatchRGB
->("accent-foreground-cut", builder =>
-    builder.instance((element: HTMLElement) =>
-        accentForegroundCutByContrast(ContrastTarget.normal)(element)
-    )
+export const ForegroundOnAccent = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "foreground-on-accent",
+    builder =>
+        builder.instance((element: HTMLElement) =>
+            foregroundOnAccentByContrast(ContrastTarget.normal)(element)
+        )
 );
 /** @public */
-export const AccentForegroundCutLarge = DI.createInterface<
+export const ForegroundOnAccentLarge = DI.createInterface<
     (element: HTMLElement) => SwatchRGB
->("accent-foreground-cut-large", builder =>
+>("foreground-on-accent-large", builder =>
     builder.instance((element: HTMLElement) =>
-        accentForegroundCutByContrast(ContrastTarget.large)(element)
+        foregroundOnAccentByContrast(ContrastTarget.large)(element)
     )
 );
 
 /** @public */
-export const accentForegroundCut = create<SwatchRGB>("accent-foreground-cut").withDefault(
+export const foregroundOnAccent = create<SwatchRGB>("foreground-on-accent").withDefault(
     (element: HTMLElement) => {
-        return DI.getOrCreateDOMContainer(element).get(AccentForegroundCut)(element);
+        return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccent)(element);
     }
 );
 /** @public */
-export const accentForegroundCutLarge = create<SwatchRGB>(
-    "accent-foreground-cut-large"
+export const foregroundOnAccentLarge = create<SwatchRGB>(
+    "foreground-on-accent-large"
 ).withDefault((element: HTMLElement) => {
-    return DI.getOrCreateDOMContainer(element).get(AccentForegroundCutLarge)(element);
+    return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccentLarge)(element);
 });
 
 // Accent Fill
@@ -341,7 +341,7 @@ const accentFillByContrast = (contrast: number) => (
         accentPalette.getValueFor(element),
         neutralPalette.getValueFor(element),
         fill || fillColor.getValueFor(element),
-        accentForegroundCut.getValueFor(element),
+        foregroundOnAccent.getValueFor(element),
         contrast,
         accentFillHoverDelta.getValueFor(element),
         accentFillActiveDelta.getValueFor(element),
@@ -456,25 +456,27 @@ export const neutralStrokeDivider = create<SwatchRGB>(
 /** @public @deprecated */
 export const neutralDivider = neutralStrokeDivider;
 
-// Neutral Fill Card
+// Neutral Fill Layer
 /** @public */
-export const NeutralFillCard = DI.createInterface<
+export const NeutralFillLayer = DI.createInterface<
     (element: HTMLElement, fill?: SwatchRGB) => SwatchRGB
->("neutral-fill-card", builder =>
+>("neutral-fill-layer", builder =>
     builder.instance((element: HTMLElement, fill?: SwatchRGB) =>
-        neutralFillCardAlgorithm(
+        neutralFillLayerAlgorithm(
             neutralPalette.getValueFor(element),
             fill || fillColor.getValueFor(element),
-            neutralFillCardRestDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element)
         )
     )
 );
 /** @public */
-export const neutralFillCard = create<SwatchRGB>(
+export const neutralFillLayer = create<SwatchRGB>(
     "neutral-fill-card"
 ).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralFillCard)(element)
+    DI.getOrCreateDOMContainer(element).get(NeutralFillLayer)(element)
 );
+/** @public @deprecated */
+export const neutralFillCard = neutralFillLayer;
 
 // Neutral Fill Input
 /** @public */
@@ -815,7 +817,7 @@ export const NeutralLayerFloating = DI.createInterface<
         neutralLayerFloatingAlgorithm(
             neutralPalette.getValueFor(element),
             baseLayerLuminance.getValueFor(element),
-            neutralFillCardRestDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element)
         )
     )
 );
@@ -856,7 +858,7 @@ export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => Swatc
             neutralLayerL2Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
-                neutralFillCardRestDelta.getValueFor(element),
+                neutralFillLayerRestDelta.getValueFor(element),
                 neutralFillRestDelta.getValueFor(element),
                 neutralFillHoverDelta.getValueFor(element),
                 neutralFillActiveDelta.getValueFor(element)
@@ -880,7 +882,7 @@ export const NeutralLayerL3 = DI.createInterface<(element: HTMLElement) => Swatc
             neutralLayerL3Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
-                neutralFillCardRestDelta.getValueFor(element),
+                neutralFillLayerRestDelta.getValueFor(element),
                 neutralFillRestDelta.getValueFor(element),
                 neutralFillHoverDelta.getValueFor(element),
                 neutralFillActiveDelta.getValueFor(element)
@@ -904,7 +906,7 @@ export const NeutralLayerL4 = DI.createInterface<(element: HTMLElement) => Swatc
             neutralLayerL4Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
-                neutralFillCardRestDelta.getValueFor(element),
+                neutralFillLayerRestDelta.getValueFor(element),
                 neutralFillRestDelta.getValueFor(element),
                 neutralFillHoverDelta.getValueFor(element),
                 neutralFillActiveDelta.getValueFor(element)

@@ -10,12 +10,12 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     bodyFont,
     controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    foregroundOnAccent,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -76,14 +76,14 @@ export const checkboxStyles = (context, definition) =>
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${accentForegroundCut};
+        fill: ${foregroundOnAccent};
         opacity: 0;
         pointer-events: none;
     }
 
     .indeterminate-indicator {
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${accentForegroundCut};
+        background: ${foregroundOnAccent};
         position: absolute;
         top: 50%;
         left: 50%;

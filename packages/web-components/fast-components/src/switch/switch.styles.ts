@@ -10,12 +10,12 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     bodyFont,
     controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    foregroundOnAccent,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -137,7 +137,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]) .checked-indicator {
-        background: ${accentForegroundCut};
+        background: ${foregroundOnAccent};
     }
 
     :host([aria-checked="true"]) .switch {

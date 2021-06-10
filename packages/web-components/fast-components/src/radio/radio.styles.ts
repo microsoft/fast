@@ -10,11 +10,11 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     bodyFont,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    foregroundOnAccent,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -87,8 +87,8 @@ export const radioStyles = (context, definition) =>
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        background: ${accentForegroundCut};
-        fill: ${accentForegroundCut};
+        background: ${foregroundOnAccent};
+        fill: ${foregroundOnAccent};
         opacity: 0;
         pointer-events: none;
     }

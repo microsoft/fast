@@ -10,7 +10,6 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
-    accentForegroundCut,
     bodyFont,
     controlCornerRadius,
     designUnit,
@@ -18,6 +17,7 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccent,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -98,7 +98,7 @@ export const selectStyles = (context, definition) =>
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
-        color: ${accentForegroundCut};
+        color: ${foregroundOnAccent};
     }
 
     :host([disabled]) {
