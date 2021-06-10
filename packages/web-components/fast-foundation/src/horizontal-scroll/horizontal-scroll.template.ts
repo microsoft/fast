@@ -1,7 +1,7 @@
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
+import type { HorizontalScroll } from "./horizontal-scroll";
 
 /**
  * @public
@@ -9,14 +9,8 @@ import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scr
 export const horizontalScrollTemplate: (
     context,
     definition
-) => ViewTemplate<HorizontalScroll> = (
-    context,
-    definition: HorizontalScrollOptions
-) => html`
-    <template
-        class="horizontal-scroll"
-        @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
-    >
+) => ViewTemplate<HorizontalScroll> = (context, definition) => html`
+    <template class="horizontal-scroll">
         ${startTemplate}
         <div class="scroll-area">
             <div
@@ -42,9 +36,7 @@ export const horizontalScrollTemplate: (
                         ${ref("previousFlipper")}
                     >
                         <div class="scroll-action" @click="${x => x.scrollToPrevious()}">
-                            <slot name="previous-flipper">
-                                ${definition.previousFlipper || ""}
-                            </slot>
+                            <slot name="previous-flipper"></slot>
                         </div>
                     </div>
                     <div
@@ -53,9 +45,7 @@ export const horizontalScrollTemplate: (
                         ${ref("nextFlipper")}
                     >
                         <div class="scroll-action" @click="${x => x.scrollToNext()}">
-                            <slot name="next-flipper">
-                                ${definition.nextFlipper || ""}
-                            </slot>
+                            <slot name="next-flipper"></slot>
                         </div>
                     </div>
                 `
