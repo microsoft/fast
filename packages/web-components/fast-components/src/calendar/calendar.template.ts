@@ -13,7 +13,7 @@ import {
  * @param calendar - A calendar object to extract days of the month from
  * @returns a multidimensional array that includes the days of the month broken up by week
  */
-const getWeeks = (calendar: Calendar) =>
+const getWeeks = (calendar: Calendar): CalendarDateInfo[][] =>
     calendar
         .getDays()
         .reduce(
