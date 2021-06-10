@@ -2,11 +2,11 @@ import { css } from "@microsoft/fast-element";
 import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
+    focusStrokeOuter,
     neutralFillRest,
-    neutralFocus,
-    neutralForegroundRest,
-    outlineWidth,
+    neutralForeground,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -22,11 +22,11 @@ export const tooltipStyles = (context, definition) =>
 
         .tooltip {
             box-sizing: border-box;
-            border-radius: calc(${cornerRadius} * 1px);
-            border: calc(${outlineWidth} * 1px) solid ${neutralFocus};
-            box-shadow: 0 0 0 1px ${neutralFocus} inset;
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+            box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
             background: ${neutralFillRest};
-            color: ${neutralForegroundRest};
+            color: ${neutralForeground};
             padding: 4px;
             height: fit-content;
             width: fit-content;

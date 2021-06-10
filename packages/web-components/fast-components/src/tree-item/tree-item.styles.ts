@@ -13,19 +13,20 @@ import {
     accentForegroundRest,
     baseHeightMultiplier,
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     density,
     designUnit,
     disabledOpacity,
-    focusOutlineWidth,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    NeutralFill,
+    neutralFillRest,
     NeutralFillStealth,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralFillStealthSelected,
-    neutralFocus,
-    neutralForegroundRest,
-    outlineWidth,
+    neutralForeground,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -39,7 +40,7 @@ const ltr = css`
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
-        left: calc(${focusOutlineWidth} * 1px);
+        left: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(45deg);
@@ -54,7 +55,7 @@ const rtl = css`
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
-        right: calc(${focusOutlineWidth} * 1px);
+        right: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(135deg);
@@ -73,8 +74,9 @@ const expandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
 const selectedExpandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
     "tree-item-expand-collapse-selected-hover"
 ).withDefault((target: HTMLElement) => {
-    const recipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
-    return recipe(target, recipe(target).hover).selected;
+    const baseRecipe = DI.findResponsibleContainer(target).get(NeutralFill);
+    const buttonRecipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
+    return buttonRecipe(target, baseRecipe(target).rest).hover;
 });
 
 export const treeItemStyles = (context, definition) =>
@@ -83,7 +85,7 @@ export const treeItemStyles = (context, definition) =>
         contain: content;
         position: relative;
         outline: none;
-        color: ${neutralForegroundRest};
+        color: ${neutralForeground};
         background: ${neutralFillStealthRest};
         cursor: pointer;
         font-family: ${bodyFont};
@@ -100,16 +102,16 @@ export const treeItemStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .positioning-region {
-        border: ${neutralFocus} calc(${outlineWidth} * 1px) solid;
-        border-radius: calc(${cornerRadius} * 1px);
-        color: ${neutralForegroundRest};
+        border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        color: ${neutralForeground};
     }
 
     .positioning-region {
         display: flex;
         position: relative;
         box-sizing: border-box;
-        border: transparent calc(${outlineWidth} * 1px) solid;
+        border: transparent calc(${strokeWidth} * 1px) solid;
         height: calc((${heightNumber} + 1) * 1px);
     }
 
@@ -227,7 +229,7 @@ export const treeItemStyles = (context, definition) =>
     }
     
     :host([selected]) .positioning-region {
-        background: ${neutralFillStealthSelected};
+        background: ${neutralFillRest};
     }
 
     :host([selected]) .expand-collapse-button:hover {
@@ -245,7 +247,7 @@ export const treeItemStyles = (context, definition) =>
             /* The french fry background needs to be calculated based on the selected background state for this control.
             We currently have no way of changing that, so setting to accent-foreground-rest for the time being */ ""
         } background: ${accentForegroundRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     ::slotted(fast-tree-item) {

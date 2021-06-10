@@ -3,7 +3,7 @@ import {
     Toolbar as FoundationToolbar,
     toolbarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { fillColor, NeutralFillCard } from "../design-tokens";
+import { fillColor, NeutralFillLayer } from "../design-tokens";
 import { ToolbarStyles as styles } from "./toolbar.styles";
 
 /**
@@ -13,7 +13,7 @@ export class Toolbar extends FoundationToolbar {
     connectedCallback() {
         super.connectedCallback();
         fillColor.setValueFor(this, (target: HTMLElement) => {
-            return DI.findResponsibleContainer(target).get(NeutralFillCard)(
+            return DI.findResponsibleContainer(target).get(NeutralFillLayer)(
                 target,
                 fillColor.getValueFor(this.parentElement!)
             );

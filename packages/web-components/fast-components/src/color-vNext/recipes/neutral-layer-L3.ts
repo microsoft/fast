@@ -8,7 +8,7 @@ import { neutralLayerL2Index } from "./neutral-layer-L2";
 export function neutralLayerL3(
     palette: PaletteRGB,
     luminance: number,
-    cardDelta: number,
+    layerDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
@@ -17,10 +17,10 @@ export function neutralLayerL3(
         neutralLayerL2Index(
             palette,
             luminance,
-            cardDelta,
+            layerDelta,
             fillRestDelta,
             fillHoverDelta,
             fillActiveDelta
-        ) + cardDelta
+        ) + layerDelta
     );
 }

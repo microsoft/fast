@@ -13,7 +13,7 @@ import {
     contrast,
     DesignSystemResolver,
     neutralForegroundHint,
-    neutralOutlineRest,
+    neutralStrokeRest,
     SwatchResolver,
 } from "./recipes";
 
@@ -97,7 +97,7 @@ const swatchTwoStyles: ComponentStyleSheet<
     },
     swatch__foreground: {
         "& $swatch_icon": {
-            border: format<ColorsDesignSystem>("1px solid {0}", neutralOutlineRest),
+            border: format<ColorsDesignSystem>("1px solid {0}", neutralStrokeRest),
             "&::before": {
                 fontSize: "13px",
                 content: "'A'",

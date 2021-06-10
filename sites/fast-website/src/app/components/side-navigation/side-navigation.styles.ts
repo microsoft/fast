@@ -3,11 +3,11 @@ import { display } from "@microsoft/fast-foundation";
 import {
     accentFillHover,
     accentForegroundActive,
-    accentForegroundCut,
+    foregroundOnAccent,
     bodyFont,
-    cornerRadius,
     designUnit,
-    focusOutlineWidth,
+    focusStrokeWidth,
+    controlCornerRadius,
 } from "@microsoft/fast-components";
 
 export const SideNavigationStyles = css`
@@ -30,7 +30,7 @@ export const SideNavigationStyles = css`
     }
 
     .icon {
-        fill: ${accentForegroundCut};
+        fill: ${foregroundOnAccent};
         width: 20px;
         height: 20px;
     }
@@ -41,9 +41,9 @@ export const SideNavigationStyles = css`
 
     .scroll-indicator {
         height: 36px;
-        width: calc(${focusOutlineWidth} * 1px);
-        background-color: ${accentForegroundCut};
-        border-radius: calc(${cornerRadius} * 1px);
+        width: calc(${focusStrokeWidth} * 1px);
+        background-color: ${foregroundOnAccent};
+        border-radius: calc(${controlCornerRadius} * 1px);
         margin: calc(${designUnit} * 2px) var(--design-unit-large) 0;
         transition: 300ms ease-in-out;
         transition-property: background-color, height;
