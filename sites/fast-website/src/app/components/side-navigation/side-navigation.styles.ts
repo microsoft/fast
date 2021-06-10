@@ -3,10 +3,7 @@ import { display } from "@microsoft/fast-foundation";
 import {
     accentFillHover,
     accentForegroundActive,
-    accentForegroundActiveBehavior,
     accentForegroundCut,
-    accentForegroundCutRestBehavior,
-    accentForegroundHoverBehavior,
     bodyFont,
     cornerRadius,
     designUnit,
