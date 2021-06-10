@@ -7,6 +7,10 @@ import {
     neutralForegroundRestBehavior,
 } from "../styles/index";
 
+/**
+ * Styles used by the calendar title and contents
+ * @public
+ */
 export const CalendarStyles = css`
     ${display("block")} :host {
         --cell-border: none;
@@ -19,9 +23,7 @@ export const CalendarStyles = css`
         --inactive-day-color: ${SystemColors.GrayText};
     }
 
-    .days > data-grid-row {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
+    .days {
         border-left: var(--cell-border);
     }
 
@@ -37,10 +39,6 @@ export const CalendarStyles = css`
         color: var(--weekday-color);
         padding: 5px 0;
         text-align: center;
-    }
-
-    .week-day:nth-child(7) {
-        border-right: var(--cell-border);
     }
 
     .day {
@@ -63,3 +61,16 @@ export const CalendarStyles = css`
         outline-offset: -1px;
     }
 `.withBehaviors(accentForegroundActiveBehavior, neutralForegroundRestBehavior);
+
+/**
+ * Styles for a calendar grid row
+ * @public
+ */
+export const CalendarGridRowStyles = css`
+    :host {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        box-sizing: border-box;
+        width: 100%;
+    }
+`;

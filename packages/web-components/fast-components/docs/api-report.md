@@ -235,6 +235,9 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 export const ButtonStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
+export const CalendarGridRowStyles: import("@microsoft/fast-element").ElementStyles;
+
+// @public
 export const CalendarStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
@@ -315,6 +318,18 @@ export class FASTButton extends Button {
 
 // @public
 export class FASTCalendar extends Calendar {
+}
+
+// @public
+export class FASTCalendardGrid extends DataGrid {
+}
+
+// @public
+export class FASTCalendarGridCell extends DataGridCell {
+}
+
+// @public
+export class FASTCalendarGridRow extends DataGridRow {
 }
 
 // @public

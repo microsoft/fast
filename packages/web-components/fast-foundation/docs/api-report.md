@@ -237,7 +237,7 @@ export const ButtonTemplate: ViewTemplate<Button>;
 
 // @public
 export class Calendar extends FASTElement {
-    getDays(info?: CalendarInfo): any;
+    getDays(info?: CalendarInfo): CalendarDateInfo[];
     getLocaleDay(month?: number, day?: number, year?: number): string;
     getLocaleMonth(month?: number): string;
     getLocaleWeekDays(): string[];
@@ -248,11 +248,22 @@ export class Calendar extends FASTElement {
     isToday(year: number, month: number, day: number): boolean;
     locale: string;
     localeFormatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
+    minWeeks: number;
     month: number;
     monthFormat: DateStyle;
     weekdayFormat: DateStyle;
     year: number;
 }
+
+// @public
+export type CalendarDateInfo = {
+    day: number;
+    month: number;
+    year: number;
+};
+
+// @public
+export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarInfo = MonthInfo & {
@@ -262,6 +273,12 @@ export type CalendarInfo = MonthInfo & {
 
 // @public
 export const CalendarTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const CalendarTitleTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const CalendarWeekdayTemplate: ViewTemplate<Calendar>;
 
 // @public
 export class Card extends FASTElement {

@@ -64,14 +64,17 @@
         margin: 20px 40px;
     }
 
-    .calendar-change fast-flipper {
+    .calendar-change #previous,
+    .calendar-change #next {
         position: absolute;
         left: 0;
         top: 10px;
         transform: translateX(-50%);
+        border: 0;
+        background: 0;
     }
 
-    .calendar-change fast-flipper#next {
+    .calendar-change #next {
         right: 0;
         left: auto;
         transform: translateX(50%);
@@ -166,14 +169,25 @@
 </script>
 
 <h2>Changing calendar</h2>
-<fast-calendar class="light-borders calendar-change">
-    <fast-flipper slot="end" id="previous" direction="previous"></fast-flipper>
-    <fast-flipper slot="end" id="next"></fast-flipper>
+<fast-calendar class="light-borders calendar-change" minWeeks="6">
+    <button id="previous" class="calendar-control" tabindex="-1">
+        <fast-flipper
+            id="previous-flipper"
+            slot="end"
+            direction="previous"
+            aria-hidden="false"
+        ></fast-flipper>
+    </button>
+    <button id="next" class="calendar-control" tabindex="-1">
+        <fast-flipper id="next-flipper" slot="end" aria-hidden="false"></fast-flipper>
+    </button>
 </fast-calendar>
 
 <script>
     const changeCalendar = (direction, event) => {
-        const calendar = event.target.parentNode;
+        const calendar = event.path.find(
+            node => !!node.tagName && node.tagName.toLowerCase().indexOf("calendar") >= 0
+        );
         const { month, year } = calendar;
         const nextMonth = month + direction;
         calendar.year = year + (nextMonth > 12 ? 1 : nextMonth < 1 ? -1 : 0);
@@ -210,6 +224,7 @@
             const monthCalendar = document.createElement("fast-calendar");
             monthCalendar.className = "compact";
             monthCalendar.weekdayFormat = "narrow";
+            monthCalendar.minWeeks = 6;
             monthCalendar.month = index + 1;
             if (year) monthCalendar.year = year;
             container.appendChild(monthCalendar);

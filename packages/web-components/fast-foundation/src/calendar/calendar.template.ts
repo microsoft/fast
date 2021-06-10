@@ -1,7 +1,56 @@
 import { html, repeat } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Calendar } from "./calendar";
+import type { Calendar, CalendarDateInfo } from "./calendar";
+
+/**
+ * A basic Calendar title template that includes the month and year
+ * @public
+ */
+export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
+    <div class="title" part="title">
+        ${startTemplate}
+        <slot></slot>
+        ${x => x.getLocaleMonth()} ${x => x.getLocaleYear()} ${endTemplate}
+    </div>
+`;
+
+/**
+ * Calendar weekday label template
+ * @public
+ */
+export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
+    <div class="week-day">${x => x}</div>
+`;
+
+/**
+ * A calendar day template
+ * @public
+ */
+export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
+    <div
+        class="day${(x, c) =>
+            x.month !== (c.parent.month ?? c.parentContext.parent.month) ? ` off` : ``}${(
+            x,
+            c
+        ) => {
+            const isToday = c.parent.isToday || c.parentContext.parent.isToday;
+            return !!isToday(x.year, x.month, x.day) ? ` today` : ``;
+        }}"
+        data-year="${x => x.year}"
+        data-month="${x => x.month - 1}"
+        data-day="${x => x.day}"
+    >
+        <div class="date" part="date">
+            ${(x, c) => {
+                const parent = c.parent.getLocaleDay ? c.parent : c.parentContext.parent;
+                const getLocaleDay = parent.getLocaleDay.bind(parent);
+                return getLocaleDay(x.month, x.day, x.year);
+            }}
+        </div>
+        <slot name="${x => x.month}-${x => x.day}-${x => x.year}"></slot>
+    </div>
+`;
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Calendar:class)} component.
@@ -9,79 +58,10 @@ import type { Calendar } from "./calendar";
  */
 export const CalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
-        <div class="title" part="title">
-            <slot></slot>
-            ${x => x.getLocaleMonth()} ${x => x.getLocaleYear()}
+        ${CalendarTitleTemplate}
+        <div class="days">
+            ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
+            ${repeat(x => x.getDays(), CalendarDayTemplate)}
         </div>
-        <fast-data-grid class="days" generate-header="none">
-            <data-grid-row
-                role="row"
-                row-type="header"
-                grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
-            >
-                ${repeat(
-                    x => x.getLocaleWeekDays(),
-                    html`
-                        <data-grid-cell
-                            tabindex="-1"
-                            role="columnheader"
-                            cell-type="columnheader"
-                            class="week-day"
-                        >
-                            ${x => x}
-                        </data-grid-cell>
-                    `
-                )}
-            </data-grid-row>
-            ${x => {
-                const getLocaleDay = x.getLocaleDay.bind(x);
-                const weeks = x.getDays().reduce(
-                    (weeks, day) => {
-                        const current = () => weeks[weeks.length - 1];
-                        if (current().length >= 7) {
-                            weeks.push([]);
-                        }
-                        current().push(day);
-                        return weeks;
-                    },
-                    [[]]
-                );
-
-                const weeksGrid = weeks.reduce((htmlOut, week) => {
-                    return (htmlOut += `
-                            <data-grid-row role="row" row-type="default" grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr">
-                                ${week.reduce((weekOut, day, index) => {
-                                    return (weekOut += `
-                                        <data-grid-cell role="gridcell" tabindex="-1" grid-column="${
-                                            index + 1
-                                        }" class="day${
-                                        day.month !== x.month ? ` off` : ``
-                                    }${
-                                        x.isToday(day.year, day.month, day.day)
-                                            ? ` today`
-                                            : ``
-                                    }" data-year="${day.year}" data-month="${
-                                        day.month - 1
-                                    }" data-day="${day.day}">
-                                            <div>${getLocaleDay(
-                                                day.month,
-                                                day.day,
-                                                day.year
-                                            )}</div>
-                                            <slot name="${day.month}-${day.day}-${
-                                        day.year
-                                    }"></slot>
-                                        </data-grid-cell>
-                                    `);
-                                }, "")}
-                            </data-grid-row>
-                        `);
-                }, "");
-
-                return html`
-                    ${weeksGrid}
-                `;
-            }}
-        </fast-data-grid>
     </template>
 `;

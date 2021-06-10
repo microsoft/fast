@@ -28,6 +28,17 @@ export type CalendarInfo = MonthInfo & {
 };
 
 /**
+ * Caldendar date info
+ * used to represent a date
+ * @public
+ */
+export type CalendarDateInfo = {
+    day: number;
+    month: number;
+    year: number;
+};
+
+/**
  * Calendar component
  * @public
  */
@@ -55,15 +66,26 @@ export class Calendar extends FASTElement {
 
     /**
      * Format style for the week day labels
+     * @public
      */
     @attr
     public weekdayFormat: DateStyle = "short";
 
     /**
      * Format style for the month label
+     * @public
      */
     @attr
     public monthFormat: DateStyle = "long";
+
+    /**
+     * Minimum number of weeks to show for the month
+     * This can be used to normalize the calendar view
+     *  when changing or across multiple calendars
+     * @public
+     */
+    @attr
+    public minWeeks: number = 0;
 
     /**
      * The number of miliseconds in a day
@@ -211,14 +233,18 @@ export class Calendar extends FASTElement {
      * @param info - an object containing the information needed to render a calendar month
      * @returns a list of days in a calendar month
      */
-    public getDays(info: CalendarInfo = this.getMonthInfo()) {
+    public getDays(info: CalendarInfo = this.getMonthInfo()): CalendarDateInfo[] {
         const { start, length, previous, next } = info;
-        const days: any = [];
+        const days: CalendarDateInfo[] = [];
         let day = 1 - start;
 
-        while (days.length < 42) {
+        while (
+            days.length < start + length ||
+            days.length < this.minWeeks * 7 ||
+            days.length % 7 !== 0
+        ) {
             const { month, year } = day < 1 ? previous : day > length ? next : info;
-            const date = {
+            const date: CalendarDateInfo = {
                 day: day < 1 ? previous.length + day : day > length ? day - length : day,
                 month,
                 year,
