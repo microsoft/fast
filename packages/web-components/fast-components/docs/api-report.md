@@ -192,10 +192,16 @@ export const accentForegroundActiveBehavior: import("@microsoft/fast-foundation"
 // @public (undocumented)
 export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+// @public @deprecated (undocumented)
+export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
 // Warning: (ae-internal-missing-underscore) The name "accentForegroundCut_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
 export const accentForegroundCut_DEPRECATED: SwatchRecipe;
+
+// @public @deprecated (undocumented)
+export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "accentForegroundCutLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //

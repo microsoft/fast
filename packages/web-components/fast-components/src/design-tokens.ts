@@ -325,12 +325,16 @@ export const foregroundOnAccent = create<SwatchRGB>("foreground-on-accent").with
         return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccent)(element);
     }
 );
+/** @public @deprecated Use foregroundOnAccent */
+export const accentForegroundCut = foregroundOnAccent;
 /** @public */
 export const foregroundOnAccentLarge = create<SwatchRGB>(
     "foreground-on-accent-large"
 ).withDefault((element: HTMLElement) => {
     return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccentLarge)(element);
 });
+/** @public @deprecated Use foregroundOnAccentLarge */
+export const accentForegroundCutLarge = foregroundOnAccentLarge;
 
 // Accent Fill
 const accentFillByContrast = (contrast: number) => (
