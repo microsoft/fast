@@ -1,4 +1,9 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
@@ -8,7 +13,7 @@ import type {
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
 import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -27,6 +32,15 @@ export type HorizontalScrollView = "default" | "mobile";
  * @public
  */
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+
+/**
+ * Horizontal scroll configuration options
+ * @public
+ */
+export type HorizontalScrollOptions = FoundationElementDefinition & {
+    nextFlipper?: string | SyntheticViewTemplate;
+    previousFlipper?: string | SyntheticViewTemplate;
+};
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -281,6 +295,24 @@ export class HorizontalScroll extends FoundationElement {
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
+        }
+    }
+
+    /**
+     * Lets the user arrow left and right through the horizontal scroll
+     * @param e - Keyboard event
+     * @public
+     */
+    public keyupHandler(e: Event & KeyboardEvent) {
+        const key = e.key;
+
+        switch (key) {
+            case "ArrowLeft":
+                this.scrollToPrevious();
+                break;
+            case "ArrowRight":
+                this.scrollToNext();
+                break;
         }
     }
 
