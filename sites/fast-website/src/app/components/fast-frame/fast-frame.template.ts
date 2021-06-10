@@ -213,26 +213,8 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
             </fast-tabs>
-            <fast-design-system-provider
-                use-defaults
-                class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
-                base-layer-luminance="${x => x.baseLayerLuminance}"
-                background-color="${x => x.backgroundColor}"
-                accent-base-color="${x => x.accentColor}"
-                density="${x => x.density}"
-                corner-radius="${x => x.borderRadius}"
-                outline-width="${x => x.outlineWidth}"
-                :accentPalette=${x =>
-                    Array.isArray(x.accentPalette) ? x.accentPalette : null}
-                :neutralPalette=${x =>
-                    Array.isArray(x.neutralPalette) ? x.neutralPalette : null}
-            >
-                <fast-design-system-provider
-                    density="0"
-                    class="responsive-expand-flipper"
-                    base-height-multiplier="10"
-                    base-horizontal-spacing-multiplier="3"
-                >
+            <div class="${x => (x.expanded ? "preview preview-expanded" : "preview")}">
+                <div class="responsive-expand-flipper">
                     <fast-flipper
                         direction="${x => (x.expanded ? "next" : "previous")}"
                         aria-expanded="${x => x.expanded}"
@@ -242,7 +224,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         @click="${(x, c) =>
                             x.handleExpandKeypress(c.event as KeyboardEvent)}"
                     ></fast-flipper>
-                </fast-design-system-provider>
+                </div>
                 <fast-card>
                     <div class="image-container">
                         <fast-badge fill="primary" color="primary" class="badge">
@@ -346,7 +328,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-button>
                     </div>
                 </div>
-            </fast-design-system-provider>
+            </div>
         </div>
     </template>
 `;
