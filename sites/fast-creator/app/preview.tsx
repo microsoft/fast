@@ -19,14 +19,14 @@ import {
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
-import * as FASTComponents from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
+import {
+    baseLayerLuminance,
+    fillColor,
+    neutralLayerL1,
+    StandardLuminance,
+} from "@microsoft/fast-components";
 import { HTMLRenderReact } from "./web-components";
-
-// Prevent tree shaking
-FASTComponents;
+import { mapFASTComponentsDesignSystem } from "./configs/library.fast.design-system.mapping";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
@@ -39,8 +39,8 @@ export interface PreviewState {
     activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
-    theme: FASTComponents.StandardLuminance;
-    designSystemDataDictionary: DataDictionary<unknown>;
+    theme: StandardLuminance;
+    designSystemDataDictionary: DataDictionary<unknown> | void;
     htmlRenderMessageSystem: MessageSystem;
     htmlRenderReady: boolean;
 }
@@ -58,31 +58,14 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         this.ref = React.createRef();
         this.renderRef = React.createRef();
         this.activeDictionaryItemWrapperRef = React.createRef();
-
+        baseLayerLuminance.withDefault(StandardLuminance.LightMode);
+        fillColor.withDefault(neutralLayerL1);
         this.state = {
             activeDictionaryId: "",
             dataDictionary: void 0,
             schemaDictionary: {},
-            theme: FASTComponents.StandardLuminance.LightMode,
-            designSystemDataDictionary: [
-                {
-                    [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
-                        data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
-                            direction: Direction.ltr,
-                            "background-color": FASTComponents.neutralLayerL1_DEPRECATED(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance:
-                                        FASTComponents.StandardLuminance.LightMode,
-                                })
-                            ),
-                        },
-                    },
-                },
-                designSystemLinkedDataId,
-            ],
+            theme: StandardLuminance.LightMode,
+            designSystemDataDictionary: void 0,
             htmlRenderMessageSystem: new MessageSystem({
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
@@ -97,9 +80,15 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            const direction: Direction = (this.state.designSystemDataDictionary[0][
-                "design-system"
-            ].data as any)["direction"];
+            const direction: Direction =
+                this.state.designSystemDataDictionary &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any) &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
+                    "direction"
+                ]
+                    ? (this.state.designSystemDataDictionary[0]["design-system"]
+                          .data as any)["direction"]
+                    : Direction.ltr;
 
             return (
                 <React.Fragment>
@@ -144,30 +133,14 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         }
 
         if (this.state.dataDictionary !== undefined && this.renderRef.current !== null) {
-            const designSystemProvider: any = this.renderRef.current.designRef;
-            [...designSystemProvider.attributes].forEach(attr =>
-                designSystemProvider.removeAttribute(attr.name)
-            );
-
-            Object.entries(
-                this.state.designSystemDataDictionary[0]["design-system"].data as any
-            ).forEach(([attribute, value]: [string, any]) => {
-                designSystemProvider.setAttribute(attribute, value);
-            });
-
-            const accentColor: string = (this.state.designSystemDataDictionary[0][
-                "design-system"
-            ].data as any)["accent-base-color"];
-
-            const generatedAccentPalette = createColorPalette(
-                parseColorHexRGB(accentColor)
-            );
-            (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
-
-            designSystemProvider.setAttribute(
-                "style",
-                "background: var(--background-color); height: 100%;"
-            );
+            if (
+                this.state.designSystemDataDictionary &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any)
+            ) {
+                mapFASTComponentsDesignSystem(
+                    this.state.designSystemDataDictionary[0]["design-system"].data as any
+                );
+            }
 
             this.state.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
@@ -252,22 +225,39 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
+                            const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
+                                this.state.designSystemDataDictionary &&
+                                (this.state.designSystemDataDictionary[0]["design-system"]
+                                    .data as any)
+                                    ? [
+                                          {
+                                              ["design-system"]: {
+                                                  schemaId: this.state
+                                                      .designSystemDataDictionary[0][
+                                                      "design-system"
+                                                  ].schemaId,
+                                                  data: {
+                                                      ...(messageData as any).data,
+                                                  },
+                                              },
+                                          },
+                                          "design-system",
+                                      ]
+                                    : [
+                                          {
+                                              ["design-system"]: {
+                                                  schemaId: "fastDesignTokens",
+                                                  data: {
+                                                      ...(messageData as any).data,
+                                                  },
+                                              },
+                                          },
+                                          "design-system",
+                                      ];
+
                             this.setState(
                                 {
-                                    designSystemDataDictionary: [
-                                        {
-                                            ["design-system"]: {
-                                                schemaId: this.state
-                                                    .designSystemDataDictionary[0][
-                                                    "design-system"
-                                                ].schemaId,
-                                                data: {
-                                                    ...(messageData as any).data,
-                                                },
-                                            },
-                                        },
-                                        "design-system",
-                                    ],
+                                    designSystemDataDictionary: updatedDesignSystemDataDictionary,
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );

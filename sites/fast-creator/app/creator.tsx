@@ -36,7 +36,6 @@ import {
     textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
@@ -52,8 +51,6 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
-    NeutralLayerL1,
-    neutralLayerL1_DEPRECATED,
     StandardLuminance,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
@@ -68,6 +65,7 @@ import {
     renderFormTabs,
 } from "./web-components";
 import { Device } from "./web-components/devices";
+import fastDesignSystemSchema from "./configs/library.fast.design-system.schema.json";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -89,6 +87,7 @@ const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-in
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
+    [fastDesignSystemSchema.id]: fastDesignSystemSchema,
     [textSchema.id]: textSchema,
 };
 
@@ -156,7 +155,7 @@ class Creator extends Editor<{}, CreatorState> {
             deviceId: this.devices[0].id,
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            accentColor: "",
             activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
@@ -166,16 +165,11 @@ class Creator extends Editor<{}, CreatorState> {
             designSystemDataDictionary: [
                 {
                     [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
+                        schemaId: "fastDesignTokens",
                         data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            "accent-color": "#DA1A5F",
                             direction: Direction.ltr,
-                            "background-color": neutralLayerL1_DEPRECATED(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance: StandardLuminance.LightMode,
-                                })
-                            ),
+                            "base-layer-luminance": StandardLuminance.LightMode,
                         },
                     },
                 },
@@ -198,7 +192,7 @@ class Creator extends Editor<{}, CreatorState> {
     public render(): React.ReactNode {
         const accentColor: string = (this.state.designSystemDataDictionary[0][
             "design-system"
-        ].data as any)["accent-base-color"];
+        ].data as any)["accent-color"];
         const direction: Direction = (this.state.designSystemDataDictionary[0][
             "design-system"
         ].data as any)["direction"];
@@ -272,7 +266,7 @@ class Creator extends Editor<{}, CreatorState> {
                                         accentBaseColor={
                                             accentColor !== undefined
                                                 ? accentColor
-                                                : fastDesignSystemDefaults.accentBaseColor
+                                                : "#DA1A5F"
                                         }
                                         onAccentColorPickerChange={
                                             this.handleAccentColorPickerChange
@@ -570,7 +564,7 @@ class Creator extends Editor<{}, CreatorState> {
         e: React.FormEvent<HTMLInputElement>
     ): void => {
         const value: string = e.currentTarget.value;
-        this.updateDesignSystemDataDictionaryState({ "accent-base-color": value });
+        this.updateDesignSystemDataDictionaryState({ "accent-color": value });
     };
 
     /**
@@ -587,11 +581,9 @@ class Creator extends Editor<{}, CreatorState> {
         });
 
         this.updateDesignSystemDataDictionaryState({
-            "background-color": neutralLayerL1_DEPRECATED(
-                Object.assign({}, fastDesignSystemDefaults, {
-                    baseLayerLuminance: updatedTheme,
-                })
-            ),
+            // TODO: this should update the fill color
+            // and any other design tokens that should
+            // react to switching between light mode and dark mode
         });
     };
 
