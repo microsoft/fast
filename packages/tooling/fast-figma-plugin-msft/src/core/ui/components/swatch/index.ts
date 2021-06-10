@@ -1,7 +1,8 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
-    neutralFillStealthHoverBehavior,
-    neutralForegroundHintBehavior,
+    cornerRadius,
+    neutralFillStealthHover,
+    neutralForegroundHint,
 } from "@microsoft/fast-components";
 
 const template = html`
@@ -26,14 +27,14 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        color: var(--neutral-foreground-hint);
+        color: ${neutralForegroundHint};
     }
 
     .swatch {
         box-sizing: border-box;
         width: 32px;
         height: 32px;
-        border-radius: calc(var(--corner-radius) * 2px);
+        border-radius: calc(${cornerRadius} * 2px);
         background: var(--swatch-value);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
         position: relative;
@@ -50,7 +51,7 @@ const styles = css`
         box-sizing: border-box;
         background: var(--background-color);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
-        border-radius: calc(var(--cornerRadius) * 2px);
+        border-radius: calc(${cornerRadius} * 2px);
     }
 
     .swatch::after {
@@ -97,14 +98,14 @@ const styles = css`
 
     :host(.interactive:hover) {
         cursor: pointer;
-        background: var(--neutral-fill-stealth-hover);
+        background: ${neutralFillStealthHover};
     }
 
     :host(.selected),
     :host(.selected:hover) {
         background: #daebf7;
     }
-`.withBehaviors(neutralFillStealthHoverBehavior, neutralForegroundHintBehavior);
+`;
 
 export enum SwatchTypes {
     background = "background",
