@@ -25,7 +25,7 @@ describe("neutralFocus", (): void => {
         const color = (parseColorHexRGB(neutralBaseColor)!)
         const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
         palette.swatches.forEach(( newSwatch, index ) => {
-                it(`should be the same for ${newSwatch}`, () => {
+                it(`should be the same for ${newSwatch.toColorString()}`, () => {
                     expect(neutralFocus_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})).to.be.equal(focusStrokeOuterNew( palette, newSwatch).toColorString().toUpperCase())
             });
         })
@@ -39,7 +39,7 @@ describe("neutralFocusInnerAccent", () => {
         const accentPalette = PaletteRGB.create(accentBase);
         neutralPalette.swatches.forEach(( newSwatch, index ) => {
                 const neutralFocusColor = focusStrokeOuterNew(neutralPalette, newSwatch);
-                it(`should be the same for ${newSwatch}`, () => {
+                it(`should be the same for ${newSwatch.toColorString()}`, () => {
                     expect(neutralFocusInnerAccent_DEPRECATED(accentBaseColor)({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]}))
                     .to.be.equal(focusStrokeInnerNew(
                         accentPalette,

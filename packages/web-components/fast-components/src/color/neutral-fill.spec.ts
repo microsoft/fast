@@ -109,9 +109,11 @@ describe("ensure parity between old and new recipe implementation", () => {
         const { neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta } = fastDesignSystemDefaults;
         const oldValues = neutralFill_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]});
         const newValues = neutralFillNew(palette, newSwatch, neutralFillRestDelta, neutralFillHoverDelta, neutralFillActiveDelta, neutralFillFocusDelta );
-            it(`should be the same for ${newSwatch}`, () => {
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 for (let key in oldValues) {
-                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    if (key !== "selected") {
+                        expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    }
                 }
         });
     })

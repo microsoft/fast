@@ -124,6 +124,7 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillStealthHoverDelta,
             neutralFillStealthActiveDelta,
             neutralFillStealthFocusDelta,
+            neutralFillStealthSelectedDelta,
             neutralFillRestDelta,
             neutralFillHoverDelta,
             neutralFillActiveDelta,
@@ -142,9 +143,11 @@ describe("ensure parity between old and new recipe implementation", () => {
             neutralFillActiveDelta,
             neutralFillFocusDelta
         );
-            it(`should be the same for ${newSwatch}`, () => {
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 for (let key in oldValues) {
-                    expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    if (key !== "selected") {
+                        expect(oldValues[key]).to.equal(newValues[key].toColorString().toUpperCase())
+                    }
                 }
         });
     })

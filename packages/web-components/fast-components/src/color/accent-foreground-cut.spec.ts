@@ -37,7 +37,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const color = (parseColorHexRGB(accentBaseColor)!)
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     it(
-        `should be the same for ${palette.source}`,
+        `should be the same for ${palette.source.toColorString()}`,
         () => {
             expect(
                 accentForegroundCut_DEPRECATED(

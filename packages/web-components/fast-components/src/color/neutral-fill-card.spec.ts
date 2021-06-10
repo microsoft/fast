@@ -52,7 +52,7 @@ describe("ensure parity between old and new recipe implementation", () => {
     const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
     const { neutralFillCardDelta } = fastDesignSystemDefaults;
     palette.swatches.forEach(( newSwatch, index ) => {
-            it(`should be the same for ${newSwatch}`, () => {
+            it(`should be the same for ${newSwatch.toColorString()}`, () => {
                 expect(
                     neutralFillCard_DEPRECATED({...fastDesignSystemDefaults, backgroundColor: fastDesignSystemDefaults.neutralPalette[index]})
                 ).to.be.equal(neutralFillLayerNew( palette, newSwatch, neutralFillCardDelta).toColorString().toUpperCase())
