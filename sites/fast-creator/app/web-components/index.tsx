@@ -1,12 +1,16 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
-import { fastToolingColorPicker, FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
+import {
+    fastToolingColorPicker,
+    fastToolingCSSLayout,
+} from "@microsoft/fast-tooling/dist/esm/web-components";
 import {
     fastButton,
     fastSelect,
     fastSlider,
     fastSliderLabel,
+    fastSwitch,
     fastTab,
     fastTabPanel,
     fastTabs,
@@ -40,7 +44,6 @@ import { defaultDevices, Device } from "./devices";
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
 HTMLRenderLayerInlineEdit;
-FASTToolingCSSLayout;
 DesignSystem.getOrCreate().register(
     fastButton(),
     fastSelect(),
@@ -48,11 +51,13 @@ DesignSystem.getOrCreate().register(
     fastSliderLabel(),
     fastTabs(),
     fastTab(),
+    fastSwitch(),
     fastTabPanel(),
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
     fastToolingHTMLRender({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" })
+    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" }),
+    fastToolingCSSLayout({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -298,7 +303,9 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
     };
 
     render() {
-        return <css-layout ref={this.setLayoutRef}></css-layout>;
+        return (
+            <fast-tooling-css-layout ref={this.setLayoutRef}></fast-tooling-css-layout>
+        );
     }
 }
 

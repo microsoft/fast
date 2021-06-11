@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import App from "./app";
 /* eslint-disable-next-line */
 const styles = require("@microsoft/site-utilities/src/components/editor/editor.style.css");
+styles;
 
 /**
  * Create the a style override

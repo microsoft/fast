@@ -1,20 +1,14 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { fastSwitch } from "@microsoft/fast-components";
+import { DOM } from "@microsoft/fast-element";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import { expect } from "chai";
-import { fixture } from "../fixture";
-import { CSSLayoutTemplate as template } from "./css-layout.template";
-import { FASTToolingCSSLayout as CSSLayout } from ".";
-
-@customElement({
-    name: "fast-tooling-css-layout",
-    template,
-})
-class FASTToolingCSSLayout extends CSSLayout {}
-FASTToolingCSSLayout;
+import { fixture } from "../../__test__/fixture";
+import { fastToolingCSSLayout } from ".";
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTToolingCSSLayout>(
-        "fast-tooling-css-layout"
-    );
+    const { element, connect, disconnect } = await fixture(fastToolingCSSLayout(), {
+        designSystem: DesignSystem.getOrCreate().register(fastSwitch()),
+    });
 
     return { element, connect, disconnect };
 }
