@@ -1,7 +1,7 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
-import { FASTColorPicker, FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
+import { fastToolingColorPicker, FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import {
     fastButton,
     fastSelect,
@@ -10,10 +10,11 @@ import {
     fastTab,
     fastTabPanel,
     fastTabs,
+    fastTextField,
 } from "@microsoft/fast-components";
-import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import { HTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
-import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
+import { fastToolingHTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render";
+import { fastToolingHTMLRenderLayerNavigation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
@@ -30,6 +31,7 @@ import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilit
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
 import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import { FormId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
@@ -37,18 +39,21 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTColorPicker;
-fastSlider;
-fastSliderLabel;
-fastButton;
-fastSelect;
-fastTab;
-fastTabPanel;
-fastTabs;
-HTMLRender;
 HTMLRenderLayerInlineEdit;
-HTMLRenderLayerNavgation;
 FASTToolingCSSLayout;
+DesignSystem.getOrCreate().register(
+    fastButton(),
+    fastSelect(),
+    fastSlider(),
+    fastSliderLabel(),
+    fastTabs(),
+    fastTab(),
+    fastTabPanel(),
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" }),
+    fastToolingHTMLRender({ prefix: "fast-tooling" }),
+    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" })
+);
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -108,7 +113,7 @@ function getColorPickerControl(
         context: ControlContext.fill,
         control: (config: ControlConfig): React.ReactNode => {
             return (
-                <color-picker
+                <fast-tooling-color-picker
                     value={config.value || config.default}
                     events={{
                         change: (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -117,7 +122,7 @@ function getColorPickerControl(
                             });
                         },
                     }}
-                ></color-picker>
+                ></fast-tooling-color-picker>
             );
         },
     });
@@ -127,7 +132,7 @@ export function getColorPickerControls(
     updateHandler: (updatedData: { [key: string]: unknown }) => void
 ): StandardControlPlugin[] {
     return [
-        getColorPickerControl("background-color", updateHandler),
+        getColorPickerControl("fill-color", updateHandler),
         getColorPickerControl("accent-base-color", updateHandler),
     ];
 }
@@ -192,12 +197,9 @@ export function getSliderControls(
 ): StandardControlPlugin[] {
     return [
         getSliderControl("base-layer-luminance", updateHandler, 0, 1, 0.1, 1),
-        getSliderControl("density", updateHandler, -2, 2),
-        getSliderControl("base-height-multiplier", updateHandler, 5, 15),
-        getSliderControl("base-horizontal-spacing-multiplier", updateHandler, 0, 6),
-        getSliderControl("corner-radius", updateHandler, 0, 22, 1, 3),
-        getSliderControl("outline-width", updateHandler, 0, 12, 1, 1),
-        getSliderControl("focus-outline-width", updateHandler, 0, 12, 1, 2),
+        getSliderControl("control-corner-radius", updateHandler, 0, 22, 1, 3),
+        getSliderControl("stroke-width", updateHandler, 0, 12, 1, 1),
+        getSliderControl("focus-stroke-width", updateHandler, 0, 12, 1, 2),
         getSliderControl("disabled-opacity", updateHandler, 0, 1, 0.1, 0.3),
     ];
 }
@@ -301,28 +303,18 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
 }
 
 export class HTMLRenderReact extends React.Component {
-    public designRef: React.RefObject<HTMLDivElement>;
     public renderRef: React.RefObject<HTMLDivElement>;
-
-    private setDesignRef = el => {
-        this.designRef = el;
-    };
 
     private setRenderRef = el => {
         this.renderRef = el;
     };
 
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
-            <fast-design-system-provider ref={this.setDesignRef}>
-                <fast-tooling-html-render ref={this.setRenderRef}>
-                    <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
-                    <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
-                </fast-tooling-html-render>
-            </fast-design-system-provider>
+            <fast-tooling-html-render ref={this.setRenderRef}>
+               <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
+            </fast-tooling-html-render>
         );
     }
 }
