@@ -1,4 +1,4 @@
-import { customElement, FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "@microsoft/fast-foundation";
 import {

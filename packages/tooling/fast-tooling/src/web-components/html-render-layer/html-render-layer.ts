@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     DataDictionary,
