@@ -36,11 +36,11 @@ import {
     textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
+    baseLayerLuminance,
     fastBadge,
     fastCheckbox,
     fastNumberField,
@@ -52,8 +52,9 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
-    neutralLayerL1_DEPRECATED,
+    fillColor,
     StandardLuminance,
+    SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
@@ -68,6 +69,7 @@ import {
     renderFormTabs,
 } from "./web-components";
 import { Device } from "./web-components/devices";
+import fastDesignSystemSchema from "./configs/library.fast.design-system.schema.json";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -83,12 +85,22 @@ DesignSystem.getOrCreate().register(
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" })
 );
+baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
+fillColor.setValueFor(
+    document.body,
+    SwatchRGB.create(
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode
+    )
+);
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
+    [fastDesignSystemSchema.id]: fastDesignSystemSchema,
     [textSchema.id]: textSchema,
 };
 
@@ -156,7 +168,7 @@ class Creator extends Editor<{}, CreatorState> {
             deviceId: this.devices[0].id,
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            accentColor: "",
             activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
@@ -166,16 +178,11 @@ class Creator extends Editor<{}, CreatorState> {
             designSystemDataDictionary: [
                 {
                     [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
+                        schemaId: "fastDesignTokens",
                         data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            "accent-base-color": "#DA1A5F",
                             direction: Direction.ltr,
-                            "background-color": neutralLayerL1_DEPRECATED(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance: StandardLuminance.LightMode,
-                                })
-                            ),
+                            theme: StandardLuminance.LightMode,
                         },
                     },
                 },
@@ -272,7 +279,7 @@ class Creator extends Editor<{}, CreatorState> {
                                         accentBaseColor={
                                             accentColor !== undefined
                                                 ? accentColor
-                                                : fastDesignSystemDefaults.accentBaseColor
+                                                : "#DA1A5F"
                                         }
                                         onAccentColorPickerChange={
                                             this.handleAccentColorPickerChange
@@ -365,6 +372,11 @@ class Creator extends Editor<{}, CreatorState> {
                     dataDictionary: this.state.designSystemDataDictionary,
                     schemaDictionary,
                 });
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    originatorId: "design-system",
+                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
             } else {
@@ -587,11 +599,7 @@ class Creator extends Editor<{}, CreatorState> {
         });
 
         this.updateDesignSystemDataDictionaryState({
-            "background-color": neutralLayerL1_DEPRECATED(
-                Object.assign({}, fastDesignSystemDefaults, {
-                    baseLayerLuminance: updatedTheme,
-                })
-            ),
+            theme: updatedTheme,
         });
     };
 

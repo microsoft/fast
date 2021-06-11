@@ -22,7 +22,6 @@ import fastTabsDefinition from "@microsoft/fast-components/dist/esm/tabs/tabs.vs
 import fastTextAreaDefinition from "@microsoft/fast-components/dist/esm/text-area/text-area.vscode.definition.json";
 import fastTextFieldDefinition from "@microsoft/fast-components/dist/esm/text-field/text-field.vscode.definition.json";
 import fastTooltipDefinition from "@microsoft/fast-components/dist/esm/tooltip/tooltip.vscode.definition.json";
-import fastDesignSystemProviderDefinition from "@microsoft/fast-components/dist/esm/design-system-provider/design-system-provider.vscode.definition.json";
 
 export const componentCategories: FormCategoryDictionary = {
     [fastAccordionItemDefinition.tags[0].name]: {
@@ -49,30 +48,22 @@ export const componentCategories: FormCategoryDictionary = {
             },
         ],
     },
-    [fastDesignSystemProviderDefinition.tags[0].name]: {
+    fastDesignTokens: {
         "": [
             {
                 title: "Color",
                 dataLocations: [
                     "base-layer-luminance",
-                    "background-color",
+                    "fill-color",
                     "accent-base-color",
-                ],
-            },
-            {
-                title: "Layout",
-                dataLocations: [
-                    "density",
-                    "base-height-multiplier",
-                    "base-horizontal-spacing-multiplier",
                 ],
             },
             {
                 title: "Style",
                 dataLocations: [
-                    "corner-radius",
-                    "outline-width",
-                    "focus-outline-width",
+                    "control-corner-radius",
+                    "stroke-width",
+                    "focus-stroke-width",
                     "disabled-opacity",
                 ],
             },
@@ -80,9 +71,8 @@ export const componentCategories: FormCategoryDictionary = {
                 title: "Advanced",
                 expandByDefault: false,
                 dataLocations: [
+                    "theme",
                     "design-unit",
-                    "no-paint",
-                    "use-defaults",
                     "direction",
                     "type-ramp-minus-2-font-size",
                     "type-ramp-minus-2-line-height",
