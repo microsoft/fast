@@ -5,7 +5,6 @@ import { MessageSystem, MessageSystemType } from "../../message-system";
 import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-config";
 import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { ActivityType } from "../html-render-layer/html-render-layer";
-import { HTMLRenderLayerNavigation } from "./html-render-layer-navigation";
 import { fastToolingHTMLRenderLayerNavigation } from "./";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
