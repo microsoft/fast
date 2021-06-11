@@ -54,7 +54,6 @@ export enum SwatchFamilyType {
     hover = "hover",
     active = "active",
     focus = "focus",
-    selected = "selected",
 }
 
 /**
