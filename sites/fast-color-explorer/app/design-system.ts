@@ -114,7 +114,6 @@ export interface ColorsDesignSystem {
     accentFillHoverDelta: number;
     accentFillActiveDelta: number;
     accentFillFocusDelta: number;
-    accentFillSelectedDelta: number;
 
     /**
      * Color swatch deltas for the accent-foreground recipe.
@@ -131,7 +130,6 @@ export interface ColorsDesignSystem {
     neutralFillHoverDelta: number;
     neutralFillActiveDelta: number;
     neutralFillFocusDelta: number;
-    neutralFillSelectedDelta: number;
 
     /**
      * Color swatch deltas for the neutral-fill-input recipe.
@@ -140,7 +138,6 @@ export interface ColorsDesignSystem {
     neutralFillInputHoverDelta: number;
     neutralFillInputActiveDelta: number;
     neutralFillInputFocusDelta: number;
-    neutralFillInputSelectedDelta: number;
 
     /**
      * Color swatch deltas for the neutral-fill-stealth recipe.
@@ -149,7 +146,6 @@ export interface ColorsDesignSystem {
     neutralFillStealthHoverDelta: number;
     neutralFillStealthActiveDelta: number;
     neutralFillStealthFocusDelta: number;
-    neutralFillStealthSelectedDelta: number;
 
     /**
      * Configuration for the neutral-fill-strong recipe.
@@ -261,7 +257,6 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
     accentFillHoverDelta: 4,
     accentFillActiveDelta: -5,
     accentFillFocusDelta: 0,
-    accentFillSelectedDelta: 12,
 
     accentForegroundRestDelta: 0,
     accentForegroundHoverDelta: 6,
@@ -272,19 +267,16 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
     neutralFillHoverDelta: 10,
     neutralFillActiveDelta: 5,
     neutralFillFocusDelta: 0,
-    neutralFillSelectedDelta: 7,
 
     neutralFillInputRestDelta: 0,
     neutralFillInputHoverDelta: 0,
     neutralFillInputActiveDelta: 0,
     neutralFillInputFocusDelta: 0,
-    neutralFillInputSelectedDelta: 0,
 
     neutralFillStealthRestDelta: 0,
     neutralFillStealthHoverDelta: 5,
     neutralFillStealthActiveDelta: 3,
     neutralFillStealthFocusDelta: 0,
-    neutralFillStealthSelectedDelta: 7,
 
     neutralFillStrongHoverDelta: 8,
     neutralFillStrongActiveDelta: -5,
