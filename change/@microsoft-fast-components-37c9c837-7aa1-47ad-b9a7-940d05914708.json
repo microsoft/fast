@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "select should emit an input event before the change event",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
