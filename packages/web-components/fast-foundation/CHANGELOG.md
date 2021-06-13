@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Sun, 13 Jun 2021 07:19:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- ensure host element of a shadowed element can be resolved (nicholasrice@users.noreply.github.com)
 
 ## 1.24.5
 
