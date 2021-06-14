@@ -14,11 +14,6 @@ export {
 } from "./neutral-foreground-toggle";
 
 export {
-    accentForegroundCut_DEPRECATED,
-    accentForegroundCutLarge_DEPRECATED,
-} from "./accent-foreground-cut";
-
-export {
     neutralForegroundHint_DEPRECATED,
     neutralForegroundHintLarge_DEPRECATED,
 } from "./neutral-foreground-hint";

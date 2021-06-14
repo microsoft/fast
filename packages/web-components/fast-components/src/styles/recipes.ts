@@ -1,7 +1,6 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
     accentForeground_DEPRECATED,
-    accentForegroundCut_DEPRECATED,
     accentForegroundLarge_DEPRECATED,
     neutralContrastFill_DEPRECATED,
     neutralContrastFillRest_DEPRECATED,
@@ -152,16 +151,7 @@ export const accentForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
     x => accentForeground_DEPRECATED(x).focus,
     FASTDesignSystemProvider.findProvider
 );
-/**
- * Behavior to resolve and make available the accent-foreground-cut-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundCutRestBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-cut-rest",
-    x => accentForegroundCut_DEPRECATED(x),
-    FASTDesignSystemProvider.findProvider
-);
+
 /**
  * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.
  * @public
