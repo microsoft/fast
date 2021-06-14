@@ -113,6 +113,7 @@
   },
   "resolutions": {
     "@types/react": "*",
+    "glob-parent": "^5.1.2",
     "immer": "^8.0.1",
     "is-svg": "^4.2.2",
     "jimp": "^0.16.1",
