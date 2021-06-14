@@ -44,14 +44,6 @@ export {
     neutralFillToggleActive_DEPRECATED,
 } from "./neutral-fill-toggle";
 
-export {
-    neutralFillInput_DEPRECATED,
-    neutralFillInputRest_DEPRECATED,
-    neutralFillInputHover_DEPRECATED,
-    neutralFillInputActive_DEPRECATED,
-    neutralFillInputSelected_DEPRECATED,
-} from "./neutral-fill-input";
-
 /**
  * Border exports
  */

@@ -1,7 +1,6 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
     neutralFill_DEPRECATED,
-    neutralFillInput_DEPRECATED,
     neutralFillStealth_DEPRECATED,
     neutralFillToggle_DEPRECATED,
     neutralFocus_DEPRECATED,
@@ -245,57 +244,6 @@ export const neutralFillToggleActiveBehavior = cssCustomPropertyBehaviorFactory(
 export const neutralFillToggleFocusBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-fill-toggle-focus",
     x => neutralFillToggle_DEPRECATED(x).focus,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-input-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillInputRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-rest",
-    x => neutralFillInput_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-input-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillInputHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-hover",
-    x => neutralFillInput_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-
-/**
- * Behavior to resolve and make available the neutral-fill-input-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillInputActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-active",
-    x => neutralFillInput_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-input-selected CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillInputSelectedBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-selected",
-    x => neutralFillInput_DEPRECATED(x).selected,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-input-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillInputFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-input-focus",
-    x => neutralFillInput_DEPRECATED(x).focus,
     FASTDesignSystemProvider.findProvider
 );
 
