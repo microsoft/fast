@@ -1,6 +1,5 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
-    neutralDividerRest_DEPRECATED,
     neutralFill_DEPRECATED,
     neutralFillCard_DEPRECATED,
     neutralFillInput_DEPRECATED,
@@ -11,7 +10,6 @@ import {
     neutralForeground_DEPRECATED,
     neutralForegroundHint_DEPRECATED,
     neutralForegroundHintLarge_DEPRECATED,
-    neutralForegroundRest_DEPRECATED,
     neutralForegroundToggle_DEPRECATED,
     neutralForegroundToggleLarge_DEPRECATED,
     neutralLayerCard_DEPRECATED,
@@ -352,16 +350,7 @@ export const neutralOutlineFocusBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralOutline_DEPRECATED(x).focus,
     FASTDesignSystemProvider.findProvider
 );
-/**
- * Behavior to resolve and make available the neutral-divider-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralDividerRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-divider-rest",
-    neutralDividerRest_DEPRECATED,
-    FASTDesignSystemProvider.findProvider
-);
+
 /**
  * Behavior to resolve and make available the neutral-layer-floating CSS custom property.
  * @public

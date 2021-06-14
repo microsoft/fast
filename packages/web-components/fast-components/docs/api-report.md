@@ -1231,15 +1231,6 @@ export const menuStyles: (context: any, definition: any) => import("@microsoft/f
 // @public @deprecated (undocumented)
 export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralDividerRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralDividerRest_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const neutralDividerRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public @deprecated (undocumented)
 export const neutralDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
@@ -1258,6 +1249,7 @@ export const neutralFill_DEPRECATED: ColorRecipe<FillSwatchFamily>;
 // @public (undocumented)
 export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)

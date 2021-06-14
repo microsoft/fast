@@ -64,8 +64,6 @@ export {
     neutralOutlineActive_DEPRECATED,
 } from "./neutral-outline";
 
-export { neutralDividerRest_DEPRECATED } from "./neutral-divider";
-
 /**
  * App layer exports
  */
