@@ -1,7 +1,6 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
     neutralFill_DEPRECATED,
-    neutralFillCard_DEPRECATED,
     neutralFillInput_DEPRECATED,
     neutralFillStealth_DEPRECATED,
     neutralFillToggle_DEPRECATED,
@@ -300,16 +299,6 @@ export const neutralFillInputFocusBehavior = cssCustomPropertyBehaviorFactory(
     FASTDesignSystemProvider.findProvider
 );
 
-/**
- * Behavior to resolve and make available the neutral-fill-card-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillCardRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-card-rest",
-    x => neutralFillCard_DEPRECATED(x),
-    FASTDesignSystemProvider.findProvider
-);
 /**
  * Behavior to resolve and make available the neutral-outline-rest CSS custom property.
  * @public

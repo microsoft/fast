@@ -52,8 +52,6 @@ export {
     neutralFillInputSelected_DEPRECATED,
 } from "./neutral-fill-input";
 
-export { neutralFillCard_DEPRECATED } from "./neutral-fill-card";
-
 /**
  * Border exports
  */
