@@ -113,6 +113,7 @@
   },
   "resolutions": {
     "@types/react": "*",
+    "clean-css": "^4.2.3",
     "immer": "^8.0.1",
     "is-svg": "^4.2.2",
     "jimp": "^0.16.1",
