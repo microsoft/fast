@@ -1,7 +1,5 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
-    neutralContrastFill_DEPRECATED,
-    neutralContrastFillRest_DEPRECATED,
     neutralDividerRest_DEPRECATED,
     neutralFill_DEPRECATED,
     neutralFillCard_DEPRECATED,
@@ -462,55 +460,5 @@ export const neutralFocusBehavior = cssCustomPropertyBehaviorFactory(
 export const neutralFocusInnerAccentBehavior = cssCustomPropertyBehaviorFactory(
     "neutral-focus-inner-accent",
     neutralFocusInnerAccent_DEPRECATED(accentBaseColor),
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-contrast-foreground-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralContrastForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-contrast-foreground-rest",
-    x => neutralForegroundRest_DEPRECATED(neutralContrastFillRest_DEPRECATED)(x),
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-contrast-fill-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralContrastFillRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-contrast-fill-rest",
-    x => neutralContrastFill_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-contrast-fill-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralContrastFillHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-contrast-fill-hover",
-    x => neutralContrastFill_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-contrast-fill-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralContrastFillActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-contrast-fill-active",
-    x => neutralContrastFill_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-contrast-fill-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralContrastFillFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-contrast-fill-focus",
-    x => neutralContrastFill_DEPRECATED(x).focus,
     FASTDesignSystemProvider.findProvider
 );

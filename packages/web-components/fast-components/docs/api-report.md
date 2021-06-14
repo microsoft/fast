@@ -1228,46 +1228,10 @@ export const menuItemStyles: (context: any, definition: any) => import("@microso
 // @public
 export const menuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
-// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralContrastFill_DEPRECATED: SwatchFamilyResolver;
-
-// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralContrastFillActive_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const neutralContrastFillActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public @deprecated
-export const neutralContrastFillFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralContrastFillHover_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const neutralContrastFillHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// Warning: (ae-internal-missing-underscore) The name "neutralContrastFillRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralContrastFillRest_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const neutralContrastFillRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public @deprecated
-export const neutralContrastForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public @deprecated (undocumented)
 export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralDividerRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)
@@ -1546,6 +1510,7 @@ export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesi
 // @public (undocumented)
 export const neutralFillStrongRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralFillToggle_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)

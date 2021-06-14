@@ -52,13 +52,6 @@ export {
     neutralFillInputSelected_DEPRECATED,
 } from "./neutral-fill-input";
 
-export {
-    neutralContrastFill_DEPRECATED,
-    neutralContrastFillRest_DEPRECATED,
-    neutralContrastFillHover_DEPRECATED,
-    neutralContrastFillActive_DEPRECATED,
-} from "./neutral-contrast-fill";
-
 export { neutralFillCard_DEPRECATED } from "./neutral-fill-card";
 
 /**
