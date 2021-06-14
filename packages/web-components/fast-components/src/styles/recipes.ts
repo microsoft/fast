@@ -1,7 +1,5 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
-    accentForeground_DEPRECATED,
-    accentForegroundLarge_DEPRECATED,
     neutralContrastFill_DEPRECATED,
     neutralContrastFillRest_DEPRECATED,
     neutralDividerRest_DEPRECATED,
@@ -111,87 +109,7 @@ export const neutralForegroundHintLargeBehavior = cssCustomPropertyBehaviorFacto
     neutralForegroundHintLarge_DEPRECATED,
     FASTDesignSystemProvider.findProvider
 );
-/**
- * Behavior to resolve and make available the accent-foreground-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-rest",
-    x => accentForeground_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-hover",
-    x => accentForeground_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-active",
-    x => accentForeground_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-focus",
-    x => accentForeground_DEPRECATED(x).focus,
-    FASTDesignSystemProvider.findProvider
-);
 
-/**
- * Behavior to resolve and make available the accent-foreground-large-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundLargeRestBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-large-rest",
-    x => accentForegroundLarge_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-large-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundLargeHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-large-hover",
-    x => accentForegroundLarge_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-large-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundLargeActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-large-active",
-    x => accentForegroundLarge_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the accent-foreground-large-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const accentForegroundLargeFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "accent-foreground-large-focus",
-    x => accentForegroundLarge_DEPRECATED(x).focus,
-    FASTDesignSystemProvider.findProvider
-);
 /**
  * Behavior to resolve and make available the neutral-fill-rest CSS custom property.
  * @public

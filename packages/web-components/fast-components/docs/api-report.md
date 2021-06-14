@@ -89,23 +89,8 @@ export const accentFillRestDelta: import("@microsoft/fast-foundation").CSSDesign
 // @public (undocumented)
 export const AccentForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof accentForeground>>;
 
-// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentForeground_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForeground_DEPRECATED: SwatchFamilyResolver;
-
 // @public (undocumented)
 export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundActive_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public (undocumented)
 export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -119,68 +104,17 @@ export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSD
 // @public (undocumented)
 export const accentForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// @public @deprecated
-export const accentForegroundFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const accentForegroundFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const accentForegroundHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundHover_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const accentForegroundHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundLarge_DEPRECATED: SwatchFamilyResolver;
-
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundLargeActive_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundLargeActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public @deprecated
-export const accentForegroundLargeFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundLargeHover_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundLargeHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundLargeRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundLargeRest_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundLargeRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-internal-missing-underscore) The name "accentForegroundRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentForegroundRest_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const accentForegroundRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public (undocumented)
 export const accentForegroundRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1294,11 +1228,13 @@ export const menuItemStyles: (context: any, definition: any) => import("@microso
 // @public
 export const menuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)
 export const neutralContrastFill_DEPRECATED: SwatchFamilyResolver;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralContrastFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)

@@ -18,17 +18,6 @@ export {
     neutralForegroundHintLarge_DEPRECATED,
 } from "./neutral-foreground-hint";
 
-export {
-    accentForeground_DEPRECATED,
-    accentForegroundRest_DEPRECATED,
-    accentForegroundHover_DEPRECATED,
-    accentForegroundActive_DEPRECATED,
-    accentForegroundLarge_DEPRECATED,
-    accentForegroundLargeRest_DEPRECATED,
-    accentForegroundLargeHover_DEPRECATED,
-    accentForegroundLargeActive_DEPRECATED,
-} from "./accent-foreground";
-
 /**
  * Fill exports
  */
