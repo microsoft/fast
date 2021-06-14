@@ -22,6 +22,9 @@ export const SwatchRGB = Object.freeze({
     create(r: number, g: number, b: number): SwatchRGB {
         return new SwatchRGBImpl(r, g, b);
     },
+    from(obj: { r: number; g: number; b: number }): SwatchRGB {
+        return new SwatchRGBImpl(obj.r, obj.g, obj.b);
+    },
 });
 
 /**

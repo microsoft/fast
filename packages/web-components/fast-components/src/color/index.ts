@@ -69,19 +69,6 @@ export {
 } from "./neutral-fill-input";
 
 export {
-    accentFill_DEPRECATED,
-    accentFillRest_DEPRECATED,
-    accentFillHover_DEPRECATED,
-    accentFillActive_DEPRECATED,
-    accentFillSelected_DEPRECATED,
-    accentFillLarge_DEPRECATED,
-    accentFillLargeRest_DEPRECATED,
-    accentFillLargeHover_DEPRECATED,
-    accentFillLargeActive_DEPRECATED,
-    accentFillLargeSelected_DEPRECATED,
-} from "./accent-fill";
-
-export {
     neutralContrastFill_DEPRECATED,
     neutralContrastFillRest_DEPRECATED,
     neutralContrastFillHover_DEPRECATED,

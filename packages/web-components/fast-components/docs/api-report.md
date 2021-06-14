@@ -60,21 +60,8 @@ import { TreeView } from '@microsoft/fast-foundation';
 // @public (undocumented)
 export const AccentFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof accentFill>>;
 
-// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "FillSwatchFamily" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFill_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily>;
-
 // @public (undocumented)
 export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "accentFillActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillActive_DEPRECATED: SwatchRecipe;
 
 // @public (undocumented)
 export const accentFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -88,60 +75,21 @@ export const accentFillFocusDelta: import("@microsoft/fast-foundation").CSSDesig
 // @public (undocumented)
 export const accentFillHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillHover_DEPRECATED: SwatchRecipe;
-
 // @public (undocumented)
 export const accentFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillLarge_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillLarge_DEPRECATED: SwatchFamilyResolver<FillSwatchFamily>;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillLargeActive_DEPRECATED: SwatchRecipe;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillLargeHover_DEPRECATED: SwatchRecipe;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillLargeRest_DEPRECATED: SwatchRecipe;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillLargeSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillLargeSelected_DEPRECATED: SwatchRecipe;
 
 // @public (undocumented)
 export const accentFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// Warning: (ae-internal-missing-underscore) The name "accentFillRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillRest_DEPRECATED: SwatchRecipe;
-
 // @public (undocumented)
 export const accentFillRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// Warning: (ae-internal-missing-underscore) The name "accentFillSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const accentFillSelected_DEPRECATED: SwatchRecipe;
 
 // Warning: (ae-forgotten-export) The symbol "accentForeground" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
 export const AccentForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof accentForeground>>;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchFamilyResolver" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "accentForeground_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -150,6 +98,7 @@ export const accentForeground_DEPRECATED: SwatchFamilyResolver;
 // @public (undocumented)
 export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
+// Warning: (ae-forgotten-export) The symbol "SwatchRecipe" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "accentForegroundActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -1304,6 +1253,7 @@ export const neutralDividerRestDelta: import("@microsoft/fast-foundation").CSSDe
 export const NeutralFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFill>>;
 
 // Warning: (ae-forgotten-export) The symbol "ColorRecipe" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "FillSwatchFamily" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralFill_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)
@@ -1916,6 +1866,11 @@ export interface SwatchRGB extends Swatch {
 // @public (undocumented)
 export const SwatchRGB: Readonly<{
     create(r: number, g: number, b: number): SwatchRGB;
+    from(obj: {
+        r: number;
+        g: number;
+        b: number;
+    }): SwatchRGB;
 }>;
 
 // @public
