@@ -20,14 +20,14 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForeground,
+    neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -45,7 +45,7 @@ export const BaseButtonStyles = css`
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         background-color: ${neutralFillRest};
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
         cursor: pointer;
@@ -169,7 +169,7 @@ export const BaseButtonStyles = css`
 export const AccentButtonStyles = css`
     :host([appearance="accent"]) {
         background: ${accentFillRest};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
     }
 
     :host([appearance="accent"]:hover) {
@@ -339,7 +339,7 @@ export const LightweightButtonStyles = css`
     }
 
     :host([appearance="lightweight"]) .control:${focusVisible} .content::before {
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         height: calc(${focusStrokeWidth} * 1px);
     }
 `.withBehaviors(

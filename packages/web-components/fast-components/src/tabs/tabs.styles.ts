@@ -6,7 +6,7 @@ import {
     bodyFont,
     controlCornerRadius,
     designUnit,
-    neutralForeground,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -19,7 +19,7 @@ export const tabsStyles = (context, definition) =>
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForeground};
+            color: ${neutralForegroundRest};
             grid-template-columns: auto 1fr auto;
             grid-template-rows: auto 1fr;
         }

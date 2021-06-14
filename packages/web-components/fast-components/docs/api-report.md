@@ -1236,13 +1236,13 @@ export const focusStrokeWidth: import("@microsoft/fast-foundation").CSSDesignTok
 export const ForegroundOnAccent: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
 // @public (undocumented)
-export const foregroundOnAccent: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// @public (undocumented)
 export const ForegroundOnAccentLarge: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
 // @public (undocumented)
-export const foregroundOnAccentLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1412,7 +1412,7 @@ export const neutralFillInputSelected_DEPRECATED: ColorRecipe<string>;
 export const NeutralFillLayer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => SwatchRGB>;
 
 // @public (undocumented)
-export const neutralFillLayer: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // @public (undocumented)
 export const neutralFillLayerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1580,10 +1580,7 @@ export function neutralFocusInnerAccent_DEPRECATED(accentFillColor: DesignSystem
 // Warning: (ae-forgotten-export) The symbol "neutralForeground" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-export const NeutralForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralForeground_2>>;
-
-// @public (undocumented)
-export const neutralForeground: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const NeutralForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralForeground>>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralForeground_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1616,7 +1613,10 @@ export const neutralForegroundHintLarge_DEPRECATED: SwatchRecipe;
 // @internal @deprecated (undocumented)
 export const neutralForegroundHover_DEPRECATED: SwatchRecipe;
 
-// @public @deprecated (undocumented)
+// @public @deprecated
+export const neutralForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
 export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralForegroundRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1634,10 +1634,46 @@ export const neutralForegroundToggle_DEPRECATED: SwatchRecipe;
 // @internal @deprecated
 export const neutralForegroundToggleLarge_DEPRECATED: SwatchRecipe;
 
+// @public @deprecated
+export const neutralForegroundToggleLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const NeutralLayer1: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralLayer1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const NeutralLayer2: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralLayer2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const NeutralLayer3: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralLayer3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
+// @public (undocumented)
+export const NeutralLayer4: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralLayer4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerCard_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated
 export const neutralLayerCard_DEPRECATED: ColorRecipe<Swatch_2>;
+
+// @public @deprecated
+export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public (undocumented)
+export const NeutralLayerCardContainer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+
+// @public (undocumented)
+export const neutralLayerCardContainer: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerCardContainer_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1655,10 +1691,10 @@ export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesig
 // @internal @deprecated
 export const neutralLayerFloating_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public (undocumented)
-export const NeutralLayerL1: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+// @public @deprecated
+export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL1_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1671,10 +1707,13 @@ export const neutralLayerL1_DEPRECATED: ColorRecipe<Swatch_2>;
 // @internal @deprecated
 export const neutralLayerL1Alt_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public (undocumented)
-export const NeutralLayerL2: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+// @public @deprecated
+export const neutralLayerL1AltBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public @deprecated
+export const neutralLayerL1Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
+
+// @public @deprecated (undocumented)
 export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL2_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1682,10 +1721,10 @@ export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken
 // @internal @deprecated
 export const neutralLayerL2_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public (undocumented)
-export const NeutralLayerL3: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+// @public @deprecated
+export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL3_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1693,10 +1732,10 @@ export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken
 // @internal @deprecated
 export const neutralLayerL3_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public (undocumented)
-export const NeutralLayerL4: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+// @public @deprecated
+export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // Warning: (ae-internal-missing-underscore) The name "neutralLayerL4_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1755,7 +1794,7 @@ export const neutralStrokeActiveDelta: import("@microsoft/fast-foundation").CSSD
 export const NeutralStrokeDivider: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
 // @public (undocumented)
-export const neutralStrokeDivider: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeDividerRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
 // @public (undocumented)
 export const neutralStrokeDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
