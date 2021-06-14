@@ -1,7 +1,6 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
     neutralFill_DEPRECATED,
-    neutralFillStealth_DEPRECATED,
     neutralFillToggle_DEPRECATED,
     neutralFocus_DEPRECATED,
     neutralFocusInnerAccent_DEPRECATED,
@@ -154,58 +153,7 @@ export const neutralFillSelectedBehavior = cssCustomPropertyBehaviorFactory(
     x => neutralFill_DEPRECATED(x).selected,
     FASTDesignSystemProvider.findProvider
 );
-/**
- * Behavior to resolve and make available the neutral-fill-stealth-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillStealthRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-stealth-rest",
-    x => neutralFillStealth_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
 
-/**
- * Behavior to resolve and make available the neutral-fill-stealth-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillStealthHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-stealth-hover",
-    x => neutralFillStealth_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-
-/**
- * Behavior to resolve and make available the neutral-fill-stealth-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillStealthActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-stealth-active",
-    x => neutralFillStealth_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-stealth-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillStealthFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-stealth-focus",
-    x => neutralFillStealth_DEPRECATED(x).focus,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-fill-stealth-selected CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralFillStealthSelectedBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-fill-stealth-selected",
-    x => neutralFillStealth_DEPRECATED(x).selected,
-    FASTDesignSystemProvider.findProvider
-);
 /**
  * Behavior to resolve and make available the neutral-fill-toggle-rest CSS custom property.
  * @public

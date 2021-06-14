@@ -1355,22 +1355,8 @@ export const neutralFillSelectedBehavior: import("@microsoft/fast-foundation").C
 // @public (undocumented)
 export const NeutralFillStealth: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillStealth>>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealth_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralFillStealth_DEPRECATED: ColorRecipe<FillSwatchFamily>;
-
 // @public (undocumented)
 export const neutralFillStealthActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-forgotten-export) The symbol "Swatch" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthActive_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralFillStealthActive_DEPRECATED: ColorRecipe<Swatch_2>;
-
-// @public @deprecated
-export const neutralFillStealthActiveBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public (undocumented)
 export const neutralFillStealthActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1378,22 +1364,11 @@ export const neutralFillStealthActiveDelta: import("@microsoft/fast-foundation")
 // @public (undocumented)
 export const neutralFillStealthFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// @public @deprecated
-export const neutralFillStealthFocusBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const neutralFillStealthFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillStealthHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthHover_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralFillStealthHover_DEPRECATED: ColorRecipe<Swatch_2>;
-
-// @public @deprecated
-export const neutralFillStealthHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public (undocumented)
 export const neutralFillStealthHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1401,24 +1376,8 @@ export const neutralFillStealthHoverDelta: import("@microsoft/fast-foundation").
 // @public (undocumented)
 export const neutralFillStealthRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthRest_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralFillStealthRest_DEPRECATED: ColorRecipe<Swatch_2>;
-
-// @public @deprecated
-export const neutralFillStealthRestBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const neutralFillStealthRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// Warning: (ae-internal-missing-underscore) The name "neutralFillStealthSelected_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const neutralFillStealthSelected_DEPRECATED: ColorRecipe<Swatch_2>;
-
-// @public @deprecated
-export const neutralFillStealthSelectedBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // Warning: (ae-forgotten-export) The symbol "neutralFillContrast" needs to be exported by the entry point index.d.ts
 //
@@ -1509,6 +1468,7 @@ export const neutralFillToggleRestDelta: import("@microsoft/fast-foundation").CS
 // @public @deprecated (undocumented)
 export const neutralFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
+// Warning: (ae-forgotten-export) The symbol "Swatch" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "neutralFocus_DEPRECATED" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)

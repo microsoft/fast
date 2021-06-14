@@ -30,14 +30,6 @@ export {
 } from "./neutral-fill";
 
 export {
-    neutralFillStealth_DEPRECATED,
-    neutralFillStealthRest_DEPRECATED,
-    neutralFillStealthHover_DEPRECATED,
-    neutralFillStealthActive_DEPRECATED,
-    neutralFillStealthSelected_DEPRECATED,
-} from "./neutral-fill-stealth";
-
-export {
     neutralFillToggle_DEPRECATED,
     neutralFillToggleRest_DEPRECATED,
     neutralFillToggleHover_DEPRECATED,
