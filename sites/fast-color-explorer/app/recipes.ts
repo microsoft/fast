@@ -1,26 +1,26 @@
 import { contrastRatio, parseColor } from "@microsoft/fast-colors";
-import { accentFill as accentFillAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-fill";
-import { accentForeground as accentForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/accent-foreground";
-import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/foreground-on-accent";
-import { neutralDivider as neutralDividerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-divider";
-import { neutralFill as neutralFillAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill";
-import { neutralFillLayer as neutralFillLayerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-layer";
-import { neutralFillInput as neutralFillInputAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-input";
-import { neutralFillStealth as neutralFillStealthAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-stealth";
-import { neutralFillContrast as neutralFillContrastAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-fill-contrast";
+import { accentFill as accentFillAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/accent-fill";
+import { accentForeground as accentForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/accent-foreground";
+import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/foreground-on-accent";
+import { neutralDivider as neutralDividerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-divider";
+import { neutralFill as neutralFillAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill";
+import { neutralFillLayer as neutralFillLayerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-layer";
+import { neutralFillInput as neutralFillInputAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-input";
+import { neutralFillStealth as neutralFillStealthAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-stealth";
+import { neutralFillContrast as neutralFillContrastAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-contrast";
 import {
     focusStrokeInner as focusStrokeInnerAlgorithm,
     focusStrokeOuter as focusStrokeOuterAlgorithm,
-} from "@microsoft/fast-components/dist/esm/color-vNext/recipes/focus-stroke";
-import { neutralForeground as neutralForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground";
-import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground-hint";
-import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-card-container";
-import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-floating";
-import { neutralLayer1 as neutralLayer1Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-1";
-import { neutralLayer2 as neutralLayer2Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-2";
-import { neutralLayer3 as neutralLayer3Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-3";
-import { neutralLayer4 as neutralLayer4Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-4";
-import { neutralStroke as neutralStrokeAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-stroke";
+} from "@microsoft/fast-components/dist/esm/color/recipes/focus-stroke";
+import { neutralForeground as neutralForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-foreground";
+import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-foreground-hint";
+import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-card-container";
+import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-floating";
+import { neutralLayer1 as neutralLayer1Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-1";
+import { neutralLayer2 as neutralLayer2Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-2";
+import { neutralLayer3 as neutralLayer3Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-3";
+import { neutralLayer4 as neutralLayer4Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-4";
+import { neutralStroke as neutralStrokeAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-stroke";
 import { ColorsDesignSystem, swatchToSwatchRGB } from "./design-system";
 
 export type Swatch = string;

@@ -14,7 +14,7 @@ import {
     FoundationElement,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
-import { PaletteRGB } from "../color-vNext/palette";
+import { PaletteRGB } from "../color/palette";
 import {
     accentFillActiveDelta,
     accentFillFocusDelta,

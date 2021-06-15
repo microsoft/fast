@@ -5,7 +5,7 @@ export function baseLayerLuminanceSwatch(luminance: number) {
 }
 
 /**
- * Recommended values for light and dark mode for {@link @microsoft/fast-components#FASTDesignSystem.baseLayerLuminance}.
+ * Recommended values for light and dark mode for {@link @microsoft/fast-components#baseLayerLuminance}.
  *
  * @public
  */
