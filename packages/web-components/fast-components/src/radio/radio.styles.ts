@@ -14,11 +14,11 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeActive,
     neutralStrokeHover,
     neutralStrokeRest,
@@ -60,7 +60,7 @@ export const radioStyles = (context, definition) =>
 
     .label {
         font-family: ${bodyFont};
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
         } padding-inline-start: calc(${designUnit} * 2px + 2px);
@@ -87,8 +87,8 @@ export const radioStyles = (context, definition) =>
         bottom: 5px;
         border-radius: 999px;
         display: inline-block;
-        background: ${foregroundOnAccent};
-        fill: ${foregroundOnAccent};
+        background: ${foregroundOnAccentRest};
+        fill: ${foregroundOnAccentRest};
         opacity: 0;
         pointer-events: none;
     }

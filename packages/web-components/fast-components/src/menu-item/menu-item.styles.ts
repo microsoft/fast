@@ -15,10 +15,10 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthRest,
-    neutralForeground,
     neutralForegroundHint,
-    neutralLayerL2,
-    neutralLayerL3,
+    neutralForegroundRest,
+    neutralLayer2,
+    neutralLayer3,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -41,7 +41,7 @@ export const menuItemStyles = (context, definition) =>
         padding: 0;
         margin: 0 calc(${designUnit} * 1px);
         white-space: nowrap;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
@@ -79,20 +79,20 @@ export const menuItemStyles = (context, definition) =>
 
     :host(:${focusVisible}) {
         border-color: ${focusStrokeOuter};
-        background: ${neutralLayerL3};
-        color: ${neutralForeground};
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
     }
 
     :host(:hover) {
-        background: ${neutralLayerL3};
-        color: ${neutralForeground};
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
-        background: ${neutralLayerL2};
-        color: ${neutralForeground};
+        background: ${neutralLayer2};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
@@ -101,7 +101,7 @@ export const menuItemStyles = (context, definition) =>
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         background: ${neutralFillStealthRest};
     }
@@ -109,7 +109,7 @@ export const menuItemStyles = (context, definition) =>
     :host([disabled]:hover) .start,
     :host([disabled]:hover) .end,
     :host([disabled]:hover)::slotted(svg) {
-        fill: ${neutralForeground};
+        fill: ${neutralForegroundRest};
     }
 
     .expand-collapse-glyph {
@@ -148,7 +148,7 @@ export const menuItemStyles = (context, definition) =>
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: ${neutralForeground};
+        fill: ${neutralForegroundRest};
     }
 
     :host(.indent-1[aria-haspopup="menu"]),
@@ -204,7 +204,7 @@ export const menuItemStyles = (context, definition) =>
 
     :host .checkbox,
     :host .radio {
-        border: calc(${strokeWidth} * 1px) solid ${neutralForeground};
+        border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]) .checkbox,
@@ -240,7 +240,7 @@ export const menuItemStyles = (context, definition) =>
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForeground};
+        fill: ${neutralForegroundRest};
         pointer-events: none;
     }
 
@@ -252,7 +252,7 @@ export const menuItemStyles = (context, definition) =>
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         pointer-events: none;
     }
 

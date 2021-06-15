@@ -20,7 +20,7 @@ import {
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralForegroundHint,
     strokeWidth,
     typeRampBaseFontSize,
@@ -48,12 +48,12 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(:hover) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:active) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
@@ -106,11 +106,11 @@ export const tabStyles = (context, definition) =>
     }
 
     :host(.vertical:hover) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:active) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {

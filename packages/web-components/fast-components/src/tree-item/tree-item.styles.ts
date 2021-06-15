@@ -25,7 +25,7 @@ import {
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForeground,
+    neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -85,7 +85,7 @@ export const treeItemStyles = (context, definition) =>
         contain: content;
         position: relative;
         outline: none;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         background: ${neutralFillStealthRest};
         cursor: pointer;
         font-family: ${bodyFont};
@@ -104,7 +104,7 @@ export const treeItemStyles = (context, definition) =>
     :host(:${focusVisible}) .positioning-region {
         border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
         border-radius: calc(${controlCornerRadius} * 1px);
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     .positioning-region {

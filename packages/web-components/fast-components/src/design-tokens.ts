@@ -16,11 +16,12 @@ import {
 } from "./color-vNext/recipes/focus-stroke";
 import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
+import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "./color-vNext/recipes/neutral-layer-card-container";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
-import { neutralLayerL1 as neutralLayerL1Algorithm } from "./color-vNext/recipes/neutral-layer-L1";
-import { neutralLayerL2 as neutralLayerL2Algorithm } from "./color-vNext/recipes/neutral-layer-L2";
-import { neutralLayerL3 as neutralLayerL3Algorithm } from "./color-vNext/recipes/neutral-layer-L3";
-import { neutralLayerL4 as neutralLayerL4Algorithm } from "./color-vNext/recipes/neutral-layer-L4";
+import { neutralLayer1 as neutralLayer1Algorithm } from "./color-vNext/recipes/neutral-layer-1";
+import { neutralLayer2 as neutralLayer2Algorithm } from "./color-vNext/recipes/neutral-layer-2";
+import { neutralLayer3 as neutralLayer3Algorithm } from "./color-vNext/recipes/neutral-layer-3";
+import { neutralLayer4 as neutralLayer4Algorithm } from "./color-vNext/recipes/neutral-layer-4";
 import { neutralStroke as neutralStrokeAlgorithm } from "./color-vNext/recipes/neutral-stroke";
 import { SwatchRGB } from "./color-vNext/swatch";
 import { StandardLuminance } from "./color-vNext/utilities/base-layer-luminance";
@@ -320,21 +321,21 @@ export const ForegroundOnAccentLarge = DI.createInterface<
 );
 
 /** @public */
-export const foregroundOnAccent = create<SwatchRGB>("foreground-on-accent").withDefault(
-    (element: HTMLElement) => {
-        return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccent)(element);
-    }
-);
-/** @public @deprecated Use foregroundOnAccent */
-export const accentForegroundCut = foregroundOnAccent;
+export const foregroundOnAccentRest = create<SwatchRGB>(
+    "foreground-on-accent-rest"
+).withDefault((element: HTMLElement) => {
+    return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccent)(element);
+});
+/** @public @deprecated Use foregroundOnAccentRest */
+export const accentForegroundCut = foregroundOnAccentRest;
 /** @public */
-export const foregroundOnAccentLarge = create<SwatchRGB>(
-    "foreground-on-accent-large"
+export const foregroundOnAccentRestLarge = create<SwatchRGB>(
+    "foreground-on-accent-rest-large"
 ).withDefault((element: HTMLElement) => {
     return DI.getOrCreateDOMContainer(element).get(ForegroundOnAccentLarge)(element);
 });
-/** @public @deprecated Use foregroundOnAccentLarge */
-export const accentForegroundCutLarge = foregroundOnAccentLarge;
+/** @public @deprecated Use foregroundOnAccentRestLarge */
+export const accentForegroundCutLarge = foregroundOnAccentRestLarge;
 
 // Accent Fill
 const accentFillByContrast = (contrast: number) => (
@@ -345,7 +346,7 @@ const accentFillByContrast = (contrast: number) => (
         accentPalette.getValueFor(element),
         neutralPalette.getValueFor(element),
         fill || fillColor.getValueFor(element),
-        foregroundOnAccent.getValueFor(element),
+        foregroundOnAccentRest.getValueFor(element),
         contrast,
         accentFillHoverDelta.getValueFor(element),
         accentFillActiveDelta.getValueFor(element),
@@ -452,13 +453,13 @@ export const NeutralStrokeDivider = DI.createInterface<
     )
 );
 /** @public */
-export const neutralStrokeDivider = create<SwatchRGB>(
-    "neutral-stroke-divider"
+export const neutralStrokeDividerRest = create<SwatchRGB>(
+    "neutral-stroke-divider-rest"
 ).withDefault(element =>
     DI.getOrCreateDOMContainer(element).get(NeutralStrokeDivider)(element)
 );
-/** @public @deprecated Use neutralStrokeDivider */
-export const neutralDivider = neutralStrokeDivider;
+/** @public @deprecated Use neutralStrokeDividerRest */
+export const neutralDivider = neutralStrokeDividerRest;
 
 // Neutral Fill Layer
 /** @public */
@@ -474,13 +475,13 @@ export const NeutralFillLayer = DI.createInterface<
     )
 );
 /** @public */
-export const neutralFillLayer = create<SwatchRGB>(
-    "neutral-fill-card"
+export const neutralFillLayerRest = create<SwatchRGB>(
+    "neutral-fill-layer-rest"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralFillLayer)(element)
 );
-/** @public @deprecated Use neutralFillLayer */
-export const neutralFillCard = neutralFillLayer;
+/** @public @deprecated Use neutralFillLayerRest */
+export const neutralFillCard = neutralFillLayerRest;
 
 // Neutral Fill Input
 /** @public */
@@ -758,13 +759,11 @@ export const NeutralForeground = DI.createInterface<
 );
 
 /** @public */
-export const neutralForeground = create<SwatchRGB>(
-    "neutral-foreground"
+export const neutralForegroundRest = create<SwatchRGB>(
+    "neutral-foreground-rest"
 ).withDefault((element: HTMLElement) =>
     DI.getOrCreateDOMContainer(element).get(NeutralForeground)(element)
 );
-/** @public @deprecated Use neutralForeground */
-export const neutralForegroundRest = neutralForeground;
 
 // Neutral Stroke
 /** @public */
@@ -812,6 +811,27 @@ export const neutralOutlineActive = neutralStrokeActive;
 /** @public @deprecated Use neutralStrokeFocus */
 export const neutralOutlineFocus = neutralStrokeFocus;
 
+// Neutral Layer Card Container
+/** @public */
+export const NeutralLayerCardContainer = DI.createInterface<
+    (element: HTMLElement) => SwatchRGB
+>("neutral-layer-card-container", builder =>
+    builder.instance((element: HTMLElement) =>
+        neutralLayerCardContainerAlgorithm(
+            neutralPalette.getValueFor(element),
+            baseLayerLuminance.getValueFor(element),
+            neutralFillLayerRestDelta.getValueFor(element)
+        )
+    )
+);
+
+/** @public */
+export const neutralLayerCardContainer = create<SwatchRGB>(
+    "neutral-layer-card-container"
+).withDefault((element: HTMLElement) =>
+    DI.getOrCreateDOMContainer(element).get(NeutralLayerCardContainer)(element)
+);
+
 // Neutral Layer Floating
 /** @public */
 export const NeutralLayerFloating = DI.createInterface<
@@ -833,13 +853,13 @@ export const neutralLayerFloating = create<SwatchRGB>(
     DI.getOrCreateDOMContainer(element).get(NeutralLayerFloating)(element)
 );
 
-// Neutral Layer L1
+// Neutral Layer 1
 /** @public */
-export const NeutralLayerL1 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
-    "neutral-layer-L1",
+export const NeutralLayer1 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-1",
     builder =>
         builder.instance((element: HTMLElement) =>
-            neutralLayerL1Algorithm(
+            neutralLayer1Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element)
             )
@@ -847,19 +867,21 @@ export const NeutralLayerL1 = DI.createInterface<(element: HTMLElement) => Swatc
 );
 
 /** @public */
-export const neutralLayerL1 = create<SwatchRGB>(
-    "neutral-layer-L1"
+export const neutralLayer1 = create<SwatchRGB>(
+    "neutral-layer-1"
 ).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralLayerL1)(element)
+    DI.getOrCreateDOMContainer(element).get(NeutralLayer1)(element)
 );
+/** @public @deprecated Use neutralLayer1 */
+export const neutralLayerL1 = neutralLayer1;
 
-// Neutral Layer L2
+// Neutral Layer 2
 /** @public */
-export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
-    "neutral-layer-L2",
+export const NeutralLayer2 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-2",
     builder =>
         builder.instance((element: HTMLElement) =>
-            neutralLayerL2Algorithm(
+            neutralLayer2Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
                 neutralFillLayerRestDelta.getValueFor(element),
@@ -871,19 +893,21 @@ export const NeutralLayerL2 = DI.createInterface<(element: HTMLElement) => Swatc
 );
 
 /** @public */
-export const neutralLayerL2 = create<SwatchRGB>(
-    "neutral-layer-L2"
+export const neutralLayer2 = create<SwatchRGB>(
+    "neutral-layer-2"
 ).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralLayerL2)(element)
+    DI.getOrCreateDOMContainer(element).get(NeutralLayer2)(element)
 );
+/** @public @deprecated Use neutralLayer2 */
+export const neutralLayerL2 = neutralLayer2;
 
-// Neutral Layer L3
+// Neutral Layer 3
 /** @public */
-export const NeutralLayerL3 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
-    "neutral-layer-L3",
+export const NeutralLayer3 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-3",
     builder =>
         builder.instance((element: HTMLElement) =>
-            neutralLayerL3Algorithm(
+            neutralLayer3Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
                 neutralFillLayerRestDelta.getValueFor(element),
@@ -895,19 +919,21 @@ export const NeutralLayerL3 = DI.createInterface<(element: HTMLElement) => Swatc
 );
 
 /** @public */
-export const neutralLayerL3 = create<SwatchRGB>(
-    "neutral-layer-L3"
+export const neutralLayer3 = create<SwatchRGB>(
+    "neutral-layer-3"
 ).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralLayerL3)(element)
+    DI.getOrCreateDOMContainer(element).get(NeutralLayer3)(element)
 );
+/** @public @deprecated Use neutralLayer3 */
+export const neutralLayerL3 = neutralLayer3;
 
-// Neutral Layer L4
+// Neutral Layer 4
 /** @public */
-export const NeutralLayerL4 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
-    "neutral-layer-L4",
+export const NeutralLayer4 = DI.createInterface<(element: HTMLElement) => SwatchRGB>(
+    "neutral-layer-4",
     builder =>
         builder.instance((element: HTMLElement) =>
-            neutralLayerL4Algorithm(
+            neutralLayer4Algorithm(
                 neutralPalette.getValueFor(element),
                 baseLayerLuminance.getValueFor(element),
                 neutralFillLayerRestDelta.getValueFor(element),
@@ -919,8 +945,10 @@ export const NeutralLayerL4 = DI.createInterface<(element: HTMLElement) => Swatc
 );
 
 /** @public */
-export const neutralLayerL4 = create<SwatchRGB>(
-    "neutral-layer-L4"
+export const neutralLayer4 = create<SwatchRGB>(
+    "neutral-layer-4"
 ).withDefault((element: HTMLElement) =>
-    DI.getOrCreateDOMContainer(element).get(NeutralLayerL4)(element)
+    DI.getOrCreateDOMContainer(element).get(NeutralLayer4)(element)
 );
+/** @public @deprecated Use neutralLayer4 */
+export const neutralLayerL4 = neutralLayer4;

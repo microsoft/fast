@@ -12,10 +12,10 @@ import {
 import {
     neutralLayerFloating as neutralLayerFloatingNew
 } from '../color-vNext/recipes/neutral-layer-floating';
-import { neutralLayerL1 as neutralLayerL1New } from "../color-vNext/recipes/neutral-layer-L1";
-import { neutralLayerL2 as neutralLayerL2New } from "../color-vNext/recipes/neutral-layer-L2";
-import { neutralLayerL3 as neutralLayerL3New } from "../color-vNext/recipes/neutral-layer-L3";
-import { neutralLayerL4 as neutralLayerL4New } from "../color-vNext/recipes/neutral-layer-L4";
+import { neutralLayer1 as neutralLayer1New } from "../color-vNext/recipes/neutral-layer-1";
+import { neutralLayer2 as neutralLayer2New } from "../color-vNext/recipes/neutral-layer-2";
+import { neutralLayer3 as neutralLayer3New } from "../color-vNext/recipes/neutral-layer-3";
+import { neutralLayer4 as neutralLayer4New } from "../color-vNext/recipes/neutral-layer-4";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { neutralBaseColor } from "./color-constants";
 import { PaletteRGB } from "../color-vNext/palette";
@@ -79,8 +79,8 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
              const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL1_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.LightMode).toColorString().toUpperCase())
-            expect(neutralLayerL1_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL1New(palette, StandardLuminance.DarkMode).toColorString().toUpperCase())
+            expect(neutralLayerL1_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayer1New(palette, StandardLuminance.LightMode).toColorString().toUpperCase())
+            expect(neutralLayerL1_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayer1New(palette, StandardLuminance.DarkMode).toColorString().toUpperCase())
         })
     });
 
@@ -110,7 +110,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL2_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL2New(
+            expect(neutralLayerL2_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayer2New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -118,7 +118,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL2_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL2New(
+            expect(neutralLayerL2_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayer2New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
@@ -155,7 +155,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL3_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL3New(
+            expect(neutralLayerL3_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayer3New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -163,7 +163,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL3_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL3New(
+            expect(neutralLayerL3_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayer3New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
@@ -200,7 +200,7 @@ describe("neutralLayer", (): void => {
         it("should have a new implementation that matches the old implementation", () => {
             const color = (parseColorHexRGB(neutralBaseColor)!)
             const palette = PaletteRGB.create(SwatchRGB.create(color.r, color.g, color.b));
-            expect(neutralLayerL4_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayerL4New(
+            expect(neutralLayerL4_DEPRECATED(lightModeDesignSystem)).to.equal(neutralLayer4New(
                 palette,
                 StandardLuminance.LightMode,
                 lightModeDesignSystem.neutralFillCardDelta,
@@ -208,7 +208,7 @@ describe("neutralLayer", (): void => {
                 lightModeDesignSystem.neutralFillHoverDelta,
                 lightModeDesignSystem.neutralFillActiveDelta,
                 ).toColorString().toUpperCase())
-            expect(neutralLayerL4_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayerL4New(
+            expect(neutralLayerL4_DEPRECATED(darkModeDesignSystem)).to.equal(neutralLayer4New(
                 palette,
                 StandardLuminance.DarkMode,
                 darkModeDesignSystem.neutralFillCardDelta,
