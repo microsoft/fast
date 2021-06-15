@@ -1,6 +1,5 @@
 import { cssCustomPropertyBehaviorFactory } from "@microsoft/fast-foundation";
 import {
-    neutralForeground_DEPRECATED,
     neutralLayerCard_DEPRECATED,
     neutralLayerCardContainer_DEPRECATED,
     neutralLayerFloating_DEPRECATED,
@@ -12,47 +11,6 @@ import {
     neutralOutline_DEPRECATED,
 } from "../color/index";
 import { FASTDesignSystemProvider } from "../design-system-provider/index";
-
-/**
- * Behavior to resolve and make available the neutral-foreground-rest CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralForegroundRestBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-foreground-rest",
-    x => neutralForeground_DEPRECATED(x).rest,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-foreground-hover CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralForegroundHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-foreground-hover",
-    x => neutralForeground_DEPRECATED(x).hover,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-foreground-active CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralForegroundActiveBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-foreground-active",
-    x => neutralForeground_DEPRECATED(x).active,
-    FASTDesignSystemProvider.findProvider
-);
-/**
- * Behavior to resolve and make available the neutral-foreground-focus CSS custom property.
- * @public
- * @deprecated - to-be deleted
- */
-export const neutralForegroundFocusBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-foreground-focus",
-    x => neutralForeground_DEPRECATED(x).focus,
-    FASTDesignSystemProvider.findProvider
-);
 
 /**
  * Behavior to resolve and make available the neutral-outline-rest CSS custom property.

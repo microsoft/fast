@@ -1,14 +1,4 @@
 /**
- * Text exports
- */
-export {
-    neutralForeground_DEPRECATED,
-    neutralForegroundRest_DEPRECATED,
-    neutralForegroundHover_DEPRECATED,
-    neutralForegroundActive_DEPRECATED,
-} from "./neutral-foreground";
-
-/**
  * Border exports
  */
 export {
