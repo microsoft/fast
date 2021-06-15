@@ -8,7 +8,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { SwatchRGB } from "../color-vNext/swatch";
+import { SwatchRGB } from "../color/swatch";
 import {
     accentForegroundRest,
     baseHeightMultiplier,
