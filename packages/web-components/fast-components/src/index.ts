@@ -14,7 +14,6 @@ export * from "./checkbox/index";
 export * from "./combobox/index";
 export * from "./data-grid/index";
 export * from "./design-system-provider/index";
-export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
 export { Swatch, SwatchRGB } from "./color-vNext/swatch";
 export { Palette, PaletteRGB } from "./color-vNext/palette";
 export { isDark } from "./color-vNext/utilities/is-dark";
