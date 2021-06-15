@@ -1,11 +1,8 @@
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
+import { Palette } from "../palette";
+import { Swatch } from "../swatch";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
-export function neutralLayer1(
-    palette: PaletteRGB,
-    baseLayerLuminance: number
-): SwatchRGB {
+export function neutralLayer1(palette: Palette, baseLayerLuminance: number): Swatch {
     return palette.get(
         palette.closestIndexOf(baseLayerLuminanceSwatch(baseLayerLuminance))
     );

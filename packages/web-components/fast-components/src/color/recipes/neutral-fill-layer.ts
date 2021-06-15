@@ -1,14 +1,14 @@
-import { PaletteRGB } from "../palette";
-import { Swatch, SwatchRGB } from "../swatch";
+import { Palette } from "../palette";
+import { Swatch } from "../swatch";
 
 /**
  * @internal
  */
 export function neutralFillLayer(
-    palette: PaletteRGB,
+    palette: Palette,
     reference: Swatch,
     delta: number
-): SwatchRGB {
+): Swatch {
     const referenceIndex = palette.closestIndexOf(reference);
 
     return palette.get(referenceIndex - (referenceIndex < delta ? delta * -1 : delta));
