@@ -5,7 +5,7 @@ import {
     controlCornerRadius,
     focusStrokeOuter,
     neutralFillRest,
-    neutralForeground,
+    neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -26,7 +26,7 @@ export const tooltipStyles = (context, definition) =>
             border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
             box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
             background: ${neutralFillRest};
-            color: ${neutralForeground};
+            color: ${neutralForegroundRest};
             padding: 4px;
             height: fit-content;
             width: fit-content;

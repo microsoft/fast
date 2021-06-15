@@ -11,7 +11,7 @@ import {
     density,
     designUnit,
     disabledOpacity,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeHover,
     neutralStrokeRest,
 } from "../design-tokens";
@@ -61,22 +61,22 @@ export const sliderStyles = (context, definition) =>
         height: calc(var(--thumb-size) * 1px);
         width: calc(var(--thumb-size) * 1px);
         transition: all 0.2s ease;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
     .thumb-cursor {
         border: none;
         width: calc(var(--thumb-size) * 1px);
         height: calc(var(--thumb-size) * 1px);
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         border-radius: calc(${controlCornerRadius} * 1px);
     }
     .thumb-cursor:hover {
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         border-color: ${neutralStrokeHover};
     }
     .thumb-cursor:active {
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
     }
     :host([orientation="horizontal"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px));

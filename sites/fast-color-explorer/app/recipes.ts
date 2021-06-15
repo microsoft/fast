@@ -16,10 +16,10 @@ import { neutralForeground as neutralForegroundAlgorithm } from "@microsoft/fast
 import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-foreground-hint";
 import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-card-container";
 import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-floating";
-import { neutralLayerL1 as neutralLayerL1Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L1";
-import { neutralLayerL2 as neutralLayerL2Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L2";
-import { neutralLayerL3 as neutralLayerL3Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L3";
-import { neutralLayerL4 as neutralLayerL4Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-L4";
+import { neutralLayer1 as neutralLayer1Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-1";
+import { neutralLayer2 as neutralLayer2Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-2";
+import { neutralLayer3 as neutralLayer3Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-3";
+import { neutralLayer4 as neutralLayer4Algorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-layer-4";
 import { neutralStroke as neutralStrokeAlgorithm } from "@microsoft/fast-components/dist/esm/color-vNext/recipes/neutral-stroke";
 import { ColorsDesignSystem, swatchToSwatchRGB } from "./design-system";
 
@@ -334,14 +334,14 @@ export const neutralLayerFloating = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-export const neutralLayerL1 = (d?: ColorsDesignSystem): string => {
-    return neutralLayerL1Algorithm(d?.neutralPaletteRGB, d?.baseLayerLuminance)
+export const neutralLayer1 = (d?: ColorsDesignSystem): string => {
+    return neutralLayer1Algorithm(d?.neutralPaletteRGB, d?.baseLayerLuminance)
         .toColorString()
         .toUpperCase();
 };
 
-export const neutralLayerL2 = (d?: ColorsDesignSystem): string => {
-    return neutralLayerL2Algorithm(
+export const neutralLayer2 = (d?: ColorsDesignSystem): string => {
+    return neutralLayer2Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
         d?.neutralFillLayerDelta,
@@ -353,8 +353,8 @@ export const neutralLayerL2 = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-export const neutralLayerL3 = (d?: ColorsDesignSystem): string => {
-    return neutralLayerL3Algorithm(
+export const neutralLayer3 = (d?: ColorsDesignSystem): string => {
+    return neutralLayer3Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
         d?.neutralFillLayerDelta,
@@ -366,8 +366,8 @@ export const neutralLayerL3 = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-export const neutralLayerL4 = (d?: ColorsDesignSystem): string => {
-    return neutralLayerL4Algorithm(
+export const neutralLayer4 = (d?: ColorsDesignSystem): string => {
+    return neutralLayer4Algorithm(
         d?.neutralPaletteRGB,
         d?.baseLayerLuminance,
         d?.neutralFillLayerDelta,

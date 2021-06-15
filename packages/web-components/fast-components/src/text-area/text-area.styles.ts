@@ -19,7 +19,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -38,7 +38,7 @@ export const textAreaStyles = (context, definition) =>
     .control {
         box-sizing: border-box;
         position: relative;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         background: ${neutralFillInputRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
@@ -95,7 +95,7 @@ export const textAreaStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};

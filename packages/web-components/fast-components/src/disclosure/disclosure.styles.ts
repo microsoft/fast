@@ -8,7 +8,7 @@ import {
     accentForegroundRest,
     bodyFont,
     controlCornerRadius,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     strokeWidth,
     typeRampBaseFontSize,
 } from "../design-tokens";
@@ -28,7 +28,7 @@ export const disclosureStyles = css`
 
     :host([appearance="accent"]) .invoker {
         background: ${accentFillRest};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
         border-radius: calc(${controlCornerRadius} * 1px);

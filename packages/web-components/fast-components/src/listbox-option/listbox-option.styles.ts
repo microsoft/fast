@@ -16,9 +16,9 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillHover,
-    neutralForeground,
+    neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -32,7 +32,7 @@ export const optionStyles = (context, definition) =>
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
         box-sizing: border-box;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
@@ -50,27 +50,27 @@ export const optionStyles = (context, definition) =>
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
     }
 
     :host([aria-selected="true"]) {
         background: ${accentFillHover};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
     }
 
     :host(:active) {
         background: ${accentFillActive};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
     }
 
     :host(:not([aria-selected="true"]):hover) {
         background: ${neutralFillHover};
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {

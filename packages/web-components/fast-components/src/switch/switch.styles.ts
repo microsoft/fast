@@ -15,11 +15,11 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeActive,
     neutralStrokeHover,
     neutralStrokeRest,
@@ -97,13 +97,13 @@ export const switchStyles = (context, definition) =>
         position: absolute;
         top: 5px;
         bottom: 5px;
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -115,7 +115,7 @@ export const switchStyles = (context, definition) =>
     }
 
     .label {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
 
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
@@ -137,7 +137,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]) .checked-indicator {
-        background: ${foregroundOnAccent};
+        background: ${foregroundOnAccentRest};
     }
 
     :host([aria-checked="true"]) .switch {

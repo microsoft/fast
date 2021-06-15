@@ -11,7 +11,7 @@ import {
     accentForegroundRest,
     bodyFont,
     focusStrokeWidth,
-    neutralForeground,
+    neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -85,12 +85,12 @@ export const breadcrumbItemStyles = (context, definition) =>
     }
 
     .control:${focusVisible} .content::before {
-        background: ${neutralForeground};
+        background: ${neutralForegroundRest};
         height: calc(${focusStrokeWidth} * 1px);
     }
 
     .control:not([href]) {
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: default;
     }
 

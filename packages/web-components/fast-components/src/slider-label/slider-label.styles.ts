@@ -5,7 +5,7 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeRest,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
@@ -55,7 +55,7 @@ export const sliderLabelStyles = (context, definition) =>
     css`
         ${display("block")} :host {
             font-family: ${bodyFont};
-            color: ${neutralForeground};
+            color: ${neutralForegroundRest};
             fill: currentcolor;
         }
         .root {

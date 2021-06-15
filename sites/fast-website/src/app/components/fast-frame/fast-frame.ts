@@ -3,7 +3,7 @@ import {
     StandardLuminance,
     PaletteRGB,
     SwatchRGB,
-    NeutralLayerL1,
+    NeutralLayer1,
     baseLayerLuminance,
     neutralPalette,
     accentPalette,
@@ -190,7 +190,7 @@ export class FastFrame extends FASTElement {
 
     private updateBackgroundColor(): void {
         this.backgroundColor = DI.getOrCreateDOMContainer(this)
-            .get(NeutralLayerL1)(this)
+            .get(NeutralLayer1)(this)
             .toColorString();
     }
 

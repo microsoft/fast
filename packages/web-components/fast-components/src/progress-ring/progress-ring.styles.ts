@@ -8,7 +8,7 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles";
 
-export const progressRingStyles = (context, defintion) =>
+export const progressRingStyles = (context, definition) =>
     css`
         ${display("flex")} :host {
             align-items: center;

@@ -17,12 +17,12 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillStealthRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralLayerFloating,
     neutralStrokeRest,
     strokeWidth,
@@ -40,7 +40,7 @@ export const selectStyles = (context, definition) =>
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         font-family: ${bodyFont};
         height: calc(${heightNumber} * 1px);
         position: relative;
@@ -98,7 +98,7 @@ export const selectStyles = (context, definition) =>
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillHover};
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
     }
 
     :host([disabled]) {
@@ -113,7 +113,7 @@ export const selectStyles = (context, definition) =>
 
     :host([disabled]:hover) {
         background: ${neutralFillStealthRest};
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
