@@ -12,12 +12,12 @@ import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
 import {
     ColorRecipe,
+    neutralLayer1,
+    neutralLayer2,
+    neutralLayer3,
+    neutralLayer4,
     neutralLayerCardContainer,
     neutralLayerFloating,
-    neutralLayerL1,
-    neutralLayerL2,
-    neutralLayerL3,
-    neutralLayerL4,
     Swatch,
     SwatchResolver,
 } from "./recipes";
@@ -46,10 +46,10 @@ class App extends React.Component<AppProps, {}> {
     private backgroundRecipes: Array<[SwatchResolver, string]> = [
         [neutralLayerFloating, "neutralLayerFloating"],
         [neutralLayerCardContainer, "neutralLayerCardContainer"],
-        [neutralLayerL1, "neutralLayerL1"],
-        [neutralLayerL2, "neutralLayerL2"],
-        [neutralLayerL3, "neutralLayerL3"],
-        [neutralLayerL4, "neutralLayerL4"],
+        [neutralLayer1, "neutralLayer1"],
+        [neutralLayer2, "neutralLayer2"],
+        [neutralLayer3, "neutralLayer3"],
+        [neutralLayer4, "neutralLayer4"],
     ];
 
     public render(): React.ReactNode {
