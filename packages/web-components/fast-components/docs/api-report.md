@@ -1613,9 +1613,6 @@ export const neutralForegroundHintLarge_DEPRECATED: SwatchRecipe;
 // @internal @deprecated (undocumented)
 export const neutralForegroundHover_DEPRECATED: SwatchRecipe;
 
-// @public @deprecated
-export const neutralForegroundHoverBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
@@ -1633,9 +1630,6 @@ export const neutralForegroundToggle_DEPRECATED: SwatchRecipe;
 //
 // @internal @deprecated
 export const neutralForegroundToggleLarge_DEPRECATED: SwatchRecipe;
-
-// @public @deprecated
-export const neutralForegroundToggleLargeBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public (undocumented)
 export const NeutralLayer1: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
@@ -1666,9 +1660,6 @@ export const neutralLayer4: import("@microsoft/fast-foundation").CSSDesignToken<
 // @internal @deprecated
 export const neutralLayerCard_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public @deprecated
-export const neutralLayerCardBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public (undocumented)
 export const NeutralLayerCardContainer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
 
@@ -1691,9 +1682,6 @@ export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesig
 // @internal @deprecated
 export const neutralLayerFloating_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public @deprecated
-export const neutralLayerFloatingBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public @deprecated (undocumented)
 export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
@@ -1707,12 +1695,6 @@ export const neutralLayerL1_DEPRECATED: ColorRecipe<Swatch_2>;
 // @internal @deprecated
 export const neutralLayerL1Alt_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public @deprecated
-export const neutralLayerL1AltBehavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
-// @public @deprecated
-export const neutralLayerL1Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public @deprecated (undocumented)
 export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
@@ -1721,9 +1703,6 @@ export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken
 // @internal @deprecated
 export const neutralLayerL2_DEPRECATED: ColorRecipe<Swatch_2>;
 
-// @public @deprecated
-export const neutralLayerL2Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
-
 // @public @deprecated (undocumented)
 export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
 
@@ -1731,9 +1710,6 @@ export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken
 //
 // @internal @deprecated
 export const neutralLayerL3_DEPRECATED: ColorRecipe<Swatch_2>;
-
-// @public @deprecated
-export const neutralLayerL3Behavior: import("@microsoft/fast-foundation").CSSCustomPropertyBehavior;
 
 // @public @deprecated (undocumented)
 export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
@@ -1877,7 +1853,7 @@ export enum PaletteType {
 export const parseColorString: (color: string) => ColorRGBA64;
 
 // @public
-export const progressRingStyles: (context: any, defintion: any) => import("@microsoft/fast-element").ElementStyles;
+export const progressRingStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const progressStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
