@@ -19,7 +19,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -40,7 +40,7 @@ export const numberFieldStyles = (context, definition) =>
         position: relative;
         display: flex;
         flex-direction: row;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         background: ${neutralFillInputRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
@@ -76,7 +76,7 @@ export const numberFieldStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
@@ -109,11 +109,11 @@ export const numberFieldStyles = (context, definition) =>
     }
 
     .step-up-glyph:before {
-        border-bottom-color: ${neutralForeground};
+        border-bottom-color: ${neutralForegroundRest};
     }
 
     .step-down-glyph:before {
-        border-top-color: ${neutralForeground};
+        border-top-color: ${neutralForegroundRest};
     }
 
     ::slotted(svg) {

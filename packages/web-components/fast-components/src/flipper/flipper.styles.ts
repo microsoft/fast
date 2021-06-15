@@ -14,9 +14,9 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccent,
+    foregroundOnAccentRest,
     neutralFillStealthRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens";
@@ -32,7 +32,7 @@ export const flipperStyles = (context, definition) =>
         margin: 0;
         position: relative;
         fill: currentcolor;
-        color: ${foregroundOnAccent};
+        color: ${foregroundOnAccentRest};
         background: transparent;
         outline: none;
         border: none;
@@ -67,7 +67,7 @@ export const flipperStyles = (context, definition) =>
         opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
         fill: currentcolor;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled])::before,

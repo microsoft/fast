@@ -19,7 +19,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
-    neutralForeground,
+    neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -40,7 +40,7 @@ export const textFieldStyles = (context, definition) =>
         position: relative;
         display: flex;
         flex-direction: row;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         background: ${neutralFillInputRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
@@ -72,7 +72,7 @@ export const textFieldStyles = (context, definition) =>
 
     .label {
         display: block;
-        color: ${neutralForeground};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
