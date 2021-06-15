@@ -5,10 +5,10 @@ import { middleGrey } from "../utilities/color-constants";
 import {
     neutralLayerFloating
 } from './neutral-layer-floating';
-import { neutralLayerL1 } from "./neutral-layer-L1";
-import { neutralLayerL2 } from "./neutral-layer-L2";
-import { neutralLayerL3 } from "./neutral-layer-L3";
-import { neutralLayerL4 } from "./neutral-layer-L4";
+import { neutralLayer1 } from "./neutral-layer-1";
+import { neutralLayer2 } from "./neutral-layer-2";
+import { neutralLayer3 } from "./neutral-layer-3";
+import { neutralLayer4 } from "./neutral-layer-4";
 
 const neutralPalette = PaletteRGB.create(middleGrey);
 
@@ -27,39 +27,39 @@ const enum NeutralPaletteDarkModeOffsets {
 }
 
 describe("neutralLayer", (): void => {
-    describe("L1", (): void => {
-        it("should return values from L1 when in light mode", (): void => {
-            expect(neutralLayerL1(neutralPalette, StandardLuminance.LightMode)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L1))
+    describe("1", (): void => {
+        it("should return values from 1 when in light mode", (): void => {
+            expect(neutralLayer1(neutralPalette, StandardLuminance.LightMode)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L1))
         });
-        it("should return values from L1 when in dark mode", (): void => {
-            expect(neutralLayerL1(neutralPalette, StandardLuminance.DarkMode)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L1))
-        });
-    });
-
-    describe("L2", (): void => {
-        it("should return values from L2 when in light mode", (): void => {
-            expect(neutralLayerL2(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L2))
-        });
-        it("should return values from L2 when in dark mode", (): void => {
-            expect(neutralLayerL2(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L2))
+        it("should return values from 1 when in dark mode", (): void => {
+            expect(neutralLayer1(neutralPalette, StandardLuminance.DarkMode)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L1))
         });
     });
 
-    describe("L3", (): void => {
-        it("should return values from L3 when in light mode", (): void => {
-            expect(neutralLayerL3(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L3))
+    describe("2", (): void => {
+        it("should return values from 2 when in light mode", (): void => {
+            expect(neutralLayer2(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L2))
         });
-        it("should return values from L3 when in dark mode", (): void => {
-            expect(neutralLayerL3(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L3))
+        it("should return values from 2 when in dark mode", (): void => {
+            expect(neutralLayer2(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L2))
         });
     });
 
-    describe("L4", (): void => {
-        it("should return values from L4 when in light mode", (): void => {
-            expect(neutralLayerL4(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L4))
+    describe("3", (): void => {
+        it("should return values from 3 when in light mode", (): void => {
+            expect(neutralLayer3(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L3))
         });
-        it("should return values from L4 when in dark mode", (): void => {
-            expect(neutralLayerL4(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L4))
+        it("should return values from 3 when in dark mode", (): void => {
+            expect(neutralLayer3(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L3))
+        });
+    });
+
+    describe("4", (): void => {
+        it("should return values from 4 when in light mode", (): void => {
+            expect(neutralLayer4(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L4))
+        });
+        it("should return values from 4 when in dark mode", (): void => {
+            expect(neutralLayer4(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L4))
         });
     });
 
