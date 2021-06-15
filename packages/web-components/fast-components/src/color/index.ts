@@ -9,20 +9,6 @@ export {
 } from "./neutral-outline";
 
 /**
- * App layer exports
- */
-export {
-    neutralLayerFloating_DEPRECATED,
-    neutralLayerCard_DEPRECATED,
-    neutralLayerCardContainer_DEPRECATED,
-    neutralLayerL1_DEPRECATED,
-    neutralLayerL1Alt_DEPRECATED,
-    neutralLayerL2_DEPRECATED,
-    neutralLayerL3_DEPRECATED,
-    neutralLayerL4_DEPRECATED,
-} from "./neutral-layer";
-
-/**
  * Export supporting types
  */
 export { isDarkMode, palette, PaletteType, Palette } from "./palette";
