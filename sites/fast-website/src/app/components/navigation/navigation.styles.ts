@@ -1,7 +1,5 @@
 import { css } from "@microsoft/fast-element";
 import {
-    neutralForegroundRestBehavior,
-    neutralForegroundHintBehavior,
     fillColor,
     bodyFont,
     typeRampMinus1FontSize,
@@ -10,7 +8,6 @@ import {
     neutralForegroundRest,
 } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
-import { fill } from "lodash";
 
 export const NavigationStyles = css`
     ${display("grid")} :host {
