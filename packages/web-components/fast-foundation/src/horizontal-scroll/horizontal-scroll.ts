@@ -12,7 +12,6 @@ import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
-import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 declare global {
@@ -57,13 +56,13 @@ export class HorizontalScroll extends FoundationElement {
      * Reference to flipper to scroll to previous content
      * @public
      */
-    public previousFlipper: HTMLDivElement;
+    public previousFlipperContainer: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to the next content
      * @public
      */
-    public nextFlipper: HTMLDivElement;
+    public nextFlipperContainer: HTMLDivElement;
 
     /**
      * @internal
@@ -284,14 +283,14 @@ export class HorizontalScroll extends FoundationElement {
      */
     private setFlippers(): void {
         const position: number = this.scrollContainer.scrollLeft;
-        if (this.previousFlipper) {
-            this.previousFlipper.classList.toggle("disabled", position === 0);
+        if (this.previousFlipperContainer) {
+            this.previousFlipperContainer.classList.toggle("disabled", position === 0);
         }
-        if (this.nextFlipper && this.scrollStops) {
+        if (this.nextFlipperContainer && this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipper.classList.toggle(
+            this.nextFlipperContainer.classList.toggle(
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );

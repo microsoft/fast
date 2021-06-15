@@ -39,9 +39,9 @@ export const horizontalScrollTemplate: (
                     <div
                         class="scroll scroll-prev"
                         part="scroll-prev"
-                        ${ref("previousFlipper")}
+                        ${ref("previousFlipperContainer")}
                     >
-                        <div class="scroll-action" @click="${x => x.scrollToPrevious()}">
+                        <div class="scroll-action">
                             <slot name="previous-flipper">
                                 ${definition.previousFlipper || ""}
                             </slot>
@@ -50,9 +50,9 @@ export const horizontalScrollTemplate: (
                     <div
                         class="scroll scroll-next"
                         part="scroll-next"
-                        ${ref("nextFlipper")}
+                        ${ref("nextFlipperContainer")}
                     >
-                        <div class="scroll-action" @click="${x => x.scrollToNext()}">
+                        <div class="scroll-action">
                             <slot name="next-flipper">
                                 ${definition.nextFlipper || ""}
                             </slot>

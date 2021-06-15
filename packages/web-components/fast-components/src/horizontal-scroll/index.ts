@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import {
     HorizontalScroll as FoundationHorizontalScroll,
     HorizontalScrollOptions,
@@ -37,8 +38,17 @@ export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOpt
     baseName: "horizontal-scroll",
     template,
     styles,
-    nextFlipper: `<fast-flipper @click=${x =>
-        x.scrollToNext()} aria-hidden="false"></fast-flipper>`,
-    previousFlipper: `<fast-flipper @click=${x =>
-        x.scrollToPrevious()} direction="previous" aria-hidden="false"></fast-flipper>`,
+    nextFlipper: html`
+        <fast-flipper
+            @click="${x => x.scrollToNext()}"
+            aria-hidden="false"
+        ></fast-flipper>
+    `,
+    previousFlipper: html`
+        <fast-flipper
+            @click="${x => x.scrollToPrevious()}"
+            direction="previous"
+            aria-hidden="false"
+        ></fast-flipper>
+    `,
 });
