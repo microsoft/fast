@@ -1,5 +1,6 @@
 import {
     attr,
+    booleanConverter,
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
@@ -112,6 +113,13 @@ export class HorizontalScroll extends FoundationElement {
      */
     @attr
     public easing: ScrollEasing = "ease-in-out";
+
+    /**
+     * Attribute to hide flippers from assistive technology
+     * @public
+     */
+    @attr({ attribute: "aria-hidden", converter: booleanConverter })
+    public flippersHiddenFromAT: boolean = false;
 
     /**
      * Scrolling state

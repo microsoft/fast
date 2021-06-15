@@ -1242,9 +1242,10 @@ export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     easing: ScrollEasing;
+    flippersHiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
-    nextFlipper: HTMLDivElement;
-    previousFlipper: HTMLDivElement;
+    nextFlipperContainer: HTMLDivElement;
+    previousFlipperContainer: HTMLDivElement;
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;

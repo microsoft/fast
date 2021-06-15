@@ -41,14 +41,14 @@ export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOpt
     nextFlipper: html`
         <fast-flipper
             @click="${x => x.scrollToNext()}"
-            aria-hidden="false"
+            aria-hidden="${x => x.flippersHiddenFromAT}"
         ></fast-flipper>
     `,
     previousFlipper: html`
         <fast-flipper
             @click="${x => x.scrollToPrevious()}"
             direction="previous"
-            aria-hidden="false"
+            aria-hidden="${x => x.flippersHiddenFromAT}"
         ></fast-flipper>
     `,
 });
