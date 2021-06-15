@@ -8,34 +8,6 @@ export {
     neutralForegroundActive_DEPRECATED,
 } from "./neutral-foreground";
 
-export {
-    neutralForegroundToggle_DEPRECATED,
-    neutralForegroundToggleLarge_DEPRECATED,
-} from "./neutral-foreground-toggle";
-
-export {
-    neutralForegroundHint_DEPRECATED,
-    neutralForegroundHintLarge_DEPRECATED,
-} from "./neutral-foreground-hint";
-
-/**
- * Fill exports
- */
-export {
-    neutralFill_DEPRECATED,
-    neutralFillRest_DEPRECATED,
-    neutralFillHover_DEPRECATED,
-    neutralFillActive_DEPRECATED,
-    neutralFillSelected_DEPRECATED,
-} from "./neutral-fill";
-
-export {
-    neutralFillToggle_DEPRECATED,
-    neutralFillToggleRest_DEPRECATED,
-    neutralFillToggleHover_DEPRECATED,
-    neutralFillToggleActive_DEPRECATED,
-} from "./neutral-fill-toggle";
-
 /**
  * Border exports
  */
@@ -59,14 +31,6 @@ export {
     neutralLayerL3_DEPRECATED,
     neutralLayerL4_DEPRECATED,
 } from "./neutral-layer";
-
-/**
- * Focus colors
- */
-export {
-    neutralFocus_DEPRECATED,
-    neutralFocusInnerAccent_DEPRECATED,
-} from "./neutral-focus";
 
 /**
  * Export supporting types
