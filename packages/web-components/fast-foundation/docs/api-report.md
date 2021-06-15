@@ -9,7 +9,6 @@ import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
-import { DecoratorAttributeConfiguration } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
@@ -251,8 +250,6 @@ export class Button extends FormAssociatedButton {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
-    // @deprecated (undocumented)
-    get root(): HTMLButtonElement;
     type: "submit" | "reset" | "button";
     }
 
@@ -421,22 +418,6 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 // @alpha
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
-// Warning: (ae-forgotten-export) The symbol "CustomPropertyManagerBase" needs to be exported by the entry point index.d.ts
-//
-// @public
-export class ConstructableStylesCustomPropertyManager extends CustomPropertyManagerBase {
-    constructor(sheet: CSSStyleSheet);
-    // (undocumented)
-    protected customPropertyTarget: CSSStyleDeclaration;
-    isSubscribed(client: CustomPropertyManagerClient): boolean;
-    // (undocumented)
-    protected readonly sheet: CSSStyleSheet;
-    // (undocumented)
-    protected styles: ElementStyles;
-    subscribe(client: CustomPropertyManagerClient): void;
-    unsubscribe(client: CustomPropertyManagerClient): void;
-}
-
 // @alpha (undocumented)
 export interface Container extends ServiceLocator {
     // (undocumented)
@@ -511,38 +492,6 @@ export class ContainerImpl implements Container {
 // @alpha
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
-// @public
-export class CSSCustomPropertyBehavior implements Behavior, CSSCustomPropertyDefinition {
-    constructor(name: string, value: CSSCustomPropertyDefinition["value"], host: (source: HTMLElement) => Partial<CSSCustomPropertyTarget> | null);
-    // @internal
-    bind(source: HTMLElement): void;
-    readonly name: CSSCustomPropertyDefinition["name"];
-    readonly propertyName: string;
-    // @internal
-    unbind(source: HTMLElement): void;
-    readonly value: CSSCustomPropertyDefinition["value"];
-    readonly var: string;
-}
-
-// @public
-export function cssCustomPropertyBehaviorFactory(name: string, value: string | ((...arg: any[]) => string), host: (source: typeof FASTElement & HTMLElement) => Partial<CSSCustomPropertyTarget> | null): CSSCustomPropertyBehavior;
-
-// @public
-export interface CSSCustomPropertyDefinition {
-    name: string;
-    value: string | ((...args: any[]) => string);
-}
-
-// @public
-export interface CSSCustomPropertyTarget {
-    // (undocumented)
-    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[] | void;
-    // (undocumented)
-    registerCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
-    // (undocumented)
-    unregisterCSSCustomProperty(behavior: CSSCustomPropertyDefinition): void;
-}
-
 // @alpha
 export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
     createCSS?(): string;
@@ -552,25 +501,6 @@ export interface CSSDesignToken<T extends string | number | boolean | BigInteger
 
 // @public
 export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "inherit" | "initial" | "inline" | "inline-block" | "inline-flex" | "inline-grid" | "inline-table" | "list-item" | "none" | "run-in" | "table" | "table-caption" | "table-cell" | "table-column" | "table-column-group" | "table-footer-group" | "table-header-group" | "table-row" | "table-row-group";
-
-// @public
-export interface CustomPropertyManager {
-    isSubscribed?(provider: CustomPropertyManagerClient): boolean;
-    readonly owner: CustomPropertyManagerClient | null;
-    register(definition: CSSCustomPropertyDefinition): void;
-    remove(name: string): void;
-    set(definition: CSSCustomPropertyDefinition): void;
-    setAll(): void;
-    subscribe?(provider: CustomPropertyManagerClient): void;
-    unregister(name: string): void;
-    unsubscribe?(provider: CustomPropertyManagerClient): void;
-}
-
-// @public
-export interface CustomPropertyManagerClient extends FASTElement, HTMLElement {
-    cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    evaluate(definition: CSSCustomPropertyDefinition): string;
-}
 
 // @public
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
@@ -693,13 +623,6 @@ export enum DataGridRowTypes {
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
-// @public
-export interface DecoratorDesignSystemPropertyConfiguration extends Omit<DecoratorAttributeConfiguration, "attribute"> {
-    attribute?: string | false;
-    cssCustomProperty?: string | false;
-    default: any;
-}
-
 // @alpha
 export class DefaultComponentPresentation implements ComponentPresentation {
     constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
@@ -717,9 +640,6 @@ export const DefaultResolver: Readonly<{
     singleton(key: Key): Resolver;
     transient(key: Key): Resolver;
 }>;
-
-// @public
-export function defineDesignSystemProvider(nameOrDef: string | PartialFASTElementDefinition): <T extends typeof DesignSystemProvider>(providerCtor: T) => void;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -830,56 +750,6 @@ export const DesignSystem: Readonly<{
     responsibleFor(element: HTMLElement): DesignSystem;
     getOrCreate(element?: HTMLElement): DesignSystem;
 }>;
-
-// @public
-export interface DesignSystemConsumer {
-    // (undocumented)
-    provider: DesignSystemProvider | null;
-}
-
-// @public
-export const designSystemConsumerBehavior: Behavior;
-
-// @public
-export function designSystemProperty<T extends DesignSystemProvider>(config: DecoratorDesignSystemPropertyConfiguration): (source: T, property: string) => void;
-
-// @public
-export class DesignSystemProvider extends FASTElement implements CSSCustomPropertyTarget, DesignSystemConsumer, CustomPropertyManagerClient {
-    constructor();
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal
-    cssCustomPropertyDefinitions: Map<string, CSSCustomPropertyDefinition>;
-    customPropertyManager: CustomPropertyManager;
-    designSystem: {};
-    // @internal
-    designSystemProperties: {
-        [propertyName: string]: Required<Pick<DecoratorDesignSystemPropertyConfiguration, "cssCustomProperty" | "default">>;
-    };
-    // (undocumented)
-    disconnectedCallback(): void;
-    // @deprecated
-    disconnectedCSSCustomPropertyRegistry?: CSSCustomPropertyDefinition[];
-    disconnectedRegistry?: Array<(provider: DesignSystemProvider) => void> | void;
-    evaluate(definition: CSSCustomPropertyDefinition): string;
-    static findProvider(el: HTMLElement & Partial<DesignSystemConsumer>): DesignSystemProvider | null;
-    static isDesignSystemProvider(el: HTMLElement | DesignSystemProvider): el is DesignSystemProvider;
-    readonly isDesignSystemProvider = true;
-    provider: DesignSystemProvider | null;
-    registerCSSCustomProperty(def: CSSCustomPropertyDefinition): void;
-    static registerTagName(tagName: string): void;
-    static get tagNames(): string[];
-    unregisterCSSCustomProperty(def: CSSCustomPropertyDefinition): void;
-    useDefaults: boolean;
-    }
-
-// Warning: (ae-internal-missing-underscore) The name "designSystemProvider" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const designSystemProvider: typeof defineDesignSystemProvider;
-
-// @public
-export const DesignSystemProviderTemplate: ViewTemplate<DesignSystemProvider>;
 
 // @alpha
 export interface DesignSystemRegistrationContext {
@@ -1290,9 +1160,6 @@ export interface Invoker<T extends Constructable = any> {
 }
 
 // @public
-export function isDesignSystemConsumer(element: HTMLElement | DesignSystemConsumer): element is DesignSystemConsumer;
-
-// @public
 export function isListboxOption(el: Element): el is ListboxOption;
 
 // @public
@@ -1443,9 +1310,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
     unbind(source: typeof FASTElement & HTMLElement): void;
     static with(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 }
-
-// @public @deprecated
-export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList): (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
 export type MediaQueryListListener = (this: MediaQueryList, ev?: MediaQueryListEvent) => void;
@@ -2050,17 +1914,6 @@ export const startTemplate: ViewTemplate<StartEnd>;
 // @alpha
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
-// @public
-export class StyleElementCustomPropertyManager extends CustomPropertyManagerBase {
-    constructor(style: HTMLStyleElement, client: CustomPropertyManagerClient);
-    // (undocumented)
-    protected customPropertyTarget: CSSStyleDeclaration;
-    // (undocumented)
-    get sheet(): CSSStyleSheet | null;
-    // (undocumented)
-    readonly styles: HTMLStyleElement;
-}
-
 // @alpha (undocumented)
 export const supportsElementInternals: boolean;
 
@@ -2370,16 +2223,12 @@ export class TreeItem extends FoundationElement {
     // (undocumented)
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
-    // @deprecated (undocumented)
-    handleBlur: (e: FocusEvent) => void;
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
     // (undocumented)
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // @deprecated (undocumented)
-    handleFocus: (e: Event) => void;
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
@@ -2414,12 +2263,8 @@ export class TreeView extends FoundationElement {
     connectedCallback(): void;
     // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // @deprecated (undocumented)
-    focusable: boolean;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
-    // @deprecated (undocumented)
-    handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)

@@ -170,19 +170,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 }
 
 /**
- * Construct a behavior factory that will conditionally apply a stylesheet based
- * on a MediaQueryList
- *
- * @param query - The MediaQueryList to subscribe to matches for.
- *
- * @public
- * @deprecated - use {@link MatchMediaStyleSheetBehavior.with}
- */
-export function matchMediaStylesheetBehaviorFactory(query: MediaQueryList) {
-    return MatchMediaStyleSheetBehavior.with(query);
-}
-
-/**
  * This can be used to construct a behavior to apply a forced-colors only stylesheet.
  * @public
  */
