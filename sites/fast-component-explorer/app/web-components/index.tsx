@@ -1,9 +1,9 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
     fastButton,
-    FASTDesignSystemProvider,
+    fastDesignSystemProvider,
     fastOption,
     fastSelect,
     fastTab,
@@ -11,21 +11,23 @@ import {
     fastTabs,
 } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
-import h from "@microsoft/site-utilities/dist/web-components/pragma";
-import { ListboxOption } from "@microsoft/fast-foundation";
+import { DesignSystem, ListboxOption } from "@microsoft/fast-foundation";
 import { Select } from "@microsoft/fast-foundation";
 import { Scenario } from "../fast-components/configs/data.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-fastButton;
-FASTDesignSystemProvider;
-fastOption;
-fastSelect;
-fastTab;
-fastTabPanel;
-fastTabs;
+
+DesignSystem.getOrCreate().register(
+    fastButton(),
+    fastDesignSystemProvider(),
+    fastOption(),
+    fastSelect(),
+    fastTab(),
+    fastTabPanel(),
+    fastTabs()
+);
 
 interface RenderDevToolsTabsConfig {
     codeRenderCallback: (e: HTMLElement) => void;

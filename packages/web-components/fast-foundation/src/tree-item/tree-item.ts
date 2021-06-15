@@ -160,20 +160,6 @@ export class TreeItem extends FoundationElement {
     }
 
     /**
-     * @deprecated - no longer needed.
-     * @param e - Event object
-     */
-    /* eslint-disable-next-line */
-    public handleFocus = (e: Event): void => {};
-
-    /**
-     * @deprecated - no longer needed.
-     * @param e - Event object
-     */
-    /* eslint-disable-next-line */
-    public handleBlur = (e: FocusEvent): void => {};
-
-    /**
      * The keyboarding on treeview should conform to the following spec
      * https://w3c.github.io/aria-practices/#keyboard-interaction-23
      * @param e - Event object for keyDown event

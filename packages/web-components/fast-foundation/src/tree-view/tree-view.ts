@@ -15,20 +15,8 @@ export class TreeView extends FoundationElement {
     @attr({ attribute: "render-collapsed-nodes" })
     public renderCollapsedNodes: boolean;
 
-    /**
-     * @deprecated - the tree itself is no longer a focusable area.
-     */
-    @observable
-    public focusable: boolean = true;
-
     @observable
     public currentSelected: HTMLElement | TreeItem | null;
-
-    /**
-     * @deprecated - this property is no longer needed.
-     */
-    @observable
-    private lastFocused: HTMLElement;
 
     @observable
     private nested: boolean;
@@ -75,12 +63,6 @@ export class TreeView extends FoundationElement {
             target.removeAttribute("tabindex");
         }
     };
-
-    /**
-     * @deprecated - no longer needed
-     */
-    /* eslint-disable-next-line */
-    public handleFocus = (e: FocusEvent): void => {};
 
     public connectedCallback(): void {
         super.connectedCallback();
