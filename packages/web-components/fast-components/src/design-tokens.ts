@@ -1,31 +1,31 @@
 import { DesignToken, DI } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { PaletteRGB } from "./color-vNext/palette";
-import { accentFill as accentFillAlgorithm } from "./color-vNext/recipes/accent-fill";
-import { accentForeground as accentForegroundAlgorithm } from "./color-vNext/recipes/accent-foreground";
-import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color-vNext/recipes/foreground-on-accent";
-import { neutralDivider as neutralDividerAlgorithm } from "./color-vNext/recipes/neutral-divider";
-import { neutralFill as neutralFillAlgorithm } from "./color-vNext/recipes/neutral-fill";
-import { neutralFillInput as NeutralFillInputAlgorithm } from "./color-vNext/recipes/neutral-fill-input";
-import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color-vNext/recipes/neutral-fill-layer";
-import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color-vNext/recipes/neutral-fill-stealth";
-import { neutralFillContrast as neutralFillContrastAlgorithm } from "./color-vNext/recipes/neutral-fill-contrast";
+import { PaletteRGB } from "./color/palette";
+import { accentFill as accentFillAlgorithm } from "./color/recipes/accent-fill";
+import { accentForeground as accentForegroundAlgorithm } from "./color/recipes/accent-foreground";
+import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent";
+import { neutralDivider as neutralDividerAlgorithm } from "./color/recipes/neutral-divider";
+import { neutralFill as neutralFillAlgorithm } from "./color/recipes/neutral-fill";
+import { neutralFillInput as NeutralFillInputAlgorithm } from "./color/recipes/neutral-fill-input";
+import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color/recipes/neutral-fill-layer";
+import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color/recipes/neutral-fill-stealth";
+import { neutralFillContrast as neutralFillContrastAlgorithm } from "./color/recipes/neutral-fill-contrast";
 import {
     focusStrokeInner as focusStrokeInnerAlgorithm,
     focusStrokeOuter as focusStrokeOuterAlgorithm,
-} from "./color-vNext/recipes/focus-stroke";
-import { neutralForeground as neutralForegroundAlgorithm } from "./color-vNext/recipes/neutral-foreground";
-import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color-vNext/recipes/neutral-foreground-hint";
-import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "./color-vNext/recipes/neutral-layer-card-container";
-import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color-vNext/recipes/neutral-layer-floating";
-import { neutralLayer1 as neutralLayer1Algorithm } from "./color-vNext/recipes/neutral-layer-1";
-import { neutralLayer2 as neutralLayer2Algorithm } from "./color-vNext/recipes/neutral-layer-2";
-import { neutralLayer3 as neutralLayer3Algorithm } from "./color-vNext/recipes/neutral-layer-3";
-import { neutralLayer4 as neutralLayer4Algorithm } from "./color-vNext/recipes/neutral-layer-4";
-import { neutralStroke as neutralStrokeAlgorithm } from "./color-vNext/recipes/neutral-stroke";
-import { SwatchRGB } from "./color-vNext/swatch";
-import { StandardLuminance } from "./color-vNext/utilities/base-layer-luminance";
-import { accentBase, middleGrey } from "./color-vNext/utilities/color-constants";
+} from "./color/recipes/focus-stroke";
+import { neutralForeground as neutralForegroundAlgorithm } from "./color/recipes/neutral-foreground";
+import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color/recipes/neutral-foreground-hint";
+import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color/recipes/neutral-layer-floating";
+import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "./color/recipes/neutral-layer-card-container";
+import { neutralLayer1 as neutralLayer1Algorithm } from "./color/recipes/neutral-layer-1";
+import { neutralLayer2 as neutralLayer2Algorithm } from "./color/recipes/neutral-layer-2";
+import { neutralLayer3 as neutralLayer3Algorithm } from "./color/recipes/neutral-layer-3";
+import { neutralLayer4 as neutralLayer4Algorithm } from "./color/recipes/neutral-layer-4";
+import { neutralStroke as neutralStrokeAlgorithm } from "./color/recipes/neutral-stroke";
+import { SwatchRGB } from "./color/swatch";
+import { StandardLuminance } from "./color/utilities/base-layer-luminance";
+import { accentBase, middleGrey } from "./color/utilities/color-constants";
 
 const { create } = DesignToken;
 
