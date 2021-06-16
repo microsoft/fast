@@ -3,13 +3,13 @@ import {
     createPickerListTemplate,
     createPickerMenuTemplate,
     createPickerTemplate,
+    Picker,
     PickerList,
     PickerMenu,
 } from "@microsoft/fast-foundation";
-import { PeoplePickerStyles as pickerStyles } from "./people-picker.styles";
-import { PeoplePickerMenuStyles as pickerMenuStyles } from "./people-picker-menu.styles";
-import { PeoplePickerListStyles as pickerListStyles } from "./people-picker-list.styles";
-import { PeoplePicker } from "./people-picker";
+import { PickerStyles as pickerStyles } from "./picker.styles";
+import { PickerMenuStyles as pickerMenuStyles } from "./picker-menu.styles";
+import { PickerListStyles as pickerListStyles } from "./picker-list.styles";
 
 const itemTemplate: ViewTemplate = html`
     <button
@@ -19,7 +19,7 @@ const itemTemplate: ViewTemplate = html`
         @keydown="${(x, c) =>
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
     >
-        <mgt-person user-id="${x => x}" view="oneLine"></mgt-person>
+        ${x => x}
     </button>
 `;
 
@@ -29,40 +29,36 @@ const optionTemplate: ViewTemplate = html`
         tabindex="-1"
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
     >
-        <mgt-person
-            user-id="${x => x}"
-            view="twoLines"
-            line2-property="jobTitle"
-        ></mgt-person>
+        ${x => x}
     </button>
 `;
 
 /**
- * The FAST People Picker Custom Element. Implements {@link @microsoft/fast-foundation#PeoplePicker},
- * {@link @microsoft/fast-foundation#PeoplePickerTemplate}
+ * The FAST  Picker Custom Element. Implements {@link @microsoft/fast-foundation#Picker},
+ * {@link @microsoft/fast-foundation#PickerTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-people-picker\>
+ * HTML Element: \<fast-picker\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 @customElement({
-    name: "fast-people-picker",
+    name: "fast-picker",
     template: createPickerTemplate("fast", itemTemplate, optionTemplate),
     styles: pickerStyles,
     shadowOptions: {
         delegatesFocus: true,
     },
 })
-export class FASTPeoplePicker extends PeoplePicker {}
+export class FASTPicker extends Picker {}
 
 /**
- * Styles for PeoplePicker
+ * Styles for Picker
  * @public
  */
-export const PeoplePickerStyles = pickerStyles;
+export const PickerStyles = pickerStyles;
 
 /**
  *
@@ -70,21 +66,21 @@ export const PeoplePickerStyles = pickerStyles;
  *
  * @public
  * @remarks
- * HTML Element: \<fast-people-picker-menu\>
+ * HTML Element: \<fast-picker-menu\>
  *
  */
 @customElement({
-    name: "fast-people-picker-menu",
+    name: "fast-picker-menu",
     template: createPickerMenuTemplate("fast"),
     styles: pickerMenuStyles,
 })
-export class FASTPeoplePickerMenu extends PickerMenu {}
+export class FASTPickerMenu extends PickerMenu {}
 
 /**
- * Styles for PeoplePickerMenu
+ * Styles for PickerMenu
  * @public
  */
-export const PeoplePickerMenuStyles = pickerMenuStyles;
+export const PickerMenuStyles = pickerMenuStyles;
 
 /**
  *
@@ -92,18 +88,18 @@ export const PeoplePickerMenuStyles = pickerMenuStyles;
  *
  * @public
  * @remarks
- * HTML Element: \<fast-people-picker-list\>
+ * HTML Element: \<fast-picker-list\>
  *
  */
 @customElement({
-    name: "fast-people-picker-list",
+    name: "fast-picker-list",
     template: createPickerListTemplate("fast"),
     styles: pickerListStyles,
 })
-export class FASTPeoplePickerList extends PickerList {}
+export class FASTPickerList extends PickerList {}
 
 /**
- * Styles for PeoplePickerList
+ * Styles for PickerList
  * @public
  */
-export const PeoplePickerListStyles = pickerListStyles;
+export const PickerListStyles = pickerListStyles;

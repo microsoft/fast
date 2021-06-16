@@ -30,8 +30,6 @@ The 'picker' component is actually composed of three web components:
 
 Most end-user developers will simply deal with the top level 'picker'  (ie. "people-picker", "topping-picker", etc...) and the 'picker-list' and 'picker-menu' sub-components should mostly only be a concern for developers creating these derived types.
 
-Management of loading states is largely left to the derived types
-
 ### API
 
 **Picker**

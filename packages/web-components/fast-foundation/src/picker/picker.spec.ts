@@ -17,7 +17,7 @@ function createOptionTemplate(): ViewTemplate {
 
 @customElement({
     name: "fast-picker",
-    template: createPickerTemplate("fast", "fast-picker-menu", createItemTemplate(), createOptionTemplate()),
+    template: createPickerTemplate("fast",  createItemTemplate(), createOptionTemplate()),
 })
 class FASTPicker extends Picker {}
 

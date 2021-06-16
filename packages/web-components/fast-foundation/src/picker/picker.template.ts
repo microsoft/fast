@@ -7,14 +7,13 @@ import type { Picker } from "./picker";
  */
 export function createPickerTemplate(
     prefix: string,
-    subtype: string,
     itemTemplate: ViewTemplate,
     optionTemplate: ViewTemplate
 ): ViewTemplate {
     return html<Picker>`
         <template
-            :selectedlisttag=${`${prefix}-${subtype}-picker-list`}
-            :pickermenutag=${`${prefix}-${subtype}-picker-menu`}
+            :selectedlisttag=${`${prefix}-picker-list`}
+            :pickermenutag=${`${prefix}-picker-menu`}
             :defaultItemTemplate=${itemTemplate}
             :defaultOptionTemplate=${optionTemplate}
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
@@ -29,15 +28,25 @@ export function createPickerTemplate(
                 html<Picker>`
                 <${prefix}-anchored-region
                     class="region"
-                    auto-update-mode="${x => x.menuConfig.autoUpdateMode !== undefined ? x.menuConfig.autoUpdateMode : 'auto'}"
-                    fixed-placement="${x => x.menuConfig.fixedPlacement !== undefined ? x.menuConfig.fixedPlacement : true }"
-                    vertical-positioning-mode="${x =>x.menuConfig.verticalPositioningMode}"
-                    vertical-default-position="${x => x.menuConfig.verticalDefaultPosition}"
+                    auto-update-mode="${x =>
+                        x.menuConfig.autoUpdateMode !== undefined
+                            ? x.menuConfig.autoUpdateMode
+                            : "auto"}"
+                    fixed-placement="${x =>
+                        x.menuConfig.fixedPlacement !== undefined
+                            ? x.menuConfig.fixedPlacement
+                            : true}"
+                    vertical-positioning-mode="${x =>
+                        x.menuConfig.verticalPositioningMode}"
+                    vertical-default-position="${x =>
+                        x.menuConfig.verticalDefaultPosition}"
                     vertical-scaling="${x => x.menuConfig.verticalScaling}"
                     vertical-inset="${x => x.menuConfig.verticalInset}"
                     vertical-threshold="${x => x.menuConfig.verticalThreshold}"
-                    horizontal-positioning-mode="${x =>x.menuConfig.horizontalPositioningMode}"
-                    horizontal-default-position="${x => x.menuConfig.horizontalDefaultPosition}"
+                    horizontal-positioning-mode="${x =>
+                        x.menuConfig.horizontalPositioningMode}"
+                    horizontal-default-position="${x =>
+                        x.menuConfig.horizontalDefaultPosition}"
                     horizontal-scaling="${x => x.menuConfig.horizontalScaling}"
                     horizontal-inset="${x => x.menuConfig.horizontalInset}"
                     horizontal-threshold="${x => x.menuConfig.horizontalThreshold}"
@@ -47,10 +56,7 @@ export function createPickerTemplate(
                     ${when(
                         x => !x.showNoOptions && !x.showLoading,
                         html<Picker>`
-                            <slot
-                                name="menu-region"
-                            >
-                            </slot>
+                            <slot name="menu-region"></slot>
                         `
                     )}
                     ${when(

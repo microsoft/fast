@@ -33,6 +33,7 @@ export * from "./menu/index";
 export * from "./menu-item/index";
 export * from "./number-field/index";
 export * from "./people-picker/index";
+export * from "./picker/index";
 export * from "./progress/index";
 export * from "./progress-ring/index";
 export * from "./radio/index";
