@@ -16,6 +16,7 @@ export const flipperTemplate: (
         aria-disabled="${x => (x.disabled ? true : void 0)}"
         tabindex="${x => (x.hiddenFromAT ? -1 : 0)}"
         class="${x => x.direction} ${x => (x.disabled ? "disabled" : "")}"
+        @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
         ${when(
             x => x.direction === FlipperDirection.next,

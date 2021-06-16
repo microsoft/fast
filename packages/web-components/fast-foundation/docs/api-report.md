@@ -951,6 +951,7 @@ export class Flipper extends FoundationElement {
     direction: FlipperDirection;
     disabled: boolean;
     hiddenFromAT: boolean;
+    keyupHandler(e: Event & KeyboardEvent): void;
 }
 
 // @public
@@ -1111,8 +1112,10 @@ export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     easing: ScrollEasing;
-    nextFlipper: HTMLDivElement;
-    previousFlipper: HTMLDivElement;
+    flippersHiddenFromAT: boolean;
+    keyupHandler(e: Event & KeyboardEvent): void;
+    nextFlipperContainer: HTMLDivElement;
+    previousFlipperContainer: HTMLDivElement;
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;
@@ -1124,6 +1127,14 @@ export class HorizontalScroll extends FoundationElement {
     speed: number;
     view: HorizontalScrollView;
     }
+
+// Warning: (ae-incompatible-release-tags) The symbol "HorizontalScrollOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type HorizontalScrollOptions = FoundationElementDefinition & {
+    nextFlipper?: string | SyntheticViewTemplate;
+    previousFlipper?: string | SyntheticViewTemplate;
+};
 
 // @public (undocumented)
 export const horizontalScrollTemplate: (context: any, definition: any) => ViewTemplate<HorizontalScroll>;

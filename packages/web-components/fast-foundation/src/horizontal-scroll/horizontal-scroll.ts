@@ -1,4 +1,10 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    booleanConverter,
+    nullableNumberConverter,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
 // At that point these files should be deleted.
@@ -7,8 +13,7 @@ import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
-import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -29,6 +34,15 @@ export type HorizontalScrollView = "default" | "mobile";
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
 /**
+ * Horizontal scroll configuration options
+ * @public
+ */
+export type HorizontalScrollOptions = FoundationElementDefinition & {
+    nextFlipper?: string | SyntheticViewTemplate;
+    previousFlipper?: string | SyntheticViewTemplate;
+};
+
+/**
  * A HorizontalScroll Custom HTML Element
  * @public
  */
@@ -43,13 +57,13 @@ export class HorizontalScroll extends FoundationElement {
      * Reference to flipper to scroll to previous content
      * @public
      */
-    public previousFlipper: HTMLDivElement;
+    public previousFlipperContainer: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to the next content
      * @public
      */
-    public nextFlipper: HTMLDivElement;
+    public nextFlipperContainer: HTMLDivElement;
 
     /**
      * @internal
@@ -99,6 +113,13 @@ export class HorizontalScroll extends FoundationElement {
      */
     @attr
     public easing: ScrollEasing = "ease-in-out";
+
+    /**
+     * Attribute to hide flippers from assistive technology
+     * @public
+     */
+    @attr({ attribute: "aria-hidden", converter: booleanConverter })
+    public flippersHiddenFromAT: boolean = false;
 
     /**
      * Scrolling state
@@ -270,17 +291,35 @@ export class HorizontalScroll extends FoundationElement {
      */
     private setFlippers(): void {
         const position: number = this.scrollContainer.scrollLeft;
-        if (this.previousFlipper) {
-            this.previousFlipper.classList.toggle("disabled", position === 0);
+        if (this.previousFlipperContainer) {
+            this.previousFlipperContainer.classList.toggle("disabled", position === 0);
         }
-        if (this.nextFlipper && this.scrollStops) {
+        if (this.nextFlipperContainer && this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipper.classList.toggle(
+            this.nextFlipperContainer.classList.toggle(
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
+        }
+    }
+
+    /**
+     * Lets the user arrow left and right through the horizontal scroll
+     * @param e - Keyboard event
+     * @public
+     */
+    public keyupHandler(e: Event & KeyboardEvent) {
+        const key = e.key;
+
+        switch (key) {
+            case "ArrowLeft":
+                this.scrollToPrevious();
+                break;
+            case "ArrowRight":
+                this.scrollToNext();
+                break;
         }
     }
 
