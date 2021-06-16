@@ -317,15 +317,22 @@ enum ContrastTarget {
 }
 
 // Foreground On Accent
-const foregroundOnAccentByContrast = (contrast: number) => (element: HTMLElement) =>
-    foregroundOnAccentAlgorithm(accentPalette.getValueFor(element).source, contrast);
+const foregroundOnAccentByContrast = (contrast: number) => (
+    element: HTMLElement,
+    reference?: Swatch
+) => {
+    return foregroundOnAccentAlgorithm(
+        reference || fillColor.getValueFor(element),
+        contrast
+    );
+};
 /** @public */
 export const foregroundOnAccentRecipe = create<ColorRecipe>({
     name: "foreground-on-accent-recipe",
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        foregroundOnAccentByContrast(ContrastTarget.normal)(element),
+        foregroundOnAccentByContrast(ContrastTarget.normal)(element, reference),
 });
 /** @public */
 export const foregroundOnAccentLargeRecipe = create<ColorRecipe>({
@@ -333,7 +340,7 @@ export const foregroundOnAccentLargeRecipe = create<ColorRecipe>({
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        foregroundOnAccentByContrast(ContrastTarget.large)(element),
+        foregroundOnAccentByContrast(ContrastTarget.large)(element, reference),
 });
 
 /** @public */
@@ -357,8 +364,8 @@ export const accentForegroundCutLarge = foregroundOnAccentRestLarge;
 const accentFillByContrast = (contrast: number) => (
     element: HTMLElement,
     reference?: Swatch
-) => {
-    return accentFillAlgorithm(
+) =>
+    accentFillAlgorithm(
         accentPalette.getValueFor(element),
         neutralPalette.getValueFor(element),
         reference || fillColor.getValueFor(element),
@@ -371,14 +378,13 @@ const accentFillByContrast = (contrast: number) => (
         neutralFillHoverDelta.getValueFor(element),
         neutralFillActiveDelta.getValueFor(element)
     );
-};
 /** @public */
 export const accentFillRecipe = create<ColorFamilyRecipe>({
     name: "accent-fill-recipe",
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): SwatchFamily =>
-        accentFillByContrast(ContrastTarget.normal)(element),
+        accentFillByContrast(ContrastTarget.normal)(element, reference),
 });
 
 /** @public */
@@ -407,17 +413,19 @@ export const accentFillFocus = create<Swatch>("accent-fill-focus").withDefault(
 );
 
 // Accent Foreground
-const accentForegroundByContrast = (contrast: number) => (element: HTMLElement) => {
-    return accentForegroundAlgorithm(
+const accentForegroundByContrast = (contrast: number) => (
+    element: HTMLElement,
+    reference?: Swatch
+) =>
+    accentForegroundAlgorithm(
         accentPalette.getValueFor(element),
-        fillColor.getValueFor(element),
+        reference || fillColor.getValueFor(element),
         contrast,
         accentForegroundRestDelta.getValueFor(element),
         accentForegroundHoverDelta.getValueFor(element),
         accentForegroundActiveDelta.getValueFor(element),
         accentForegroundFocusDelta.getValueFor(element)
     );
-};
 
 /** @public */
 export const accentForegroundRecipe = create<ColorFamilyRecipe>({
@@ -425,7 +433,7 @@ export const accentForegroundRecipe = create<ColorFamilyRecipe>({
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): SwatchFamily =>
-        accentForegroundByContrast(ContrastTarget.normal)(element),
+        accentForegroundByContrast(ContrastTarget.normal)(element, reference),
 });
 
 /** @public */
@@ -464,7 +472,7 @@ export const neutralStrokeDividerRecipe = create<ColorRecipe>({
     evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
         neutralDividerAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element),
+            reference || fillColor.getValueFor(element),
             neutralStrokeDividerRestDelta.getValueFor(element)
         ),
 });
