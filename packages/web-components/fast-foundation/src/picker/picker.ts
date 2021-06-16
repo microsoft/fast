@@ -73,10 +73,6 @@ export class Picker extends FASTElement {
      */
     @attr({ attribute: "max-selected" })
     public maxSelected: number | undefined;
-    private maxSelectedChanged(): void {
-        if (this.$fastController.isConnected) {
-        }
-    }
 
     /**
      * The text to present to assistive technolgies when no suggestions are available.
@@ -176,7 +172,7 @@ export class Picker extends FASTElement {
     /**
      *
      *
-     * @internal
+     * @public
      */
     @observable
     public optionsList: string[] = [];
@@ -197,6 +193,9 @@ export class Picker extends FASTElement {
     private flyoutOpenChanged(): void {
         if (this.flyoutOpen) {
             DOM.queueUpdate(this.setRegionProps);
+            this.$emit("menuopening", { bubbles: false });
+        } else {
+            this.$emit("menuclosing", { bubbles: false });
         }
     }
 
@@ -241,7 +240,7 @@ export class Picker extends FASTElement {
     public menuFocusOptionId: string | null = null;
 
     /**
-     *
+     *  todo: attribute for this
      *
      * @internal
      */
@@ -435,13 +434,11 @@ export class Picker extends FASTElement {
         this.disableMenu();
         return;
     }
+    private handleTextInput(e: InputEvent): void {}
 
-    protected handleTextInput(e: InputEvent): void {}
-
-    public handleInputClick = (e: MouseEvent): void => {
+    private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
-
     private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
         if (this.flyoutOpen) {
@@ -651,6 +648,7 @@ export class Picker extends FASTElement {
     public handleRegionLoaded = (e: Event): void => {
         DOM.queueUpdate(() => {
             this.setFocusedOption(0);
+            this.$emit("menuloaded", { bubbles: false });
         });
     };
 
@@ -711,7 +709,7 @@ export class Picker extends FASTElement {
             const currentFocusedItemIndex: number = selectedItems.indexOf(
                 document.activeElement
             );
-            let newFocusedItemIndex = Math.min(
+            const newFocusedItemIndex = Math.min(
                 selectedItems.length,
                 Math.max(0, currentFocusedItemIndex + increment)
             );

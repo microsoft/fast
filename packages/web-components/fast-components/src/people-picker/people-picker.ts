@@ -2,13 +2,8 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Picker } from "@microsoft/fast-foundation";
 import { PersonType, Providers, ProviderState, IDynamicPerson } from "@microsoft/mgt";
 import { findPeople, getPeople } from "./graph/graph.people";
-import {
-    findUsers,
-    findGroupMembers,
-    getUser,
-    getUsersForUserIds,
-} from "./graph/graph.user";
-import { GroupType, findGroups, findGroupsFromGroup } from "./graph/graph.groups";
+import { findUsers, findGroupMembers, getUsersForUserIds } from "./graph/graph.user";
+import { GroupType, findGroups } from "./graph/graph.groups";
 
 /**
  * ensures one call at a time
@@ -34,7 +29,16 @@ export function debounce(func, time) {
  *
  * @public
  */
-export class PeoplePicker extends Picker {
+export class PeoplePicker extends FASTElement {
+    /**
+     * Items pre-selected when component is first connected.
+     * @public
+     * @remarks
+     * HTML Attribute: default-selection
+     */
+    @attr({ attribute: "default-selection" })
+    public defaultSelection: string;
+
     /**
      *  value determining if search is filtered to a group.
      *
@@ -152,6 +156,14 @@ export class PeoplePicker extends Picker {
      * @internal
      */
     @observable
+    public optionsList: string[] = [];
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
     public groupPeople: IDynamicPerson[];
 
     /**
@@ -170,6 +182,21 @@ export class PeoplePicker extends Picker {
         this.optionsList = newOptions;
     }
 
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public showLoading: boolean = false;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    public picker: Picker;
+
     private _debouncedSearch: { (): void; (): void };
     private defaultSelectedUsers: IDynamicPerson[];
 
@@ -179,6 +206,7 @@ export class PeoplePicker extends Picker {
     public connectedCallback(): void {
         super.connectedCallback();
         this.showLoading = true;
+        this.addEventListener("input", this.handleTextInput);
     }
 
     /**
@@ -188,17 +216,13 @@ export class PeoplePicker extends Picker {
         super.disconnectedCallback();
     }
 
-    protected handleTextInput = (e: InputEvent): void => {
+    private handleTextInput = (e: InputEvent): void => {
         this.startSearch();
-        super.handleTextInput(e);
     };
 
-    protected toggleFlyout(open: boolean): void {
-        if (open && !this.flyoutOpen) {
-            this.showLoading = true;
-            this.startSearch();
-        }
-        super.toggleFlyout(open);
+    public handleMenuOpening(e: Event): void {
+        this.showLoading = true;
+        this.startSearch();
     }
 
     private startSearch = (): void => {
@@ -219,7 +243,8 @@ export class PeoplePicker extends Picker {
      */
     protected async loadState(): Promise<void> {
         let people = this.people;
-        const input = this.inputElement.value.toLowerCase();
+        // TODO: scomea - better api for picker value
+        const input = this.picker.inputElement.value.toLowerCase();
         const provider = Providers.globalProvider;
         if (!people && provider && provider.state === ProviderState.SignedIn) {
             const graph = provider.graph.forComponent(this);
@@ -261,7 +286,7 @@ export class PeoplePicker extends Picker {
 
             if (
                 this.defaultSelection &&
-                !this.selectedOptions.length &&
+                !this.picker.selectedOptions.length &&
                 !this.defaultSelectedUsers
             ) {
                 this.defaultSelectedUsers = await getUsersForUserIds(
@@ -343,7 +368,7 @@ export class PeoplePicker extends Picker {
         // check if people need to be updated
         // ensuring people list is displayed
         // find ids from selected people
-        const idFilter = this.selectedOptions;
+        const idFilter = this.picker.selectedOptions;
 
         if (people) {
             // filter id's
