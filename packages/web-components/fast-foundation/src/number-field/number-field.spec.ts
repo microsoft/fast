@@ -740,6 +740,32 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+
+        it("should increment no value to the step amount", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            element.step = step;
+            element.stepUp();
+
+            await connect();
+            expect(element.value).to.equal(`${step}`);
+
+            await disconnect();
+        });
+
+        it("should decrement no value to the negative step amount", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            element.step = step;
+            element.stepDown();
+
+            await connect();
+            expect(element.value).to.equal(`${0 - step}`);
+
+            await disconnect();
+        });
+
+
     });
 
     describe("hide step", () => {
