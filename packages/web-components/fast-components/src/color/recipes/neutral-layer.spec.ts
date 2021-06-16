@@ -9,6 +9,7 @@ import { neutralLayer1 } from "./neutral-layer-1";
 import { neutralLayer2 } from "./neutral-layer-2";
 import { neutralLayer3 } from "./neutral-layer-3";
 import { neutralLayer4 } from "./neutral-layer-4";
+import { SwatchRGB } from "../swatch";
 
 const neutralPalette = PaletteRGB.create(middleGrey);
 
@@ -65,7 +66,7 @@ describe("neutralLayer", (): void => {
 
     describe("neutralLayerFloating", (): void => {
         it("should return a color from the neutral palette", (): void => {
-            expect(neutralPalette.swatches.includes(neutralLayerFloating(neutralPalette, StandardLuminance.LightMode, 3))).to.be.true;
+            expect(neutralPalette.swatches.includes(neutralLayerFloating(neutralPalette, StandardLuminance.LightMode, 3) as SwatchRGB)).to.be.true;
         });
     });
 });

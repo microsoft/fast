@@ -1,5 +1,5 @@
-import { Swatch, SwatchRGB } from "../swatch";
-import { PaletteRGB } from "../palette";
+import { Swatch } from "../swatch";
+import { Palette } from "../palette";
 import { directionByIsDark } from "../utilities/direction-by-is-dark";
 
 /**
@@ -11,10 +11,10 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark";
  * @internal
  */
 export function neutralDivider(
-    palette: PaletteRGB,
+    palette: Palette,
     reference: Swatch,
     delta: number
-): SwatchRGB {
+): Swatch {
     return palette.get(
         palette.closestIndexOf(reference) + directionByIsDark(reference) * delta
     );
