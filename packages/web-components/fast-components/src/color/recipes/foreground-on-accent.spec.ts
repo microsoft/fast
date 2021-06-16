@@ -5,8 +5,8 @@ import { foregroundOnAccent } from './foreground-on-accent';
 
 describe("Cut text", (): void => {
     it("should return black when background does not meet contrast ratio", (): void => {
-        const small = foregroundOnAccent(SwatchRGB.create(1, 1, 1), 4.5);
-        const large = foregroundOnAccent(SwatchRGB.create(1, 1, 1), 3);
+        const small = foregroundOnAccent(SwatchRGB.create(1, 1, 1), 4.5) as SwatchRGB;
+        const large = foregroundOnAccent(SwatchRGB.create(1, 1, 1), 3) as SwatchRGB;
 
         expect(small.r).to.equal(black.r);
         expect(small.g).to.equal(black.g);

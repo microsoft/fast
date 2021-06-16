@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { PaletteRGB } from "../palette";
+import { SwatchRGB } from "../swatch";
 import { accentBase, middleGrey } from "../utilities/color-constants";
 import { neutralForegroundHint } from "./neutral-foreground-hint";
 
@@ -14,7 +15,7 @@ describe("neutralForegroundHint", (): void => {
                     neutralForegroundHint(
                         neutralPalette,
                         swatch
-                    )
+                    ) as SwatchRGB
                 )
             ).not.to.equal(-1);
         });

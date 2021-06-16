@@ -14,7 +14,7 @@ import {
     FoundationElement,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
-import { PaletteRGB } from "../color/palette";
+import { Palette } from "../color/palette";
 import {
     accentFillActiveDelta,
     accentFillFocusDelta,
@@ -169,7 +169,7 @@ class DesignSystemProvider extends FoundationElement {
      */
     @observable
     @designToken(neutralPalette)
-    public neutralPalette: PaletteRGB;
+    public neutralPalette: Palette;
 
     /**
      * Defines the palette that all accent color recipes are derived from.
@@ -183,7 +183,7 @@ class DesignSystemProvider extends FoundationElement {
      */
     @observable
     @designToken(accentPalette)
-    public accentPalette: PaletteRGB;
+    public accentPalette: Palette;
 
     /**
      *
