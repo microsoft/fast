@@ -1,14 +1,13 @@
 import { css, cssPartial } from "@microsoft/fast-element";
 import {
     DesignToken,
-    DI,
     disabledCursor,
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { SwatchRGB } from "../color/swatch";
+import { Swatch } from "../color/swatch";
 import {
     accentForegroundRest,
     baseHeightMultiplier,
@@ -19,11 +18,11 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    NeutralFill,
+    neutralFillRecipe,
     neutralFillRest,
-    NeutralFillStealth,
     neutralFillStealthActive,
     neutralFillStealthHover,
+    neutralFillStealthRecipe,
     neutralFillStealthRest,
     neutralForegroundRest,
     strokeWidth,
@@ -64,19 +63,19 @@ const rtl = css`
 
 export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
-const expandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
+const expandCollapseHoverBehavior = DesignToken.create<Swatch>(
     "tree-item-expand-collapse-hover"
 ).withDefault((target: HTMLElement) => {
-    const recipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
-    return recipe(target, recipe(target).hover).hover;
+    const recipe = neutralFillStealthRecipe.getValueFor(target);
+    return recipe.evaluate(target, recipe.evaluate(target).hover).hover;
 });
 
-const selectedExpandCollapseHoverBehavior = DesignToken.create<SwatchRGB>(
+const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
     "tree-item-expand-collapse-selected-hover"
 ).withDefault((target: HTMLElement) => {
-    const baseRecipe = DI.findResponsibleContainer(target).get(NeutralFill);
-    const buttonRecipe = DI.findResponsibleContainer(target).get(NeutralFillStealth);
-    return buttonRecipe(target, baseRecipe(target).rest).hover;
+    const baseRecipe = neutralFillRecipe.getValueFor(target);
+    const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+    return buttonRecipe.evaluate(target, baseRecipe.evaluate(target).rest).hover;
 });
 
 export const treeItemStyles = (context, definition) =>

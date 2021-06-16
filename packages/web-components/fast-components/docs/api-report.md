@@ -55,72 +55,68 @@ import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
-// Warning: (ae-forgotten-export) The symbol "accentFill" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const AccentFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof accentFill>>;
-
-// @public (undocumented)
-export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentFillHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentFillHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentFillRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentFillRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-forgotten-export) The symbol "accentForeground" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const AccentForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof accentForeground>>;
-
-// @public (undocumented)
-export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const accentForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentForegroundFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentForegroundHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentForegroundHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const accentForegroundRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentForegroundRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentPalette: DesignToken<PaletteRGB>;
+export const accentPalette: DesignToken<Palette<Swatch>>;
 
 // @public
 export const accordionItemStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -488,6 +484,9 @@ export const cardStyles: import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const checkboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export type ColorRecipe = Recipe<Swatch>;
 
 // @public
 export const comboboxStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -958,7 +957,7 @@ export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundat
 }, typeof TreeView>;
 
 // @public (undocumented)
-export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public
 export const flipperStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
@@ -967,31 +966,31 @@ export const flipperStyles: (context: any, definition: any) => import("@microsof
 export const focusOutlineWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const FocusStrokeInner: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const focusStrokeInner: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeInner: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const focusStrokeInnerRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const FocusStrokeOuter: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const focusStrokeOuter: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeOuter: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const focusStrokeOuterRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const focusStrokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const ForegroundOnAccent: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const foregroundOnAccentLargeRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const ForegroundOnAccentLarge: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const foregroundOnAccentRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -999,6 +998,17 @@ export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").C
 export class HorizontalScroll extends HorizontalScroll_2 {
     // @public (undocumented)
     connectedCallback(): void;
+}
+
+// @public (undocumented)
+export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
+
+// @public (undocumented)
+export interface InteractiveSwatchSet {
+    active: Swatch;
+    focus: Swatch;
+    hover: Swatch;
+    rest: Swatch;
 }
 
 // @public
@@ -1014,283 +1024,271 @@ export const menuItemStyles: (context: any, definition: any) => import("@microso
 export const menuStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public @deprecated (undocumented)
-export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-forgotten-export) The symbol "neutralFill" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const NeutralFill: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFill>>;
-
-// @public (undocumented)
-export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFillCard: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillCard: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillCardDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-forgotten-export) The symbol "neutralFillInput" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const NeutralFillInput: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillInput>>;
-
-// @public (undocumented)
-export const neutralFillInputActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillInputActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillInputActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillInputFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillInputFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillInputFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillInputHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillInputHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillInputHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillInputRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillInputRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const NeutralFillLayer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => SwatchRGB>;
+export const neutralFillLayerRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillLayerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralFillRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-forgotten-export) The symbol "neutralFillStealth" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const NeutralFillStealth: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillStealth>>;
-
-// @public (undocumented)
-export const neutralFillStealthActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStealthActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStealthActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStealthFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStealthFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStealthFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStealthHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStealthHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStealthHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStealthRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStealthRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralFillStealthRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStealthRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// Warning: (ae-forgotten-export) The symbol "neutralFillContrast" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
-export const NeutralFillStrong: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement, fill?: SwatchRGB | undefined) => ReturnType<typeof neutralFillContrast>>;
-
-// @public (undocumented)
-export const neutralFillStrongActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStrongActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStrongActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStrongFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStrongFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStrongFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStrongHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStrongHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStrongHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillStrongRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillStrongRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFillToggleActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillToggleActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillToggleActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFillToggleFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillToggleFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillToggleFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFillToggleHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillToggleHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillToggleHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFillToggleRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFillToggleRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillToggleRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public @deprecated (undocumented)
-export const neutralFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralFocusInnerAccent: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
-
-// Warning: (ae-forgotten-export) The symbol "neutralForeground" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export const NeutralForeground: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralForeground>>;
+export const neutralFocusInnerAccent: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralForegroundHint: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralForegroundHintRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralForegroundRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const NeutralLayer1: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayer1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayer1: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralLayer2: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralLayer1Recipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralLayer2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayer2: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralLayer3: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralLayer2Recipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralLayer3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayer3: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralLayer4: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralLayer3Recipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralLayer4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayer4: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralLayerCardContainer: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralLayer4Recipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralLayerCardContainer: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerCardContainer: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const NeutralLayerFloating: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralLayerCardContainerRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralLayerFloatingRecipe: DesignToken<ColorRecipe>;
 
 // @public @deprecated (undocumented)
-export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralOutlineActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralOutlineActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralOutlineFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralOutlineFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralOutlineHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralOutlineHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
-export const neutralOutlineRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralOutlineRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralPalette: DesignToken<PaletteRGB>;
-
-// Warning: (ae-forgotten-export) The symbol "neutralStroke" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-export const NeutralStroke: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => ReturnType<typeof neutralStroke>>;
+export const neutralPalette: DesignToken<Palette<Swatch>>;
 
 // @public (undocumented)
-export const neutralStrokeActive: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokeActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const NeutralStrokeDivider: import("@microsoft/fast-foundation").InterfaceSymbol<(element: HTMLElement) => SwatchRGB>;
+export const neutralStrokeDividerRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralStrokeDividerRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeDividerRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokeDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeFocus: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokeFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeHover: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokeHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeRest: import("@microsoft/fast-foundation").CSSDesignToken<SwatchRGB>;
+export const neutralStrokeRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokeRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1348,6 +1346,12 @@ export const radioGroupStyles: (context: any, definition: any) => import("@micro
 
 // @public
 export const radioStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
+
+// @public (undocumented)
+export interface Recipe<T> {
+    // (undocumented)
+    evaluate(element: HTMLElement, reference?: Swatch): T;
+}
 
 // @public
 export const selectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;

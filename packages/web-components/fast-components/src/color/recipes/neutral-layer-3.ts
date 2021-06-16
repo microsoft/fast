@@ -1,18 +1,18 @@
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
+import { Palette } from "../palette";
+import { Swatch } from "../swatch";
 import { neutralLayer2Index } from "./neutral-layer-2";
 
 /**
  * @internal
  */
 export function neutralLayer3(
-    palette: PaletteRGB,
+    palette: Palette,
     luminance: number,
     layerDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
-): SwatchRGB {
+): Swatch {
     return palette.get(
         neutralLayer2Index(
             palette,

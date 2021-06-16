@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { PaletteRGB } from "../palette";
+import { SwatchRGB } from "../swatch";
 import { middleGrey } from "../utilities/color-constants";
 import { neutralFillLayer } from "./neutral-fill-layer";
 
@@ -22,7 +23,7 @@ describe("neutralFillCard", (): void => {
         for (let i: number = delta; i < neutralPalette.swatches.length; i++) {
             expect(
                 neutralPalette.swatches.indexOf(
-                    neutralFillLayer(neutralPalette, neutralPalette.get(i), delta)
+                    neutralFillLayer(neutralPalette, neutralPalette.get(i), delta) as SwatchRGB
                 )
             ).to.equal(i - 3);
         }

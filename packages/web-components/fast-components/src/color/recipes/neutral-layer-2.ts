@@ -1,12 +1,12 @@
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
+import { Palette } from "../palette";
+import { Swatch } from "../swatch";
 import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
 
 /**
  * @internal
  */
 export function neutralLayer2Index(
-    palette: PaletteRGB,
+    palette: Palette,
     luminance: number,
     layerDelta: number,
     fillRestDelta: number,
@@ -25,13 +25,13 @@ export function neutralLayer2Index(
  * @internal
  */
 export function neutralLayer2(
-    palette: PaletteRGB,
+    palette: Palette,
     luminance: number,
     layerDelta: number,
     fillRestDelta: number,
     fillHoverDelta: number,
     fillActiveDelta: number
-): SwatchRGB {
+): Swatch {
     return palette.get(
         neutralLayer2Index(
             palette,

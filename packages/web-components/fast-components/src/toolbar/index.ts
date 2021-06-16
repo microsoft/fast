@@ -1,9 +1,10 @@
 import {
-    DI,
+    composedParent,
     Toolbar as FoundationToolbar,
     toolbarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { fillColor, NeutralFillLayer } from "../design-tokens";
+import { Swatch } from "../color/swatch";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
 import { ToolbarStyles as styles } from "./toolbar.styles";
 
 /**
@@ -12,12 +13,18 @@ import { ToolbarStyles as styles } from "./toolbar.styles";
 export class Toolbar extends FoundationToolbar {
     connectedCallback() {
         super.connectedCallback();
-        fillColor.setValueFor(this, (target: HTMLElement) => {
-            return DI.findResponsibleContainer(target).get(NeutralFillLayer)(
-                target,
-                fillColor.getValueFor(this.parentElement!)
+
+        const parent = composedParent(this);
+
+        if (parent) {
+            fillColor.setValueFor(
+                this,
+                (target: HTMLElement): Swatch =>
+                    neutralFillLayerRecipe
+                        .getValueFor(target)
+                        .evaluate(target, fillColor.getValueFor(parent))
             );
-        });
+        }
     }
 }
 
