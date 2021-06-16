@@ -1,6 +1,6 @@
 import { Swatch } from "./swatch";
 
-export interface SwatchFamily {
+export interface InteractiveSwatchSet {
     /**
      * The swatch to apply to the rest state
      */
