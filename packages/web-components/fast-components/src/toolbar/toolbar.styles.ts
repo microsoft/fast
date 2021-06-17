@@ -5,7 +5,13 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { fillColor, neutralStrokeFocus } from "../design-tokens";
+import {
+    controlCornerRadius,
+    fillColor,
+    focusStrokeWidth,
+    neutralStrokeFocus,
+    strokeWidth,
+} from "../design-tokens";
 
 /**
  * Styles for the {@link (FASTToolbar:class)|FASTToolbar component}.
@@ -22,13 +28,13 @@ export const ToolbarStyles: (context, definition) => ElementStyles = (
                 (var(--design-unit) + calc(var(--density) + 2)) * 1px
             );
             background-color: ${fillColor};
-            border-radius: calc(var(--corner-radius) * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
             fill: currentcolor;
             padding: var(--toolbar-item-gap);
         }
 
         :host(${focusVisible}) {
-            outline: calc(var(--outline-width) * 1px) solid ${neutralStrokeFocus};
+            outline: calc(${strokeWidth} * 1px) solid ${neutralStrokeFocus};
         }
 
         .positioning-region {
@@ -67,7 +73,7 @@ export const ToolbarStyles: (context, definition) => ElementStyles = (
         forcedColorsStylesheetBehavior(
             css`
             :host(:${focusVisible}) {
-                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight};
                 color: ${SystemColors.ButtonText};
                 forced-color-adjust: none;
             }

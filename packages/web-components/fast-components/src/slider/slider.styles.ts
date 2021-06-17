@@ -11,6 +11,8 @@ import {
     density,
     designUnit,
     disabledOpacity,
+    fillColor,
+    focusStrokeOuter,
     neutralForegroundRest,
     neutralStrokeHover,
     neutralStrokeRest,
@@ -53,7 +55,7 @@ export const sliderStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .thumb-cursor {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px var(--neutral-focus);
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
     
     .thumb-container {

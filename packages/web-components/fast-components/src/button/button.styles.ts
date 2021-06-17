@@ -7,6 +7,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRest,
     accentForegroundRest,
+    disabledOpacity,
     neutralFillRest,
     neutralFillStealthRest,
 } from "../design-tokens";
@@ -24,7 +25,7 @@ export const buttonStyles = (context, definition) =>
         :host([disabled]),
         :host([disabled]:hover),
         :host([disabled]:active) {
-            opacity: var(--disabled-opacity);
+            opacity: ${disabledOpacity};
             background-color: ${neutralFillRest};
             cursor: ${disabledCursor};
         }
