@@ -14,6 +14,7 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
+    fillColor,
     focusStrokeOuter,
     foregroundOnAccentRest,
     neutralFillInputActive,
@@ -89,8 +90,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
-        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
     .checked-indicator {
@@ -156,8 +156,7 @@ export const switchStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
-        border-color: transparent;
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
     .unchecked-message {

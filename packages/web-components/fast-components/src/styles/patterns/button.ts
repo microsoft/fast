@@ -82,8 +82,8 @@ export const BaseButtonStyles = css`
     }
 
     .control:${focusVisible} {
-        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter};
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
     }
 
     .control::-moz-focus-inner {
@@ -136,7 +136,7 @@ export const BaseButtonStyles = css`
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
               border-color: ${SystemColors.ButtonText};
-              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText};
+              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText} inset;
               color: ${SystemColors.HighlightText};
             }
 
@@ -181,7 +181,8 @@ export const AccentButtonStyles = css`
     }
 
     :host([appearance="accent"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
+            0 0 0 calc((${focusStrokeWidth} + ${strokeWidth}) * 1px) ${focusStrokeInner} inset;
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -199,8 +200,8 @@ export const AccentButtonStyles = css`
             }
 
             :host([appearance="accent"]) .control:${focusVisible} {
-                border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 2px ${SystemColors.HighlightText} inset;
+                border-color: ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.HighlightText} inset;
             }
 
             :host([appearance="accent"][href]) .control{
@@ -218,7 +219,7 @@ export const AccentButtonStyles = css`
 
             :host([appearance="accent"][href]) .control:${focusVisible} {
                 border-color: ${SystemColors.LinkText};
-                box-shadow: 0 0 0 2px ${SystemColors.HighlightText} inset;
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.LinkText} inset;
             }
         `
     )
@@ -393,7 +394,7 @@ export const OutlineButtonStyles = css`
     }
 
     :host([appearance="outline"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
         border-color: ${focusStrokeOuter};
     }
 `.withBehaviors(
@@ -406,7 +407,7 @@ export const OutlineButtonStyles = css`
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
               border-color: ${SystemColors.ButtonText};
-              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText};
+              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText} inset;
               color: ${SystemColors.HighlightText};
               fill: currentColor;
             }
