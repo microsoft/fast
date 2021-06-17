@@ -1218,8 +1218,7 @@ export function mapCSSInlineStyleToCSSPropertyDictionary(
     const cssPropertyDictionary = {};
 
     if (style) {
-        const cssDeclarations = style.split(";");
-        cssDeclarations.forEach((cssDeclaration: string) => {
+        style.split(";").forEach((cssDeclaration: string) => {
             const cssPropertyAndValue = cssDeclaration.split(":");
 
             if (cssPropertyAndValue.length === 2) {
