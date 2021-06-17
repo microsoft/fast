@@ -5,6 +5,7 @@ import {
     controlCornerRadius,
     designUnit,
     neutralLayerFloating,
+    neutralStrokeDividerRest,
     strokeWidth,
 } from "../design-tokens";
 import { elevation } from "../styles/index";
@@ -33,7 +34,7 @@ export const menuStyles = (context, definition) =>
             height: 0;
             margin: 0;
             border: none;
-            border-top: calc(${strokeWidth} * 1px) solid var(--neutral-divider-rest);
+            border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

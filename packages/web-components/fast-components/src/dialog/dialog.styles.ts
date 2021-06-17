@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { controlCornerRadius, strokeWidth } from "../design-tokens";
+import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 
 export const dialogStyles = (context, definition) => css`
@@ -41,7 +41,7 @@ export const dialogStyles = (context, definition) => css`
         margin-bottom: auto;
         width: var(--dialog-width);
         height: var(--dialog-height);
-        background-color: var(--background-color);
+        background-color: ${fillColor};
         z-index: 1;
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid transparent;

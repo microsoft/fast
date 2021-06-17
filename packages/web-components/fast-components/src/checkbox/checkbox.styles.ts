@@ -14,6 +14,7 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
+    fillColor,
     focusStrokeOuter,
     foregroundOnAccentRest,
     neutralFillInputActive,
@@ -104,8 +105,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
-        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
     :host([aria-checked="true"]) .control {
@@ -124,8 +124,7 @@ export const checkboxStyles = (context, definition) =>
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${focusStrokeOuter};
-        border-color: transparent;
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
 
@@ -163,7 +162,6 @@ export const checkboxStyles = (context, definition) =>
                 background: ${SystemColors.Field};
             }
             :host(:${focusVisible}) .control {
-                border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
             :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {

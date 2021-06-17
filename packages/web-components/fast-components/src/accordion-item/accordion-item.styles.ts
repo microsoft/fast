@@ -8,11 +8,13 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRest,
     bodyFont,
+    controlCornerRadius,
     density,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralForegroundRest,
+    neutralStrokeDividerRest,
     strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
@@ -27,7 +29,7 @@ export const accordionItemStyles = (context, definition) =>
         flex-direction: column;
         font-size: ${typeRampMinus1FontSize};
         line-height: ${typeRampMinus1LineHeight};
-        border-bottom: calc(${strokeWidth} * 1px) solid var(--neutral-divider-rest);
+        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
     
     .region {
@@ -78,9 +80,8 @@ export const accordionItemStyles = (context, definition) =>
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
-            ${focusStrokeOuter};
+        border: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host([expanded]) .region {
@@ -138,7 +139,6 @@ export const accordionItemStyles = (context, definition) =>
             css`
             .button:${focusVisible}::before {
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.Highlight};
             }
         `
         )
