@@ -74,7 +74,7 @@ export const flipperStyles = (context, definition) =>
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
         background: ${neutralFillStealthRest};
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border-color: ${neutralStrokeRest};
     }
 
     :host(:hover)::before {
@@ -92,7 +92,8 @@ export const flipperStyles = (context, definition) =>
     }
 
     :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
+            0 0 0 calc((${focusStrokeWidth} + ${strokeWidth}) * 1px) ${focusStrokeInner} inset;
         border-color: ${focusStrokeOuter};
     }
 
@@ -142,7 +143,7 @@ export const flipperStyles = (context, definition) =>
             :host(:${focusVisible})::before {
                 forced-color-adjust: none;
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+                box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.Highlight} inset;
             }
         `
         )

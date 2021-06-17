@@ -28,7 +28,8 @@ export const listboxStyles = (context, definition) =>
 
         :host(:focus-within:not([disabled])) {
             border-color: ${focusStrokeOuter};
-            box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+                ${focusStrokeOuter} inset;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

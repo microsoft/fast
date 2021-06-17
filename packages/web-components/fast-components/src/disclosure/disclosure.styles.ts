@@ -50,7 +50,7 @@ export const disclosureStyles = css`
     :host([appearance="lightweight"]) .invoker {
         background: transparent;
         color: ${accentForegroundRest};
-        border-bottom: calc(${strokeWidth} * 1px) solid var(--accent-foreground-rest);
+        border-bottom: calc(${strokeWidth} * 1px) solid ${accentForegroundRest};
         cursor: pointer;
         width: max-content;
         margin: 16px 0;
