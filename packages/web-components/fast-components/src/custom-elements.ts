@@ -4,6 +4,7 @@
 import { fastAccordion, fastAccordionItem } from "./accordion/index";
 import { fastAnchor } from "./anchor/index";
 import { fastAnchoredRegion } from "./anchored-region/index";
+import { fastAvatar } from "./avatar/index";
 import { fastBadge } from "./badge/index";
 import { fastBreadcrumbItem } from "./breadcrumb-item/index";
 import { fastBreadcrumb } from "./breadcrumb/index";
@@ -61,6 +62,7 @@ export {
     fastAccordionItem,
     fastAnchor,
     fastAnchoredRegion,
+    fastAvatar,
     fastBadge,
     fastBreadcrumb,
     fastBreadcrumbItem,
@@ -110,6 +112,7 @@ export const allComponents = {
     fastAccordionItem,
     fastAnchor,
     fastAnchoredRegion,
+    fastAvatar,
     fastBadge,
     fastBreadcrumb,
     fastBreadcrumbItem,

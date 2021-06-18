@@ -5,6 +5,7 @@ export * from "./custom-elements";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
+export * from "./avatar/index";
 export * from "./badge/index";
 export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
