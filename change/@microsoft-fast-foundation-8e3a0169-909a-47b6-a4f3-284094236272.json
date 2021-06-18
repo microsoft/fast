@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Enable stepping from null values on number-field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
