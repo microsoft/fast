@@ -1,7 +1,6 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import { tabbable } from "tabbable";
-import { FoundationElement } from "../foundation-element";
+import { attr, DOM, elements, FASTElement, observable } from "@microsoft/fast-element";
+import { isHTMLElement, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
+import { isFocusable, isTabbable, tabbable } from "tabbable";
 
 /**
  * A Switch Custom HTML Element.
@@ -215,46 +214,46 @@ export class Dialog extends FoundationElement {
     };
 
     private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
-        if (this.tabQueueStart === undefined) {
-            return tabbable(this);
-        }
-
         const bounds: HTMLElement[] = [];
 
-        const boundStart: HTMLElement | null = this.resolveElementReference(
-            this.tabQueueStart
-        );
-        if (boundStart !== null) {
-            bounds.push(boundStart);
+        if (this.tabQueueStart === undefined) {
+            return Dialog.reduceTabbableItems(bounds, this);
         }
 
-        const boundEnd: HTMLElement | null = this.resolveElementReference(
-            this.tabQueueEnd
-        );
-        if (boundEnd !== null) {
-            bounds.push(boundEnd);
-        }
+        // const boundStart: HTMLElement | null = this.resolveElementReference(
+        //     this.tabQueueStart
+        // );
+        // if (boundStart !== null) {
+        //     bounds.push(boundStart);
+        // }
+
+        // const boundEnd: HTMLElement | null = this.resolveElementReference(
+        //     this.tabQueueEnd
+        // );
+        // if (boundEnd !== null) {
+        //     bounds.push(boundEnd);
+        // }
 
         return bounds;
     };
 
-    private resolveElementReference = (
-        elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
-    ): HTMLElement | null => {
-        if (typeof elementRef === "string") {
-            return document.getElementById(elementRef);
-        }
+    // private resolveElementReference = (
+    //     elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
+    // ): HTMLElement | null => {
+    //     if (typeof elementRef === "string") {
+    //         return document.getElementById(elementRef);
+    //     }
 
-        if (typeof elementRef === "function") {
-            return elementRef(this.dialog);
-        }
+    //     if (typeof elementRef === "function") {
+    //         return elementRef(this.dialog);
+    //     }
 
-        if (isHTMLElement(elementRef)) {
-            return elementRef;
-        }
+    //     if (isHTMLElement(elementRef)) {
+    //         return elementRef;
+    //     }
 
-        return null;
-    };
+    //     return null;
+    // };
 
     /**
      * focus on first element of tab queue
@@ -273,4 +272,59 @@ export class Dialog extends FoundationElement {
     private shouldForceFocus = (currentFocusElement: Element | null): boolean => {
         return !this.hidden && !this.contains(currentFocusElement);
     };
+
+    /**
+     * Reduce a collection to only its focusable elements.
+     *
+     * @param elements - Collection of elements to reduce
+     * @param element - The current element
+     *
+     * @internal
+     */
+    private static reduceTabbableItems(
+        elements: HTMLElement[],
+        element: FASTElement & HTMLElement
+    ) {
+        const isTabbableFastElement: boolean = Dialog.isTabbableFastElement(element);
+        const hasTabbableShadow: boolean = Dialog.hasTabbableShadow(element);
+
+        if (isTabbable(element) || hasTabbableShadow) {
+            elements.push(element);
+            return elements;
+        }
+
+        if (element.childElementCount) {
+            return elements.concat(
+                Array.from(element.children).reduce(Dialog.reduceTabbableItems, [])
+            );
+        }
+
+        return elements;
+    }
+
+    /**
+     * Test if element is tabbable fast element
+     *
+     * @param element - The element to check
+     *
+     * @internal
+     */
+    private static isTabbableFastElement(element: FASTElement & HTMLElement) {
+        const delegates: boolean | undefined =
+            element.$fastController?.definition.shadowOptions?.delegatesFocus;
+        return delegates === true;
+    }
+
+    /**
+     * Test if the element has a tabbable shadow
+     *
+     * @param element - The element to check
+     *
+     * @internal
+     */
+    private static hasTabbableShadow(element: FASTElement & HTMLElement) {
+        return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
+            return isFocusable(x) && (x as HTMLElement).tabIndex !== -1;
+        });
+    }
 }

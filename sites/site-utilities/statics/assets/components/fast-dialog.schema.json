@@ -46,18 +46,6 @@
       "mapsToAttribute": "aria-label",
       "type": "string"
     },
-    "tab-queue-start": {
-      "title": "Tab queue start element id",
-      "description": "The id of the element that starts the dialog focus trap",
-      "mapsToAttribute": "tab-queue-start",
-      "type": "string"
-    },
-    "tab-queue-end": {
-      "title": "Tab queue end element id",
-      "description": "The id of the element that ends the dialog focus trap",
-      "mapsToAttribute": "tab-queue-end",
-      "type": "string"
-    },
     "Slot": {
       "title": "Default slot",
       "description": "The dialog content",
