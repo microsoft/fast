@@ -6,7 +6,7 @@ import fastAnchorDefinition from "./anchor/anchor.vscode.definition.json";
 export { fastAnchorDefinition };
 import fastAnchoredRegionDefinition from "./anchored-region/anchored-region.vscode.definition.json";
 export { fastAnchoredRegionDefinition };
-import { fastAvatarDefinition } from "./avatar/avatar.vscode.definition.json";
+import fastAvatarDefinition from "./avatar/avatar.vscode.definition.json";
 export { fastAvatarDefinition };
 import fastBadgeDefinition from "./badge/badge.vscode.definition.json";
 export { fastBadgeDefinition };
