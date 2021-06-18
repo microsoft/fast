@@ -64,7 +64,7 @@ export const NumberFieldTemplate: ViewTemplate<NumberField> = html`
                 ${ref("control")}
             />
             ${when(
-                x => !x.hideStep,
+                x => !x.hideStep && !x.readOnly,
                 html`
                     <div class="controls" part="controls">
                         <div

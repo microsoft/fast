@@ -786,4 +786,23 @@ describe("NumberField", () => {
             await disconnect();
         });
     });
+
+    describe("readonly", () => {
+        it("should not render step controls when `readonly` attribute is present", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
+
+            element.setAttribute("readonly", "");
+
+            await DOM.nextUpdate();
+
+            expect(
+                element.shadowRoot?.querySelector(".controls")).to.equal(null);
+
+            await disconnect();
+        });
+    });
 });
