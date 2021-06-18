@@ -166,6 +166,32 @@ export class ARIAGlobalStatesAndProperties {
 // @beta
 export type AutoUpdateMode = "anchor" | "auto";
 
+// Warning: (ae-incompatible-release-tags) The symbol "Avatar" is marked as @public, but its signature references "FoundationElement" which is marked as @alpha
+//
+// @public
+export class Avatar extends FoundationElement {
+    color: string;
+    connectedCallback(): void;
+    fill: string;
+    initials: string;
+    link: string;
+    name: string;
+    // (undocumented)
+    protected nameChanged(): void;
+    // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
+    shape: AvatarShape;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "AvatarOptions" is marked as @public, but its signature references "FoundationElementDefinition" which is marked as @alpha
+//
+// @public
+export type AvatarOptions = FoundationElementDefinition & {
+    media?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const avatarTemplate: (context: any, definition: AvatarOptions) => ViewTemplate<Avatar>;
+
 // @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
