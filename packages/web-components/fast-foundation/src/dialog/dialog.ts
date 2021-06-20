@@ -42,26 +42,6 @@ export class Dialog extends FoundationElement {
     public trapFocus: boolean = true;
 
     /**
-     * The start element of the internal tab queue
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: tab-queue-start
-     */
-    @attr({ attribute: "tab-queue-start" })
-    public tabQueueStart: string | HTMLElement | ((HTMLElement) => HTMLElement);
-
-    /**
-     * The end element of the internal tab queue
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: tab-queue-end
-     */
-    @attr({ attribute: "tab-queue-end" })
-    public tabQueueEnd: string | HTMLElement | ((HTMLElement) => HTMLElement);
-
-    /**
      * The id of the element describing the dialog.
      * @public
      * @remarks
@@ -216,43 +196,7 @@ export class Dialog extends FoundationElement {
     private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
         const bounds: HTMLElement[] = [];
 
-        if (this.tabQueueStart === undefined) {
-            return Dialog.reduceTabbableItems(bounds, this);
-        }
-
-        const boundStart: HTMLElement | null = this.resolveElementReference(
-            this.tabQueueStart
-        );
-        if (boundStart !== null) {
-            bounds.push(boundStart);
-        }
-
-        const boundEnd: HTMLElement | null = this.resolveElementReference(
-            this.tabQueueEnd
-        );
-        if (boundEnd !== null) {
-            bounds.push(boundEnd);
-        }
-
-        return bounds;
-    };
-
-    private resolveElementReference = (
-        elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
-    ): HTMLElement | null => {
-        if (typeof elementRef === "string") {
-            return document.getElementById(elementRef);
-        }
-
-        if (typeof elementRef === "function") {
-            return elementRef(this.dialog);
-        }
-
-        if (isHTMLElement(elementRef)) {
-            return elementRef;
-        }
-
-        return null;
+        return Dialog.reduceTabbableItems(bounds, this);
     };
 
     /**
