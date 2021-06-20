@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix malformed templates",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
