@@ -1,6 +1,6 @@
-import { attr, DOM, elements, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement } from "@microsoft/fast-element";
 import { isHTMLElement, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import { isFocusable, isTabbable, tabbable } from "tabbable";
+import { isTabbable } from "tabbable";
 
 /**
  * A Switch Custom HTML Element.
@@ -220,40 +220,40 @@ export class Dialog extends FoundationElement {
             return Dialog.reduceTabbableItems(bounds, this);
         }
 
-        // const boundStart: HTMLElement | null = this.resolveElementReference(
-        //     this.tabQueueStart
-        // );
-        // if (boundStart !== null) {
-        //     bounds.push(boundStart);
-        // }
+        const boundStart: HTMLElement | null = this.resolveElementReference(
+            this.tabQueueStart
+        );
+        if (boundStart !== null) {
+            bounds.push(boundStart);
+        }
 
-        // const boundEnd: HTMLElement | null = this.resolveElementReference(
-        //     this.tabQueueEnd
-        // );
-        // if (boundEnd !== null) {
-        //     bounds.push(boundEnd);
-        // }
+        const boundEnd: HTMLElement | null = this.resolveElementReference(
+            this.tabQueueEnd
+        );
+        if (boundEnd !== null) {
+            bounds.push(boundEnd);
+        }
 
         return bounds;
     };
 
-    // private resolveElementReference = (
-    //     elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
-    // ): HTMLElement | null => {
-    //     if (typeof elementRef === "string") {
-    //         return document.getElementById(elementRef);
-    //     }
+    private resolveElementReference = (
+        elementRef: string | HTMLElement | ((HTMLElement) => HTMLElement)
+    ): HTMLElement | null => {
+        if (typeof elementRef === "string") {
+            return document.getElementById(elementRef);
+        }
 
-    //     if (typeof elementRef === "function") {
-    //         return elementRef(this.dialog);
-    //     }
+        if (typeof elementRef === "function") {
+            return elementRef(this.dialog);
+        }
 
-    //     if (isHTMLElement(elementRef)) {
-    //         return elementRef;
-    //     }
+        if (isHTMLElement(elementRef)) {
+            return elementRef;
+        }
 
-    //     return null;
-    // };
+        return null;
+    };
 
     /**
      * focus on first element of tab queue
@@ -285,10 +285,14 @@ export class Dialog extends FoundationElement {
         elements: HTMLElement[],
         element: FASTElement & HTMLElement
     ) {
-        const isTabbableFastElement: boolean = Dialog.isTabbableFastElement(element);
-        const hasTabbableShadow: boolean = Dialog.hasTabbableShadow(element);
+        if (element.getAttribute("tabindex") === "-1") {
+            return elements;
+        }
 
-        if (isTabbable(element) || hasTabbableShadow) {
+        if (
+            isTabbable(element) ||
+            (Dialog.isFocusableFastElement(element) && Dialog.hasTabbableShadow(element))
+        ) {
             elements.push(element);
             return elements;
         }
@@ -303,20 +307,18 @@ export class Dialog extends FoundationElement {
     }
 
     /**
-     * Test if element is tabbable fast element
+     * Test if element is focusable fast element
      *
      * @param element - The element to check
      *
      * @internal
      */
-    private static isTabbableFastElement(element: FASTElement & HTMLElement) {
-        const delegates: boolean | undefined =
-            element.$fastController?.definition.shadowOptions?.delegatesFocus;
-        return delegates === true;
+    private static isFocusableFastElement(element: FASTElement & HTMLElement): boolean {
+        return !!element.$fastController?.definition.shadowOptions?.delegatesFocus;
     }
 
     /**
-     * Test if the element has a tabbable shadow
+     * Test if the element has a focusable shadow
      *
      * @param element - The element to check
      *
@@ -324,7 +326,7 @@ export class Dialog extends FoundationElement {
      */
     private static hasTabbableShadow(element: FASTElement & HTMLElement) {
         return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
-            return isFocusable(x) && (x as HTMLElement).tabIndex !== -1;
+            return isTabbable(x);
         });
     }
 }
