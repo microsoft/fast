@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { AvatarOptions, display } from "@microsoft/fast-foundation";
 import {
     baseHeightMultiplier,
-    cornerRadius,
+    controlCornerRadius,
     density,
     designUnit,
     neutralForegroundRest,
@@ -49,7 +49,7 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
         }
 
         .square {
-            border-radius: calc(${cornerRadius} * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
             min-width: 100%;
             overflow: hidden;
         }
