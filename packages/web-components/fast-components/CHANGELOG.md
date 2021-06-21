@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 13 Jun 2021 07:19:23 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.21.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
 
 ## 1.21.6
 

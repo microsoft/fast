@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.7",
+      "version": "1.24.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Enable stepping from null values on number-field",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix malformed templates",
+            "author": "scomea@microsoft.com",
+            "commit": "7e6a11f80d4ab89c8e3a682d9f6b0db71ea3a317",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 13 Jun 2021 07:19:23 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.6",
       "version": "1.24.6",

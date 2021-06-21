@@ -24,7 +24,7 @@ export function createDataGridTemplate(prefix: string): ViewTemplate {
         <template
             role="grid"
             tabindex="0"
-            :prefix=${prefix}
+            :prefix="${prefix}"
             :defaultRowItemTemplate="${rowItemTemplate}"
             ${children({
                 property: "rowElements",

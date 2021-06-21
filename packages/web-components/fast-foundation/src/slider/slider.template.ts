@@ -31,7 +31,7 @@ export const SliderTemplate: ViewTemplate<Slider> = html`
                 ${ref("thumb")}
                 part="thumb-container"
                 class="thumb-container"
-                style=${x => x.position}
+                style="${x => x.position}"
             >
                 <slot name="thumb"><div class="thumb-cursor"></div></slot>
             </div>
