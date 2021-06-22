@@ -1,8 +1,5 @@
 import { customElement, observable } from "@microsoft/fast-element";
-import {
-    MessageSystemDataTypeAction,
-    MessageSystemType,
-} from "../../message-system";
+import { MessageSystemDataTypeAction, MessageSystemType } from "../../message-system";
 import {
     ActivityType,
     HTMLRenderLayer,
@@ -103,7 +100,6 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.textAreaRef.style.left = this.textPosition.left + "px";
         this.textAreaRef.style.width = "0";
         this.textAreaRef.style.height = "0";
-        console.log(this.textAreaRef.scrollWidth, this.textPosition.width);
         this.textAreaRef.style.width =
             (this.textAreaRef.scrollWidth > this.textPosition.width
                 ? this.textAreaRef.scrollWidth
@@ -139,7 +135,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         const path: EventTarget[] = event.composedPath();
         let i = 0;
         this.currentStyleTarget = path[i] as HTMLElement;
-        // walk up the composedPath until we find an element that isn't a text node or a slot.
+        // walk up the composedPath until we find an element that isn't a text node, document fragment or a slot.
         while (
             this.currentStyleTarget.nodeType === 3 ||
             this.currentStyleTarget.nodeType === 11 ||
@@ -162,7 +158,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.textAreaActive = false;
         this.textValue = "";
         this.originalTextValue = "";
-        // update the data dictionary
+
         // send the data update message
         this.messageSystem.postMessage({
             type: MessageSystemType.data,

@@ -17,10 +17,7 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
-import {
-    ActivityType,
-    HTMLRenderLayer
-} from "../html-render-layer/html-render-layer";
+import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
