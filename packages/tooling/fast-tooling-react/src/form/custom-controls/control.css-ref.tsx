@@ -1,7 +1,5 @@
 import React from "react";
 import { CSSRefProps, CSSRefState } from "./control.css-ref.props";
-import { Syntax } from "@microsoft/fast-tooling/dist/esm/css-data.syntax";
-import { Type } from "@microsoft/fast-tooling/dist/esm/css-data.types";
 import {
     CombinatorType,
     CSSPropertiesDictionary,
@@ -41,6 +39,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                 return this.renderByType();
         }
     }
+
     private renderMultipleItems(): React.ReactNode {
         return (
             <div>
@@ -51,6 +50,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                                 key={index}
                                 syntax={syntaxRef}
                                 onChange={this.handleMultipleChange(index)}
+                                value={this.state.values[index]}
                             />
                         );
                     }
@@ -68,6 +68,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                 <CSSRef
                     syntax={(this.props.syntax.ref as CSSPropertyRef[])[this.state.index]}
                     onChange={this.handleChange}
+                    value={this.state.values[this.state.index]}
                 />
             ) : null;
 
@@ -101,6 +102,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                             }
                         ),
                     ],
+                    value: this.props.value,
                 })}
                 {cssRef}
             </div>
@@ -115,18 +117,21 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                         ref: this.props.syntax,
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
+                        value: this.props.value,
                     });
                 case "type":
                     return renderTypeControl({
                         ref: this.props.syntax,
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
+                        value: this.props.value,
                     });
                 case "syntax":
                     return renderSyntaxControl({
                         ref: this.props.syntax,
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
+                        value: this.props.value,
                     });
                 case "property":
                     const propertyKey: string = this.props.syntax.ref.slice(2, -2);
@@ -143,6 +148,7 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                             property: propertyKey,
                             key: this.props.syntax.ref,
                             handleChange: this.props.onChange,
+                            value: this.props.value,
                         });
                     }
                 default:
@@ -150,7 +156,13 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
             }
         }
 
-        return <CSSRef syntax={this.props.syntax.ref[0]} onChange={this.handleChange} />;
+        return (
+            <CSSRef
+                syntax={this.props.syntax.ref[0]}
+                onChange={this.handleChange}
+                value={this.props.value}
+            />
+        );
     }
 
     private renderBrackets(): React.ReactNode {
