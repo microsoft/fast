@@ -42,7 +42,7 @@ export class HTMLRenderLayerTest extends HTMLRenderLayer {
     public lastActivity: ActivityResult = null;
 
     public elementActivity(
-        layerActivityId: string, 
+        layerActivityId: string,
         activityType: ActivityType,
         datadictionaryId: string,
         elementRef: HTMLElement

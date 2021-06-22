@@ -17,7 +17,10 @@ import {
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
-import { ActivityType, HTMLRenderLayer, HTMLRenderLayerCallbackType } from "../html-render-layer/html-render-layer";
+import {
+    ActivityType,
+    HTMLRenderLayer
+} from "../html-render-layer/html-render-layer";
 import { HTMLRenderStyles } from "./html-render.styles";
 import { HTMLRenderTemplate } from "./html-render.template";
 
@@ -29,7 +32,6 @@ export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
     styles: HTMLRenderStyles,
 })
 export class HTMLRender extends FASTElement {
-
     private layerActivityId: string = "HTMLRender";
 
     private dataDictionary: DataDictionary<unknown>;
@@ -89,23 +91,31 @@ export class HTMLRender extends FASTElement {
         if (e.data) {
             if (
                 (e.data.type === MessageSystemType.initialize ||
-                e.data.type === MessageSystemType.data) &&
+                    e.data.type === MessageSystemType.data) &&
                 (!e.data.options ||
                     e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
                 this.currentElement = null;
-                this.updateLayers(this.layerActivityId, ActivityType.clear, "", null, null);
+                this.updateLayers(
+                    this.layerActivityId,
+                    ActivityType.clear,
+                    "",
+                    null,
+                    null
+                );
                 this.renderMarkup();
                 if (e.data.activeDictionaryId) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
                     // give everything time to actually render
-                    if(this.selectTimeout)
-                    {
+                    if (this.selectTimeout) {
                         window.clearTimeout(this.selectTimeout);
                     }
-                    this.selectTimeout = window.setTimeout(this.selectActiveDictionaryId, 50);
+                    this.selectTimeout = window.setTimeout(
+                        this.selectActiveDictionaryId,
+                        50
+                    );
                 }
             }
             if (
@@ -115,11 +125,13 @@ export class HTMLRender extends FASTElement {
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
-                    if(this.selectTimeout)
-                    {
+                    if (this.selectTimeout) {
                         window.clearTimeout(this.selectTimeout);
                     }
-                    this.selectTimeout = window.setTimeout(this.selectActiveDictionaryId, 50);
+                    this.selectTimeout = window.setTimeout(
+                        this.selectActiveDictionaryId,
+                        50
+                    );
                 }
             }
         }
@@ -127,13 +139,13 @@ export class HTMLRender extends FASTElement {
 
     private selectActiveDictionaryId = () => {
         this.selectTimeout = null;
-        const foo: string = this.activeDictionaryId;
         let el: HTMLElement = this.shadowRoot.querySelector(
             "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
         );
-        while(!el && this.dataDictionary[0][this.activeDictionaryId].parent)
-        {
-            this.activeDictionaryId = this.dataDictionary[0][this.activeDictionaryId].parent.id;
+        while (!el && this.dataDictionary[0][this.activeDictionaryId].parent) {
+            this.activeDictionaryId = this.dataDictionary[0][
+                this.activeDictionaryId
+            ].parent.id;
             el = this.shadowRoot.querySelector(
                 "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
             );
@@ -141,7 +153,7 @@ export class HTMLRender extends FASTElement {
         if (el) {
             this.currentElement = el;
             this.updateLayers(
-                this.layerActivityId, 
+                this.layerActivityId,
                 ActivityType.click,
                 this.activeDictionaryId,
                 this.currentElement,
@@ -159,15 +171,20 @@ export class HTMLRender extends FASTElement {
     ) {
         if (this.renderLayers) {
             this.renderLayers.forEach(value => {
-                value.elementActivity(layerActivityId, activityType, dictionaryId, elementRef, event);
+                value.elementActivity(
+                    layerActivityId,
+                    activityType,
+                    dictionaryId,
+                    elementRef,
+                    event
+                );
             });
         }
     }
 
-    private layerCallback = (layerActivityId: string) =>
-    {
-        this.updateLayers(layerActivityId, ActivityType.update, "", null, null);
-    }
+    private layerCallback = (layerActivityId: string, activityType: ActivityType) => {
+        this.updateLayers(layerActivityId, activityType, "", null, null);
+    };
 
     /// Mouse Handlers
 
@@ -195,7 +212,13 @@ export class HTMLRender extends FASTElement {
                     this.currentElement.getAttribute(this.dataDictionaryAttr)
             )
         ) {
-            this.updateLayers(this.layerActivityId, ActivityType.hover, targetEl.dataId, targetEl.el, null);
+            this.updateLayers(
+                this.layerActivityId,
+                ActivityType.hover,
+                targetEl.dataId,
+                targetEl.el,
+                null
+            );
         }
         return false;
     }
@@ -245,9 +268,46 @@ export class HTMLRender extends FASTElement {
     }
 
     public dblClickHandler(e: MouseEvent): boolean {
+        // Get the element of the double click event
         const targetEl = this.getTargetElementFromMouseEvent(e);
-        if (targetEl.dataId !== null && this.dataDictionary[0][targetEl.dataId].data["Slot"].length>0) {
-            const newDataId: string = this.dataDictionary[0][targetEl.dataId].data["Slot"][0].id;
+        if (
+            targetEl.dataId !== null &&
+            this.dataDictionary[0][targetEl.dataId].data["Slot"] &&
+            this.dataDictionary[0][targetEl.dataId].data["Slot"].length > 0
+        ) {
+            let textNode = null;
+            let childIndex = -1;
+            // Find the actuall text node that was double clicked
+            if (targetEl.el.childNodes.length > 0) {
+                let i = 0;
+                while (i < targetEl.el.childNodes.length && textNode === null) {
+                    if (targetEl.el.childNodes[i].nodeType === 3) {
+                        const range = document.createRange();
+                        range.selectNode(targetEl.el.childNodes[i]);
+                        const rect = range.getBoundingClientRect();
+                        if (
+                            e.clientX >= rect.left &&
+                            e.clientX <= rect.right &&
+                            e.clientY >= rect.top &&
+                            e.clientY <= rect.bottom
+                        ) {
+                            textNode = targetEl.el.childNodes[i];
+                            childIndex = i;
+                        }
+                    }
+                    i++;
+                }
+            }
+            if (childIndex === -1) {
+                return false;
+            }
+
+            // The childNode index should be the same as the dictionary index.
+            const newDataId: string = this.dataDictionary[0][targetEl.dataId].data[
+                "Slot"
+            ][childIndex].id;
+
+            // Navigate to the text node
             this.messageSystem.postMessage({
                 type: MessageSystemType.navigation,
                 action: MessageSystemNavigationTypeAction.update,
@@ -257,8 +317,15 @@ export class HTMLRender extends FASTElement {
                 },
                 activeNavigationConfigId: "",
             });
-    
-            this.updateLayers(this.layerActivityId, ActivityType.doubleClick, newDataId, targetEl.el, e);
+
+            // Update the layers
+            this.updateLayers(
+                this.layerActivityId,
+                ActivityType.doubleClick,
+                newDataId,
+                textNode,
+                e
+            );
             e.preventDefault();
             e.stopPropagation();
             return false;

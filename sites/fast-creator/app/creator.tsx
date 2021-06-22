@@ -337,7 +337,7 @@ class Creator extends Editor<{}, CreatorState> {
                 });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
-            } else if(e.data.value) {
+            } else if (e.data.value) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
@@ -348,8 +348,7 @@ class Creator extends Editor<{}, CreatorState> {
                         originatorId: HTMLRenderOriginatorId,
                     },
                 });
-            } else if(e.data.data)
-            {
+            } else if (e.data.data) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.data,
                     action: MessageSystemDataTypeAction.update,
@@ -358,9 +357,8 @@ class Creator extends Editor<{}, CreatorState> {
                     options: {
                         originatorId: HTMLRenderOriginatorId,
                     },
-                });                
+                });
             }
-
         }
 
         if (

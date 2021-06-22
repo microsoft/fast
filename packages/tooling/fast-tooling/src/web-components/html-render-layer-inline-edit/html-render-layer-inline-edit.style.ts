@@ -10,8 +10,7 @@ export const HTMLRenderLayerInlineEditStyles = css`
         pointer-events: none;
     }
 
-    .text-area
-    {
+    .text-area {
         display: none;
         position: absolute;
         box-sizing: content-box;
@@ -20,16 +19,18 @@ export const HTMLRenderLayerInlineEditStyles = css`
         width: 0;
         height: 0;
         pointer-events: auto;
-        margin:0;
-        border:none;
-        padding:0;
-        background: transparent;
-        color: rgba(0,0,0,0);
+        margin: 0;
+        border: none;
+        padding: 0;
+        background: white;
         caret-color: black;
+        overflow: hidden;
+        resize: none;
+        outline: 1px solid black;
+        white-space: pre-wrap;
     }
 
-    .text-area.active
-    {
-        display:block;
+    .text-area.active {
+        display: block;
     }
 `;

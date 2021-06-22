@@ -13,7 +13,6 @@ import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigatio
     styles: HTMLRenderLayerNavigationStyles,
 })
 export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
-
     public layerActivityId: string = "NavLayer";
 
     @observable
@@ -30,6 +29,9 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
 
     @observable
     public clickLayerHide: boolean = false;
+
+    @observable
+    public hoverLayerHide: boolean = false;
 
     @observable
     public clickPillContent: string = "";
@@ -110,37 +112,42 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     }
 
     private handleUpdate() {
-        if(this.clickLayerActive)
-        {
+        if (this.clickLayerActive) {
             this.clickPosition = this.GetPositionFromElement(this.currElementRef);
         }
     }
 
     public elementActivity(
-        layerActivityId: string, 
+        layerActivityId: string,
         activityType: ActivityType,
         dataDictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: Node
     ) {
-        if(layerActivityId === this.layerActivityId)
-        {
+        if (layerActivityId === this.layerActivityId) {
             return;
         }
         switch (activityType) {
             case ActivityType.hover:
-                this.handleHighlight(dataDictionaryId, elementRef);
+                this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.blur:
                 this.handleUnHighlight();
                 break;
             case ActivityType.click:
-                this.handleSelect(dataDictionaryId, elementRef);
+                this.handleSelect(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.clear:
                 this.handleClear();
                 break;
             case ActivityType.update:
                 this.handleUpdate();
+                break;
+            case ActivityType.takeFocus:
+                this.hoverLayerHide = true;
+                break;
+            case ActivityType.releaseFocus:
+                this.hoverLayerHide = false;
+                break;
         }
     }
 }

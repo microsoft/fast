@@ -172,18 +172,15 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         }
     }
 
-    private attachComponentsAndInit(): void
-    {
+    private attachComponentsAndInit(): void {
         this.attachMappedComponents();
-        if (this.state.dataDictionary !== undefined)
-        {
+        if (this.state.dataDictionary !== undefined) {
             this.state.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: this.state.dataDictionary,
                 schemaDictionary: this.state.schemaDictionary,
             });
-            if(this.state.activeDictionaryId)
-            {
+            if (this.state.activeDictionaryId) {
                 this.state.htmlRenderMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
@@ -197,8 +194,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         }
     }
 
-    private attachComponentsAndData(): void
-    {
+    private attachComponentsAndData(): void {
         this.attachMappedComponents();
     }
 
@@ -238,10 +234,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 return;
             }
 
-            if (messageData !== undefined &&
+            if (
+                messageData !== undefined &&
                 (!(messageData as any).options ||
-                ((messageData as any).options as any).originatorId !==
-                    "preview")) {
+                    ((messageData as any).options as any).originatorId !== "preview")
+            ) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
                         this.setState(
@@ -308,7 +305,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     };
 
     private handleHtmlMessageSystem = (message: MessageEvent): void => {
-
         if (message.data) {
             if (
                 message.data.type === MessageSystemType.navigation &&
@@ -317,7 +313,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.options.originatorId === HTMLRenderOriginatorId
             ) {
                 this.setState({
-                    activeDictionaryId: message.data.activeDictionaryId
+                    activeDictionaryId: message.data.activeDictionaryId,
                 });
                 window.postMessage(
                     {
@@ -332,17 +328,15 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.action === MessageSystemNavigationTypeAction.update &&
                 message.data.options &&
                 message.data.options.originatorId === HTMLRenderOriginatorId
-            )
-            {
+            ) {
                 window.postMessage(
                     {
                         type: MessageSystemType.custom,
                         action: ViewerCustomAction.call,
-                        data: message.data.data
+                        data: message.data.data,
                     },
                     "*"
                 );
-
             }
         }
     };

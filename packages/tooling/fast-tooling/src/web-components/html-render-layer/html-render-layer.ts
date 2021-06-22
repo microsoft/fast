@@ -12,7 +12,9 @@ export enum ActivityType {
     click = "click",
     clear = "clear",
     doubleClick = "dblclick",
-    update = "update"
+    update = "update",
+    takeFocus = "takeFocus",
+    releaseFocus = "release",
 }
 
 export class OverylayPosition {
@@ -29,7 +31,9 @@ export class OverylayPosition {
     }
 }
 
-export interface HTMLRenderLayerCallbackType { (layerActivityId: string): void }
+export interface HTMLRenderLayerCallbackType {
+    (layerActivityId: string, activityType: ActivityType): void;
+}
 
 export abstract class HTMLRenderLayer extends FASTElement {
     public dataDictionary: DataDictionary<unknown>;
@@ -64,7 +68,7 @@ export abstract class HTMLRenderLayer extends FASTElement {
         layerActivityId: string,
         activityType: ActivityType,
         datadictionaryId: string,
-        elementRef: HTMLElement,
+        elementRef: Node,
         event: Event
     );
 }

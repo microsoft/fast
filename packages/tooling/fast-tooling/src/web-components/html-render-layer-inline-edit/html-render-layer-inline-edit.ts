@@ -1,6 +1,13 @@
 import { customElement, observable } from "@microsoft/fast-element";
-import { MessageSystemDataTypeAction, MessageSystemNavigationTypeAction, MessageSystemType } from "../../message-system";;
-import { ActivityType, HTMLRenderLayer, OverylayPosition } from "../html-render-layer/html-render-layer";
+import {
+    MessageSystemDataTypeAction,
+    MessageSystemType,
+} from "../../message-system";
+import {
+    ActivityType,
+    HTMLRenderLayer,
+    OverylayPosition,
+} from "../html-render-layer/html-render-layer";
 import { HTMLRenderOriginatorId } from "../html-render/html-render";
 import { HTMLRenderLayerInlineEditStyles } from "./html-render-layer-inline-edit.style";
 import { HTMLRenderLayerInlineEditTemplate } from "./html-render-layer-inline-edit.template";
@@ -19,76 +26,142 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     @observable
     public textPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 
-    @observable 
+    @observable
     public textValue: string = "";
 
     public textAreaRef: HTMLTextAreaElement;
 
     private currentDataId: string = null;
-    private currentTarget: HTMLElement;
     private originalTextValue: string = null;
+    private currentStyleTarget: HTMLElement;
+    private currentTextNode: Node;
+    private timeoutRef: number = null;
 
-    public handleTextInput(e: InputEvent) {
-        if(e.inputType === "insertLineBreak")
-        {
+    connectedCallback() {
+        super.connectedCallback();
+
+        window.addEventListener("scroll", this.handleWindowChange);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        window.removeEventListener("scroll", this.handleWindowChange);
+    }
+
+    private handleWindowChange = () => {
+        if (this.textAreaActive) {
+            if (this.timeoutRef !== null) {
+                window.clearTimeout(this.timeoutRef);
+            }
+            this.timeoutRef = window.setTimeout(() => {
+                this.applySizeAndPositionToTextbox();
+            }, 40);
+        }
+    };
+
+    public handleKeyDown(e: KeyboardEvent) {
+        if (e.key.length === 1) {
+            this.currentTextNode.textContent += e.key === " " ? " " : e.key;
+            this.applySizeAndPositionToTextbox();
+        }
+        return true;
+    }
+
+    public handleTextInput(e: KeyboardEvent) {
+        if (e.key === "Enter") {
             this.commitEdit();
+            e.preventDefault();
+            return false;
+        } else if (e.key === "Escape") {
+            this.cancelEdit();
             e.preventDefault();
             return false;
         }
         const inputVal = (e.composedPath()[0] as HTMLInputElement).value;
-        this.currentTarget.innerText = inputVal;
+        this.currentTextNode.textContent = inputVal;
         this.applySizeAndPositionToTextbox();
-        if(this.activityCallback)
-        {
-            this.activityCallback(this.layerActivityId);
+        if (this.activityCallback) {
+            this.activityCallback(this.layerActivityId, ActivityType.update);
         }
     }
 
-    private GetPositionFromElement(target: HTMLElement): OverylayPosition {
-        const pos: DOMRect = target.getBoundingClientRect();
+    public handleBlur(e: InputEvent) {
+        this.cancelEdit();
+    }
+
+    private GetPositionFromElement(target: Node): OverylayPosition {
+        const range = document.createRange();
+        range.selectNode(target);
+        const pos: DOMRect = range.getBoundingClientRect();
         return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
-    private applySizeAndPositionToTextbox()
-    {
-        this.textPosition = this.GetPositionFromElement(this.currentTarget);
+    private applySizeAndPositionToTextbox() {
+        this.textPosition = this.GetPositionFromElement(this.currentTextNode);
         this.textAreaRef.style.top = this.textPosition.top + "px";
         this.textAreaRef.style.left = this.textPosition.left + "px";
-        this.textAreaRef.style.width = this.textPosition.width + "px";
-        this.textAreaRef.style.height = this.textPosition.height + "px";
+        this.textAreaRef.style.width = "0";
+        this.textAreaRef.style.height = "0";
+        console.log(this.textAreaRef.scrollWidth, this.textPosition.width);
+        this.textAreaRef.style.width =
+            (this.textAreaRef.scrollWidth > this.textPosition.width
+                ? this.textAreaRef.scrollWidth
+                : this.textPosition.width) + "px";
+        this.textAreaRef.style.height =
+            (this.textAreaRef.scrollHeight > this.textPosition.height
+                ? this.textAreaRef.scrollHeight
+                : this.textPosition.height) + "px";
     }
 
-    private applyStylesToTextbox()
-    {
-        const styles: CSSStyleDeclaration = window.getComputedStyle(this.currentTarget);
+    private applyStylesToTextbox() {
+        const styles: CSSStyleDeclaration = window.getComputedStyle(
+            this.currentStyleTarget
+        );
         this.textAreaRef.style.font = styles.font;
         this.textAreaRef.style.fontWeight = styles.fontWeight;
         this.textAreaRef.style.lineHeight = styles.lineHeight;
-        this.textAreaRef.style.padding = styles.padding;
     }
 
-    private startEdit(datadictionaryId: string, elementRef: HTMLElement, event: MouseEvent)
-    {
-        if(this.currentDataId === datadictionaryId)
-        {
+    private startEdit(datadictionaryId: string, elementRef: Node, event: MouseEvent) {
+        if (this.currentDataId === datadictionaryId) {
             this.cancelEdit();
         }
+        if (this.activityCallback) {
+            this.activityCallback(this.layerActivityId, ActivityType.takeFocus);
+        }
+
         this.currentDataId = datadictionaryId;
-        this.currentTarget = elementRef;
-        this.textValue = elementRef.innerText;
+        this.currentTextNode = elementRef;
+
+        this.textValue = this.dataDictionary[0][datadictionaryId].data as string;
         this.originalTextValue = this.textValue;
+        const path: EventTarget[] = event.composedPath();
+        let i = 0;
+        this.currentStyleTarget = path[i] as HTMLElement;
+        // walk up the composedPath until we find an element that isn't a text node or a slot.
+        while (
+            this.currentStyleTarget.nodeType === 3 ||
+            this.currentStyleTarget.nodeType === 11 ||
+            this.currentStyleTarget.nodeName === "SLOT"
+        ) {
+            i++;
+            this.currentStyleTarget = path[i] as HTMLElement;
+        }
         // position, style and show the textarea
         this.applyStylesToTextbox();
         this.applySizeAndPositionToTextbox();
         this.textAreaActive = true;
-        window.setTimeout(()=>{this.textAreaRef.focus();},10);
+        window.setTimeout(() => {
+            this.textAreaRef.focus();
+        }, 10);
     }
 
-    private commitEdit()
-    {
-        const newValue = this.textAreaRef.value;
+    private commitEdit() {
+        const newValue = this.textAreaRef.value.replaceAll("\n", "");
         this.textAreaActive = false;
         this.textValue = "";
+        this.originalTextValue = "";
         // update the data dictionary
         // send the data update message
         this.messageSystem.postMessage({
@@ -101,42 +174,50 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
             },
         });
         this.currentDataId = null;
-        this.currentTarget = null;
+        this.currentTextNode = null;
+        if (this.activityCallback) {
+            this.activityCallback(this.layerActivityId, ActivityType.releaseFocus);
+        }
     }
 
-    private cancelEdit()
-    {
+    private cancelEdit() {
         // undo everything
-        if(this.currentTarget)
-        {
-            this.currentTarget.innerText = this.originalTextValue;
+        if (this.currentTextNode) {
+            this.currentTextNode.textContent = this.originalTextValue;
         }
         this.textAreaActive = false;
         this.currentDataId = null;
-        this.currentTarget = null;
-        if(this.activityCallback)
-        {
-            this.activityCallback(this.layerActivityId);
+        this.currentTextNode = null;
+        this.textValue = "";
+        this.originalTextValue = "";
+        if (this.activityCallback) {
+            this.activityCallback(this.layerActivityId, ActivityType.update);
+            this.activityCallback(this.layerActivityId, ActivityType.releaseFocus);
         }
     }
 
-    public elementActivity(layerActivityId: string, activityType: ActivityType, datadictionaryId: string, elementRef: HTMLElement, event: Event) {
-        if(layerActivityId === this.layerActivityId)
-        {
+    public elementActivity(
+        layerActivityId: string,
+        activityType: ActivityType,
+        datadictionaryId: string,
+        elementRef: Node,
+        event: Event
+    ) {
+        if (layerActivityId === this.layerActivityId) {
             return;
         }
-        switch(activityType)
-        {
+        switch (activityType) {
             case ActivityType.click:
-                if(this.currentDataId !== null && this.currentDataId !== datadictionaryId)
-                {
+                if (
+                    this.currentDataId !== null &&
+                    this.currentDataId !== datadictionaryId
+                ) {
                     // currently editing and something else was clicked
                     this.cancelEdit();
                 }
                 break;
             case ActivityType.clear:
-                if(this.currentDataId !== null)
-                {
+                if (this.currentDataId !== null) {
                     this.cancelEdit();
                 }
                 break;
@@ -145,6 +226,5 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
                 this.startEdit(datadictionaryId, elementRef, event as MouseEvent);
                 break;
         }
-
     }
 }
