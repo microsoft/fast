@@ -2,6 +2,7 @@ export * from "./accordion-item/index";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
+export * from "./avatar/index";
 export * from "./badge/index";
 export * from "./breadcrumb-item/index";
 export * from "./breadcrumb/index";
