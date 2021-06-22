@@ -72,7 +72,7 @@ export const avatarStyles = (context, definition: AvatarOptions) =>
             display: block;
         }
 
-        .name {
+        .content {
             font-size: calc(
                 (var(--avatar-text-size) + var(--avatar-size, var(--avatar-size-default))) /
                     var(--avatar-text-ratio)

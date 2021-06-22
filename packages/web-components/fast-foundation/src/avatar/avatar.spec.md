@@ -10,7 +10,6 @@ A common use case would be to display an image or text (usually initials) of a u
 
 ### Features
 - A URL for an image can be passed to the component to be displayed in the backplate
-  - When no image is provided, the initials of the provided name will be displayed in the backplate
 - Badge slot: Able to slot in a badge component
 - Media slot: Accepts an `img` or an `svg`
 - `shape`, a circle or square shape can be chosen. Any border radius for square shaped backplates should be determined by the users design system values or stylesheet
@@ -34,7 +33,6 @@ A common use case would be to display an image or text (usually initials) of a u
 #### Attributes
 |   Name    | Description                                                 | Type                                |
 |-----------|-------------------------------------------------------------|-------------------------------------|
-| `name`    | Accepts name string for backplate display                        | `string`                            |
 | `src` | Accepts URL string of image to be displayed                 | `string`                            |
 | `alt`| Accepts alt text for image                                  | `string`                            |
 | `link`    | Accepts a URL for the anchor source                         | `string`                            |
@@ -66,7 +64,7 @@ A common use case would be to display an image or text (usually initials) of a u
         style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
     >
         <slot name="media" part="media">${definition.media || ""}</slot>
-        <span class="name" part="name">${x => x.initials}</span>
+        <slot class="content" part="content"></slot>
     </a>
 </div>
 <slot name="badge" part="badge"></slot>

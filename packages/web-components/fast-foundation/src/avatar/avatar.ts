@@ -18,30 +18,6 @@ export type AvatarOptions = FoundationElementDefinition & {
  */
 export class Avatar extends FoundationElement {
     /**
-     * Indicates the Avatar should have a name.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: name
-     */
-    @attr public name: string;
-    protected nameChanged(): void {
-        if (!this.initials) {
-            const result = this.name?.match(/\b\w/g) || [];
-            this.initials = ((result.shift() || "") + (result.pop() || "")).toUpperCase();
-        }
-    }
-
-    /**
-     * Indicates the Avatar should have initials.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: initials
-     */
-    @attr public initials: string;
-
-    /**
      * Indicates the Avatar should have a color fill.
      *
      * @public

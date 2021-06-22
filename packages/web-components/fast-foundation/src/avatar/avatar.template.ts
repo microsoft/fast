@@ -23,7 +23,7 @@ export const avatarTemplate: (
             style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
         >
             <slot name="media" part="media">${definition.media || ""}</slot>
-            <span class="name" part="name">${x => x.initials}</span>
+            <slot class="content" part="content"><slot>
         </a>
     </div>
     <slot name="badge" part="badge"></slot>

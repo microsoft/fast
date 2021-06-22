@@ -173,11 +173,7 @@ export class Avatar extends FoundationElement {
     color: string;
     connectedCallback(): void;
     fill: string;
-    initials: string;
     link: string;
-    name: string;
-    // (undocumented)
-    protected nameChanged(): void;
     // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
     shape: AvatarShape;
 }

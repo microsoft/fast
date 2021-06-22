@@ -8,6 +8,8 @@ import { Accordion } from '@microsoft/fast-foundation';
 import { AccordionItemOptions } from '@microsoft/fast-foundation';
 import { Anchor as Anchor_2 } from '@microsoft/fast-foundation';
 import { AnchoredRegion } from '@microsoft/fast-foundation';
+import { Avatar as Avatar_2 } from '@microsoft/fast-foundation';
+import { AvatarOptions } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
 import { Behavior } from '@microsoft/fast-element';
 import { Breadcrumb } from '@microsoft/fast-foundation';
@@ -160,6 +162,7 @@ export const allComponents: {
         template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").AnchoredRegion, any>;
         styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
     }, typeof import("@microsoft/fast-foundation").AnchoredRegion>;
+    fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AvatarOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
     fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Badge, any>;
@@ -438,6 +441,15 @@ export const anchoredRegionStyles: (context: any, definition: any) => import("@m
 // @public
 export const anchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
+// @public (undocumented)
+export class Avatar extends Avatar_2 {
+    alt: string;
+    imgSrc: string;
+}
+
+// @public
+export const avatarStyles: (context: any, definition: AvatarOptions) => import("@microsoft/fast-element").ElementStyles;
+
 // @public
 export const badgeStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
@@ -598,6 +610,9 @@ export const fastAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-f
     template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<AnchoredRegion, any>;
     styles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 }, typeof AnchoredRegion>;
+
+// @public
+export const fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AvatarOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
 export const fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
@@ -999,6 +1014,9 @@ export class HorizontalScroll extends HorizontalScroll_2 {
     // @public (undocumented)
     connectedCallback(): void;
 }
+
+// @public (undocumented)
+export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
 
 // @public (undocumented)
 export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
@@ -1530,14 +1548,14 @@ export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/custom-elements.d.ts:65:5 - (ae-incompatible-release-tags) The symbol "fastAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
-// dist/dts/custom-elements.d.ts:108:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
-// dist/dts/custom-elements.d.ts:123:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
-// dist/dts/custom-elements.d.ts:170:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:242:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:279:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:294:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:318:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:66:5 - (ae-incompatible-release-tags) The symbol "fastAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
+// dist/dts/custom-elements.d.ts:110:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
+// dist/dts/custom-elements.d.ts:125:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+// dist/dts/custom-elements.d.ts:172:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+// dist/dts/custom-elements.d.ts:244:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:281:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:296:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:320:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 

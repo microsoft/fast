@@ -6,12 +6,6 @@
             "description": "The FAST avatar element",
             "attributes": [
                 {
-                    "name": "initials",
-                    "description": "The initials attribute",
-                    "type": "string",
-                    "required": false
-                },
-                {
                     "name": "fill",
                     "description": "The fill attribute",
                     "type": "string",
