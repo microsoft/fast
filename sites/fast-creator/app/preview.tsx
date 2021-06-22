@@ -5,7 +5,6 @@ import {
     DataMessageOutgoing,
     InitializeMessageOutgoing,
     MessageSystem,
-    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
     MessageSystemType,
@@ -192,10 +191,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 });
             }
         }
-    }
-
-    private attachComponentsAndData(): void {
-        this.attachMappedComponents();
     }
 
     private handleNavigation(): void {

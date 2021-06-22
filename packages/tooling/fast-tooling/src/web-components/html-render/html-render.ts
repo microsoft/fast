@@ -137,14 +137,14 @@ export class HTMLRender extends FASTElement {
     private selectActiveDictionaryId = () => {
         this.selectTimeout = null;
         let el: HTMLElement = this.shadowRoot.querySelector(
-            "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+            `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
         );
         while (!el && this.dataDictionary[0][this.activeDictionaryId].parent) {
             this.activeDictionaryId = this.dataDictionary[0][
                 this.activeDictionaryId
             ].parent.id;
             el = this.shadowRoot.querySelector(
-                "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+                `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
             );
         }
         if (el) {

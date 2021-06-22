@@ -32,7 +32,6 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     private originalTextValue: string = null;
     private currentStyleTarget: HTMLElement;
     private currentTextNode: Node;
-    private timeoutRef: number = null;
 
     connectedCallback() {
         super.connectedCallback();
@@ -48,18 +47,13 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
 
     private handleWindowChange = () => {
         if (this.textAreaActive) {
-            if (this.timeoutRef !== null) {
-                window.clearTimeout(this.timeoutRef);
-            }
-            this.timeoutRef = window.setTimeout(() => {
-                this.applySizeAndPositionToTextbox();
-            }, 40);
+            this.applySizeAndPositionToTextbox();
         }
     };
 
     public handleKeyDown(e: KeyboardEvent) {
         if (e.key.length === 1) {
-            this.currentTextNode.textContent += e.key === " " ? " " : e.key;
+            this.currentTextNode.textContent += e.key;
             this.applySizeAndPositionToTextbox();
         }
         return true;
@@ -87,7 +81,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.cancelEdit();
     }
 
-    private GetPositionFromElement(target: Node): OverylayPosition {
+    private getPositionFromElement(target: Node): OverylayPosition {
         const range = document.createRange();
         range.selectNode(target);
         const pos: DOMRect = range.getBoundingClientRect();
@@ -95,19 +89,21 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private applySizeAndPositionToTextbox() {
-        this.textPosition = this.GetPositionFromElement(this.currentTextNode);
-        this.textAreaRef.style.top = this.textPosition.top + "px";
-        this.textAreaRef.style.left = this.textPosition.left + "px";
+        this.textPosition = this.getPositionFromElement(this.currentTextNode);
+        this.textAreaRef.style.top = `${this.textPosition.top}px`;
+        this.textAreaRef.style.left = `${this.textPosition.left}px`;
         this.textAreaRef.style.width = "0";
         this.textAreaRef.style.height = "0";
-        this.textAreaRef.style.width =
-            (this.textAreaRef.scrollWidth > this.textPosition.width
+        this.textAreaRef.style.width = `${
+            this.textAreaRef.scrollWidth > this.textPosition.width
                 ? this.textAreaRef.scrollWidth
-                : this.textPosition.width) + "px";
-        this.textAreaRef.style.height =
-            (this.textAreaRef.scrollHeight > this.textPosition.height
+                : this.textPosition.width
+        }px`;
+        this.textAreaRef.style.height = `${
+            this.textAreaRef.scrollHeight > this.textPosition.height
                 ? this.textAreaRef.scrollHeight
-                : this.textPosition.height) + "px";
+                : this.textPosition.height
+        }px`;
     }
 
     private applyStylesToTextbox() {
@@ -177,7 +173,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private cancelEdit() {
-        // undo everything
+        // reset all changes
         if (this.currentTextNode) {
             this.currentTextNode.textContent = this.originalTextValue;
         }
@@ -192,6 +188,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         }
     }
 
+    // Handle element activity events from the HTMLRender component
     public elementActivity(
         layerActivityId: string,
         activityType: ActivityType,
