@@ -144,7 +144,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.applyStylesToTextbox();
         this.applySizeAndPositionToTextbox();
         this.textAreaActive = true;
-        
+
         // give the dom time to update and show the textarea before giving it focus
         window.setTimeout(() => {
             this.textAreaRef.focus();
