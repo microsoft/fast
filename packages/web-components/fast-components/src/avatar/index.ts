@@ -6,6 +6,11 @@ import {
 } from "@microsoft/fast-foundation";
 import { avatarStyles as styles } from "./avatar.styles";
 
+/**
+ * The FAST Avatar Class
+ * @public
+ *
+ */
 export class Avatar extends FoundationAvatar {
     /**
      * Indicates the Avatar should have an image source
@@ -27,6 +32,11 @@ export class Avatar extends FoundationAvatar {
     @attr public alt: string;
 }
 
+/**
+ * The FAST Avatar Template for Images
+ *  @public
+ *
+ */
 export const imgTemplate = html<Avatar>`
     ${when(
         x => x.imgSrc,

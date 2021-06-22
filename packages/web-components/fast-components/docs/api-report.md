@@ -441,7 +441,7 @@ export const anchoredRegionStyles: (context: any, definition: any) => import("@m
 // @public
 export const anchorStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
-// @public (undocumented)
+// @public
 export class Avatar extends Avatar_2 {
     alt: string;
     imgSrc: string;
@@ -1015,7 +1015,7 @@ export class HorizontalScroll extends HorizontalScroll_2 {
     connectedCallback(): void;
 }
 
-// @public (undocumented)
+// @public
 export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
 
 // @public (undocumented)
