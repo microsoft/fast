@@ -2,7 +2,7 @@ import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
 import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
 import CSSControl from "../../src/form/custom-controls/control.css";
-import { properties } from "@microsoft/fast-tooling/dist/esm/css-data";
+import { properties as allCSSProperties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -53,6 +53,14 @@ export interface DataSet {
     displayName: string;
     data: any;
 }
+
+const properties = {
+    "border-width": allCSSProperties["border-width"],
+    "border-style": allCSSProperties["border-style"],
+    "border-color": allCSSProperties["border-color"],
+    "outline-offset": allCSSProperties["outline-offset"],
+    "animation-delay": allCSSProperties["animation-delay"],
+};
 
 const dataSets: DataSet[] = [
     {
@@ -203,7 +211,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             }),
         ];
 
-        const exampleData: any = getDataFromSchema(testConfigs.customControl.schema);
+        const exampleData: any = getDataFromSchema(testConfigs.controlPluginCss.schema);
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -211,7 +219,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 dataDictionary: [
                     {
                         foo: {
-                            schemaId: testConfigs.customControl.schema.id,
+                            schemaId: testConfigs.controlPluginCss.schema.id,
                             data: exampleData,
                         },
                     },
@@ -226,7 +234,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         this.state = {
-            schema: testConfigs.customControl.schema,
+            schema: testConfigs.controlPluginCss.schema,
             data: exampleData,
             navigation: void 0,
             showExtendedControls: false,
@@ -258,7 +266,10 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     }}
                 >
                     <div>
-                        <select onChange={this.handleComponentUpdate}>
+                        <select
+                            onChange={this.handleComponentUpdate}
+                            defaultValue={testConfigs.controlPluginCss.schema.id}
+                        >
                             {this.getComponentOptions()}
                         </select>
                         {this.renderDataSetComponentOptions()}
