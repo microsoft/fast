@@ -20,35 +20,35 @@ Libraries are available in the component tab in the left pane, they can be enabl
 
 Each library will be defined by a configuration which includes the web components themselves, data examples that will be used when a component is added, the tag name of the components and the display name. See the [typings](./app/configs/typings.ts) file for the interface.
 
-When a user adds a library to a project, this library configuration will be dynamically imported. Available libraries will be referenced by a JSON file, this file will be used to create a UI and should be auto-generated. The `examples`, `schema` and `displayName` should be provided by the library.
+When a user adds a library to a project, this library configuration will be dynamically imported. Available libraries will be referenced in a dictionary file, this file will be used to create a UI.
 
-Available libraries JSON file:
-```json
-[
-    {
-        "id": "my-components",
-        "displayName": "My Components",
-        "import": "./my-components.min.js",
-        "components": {
+Available libraries file:
+```typescript
+export const elementLibraries = {
+    "my-components": {
+        id: "my-components",
+        displayName: "My Components",
+        import: "./my-components.min.js",
+        components: {
             "my-button": {
-                "displayName": "My Button",
-                "schema": {
-                    "id": "my-button",
-                    "$id": "my-button",
-                    "type": "object",
-                    "properties": {
-                        "disabled": {
-                            "type": "boolean"
+                displayName: "My Button",
+                schema: {
+                    id: "my-button",
+                    $id: "my-button",
+                    type: "object",
+                    properties: {
+                        disabled: {
+                            type: "boolean"
                         }
                     }
                 },
-                "example": {
-                    "disabled": true
+                example: {
+                    disabled: true
                 }
             }
         }
     }
-]
+}
 ```
 
 Importing the library in `creator.tsx`:
