@@ -2,6 +2,282 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.19",
+      "version": "2.8.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.0",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Jun 2021 07:19:23 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.18",
+      "version": "2.8.18",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address a CSS specificy issue that appeared recently and resulted in the native browser dropdown arrow appearing",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "e7f1e1905413758a6156430a7b303abffe05e489",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Jun 2021 07:29:18 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.17",
+      "version": "2.8.17",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.22.2",
+            "author": "scomea@microsoft.com",
+            "commit": "7436c794f855e03e23494c5b87e895cd3221f5f6",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Jun 2021 07:35:11 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.16",
+      "version": "2.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.22.1",
+            "author": "khamu@microsoft.com",
+            "commit": "5552d245a55f319e9e0df5fef09ae56653eee491",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Jun 2021 07:47:44 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.15",
+      "version": "2.8.15",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address an issue where the first character typed results in the cursor moving to the end of the text",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "a58982ce00128c30f64093c56e22cc95fd6e30bb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 31 May 2021 07:44:04 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.14",
+      "version": "2.8.14",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove a redundant design system provider",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "aef1629295c1ab4c8dbfef5b12a77c1dffda5c53",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.13",
+      "version": "2.8.13",
+      "comments": {
+        "patch": [
+          {
+            "comment": "allow navigation through the message system to open the expanded state of all parent navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2c9ab357b23e407f330a75c40d08af81deeeac6b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "fix typo in documentation",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.3",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.21.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "58a230232f1bd5a5ac8735ec486c20a31e99d1ed",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 27 May 2021 07:34:58 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.12",
+      "version": "2.8.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.21.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "67c4d4a194619fea80efc3d8b8f43d36096fcb7e",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.11",
+      "version": "2.8.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove the soft remove from default controls that store a limited set of values",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "41e207e39a75e384e3c2da59d814c6b0e3b087a3",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "fix missing error stylings for array and checkbox, removed the required from checkbox as the required attr is not the same as the json schema required",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2377ba0925c5f92875ea991890eebecaf7e4f9eb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.10",
+      "version": "2.8.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.20.1",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 May 2021 07:17:34 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.9",
+      "version": "2.8.9",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.20.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e137c09f4c12f3e3b224e95bc88a7c5e366597e",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.9",
+      "version": "2.8.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ensure oneOf and anyOf state in the Form component is not null before updating it after receiving a custom message",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "217d5b38c1024ab86911505c992d2683f94bb222",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "update tooling dependencies to use the carrot syntax for later than versions",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "07eaad7ba29abd423aa00165536aee10a29bdc58",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bf044d84294b41ca4a4eb31fa433cc2e1f992996",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.20.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bf044d84294b41ca4a4eb31fa433cc2e1f992996",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.8",
+      "version": "2.8.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.19.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.7",
+      "version": "2.8.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "pin FAST components dependency to facilitate upcoming breaking changes",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1edae31d0a1b06d52157ec2e9eeb89bda501e638",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.20.9",
+            "author": "khamu@microsoft.com",
+            "commit": "9614e6783c9a1db787d74028f413073dc2e098c3",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.19.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "7fadbeb59267e4dc976cd9f56ee5b61f26e4ae20",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixes an issue where submitting a new linked data item would occur without keyboard input",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "653bb537e44c365a63b5cbefd74774a0a4be1d08",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 02 May 2021 07:18:00 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.6",
       "version": "2.8.6",

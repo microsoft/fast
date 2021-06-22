@@ -2,6 +2,230 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-components_v1.21.7",
+      "version": "1.21.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.7",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Jun 2021 07:19:23 GMT",
+      "tag": "@microsoft/fast-components_v1.21.6",
+      "version": "1.21.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.6",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d1af72075ae857310f07183fb3e74583f27d0ded",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Jun 2021 07:29:18 GMT",
+      "tag": "@microsoft/fast-components_v1.21.5",
+      "version": "1.21.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.5",
+            "author": "scomea@microsoft.com",
+            "commit": "7436c794f855e03e23494c5b87e895cd3221f5f6",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Jun 2021 07:35:11 GMT",
+      "tag": "@microsoft/fast-components_v1.21.4",
+      "version": "1.21.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add transparent background on hover and active states",
+            "author": "khamu@microsoft.com",
+            "commit": "5552d245a55f319e9e0df5fef09ae56653eee491",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 May 2021 07:42:30 GMT",
+      "tag": "@microsoft/fast-components_v1.21.3",
+      "version": "1.21.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Merge branch 'master' into patch-1",
+            "author": "xavier@norival.dev",
+            "commit": "b5d702a313a19ce62468c8093c830e460c44f9b5",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 26 May 2021 07:33:37 GMT",
+      "tag": "@microsoft/fast-components_v1.21.3",
+      "version": "1.21.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1e7f447f76a85be625ca890035794d28e7a84fad",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 May 2021 07:27:43 GMT",
+      "tag": "@microsoft/fast-components_v1.21.2",
+      "version": "1.21.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix/add to data grid component explorer sample",
+            "author": "scomea@microsoft.com",
+            "commit": "05805c135def8a212652789ba3c3a8bc2927d333",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix data grid tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "42e8fb5d98d41dac03230c89923ed80ab2a03eb5",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 17:48:08 GMT",
+      "tag": "@microsoft/fast-components_v1.21.1",
+      "version": "1.21.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix mismatched environment variable",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bf044d84294b41ca4a4eb31fa433cc2e1f992996",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6ec5b991120bb6cfedcdbb1a748039292e51f348",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 May 2021 07:24:10 GMT",
+      "tag": "@microsoft/fast-components_v1.21.0",
+      "version": "1.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add toolbar component",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.8.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c7db517ac34ee6f0e5454bbf395711f464b438a0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 May 2021 23:37:36 GMT",
+      "tag": "@microsoft/fast-components_v1.20.9",
+      "version": "1.20.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hover typo on accent button style",
+            "author": "khamu@microsoft.com",
+            "commit": "9614e6783c9a1db787d74028f413073dc2e098c3",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "menu should not reset tabindex unnecessarily",
+            "author": "scomea@microsoft.com",
+            "commit": "90362fca45c9959992ef09bd09c0b7054a0aca49",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "moved disabled selectors out of the common button styles and add them into the button styles file",
+            "author": "khamu@microsoft.com",
+            "commit": "2824af42decf2387beef23c293d10855411909a8",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "selected option is not visible when dropdown is opened in fast-select",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2c4732a17e4091b1dddecc25138370a1a3565bfb",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: update scrolling with delay loaded content",
+            "author": "robarb@microsoft.com",
+            "commit": "604390a124630a9fe3f2d785d8e7058d10fd142f",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "tie the component definitions to the VS code custom data format",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6974d89f1d21f72dd08726c0d4d961bdb41c6774",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "update dependencies to remove circular dependencies and fix component import",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "27d445fff897aa782cfffbf6df1ca3da1380c49f",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "ensure fast-tooling is pulling FAST assets from npm registry depdnencies",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "afb7dc1b4fae096699b5b89ae817539ea27a4817",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 02 May 2021 07:18:00 GMT",
       "tag": "@microsoft/fast-components_v1.20.6",
       "version": "1.20.6",

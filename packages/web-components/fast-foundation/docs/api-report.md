@@ -563,6 +563,8 @@ export class DataGrid extends FASTElement {
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
@@ -749,6 +751,19 @@ export class DelegatesARIATextbox {
 export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAToolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAToolbar {
+    ariaLabel: string;
+    ariaLabelledby: string;
+}
+
+// @internal
+export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
+}
+
 // @alpha
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
@@ -827,11 +842,13 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 // @alpha
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
+    readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
-    // (undocumented)
     readonly name: string;
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
+    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
@@ -840,10 +857,22 @@ export const DesignToken: Readonly<{
     create: typeof create;
 }>;
 
+// @alpha (undocumented)
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
+    target: HTMLElement;
+    token: T;
+}
+
 // @alpha
 export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
     name: string;
+}
+
+// @alpha (undocumented)
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
+    // (undocumented)
+    handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
 // @alpha
@@ -1510,7 +1539,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     // @internal
     initialValue: string;
     // @internal (undocumented)
-    keypressHandler: (e: KeyboardEvent) => void;
+    keypressHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     readOnly: boolean;
     }
@@ -1780,6 +1809,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     position: string;
     readOnly: boolean;
     step: number;
+    // @internal (undocumented)
+    stepMultiplier: number;
     // @internal (undocumented)
     thumb: HTMLDivElement;
     // @internal (undocumented)
@@ -2059,6 +2090,40 @@ export enum TextFieldType {
     url = "url"
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
+//
+// @public
+export class Toolbar extends FASTElement {
+    // @internal
+    get activeIndex(): number;
+    set activeIndex(value: number);
+    // @internal
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    direction: Direction;
+    // @internal
+    focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    orientation: Orientation;
+    // @internal
+    slottedItems: HTMLElement[];
+    // @internal
+    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void;
+    // @internal
+    slottedLabel: HTMLElement[];
+}
+
+// @internal (undocumented)
+export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
+}
+
+// @public
+export const ToolbarTemplate: ViewTemplate<Toolbar>;
+
 // @public
 export class Tooltip extends FASTElement {
     anchor: string;
@@ -2209,7 +2274,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:54:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

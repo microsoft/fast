@@ -1,7 +1,7 @@
 name: CI - FAST Validation
 
 on:
-  push: 
+  push:
     branches:
     - master
   pull_request:
@@ -9,11 +9,13 @@ on:
     - master
   schedule:
     - cron: 0 7 * * 3
-  
+
 jobs:
   linux_cross-platform_cross-browser:
     runs-on: [ubuntu-latest]
-    
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
+
     steps:
     - uses: actions/checkout@v2
 
@@ -22,10 +24,13 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
@@ -33,23 +38,44 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Prepare workspaces
-      run: yarn prepare
-
     - name: Testing Prettier format
       run: yarn format:check
+
+    - name: Prepare workspaces
+      run: yarn prepare
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-    - name: Test Playwright
+    - name: Install playwright dependencies and browsers
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
-      
+        yarn playwright install-deps
+        yarn playwright install
+
+    - name: Build Playwright tests
+      run: yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+
+    - name: Test Playwright (firefox)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+
+    - name: Test Playwright (webkit)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: webkit
+
     - name: Initialize CodeQL
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       uses: github/codeql-action/init@v1
@@ -62,6 +88,8 @@ jobs:
 
   windows_cross-platform_cross-browser:
     runs-on: [windows-latest]
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - name: Set git to use LF
@@ -80,10 +108,13 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
@@ -91,25 +122,48 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts
 
-    - name: Prepare workspaces
-      run: yarn prepare
-
     - name: Testing Prettier format
       run: yarn format:check
 
+    - name: Prepare workspaces
+      run: yarn prepare
+
     - name: Testing unit tests
       run: yarn lerna run test --stream
-     
-    - name: Test Playwright
+
+    - name: Install playwright dependencies and browsers
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
+        yarn playwright install-deps
+        yarn playwright install
+
+    - name: Build Playwright tests
+      run: yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+
+    - name: Test Playwright (firefox)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+
+    - name: Test Playwright (webkit)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: webkit
 
   macos_cross-platform_cross-browser:
     runs-on: [macos-latest]
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -119,30 +173,54 @@ jobs:
       run: echo '::set-output name=dir::$(yarn cache dir)'
 
     - name: Set up node_modules cache
-      uses: actions/cache@v1.1.2
+      uses: actions/cache@v2
       id: yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
 
     - name: Install package dependencies
       run: yarn install --network-timeout=36000 --frozen-lockfile --ignore-scripts
-    
-    - name: Prepare workspaces
-      run: yarn prepare
 
     - name: Testing Prettier format
       run: yarn format:check
 
+    - name: Prepare workspaces
+      run: yarn prepare
+
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
-    - name: Test Playwright
+    - name: Install playwright dependencies and browsers
       run: |
-        cd packages/web-components/fast-components
-        npm install playwright
-        yarn test-chromium:pw 
-        yarn test-firefox:pw 
-        yarn test-webkit:pw
+        yarn playwright install-deps
+        yarn playwright install
+
+    - name: Build Playwright tests
+      run: yarn workspace @microsoft/fast-components build:pw
+
+    - name: Test Playwright (chromium)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: chromium
+
+    - name: Test Playwright (firefox)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: firefox
+
+    - name: Test Playwright (webkit)
+      run: yarn workspace @microsoft/fast-components test-pw
+      continue-on-error: true
+      timeout-minutes: 2
+      env:
+        PLAYWRIGHT_BROWSER: webkit

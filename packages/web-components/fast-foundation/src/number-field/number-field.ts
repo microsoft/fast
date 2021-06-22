@@ -193,7 +193,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const stepUpValue = this.step + parseFloat(this.value);
+        const stepUpValue = this.step + (parseFloat(this.value) || 0);
         this.value = this.getValidValue(stepUpValue);
 
         this.$emit("input");
@@ -205,7 +205,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const stepDownValue = parseFloat(this.value) - this.step;
+        const stepDownValue = (parseFloat(this.value) || 0) - this.step;
         this.value = this.getValidValue(stepDownValue);
 
         this.$emit("input");

@@ -11,6 +11,9 @@ import {
     FASTTabs,
 } from "@microsoft/fast-components";
 import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
+import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
+import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
 import {
@@ -24,6 +27,9 @@ import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
+import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
+import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { FormId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
 import { defaultDevices, Device } from "./devices";
@@ -38,6 +44,9 @@ FASTSliderLabel;
 FASTTab;
 FASTTabs;
 FASTTabPanel;
+HTMLRender;
+HTMLRenderLayerNavgation;
+FASTToolingCSSLayout;
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -199,6 +208,15 @@ function getCSSControls(): StandardControlPlugin {
             return (
                 <CSSControl
                     css={(CSSProperties as unknown) as CSSPropertiesDictionary}
+                    cssControls={[
+                        new CSSStandardControlPlugin({
+                            id: "layout",
+                            propertyNames: cssLayoutCssProperties,
+                            control: (config: CSSControlConfig) => {
+                                return <CSSLayout onChange={config.onChange} />;
+                            },
+                        }),
+                    ]}
                     {...config}
                 />
             );
@@ -256,4 +274,52 @@ export function renderFormTabs(
             </fast-tab-panel>
         </fast-tabs>
     );
+}
+
+export interface CSSLayoutProps {
+    onChange: (config: { [key: string]: string }) => void;
+}
+
+export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
+    public layoutRef: React.RefObject<any>;
+
+    private setLayoutRef = el => {
+        this.layoutRef = el;
+
+        if (this.layoutRef) {
+            (this.layoutRef as any).onChange = e => {
+                this.props.onChange(e);
+            };
+        }
+    };
+
+    render() {
+        return <css-layout ref={this.setLayoutRef}></css-layout>;
+    }
+}
+
+export class HTMLRenderReact extends React.Component {
+    public designRef: React.RefObject<HTMLDivElement>;
+    public renderRef: React.RefObject<HTMLDivElement>;
+
+    private setDesignRef = el => {
+        this.designRef = el;
+    };
+
+    private setRenderRef = el => {
+        this.renderRef = el;
+    };
+
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <fast-design-system-provider ref={this.setDesignRef}>
+                <fast-tooling-html-render ref={this.setRenderRef}>
+                    <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                </fast-tooling-html-render>
+            </fast-design-system-provider>
+        );
+    }
 }

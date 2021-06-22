@@ -31,6 +31,7 @@ const styles: ComponentStyles<CheckboxControlClassNameContract, {}> = {
         height: "14px",
         boxSizing: "border-box",
         borderRadius: "2px",
+        border: "1px solid transparent",
         zIndex: "1",
         margin: "0",
         "&:disabled": {

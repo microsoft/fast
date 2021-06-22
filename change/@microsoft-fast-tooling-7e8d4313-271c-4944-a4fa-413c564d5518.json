@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "ensure fast-tooling is pulling FAST assets from npm registry depdnencies",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

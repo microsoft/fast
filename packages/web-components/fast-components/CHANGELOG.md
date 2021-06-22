@@ -1,8 +1,89 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.21.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
+
+## 1.21.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.6 (nicholasrice@users.noreply.github.com)
+
+## 1.21.5
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.5 (scomea@microsoft.com)
+
+## 1.21.4
+
+Sun, 06 Jun 2021 07:35:11 GMT
+
+### Patches
+
+- add transparent background on hover and active states (khamu@microsoft.com)
+
+## 1.21.3
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.3 (7559015+janechu@users.noreply.github.com)
+
+## 1.21.2
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- fix data grid tabbing (scomea@microsoft.com)
+
+## 1.21.1
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.0 (nicholasrice@users.noreply.github.com)
+
+## 1.21.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add toolbar component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.0 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.0 (john.kreitlow@microsoft.com)
+
+## 1.20.9
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- fix hover typo on accent button style (khamu@microsoft.com)
+- menu should not reset tabindex unnecessarily (scomea@microsoft.com)
+- moved disabled selectors out of the common button styles and add them into the button styles file (khamu@microsoft.com)
+- selected option is not visible when dropdown is opened in fast-select (john.kreitlow@microsoft.com)
+- fix: update scrolling with delay loaded content (robarb@microsoft.com)
 
 ## 1.20.6
 

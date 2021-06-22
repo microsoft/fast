@@ -5,9 +5,11 @@ import React from "react";
 import {
     CustomMessageIncomingOutgoing,
     DataType,
+    MessageSystemNavigationTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
+import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import {
     ControlConfig,
     ControlType,
@@ -39,7 +41,8 @@ import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
-import { divTag, linkedDataExamples } from "./configs";
+import { linkedDataExamples } from "./configs";
+import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
 import { Footer } from "./site-footer";
@@ -59,6 +62,7 @@ const schemaDictionary: SchemaDictionary = {
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
+export const defaultElementDataId: string = "root";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
@@ -97,7 +101,6 @@ class Creator extends Editor<{}, CreatorState> {
     constructor(props: {}) {
         super(props);
 
-        const componentLinkedDataId: string = "root";
         const designSystemLinkedDataId: string = "design-system";
 
         this.devices = this.getDevices();
@@ -123,7 +126,7 @@ class Creator extends Editor<{}, CreatorState> {
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
             accentColor: fastDesignSystemDefaults.accentBaseColor,
-            activeDictionaryId: componentLinkedDataId,
+            activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
             mobileFormVisible: false,
@@ -149,12 +152,12 @@ class Creator extends Editor<{}, CreatorState> {
             ],
             dataDictionary: [
                 {
-                    [componentLinkedDataId]: {
+                    [defaultElementDataId]: {
                         schemaId: divTag,
                         data: {},
                     },
                 },
-                componentLinkedDataId,
+                defaultElementDataId,
             ],
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
@@ -316,7 +319,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<CreatorState> = {};
-
         if (
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
@@ -334,6 +336,17 @@ class Creator extends Editor<{}, CreatorState> {
                 });
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
+            } else {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId:
+                        e.data.value === "" ? this.state.dataDictionary[1] : e.data.value,
+                    activeNavigationConfigId: "",
+                    options: {
+                        originatorId: HTMLRenderOriginatorId,
+                    },
+                });
             }
         }
 

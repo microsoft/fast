@@ -47,12 +47,6 @@ export interface ControlSwitchProps
     attributeSettingsMappingToPropertyNames?: AttributeSettingsMappingToPropertyNames;
 
     /**
-     * Allow soft remove
-     * defaults to true
-     */
-    softRemove?: boolean;
-
-    /**
      * Localized strings
      */
     strings: FormStrings;

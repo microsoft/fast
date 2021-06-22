@@ -1,8 +1,98 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.24.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Enable stepping from null values on number-field (robarb@microsoft.com)
+- fix malformed templates (scomea@microsoft.com)
+
+## 1.24.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- ensure host element of a shadowed element can be resolved (nicholasrice@users.noreply.github.com)
+
+## 1.24.5
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- streamline horizontal scroll resize (scomea@microsoft.com)
+
+## 1.24.4
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- Ensure stale Design Token custom property stylesheets are removed when token values change. (nicholasrice@users.noreply.github.com)
+- fix bug caused by asserting parentElement was not null (nicholasrice@users.noreply.github.com)
+
+## 1.24.3
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- allow a float to be accurately represented when a step is a fraction (7559015+janechu@users.noreply.github.com)
+- fix css custom property emission for dependent DesignToken properties (nicholasrice@users.noreply.github.com)
+
+## 1.24.2
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- fix data grid tabbing (scomea@microsoft.com)
+
+## 1.24.1
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- update to Design System Provider to use dom.supportsAdoptedStyleSheets (nicholasrice@users.noreply.github.com)
+
+## 1.24.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add toolbar component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v4.8.0 (john.kreitlow@microsoft.com)
+
+## 1.23.0
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Minor changes
+
+- Adds subscribe and unsubscribe methods to DesignToken (nicholasrice@users.noreply.github.com)
+- Adds feature to DesignToken to prevent emission to CSS (nicholasrice@users.noreply.github.com)
+- Addresses significant performance issues with DesignToken implmentation. This change removes several alpha APIs on DesignToken. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: update scrolling with delay loaded content (robarb@microsoft.com)
+- menu should not reset tabIndex unnecessarily (scomea@microsoft.com)
+- selected option is not visible when dropdown is opened in fast-select (john.kreitlow@microsoft.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- fix: fast-number-field does not fire input event when buttons pressed (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.3.0 (nicholasrice@users.noreply.github.com)
 
 ## 1.20.0
 
