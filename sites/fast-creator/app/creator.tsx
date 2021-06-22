@@ -41,7 +41,7 @@ import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
-import { linkedDataExamples } from "./configs";
+import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
@@ -310,10 +310,20 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
-            onChange({
-                ...e,
-                value: linkedDataExamples[e.value[0].schemaId] || e.value,
-            });
+            Object.entries(elementLibraryContents).forEach(
+                ([elementLibraryId, schemaIds]: [string, string[]]) => {
+                    if (schemaIds.includes(e.value[0].schemaId)) {
+                        onChange({
+                            ...e,
+                            value:
+                                [
+                                    elementLibraries[elementLibraryId]
+                                        .componentDictionary[e.value[0].schemaId].example,
+                                ] || e.value,
+                        });
+                    }
+                }
+            );
         };
     };
 
