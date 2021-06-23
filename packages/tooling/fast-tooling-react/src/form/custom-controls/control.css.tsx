@@ -99,6 +99,8 @@ class CSSControl extends React.Component<
                     onChange={this.handleOnChange(cssPropertyName)}
                     mapsToProperty={cssPropertyName}
                     value={cssPropertyValue}
+                    dictionaryId={this.props.dictionaryId}
+                    dataLocation={this.props.dataLocation}
                 />
             </fieldset>
         );

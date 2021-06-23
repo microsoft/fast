@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.8",
+      "version": "1.24.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "prevent left/right arrows from scrolling when expanding/collapsing tree-item",
+            "author": "tlmii@users.noreply.github.com",
+            "commit": "ef8b84eca2eb82f84abc4f08986c384e0f3b3305",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Jun 2021 07:21:25 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.7",
       "version": "1.24.7",
