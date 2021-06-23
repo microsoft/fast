@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.20",
+      "version": "2.8.20",
+      "comments": {
+        "patch": [
+          {
+            "comment": "force the CSS control to respect state changes involving dictionary ID updates",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "67aea44b590114e3ceed6247d1066437ac9a01a2",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "add update the state of the CSS control when the control based on the inline string value",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "0d65582e50995237c50a80cddf802b3a08fb5779",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Jun 2021 07:21:25 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.19",
       "version": "2.8.19",

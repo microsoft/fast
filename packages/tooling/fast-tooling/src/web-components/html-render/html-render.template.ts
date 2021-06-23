@@ -9,6 +9,7 @@ export const HTMLRenderTemplate = html<HTMLRender>`
         <div
             class="html-render"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+            @dblclick="${(x, c) => x.dblClickHandler(c.event as MouseEvent)}"
             @mouseover="${(x, c) => x.hoverHandler(c.event as MouseEvent)}"
             @mouseout="${(x, c) => x.blurHandler(c.event as MouseEvent)}"
             @keydown="${(x, c) => x.keyDownHandler(c.event as KeyboardEvent)}"

@@ -27,6 +27,8 @@ export function renderPropertyControl(
                     syntax={config.syntax}
                     onChange={config.handleChange}
                     value={config.value}
+                    dictionaryId={config.dictionaryId}
+                    dataLocation={config.dataLocation}
                 />
             );
     }
