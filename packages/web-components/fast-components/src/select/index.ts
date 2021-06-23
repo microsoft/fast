@@ -6,13 +6,13 @@ import {
 import { selectStyles as styles } from "./select.styles";
 
 /**
- * The FAST select Custom Element. Implements, {@link @microsoft/fast-foundation#Select}
- * {@link @microsoft/fast-foundation#selectTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#selectTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-select\>
+ * Generates HTML Element: \<fast-select\>
  *
  */
 export const fastSelect = Select.compose<SelectOptions>({

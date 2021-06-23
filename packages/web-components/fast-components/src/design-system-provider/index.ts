@@ -1025,11 +1025,10 @@ class DesignSystemProvider extends FoundationElement {
 }
 
 /**
- * The FAST Design System Provider Element.
- *
+A function that returns a {@link @microsoft/fast-foundation#DesignSystemProvider} registration for configuring the component with a DesignSystem. *
  * @public
  * @remarks
- * HTML Element: \<fast-design-system-provider\>
+ * Generates HTML Element: \<fast-design-system-provider\>
  */
 export const fastDesignSystemProvider = DesignSystemProvider.compose({
     baseName: "design-system-provider",

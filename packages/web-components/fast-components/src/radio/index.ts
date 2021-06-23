@@ -6,13 +6,13 @@ import {
 import { radioStyles as styles } from "./radio.styles";
 
 /**
- * The FAST Radio Element. Implements {@link @microsoft/fast-foundation#Radio},
- * {@link @microsoft/fast-foundation#radioTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Radio} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#radioTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-radio\>
+ * Generates HTML Element: \<fast-radio\>
  */
 export const fastRadio = Radio.compose<RadioOptions>({
     baseName: "radio",
