@@ -49,7 +49,7 @@ export function renderTextInput(config: RenderRefControlConfig): React.ReactNode
     return (
         <fast-text-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -67,7 +67,7 @@ export function renderNumber(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -85,7 +85,7 @@ export function renderInteger(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -147,7 +147,7 @@ export function renderSelection(config: RenderSelectControlConfig): React.ReactN
 
     return (
         <fast-select
-            key={config.key}
+            key={`${config.dictionaryId}::${config.dataLocation}`}
             events={{
                 change: getSelectionChangeHandler(config.handleChange),
             }}
@@ -157,7 +157,7 @@ export function renderSelection(config: RenderSelectControlConfig): React.ReactN
                     <fast-option
                         {...{
                             value: `${option.value}`,
-                            key: option.key,
+                            key: `${config.dictionaryId}::${config.dataLocation}::${option.key}`,
                             ...(`${option.value}` === currentValue
                                 ? {
                                       selected: "",
@@ -193,7 +193,7 @@ function getColorPickerChangeHandler(
 export function renderColorPicker(config: RenderRefControlConfig): React.ReactNode {
     return (
         <color-picker
-            key={config.key}
+            key={`${config.dictionaryId}::${config.dataLocation}`}
             value={config.value}
             events={{
                 change: getColorPickerChangeHandler(config.handleChange),
