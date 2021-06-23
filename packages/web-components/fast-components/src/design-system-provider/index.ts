@@ -1025,8 +1025,7 @@ class DesignSystemProvider extends FoundationElement {
 }
 
 /**
- * The FAST Design System Provider Element.
- *
+A function that returns a {@link @microsoft/fast-foundation#DesignSystemProvider} registration for configuring the component with a DesignSystem. *
  * @public
  * @remarks
  * Generates HTML Element: \<fast-design-system-provider\>

@@ -6,7 +6,7 @@ import {
 import { radioStyles as styles } from "./radio.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Radioi} registration for configuring the component with a DesignSystem.
+ * A function that returns a {@link @microsoft/fast-foundation#Radio} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#radioTemplate}
  *
  *
