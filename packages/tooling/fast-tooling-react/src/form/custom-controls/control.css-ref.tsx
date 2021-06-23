@@ -51,6 +51,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                                 syntax={syntaxRef}
                                 onChange={this.handleMultipleChange(index)}
                                 value={this.state.values[index]}
+                                dictionaryId={this.props.dictionaryId}
+                                dataLocation={this.props.dataLocation}
                             />
                         );
                     }
@@ -69,6 +71,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                     syntax={(this.props.syntax.ref as CSSPropertyRef[])[this.state.index]}
                     onChange={this.handleChange}
                     value={this.state.values[this.state.index]}
+                    dictionaryId={this.props.dictionaryId}
+                    dataLocation={this.props.dataLocation}
                 />
             ) : null;
 
@@ -103,6 +107,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                         ),
                     ],
                     value: this.props.value,
+                    dictionaryId: this.props.dictionaryId,
+                    dataLocation: this.props.dataLocation,
                 })}
                 {cssRef}
             </div>
@@ -118,6 +124,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
                         value: this.props.value,
+                        dictionaryId: this.props.dictionaryId,
+                        dataLocation: this.props.dataLocation,
                     });
                 case "type":
                     return renderTypeControl({
@@ -125,6 +133,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
                         value: this.props.value,
+                        dictionaryId: this.props.dictionaryId,
+                        dataLocation: this.props.dataLocation,
                     });
                 case "syntax":
                     return renderSyntaxControl({
@@ -132,6 +142,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                         key: this.props.syntax.ref,
                         handleChange: this.props.onChange,
                         value: this.props.value,
+                        dictionaryId: this.props.dictionaryId,
+                        dataLocation: this.props.dataLocation,
                     });
                 case "property":
                     const propertyKey: string = this.props.syntax.ref.slice(2, -2);
@@ -149,6 +161,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                             key: this.props.syntax.ref,
                             handleChange: this.props.onChange,
                             value: this.props.value,
+                            dictionaryId: this.props.dictionaryId,
+                            dataLocation: this.props.dataLocation,
                         });
                     }
                 default:
@@ -161,6 +175,8 @@ export class CSSRef extends React.Component<CSSRefProps, CSSRefState> {
                 syntax={this.props.syntax.ref[0]}
                 onChange={this.handleChange}
                 value={this.props.value}
+                dictionaryId={this.props.dictionaryId}
+                dataLocation={this.props.dataLocation}
             />
         );
     }
