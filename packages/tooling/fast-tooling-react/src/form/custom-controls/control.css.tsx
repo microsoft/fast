@@ -1,13 +1,13 @@
-/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-
 import React from "react";
 import styles, { CSSControlClassNameContract } from "./control.css.style";
 import { CSSControlProps, CSSControlState } from "./control.css.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { CSSProperty } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import {
+    CSSProperty,
+    mapCSSInlineStyleToCSSPropertyDictionary,
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
 import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import { CSSStandardControlPlugin } from "./css";
@@ -28,7 +28,7 @@ class CSSControl extends React.Component<
     constructor(props: CSSControlProps & ManagedClasses<CSSControlClassNameContract>) {
         super(props);
 
-        this.state = {};
+        this.state = mapCSSInlineStyleToCSSPropertyDictionary(this.props.value);
     }
 
     public render(): React.ReactNode {
@@ -72,7 +72,11 @@ class CSSControl extends React.Component<
                     string,
                     CSSProperty
                 ]): React.ReactNode => {
-                    return this.renderCSSProperty(cssProperty, cssPropertyName);
+                    return this.renderCSSProperty(
+                        cssProperty,
+                        cssPropertyName,
+                        this.state[cssPropertyName] || ""
+                    );
                 }
             ),
         ];
@@ -80,7 +84,8 @@ class CSSControl extends React.Component<
 
     private renderCSSProperty(
         cssProperty: CSSProperty,
-        cssPropertyName: string
+        cssPropertyName: string,
+        cssPropertyValue: string
     ): React.ReactNode {
         if (!cssProperty || !cssProperty.name || !cssProperty.syntax) {
             return null;
@@ -93,6 +98,7 @@ class CSSControl extends React.Component<
                     syntax={cssProperty.syntax}
                     onChange={this.handleOnChange(cssPropertyName)}
                     mapsToProperty={cssPropertyName}
+                    value={cssPropertyValue}
                 />
             </fieldset>
         );

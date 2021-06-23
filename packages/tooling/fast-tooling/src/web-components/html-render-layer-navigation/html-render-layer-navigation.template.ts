@@ -15,7 +15,10 @@ export const HTMLRenderLayerNavigationTemplate = html<HTMLRenderLayerNavgation>`
             <div class="pill">${x => x.clickPillContent}</div>
         </div>
         <div
-            class="${x => (x.hoverLayerActive ? "hover-layer active" : "hover-layer")}"
+            class="${x =>
+                x.hoverLayerActive && !x.hoverLayerHide
+                    ? "hover-layer active"
+                    : "hover-layer"}"
             style="top:${x => x.hoverPosition.top}px;left:${x =>
                 x.hoverPosition.left}px;width:${x =>
                 x.hoverPosition.width}px;height:${x => x.hoverPosition.height}px"

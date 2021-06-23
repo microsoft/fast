@@ -26,6 +26,7 @@ export function renderPropertyControl(
                     mapsToProperty={config.property}
                     syntax={config.syntax}
                     onChange={config.handleChange}
+                    value={config.value}
                 />
             );
     }

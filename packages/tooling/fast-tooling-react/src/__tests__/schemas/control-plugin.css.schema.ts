@@ -10,5 +10,16 @@ export default {
             type: "string",
             formControlId: "custom-controls/css",
         },
+        object: {
+            title: "Nested object",
+            type: "object",
+            properties: {
+                cssWithOverrides2: {
+                    title: "CSS 2",
+                    type: "string",
+                    formControlId: "custom-controls/css",
+                },
+            },
+        },
     },
 };
