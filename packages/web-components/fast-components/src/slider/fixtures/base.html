@@ -39,6 +39,23 @@
     <h2>Defaults</h2>
     <fast-slider></fast-slider>
 
+    <h2>Updating slider from input</h2>
+    <fast-slider id="slider-change" max="100">
+        <fast-slider-label position="0">0</fast-slider-label>
+        <fast-slider-label position="100">100</fast-slider-label>
+    </fast-slider>
+    <input id="input-change" value="50" type="number" />
+    <script>
+        const sliderChange = document.getElementById("slider-change");
+        const inputChange = document.getElementById("input-change");
+        const updateSlider = () => {
+            sliderChange.value = inputChange.value;
+        };
+        inputChange.addEventListener("change", updateSlider);
+        inputChange.addEventListener("keyup", updateSlider);
+        updateSlider();
+    </script>
+
     <!-- Margin offsets -->
     <h2>horizontal with left offset</h2>
     <fast-slider style="margin-left: 100px;"></fast-slider>
