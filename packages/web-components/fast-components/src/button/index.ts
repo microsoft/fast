@@ -56,13 +56,13 @@ export class Button extends FoundationButton {
 }
 
 /**
- * The FAST Button Element. Implements {@link @microsoft/fast-foundation#Button},
- * {@link @microsoft/fast-foundation#buttonTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Button} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#buttonTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-button\>
+ * Generates HTML Element: \<fast-button\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

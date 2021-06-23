@@ -38,13 +38,13 @@ export class TextArea extends FoundationTextArea {
 }
 
 /**
- * The FAST Text Area Custom Element. Implements {@link @microsoft/fast-foundation#TextArea},
- * {@link @microsoft/fast-foundation#textAreaTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#TextArea} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#textAreaTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-text-area\>
+ * Generates HTML Element: \<fast-text-area\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

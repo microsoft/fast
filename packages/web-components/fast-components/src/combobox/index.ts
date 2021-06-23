@@ -6,12 +6,12 @@ import {
 import { comboboxStyles as styles } from "./combobox.styles";
 
 /**
- * The FAST Combobox Custom Element. Implements {@link @microsoft/fast-foundation#Combobox},
- * {@link @microsoft/fast-foundation#comboboxTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Combobox} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#comboboxTemplate}
  *
  * @public
  * @remarks
- * HTML Element: \<fast-combobox\>
+ * Generates HTML Element: \<fast-combobox\>
  *
  */
 export const fastCombobox = Combobox.compose<ComboboxOptions>({

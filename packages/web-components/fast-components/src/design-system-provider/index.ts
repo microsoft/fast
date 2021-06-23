@@ -1029,7 +1029,7 @@ class DesignSystemProvider extends FoundationElement {
  *
  * @public
  * @remarks
- * HTML Element: \<fast-design-system-provider\>
+ * Generates HTML Element: \<fast-design-system-provider\>
  */
 export const fastDesignSystemProvider = DesignSystemProvider.compose({
     baseName: "design-system-provider",

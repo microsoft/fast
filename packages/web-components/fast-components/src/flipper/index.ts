@@ -6,13 +6,13 @@ import {
 import { flipperStyles as styles } from "./flipper.styles";
 
 /**
- * The FAST Flipper Element. Implements {@link @microsoft/fast-foundation#Flipper},
- * {@link @microsoft/fast-foundation#flipperTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Flipper} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#flipperTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-flipper\>
+ * Generates HTML Element: \<fast-flipper\>
  */
 export const fastFlipper = Flipper.compose<FlipperOptions>({
     baseName: "flipper",

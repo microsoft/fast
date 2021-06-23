@@ -29,8 +29,8 @@ export class Toolbar extends FoundationToolbar {
 }
 
 /**
- * The FAST toolbar Custom Element. Implements {@link @microsoft/fast-foundation#Toolbar},
- * {@link @microsoft/fast-foundation#ToolbarTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Toolbar} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#ToolbarTemplate}
  *
  * @public
  * @remarks

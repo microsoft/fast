@@ -2,13 +2,13 @@ import { Tabs, tabsTemplate as template } from "@microsoft/fast-foundation";
 import { tabsStyles as styles } from "./tabs.styles";
 
 /**
- * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs},
- * {@link @microsoft/fast-foundation#tabsTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Tabs} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#tabsTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tabs\>
+ * Generates HTML Element: \<fast-tabs\>
  */
 export const fastTabs = Tabs.compose({
     baseName: "tabs",
