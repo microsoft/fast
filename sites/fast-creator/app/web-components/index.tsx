@@ -13,6 +13,7 @@ import {
 import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
+import { HTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
 import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { MessageSystem } from "@microsoft/fast-tooling";
@@ -45,6 +46,7 @@ FASTTab;
 FASTTabs;
 FASTTabPanel;
 HTMLRender;
+HTMLRenderLayerInlineEdit;
 HTMLRenderLayerNavgation;
 FASTToolingCSSLayout;
 
@@ -318,6 +320,7 @@ export class HTMLRenderReact extends React.Component {
             <fast-design-system-provider ref={this.setDesignRef}>
                 <fast-tooling-html-render ref={this.setRenderRef}>
                     <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                    <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
                 </fast-tooling-html-render>
             </fast-design-system-provider>
         );
