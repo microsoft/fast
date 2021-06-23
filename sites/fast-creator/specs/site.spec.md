@@ -20,7 +20,7 @@ Libraries are available in the component tab in the left pane, they can be enabl
 
 Each library will be defined by a configuration which includes the web components themselves, data examples that will be used when a component is added, the tag name of the components and the display name. See the [typings](./app/configs/typings.ts) file for the interface.
 
-When a user adds a library to a project, this library configuration will be dynamically imported. Available libraries will be referenced in a dictionary file, this file will be used to create a UI.
+When a user adds a library to a project, the library configuration will be dynamically imported. Available libraries will be referenced in a dictionary file, the configuration file will be used to create a UI.
 
 Available libraries file:
 ```typescript
