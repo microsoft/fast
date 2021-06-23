@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "prevent left/right arrows from scrolling when expanding/collapsing tree-item",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "tlmii@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
