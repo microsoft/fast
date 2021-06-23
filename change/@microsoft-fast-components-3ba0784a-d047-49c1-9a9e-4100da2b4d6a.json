@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Slider demo showing that thumb position is updating",
+  "packageName": "@microsoft/fast-components",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
