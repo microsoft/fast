@@ -2,13 +2,13 @@ import { Breadcrumb, breadcrumbTemplate as template } from "@microsoft/fast-foun
 import { breadcrumbStyles as styles } from "./breadcrumb.styles";
 
 /**
- * The FAST Breadcrumb Element. Implements {@link @microsoft/fast-foundation#Breadcrumb},
- * {@link @microsoft/fast-foundation#breadcrumbTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Breadcrumb} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#breadcrumbTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-breadcrumb\>
+ * Generates HTML Element: \<fast-breadcrumb\>
  */
 export const fastBreadcrumb = Breadcrumb.compose({
     baseName: "breadcrumb",

@@ -38,13 +38,13 @@ export class TextField extends FoundationTextField {
 }
 
 /**
- * The FAST Text Field Custom Element. Implements {@link @microsoft/fast-foundation#TextField},
- * {@link @microsoft/fast-foundation#textFieldTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#TextField} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#textFieldTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-text-field\>
+ * Generates HTML Element: \<fast-text-field\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

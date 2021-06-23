@@ -5,13 +5,13 @@ import {
 import { anchoredRegionStyles as styles } from "./anchored-region.styles";
 
 /**
- * The FAST AnchoredRegion Element. Implements {@link @microsoft/fast-foundation#AnchoredRegion},
- * {@link @microsoft/fast-foundation#anchoredRegionTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#AnchoredRegion} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#anchoredRegionTemplate}
  *
  *
  * @beta
  * @remarks
- * HTML Element: \<fast-anchored-region\>
+ * Generates HTML Element: \<fast-anchored-region\>
  */
 export const fastAnchoredRegion = AnchoredRegion.compose({
     baseName: "anchored-region",

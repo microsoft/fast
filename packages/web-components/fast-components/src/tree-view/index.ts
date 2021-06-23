@@ -2,13 +2,13 @@ import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundati
 import { treeViewStyles as styles } from "./tree-view.styles";
 
 /**
- * The FAST tree view Custom Element. Implements, {@link @microsoft/fast-foundation#TreeView}
- * {@link @microsoft/fast-foundation#treeViewTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#TreeView} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#treeViewTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tree-view\>
+ * Generates HTML Element: \<fast-tree-view\>
  *
  */
 export const fastTreeView = TreeView.compose({

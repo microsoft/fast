@@ -6,13 +6,13 @@ import {
 import { treeItemStyles as styles } from "./tree-item.styles";
 
 /**
- * The FAST tree item Custom Element. Implements, {@link @microsoft/fast-foundation#TreeItem}
- * {@link @microsoft/fast-foundation#treeItemTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#TreeItem} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#treeItemTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tree-item\>
+ * Generates HTML Element: \<fast-tree-item\>
  *
  */
 export const fastTreeItem = TreeItem.compose<TreeItemOptions>({

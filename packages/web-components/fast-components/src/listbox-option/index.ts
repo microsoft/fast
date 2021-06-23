@@ -5,13 +5,13 @@ import {
 import { optionStyles as styles } from "./listbox-option.styles";
 
 /**
- * The FAST option Custom Element. Implements {@link @microsoft/fast-foundation#ListboxOption}
- * {@link @microsoft/fast-foundation#listboxOptionTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#ListboxOption} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#listboxOptionTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-option\>
+ * Generates HTML Element: \<fast-option\>
  *
  */
 export const fastOption = ListboxOption.compose({
