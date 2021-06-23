@@ -19,6 +19,11 @@ export interface RenderControlConfig {
      * to use
      */
     handleChange: (value: string) => void;
+
+    /**
+     * The current value
+     */
+    value: string;
 }
 
 export interface RenderRefControlConfig extends RenderControlConfig {

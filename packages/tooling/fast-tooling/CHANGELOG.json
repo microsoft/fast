@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.0",
+      "version": "0.23.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add a utility to convert inline css styles to a property dictionary",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "b06b05a0667d73733d687913ab3d1f17cf6e3fd3",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.7",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v1.21.7",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Jun 2021 07:19:23 GMT",
+      "tag": "@microsoft/fast-tooling_v0.22.3",
+      "version": "0.22.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.6",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d1af72075ae857310f07183fb3e74583f27d0ded",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Jun 2021 07:29:18 GMT",
       "tag": "@microsoft/fast-tooling_v0.22.2",
       "version": "0.22.2",

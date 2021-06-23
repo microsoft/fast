@@ -1208,3 +1208,26 @@ export function mapCSSSyntaxes(mdnCSS: MDNCSS): CSSSyntaxDictionary {
             {}
         );
 }
+
+/**
+ * Converts an inline CSS string to a property dictionary data format
+ */
+export function mapCSSInlineStyleToCSSPropertyDictionary(
+    style: string
+): CSSPropertiesDictionary {
+    const cssPropertyDictionary = {};
+
+    if (style) {
+        style.split(";").forEach((cssDeclaration: string) => {
+            const cssPropertyAndValue = cssDeclaration.split(":");
+
+            if (cssPropertyAndValue.length === 2) {
+                cssPropertyDictionary[
+                    cssPropertyAndValue[0].trim()
+                ] = cssPropertyAndValue[1].trim();
+            }
+        });
+    }
+
+    return cssPropertyDictionary;
+}

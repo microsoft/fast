@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.19
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.0 (robarb@microsoft.com)
+
+## 2.8.18
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- address a CSS specificy issue that appeared recently and resulted in the native browser dropdown arrow appearing (7559015+janechu@users.noreply.github.com)
 
 ## 2.8.17
 
