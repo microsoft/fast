@@ -10,7 +10,7 @@ export * from "../accordion-item/index";
  *
  * @public
  * @remarks
- * Generatese the HTML Element: \<fast-accordion\>
+ * Generates the HTML Element: \<fast-accordion\>
  */
 export const fastAccordion = Accordion.compose({
     baseName: "accordion",
