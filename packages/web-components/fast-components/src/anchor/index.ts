@@ -69,13 +69,13 @@ export class Anchor extends FoundationAnchor {
 export const anchorStyles = styles;
 
 /**
- * The FAST Anchor Element. Implements {@link @microsoft/fast-foundation#Anchor},
- * {@link @microsoft/fast-foundation#anchorTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Anchor} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#anchorTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-anchor\>
+ * Generates HTML Element: \<fast-anchor\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

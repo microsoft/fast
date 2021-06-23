@@ -6,13 +6,13 @@ import {
 import { sliderStyles as styles } from "./slider.styles";
 
 /**
- * The FAST Slider Custom Element. Implements {@link @microsoft/fast-foundation#(Slider:class)},
- * {@link @microsoft/fast-foundation#sliderTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Slider} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#sliderTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-slider\>
+ * Generates HTML Element: \<fast-slider\>
  */
 export const fastSlider = Slider.compose<SliderOptions>({
     baseName: "slider",

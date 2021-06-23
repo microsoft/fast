@@ -29,13 +29,13 @@ export class Card extends FoundationCard {
 }
 
 /**
- * The FAST Card Element. Implements {@link @microsoft/fast-foundation#Card},
- * {@link @microsoft/fast-foundation#CardTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Card} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#CardTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-card\>
+ * Generates HTML Element: \<fast-card\>
  */
 export const fastCard = Card.compose({
     baseName: "card",

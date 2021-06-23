@@ -26,13 +26,13 @@ export class HorizontalScroll extends FoundationHorizontalScroll {
 }
 
 /**
- * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
- * {@link @microsoft/fast-foundation#horizontalScrollTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#HorizontalScroll} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#horizontalScrollTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-horizontal-scroll\>
+ * Generates HTML Element: \<fast-horizontal-scroll\>
  */
 export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptions>({
     baseName: "horizontal-scroll",

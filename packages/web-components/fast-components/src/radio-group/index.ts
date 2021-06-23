@@ -2,13 +2,13 @@ import { RadioGroup, radioGroupTemplate as template } from "@microsoft/fast-foun
 import { radioGroupStyles as styles } from "./radio-group.styles";
 
 /**
- * The FAST Radio Group Element. Implements {@link @microsoft/fast-foundation#RadioGroup},
- * {@link @microsoft/fast-foundation#radioGroupTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#RadioGroup} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#radioGroupTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-radio-group\>
+ * Generates HTML Element: \<fast-radio-group\>
  */
 export const fastRadioGroup = RadioGroup.compose({
     baseName: "radio-group",

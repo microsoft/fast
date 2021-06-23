@@ -11,11 +11,11 @@ import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
 /**
- * The FAST Data Grid Cell Element.
+ * A function that returns a {@link @microsoft/fast-foundation#DataGridCell} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid-cell\>
+ * Generates HTML Element: \<fast-data-grid-cell\>
  */
 export const fastDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
@@ -30,11 +30,11 @@ export const fastDataGridCell = DataGridCell.compose({
 export const dataGridCellStyles = cellStyles;
 
 /**
- * The FAST Data Grid Row Element.
+ * A function that returns a {@link @microsoft/fast-foundation#DataGridRow} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid-row\>
+ * Generates HTML Element: \<fast-data-grid-row\>
  */
 export const fastDataGridRow = DataGridRow.compose({
     baseName: "data-grid-row",
@@ -49,11 +49,11 @@ export const fastDataGridRow = DataGridRow.compose({
 export const dataGridRowStyles = rowStyles;
 
 /**
- * The FAST Data Grid Element.
+ * A function that returns a {@link @microsoft/fast-foundation#DataGrid} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid\>
+ * Generates HTML Element: \<fast-data-grid\>
  */
 export const fastDataGrid = DataGrid.compose({
     baseName: "data-grid",

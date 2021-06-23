@@ -6,13 +6,13 @@ import {
 import { progressStyles as styles } from "./progress.styles";
 
 /**
- * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
- * {@link @microsoft/fast-foundation#progressTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#progressTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-progress\>
+ * Generates HTML Element: \<fast-progress\>
  */
 export const fastProgress = Progress.compose<ProgressOptions>({
     baseName: "progress",

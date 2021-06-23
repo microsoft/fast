@@ -2,13 +2,13 @@ import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation
 import { dividerStyles as styles } from "./divider.styles";
 
 /**
- * The FAST Divider Element. Implements {@link @microsoft/fast-foundation#Divider},
- * {@link @microsoft/fast-foundation#dividerTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Divider} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#dividerTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-divider\>
+ * Generates HTML Element: \<fast-divider\>
  */
 export const fastDivider = Divider.compose({
     baseName: "divider",
