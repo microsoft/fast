@@ -1,5 +1,6 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FoundationElement } from "../foundation-element";
@@ -10,11 +11,10 @@ import { FoundationElement } from "../foundation-element";
  * @param element - the element to test.
  * @public
  */
-export function isListboxOption(el: Element): el is ListboxOption {
+export function isListboxOption(el: unknown): el is ListboxOption {
     return (
         isHTMLElement(el) &&
-        ((el.getAttribute("role") as string) === "option" ||
-            el instanceof HTMLOptionElement)
+        (el instanceof ListboxOption || (el as Element).getAttribute("role") === "option")
     );
 }
 
@@ -130,12 +130,12 @@ export class ListboxOption extends FoundationElement {
         }
     }
 
-    public get label() {
-        return this.value ? this.value : this.textContent ? this.textContent : "";
+    public get label(): string {
+        return this.value ?? this.text;
     }
 
     public get text(): string {
-        return this.textContent as string;
+        return this.textContent?.trim() ?? "";
     }
 
     public set value(next: string) {
@@ -197,5 +197,5 @@ export class ListboxOption extends FoundationElement {
 /**
  * @internal
  */
-export interface ListboxOption extends StartEnd {}
-applyMixins(ListboxOption, StartEnd);
+export interface ListboxOption extends StartEnd, ARIAGlobalStatesAndProperties {}
+applyMixins(ListboxOption, StartEnd, ARIAGlobalStatesAndProperties);

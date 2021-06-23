@@ -4,13 +4,15 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
+import { uniqueId } from "lodash-es";
 import type { FoundationElementDefinition } from "../foundation-element";
+import { isListboxOption } from "../listbox-option/listbox-option";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition, SelectRole } from "./select.options";
+import { SelectPosition } from "./select.options";
 
 /**
  * Select configuration options
@@ -138,15 +140,6 @@ export class Select extends FormAssociatedSelect {
     private forcedPosition: boolean = false;
 
     /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
-
-    /**
      * Holds the current state for the calculated position of the listbox.
      *
      * @public
@@ -196,6 +189,13 @@ export class Select extends FormAssociatedSelect {
     public displayValue: string = "";
 
     /**
+     * The unique ID of the internal listbox element.
+     *
+     * @internal
+     */
+    public listboxId: string = uniqueId("listbox-");
+
+    /**
      * Synchronize the `aria-disabled` property when the `disabled` property changes.
      *
      * @param prev - The previous disabled value
@@ -233,13 +233,16 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as ListboxOption;
+        const captured = e.target as HTMLElement;
 
-            if (captured && captured.disabled) {
-                return;
+        if (captured === e.currentTarget) {
+            this.open = !this.open;
+            return true;
+        }
+
+        if (this.open) {
+            if (!isListboxOption(captured) || captured.disabled) {
+                return true;
             }
         }
 

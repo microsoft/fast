@@ -5,11 +5,11 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { limit } from "@microsoft/fast-web-utilities";
-import uniqueId from "lodash-es/uniqueId";
-import type { ListboxOption } from "../listbox-option/listbox-option";
+import { uniqueId } from "lodash-es";
+import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
-import { SelectPosition, SelectRole } from "../select/select.options";
+import { SelectPosition } from "../select/select.options";
 import { applyMixins } from "../utilities/apply-mixins";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
@@ -102,19 +102,14 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The unique id of the internal listbox.
-     *
-     * @internal
-     */
-    public listboxId: string = uniqueId("listbox-");
-
-    /**
      * The max height for the listbox when opened.
      *
      * @internal
      */
     @observable
     public maxHeight: number = 0;
+
+    public listboxId: string = uniqueId("listbox-");
 
     /**
      * The open attribute.
@@ -187,15 +182,6 @@ export class Combobox extends FormAssociatedCombobox {
     public position: SelectPosition = SelectPosition.below;
 
     /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
-
-    /**
      * The value property.
      *
      * @public
@@ -243,12 +229,10 @@ export class Combobox extends FormAssociatedCombobox {
         }
 
         if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as ListboxOption | null;
+            const captured = e.target;
 
-            if (!captured || captured.disabled) {
-                return;
+            if (!isListboxOption(captured) || captured.disabled) {
+                return true;
             }
 
             this.selectedOptions = [captured];
@@ -312,6 +296,16 @@ export class Combobox extends FormAssociatedCombobox {
                 o.hidden = !this.filteredOptions.includes(o);
             });
         }
+    }
+
+    /**
+     * Handle focus state when the element or its children receive focus.
+     *
+     * @param e - The focus event
+     * @internal
+     */
+    public focusinHandler(e: FocusEvent): boolean | void {
+        this.control.focus();
     }
 
     /**

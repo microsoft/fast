@@ -343,8 +343,6 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     keyupHandler(e: KeyboardEvent): boolean | void;
     // @internal
-    listboxId: string;
-    // @internal
     maxHeight: number;
     open: boolean;
     // (undocumented)
@@ -356,7 +354,6 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
-    role: SelectRole;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
@@ -670,7 +667,6 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 // @public
 export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
-    ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
 }
 
@@ -1135,7 +1131,7 @@ export interface Invoker<T extends Constructable = any> {
 }
 
 // @public
-export function isListboxOption(el: Element): el is ListboxOption;
+export function isListboxOption(el: unknown): el is ListboxOption;
 
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
@@ -1174,7 +1170,6 @@ export class Listbox extends FoundationElement {
     set options(value: ListboxOption[]);
     // @internal
     protected _options: ListboxOption[];
-    role: string;
     selectedIndex: number;
     // (undocumented)
     selectedIndexChanged(prev: number, next: number): void;
@@ -1191,7 +1186,7 @@ export class Listbox extends FoundationElement {
     // @internal (undocumented)
     protected setDefaultSelectedOption(): void;
     protected setSelectedOptions(): void;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    static slottedOptionFilter: (n: Element) => boolean;
     // @internal (undocumented)
     slottedOptions: HTMLElement[];
     // (undocumented)
@@ -1248,17 +1243,11 @@ export class ListboxOption extends FoundationElement {
     }
 
 // @internal (undocumented)
-export interface ListboxOption extends StartEnd {
+export interface ListboxOption extends StartEnd, ARIAGlobalStatesAndProperties {
 }
 
 // @public
 export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<ListboxOption>;
-
-// @public
-export enum ListboxRole {
-    // (undocumented)
-    listbox = "listbox"
-}
 
 // @public
 export const listboxTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Listbox>;
@@ -1655,7 +1644,6 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
-    role: SelectRole;
     // @internal
     selectedIndexChanged(prev: any, next: any): void;
     setPositioning(): void;

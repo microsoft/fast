@@ -17,29 +17,30 @@ export const comboboxTemplate: (
     definition: ComboboxOptions
 ) => html`
     <template
+        class="${x => [x.disabled && "disabled", x.position].filter(Boolean).join(" ")}"
         autocomplete="${x => x.autocomplete}"
-        class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
-        aria-disabled="${x => x.ariaDisabled}"
-        aria-autocomplete="${x => x.autocomplete}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
+        @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
     >
-        <div class="control" part="control">
+        <div class="control" part="control" role="presentation">
             ${startTemplate}
             <slot name="control">
                 <input
-                    class="selected-value"
-                    part="selected-value"
-                    placeholder="${x => x.placeholder}"
-                    role="${x => x.role}"
-                    type="text"
                     aria-activedescendant="${x =>
                         x.open ? x.ariaActiveDescendant : null}"
+                    aria-autocomplete="${x => x.autocomplete}"
                     aria-controls="${x => x.listboxId}"
                     aria-expanded="${x => x.ariaExpanded}"
                     aria-haspopup="listbox"
+                    class="selected-value"
                     ?disabled="${x => x.disabled}"
+                    id="selected-value"
+                    part="selected-value"
+                    placeholder="${x => x.placeholder}"
+                    role="combobox"
+                    type="text"
                     :value="${x => x.value}"
                     @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
                     @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
@@ -55,7 +56,7 @@ export const comboboxTemplate: (
             ${endTemplate}
         </div>
         <div
-            aria-disabled="${x => x.disabled}"
+            aria-expanded="${x => x.ariaExpanded}"
             class="listbox"
             id="${x => x.listboxId}"
             part="listbox"

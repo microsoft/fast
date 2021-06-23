@@ -17,6 +17,7 @@ export const listboxOptionTemplate: (
     definition: FoundationElementDefinition
 ) => html`
     <template
+        aria-label="${x => x.ariaLabel ?? x.text}"
         aria-selected="${x => x.selected}"
         class="${x => (x.selected ? "selected" : "")} ${x =>
             x.disabled ? "disabled" : ""}"

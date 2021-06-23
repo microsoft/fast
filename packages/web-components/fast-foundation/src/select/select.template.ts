@@ -1,9 +1,9 @@
-import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
+import type { ElementDefinitionContext } from "../design-system";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import type { Select, SelectOptions } from "./select";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
@@ -17,29 +17,26 @@ export const selectTemplate: (
     definition: SelectOptions
 ) => html`
     <template
-        class="${x => (x.open ? "open" : "")} ${x =>
-            x.disabled ? "disabled" : ""} ${x => x.position}"
-        role="${x => x.role}"
-        tabindex="${x => (!x.disabled ? "0" : null)}"
+        aria-activeDescendant="${x => x.ariaActiveDescendant}"
+        aria-controls="${x => x.listboxId}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-expanded="${x => x.ariaExpanded}"
+        aria-haspopup="listbox"
+        class="${x =>
+            [x.open && "open", x.disabled && "disabled", x.position]
+                .filter(Boolean)
+                .join(" ")}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+        ?disabled="${x => x.disabled}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+        role="combobox"
+        tabindex="${x => (!x.disabled ? "0" : null)}"
     >
-        <div
-            aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
-            aria-controls="listbox"
-            aria-expanded="${x => x.ariaExpanded}"
-            aria-haspopup="listbox"
-            class="control"
-            part="control"
-            role="button"
-            ?disabled="${x => x.disabled}"
-        >
+        <div class="control" part="control">
             ${startTemplate}
             <slot name="button-container">
-                <div class="selected-value" part="selected-value">
+                <div class="selected-value" part="selected-value" id="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
                 </div>
                 <div class="indicator" part="indicator" aria-hidden="true">
@@ -51,9 +48,11 @@ export const selectTemplate: (
             ${endTemplate}
         </div>
         <div
+            aria-activeDescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
             aria-disabled="${x => x.disabled}"
+            aria-expanded="${x => x.ariaExpanded}"
             class="listbox"
-            id="listbox"
+            id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
             style="--max-height: ${x => x.maxHeight}px"

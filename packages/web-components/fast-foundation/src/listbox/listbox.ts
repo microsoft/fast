@@ -4,7 +4,6 @@ import { FoundationElement } from "../foundation-element";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
-import { ListboxRole } from "./listbox.options";
 
 /**
  * A Listbox Custom HTML Element.
@@ -67,16 +66,6 @@ export class Listbox extends FoundationElement {
      * @internal
      */
     protected typeAheadExpired: boolean = true;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    @attr
-    public role: string = ListboxRole.listbox;
 
     /**
      * The disabled state of the listbox.
@@ -229,9 +218,7 @@ export class Listbox extends FoundationElement {
             this.selectedOptions = this.options.filter(el =>
                 el.isSameNode(selectedOption)
             );
-            this.ariaActiveDescendant = this.firstSelectedOption
-                ? this.firstSelectedOption.id
-                : "";
+            this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
         }
     }
@@ -242,7 +229,7 @@ export class Listbox extends FoundationElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter = (n: HTMLElement) =>
+    public static slottedOptionFilter = (n: Element) =>
         isListboxOption(n) && !n.disabled && !n.hidden;
 
     /**
@@ -307,14 +294,13 @@ export class Listbox extends FoundationElement {
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        const captured = (e.target as HTMLElement).closest(
-            `option,[role=option]`
-        ) as ListboxOption;
+        const captured = e.target;
 
-        if (captured && !captured.disabled) {
+        if (isListboxOption(captured) && !captured.disabled) {
             this.selectedIndex = this.options.indexOf(captured);
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -434,15 +420,6 @@ export class DelegatesARIAListbox {
      */
     @observable
     public ariaActiveDescendant: string = "";
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-disabled
-     */
-    @observable
-    public ariaDisabled: "true" | "false";
 
     /**
      * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
