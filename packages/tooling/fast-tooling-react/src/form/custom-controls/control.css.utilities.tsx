@@ -48,9 +48,16 @@ function getInputChangeHandler(
 export function renderTextInput(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-text-field
-            key={config.key}
-            events={{
-                input: getInputChangeHandler(config.handleChange),
+            {...{
+                key: config.key,
+                events: {
+                    input: getInputChangeHandler(config.handleChange),
+                },
+                ...(config.value
+                    ? {
+                          value: config.value,
+                      }
+                    : {}),
             }}
         ></fast-text-field>
     );
@@ -59,9 +66,16 @@ export function renderTextInput(config: RenderRefControlConfig): React.ReactNode
 export function renderNumber(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
-            key={config.key}
-            events={{
-                input: getInputChangeHandler(config.handleChange),
+            {...{
+                key: config.key,
+                events: {
+                    input: getInputChangeHandler(config.handleChange),
+                },
+                ...(config.value
+                    ? {
+                          value: config.value,
+                      }
+                    : {}),
             }}
         ></fast-number-field>
     );
@@ -70,11 +84,18 @@ export function renderNumber(config: RenderRefControlConfig): React.ReactNode {
 export function renderInteger(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
-            key={config.key}
-            events={{
-                input: getInputChangeHandler(config.handleChange),
+            {...{
+                key: config.key,
+                events: {
+                    input: getInputChangeHandler(config.handleChange),
+                },
+                step: 1,
+                ...(config.value
+                    ? {
+                          value: config.value,
+                      }
+                    : {}),
             }}
-            step={1}
         ></fast-number-field>
     );
 }
@@ -91,11 +112,18 @@ function getCheckboxInputChangeHandler(
 export function renderCheckbox(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-checkbox
-            events={{
-                change: getCheckboxInputChangeHandler(
-                    config.handleChange,
-                    config.ref.ref as string
-                ),
+            {...{
+                events: {
+                    change: getCheckboxInputChangeHandler(
+                        config.handleChange,
+                        config.ref.ref as string
+                    ),
+                },
+                ...(config.value
+                    ? {
+                          value: config.value,
+                      }
+                    : {}),
             }}
         >
             {config.ref.ref}
@@ -112,15 +140,31 @@ function getSelectionChangeHandler(
 }
 
 export function renderSelection(config: RenderSelectControlConfig): React.ReactNode {
+    const currentOption = config.options.find(
+        option => option.displayName === config.value
+    );
+    const currentValue = currentOption ? `${currentOption.value}` : "";
+
     return (
         <fast-select
+            key={config.key}
             events={{
                 change: getSelectionChangeHandler(config.handleChange),
             }}
         >
             {config.options.map(option => {
                 return (
-                    <fast-option value={`${option.value}`} key={option.key}>
+                    <fast-option
+                        {...{
+                            value: `${option.value}`,
+                            key: option.key,
+                            ...(`${option.value}` === currentValue
+                                ? {
+                                      selected: "",
+                                  }
+                                : {}),
+                        }}
+                    >
                         {option.displayName}
                     </fast-option>
                 );
@@ -150,6 +194,7 @@ export function renderColorPicker(config: RenderRefControlConfig): React.ReactNo
     return (
         <color-picker
             key={config.key}
+            value={config.value}
             events={{
                 change: getColorPickerChangeHandler(config.handleChange),
             }}

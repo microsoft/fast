@@ -176,9 +176,13 @@ export class TreeItem extends FASTElement {
 
         switch (e.keyCode) {
             case keyCodeArrowLeft:
+                // preventDefault to ensure we don't scroll the page
+                e.preventDefault();
                 this.collapseOrFocusParent();
                 break;
             case keyCodeArrowRight:
+                // preventDefault to ensure we don't scroll the page
+                e.preventDefault();
                 this.expandOrFocusFirstChild();
                 break;
             case keyCodeArrowDown:
