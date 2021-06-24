@@ -1,8 +1,10 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -18,10 +20,10 @@ import {
  *
  * @public
  */
-export const ToolbarStyles: (context, definition) => ElementStyles = (
-    context,
-    definition
-) =>
+export const ToolbarStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (context, definition) =>
     css`
         ${display("inline-flex")} :host {
             --toolbar-item-gap: calc(

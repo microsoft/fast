@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
-import { disabledCursor, focusVisible } from "@microsoft/fast-foundation";
+import {
+    ComboboxOptions,
+    disabledCursor,
+    ElementDefinitionContext,
+    focusVisible,
+} from "@microsoft/fast-foundation";
 import {
     strokeWidth,
     typeRampBaseFontSize,
@@ -7,7 +12,10 @@ import {
 } from "../design-tokens";
 import { selectStyles } from "../select/select.styles";
 
-export const comboboxStyles = (context, definition) => css`
+export const comboboxStyles = (
+    context: ElementDefinitionContext,
+    definition: ComboboxOptions
+) => css`
     ${selectStyles(context, definition)}
 
     :host(:empty) .listbox {

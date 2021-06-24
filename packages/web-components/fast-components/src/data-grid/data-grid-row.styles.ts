@@ -1,7 +1,14 @@
 import { css } from "@microsoft/fast-element";
+import {
+    ElementDefinitionContext,
+    FoundationElementDefinition,
+} from "../../../fast-foundation/dist/fast-foundation";
 import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
-export const DataGridRowStyles = css`
+export const dataGridRowStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => css`
     :host {
         display: grid;
         padding: 1px 0;

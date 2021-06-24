@@ -1,5 +1,10 @@
 import { css } from "@microsoft/fast-element";
-import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    display,
+    ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     bodyFont,
@@ -51,7 +56,10 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const sliderLabelStyles = (context, definition) =>
+export const sliderLabelStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         ${display("block")} :host {
             font-family: ${bodyFont};

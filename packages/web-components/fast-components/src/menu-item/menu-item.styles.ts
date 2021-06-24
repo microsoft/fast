@@ -2,8 +2,10 @@ import { css } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    MenuItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -25,7 +27,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const menuItemStyles = (context, definition) =>
+export const menuItemStyles = (
+    context: ElementDefinitionContext,
+    definition: MenuItemOptions
+) =>
     css`
     ${display("grid")} :host {
         contain: layout;

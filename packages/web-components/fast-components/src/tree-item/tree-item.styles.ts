@@ -3,8 +3,10 @@ import {
     DesignToken,
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    TreeItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { Swatch } from "../color/swatch";
@@ -78,7 +80,10 @@ const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
     return buttonRecipe.evaluate(target, baseRecipe.evaluate(target).rest).hover;
 });
 
-export const treeItemStyles = (context, definition) =>
+export const treeItemStyles = (
+    context: ElementDefinitionContext,
+    definition: TreeItemOptions
+) =>
     css`
     ${display("block")} :host {
         contain: content;

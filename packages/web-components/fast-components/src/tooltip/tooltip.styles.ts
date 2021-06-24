@@ -1,5 +1,9 @@
 import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
 import {
     bodyFont,
     controlCornerRadius,
@@ -11,7 +15,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const tooltipStyles = (context, definition) =>
+export const tooltipStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         :host {
             contain: layout;

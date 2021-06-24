@@ -2,8 +2,10 @@ import { css } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -28,7 +30,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles";
 
-export const tabStyles = (context, definition) =>
+export const tabStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;

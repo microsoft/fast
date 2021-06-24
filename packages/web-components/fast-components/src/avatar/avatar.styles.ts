@@ -1,5 +1,9 @@
 import { css } from "@microsoft/fast-element";
-import { AvatarOptions, display } from "@microsoft/fast-foundation";
+import {
+    AvatarOptions,
+    display,
+    ElementDefinitionContext,
+} from "@microsoft/fast-foundation";
 import {
     baseHeightMultiplier,
     controlCornerRadius,
@@ -22,7 +26,10 @@ const ltr = css`
     }
 `;
 
-export const avatarStyles = (context, definition: AvatarOptions) =>
+export const avatarStyles = (
+    context: ElementDefinitionContext,
+    definition: AvatarOptions
+) =>
     css`
         ${display("flex")} :host {
             position: relative;

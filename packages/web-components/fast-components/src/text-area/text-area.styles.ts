@@ -2,8 +2,10 @@ import { css } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
     accentFillActive,
@@ -27,7 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const textAreaStyles = (context, definition) =>
+export const textAreaStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
