@@ -16,7 +16,7 @@ import {
     fastTabs,
     fastTextField,
 } from "@microsoft/fast-components";
-import { HTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
+import { fastToolingHTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
 import { fastToolingHTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render";
 import { fastToolingHTMLRenderLayerNavigation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation";
 import { Select } from "@microsoft/fast-foundation";
@@ -43,7 +43,6 @@ import { defaultDevices, Device } from "./devices";
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-HTMLRenderLayerInlineEdit;
 DesignSystem.getOrCreate().register(
     fastButton(),
     fastSelect(),
@@ -57,7 +56,8 @@ DesignSystem.getOrCreate().register(
     fastToolingColorPicker({ prefix: "fast-tooling" }),
     fastToolingHTMLRender({ prefix: "fast-tooling" }),
     fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" })
+    fastToolingCSSLayout({ prefix: "fast-tooling" }),
+    fastToolingHTMLRenderLayerInlineEdit({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -319,7 +319,7 @@ export class HTMLRenderReact extends React.Component {
     render() {
         return (
             <fast-tooling-html-render ref={this.setRenderRef}>
-               <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
                 <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
             </fast-tooling-html-render>
         );
