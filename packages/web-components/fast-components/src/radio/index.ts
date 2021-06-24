@@ -28,3 +28,9 @@ export const fastRadio = Radio.compose<RadioOptions>({
  * @public
  */
 export const radioStyles = styles;
+
+/**
+ * Base class for Radio
+ * @public
+ */
+export { Radio };

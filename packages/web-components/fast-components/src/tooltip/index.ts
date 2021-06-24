@@ -15,3 +15,9 @@ export const fastTooltip = Tooltip.compose({
     template,
     styles,
 });
+
+/**
+ * Base class for Tooltip
+ * @public
+ */
+export { Tooltip };

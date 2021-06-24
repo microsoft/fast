@@ -15,3 +15,9 @@ export const fastBreadcrumb = Breadcrumb.compose({
     template,
     styles,
 });
+
+/**
+ * Base class for Breadcrumb
+ * @public
+ */
+export { Breadcrumb };

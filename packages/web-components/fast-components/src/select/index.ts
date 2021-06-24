@@ -38,3 +38,9 @@ export const fastSelect = Select.compose<SelectOptions>({
  * @public
  */
 export const selectStyles = styles;
+
+/**
+ * Base class for Select
+ * @public
+ */
+export { Select };
