@@ -1,12 +1,17 @@
 {
-  "name": "fast-cli",
+  "name": "@microsoft/fast-cli",
   "description": "The FAST command line tool",
   "version": "0.1.0",
-  "author": "Microsoft",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
   "bin": {
     "fast": "./bin/run"
   },
-  "bugs": "https://github.com/Microsoft/git+https://github.com/Microsoft/fast.git/issues",
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -14,12 +19,42 @@
     "tslib": "^1"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1",
-    "@types/node": "^10",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
     "eslint": "^5.13",
     "eslint-config-oclif": "^3.1",
     "eslint-config-oclif-typescript": "^0.1",
+    "@types/chai": "^4.2.11",
+    "@types/karma": "^5.0.0",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^10",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
+    "@types/lodash-es": "^4.17.4",
+    "babel-core": "^7.0.0-bridge.0",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^4.0.0",
     "globby": "^10",
+    "istanbul": "^0.4.5",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
+    "karma": "^5.0.4",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.2",
+    "karma-coverage-istanbul-reporter": "^3.0.0",
+    "karma-firefox-launcher": "^2.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-source-map-support": "^1.4.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^4.0.2",
+    "lodash-es": "4.17.15",
+    "mocha": "^7.1.2",
+    "@oclif/dev-cli": "^1",
+    "prettier": "2.0.2",
+    "ts-loader": "^4.0.1",
     "ts-node": "^8",
     "typescript": "^3.3"
   },
@@ -53,7 +88,11 @@
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "test": "echo NO TESTS",
+    "eslint": "eslint . --ext .ts,.tsx",
+    "eslint:fix": "eslint . --ext .ts,.tsx --fix",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"
