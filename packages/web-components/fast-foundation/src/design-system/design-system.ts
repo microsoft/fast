@@ -63,7 +63,7 @@ export interface ElementDefinitionContext {
     definePresentation(presentation: ComponentPresentation): void;
 
     /**
-     * Returns the HTML element name that the type will be defined as.
+     * Returns the HTML element tag name that the type will be defined as.
      * @param type - The type to lookup.
      * @public
      */
