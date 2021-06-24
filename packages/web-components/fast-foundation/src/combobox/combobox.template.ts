@@ -3,15 +3,19 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import type { Combobox, ComboboxOptions } from "./combobox";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
  * @public
  */
 export const comboboxTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: ComboboxOptions
-) => ViewTemplate<Combobox> = (context, definition: ComboboxOptions) => html`
+) => ViewTemplate<Combobox> = (
+    context: ElementDefinitionContext,
+    definition: ComboboxOptions
+) => html`
     <template
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"

@@ -1,7 +1,9 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
+    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -20,7 +22,13 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
-export const buttonStyles = (context, definition) =>
+export const buttonStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         :host([disabled]),
         :host([disabled]:hover),

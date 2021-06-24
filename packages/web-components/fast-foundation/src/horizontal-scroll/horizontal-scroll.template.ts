@@ -2,15 +2,16 @@ import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * @public
  */
 export const horizontalScrollTemplate: (
-    context,
-    definition
+    context: ElementDefinitionContext,
+    definition: HorizontalScrollOptions
 ) => ViewTemplate<HorizontalScroll> = (
-    context,
+    context: ElementDefinitionContext,
     definition: HorizontalScrollOptions
 ) => html`
     <template
