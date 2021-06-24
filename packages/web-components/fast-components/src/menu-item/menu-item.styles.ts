@@ -348,6 +348,15 @@ export const menuItemStyles = (context, definition) =>
             :host([aria-checked="true"]) .radio-indicator {
                 background: ${SystemColors.Highlight};
             }
+
+            ::slotted([slot="end"]:not(svg)) {
+                color: ${SystemColors.ButtonText};
+            }
+
+            :host(:hover) ::slotted([slot="end"]:not(svg)),
+            :host(:${focusVisible}) ::slotted([slot="end"]:not(svg)) {
+                color: ${SystemColors.HighlightText};
+            }
         `
         ),
 

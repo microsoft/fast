@@ -121,8 +121,13 @@ export const breadcrumbItemStyles = (context, definition) =>
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                .control:hover .content::before {
+                .control:hover .content::before,
+                .control:${focusVisible} .content::before {
                     background: ${SystemColors.LinkText};
+                }
+                .start,
+                .end {
+                    fill: ${SystemColors.ButtonText};
                 }
             `
         )

@@ -205,6 +205,9 @@ export const numberFieldStyles = (context, definition) =>
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
                 }
+                input::placeholder {
+                    color: ${SystemColors.GrayText};
+                }
             `
         )
     );
