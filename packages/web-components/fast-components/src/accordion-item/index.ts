@@ -53,3 +53,9 @@ export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
  * @public
  */
 export const accordionItemStyles = styles;
+
+/**
+ * Base class for Accordion item
+ * @public
+ */
+export { AccordionItem };

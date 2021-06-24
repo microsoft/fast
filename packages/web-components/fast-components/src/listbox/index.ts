@@ -22,3 +22,9 @@ export const fastListbox = Listbox.compose({
  * @public
  */
 export const listboxStyles = styles;
+
+/**
+ * Base class for Listbox
+ * @public
+ */
+export { Listbox };

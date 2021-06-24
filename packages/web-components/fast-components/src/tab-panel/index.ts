@@ -21,3 +21,9 @@ export const fastTabPanel = TabPanel.compose({
  * @public
  */
 export const tabPanelStyles = styles;
+
+/**
+ * Base class for TabPanel
+ * @public
+ */
+export { TabPanel };

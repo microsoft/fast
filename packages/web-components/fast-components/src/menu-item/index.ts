@@ -55,3 +55,9 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
  * @public
  */
 export const menuItemStyles = styles;
+
+/**
+ * Base class for MenuItem
+ * @public
+ */
+export { MenuItem };

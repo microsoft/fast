@@ -66,3 +66,21 @@ export const fastDataGrid = DataGrid.compose({
  * @public
  */
 export const dataGridStyles = gridStyles;
+
+/**
+ * Base class for DataGrid
+ * @public
+ */
+export { DataGrid };
+
+/**
+ * Base class for DataGridRow
+ * @public
+ */
+export { DataGridRow };
+
+/**
+ * Base class for DataGridCell
+ * @public
+ */
+export { DataGridCell };

@@ -5,18 +5,23 @@
 ```ts
 
 import { Accordion } from '@microsoft/fast-foundation';
+import { AccordionItem } from '@microsoft/fast-foundation';
 import { AccordionItemOptions } from '@microsoft/fast-foundation';
 import { Anchor as Anchor_2 } from '@microsoft/fast-foundation';
 import { AnchoredRegion } from '@microsoft/fast-foundation';
 import { Avatar as Avatar_2 } from '@microsoft/fast-foundation';
 import { AvatarOptions } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
+import { BaseProgress } from '@microsoft/fast-foundation';
 import { Behavior } from '@microsoft/fast-element';
 import { Breadcrumb } from '@microsoft/fast-foundation';
+import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { BreadcrumbItemOptions } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
+import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
+import { Combobox } from '@microsoft/fast-foundation';
 import { ComboboxOptions } from '@microsoft/fast-foundation';
 import { DataGrid } from '@microsoft/fast-foundation';
 import { DataGridCell } from '@microsoft/fast-foundation';
@@ -28,6 +33,7 @@ import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
 import { Divider } from '@microsoft/fast-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { Flipper } from '@microsoft/fast-foundation';
 import { FlipperOptions } from '@microsoft/fast-foundation';
 import { FoundationElement } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
@@ -35,17 +41,22 @@ import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
+import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
 import { NumberField as NumberField_2 } from '@microsoft/fast-foundation';
 import { NumberFieldOptions } from '@microsoft/fast-foundation';
 import { ProgressOptions } from '@microsoft/fast-foundation';
 import { ProgressRingOptions } from '@microsoft/fast-foundation';
+import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { RadioOptions } from '@microsoft/fast-foundation';
+import { Select } from '@microsoft/fast-foundation';
 import { SelectOptions } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
+import { Slider } from '@microsoft/fast-foundation';
 import { SliderLabel as SliderLabel_2 } from '@microsoft/fast-foundation';
 import { SliderOptions } from '@microsoft/fast-foundation';
+import { Switch } from '@microsoft/fast-foundation';
 import { SwitchOptions } from '@microsoft/fast-foundation';
 import { Tab } from '@microsoft/fast-foundation';
 import { TabPanel } from '@microsoft/fast-foundation';
@@ -54,6 +65,7 @@ import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
 import { TextField as TextField_2 } from '@microsoft/fast-foundation';
 import { Toolbar as Toolbar_2 } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
+import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
@@ -120,6 +132,10 @@ export const accentForegroundRestDelta: import("@microsoft/fast-foundation").CSS
 // @public (undocumented)
 export const accentPalette: DesignToken<Palette<Swatch>>;
 
+export { Accordion }
+
+export { AccordionItem }
+
 // @public
 export const accordionItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: AccordionItemOptions) => import("@microsoft/fast-element").ElementStyles;
 
@@ -173,21 +189,21 @@ export const allComponents: {
     fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").TreeItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 };
 
-// Warning: (ae-internal-missing-underscore) The name "Anchor" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export class Anchor extends Anchor_2 {
-    // @public
     appearance: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
     // (undocumented)
     connectedCallback(): void;
+    // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
 
 // @public
 export type AnchorAppearance = ButtonAppearance | "hypertext";
+
+export { AnchoredRegion }
 
 // @public
 export const anchoredRegionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -204,6 +220,8 @@ export class Avatar extends Avatar_2 {
 // @public
 export const avatarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: AvatarOptions) => import("@microsoft/fast-element").ElementStyles;
 
+export { Badge }
+
 // @public
 export const badgeStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
@@ -216,8 +234,16 @@ export const baseHorizontalSpacingMultiplier: import("@microsoft/fast-foundation
 // @public (undocumented)
 export const baseLayerLuminance: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+export { BaseProgress as Progress }
+
+export { BaseProgress as ProgressRing }
+
 // @public (undocumented)
 export const bodyFont: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+export { Breadcrumb }
+
+export { BreadcrumbItem }
 
 // Warning: (ae-internal-missing-underscore) The name "Button" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -248,11 +274,15 @@ export class Card extends Card_2 {
 // @public
 export const cardStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
+export { Checkbox }
+
 // @public
 export const checkboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: CheckboxOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
 export type ColorRecipe = Recipe<Swatch>;
+
+export { Combobox }
 
 // @public
 export const comboboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ComboboxOptions) => import("@microsoft/fast-element").ElementStyles;
@@ -263,8 +293,14 @@ export const controlCornerRadius: import("@microsoft/fast-foundation").CSSDesign
 // @public @deprecated (undocumented)
 export const cornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+export { DataGrid }
+
+export { DataGridCell }
+
 // @public
 export const dataGridCellStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+export { DataGridRow }
 
 // @public
 export const dataGridRowStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -277,6 +313,8 @@ export const density: import("@microsoft/fast-foundation").CSSDesignToken<number
 
 // @public (undocumented)
 export const designUnit: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+export { Dialog }
 
 // @public
 export const dialogStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -318,6 +356,8 @@ export type DisclosureAppearance = "accent" | "lightweight";
 // @public
 export const disclosureStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
+export { Divider }
+
 // @public
 export const dividerStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
@@ -327,8 +367,6 @@ export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-founda
 // @public
 export const fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AccordionItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<AccordionItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "fastAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
-//
 // @public
 export const fastAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Anchor>;
 
@@ -482,6 +520,8 @@ export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundat
 // @public (undocumented)
 export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
+export { Flipper }
+
 // @public
 export const flipperStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: FlipperOptions) => import("@microsoft/fast-element").ElementStyles;
 
@@ -540,8 +580,16 @@ export interface InteractiveSwatchSet {
 // @public
 export function isDark(color: Swatch): boolean;
 
+export { Listbox }
+
+export { ListboxOption }
+
 // @public
 export const listboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+export { Menu }
+
+export { MenuItem }
 
 // @public
 export const menuItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: MenuItemOptions) => import("@microsoft/fast-element").ElementStyles;
@@ -867,6 +915,10 @@ export const progressRingStyles: (context: import("@microsoft/fast-foundation").
 // @public
 export const progressStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ProgressOptions) => import("@microsoft/fast-element").ElementStyles;
 
+export { Radio }
+
+export { RadioGroup }
+
 // @public
 export const radioGroupStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
@@ -879,11 +931,17 @@ export interface Recipe<T> {
     evaluate(element: HTMLElement, reference?: Swatch): T;
 }
 
+export { Select }
+
 // @public
 export const selectStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SelectOptions) => import("@microsoft/fast-element").ElementStyles;
 
+export { Skeleton }
+
 // @public
 export const skeletonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+export { Slider }
 
 // Warning: (ae-internal-missing-underscore) The name "SliderLabel" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -938,11 +996,19 @@ export const SwatchRGB: Readonly<{
     }): SwatchRGB;
 }>;
 
+export { Switch }
+
 // @public
 export const switchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SwitchOptions) => import("@microsoft/fast-element").ElementStyles;
 
+export { Tab }
+
+export { TabPanel }
+
 // @public
 export const tabPanelStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+export { Tabs }
 
 // @public
 export const tabsStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -993,8 +1059,14 @@ export class Toolbar extends Toolbar_2 {
 // @public
 export const toolbarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
+export { Tooltip }
+
+export { TreeItem }
+
 // @public
 export const treeItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: TreeItemOptions) => import("@microsoft/fast-element").ElementStyles;
+
+export { TreeView }
 
 // @public
 export const treeViewStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -1056,7 +1128,6 @@ export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/custom-elements.d.ts:58:5 - (ae-incompatible-release-tags) The symbol "fastAnchor" is marked as @public, but its signature references "Anchor" which is marked as @internal
 // dist/dts/custom-elements.d.ts:64:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
 // dist/dts/custom-elements.d.ts:65:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 // dist/dts/custom-elements.d.ts:72:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal

@@ -28,3 +28,9 @@ export const fastSlider = Slider.compose<SliderOptions>({
  * @public
  */
 export const sliderStyles = styles;
+
+/**
+ * Base class for Slider
+ * @public
+ */
+export { Slider };
