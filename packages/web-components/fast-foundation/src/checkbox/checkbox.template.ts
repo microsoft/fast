@@ -1,15 +1,19 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { Checkbox, CheckboxOptions } from "./checkbox";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Checkbox:class)} component.
  * @public
  */
 export const checkboxTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: CheckboxOptions
-) => ViewTemplate<Checkbox> = (context, definition: CheckboxOptions) => html`
+) => ViewTemplate<Checkbox> = (
+    context: ElementDefinitionContext,
+    definition: CheckboxOptions
+) => html`
     <template
         role="checkbox"
         aria-checked="${x => x.checked}"

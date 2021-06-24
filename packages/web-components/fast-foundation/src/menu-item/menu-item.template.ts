@@ -4,6 +4,7 @@ import { AnchoredRegion } from "../anchored-region";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { MenuItemRole } from "./menu-item";
 import type { MenuItem, MenuItemOptions } from "./menu-item";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
@@ -12,9 +13,12 @@ import type { MenuItem, MenuItemOptions } from "./menu-item";
  * @public
  */
 export const menuItemTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: MenuItemOptions
-) => ViewTemplate<MenuItem> = (context, definition: MenuItemOptions) => html<MenuItem>`
+) => ViewTemplate<MenuItem> = (
+    context: ElementDefinitionContext,
+    definition: MenuItemOptions
+) => html<MenuItem>`
     <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"

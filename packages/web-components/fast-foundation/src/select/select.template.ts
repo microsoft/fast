@@ -3,15 +3,19 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import type { Select, SelectOptions } from "./select";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
  * @public
  */
 export const selectTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: SelectOptions
-) => ViewTemplate<Select> = (context, definition: SelectOptions) => html`
+) => ViewTemplate<Select> = (
+    context: ElementDefinitionContext,
+    definition: SelectOptions
+) => html`
     <template
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"
