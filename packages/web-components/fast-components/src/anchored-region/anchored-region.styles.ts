@@ -2,7 +2,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     FoundationElementDefinition,
-} from "../../../fast-foundation/dist/fast-foundation";
+} from "@microsoft/fast-foundation";
 
 export const anchoredRegionStyles: (
     context: ElementDefinitionContext,
