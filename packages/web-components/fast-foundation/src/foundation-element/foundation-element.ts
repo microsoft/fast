@@ -25,7 +25,7 @@ type EagerOrLazyFoundationOption<T, K extends FoundationElementDefinition> =
 /**
  * An element definition used to define a FoundationElement when registered through the design
  * system registry.
- * @alpha
+ * @public
  */
 export interface FoundationElementDefinition {
     /**
@@ -70,11 +70,17 @@ export interface FoundationElementDefinition {
 
 /**
  * A set of properties which the component consumer can override during the element registration process.
- * @alpha
+ * @public
  */
 export type OverrideFoundationElementDefinition<
     T extends FoundationElementDefinition
-> = Partial<Omit<T, "type">> & { prefix?: string };
+> = Partial<Omit<T, "type">> & {
+    /**
+     * An element prefix that overrides the design system configuration.
+     * @public
+     */
+    prefix?: string;
+};
 
 /**
  * Defines a foundation element class that:
@@ -82,7 +88,7 @@ export type OverrideFoundationElementDefinition<
  * 2. Allows resolving the element template from the instance or ComponentPresentation
  * 3. Allows resolving the element styles from the instance or ComponentPresentation
  *
- * @alpha
+ * @public
  */
 export class FoundationElement extends FASTElement {
     private _presentation: ComponentPresentation | null | undefined = void 0;
@@ -90,6 +96,7 @@ export class FoundationElement extends FASTElement {
     /**
      * A property which resolves the ComponentPresentation instance
      * for the current component.
+     * @public
      */
     protected get $presentation(): ComponentPresentation | null {
         if (this._presentation === void 0) {
@@ -102,7 +109,8 @@ export class FoundationElement extends FASTElement {
     /**
      * Sets the template of the element instance. When undefined,
      * the element will attempt to resolve the template from
-     * the $fastProvider
+     * the associated presentation or custom element definition.
+     * @public
      */
     @observable
     public template: ElementViewTemplate | void | null;
@@ -115,7 +123,8 @@ export class FoundationElement extends FASTElement {
     /**
      * Sets the default styles for the element instance. When undefined,
      * the element will attempt to resolve default styles from
-     * the $fastProvider
+     * the associated presentation or custom element definition.
+     * @public
      */
     @observable
     public styles: ElementStyles | void | null;
@@ -130,6 +139,7 @@ export class FoundationElement extends FASTElement {
      * @remarks
      * This method is invoked by the platform whenever this FoundationElement
      * becomes connected to the document.
+     * @public
      */
     connectedCallback() {
         if (this.$presentation !== null) {
@@ -143,6 +153,7 @@ export class FoundationElement extends FASTElement {
      * Defines an element registry function with a set of element definition defaults.
      * @param elementDefinition - The definition of the element to create the registry
      * function for.
+     * @public
      */
     public static compose<
         T extends FoundationElementDefinition = FoundationElementDefinition,
@@ -179,7 +190,7 @@ function resolveOption<T, K extends FoundationElementDefinition>(
 /**
  * Registry capable of defining presentation properties for a DOM Container hierarchy.
  *
- * @alpha
+ * @internal
  */
 export class FoundationElementRegistry<
     TDefinition extends FoundationElementDefinition,

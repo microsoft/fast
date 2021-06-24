@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "docs(fast-foundation): add api docs for design system and foundation ele",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
