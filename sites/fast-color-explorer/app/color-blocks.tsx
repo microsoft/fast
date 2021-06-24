@@ -31,7 +31,6 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     foregroundOnAccent,
-    neutralDividerRest,
     neutralFillActive,
     neutralFillHover,
     neutralFillInputRest,
@@ -45,6 +44,7 @@ import {
     neutralForegroundHint,
     neutralForegroundRest,
     neutralStrokeActive,
+    neutralStrokeDividerRest,
     neutralStrokeHover,
     neutralStrokeRest,
 } from "./recipes";
@@ -539,8 +539,8 @@ class ColorBlocksBase extends React.Component<ColorBlocksProps, ColorBlocksState
                     type={SwatchTypes.outline}
                     fillRecipe={backgroundColor}
                     foregroundRecipe={neutralForegroundRest}
-                    outlineRecipe={neutralDividerRest}
-                    recipeName="neutralDividerRest"
+                    outlineRecipe={neutralStrokeDividerRest}
+                    recipeName="neutralStrokeDividerRest"
                 />
             </React.Fragment>
         );

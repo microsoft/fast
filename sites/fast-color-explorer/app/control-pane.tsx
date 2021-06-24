@@ -31,9 +31,9 @@ import { bridge, ColorsDesignSystem } from "./design-system";
 import {
     backgroundColor,
     focusStrokeOuter,
-    neutralDividerRest,
     neutralFillInputRest,
     neutralForegroundRest,
+    neutralStrokeDividerRest,
     neutralStrokeRest,
 } from "./recipes";
 import {
@@ -134,7 +134,7 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         color: neutralForegroundRest,
         height: "100%",
         maxWidth: "300px",
-        borderLeft: format("1px solid {0}", neutralDividerRest),
+        borderLeft: format("1px solid {0}", neutralStrokeDividerRest),
         background: backgroundColor,
         overflow: "auto",
     },

@@ -1,5 +1,5 @@
 import {
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     typeRampPlus2FontSize,
 } from "@microsoft/fast-components";
@@ -15,7 +15,7 @@ export const FeatureCardStyles = css`
         color: inherit;
         box-sizing: border-box;
         padding: calc(${designUnit} * 5px);
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         box-shadow: unset;
         position: relative;
     }

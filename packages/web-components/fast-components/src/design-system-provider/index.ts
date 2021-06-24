@@ -1,3 +1,4 @@
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     attr,
     css,
@@ -5,6 +6,7 @@ import {
     nullableNumberConverter,
     Observable,
     observable,
+    ValueConverter,
 } from "@microsoft/fast-element";
 import {
     DesignToken,
@@ -15,6 +17,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
 import { Palette } from "../color/palette";
+import { Swatch, SwatchRGB } from "../color/swatch";
 import {
     accentFillActiveDelta,
     accentFillFocusDelta,
@@ -78,6 +81,30 @@ import {
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
 } from "../design-tokens";
+
+/**
+ * A {@link ValueConverter} that converts to and from `Swatch` values.
+ * @remarks
+ * This converter allows for colors represented as string hex values, returning `null` if the
+ * input was `null` or `undefined`.
+ * @internal
+ */
+const swatchConverter: ValueConverter = {
+    toView(value: any): string | null {
+        if (value === null || value === undefined) {
+            return null;
+        }
+        return (value as Swatch)?.toColorString();
+    },
+
+    fromView(value: any): any {
+        if (value === null || value === undefined) {
+            return null;
+        }
+        const color = parseColorHexRGB(value);
+        return color ? SwatchRGB.create(color!.r, color!.g, color!.b) : null;
+    },
+};
 
 const backgroundStyles = css`
     :host {
@@ -156,9 +183,10 @@ class DesignSystemProvider extends FoundationElement {
      */
     @attr({
         attribute: "fill-color",
+        converter: swatchConverter,
     })
     @designToken(fillColor)
-    public fillColor: string;
+    public fillColor: Swatch;
 
     /**
      * Defines the palette that all neutral color recipes are derived from.
@@ -174,9 +202,6 @@ class DesignSystemProvider extends FoundationElement {
     /**
      * Defines the palette that all accent color recipes are derived from.
      * This is an array for hexadecimal color strings ordered from light to dark.
-     *
-     * When setting this property, be sure to *also* set {@link FASTDesignSystemProvider.accentBaseColor|accentBaseColor} to
-     * the base color deriving this palette.
      *
      * @remarks
      * HTML attribute: N/A
@@ -263,9 +288,9 @@ class DesignSystemProvider extends FoundationElement {
      * The corner radius applied to controls.
      *
      * @remarks
-     * HTML attribute: corner-radius
+     * HTML attribute: control-corner-radius
      *
-     * CSS custom property: --corner-radius
+     * CSS custom property: --control-corner-radius
      */
     @attr({
         attribute: "control-corner-radius",
@@ -572,7 +597,7 @@ class DesignSystemProvider extends FoundationElement {
     public typeRampPlus6LineHeight: string;
 
     /**
-     * The distance from the resolved accent fill color for the rest state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillRestBehavior} for usage in CSS.
+     * The distance from the resolved accent fill color for the rest state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-fill-rest-delta
@@ -587,7 +612,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentFillRestDelta: number;
 
     /**
-     * The distance from the resolved accent fill color for the hover state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillHoverBehavior} for usage in CSS.
+     * The distance from the resolved accent fill color for the hover state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-fill-hover-delta
@@ -602,7 +627,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentFillHoverDelta: number;
 
     /**
-     * The distance from the resolved accent fill color for the active state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillActiveBehavior} for usage in CSS.
+     * The distance from the resolved accent fill color for the active state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-fill-active-delta
@@ -617,7 +642,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentFillActiveDelta: number;
 
     /**
-     * The distance from the resolved accent fill color for the focus state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillFocusBehavior} for usage in CSS.
+     * The distance from the resolved accent fill color for the focus state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-fill-focus-delta
@@ -632,7 +657,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentFillFocusDelta: number;
 
     /**
-     * The distance from the resolved accent foreground color for the rest state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundRestBehavior} for usage in CSS.
+     * The distance from the resolved accent foreground color for the rest state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-foreground-rest-delta
@@ -647,7 +672,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentForegroundRestDelta: number;
 
     /**
-     * The distance from the resolved accent foreground color for the hover state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundHoverBehavior} for usage in CSS.
+     * The distance from the resolved accent foreground color for the hover state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-foreground-hover-delta
@@ -662,7 +687,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentForegroundHoverDelta: number;
 
     /**
-     * The distance from the resolved accent foreground color for the active state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundActiveBehavior} for usage in CSS.
+     * The distance from the resolved accent foreground color for the active state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-foreground-active-delta
@@ -677,7 +702,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentForegroundActiveDelta: number;
 
     /**
-     * The distance from the resolved accent foreground color for the focus state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundFocusBehavior} for usage in CSS.
+     * The distance from the resolved accent foreground color for the focus state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: accent-foreground-focus-delta
@@ -692,7 +717,7 @@ class DesignSystemProvider extends FoundationElement {
     public accentForegroundFocusDelta: number;
 
     /**
-     * The distance from the resolved neutral fill color for the rest state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillRestBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill color for the rest state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-rest-delta
@@ -707,7 +732,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillRestDelta: number;
 
     /**
-     * The distance from the resolved neutral fill color for the hover state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillHoverBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill color for the hover state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-hover-delta
@@ -722,7 +747,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillHoverDelta: number;
 
     /**
-     * The distance from the resolved neutral fill color for the active state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillActiveBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill color for the active state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-active-delta
@@ -737,7 +762,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillActiveDelta: number;
 
     /**
-     * The distance from the resolved neutral fill color for the focus state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillFocusBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill color for the focus state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-focus-delta
@@ -752,7 +777,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillFocusDelta: number;
 
     /**
-     * The distance from the resolved neutral fill input color for the rest state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputRestBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill input color for the rest state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-input-rest-delta
@@ -767,7 +792,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillInputRestDelta: number;
 
     /**
-     * The distance from the resolved neutral fill input color for the hover state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputHoverBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill input color for the hover state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-input-hover-delta
@@ -782,7 +807,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillInputHoverDelta: number;
 
     /**
-     * The distance from the resolved neutral fill input color for the active state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputActiveBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill input color for the active state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-input-active-delta
@@ -797,7 +822,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillInputActiveDelta: number;
 
     /**
-     * The distance from the resolved neutral fill input color for the focus state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputFocusBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill input color for the focus state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-input-focus-delta
@@ -812,7 +837,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillInputFocusDelta: number;
 
     /**
-     * The distance from the resolved neutral fill stealth color for the rest state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthRestBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill stealth color for the rest state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-stealth-rest-delta
@@ -827,7 +852,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStealthRestDelta: number;
 
     /**
-     * The distance from the resolved neutral fill stealth color for the hover state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthHoverBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill stealth color for the hover state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-stealth-hover-delta
@@ -842,7 +867,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStealthHoverDelta: number;
 
     /**
-     * The distance from the resolved neutral fill stealth color for the active state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthActiveBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill stealth color for the active state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-stealth-active-delta
@@ -857,7 +882,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStealthActiveDelta: number;
 
     /**
-     * The distance from the resolved neutral fill stealth color for the focus state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthFocusBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill stealth color for the focus state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-stealth-focus-delta
@@ -872,7 +897,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStealthFocusDelta: number;
 
     /**
-     * The distance from the resolved neutral fill strong color for the hover state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongHoverBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill strong color for the hover state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-strong-hover-delta
@@ -887,7 +912,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStrongHoverDelta: number;
 
     /**
-     * The distance from the resolved neutral fill strong color for the active state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongActiveBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill strong color for the active state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-strong-active-delta
@@ -902,7 +927,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralFillStrongActiveDelta: number;
 
     /**
-     * The distance from the resolved neutral fill strong color for the focus state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongFocusBehavior} for usage in CSS.
+     * The distance from the resolved neutral fill strong color for the focus state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-fill-strong-focus-delta
@@ -920,7 +945,7 @@ class DesignSystemProvider extends FoundationElement {
      * The {@link https://www.w3.org/WAI/GL/wiki/Relative_luminance#:~:text=WCAG%20definition%20of%20relative%20luminance,and%201%20for%20lightest%20white|relative luminance} of the base layer of the application.
      *
      * @remarks
-     * When set to a number between 0 and 1, this values controls the output of {@link @microsoft/fast-components#neutralLayerCardBehavior}, {@link @microsoft/fast-components#neutralLayerCardContainerBehavior}, {@link @microsoft/fast-components#neutralLayerFloatingBehavior}, {@link @microsoft/fast-components#neutralLayerL1AltBehavior}, {@link @microsoft/fast-components#neutralLayerL1Behavior}, {@link @microsoft/fast-components#neutralLayerL2Behavior}, {@link @microsoft/fast-components#neutralLayerL3Behavior}, {@link @microsoft/fast-components#neutralLayerL4Behavior}.
+     * When set to a number between 0 and 1, this values controls the output of {@link @microsoft/fast-components#neutralFillLayerRest}, {@link @microsoft/fast-components#neutralLayerCardContainer}, {@link @microsoft/fast-components#neutralLayerFloating}, {@link @microsoft/fast-components#neutralLayer1}, {@link @microsoft/fast-components#neutralLayer2}, {@link @microsoft/fast-components#neutralLayer3}, {@link @microsoft/fast-components#neutralLayer4}.
      *
      * HTML attribute: base-layer-luminance
      *
@@ -934,25 +959,25 @@ class DesignSystemProvider extends FoundationElement {
     public baseLayerLuminance: number; // 0...1
 
     /**
-     * The distance from the background-color to resolve the card background. See {@link @microsoft/fast-components#neutralFillCardRestBehavior} for usage in CSS.
+     * The distance from the background-color to resolve the card background. See {@link @microsoft/fast-components#neutralFillLayerRest} for usage in CSS.
      *
      * @remarks
-     * HTML attribute: neutral-fill-card-delta
+     * HTML attribute: neutral-fill-layer-rest-delta
      *
      * CSS custom property: N/A
      */
     @attr({
-        attribute: "neutral-fill-card-delta",
+        attribute: "neutral-fill-layer-rest-delta",
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillLayerRestDelta)
-    public neutralFillCardDelta: number;
+    public neutralFillLayerRestDelta: number;
 
     /**
-     * The distance from the resolved neutral divider color for the rest state of the neutral-foreground recipe. See {@link @microsoft/fast-components#neutralDividerRestBehavior} for usage in CSS.
+     * The distance from the resolved neutral divider color for the rest state of the neutral-foreground recipe. See {@link @microsoft/fast-components#neutralStrokeDividerRest} for usage in CSS.
      *
      * @remarks
-     * HTML attribute: neutral-divider-rest-delta
+     * HTML attribute: neutral-stroke-divider-rest-delta
      *
      * CSS custom property: N/A
      */
@@ -964,7 +989,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralStrokeDividerRestDelta: number;
 
     /**
-     * The distance from the resolved neutral stroke color for the rest state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeRestBehavior} for usage in CSS.
+     * The distance from the resolved neutral stroke color for the rest state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeRest} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-stroke-rest-delta
@@ -979,7 +1004,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralStrokeRestDelta: number;
 
     /**
-     * The distance from the resolved neutral stroke color for the hover state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeHoverBehavior} for usage in CSS.
+     * The distance from the resolved neutral stroke color for the hover state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeHover} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-stroke-hover-delta
@@ -994,7 +1019,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralStrokeHoverDelta: number;
 
     /**
-     * The distance from the resolved neutral stroke color for the active state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeActiveBehavior} for usage in CSS.
+     * The distance from the resolved neutral stroke color for the active state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeActive} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-stroke-active-delta
@@ -1009,7 +1034,7 @@ class DesignSystemProvider extends FoundationElement {
     public neutralStrokeActiveDelta: number;
 
     /**
-     * The distance from the resolved neutral stroke color for the focus state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeFocusBehavior} for usage in CSS.
+     * The distance from the resolved neutral stroke color for the focus state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeFocus} for usage in CSS.
      *
      * @remarks
      * HTML attribute: neutral-stroke-focus-delta

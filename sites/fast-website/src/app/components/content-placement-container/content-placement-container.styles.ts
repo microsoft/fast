@@ -3,7 +3,7 @@ import { display } from "@microsoft/fast-foundation";
 import { elevation } from "@microsoft/fast-components/dist/esm/styles/elevation.js";
 import {
     accentForegroundRest,
-    cornerRadius,
+    controlCornerRadius,
     designUnit,
     neutralFillFocus,
     neutralForegroundRest,
@@ -71,7 +71,7 @@ export const ContentPlacementContainerStyles = css`
     :host site-content-placement:focus-within {
         --elevation: 16;
         background: ${neutralFillFocus};
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         color: currentColor;
         opacity: 1;
         ${elevation}

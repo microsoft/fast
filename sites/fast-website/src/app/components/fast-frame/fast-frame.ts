@@ -11,10 +11,10 @@ import {
     density,
     baseHeightMultiplier,
     baseHorizontalSpacingMultiplier,
-    cornerRadius,
-    outlineWidth,
+    controlCornerRadius,
+    strokeWidth,
 } from "@microsoft/fast-components";
-import { DI, RadioGroup, Slider } from "@microsoft/fast-foundation";
+import { RadioGroup, Slider } from "@microsoft/fast-foundation";
 import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-colors";
 
 export const drawerBreakpoint: string = "660px";
@@ -89,13 +89,13 @@ export class FastFrame extends FASTElement {
     @observable
     public borderRadius: number = 3;
     borderRadiusChanged() {
-        cornerRadius.setValueFor(this, this.borderRadius);
+        controlCornerRadius.setValueFor(this, this.borderRadius);
     }
 
     @observable
-    public outlineWidth: number = 1;
-    outlineWidthChanged() {
-        outlineWidth.setValueFor(this, this.outlineWidth);
+    public strokeWidth: number = 1;
+    strokeWidthChanged() {
+        strokeWidth.setValueFor(this, this.strokeWidth);
     }
 
     @observable
@@ -155,9 +155,9 @@ export class FastFrame extends FASTElement {
         }
     };
 
-    public outlineWidthChangeHandler = (e: CustomEvent): void => {
+    public strokeWidthChangeHandler = (e: CustomEvent): void => {
         if (e.target instanceof Slider) {
-            this.outlineWidth = parseInt(e.target.value);
+            this.strokeWidth = parseInt(e.target.value);
         }
     };
 

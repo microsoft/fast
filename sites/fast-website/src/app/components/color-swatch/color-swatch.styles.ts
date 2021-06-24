@@ -1,15 +1,15 @@
 import { css } from "@microsoft/fast-element";
 import {
     bodyFont,
-    cornerRadius,
+    controlCornerRadius,
     density,
     designUnit,
     disabledOpacity,
-    neutralFocus,
+    focusStrokeOuter,
     neutralForegroundRest,
-    neutralOutlineHover,
-    neutralOutlineRest,
-    outlineWidth,
+    neutralStrokeHover,
+    neutralStrokeRest,
+    strokeWidth,
 } from "@microsoft/fast-components";
 import { heightNumber } from "@microsoft/fast-components/dist/esm/styles/size";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -42,8 +42,8 @@ ${display("inline-flex")} :host {
     width: calc(var(--input-size) * 1px);
     height: calc(var(--input-size) * 1px);
     box-sizing: border-box;
-    border-radius: calc(${cornerRadius} * 1px);
-    border: calc(${outlineWidth} * 1px) solid ${neutralOutlineRest};
+    border-radius: calc(${controlCornerRadius} * 1px);
+    border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     outline: none;
     cursor: pointer;
 }
@@ -71,7 +71,7 @@ ${display("inline-flex")} :host {
     left: -1px;
     right: -1px;
     bottom: -1px;
-    border-radius: calc(${cornerRadius} * 1px);
+    border-radius: calc(${controlCornerRadius} * 1px);
     display: inline-block;
     flex-shrink: 0;
     border: 1px solid ${neutralForegroundRest};
@@ -80,12 +80,12 @@ ${display("inline-flex")} :host {
 }
 
 .control:hover {
-    border-color: ${neutralOutlineHover};
+    border-color: ${neutralStrokeHover};
 }
 
 :host(:${focusVisible}) .control {
-    box-shadow: 0 0 0 1px ${neutralFocus} inset;
-    border-color: ${neutralFocus};
+    box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+    border-color: ${focusStrokeOuter};
 }
 
 :host(.disabled) .label,
