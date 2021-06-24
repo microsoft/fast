@@ -21,3 +21,9 @@ export const fastSkeleton = Skeleton.compose({
  * @public
  */
 export const skeletonStyles = styles;
+
+/**
+ * Base class for Skeleton
+ * @public
+ */
+export { Skeleton };

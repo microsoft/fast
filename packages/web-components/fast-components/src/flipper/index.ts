@@ -39,3 +39,9 @@ export const fastFlipper = Flipper.compose<FlipperOptions>({
  * @public
  */
 export const flipperStyles = styles;
+
+/**
+ * Base class for Flipper
+ * @public
+ */
+export { Flipper };

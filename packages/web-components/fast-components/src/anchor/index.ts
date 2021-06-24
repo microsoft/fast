@@ -13,8 +13,8 @@ import { anchorStyles as styles } from "./anchor.styles";
 export type AnchorAppearance = ButtonAppearance | "hypertext";
 
 /**
- * The FAST components version of Anchor
- * @internal
+ * Base class for Anchor
+ * @public
  */
 export class Anchor extends FoundationAnchor {
     /**

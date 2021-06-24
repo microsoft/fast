@@ -23,3 +23,9 @@ export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>(
         delegatesFocus: true,
     },
 });
+
+/**
+ * Base class for BreadcrumbItem
+ * @public
+ */
+export { BreadcrumbItem };
