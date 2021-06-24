@@ -165,7 +165,7 @@ export interface DesignSystem {
 const designSystemKey = DI.createInterface<DesignSystem>(x =>
     x.cachedCallback(handler => {
         const element = document.body as any;
-        const owned = element.$designSystem as DesignSystem;
+        const owned = element.$$designSystem$$ as DesignSystem;
 
         if (owned) {
             return owned;
@@ -197,7 +197,7 @@ export const DesignSystem = Object.freeze({
      * @public
      */
     responsibleFor(element: HTMLElement): DesignSystem {
-        const owned = (element as any).$designSystem as DesignSystem;
+        const owned = (element as any).$$designSystem$$ as DesignSystem;
 
         if (owned) {
             return owned;
@@ -215,7 +215,7 @@ export const DesignSystem = Object.freeze({
      * @public
      */
     getOrCreate(element: HTMLElement = document.body): DesignSystem {
-        const owned = (element as any).$designSystem as DesignSystem;
+        const owned = (element as any).$$designSystem$$ as DesignSystem;
 
         if (owned) {
             return owned;
@@ -243,7 +243,7 @@ class DefaultDesignSystem implements DesignSystem {
     private context: DesignSystemRegistrationContext;
 
     constructor(private host: HTMLElement, private container: Container) {
-        (host as any).$designSystem = this;
+        (host as any).$$designSystem$$ = this;
 
         container.register(
             Registration.callback(DesignSystemRegistrationContext, () => this.context)
