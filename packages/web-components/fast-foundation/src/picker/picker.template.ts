@@ -12,10 +12,10 @@ export function createPickerTemplate(
 ): ViewTemplate {
     return html<Picker>`
         <template
-            :selectedlisttag=${`${prefix}-picker-list`}
-            :pickermenutag=${`${prefix}-picker-menu`}
-            :defaultItemTemplate=${itemTemplate}
-            :defaultOptionTemplate=${optionTemplate}
+            :selectedlisttag="${`${prefix}-picker-list`}"
+            :pickermenutag="${`${prefix}-picker-menu`}"
+            :defaultItemTemplate="${itemTemplate}"
+            :defaultOptionTemplate="${optionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"

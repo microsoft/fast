@@ -23,8 +23,6 @@ export * from "./menu/menu.definition";
 export * from "./menu-item/menu-item.definition";
 export * from "./number-field/number-field.definition";
 export * from "./people-picker/people-picker.definition";
-export * from "./people-picker/people-picker-menu.definition";
-export * from "./people-picker/people-picker-list.definition";
 export * from "./picker/picker.definition";
 export * from "./picker/picker-menu.definition";
 export * from "./picker/picker-list.definition";
