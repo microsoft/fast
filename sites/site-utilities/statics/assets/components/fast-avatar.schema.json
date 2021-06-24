@@ -5,7 +5,7 @@
   "title": "undefined",
   "description": "The FAST avatar element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-avatar",
   "properties": {
     "fill": {
