@@ -1,8 +1,8 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
-    FoundationElementDefinition,
+    HorizontalScrollOptions,
 } from "@microsoft/fast-foundation";
 import { DirectionalStyleSheetBehavior } from "../styles";
 
@@ -103,9 +103,12 @@ export const ActionsStyles = css`
  * Styles handling the scroll container and content
  * @public
  */
-export const horizontalScrollStyles = (
+export const horizontalScrollStyles: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: HorizontalScrollOptions
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: HorizontalScrollOptions
 ) => css`
     ${display("block")} :host {
         --scroll-align: center;

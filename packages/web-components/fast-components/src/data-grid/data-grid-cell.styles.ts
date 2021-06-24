@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     ElementDefinitionContext,
@@ -17,7 +17,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const dataGridCellStyles = (
+export const dataGridCellStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

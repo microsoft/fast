@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -27,10 +27,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const menuItemStyles = (
+export const menuItemStyles: (
     context: ElementDefinitionContext,
     definition: MenuItemOptions
-) =>
+) => ElementStyles = (context: ElementDefinitionContext, definition: MenuItemOptions) =>
     css`
     ${display("grid")} :host {
         contain: layout;

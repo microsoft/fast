@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AvatarOptions,
     display,
@@ -26,10 +26,10 @@ const ltr = css`
     }
 `;
 
-export const avatarStyles = (
+export const avatarStyles: (
     context: ElementDefinitionContext,
     definition: AvatarOptions
-) =>
+) => ElementStyles = (context: ElementDefinitionContext, definition: AvatarOptions) =>
     css`
         ${display("flex")} :host {
             position: relative;

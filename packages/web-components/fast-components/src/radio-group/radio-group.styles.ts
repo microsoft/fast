@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
@@ -6,7 +6,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { designUnit } from "../design-tokens";
 
-export const radioGroupStyles = (
+export const radioGroupStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

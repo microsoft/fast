@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
@@ -6,7 +6,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
-export const dividerStyles = (
+export const dividerStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

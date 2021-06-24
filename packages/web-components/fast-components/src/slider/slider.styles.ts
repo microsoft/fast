@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -21,10 +21,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const sliderStyles = (
+export const sliderStyles: (
     context: ElementDefinitionContext,
     definition: SliderOptions
-) =>
+) => ElementStyles = (context: ElementDefinitionContext, definition: SliderOptions) =>
     css`
     :host([hidden]) {
         display: none;

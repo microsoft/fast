@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -32,10 +32,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const switchStyles = (
+export const switchStyles: (
     context: ElementDefinitionContext,
     definition: SwitchOptions
-) =>
+) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
     css`
     :host([hidden]) {
         display: none;

@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ComboboxOptions,
     disabledCursor,
@@ -12,7 +12,10 @@ import {
 } from "../design-tokens";
 import { selectStyles } from "../select/select.styles";
 
-export const comboboxStyles = (
+export const comboboxStyles: (
+    context: ElementDefinitionContext,
+    definition: ComboboxOptions
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: ComboboxOptions
 ) => css`

@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
@@ -15,7 +15,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const tooltipStyles = (
+export const tooltipStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

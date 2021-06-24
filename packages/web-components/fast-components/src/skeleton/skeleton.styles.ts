@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
@@ -8,7 +8,10 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { controlCornerRadius, neutralFillRest } from "../design-tokens";
 
-export const skeletonStyles = (
+export const skeletonStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

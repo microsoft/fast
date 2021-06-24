@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -29,7 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const numberFieldStyles = (
+export const numberFieldStyles: (
+    context: ElementDefinitionContext,
+    definition: NumberFieldOptions
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: NumberFieldOptions
 ) =>

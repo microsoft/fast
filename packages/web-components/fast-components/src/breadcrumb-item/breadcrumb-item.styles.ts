@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     BreadcrumbItemOptions,
     display,
@@ -20,7 +20,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const breadcrumbItemStyles = (
+export const breadcrumbItemStyles: (
+    context: ElementDefinitionContext,
+    definition: BreadcrumbItemOptions
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: BreadcrumbItemOptions
 ) =>

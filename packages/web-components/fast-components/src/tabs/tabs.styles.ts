@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
@@ -17,7 +17,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const tabsStyles = (
+export const tabsStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

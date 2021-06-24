@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
@@ -34,10 +34,10 @@ import {
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
-export const selectStyles = (
+export const selectStyles: (
     context: ElementDefinitionContext,
     definition: SelectOptions
-) =>
+) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;

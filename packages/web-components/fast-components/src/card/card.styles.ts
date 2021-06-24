@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
@@ -9,7 +9,10 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { controlCornerRadius, fillColor } from "../design-tokens";
 import { elevation } from "../styles/index";
 
-export const cardStyles = (
+export const cardStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

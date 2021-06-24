@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
     ElementDefinitionContext,
@@ -13,7 +13,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles";
 
-export const progressRingStyles = (
+export const progressRingStyles: (
+    context: ElementDefinitionContext,
+    definition: ProgressRingOptions
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: ProgressRingOptions
 ) =>

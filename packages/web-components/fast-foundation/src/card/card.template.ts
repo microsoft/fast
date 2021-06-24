@@ -11,7 +11,7 @@ import type { FoundationElementDefinition } from "../foundation-element";
 export const cardTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => ViewTemplate<Button> = (
+) => ViewTemplate<Card> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`

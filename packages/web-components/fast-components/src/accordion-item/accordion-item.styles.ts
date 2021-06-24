@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AccordionItemOptions,
     display,
@@ -23,7 +23,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const accordionItemStyles = (
+export const accordionItemStyles: (
+    context: ElementDefinitionContext,
+    definition: AccordionItemOptions
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: AccordionItemOptions
 ) =>

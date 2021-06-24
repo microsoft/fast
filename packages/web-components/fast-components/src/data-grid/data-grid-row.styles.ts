@@ -1,11 +1,14 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "../../../fast-foundation/dist/fast-foundation";
 import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
-export const dataGridRowStyles = (
+export const dataGridRowStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

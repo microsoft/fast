@@ -20,10 +20,13 @@ import {
  *
  * @public
  */
-export const ToolbarStyles: (
+export const toolbarStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => ElementStyles = (context, definition) =>
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         ${display("inline-flex")} :host {
             --toolbar-item-gap: calc(
