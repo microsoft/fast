@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema#",
   "$id": "fast-avatar",
   "id": "fast-avatar",
-  "title": "undefined",
+  "title": "Avatar",
   "description": "The FAST avatar element",
   "type": "object",
   "version": 1.1,
