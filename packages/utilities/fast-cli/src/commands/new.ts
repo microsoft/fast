@@ -1,14 +1,14 @@
-import { Command } from "@oclif/command";
 import * as path from "path";
+import { Command } from "@oclif/command";
 
 const { spawn } = require("child_process");
 
 const template = path.join(__dirname, "../templates/new");
 
 export default class New extends Command {
-    static description = "Scaffolds out a new FAST design system project";
+    static description: string = "Scaffolds out a new FAST design system project";
 
-    static args = [
+    static args: any = [
         {
             name: "projectName",
             description: "The desired name of your project",
@@ -16,7 +16,7 @@ export default class New extends Command {
         },
     ];
 
-    async run() {
+    async run(): Promise<void> {
         const { args } = this.parse(New);
         spawn("npx", ["makes", template, args.projectName], {
             stdio: "inherit",
