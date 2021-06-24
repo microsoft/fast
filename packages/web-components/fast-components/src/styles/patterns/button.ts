@@ -193,14 +193,15 @@ export const AccentButtonStyles = css`
                 color: ${SystemColors.HighlightText};
             }
 
-            :host([appearance="accent"]) .control:hover {
+            :host([appearance="accent"]) .control:hover,
+            :host([appearance="accent"]:active) .control:active {
                 background: ${SystemColors.HighlightText};
                 border-color: ${SystemColors.Highlight};
                 color: ${SystemColors.Highlight};
             }
 
             :host([appearance="accent"]) .control:${focusVisible} {
-                border-color: ${SystemColors.HighlightText};
+                border-color: ${SystemColors.Highlight};
                 box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.HighlightText} inset;
             }
 
@@ -219,7 +220,7 @@ export const AccentButtonStyles = css`
 
             :host([appearance="accent"][href]) .control:${focusVisible} {
                 border-color: ${SystemColors.LinkText};
-                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.LinkText} inset;
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.HighlightText} inset;
             }
         `
     )

@@ -43,7 +43,9 @@ export const buttonStyles: (
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]),
-                :host([disabled]) .control {
+                :host([disabled]) .control,
+                :host([disabled]:hover),
+                :host([disabled]:active) {
                     forced-color-adjust: none;
                     background-color: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.GrayText};

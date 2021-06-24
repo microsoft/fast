@@ -148,6 +148,12 @@ export const tabStyles: (
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: none;
             }
+            :host([disabled]),
+            :host([disabled]:hover) {
+                opacity: 1;
+                color: ${SystemColors.GrayText};
+                background: ${SystemColors.ButtonFace};
+            }
         `
         )
     );
