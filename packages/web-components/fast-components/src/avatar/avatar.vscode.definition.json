@@ -3,6 +3,7 @@
     "tags": [
         {
             "name": "fast-avatar",
+            "title": "Avatar",
             "description": "The FAST avatar element",
             "attributes": [
                 {
