@@ -4,8 +4,8 @@ import {
     bodyFont,
     neutralForegroundRest,
     fillColor,
-    cornerRadius,
-    neutralFillCard,
+    controlCornerRadius,
+    neutralFillLayerRest,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
     neutralForegroundHint,
@@ -27,7 +27,7 @@ export const FastFrameStyles = css`
         text-align: center;
         width: 100%;
         background: ${fillColor};
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host {
@@ -52,7 +52,7 @@ export const FastFrameStyles = css`
         flex-direction: column;
         width: 100%;
         text-align: start;
-        background: ${neutralFillCard};
+        background: ${neutralFillLayerRest};
         padding: calc(var(--gutter) * 2px);
     }
 
@@ -104,7 +104,7 @@ export const FastFrameStyles = css`
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
         position: relative;
-        border-radius: 0 calc(${cornerRadius} * 1px) calc(${cornerRadius} * 1px) 0;
+        border-radius: 0 calc(${controlCornerRadius} * 1px) calc(${controlCornerRadius} * 1px) 0;
     }
 
     .image-container {
@@ -188,17 +188,17 @@ export const FastFrameStyles = css`
         width: 21px;
         height: 21px;
         background-color: ${accentFillRest};
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .saturation-slider-track {
         height: 100%;
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .hue-slider-track {
         height: 100%;
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         background-image:
             linear-gradient(
                 to right,
@@ -248,7 +248,7 @@ export const FastFrameStyles = css`
     }
 
     fast-tab-panel {
-        background: ${neutralFillCard};
+        background: ${neutralFillLayerRest};
         height: 100%;
     }
 
@@ -292,7 +292,7 @@ export const FastFrameStyles = css`
 
         .preview {
             grid-template-columns: minMax(300px, auto);
-            border-radius: calc(${cornerRadius} * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
         }
 
     }
@@ -312,7 +312,7 @@ export const FastFrameStyles = css`
             width: 80%;
             transition: right .5s ease-in-out;
             align-self: center;
-            border-radius: calc(${cornerRadius} * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
         }
 
         .preview-expanded {
@@ -346,7 +346,7 @@ export const FastFrameStyles = css`
         .preview {
             right: -88%;
             width: 70%;
-            border-radius: calc(${cornerRadius} * 1px);
+            border-radius: calc(${controlCornerRadius} * 1px);
         }
 
         .preview-expanded {

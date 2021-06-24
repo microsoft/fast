@@ -175,15 +175,15 @@ export const FastFrameTemplate = html<FastFrame>`
                                     20PX
                                 </fast-slider-label>
                             </fast-slider>
-                            <label for="outline-width-slider">Outline width</label>
+                            <label for="stroke-width-slider">Stroke width</label>
                             <fast-slider
-                                id="outline-width-slider"
+                                id="stroke-width-slider"
                                 min="1"
                                 max="4"
                                 step="1"
                                 value="1"
                                 @change="${(x, c) =>
-                                    x.outlineWidthChangeHandler(c.event as CustomEvent)}"
+                                    x.strokeWidthChangeHandler(c.event as CustomEvent)}"
                             >
                                 <fast-slider-label hide-mark position="1">
                                     1PX

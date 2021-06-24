@@ -1,11 +1,11 @@
 import {
-    accentForegroundCut,
-    cornerRadius,
+    controlCornerRadius,
+    foregroundOnAccentRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundRest,
-    neutralOutlineRest,
+    neutralStrokeRest,
 } from "@microsoft/fast-components";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
@@ -32,7 +32,7 @@ const styles = css`
         min-width: 32px;
         height: 32px;
         border: none;
-        border-radius: calc(${cornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         background: ${neutralFillStealthRest};
         fill: ${neutralForegroundRest};
         outline: none;
@@ -40,7 +40,7 @@ const styles = css`
     }
 
     button:focus {
-        border-color: ${neutralOutlineRest};
+        border-color: ${neutralStrokeRest};
     }
     button:hover {
         background: ${neutralFillStealthHover};
@@ -52,7 +52,7 @@ const styles = css`
 
     :host([aria-expanded="true"]) button {
         background: #18a0fb;
-        fill: ${accentForegroundCut};
+        fill: ${foregroundOnAccentRest};
     }
 `;
 

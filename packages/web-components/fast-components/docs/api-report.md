@@ -102,12 +102,6 @@ export const accentForegroundActive: import("@microsoft/fast-foundation").CSSDes
 // @public (undocumented)
 export const accentForegroundActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public @deprecated (undocumented)
-export const accentForegroundCut: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const accentForegroundCutLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
 // @public (undocumented)
 export const accentForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
@@ -289,9 +283,6 @@ export const comboboxStyles: (context: import("@microsoft/fast-foundation").Elem
 
 // @public (undocumented)
 export const controlCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const cornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 export { DataGrid }
 
@@ -525,9 +516,6 @@ export { Flipper }
 // @public
 export const flipperStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: FlipperOptions) => import("@microsoft/fast-element").ElementStyles;
 
-// @public @deprecated (undocumented)
-export const focusOutlineWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
 // @public (undocumented)
 export const focusStrokeInner: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
@@ -597,23 +585,11 @@ export const menuItemStyles: (context: import("@microsoft/fast-foundation").Elem
 // @public
 export const menuStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
-// @public @deprecated (undocumented)
-export const neutralDivider: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralDividerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
 // @public (undocumented)
 export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const neutralFillCard: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFillCardDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -726,36 +702,6 @@ export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesi
 // @public (undocumented)
 export const neutralFillStrongRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-// @public @deprecated (undocumented)
-export const neutralFillToggleActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFillToggleRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
-
-// @public @deprecated (undocumented)
-export const neutralFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralFocusInnerAccent: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
 // @public (undocumented)
 export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
@@ -803,30 +749,6 @@ export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesig
 
 // @public (undocumented)
 export const neutralLayerFloatingRecipe: DesignToken<ColorRecipe>;
-
-// @public @deprecated (undocumented)
-export const neutralLayerL1: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralLayerL2: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralLayerL3: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralLayerL4: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralOutlineActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralOutlineFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralOutlineHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
-
-// @public @deprecated (undocumented)
-export const neutralOutlineRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralPalette: DesignToken<Palette<Swatch>>;
@@ -885,9 +807,6 @@ export const numberFieldStyles: (context: import("@microsoft/fast-foundation").E
 
 // @public
 export const optionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
-
-// @public @deprecated (undocumented)
-export const outlineWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public
 export interface Palette<T extends Swatch = Swatch> {
