@@ -2,7 +2,6 @@ import { contrastRatio, parseColor } from "@microsoft/fast-colors";
 import { accentFill as accentFillAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/accent-foreground";
 import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/foreground-on-accent";
-import { neutralDivider as neutralDividerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-divider";
 import { neutralFill as neutralFillAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill";
 import { neutralFillLayer as neutralFillLayerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-layer";
 import { neutralFillInput as neutralFillInputAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-fill-input";
@@ -21,6 +20,7 @@ import { neutralLayer2 as neutralLayer2Algorithm } from "@microsoft/fast-compone
 import { neutralLayer3 as neutralLayer3Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-3";
 import { neutralLayer4 as neutralLayer4Algorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-layer-4";
 import { neutralStroke as neutralStrokeAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-stroke";
+import { neutralStrokeDivider as neutralStrokeDividerAlgorithm } from "@microsoft/fast-components/dist/esm/color/recipes/neutral-stroke-divider";
 import { ColorsDesignSystem, swatchToSwatchRGB } from "./design-system";
 
 export type Swatch = string;
@@ -131,11 +131,11 @@ export const foregroundOnAccent = (d?: ColorsDesignSystem): string => {
         .toUpperCase();
 };
 
-export const neutralDividerRest = (d?: ColorsDesignSystem): string => {
-    return neutralDividerAlgorithm(
+export const neutralStrokeDividerRest = (d?: ColorsDesignSystem): string => {
+    return neutralStrokeDividerAlgorithm(
         d?.neutralPaletteRGB,
         swatchToSwatchRGB(d?.backgroundColor as string),
-        d?.neutralDividerRestDelta
+        d?.neutralStrokeDividerRestDelta
     )
         .toColorString()
         .toUpperCase();

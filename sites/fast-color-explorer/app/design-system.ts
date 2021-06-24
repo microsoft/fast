@@ -175,9 +175,9 @@ export interface ColorsDesignSystem {
     neutralForegroundFocusDelta: number;
 
     /**
-     * Color swatch delta for the neutral-divider recipe.
+     * Color swatch delta for the neutral-stroke-divider recipe.
      */
-    neutralDividerRestDelta: number;
+    neutralStrokeDividerRestDelta: number;
 
     /**
      * Color swatch deltas for the neutral-stroke recipe.
@@ -288,7 +288,7 @@ export const colorDesignSystemDefaults: ColorsDesignSystem = {
     neutralForegroundActiveDelta: 0,
     neutralForegroundFocusDelta: 0,
 
-    neutralDividerRestDelta: 8,
+    neutralStrokeDividerRestDelta: 8,
 
     neutralStrokeRestDelta: 25,
     neutralStrokeHoverDelta: 40,
