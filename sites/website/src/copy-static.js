@@ -5,10 +5,6 @@
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const webpack = require("webpack");
-const merge = require("webpack-merge");
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
-const fastWebsiteConfig = require("@microsoft/fast-website/webpack.prod.js");
 const copy = require("../../../build/copy");
 
 function getPackageDir(pkg) {
@@ -17,41 +13,13 @@ function getPackageDir(pkg) {
 
 const outputPath = path.resolve(__dirname, "../static");
 
+const homepageDir = getPackageDir("@microsoft/fast-website");
 const utilitiesDir = getPackageDir("@microsoft/site-utilities");
 const fastComponentsDir = getPackageDir("@microsoft/fast-components");
 const utilitiesAssets = path.resolve(utilitiesDir, "statics/assets");
 
-const config = merge(fastWebsiteConfig, {
-    output: { path: outputPath },
-    performance: { hints: false },
-    plugins: [new ProgressBarPlugin()],
-});
-
-const compiler = webpack(config);
-
-compiler.hooks.beforeRun.tap("buildMessage", () => {
-    console.info("Building @microsoft/fast-website with webpack to static/");
-});
-
-compiler.run(async (err, stats) => {
-    if (err) {
-        console.error(err.stack || err);
-        if (err.details) {
-            console.error(err.details);
-        }
-        process.exit(1);
-    }
-
-    const info = stats.toJson();
-
-    if (stats.hasErrors()) {
-        info.errors.forEach(e => console.error(e));
-        process.exit(1);
-    }
-
-    if (stats.hasWarnings()) {
-        info.warnings.forEach(w => console.warn(w));
-    }
+(async function () {
+    await copy([`${homepageDir}/dist/*`], outputPath);
 
     await copy(
         [
@@ -63,5 +31,10 @@ compiler.run(async (err, stats) => {
         outputPath
     );
 
+    await copy([`${homepageDir}/dist/bundle/*`], `${outputPath}/bundle`, {
+        flat: false,
+        verbose: true,
+        up: true,
+    });
     await copy([`${utilitiesAssets}/badges/*.svg`], `${outputPath}/badges`);
-});
+})();

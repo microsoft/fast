@@ -20,13 +20,14 @@
       "sites/website"
     ],
     "nohoist": [
-      "**/react-syntax-highlighter",
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
       "**/@types/mocha",
       "**/@types/node",
-      "**/chai"
+      "**/chai",
+      "**/html-minifier-terser",
+      "**/react-syntax-highlighter"
     ]
   },
   "repository": {

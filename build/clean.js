@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* eslint-disable @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-var-requires,@typescript-eslint/typedef */
 /**
  * Utility for cleaning directories.
  * Usage: node build/clean.js %path%
@@ -15,7 +17,11 @@ const paths = argv._;
  * Function to remove a given path
  */
 function cleanPath(cleanPath) {
-    const removePath = path.resolve(process.cwd(), cleanPath)
+    if (!cleanPath) {
+        console.error("No path specified.");
+        process.exit(1);
+    }
+    const removePath = path.resolve(process.cwd(), cleanPath);
     rimraf(removePath, () => {
         console.log(removePath, "cleaned");
     });
