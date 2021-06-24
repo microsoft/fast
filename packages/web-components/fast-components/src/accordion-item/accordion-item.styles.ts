@@ -1,6 +1,8 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    AccordionItemOptions,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
@@ -21,7 +23,13 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const accordionItemStyles = (context, definition) =>
+export const accordionItemStyles: (
+    context: ElementDefinitionContext,
+    definition: AccordionItemOptions
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: AccordionItemOptions
+) =>
     css`
     ${display("flex")} :host {
         box-sizing: border-box;

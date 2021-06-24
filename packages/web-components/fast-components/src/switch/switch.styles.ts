@@ -1,9 +1,11 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    SwitchOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -30,7 +32,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const switchStyles = (context, definition) =>
+export const switchStyles: (
+    context: ElementDefinitionContext,
+    definition: SwitchOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
     css`
     :host([hidden]) {
         display: none;

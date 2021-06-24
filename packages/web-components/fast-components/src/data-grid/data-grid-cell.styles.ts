@@ -1,6 +1,11 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { focusVisible, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    ElementDefinitionContext,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
 import {
     bodyFont,
     controlCornerRadius,
@@ -12,7 +17,14 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const DataGridCellStyles = css`
+export const dataGridCellStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
     :host {
         padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
         color: ${neutralForegroundRest};
@@ -37,8 +49,8 @@ export const DataGridCellStyles = css`
     }
 
 `.withBehaviors(
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
         :host {
             forced-color-adjust: none;
             border-color: transparent;
@@ -52,5 +64,5 @@ export const DataGridCellStyles = css`
             color: ${SystemColors.FieldText};
         }
         `
-    )
-);
+        )
+    );

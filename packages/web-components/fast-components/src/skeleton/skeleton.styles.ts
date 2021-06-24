@@ -1,10 +1,20 @@
-import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
 import { controlCornerRadius, neutralFillRest } from "../design-tokens";
 
-export const skeletonStyles = (context, definition) =>
+export const skeletonStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         ${display("block")} :host {
             --skeleton-fill-default: #e1dfdd;

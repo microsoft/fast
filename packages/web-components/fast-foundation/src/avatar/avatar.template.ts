@@ -1,15 +1,19 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { Avatar, AvatarOptions } from "./avatar";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for {@link @microsoft/fast-foundation#Avatar} component.
  * @public
  */
 export const avatarTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: AvatarOptions
-) => ViewTemplate<Avatar> = (context, definition: AvatarOptions) => html`
+) => ViewTemplate<Avatar> = (
+    context: ElementDefinitionContext,
+    definition: AvatarOptions
+) => html`
     <div
         class="backplate ${x => x.shape}"
         part="backplate"

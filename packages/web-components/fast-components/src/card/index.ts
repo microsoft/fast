@@ -1,11 +1,11 @@
 import {
     composedParent,
     Card as FoundationCard,
-    CardTemplate as template,
+    cardTemplate as template,
 } from "@microsoft/fast-foundation";
 import { Swatch } from "../color/swatch";
 import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
-import { CardStyles as styles } from "./card.styles";
+import { cardStyles as styles } from "./card.styles";
 
 /**
  * @internal

@@ -1,14 +1,18 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress } from "../progress/base-progress";
+import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const progressRingTemplate: (context, definition) => ViewTemplate<BaseProgress> = (
-    context,
-    definition
+export const progressRingTemplate: (
+    context: ElementDefinitionContext,
+    definition: ProgressRingOptions
+) => ViewTemplate<BaseProgress> = (
+    context: ElementDefinitionContext,
+    definition: ProgressRingOptions
 ) => html`
     <template
         role="progressbar"
@@ -48,7 +52,7 @@ export const progressRingTemplate: (context, definition) => ViewTemplate<BasePro
             x => typeof x.value !== "number",
             html<BaseProgress>`
                 <slot name="indeterminate" slot="indeterminate">
-                    ${definition.indeterminateIndicator}
+                    ${definition.indeterminateIndicator || ""}
                 </slot>
             `
         )}

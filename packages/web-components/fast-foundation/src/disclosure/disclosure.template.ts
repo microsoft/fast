@@ -1,14 +1,19 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { Disclosure } from "./disclosure";
+import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementDefinition } from "../foundation-element";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Disclosure} component.
  * @public
  */
-export const disclosureTemplate: (context, definition) => ViewTemplate<Disclosure> = (
-    context,
-    definition
+export const disclosureTemplate: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ViewTemplate<Disclosure> = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
 ) => html`
     <details class="disclosure" ${ref("details")}>
         <summary

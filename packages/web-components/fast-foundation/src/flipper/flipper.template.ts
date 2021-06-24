@@ -2,15 +2,19 @@ import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { Flipper, FlipperOptions } from "./flipper";
 import { FlipperDirection } from "./flipper.options";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.
  * @public
  */
 export const flipperTemplate: (
-    context,
+    context: ElementDefinitionContext,
     definition: FlipperOptions
-) => ViewTemplate<Flipper> = (context, definition: FlipperOptions) => html`
+) => ViewTemplate<Flipper> = (
+    context: ElementDefinitionContext,
+    definition: FlipperOptions
+) => html`
     <template
         role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"

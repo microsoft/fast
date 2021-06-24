@@ -1,5 +1,10 @@
-import { css } from "@microsoft/fast-element";
-import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    display,
+    ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillRest,
@@ -12,7 +17,13 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const tabsStyles = (context, definition) =>
+export const tabsStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
     css`
         ${display("grid")} :host {
             box-sizing: border-box;
