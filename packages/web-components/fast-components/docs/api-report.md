@@ -284,6 +284,10 @@ export const comboboxStyles: (context: import("@microsoft/fast-foundation").Elem
 // @public (undocumented)
 export const controlCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+export { DataGrid }
+
+export { DataGridCell }
+
 // @public
 export const dataGridCellStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
