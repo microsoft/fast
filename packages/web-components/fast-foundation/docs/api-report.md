@@ -511,7 +511,7 @@ export class ContainerImpl implements Container {
     get responsibleForOwnerRequests(): boolean;
 }
 
-// @alpha
+// @public
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @alpha
@@ -754,34 +754,30 @@ export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 // @alpha
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
-// @alpha (undocumented)
+// @public
 export interface DesignSystem {
-    // (undocumented)
     register(...params: any[]): DesignSystem;
-    // (undocumented)
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
-    // (undocumented)
     withPrefix(prefix: string): DesignSystem;
-    // (undocumented)
     withShadowRootMode(mode: ShadowRootMode): DesignSystem;
 }
 
-// @alpha (undocumented)
+// @public
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
     getOrCreate(element?: HTMLElement): DesignSystem;
 }>;
 
-// @alpha
+// @public
 export interface DesignSystemRegistrationContext {
-    // (undocumented)
     readonly elementPrefix: string;
-    // (undocumented)
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
 }
 
-// @alpha (undocumented)
+// Warning: (ae-incompatible-release-tags) The symbol "DesignSystemRegistrationContext" is marked as @public, but its signature references "InterfaceSymbol" which is marked as @alpha
+//
+// @public
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @alpha
@@ -914,30 +910,24 @@ export interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
 
-// @alpha
+// @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
-// @alpha
+// @public
 export interface ElementDefinitionContext {
-    // (undocumented)
+    // Warning: (ae-incompatible-release-tags) The symbol "container" is marked as @public, but its signature references "Container" which is marked as @alpha
     readonly container: Container;
-    // (undocumented)
     defineElement(definition?: ContextualElementDefinition): void;
-    // (undocumented)
+    // Warning: (ae-incompatible-release-tags) The symbol "definePresentation" is marked as @public, but its signature references "ComponentPresentation" which is marked as @alpha
     definePresentation(presentation: ComponentPresentation): void;
-    // (undocumented)
     readonly name: string;
-    // (undocumented)
     readonly shadowRootMode: ShadowRootMode | undefined;
-    // (undocumented)
     tagFor(type: Constructable): string;
-    // (undocumented)
     readonly type: Constructable;
-    // (undocumented)
     readonly willDefine: boolean;
 }
 
-// @alpha
+// @public
 export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
 
 // @public
