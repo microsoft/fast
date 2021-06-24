@@ -422,13 +422,12 @@ export type ComboboxOptions = FoundationElementDefinition & {
 // @public
 export const comboboxTemplate: (context: any, definition: ComboboxOptions) => ViewTemplate<Combobox>;
 
-// @alpha
+// @public
 export interface ComponentPresentation {
-    // (undocumented)
     applyTo(element: FASTElement): void;
 }
 
-// @alpha
+// @public
 export const ComponentPresentation: Readonly<{
     define(tagName: string, presentation: ComponentPresentation, container: Container): void;
     forTag(tagName: string, element: HTMLElement): ComponentPresentation | null;
@@ -645,14 +644,11 @@ export enum DataGridRowTypes {
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
-// @alpha
+// @public
 export class DefaultComponentPresentation implements ComponentPresentation {
     constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
-    // (undocumented)
     applyTo(element: FASTElement): void;
-    // (undocumented)
     readonly styles: ElementStyles | null;
-    // (undocumented)
     readonly template: ElementViewTemplate | null;
 }
 
@@ -918,7 +914,6 @@ export interface ElementDefinitionContext {
     // Warning: (ae-incompatible-release-tags) The symbol "container" is marked as @public, but its signature references "Container" which is marked as @alpha
     readonly container: Container;
     defineElement(definition?: ContextualElementDefinition): void;
-    // Warning: (ae-incompatible-release-tags) The symbol "definePresentation" is marked as @public, but its signature references "ComponentPresentation" which is marked as @alpha
     definePresentation(presentation: ComponentPresentation): void;
     readonly name: string;
     readonly shadowRootMode: ShadowRootMode | undefined;
@@ -2315,6 +2310,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/design-system/component-presentation.d.ts:27:5 - (ae-incompatible-release-tags) The symbol "define" is marked as @public, but its signature references "Container" which is marked as @alpha
 // dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 

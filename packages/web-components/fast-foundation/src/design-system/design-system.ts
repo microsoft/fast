@@ -176,7 +176,7 @@ const designSystemKey = DI.createInterface<DesignSystem>(x =>
 );
 
 /**
- * An API gateway to DesignSystem features.
+ * An API gateway to design system features.
  * @public
  */
 export const DesignSystem = Object.freeze({
