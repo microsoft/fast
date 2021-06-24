@@ -5,7 +5,6 @@ import { Swatch } from "./color/swatch";
 import { accentFill as accentFillAlgorithm } from "./color/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "./color/recipes/accent-foreground";
 import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent";
-import { neutralDivider as neutralDividerAlgorithm } from "./color/recipes/neutral-divider";
 import { neutralFill as neutralFillAlgorithm } from "./color/recipes/neutral-fill";
 import { neutralFillInput as neutralFillInputAlgorithm } from "./color/recipes/neutral-fill-input";
 import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color/recipes/neutral-fill-layer";
@@ -24,6 +23,7 @@ import { neutralLayer2 as neutralLayer2Algorithm } from "./color/recipes/neutral
 import { neutralLayer3 as neutralLayer3Algorithm } from "./color/recipes/neutral-layer-3";
 import { neutralLayer4 as neutralLayer4Algorithm } from "./color/recipes/neutral-layer-4";
 import { neutralStroke as neutralStrokeAlgorithm } from "./color/recipes/neutral-stroke";
+import { neutralStrokeDivider as neutralStrokeDividerAlgorithm } from "./color/recipes/neutral-stroke-divider";
 import { StandardLuminance } from "./color/utilities/base-layer-luminance";
 import { accentBase, middleGrey } from "./color/utilities/color-constants";
 import { InteractiveSwatchSet } from "./color/recipe";
@@ -467,7 +467,7 @@ export const neutralStrokeDividerRecipe = create<ColorRecipe>({
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        neutralDividerAlgorithm(
+        neutralStrokeDividerAlgorithm(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             neutralStrokeDividerRestDelta.getValueFor(element)

@@ -4,17 +4,16 @@ For more information view the [design system provider readme](../../../fast-foun
 ### FAST Design System Properties
 |Property Name|Type|Attribute Name|CSS Custom property|
 |---|---|---|---|
-|backgroundColor|string| background-color | background-color |
-|accentBaseColor|string| accent-base-color | N/A |
+|fillColor|string| fill-color | fill-color |
 |neutralPalette|string[]| N/A | N/A |
 |accentPalette|string[]| N/A | N/A |
 |density|DensityOffset| number | density |
 |designUnit|number| number | design-unit |
 |baseHeightMultiplier|number| base-height-multiplier | base-height-multiplier |
 |baseHorizontalSpacingMultiplier|number| base-horizontal-spacing-multiplier | base-horizontal-spacing-multiplier |
-|cornerRadius|number| corner-radius | corner-radius |
-|outlineWidth|number| outline-width | outline-width |
-|focusOutlineWidth|number| focus-outline-width | focus-outline-width |
+|controlCornerRadius|number| corner-radius | corner-radius |
+|strokeWidth|number| stroke-width | stroke-width |
+|focusStrokeWidth|number| focus-stroke-width | focus-stroke-width |
 |disabledOpacity|number| disabled-opacity | disabled-opacity |
 |typeRampMinus2FontSize | string |  type-ramp-minus-2-font-size | type-ramp-minus-2-font-size |
 |typeRampMinus2LineHeight | string |  type-ramp-minus-2-line-height | type-ramp-minus-2-line-height |
@@ -38,7 +37,6 @@ For more information view the [design system provider readme](../../../fast-foun
 |accentFillHoverDelta|number| accent-fill-hover-delta | N/A |
 |accentFillActiveDelta|number| accent-fill-active-delta | N/A |
 |accentFillFocusDelta|number| accent-fill-focus-delta | N/A |
-|accentFillSelectedDelta|number| accent-fill-selected-delta | N/A |
 |accentForegroundRestDelta|number| accent-foreground-rest-delta | N/A |
 |accentForegroundHoverDelta|number| accent-foreground-hover-delta | N/A |
 |accentForegroundActiveDelta|number| accent-foreground-active-delta | N/A |
@@ -47,27 +45,24 @@ For more information view the [design system provider readme](../../../fast-foun
 |neutralFillHoverDelta|number| neutral-fill-hover-delta | N/A |
 |neutralFillActiveDelta|number| neutral-fill-active-delta | N/A |
 |neutralFillFocusDelta|number| neutral-fill-focus-delta | N/A |
-|neutralFillSelectedDelta|number| neutral-fill-selected-delta | N/A |
 |neutralFillInputRestDelta|number| neutral-fill-input-rest-delta | N/A |
 |neutralFillInputHoverDelta|number| neutral-fill-input-hover-delta | N/A |
 |neutralFillInputActiveDelta|number| neutral-fill-input-active-delta | N/A |
 |neutralFillInputFocusDelta|number| neutral-fill-input-focus-delta | N/A |
-|neutralFillInputSelectedDelta|number| neutral-fill-input-selected-delta | N/A |
 |neutralFillStealthRestDelta|number| neutral-fill-stealth-rest-delta | N/A |
 |neutralFillStealthHoverDelta|number| neutral-fill-stealth-hover-delta | N/A |
 |neutralFillStealthActiveDelta|number| neutral-fill-stealth-active-delta | N/A |
 |neutralFillStealthFocusDelta|number| neutral-fill-stealth-focus-delta | N/A |
-|neutralFillStealthSelectedDelta|number| neutral-fill-stealth-selected-delta | N/A |
-|neutralFillToggleHoverDelta|number| neutral-fill-toggle-hover-delta | N/A |
-|neutralFillToggleActiveDelta|number| neutral-fill-toggle-hover-active | N/A |
-|neutralFillToggleFocusDelta|number| neutral-fill-toggle-hover-focus | N/A |
+|neutralFillStrongHoverDelta|number| neutral-fill-strong-hover-delta | N/A |
+|neutralFillStrongActiveDelta|number| neutral-fill-strong-hover-active | N/A |
+|neutralFillStrongFocusDelta|number| neutral-fill-strong-hover-focus | N/A |
 |baseLayerLuminance|number  base-layer-luminance| | N/A |
-|neutralFillCardDelta|number| neutral-fill-card-delta | N/A |
+|neutralFillLayerRestDelta|number| neutral-fill-layer-rest-delta | N/A |
 |neutralForegroundHoverDelta|number| neutral-foreground-hover-delta | N/A |
 |neutralForegroundActiveDelta|number| neutral-foreground-active-delta | N/A |
 |neutralForegroundFocusDelta|number| neutral-foreground-focus-delta | N/A |
-|neutralDividerRestDelta|number| neutral-divider-rest-delta | N/A |
-|neutralOutlineRestDelta|number| neutral-outline-rest-delta | N/A |
-|neutralOutlineHoverDelta|number| neutral-outline-hover-delta | N/A |
-|neutralOutlineActiveDelta|number| neutral-outline-active-delta | N/A |
-|neutralOutlineFocusDelta|number| neutral-outline-focus-delta | N/A |
+|neutralStrokeDividerRestDelta|number| neutral-stroke-divider-rest-delta | N/A |
+|neutralStrokeRestDelta|number| neutral-stroke-rest-delta | N/A |
+|neutralStrokeHoverDelta|number| neutral-stroke-hover-delta | N/A |
+|neutralStrokeActiveDelta|number| neutral-stroke-active-delta | N/A |
+|neutralStrokeFocusDelta|number| neutral-stroke-focus-delta | N/A |
