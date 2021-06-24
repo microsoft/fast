@@ -1,3 +1,5 @@
+import { linkedDataSchema } from "@microsoft/fast-tooling";
+
 export default {
     $schema: "http://json-schema.org/schema#",
     title: "Component with custom CSS controls",
@@ -20,6 +22,10 @@ export default {
                     formControlId: "custom-controls/css",
                 },
             },
+        },
+        children: {
+            title: "Children",
+            ...linkedDataSchema,
         },
     },
 };

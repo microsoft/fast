@@ -274,6 +274,8 @@ export function renderSyntaxControl(config: RenderRefControlConfig): React.React
                     syntax={syntaxes[config.ref.ref.slice(1, -1) as string].value}
                     onChange={config.handleChange}
                     value={config.value}
+                    dictionaryId={config.dictionaryId}
+                    dataLocation={config.dataLocation}
                 />
             );
     }
