@@ -336,16 +336,12 @@ export const foregroundOnAccentRest = create<Swatch>(
 ).withDefault((element: HTMLElement) =>
     foregroundOnAccentRecipe.getValueFor(element).evaluate(element)
 );
-/** @public @deprecated Use foregroundOnAccentRest */
-export const accentForegroundCut = foregroundOnAccentRest;
 /** @public */
 export const foregroundOnAccentRestLarge = create<Swatch>(
     "foreground-on-accent-rest-large"
 ).withDefault((element: HTMLElement) =>
     foregroundOnAccentLargeRecipe.getValueFor(element).evaluate(element)
 );
-/** @public @deprecated Use foregroundOnAccentRestLarge */
-export const accentForegroundCutLarge = foregroundOnAccentRestLarge;
 
 // Accent Fill
 const accentFillByContrast = (contrast: number) => (
@@ -920,56 +916,3 @@ export const neutralLayer4 = create<Swatch>(
 ).withDefault((element: HTMLElement) =>
     neutralLayer4Recipe.getValueFor(element).evaluate(element)
 );
-
-// Deprecated aliases
-
-/** @public @deprecated Use controlCornerRadius */
-export const cornerRadius = controlCornerRadius;
-/** @public @deprecated Use strokeWidth */
-export const outlineWidth = strokeWidth;
-/** @public @deprecated Use focusStrokeWidth */
-export const focusOutlineWidth = focusStrokeWidth;
-/** @public @deprecated Use neutralStrokeDividerRestDelta */
-export const neutralDividerRestDelta = neutralStrokeDividerRestDelta;
-/** @public @deprecated Use neutralFillStrongRestDelta */
-export const neutralFillToggleRestDelta = neutralFillStrongRestDelta;
-/** @public @deprecated Use neutralFillStrongHoverDelta */
-export const neutralFillToggleHoverDelta = neutralFillStrongHoverDelta;
-/** @public @deprecated Use neutralFillStrongActiveDelta */
-export const neutralFillToggleActiveDelta = neutralFillStrongActiveDelta;
-/** @public @deprecated Use neutralFillStrongFocusDelta */
-export const neutralFillToggleFocusDelta = neutralFillStrongFocusDelta;
-/** @public @deprecated Use neutralFillLayerRestDelta */
-export const neutralFillCardDelta = neutralFillLayerRestDelta;
-/** @public @deprecated Use neutralFillStrongRest */
-export const neutralFillToggleRest = neutralFillStrongRest;
-/** @public @deprecated Use neutralFillStrongHover */
-export const neutralFillToggleHover = neutralFillStrongHover;
-/** @public @deprecated Use neutralFillStrongActive */
-export const neutralFillToggleActive = neutralFillStrongActive;
-/** @public @deprecated Use neutralFillStrongFocus */
-export const neutralFillToggleFocus = neutralFillStrongFocus;
-/** @public @deprecated Use neutralFillLayerRest */
-export const neutralFillCard = neutralFillLayerRest;
-/** @public @deprecated Use focusStrokeOuter */
-export const neutralFocus = focusStrokeOuter;
-/** @public @deprecated Use focusStrokeInner */
-export const neutralFocusInnerAccent = focusStrokeInner;
-/** @public @deprecated Use neutralStrokeRest */
-export const neutralOutlineRest = neutralStrokeRest;
-/** @public @deprecated Use neutralStrokeHover */
-export const neutralOutlineHover = neutralStrokeHover;
-/** @public @deprecated Use neutralStrokeActive */
-export const neutralOutlineActive = neutralStrokeActive;
-/** @public @deprecated Use neutralStrokeFocus */
-export const neutralOutlineFocus = neutralStrokeFocus;
-/** @public @deprecated Use neutralStrokeDividerRest */
-export const neutralDivider = neutralStrokeDividerRest;
-/** @public @deprecated Use neutralLayer1 */
-export const neutralLayerL1 = neutralLayer1;
-/** @public @deprecated Use neutralLayer2 */
-export const neutralLayerL2 = neutralLayer2;
-/** @public @deprecated Use neutralLayer3 */
-export const neutralLayerL3 = neutralLayer3;
-/** @public @deprecated Use neutralLayer4 */
-export const neutralLayerL4 = neutralLayer4;
