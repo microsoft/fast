@@ -20,7 +20,7 @@ const defaultElement = document.body;
 
 /**
  * Describes a DesignToken instance.
- * @alpha
+ * @public
  */
 export interface DesignToken<
     T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
@@ -74,7 +74,7 @@ export interface DesignToken<
 
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
- * @alpha
+ * @public
  */
 export interface CSSDesignToken<
     T extends
@@ -95,7 +95,7 @@ export interface CSSDesignToken<
 }
 
 /**
- * @alpha
+ * @public
  */
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     /**
@@ -110,7 +110,7 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 }
 
 /**
- * @alpha
+ * @public
  */
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
@@ -580,7 +580,7 @@ function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
 
 /**
  * Factory object for creating {@link (DesignToken:interface)} instances.
- * @alpha
+ * @public
  */
 export const DesignToken = Object.freeze({
     create,
