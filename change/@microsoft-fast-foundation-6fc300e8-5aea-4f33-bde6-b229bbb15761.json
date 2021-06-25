@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "feat(design-system): better integrate with DI and enforce constraints",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

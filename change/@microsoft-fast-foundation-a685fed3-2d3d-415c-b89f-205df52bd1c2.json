@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "feat: styling and text alignment for menu",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}
