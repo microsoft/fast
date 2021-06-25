@@ -1,26 +1,30 @@
-import { customElement } from "@microsoft/fast-element";
-import { TreeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
-import { TreeViewStyles as styles } from "./tree-view.styles";
+import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
+import { treeViewStyles as styles } from "./tree-view.styles";
 
 /**
- * The FAST tree view Custom Element. Implements, {@link @microsoft/fast-foundation#TreeView}
- * {@link @microsoft/fast-foundation#TreeViewTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#TreeView} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#treeViewTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tree-view\>
+ * Generates HTML Element: \<fast-tree-view\>
  *
  */
-@customElement({
-    name: "fast-tree-view",
+export const fastTreeView = TreeView.compose({
+    baseName: "tree-view",
     template,
     styles,
-})
-export class FASTTreeView extends TreeView {}
+});
 
 /**
  * Styles for TreeView
  * @public
  */
-export const TreeViewStyles = styles;
+export const treeViewStyles = styles;
+
+/**
+ * Base class for TreeView
+ * @public
+ */
+export { TreeView };

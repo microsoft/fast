@@ -1,25 +1,39 @@
-import { customElement } from "@microsoft/fast-element";
-import { BaseProgress, ProgressTemplate as template } from "@microsoft/fast-foundation";
-import { ProgressStyles as styles } from "./progress.styles";
+import {
+    BaseProgress as Progress,
+    ProgressOptions,
+    progressTemplate as template,
+} from "@microsoft/fast-foundation";
+import { progressStyles as styles } from "./progress.styles";
 
 /**
- * The FAST Progress Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
- * {@link @microsoft/fast-foundation#ProgressTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#progressTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-progress\>
+ * Generates HTML Element: \<fast-progress\>
  */
-@customElement({
-    name: "fast-progress",
+export const fastProgress = Progress.compose<ProgressOptions>({
+    baseName: "progress",
     template,
     styles,
-})
-export class FASTProgress extends BaseProgress {}
+    indeterminateIndicator1: `
+        <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
+    `,
+    indeterminateIndicator2: `
+        <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
+    `,
+});
 
 /**
  * Styles for Progress
  * @public
  */
-export const ProgressStyles = styles;
+export const progressStyles = styles;
+
+/**
+ * Base class for Progress
+ * @public
+ */
+export { Progress };

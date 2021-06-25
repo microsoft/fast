@@ -1,9 +1,9 @@
 import {
     attr,
-    FASTElement,
     Notifier,
     observable,
     Observable,
+    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
@@ -17,6 +17,7 @@ import {
 import { StartEnd } from "../patterns/start-end";
 import type { TreeView } from "../tree-view";
 import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 /**
  * check if the item is a tree item
@@ -29,11 +30,19 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
 }
 
 /**
+ * Tree Item configuration options
+ * @public
+ */
+export type TreeItemOptions = FoundationElementDefinition & {
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+};
+
+/**
  * A Tree item Custom HTML Element.
  *
  * @public
  */
-export class TreeItem extends FASTElement {
+export class TreeItem extends FoundationElement {
     /**
      * When true, the control will be appear expanded by user interaction.
      * @public
@@ -149,20 +158,6 @@ export class TreeItem extends FASTElement {
                 break;
         }
     }
-
-    /**
-     * @deprecated - no longer needed.
-     * @param e - Event object
-     */
-    /* eslint-disable-next-line */
-    public handleFocus = (e: Event): void => {};
-
-    /**
-     * @deprecated - no longer needed.
-     * @param e - Event object
-     */
-    /* eslint-disable-next-line */
-    public handleBlur = (e: FocusEvent): void => {};
 
     /**
      * The keyboarding on treeview should conform to the following spec

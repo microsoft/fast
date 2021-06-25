@@ -1,23 +1,23 @@
-import { customElement } from "@microsoft/fast-element";
-import { createTooltipTemplate, Tooltip } from "@microsoft/fast-foundation";
-import { TooltipStyles as styles } from "./tooltip.styles";
-import { FASTAnchoredRegion } from "../anchored-region";
-
-// prevent tree shaking
-FASTAnchoredRegion;
+import { tooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
+import { tooltipStyles as styles } from "./tooltip.styles";
 
 /**
- * The FAST Tooltip Custom Element. Implements {@link @microsoft/fast-foundation#Tooltip},
- * {@link @microsoft/fast-foundation#createTooltipTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Tooltip} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#tooltipTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tooltip\>
+ * Generates HTML Element: \<fast-tooltip\>
  */
-@customElement({
-    name: "fast-tooltip",
-    template: createTooltipTemplate("fast"),
+export const fastTooltip = Tooltip.compose({
+    baseName: "tooltip",
+    template,
     styles,
-})
-export class FASTTooltip extends Tooltip {}
+});
+
+/**
+ * Base class for Tooltip
+ * @public
+ */
+export { Tooltip };

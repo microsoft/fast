@@ -11,13 +11,17 @@ import {
 } from "@microsoft/fast-tooling";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import * as FASTComponents from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
+import {
+    allComponents,
+    baseLayerLuminance,
+    direction,
+    fillColor,
+    SwatchRGB,
+} from "@microsoft/fast-components";
 import {
     WebComponentDefinition,
     WebComponentDefinitionTag,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/web-component";
-import { neutralLayerL1 } from "@microsoft/fast-components";
 import {
     fastComponentDefinitions,
     nativeElementDefinitions,
@@ -25,6 +29,7 @@ import {
     previewDirection,
     previewTheme,
 } from "@microsoft/site-utilities";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     PreviewProps,
     PreviewState,
@@ -33,8 +38,11 @@ import {
 } from "./preview.props";
 import style from "./preview.style";
 
-// Prevent tree shaking
-FASTComponents;
+DesignSystem.getOrCreate().register(
+    Object.values(allComponents).map((component: () => any) => {
+        return component();
+    })
+);
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -58,13 +66,17 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
             theme: StandardLuminance.DarkMode,
         };
 
+        document.body.setAttribute(
+            "style",
+            `background-color: var(${fillColor.cssCustomProperty})`
+        );
         window.addEventListener("message", this.handleMessage);
     }
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
             return (
-                <fast-design-system-provider use-defaults>
+                <div>
                     <style>{style}</style>
                     <div
                         className={classNames("preview", [
@@ -75,7 +87,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
                     >
                         <div ref={this.ref} />
                     </div>
-                </fast-design-system-provider>
+                </div>
             );
         }
 
@@ -157,34 +169,21 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
 
     private attachMappedComponents(): void {
         if (this.state.dataDictionary !== undefined && this.ref.current !== null) {
-            const designSystemProvider = document.createElement(
-                "fast-design-system-provider"
-            );
+            const root = document.createElement("div");
             const innerDiv = document.createElement("div");
             this.ref.current.innerHTML = "";
 
             innerDiv.setAttribute("style", "padding: 20px;");
-            designSystemProvider.setAttribute("use-defaults", "");
-            designSystemProvider.setAttribute(
-                "background-color",
-                neutralLayerL1(
-                    Object.assign({}, fastDesignSystemDefaults, {
-                        baseLayerLuminance: this.state.theme,
-                    })
-                )
-            );
-            designSystemProvider.setAttribute(
-                "style",
-                "min-height: 100vh; min-width: 100vw;"
+
+            root.setAttribute("style", "min-height: 100vh; min-width: 100vw;");
+
+            direction.withDefault(this.state.direction);
+            baseLayerLuminance.withDefault(this.state.theme);
+            fillColor.withDefault(
+                SwatchRGB.create(this.state.theme, this.state.theme, this.state.theme)
             );
 
-            designSystemProvider.setAttribute("direction", this.state.direction);
-
-            if (this.state.transparentBackground) {
-                designSystemProvider.setAttribute("no-paint", "");
-            }
-
-            designSystemProvider.appendChild(innerDiv);
+            root.appendChild(innerDiv);
 
             innerDiv.appendChild(
                 mapDataDictionary({
@@ -212,7 +211,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
                     resolver: htmlResolver,
                 })
             );
-            this.ref.current.append(designSystemProvider);
+            this.ref.current.append(root);
         }
     }
 }

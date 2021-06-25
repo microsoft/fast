@@ -1,6 +1,11 @@
+/**
+ * Export all custom element definitions.
+ */
+export * from "./custom-elements";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
+export * from "./avatar/index";
 export * from "./badge/index";
 export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
@@ -8,10 +13,14 @@ export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
-export * from "./color/index";
 export * from "./data-grid/index";
 export * from "./design-system-provider/index";
-export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system";
+export { Palette, PaletteRGB } from "./color/palette";
+export { InteractiveSwatchSet } from "./color/recipe";
+export { Swatch, SwatchRGB } from "./color/swatch";
+export { isDark } from "./color/utilities/is-dark";
+export { StandardLuminance } from "./color/utilities/base-layer-luminance";
+export * from "./design-tokens";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";
@@ -30,7 +39,6 @@ export * from "./select/index";
 export * from "./skeleton/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
-export * from "./styles/recipes";
 export * from "./styles/direction";
 export * from "./switch/index";
 export * from "./tabs/index";

@@ -21,11 +21,11 @@
       "mapsToAttribute": "no-paint",
       "type": "boolean"
     },
-    "background-color": {
+    "fill-color": {
       "default": "#181818",
-      "title": "Background color",
-      "description": "The background color",
-      "mapsToAttribute": "background-color",
+      "title": "Fill color",
+      "description": "The fill color used for backgrounds",
+      "mapsToAttribute": "fill-color",
       "type": "string"
     },
     "accent-base-color": {
@@ -73,25 +73,25 @@
       "mapsToAttribute": "base-horizontal-spacing-multiplier",
       "type": "number"
     },
-    "corner-radius": {
+    "control-corner-radius": {
       "default": 3,
-      "title": "Corner radius",
-      "description": "The corner radius value for elements",
-      "mapsToAttribute": "corner-radius",
+      "title": "Control Corner radius",
+      "description": "The corner radius value for control components",
+      "mapsToAttribute": "control-corner-radius",
       "type": "number"
     },
-    "outline-width": {
+    "stroke-width": {
       "default": 1,
-      "title": "Outline width",
+      "title": "Stroke width",
       "description": "The width of outline strokes",
-      "mapsToAttribute": "outline-width",
+      "mapsToAttribute": "stroke-width",
       "type": "number"
     },
-    "focus-outline-width": {
+    "focus-stroke-width": {
       "default": 2,
-      "title": "Focus outline width",
+      "title": "Focus stroke width",
       "description": "The width of focus outline strokes",
-      "mapsToAttribute": "focus-outline-width",
+      "mapsToAttribute": "focus-stroke-width",
       "type": "number"
     },
     "disabled-opacity": {
@@ -231,12 +231,6 @@
       "mapsToAttribute": "accent-fill-focus-delta",
       "type": "number"
     },
-    "accent-fill-selected-delta": {
-      "default": 12,
-      "title": "Accent fill delta (selected)",
-      "mapsToAttribute": "accent-fill-selected-delta",
-      "type": "number"
-    },
     "accent-foreground-rest-delta": {
       "title": "Accent foreground delta (rest)",
       "mapsToAttribute": "accent-foreground-rest-delta",
@@ -282,12 +276,6 @@
       "mapsToAttribute": "neutral-fill-focus-delta",
       "type": "number"
     },
-    "neutral-fill-selected-delta": {
-      "default": 7,
-      "title": "Neutral fill delta (selected)",
-      "mapsToAttribute": "neutral-fill-selected-delta",
-      "type": "number"
-    },
     "neutral-fill-input-rest-delta": {
       "title": "Neutral fill input delta (rest)",
       "mapsToAttribute": "neutral-fill-input-rest-delta",
@@ -306,11 +294,6 @@
     "neutral-fill-input-focus-delta": {
       "title": "Neutral fill input delta (focus)",
       "mapsToAttribute": "neutral-fill-input-focus-delta",
-      "type": "number"
-    },
-    "neutral-fill-input-selected-delta": {
-      "title": "Neutral fill input delta (selected)",
-      "mapsToAttribute": "neutral-fill-input-selected-delta",
       "type": "number"
     },
     "neutral-fill-stealth-rest-delta": {
@@ -335,27 +318,21 @@
       "mapsToAttribute": "neutral-fill-stealth-focus-delta",
       "type": "number"
     },
-    "neutral-fill-stealth-selected-delta": {
-      "default": 7,
-      "title": "Neutral fill stealth delta (selected)",
-      "mapsToAttribute": "neutral-fill-stealth-selected-delta",
-      "type": "number"
-    },
-    "neutral-fill-toggle-hover-delta": {
+    "neutral-fill-strong-hover-delta": {
       "default": 8,
-      "title": "Neutral fill toggle delta (hover)",
-      "mapsToAttribute": "neutral-fill-toggle-hover-delta",
+      "title": "Neutral fill strong delta (hover)",
+      "mapsToAttribute": "neutral-fill-strong-hover-delta",
       "type": "number"
     },
-    "neutral-fill-toggle-active-delta": {
+    "neutral-fill-strong-active-delta": {
       "default": -5,
-      "title": "Neutral fill toggle delta (active)",
-      "mapsToAttribute": "neutral-fill-toggle-active-delta",
+      "title": "Neutral fill strong delta (active)",
+      "mapsToAttribute": "neutral-fill-strong-active-delta",
       "type": "number"
     },
-    "neutral-fill-toggle-focus-delta": {
-      "title": "Neutral fill toggle delta (focus)",
-      "mapsToAttribute": "neutral-fill-toggle-focus-delta",
+    "neutral-fill-strong-focus-delta": {
+      "title": "Neutral fill strong delta (focus)",
+      "mapsToAttribute": "neutral-fill-strong-focus-delta",
       "type": "number"
     },
     "base-layer-luminance": {
@@ -365,55 +342,40 @@
       "mapsToAttribute": "base-layer-luminance",
       "type": "number"
     },
-    "neutral-fill-card-delta": {
+    "neutral-fill-layer-rest-delta": {
       "default": 3,
-      "title": "Card background delta",
-      "mapsToAttribute": "neutral-fill-card-delta",
+      "title": "Layer background delta",
+      "mapsToAttribute": "neutral-fill-layer-rest-delta",
       "type": "number"
     },
-    "neutral-foreground-hover-delta": {
-      "title": "Neutral foreground delta (hover)",
-      "mapsToAttribute": "neutral-foreground-hover-delta",
-      "type": "number"
-    },
-    "neutral-foreground-active-delta": {
-      "title": "Neutral foreground delta (active)",
-      "mapsToAttribute": "neutral-foreground-active-delta",
-      "type": "number"
-    },
-    "neutral-foreground-focus-delta": {
-      "title": "Neutral foreground delta (focus)",
-      "mapsToAttribute": "neutral-foreground-focus-delta",
-      "type": "number"
-    },
-    "neutral-divider-rest-delta": {
+    "neutral-stroke-divider-rest-delta": {
       "default": 8,
-      "title": "Neutral divider delta",
-      "mapsToAttribute": "neutral-divider-rest-delta",
+      "title": "Neutral divider stroke delta",
+      "mapsToAttribute": "neutral-stroke-divider-rest-delta",
       "type": "number"
     },
-    "neutral-outline-rest-delta": {
+    "neutral-stroke-rest-delta": {
       "default": 25,
-      "title": "Neutral outline delta (rest)",
-      "mapsToAttribute": "neutral-outline-rest-delta",
+      "title": "Neutral stroke delta (rest)",
+      "mapsToAttribute": "neutral-stroke-rest-delta",
       "type": "number"
     },
-    "neutral-outline-hover-delta": {
+    "neutral-stroke-hover-delta": {
       "default": 40,
-      "title": "Neutral outline delta (hover)",
-      "mapsToAttribute": "neutral-outline-hover-delta",
+      "title": "Neutral stroke delta (hover)",
+      "mapsToAttribute": "neutral-stroke-hover-delta",
       "type": "number"
     },
-    "neutral-outline-active-delta": {
+    "neutral-stroke-active-delta": {
       "default": 16,
-      "title": "Neutral outline delta (active)",
-      "mapsToAttribute": "neutral-outline-active-delta",
+      "title": "Neutral stroke delta (active)",
+      "mapsToAttribute": "neutral-stroke-active-delta",
       "type": "number"
     },
-    "neutral-outline-focus-delta": {
+    "neutral-stroke-focus-delta": {
       "default": 25,
-      "title": "Neutral outline delta (focus)",
-      "mapsToAttribute": "neutral-outline-focus-delta",
+      "title": "Neutral stroke delta (focus)",
+      "mapsToAttribute": "neutral-stroke-focus-delta",
       "type": "number"
     },
     "neutral-contrast-fill-rest-delta": {

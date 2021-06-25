@@ -7,11 +7,16 @@ import {
 } from "@microsoft/fast-colors";
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
-import { FASTTextField } from "@microsoft/fast-components";
 import { FormAssociatedColorPicker } from "./color-picker.form-associated";
 
-// Prevent tree shaking
-FASTTextField;
+/**
+ * This is currently experimental, any use of the color picker must include the following
+ * imports and register with the DesignSystem
+ *
+ * import { fastTextField } from "@microsoft/fast-components";
+ * import { DesignSystem } from "@microsoft/fast-foundation";
+ * DesignSystem.getOrCreate().register(fastTextField());
+ */
 
 /**
  * Simple class for storing all of the color picker UI observable values.

@@ -1,7 +1,7 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
+import { FoundationElement } from "../foundation-element";
 
-class _Slider extends FASTElement {}
+class _Slider extends FoundationElement {}
 interface _Slider extends FormAssociated {}
 
 /**

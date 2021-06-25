@@ -4,7 +4,6 @@ import type {
 } from "@microsoft/fast-foundation";
 import { expect } from "chai";
 import type { ElementHandle } from "playwright";
-import type { FASTDesignSystemProvider } from "../design-system-provider";
 
 type FASTSelect = HTMLElement & FASTSelectType;
 
@@ -16,12 +15,8 @@ describe("FASTSelect", function () {
 
         this.documentHandle = await this.page.evaluateHandle(() => document);
 
-        this.providerHandle = (await this.page.$("#root")) as ElementHandle<
-            FASTDesignSystemProvider
-        >;
-
         this.setupHandle = await this.page.evaluateHandle(
-            ([document, provider]) => {
+            (document) => {
                 const element = document.createElement("fast-select") as FASTSelect;
 
                 for (let i = 1; i <= 3; i++) {
@@ -31,12 +26,9 @@ describe("FASTSelect", function () {
                     element.appendChild(option);
                 }
 
-                provider.appendChild(element);
+                document.body.appendChild(element)
             },
-            [this.documentHandle, this.providerHandle] as [
-                ElementHandle<Document>,
-                ElementHandle<FASTDesignSystemProvider>
-            ]
+            this.documentHandle
         );
     });
 
