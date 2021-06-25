@@ -1,5 +1,5 @@
+import { fillColor } from "@microsoft/fast-components";
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { DesignSystemProvider } from "@microsoft/fast-foundation";
 import { waveData } from "../../data/wave.data";
 
 type BezierCurveTo = [number, number, number, number, number, number];
@@ -17,7 +17,6 @@ export class BackgroundDesign extends FASTElement {
 
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
-    provider: DesignSystemProvider;
 
     waveSim = {
         scale: 1.0,
@@ -57,7 +56,6 @@ export class BackgroundDesign extends FASTElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this.provider = DesignSystemProvider.findProvider(this) as DesignSystemProvider;
         this.context = this.canvas.getContext("2d", {
             alpha: false,
         }) as CanvasRenderingContext2D;
@@ -211,7 +209,7 @@ export class BackgroundDesign extends FASTElement {
         this.steps.bg.length = 0;
         this.steps.waves.length = 0;
 
-        this.context.fillStyle = this.provider.designSystem["backgroundColor"];
+        this.context.fillStyle = fillColor.getValueFor(this).toColorString();
         this.context.fillRect(0, 0, this.waveSim.size.width, this.waveSim.size.height);
         this.context.save();
         this.context.translate(

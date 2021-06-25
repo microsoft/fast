@@ -1,5 +1,6 @@
-import { customElement, FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     htmlMapper,
     htmlResolver,
@@ -18,19 +19,11 @@ import {
     SchemaDictionary,
 } from "../../message-system";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRenderStyles } from "./html-render.styles";
-import { HTMLRenderTemplate } from "./html-render.template";
 
 export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
 
-@customElement({
-    name: "fast-tooling-html-render",
-    template: HTMLRenderTemplate,
-    styles: HTMLRenderStyles,
-})
-export class HTMLRender extends FASTElement {
+export class HTMLRender extends FoundationElement {
     private layerActivityId: string = "HTMLRender";
-
     private dataDictionary: DataDictionary<unknown>;
 
     private schemaDictionary: SchemaDictionary;

@@ -1,34 +1,48 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    AccordionItemOptions,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRestBehavior,
-    neutralDividerRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
+    accentFillRest,
+    bodyFont,
+    controlCornerRadius,
+    density,
+    designUnit,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    neutralForegroundRest,
+    neutralStrokeDividerRest,
+    strokeWidth,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
+} from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const AccordionItemStyles = css`
+export const accordionItemStyles: (
+    context: ElementDefinitionContext,
+    definition: AccordionItemOptions
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: AccordionItemOptions
+) =>
+    css`
     ${display("flex")} :host {
         box-sizing: border-box;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         flex-direction: column;
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        font-size: ${typeRampMinus1FontSize};
+        line-height: ${typeRampMinus1LineHeight};
+        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
     
     .region {
         display: none;
-        padding: calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
     }
 
     .heading {
@@ -45,20 +59,20 @@ export const AccordionItemStyles = css`
         grid-column: 2;
         grid-row: 1;
         outline: none;
-        padding: 0 calc((6 + (var(--design-unit) * 2 * var(--density))) * 1px);
+        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         text-align: left;
         height: calc(${heightNumber} * 1px);
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
         font-family: inherit;
     }
 
     .button:hover {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button:active {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     .button::before {
@@ -74,9 +88,8 @@ export const AccordionItemStyles = css`
 
     .button:${focusVisible}::before {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            ${neutralFocusBehavior.var};
+        border: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host([expanded]) .region {
@@ -94,7 +107,7 @@ export const AccordionItemStyles = css`
 
     slot[name="expanded-icon"],
     slot[name="collapsed-icon"] {
-        fill: ${accentFillRestBehavior.var};
+        fill: ${accentFillRest};
     }
 
     slot[name="collapsed-icon"] {
@@ -116,7 +129,7 @@ export const AccordionItemStyles = css`
     .start {
         display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 1px);
+        padding-inline-start: calc(${designUnit} * 1px);
         justify-content: center;
         grid-column: 1;
         z-index: 2;
@@ -130,19 +143,15 @@ export const AccordionItemStyles = css`
         z-index: 2;
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    neutralDividerRestBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralFocusBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
             .button:${focusVisible}::before {
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px) ${SystemColors.Highlight};
+            }
+            :host slot[name="collapsed-icon"],
+            :host([expanded]) slot[name="expanded-icon"] {
+                fill: ${SystemColors.ButtonText};
             }
         `
-    )
-);
+        )
+    );

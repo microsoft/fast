@@ -1,27 +1,37 @@
-import { css } from "@microsoft/fast-element";
+import { css, cssPartial, ElementStyles } from "@microsoft/fast-element";
 import {
-    cssCustomPropertyBehaviorFactory,
-    DirectionalStyleSheetBehavior,
+    DesignToken,
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    TreeItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { Swatch } from "../color/swatch";
 import {
-    accentForegroundRestBehavior,
-    heightNumber,
-    neutralFillStealthActiveBehavior,
-    neutralFillStealthHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFillStealthSelectedBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
-import { neutralFillStealthHover, neutralFillStealthSelected } from "../color/index";
-import { FASTDesignSystemProvider } from "../design-system-provider/index";
+    accentForegroundRest,
+    baseHeightMultiplier,
+    bodyFont,
+    controlCornerRadius,
+    density,
+    designUnit,
+    disabledOpacity,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    neutralFillRecipe,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRecipe,
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
 const ltr = css`
     .expand-collapse-glyph {
@@ -31,7 +41,7 @@ const ltr = css`
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
-        left: calc(var(--focus-outline-width) * 1px);
+        left: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(45deg);
@@ -46,37 +56,43 @@ const rtl = css`
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
     :host([selected])::after {
-        right: calc(var(--focus-outline-width) * 1px);
+        right: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-glyph {
         transform: rotate(135deg);
     }
 `;
 
-export const expandCollapseButtonSize =
-    "((var(--base-height-multiplier) / 2) * var(--design-unit)) + ((var(--design-unit) * var(--density)) / 2)";
+export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
-const expandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-stealth-hover-over-hover",
-    x => neutralFillStealthHover(neutralFillStealthHover)(x),
-    FASTDesignSystemProvider.findProvider
-);
+const expandCollapseHoverBehavior = DesignToken.create<Swatch>(
+    "tree-item-expand-collapse-hover"
+).withDefault((target: HTMLElement) => {
+    const recipe = neutralFillStealthRecipe.getValueFor(target);
+    return recipe.evaluate(target, recipe.evaluate(target).hover).hover;
+});
 
-const selectedExpandCollapseHoverBehavior = cssCustomPropertyBehaviorFactory(
-    "neutral-stealth-hover-over-selected",
-    x => neutralFillStealthHover(neutralFillStealthSelected)(x),
-    FASTDesignSystemProvider.findProvider
-);
+const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
+    "tree-item-expand-collapse-selected-hover"
+).withDefault((target: HTMLElement) => {
+    const baseRecipe = neutralFillRecipe.getValueFor(target);
+    const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+    return buttonRecipe.evaluate(target, baseRecipe.evaluate(target).rest).hover;
+});
 
-export const TreeItemStyles = css`
+export const treeItemStyles: (
+    context: ElementDefinitionContext,
+    definition: TreeItemOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: TreeItemOptions) =>
+    css`
     ${display("block")} :host {
         contain: content;
         position: relative;
         outline: none;
-        color: ${neutralForegroundRestBehavior.var};
-        background: ${neutralFillStealthRestBehavior.var};
+        color: ${neutralForegroundRest};
+        background: ${neutralFillStealthRest};
         cursor: pointer;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         --expand-collapse-button-size: calc(${heightNumber} * 1px);
         --tree-item-nested-width: 0;
     }
@@ -90,16 +106,16 @@ export const TreeItemStyles = css`
     }
 
     :host(:${focusVisible}) .positioning-region {
-        border: ${neutralFocusBehavior.var} calc(var(--outline-width) * 1px) solid;
-        border-radius: calc(var(--corner-radius) * 1px);
-        color: ${neutralForegroundActiveBehavior.var};
+        border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        color: ${neutralForegroundRest};
     }
 
     .positioning-region {
         display: flex;
         position: relative;
         box-sizing: border-box;
-        border: transparent calc(var(--outline-width) * 1px) solid;
+        border: transparent calc(${strokeWidth} * 1px) solid;
         height: calc((${heightNumber} + 1) * 1px);
     }
 
@@ -111,11 +127,11 @@ export const TreeItemStyles = css`
     }
 
     .positioning-region:hover {
-        background: ${neutralFillStealthHoverBehavior.var};
+        background: ${neutralFillStealthHover};
     }
 
     .positioning-region:active {
-        background: ${neutralFillStealthActiveBehavior.var};
+        background: ${neutralFillStealthActive};
     }
 
     .content-region {
@@ -124,9 +140,9 @@ export const TreeItemStyles = css`
         white-space: nowrap;
         width: 100%;
         height: calc(${heightNumber} * 1px);
-        margin-inline-start: calc(var(--design-unit) * 2px + 8px);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        margin-inline-start: calc(${designUnit} * 2px + 8px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         font-weight: 400;
     }
 
@@ -135,7 +151,7 @@ export const TreeItemStyles = css`
         ${
             /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
             update when density story is figured out */ ""
-        } font-size: calc(1em + (var(--design-unit) + 16) * 1px);
+        } font-size: calc(1em + (${designUnit} + 16) * 1px);
     }
 
     .expand-collapse-button {
@@ -145,8 +161,8 @@ export const TreeItemStyles = css`
         ${
             /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
             update when density story is figured out */ ""
-        } width: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
-        height: calc((${expandCollapseButtonSize} + (var(--design-unit) * 2)) * 1px);
+        } width: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
+        height: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
         padding: 0;
         display: flex;
         justify-content: center;
@@ -185,13 +201,13 @@ export const TreeItemStyles = css`
     .start {
         ${
             /* need to swap out once we understand how horizontalSpacing will work */ ""
-        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
+        } margin-inline-end: calc(${designUnit} * 2px + 2px);
     }
 
     .end {
         ${
             /* need to swap out once we understand how horizontalSpacing will work */ ""
-        } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        } margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([expanded]) > .items {
@@ -199,7 +215,7 @@ export const TreeItemStyles = css`
     }
 
     :host([disabled]) .content-region {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
         cursor: ${disabledCursor};
     }
 
@@ -213,15 +229,15 @@ export const TreeItemStyles = css`
     }
 
     :host(.nested) .expand-collapse-button:hover {
-        background: ${expandCollapseHoverBehavior.var};
+        background: ${expandCollapseHoverBehavior};
     }
     
     :host([selected]) .positioning-region {
-        background: ${neutralFillStealthSelectedBehavior.var};
+        background: ${neutralFillRest};
     }
 
     :host([selected]) .expand-collapse-button:hover {
-        background: ${selectedExpandCollapseHoverBehavior.var};
+        background: ${selectedExpandCollapseHoverBehavior};
     }
 
     :host([selected])::after {
@@ -234,8 +250,8 @@ export const TreeItemStyles = css`
         ${
             /* The french fry background needs to be calculated based on the selected background state for this control.
             We currently have no way of changing that, so setting to accent-foreground-rest for the time being */ ""
-        } background: ${accentForegroundRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        } background: ${accentForegroundRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     ::slotted(fast-tree-item) {
@@ -243,20 +259,9 @@ export const TreeItemStyles = css`
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
 `.withBehaviors(
-    accentForegroundRestBehavior,
-    neutralFillStealthSelectedBehavior,
-    neutralFillStealthActiveBehavior,
-    expandCollapseHoverBehavior,
-    neutralFillStealthHoverBehavior,
-    selectedExpandCollapseHoverBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior,
-    new DirectionalStyleSheetBehavior(ltr, rtl),
-    forcedColorsStylesheetBehavior(
-        css`
+        new DirectionalStyleSheetBehavior(ltr, rtl),
+        forcedColorsStylesheetBehavior(
+            css`
         :host {
             forced-color-adjust: none;
             border-color: transparent;
@@ -318,5 +323,5 @@ export const TreeItemStyles = css`
             fill: ${SystemColors.FieldText};
         }
         `
-    )
-);
+        )
+    );
