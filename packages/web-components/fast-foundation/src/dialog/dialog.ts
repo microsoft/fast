@@ -1,6 +1,7 @@
-import { attr, DOM, FASTElement } from "@microsoft/fast-element";
+import { attr, DOM } from "@microsoft/fast-element";
 import { isHTMLElement, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Switch Custom HTML Element.
@@ -227,7 +228,7 @@ export class Dialog extends FoundationElement {
      */
     private static reduceTabbableItems(
         elements: HTMLElement[],
-        element: FASTElement & HTMLElement
+        element: FoundationElement & HTMLElement
     ) {
         if (element.getAttribute("tabindex") === "-1") {
             return elements;
@@ -257,7 +258,9 @@ export class Dialog extends FoundationElement {
      *
      * @internal
      */
-    private static isFocusableFastElement(element: FASTElement & HTMLElement): boolean {
+    private static isFocusableFastElement(
+        element: FoundationElement & HTMLElement
+    ): boolean {
         return !!element.$fastController?.definition.shadowOptions?.delegatesFocus;
     }
 
@@ -268,7 +271,7 @@ export class Dialog extends FoundationElement {
      *
      * @internal
      */
-    private static hasTabbableShadow(element: FASTElement & HTMLElement) {
+    private static hasTabbableShadow(element: FoundationElement & HTMLElement) {
         return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
             return isTabbable(x);
         });

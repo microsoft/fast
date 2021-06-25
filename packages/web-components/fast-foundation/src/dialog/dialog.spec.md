@@ -46,12 +46,6 @@ As defined by the W3C:
 - `aria-labelledby` - optional based on implementation**
 - `aria-describedby` - optional based on implementation**
 - `aria-label` - optional, based on implementation**
-- `tab-queue-start`- optional, the id of the element at the start of the dialog's internal tab queue.
-- `tab-queue-end`- optional, the id of the element at the end of the dialog's internal tab queue.
-
-*Properties:*
-- `tabQueueStart` - analagous to `tab-queue-start` attribute but accepts HTMLElement instances or a function that takes an HTMLElement as a param (the dialog) and returns the start element of the dialog's internal tab queue.
-- `tabQueueEnd` - analagous to `tab-queue-end` attribute but accepts HTMLElement instances or a function that takes an HTMLElement as a param (the dialog) and returns the end element of the dialog's internal tab queue.
 
 ** See the [W3C Specification](https://w3c.github.io/aria-practices/#dialog_roles_states_props) for requirements and details.
 

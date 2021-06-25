@@ -1,7 +1,7 @@
 import type { Dialog as FASTDialogType } from "@microsoft/fast-foundation";
 import { expect } from "chai";
 import type { ElementHandle } from "playwright";
-import type { FASTDesignSystemProvider } from "../design-system-provider";
+import type { fastDesignSystemProvider } from "../design-system-provider";
 
 type FASTDialog = HTMLElement & FASTDialogType;
 
@@ -13,12 +13,8 @@ describe("FASTDialog", function () {
 
         this.documentHandle = await this.page.evaluateHandle(() => document);
 
-        this.providerHandle = (await this.page.$("#root")) as ElementHandle<
-            FASTDesignSystemProvider
-        >;
-
         this.setupHandle = await this.page.evaluateHandle(
-            ([document, provider]) => {
+            (document) => {
                 const element = document.createElement("fast-dialog") as FASTDialog;
                 element.id = "testelement";
 
@@ -30,12 +26,9 @@ describe("FASTDialog", function () {
                 button2.id = "button2";
                 element.appendChild(button2);
 
-                provider.appendChild(element);
+                document.body.appendChild(element);
             },
-            [this.documentHandle, this.providerHandle] as [
-                ElementHandle<Document>,
-                ElementHandle<FASTDesignSystemProvider>
-            ]
+            this.documentHandle
         );
     });
 
@@ -52,8 +45,8 @@ describe("FASTDialog", function () {
         expect(element).to.exist;
     });
 
-    // FASTDialog should render on the page
-    it("should trap focus by default", async function () {
+    // FASTDialog should trap focus
+    it("should trap focus", async function () {
         const element = await this.page.$("fast-dialog");
 
         await element?.focus();
