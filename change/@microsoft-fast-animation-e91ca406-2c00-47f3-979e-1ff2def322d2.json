@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "update css-loader, mini-css-extract-plugin, and postcss-loader in fast-animation",
+  "packageName": "@microsoft/fast-animation",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
