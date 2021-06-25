@@ -95,6 +95,7 @@ export interface CSSDesignToken<
 }
 
 /**
+ * Change record provided to to a {@link DesignTokenSubscriber} when a token changes for a target.
  * @public
  */
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
@@ -110,6 +111,7 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 }
 
 /**
+ * A subscriber that should receive {@link DesignTokenChangeRecord | change records} when a token changes for a target
  * @public
  */
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {

@@ -715,7 +715,7 @@ export class DelegatesARIAToolbar {
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 }
 
-// @alpha
+// @public
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @public
@@ -748,14 +748,11 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
     readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
-    // Warning: (ae-incompatible-release-tags) The symbol "getValueFor" is marked as @public, but its signature references "StaticDesignTokenValue" which is marked as @alpha
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     readonly name: string;
-    // Warning: (ae-incompatible-release-tags) The symbol "setValueFor" is marked as @public, but its signature references "DesignTokenValue" which is marked as @alpha
     setValueFor(element: HTMLElement, value: DesignTokenValue<T> | DesignToken<T>): void;
     subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
-    // Warning: (ae-incompatible-release-tags) The symbol "withDefault" is marked as @public, but its signature references "DesignTokenValue" which is marked as @alpha
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
@@ -764,25 +761,25 @@ export const DesignToken: Readonly<{
     create: typeof create;
 }>;
 
-// @public (undocumented)
+// @public
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     target: HTMLElement;
     token: T;
 }
 
-// @alpha
+// @public
 export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
     name: string;
 }
 
-// @public (undocumented)
+// @public
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     // (undocumented)
     handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
-// @alpha
+// @public
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
@@ -1864,7 +1861,7 @@ export class StartEnd {
 // @public
 export const startTemplate: ViewTemplate<StartEnd>;
 
-// @alpha
+// @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
 // @alpha (undocumented)
@@ -2231,7 +2228,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-system/component-presentation.d.ts:27:5 - (ae-incompatible-release-tags) The symbol "define" is marked as @public, but its signature references "Container" which is marked as @alpha
-// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
