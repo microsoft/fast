@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Adaptive UI v2</title>
+    </head>
+    <style>
+        body, html {
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: var(--fill-color);
+            color: var(--neutral-foreground-rest);
+            font-family: var(--body-font);
+        }
+
+        #root {
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: 1fr auto 2fr;
+            grid-template-columns: 1fr auto auto 1fr;
+        }
+
+        fluent-demo-card {
+            grid-row: 2;
+        }
+
+        fluent-demo-card:first-child {
+            grid-column: 2;
+        }
+
+        fluent-demo-card:nth-of-type(2) {
+            grid-column: 3;
+        }
+    </style>
+    <body>
+        <div id="root">
+            <fluent-demo-card>
+                <h2 slot="heading">Humans have landed on the Moon, again </h2>
+            </fluent-demo-card>
+            <fluent-demo-card>
+                <h2 slot="heading">Tesla Roadster crashes into Mars, none injured</h2>
+            </fluent-demo-card>
+        </div>
+    </body>
+</html>
