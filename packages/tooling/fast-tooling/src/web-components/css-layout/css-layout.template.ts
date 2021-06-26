@@ -1,4 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
+import { ElementDefinitionContext, Switch } from "@microsoft/fast-foundation";
 import { CSSLayout } from "./css-layout";
 
 /**
@@ -533,12 +534,12 @@ const columnGap = html`
  * The template for the css-layout component.
  * @public
  */
-export const CSSLayoutTemplate = html<CSSLayout>`
+export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSSLayout>`
     <template>
         <div class="control-region">
-            <fast-switch @change="${(x, c) => x.handleToggleCSSLayout()}">
+            <${context.tagFor(Switch)} @change="${(x, c) => x.handleToggleCSSLayout()}">
                 Enable Flexbox
-            </fast-switch>
+            </${context.tagFor(Switch)}>
         </div>
         <div class="flexbox-controls${x => (x.flexEnabled ? ` active` : "")}">
             <div class="control-region">

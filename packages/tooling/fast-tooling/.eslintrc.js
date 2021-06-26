@@ -9,5 +9,6 @@ module.exports = {
                 allowSingleExtends: true,
             },
         ],
+        "@typescript-eslint/class-name-casing": "off",
     },
 };

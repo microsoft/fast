@@ -1,18 +1,15 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { NumberField, NumberFieldTemplate as template } from "./index";
+import { NumberField, numberFieldTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-number-field",
+const FASTNumberField = NumberField.compose({
+    baseName: "number-field",
     template,
 })
-class FASTNumberField extends NumberField {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTNumberField>(
-        "fast-number-field"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
 
     return { element, connect, disconnect, parent };
 }

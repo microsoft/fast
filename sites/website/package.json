@@ -3,12 +3,18 @@
   "version": "0.6.2",
   "private": true,
   "scripts": {
-    "clean": "node ../../build/clean.js docs",
-    "prepare-docs": "yarn clean && node src/prepare-docs.js",
-    "build-static": "node src/build-static.js",
-    "generate:badges": "yarn workspace @microsoft/site-utilities generate:badges",
-    "start": "yarn build-static && yarn prepare-docs && docusaurus start",
-    "build": "yarn generate:badges && yarn build-static && yarn prepare-docs && yarn docusaurus build"
+    "clean": "concurrently \"yarn:clean-*\"",
+    "clean-docs": "node ../../build/clean.js docs",
+    "clean-static": "node ../../build/clean.js static",
+    "copy-static": "node src/copy-static.js",
+    "generate": "concurrently \"yarn:generate-*\"",
+    "generate-badges": "yarn workspace @microsoft/site-utilities generate:badges",
+    "generate-docs": "node src/generate-docs.js",
+    "generate-homepage": "yarn workspace @microsoft/fast-website build",
+    "prebuild": "yarn clean && yarn generate && yarn copy-static",
+    "build": "docusaurus build",
+    "prestart": "yarn prebuild",
+    "start": "docusaurus start"
   },
   "browserslist": {
     "production": [
@@ -22,14 +28,11 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.70",
-    "@docusaurus/preset-classic": "2.0.0-alpha.70",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.70"
-  },
   "devDependencies": {
+    "@docusaurus/core": "2.0.0-beta.1",
+    "@docusaurus/preset-classic": "2.0.0-beta.1",
+    "@docusaurus/theme-live-codeblock": "2.0.0-beta.1",
     "@microsoft/api-documenter": "7.8.13",
-    "classnames": "^2.2.6",
-    "progress-bar-webpack-plugin": "^2.1.0"
+    "concurrently": "^6.2.0"
   }
 }

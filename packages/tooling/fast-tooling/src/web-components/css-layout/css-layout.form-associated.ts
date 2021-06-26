@@ -1,5 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
-import { FormAssociated } from "@microsoft/fast-foundation";
+import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
 
 /**
  * A form-associated base class for the flexbox component.
@@ -7,7 +6,7 @@ import { FormAssociated } from "@microsoft/fast-foundation";
  * @internal
  */
 export class FormAssociatedCSSLayout extends FormAssociated(
-    class extends FASTElement {
+    class extends FoundationElement {
         public proxy: HTMLInputElement = document.createElement("input");
     }
 ) {}

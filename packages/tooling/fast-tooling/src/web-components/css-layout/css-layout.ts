@@ -1,5 +1,4 @@
 import { observable } from "@microsoft/fast-element";
-import { FASTSwitch } from "@microsoft/fast-components";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
 import {
     alignContentOptions,
@@ -10,9 +9,6 @@ import {
     justifyContentOptions,
     ObservableFlexboxCSSPropertyName,
 } from "./css-layout.css-properties";
-
-// Prevent tree shaking
-FASTSwitch;
 
 /**
  * A CSSLayout Custom HTML Element.

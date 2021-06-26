@@ -1,12 +1,13 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { BreadcrumbItem } from "../breadcrumb-item";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Breadcrumb Custom HTML Element.
  *
  * @public
  */
-export class Breadcrumb extends FASTElement {
+export class Breadcrumb extends FoundationElement {
     /**
      * @internal
      */
