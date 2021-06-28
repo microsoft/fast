@@ -22,5 +22,5 @@
 
 .section-decoration::after {
     border-radius: calc(var(--corner-radius) * 1px);
-    height: calc(var(--type-ramp-plus-5-font-size) + var(--design-unit) * 1px);
+    height: calc(var(--type-ramp-plus5-font-size) + var(--design-unit) * 1px);
 }
