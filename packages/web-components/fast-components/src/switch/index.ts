@@ -1,25 +1,36 @@
-import { customElement } from "@microsoft/fast-element";
-import { Switch, SwitchTemplate as template } from "@microsoft/fast-foundation";
-import { SwitchStyles as styles } from "./switch.styles";
+import {
+    Switch,
+    SwitchOptions,
+    switchTemplate as template,
+} from "@microsoft/fast-foundation";
+import { switchStyles as styles } from "./switch.styles";
 
 /**
- * The FAST Switch Custom Element. Implements {@link @microsoft/fast-foundation#Switch},
- * {@link @microsoft/fast-foundation#SwitchTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Switch} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#switchTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-switch\>
+ * Generates HTML Element: \<fast-switch\>
  */
-@customElement({
-    name: "fast-switch",
+export const fastSwitch = Switch.compose<SwitchOptions>({
+    baseName: "switch",
     template,
     styles,
-})
-export class FASTSwitch extends Switch {}
+    switch: `
+        <span class="checked-indicator" part="checked-indicator"></span>
+    `,
+});
 
 /**
  * Styles for Switch
  * @public
  */
-export const SwitchStyles = styles;
+export const switchStyles = styles;
+
+/**
+ * Base class for Switch
+ * @public
+ */
+export { Switch };

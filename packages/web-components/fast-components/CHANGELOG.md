@@ -1,8 +1,62 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- fix(fast-components): update rollup index to use the new DS API (roeisenb@microsoft.com)
+- removing leftover color references and inline direction utilities (nicholasrice@users.noreply.github.com)
+- remove css capabilities from palette design tokens (nicholasrice@users.noreply.github.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- update name casing for style exports to lowercase as they are functions (chhol@microsoft.com)
+
+### Minor changes
+
+- removes deprecated infrastructure from fast-color-explorer (nicholasrice@users.noreply.github.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- More design token cleanup (47367562+bheston@users.noreply.github.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- add support for default slotted content for components with visual indicators (chhol@microsoft.com)
+- ensure all base classes for composition are exported (chhol@microsoft.com)
+
+### Patches
+
+- fixes card fill color (nicholasrice@users.noreply.github.com)
+- migrate tree-item recipes to design tokens (nicholasrice@users.noreply.github.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.0.0 (nicholasrice@users.noreply.github.com)
+
+## 1.21.8
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.8 (tlmii@users.noreply.github.com)
+
+## 1.21.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
+
+## 1.21.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.6 (nicholasrice@users.noreply.github.com)
 
 ## 1.21.5
 

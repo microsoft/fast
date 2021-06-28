@@ -1,14 +1,16 @@
 import { children, elements, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { DataGrid } from "./data-grid";
+import { DataGridRow } from "./data-grid-row";
 
-function createRowItemTemplate(prefix: string): ViewTemplate {
+function createRowItemTemplate(context): ViewTemplate {
+    const rowTag = context.tagFor(DataGridRow);
     return html`
-    <${prefix}-data-grid-row
+    <${rowTag}
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
-    ></${prefix}-data-grid-row>
+    ></${rowTag}>
 `;
 }
 
@@ -18,13 +20,17 @@ function createRowItemTemplate(prefix: string): ViewTemplate {
  *
  * @public
  */
-export function createDataGridTemplate(prefix: string): ViewTemplate {
-    const rowItemTemplate: ViewTemplate = createRowItemTemplate(prefix);
+export const dataGridTemplate: (context, definition) => ViewTemplate<DataGrid> = (
+    context,
+    definition
+) => {
+    const rowItemTemplate: ViewTemplate = createRowItemTemplate(context);
+    const rowTag = context.tagFor(DataGridRow);
     return html<DataGrid>`
         <template
             role="grid"
             tabindex="0"
-            :prefix=${prefix}
+            :rowElementTag="${() => rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate}"
             ${children({
                 property: "rowElements",
@@ -34,4 +40,4 @@ export function createDataGridTemplate(prefix: string): ViewTemplate {
             <slot></slot>
         </template>
     `;
-}
+};

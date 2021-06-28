@@ -1,21 +1,19 @@
 import { expect } from "chai";
-import { Menu, MenuTemplate as template } from "./index";
-import { MenuItem, MenuItemTemplate as itemTemplate } from "../menu-item";
+import { Menu, menuTemplate as template } from "./index";
+import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM, html } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-menu",
+const FASTMenu = Menu.compose({
+    baseName: "menu",
     template,
 })
-class FASTMenu extends Menu {}
 
-@customElement({
-    name: "fast-menu-item",
+const FASTMenuItem = MenuItem.compose({
+    baseName: "menu-item",
     template: itemTemplate,
 })
-class FASTMenuItem extends MenuItem {}
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
     key: "ArrowUp",
@@ -29,9 +27,36 @@ const arrowDownEvent = new KeyboardEvent("keydown", {
     bubbles: true,
 } as KeyboardEventInit);
 
+async function setup() {
+    const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem()]);
+
+    const menuItem1 = document.createElement("fast-menu-item");
+    (menuItem1 as MenuItem).textContent = "Foo";
+    (menuItem1 as MenuItem).id = "id1";
+
+    const menuItem2 = document.createElement("fast-menu-item");
+    (menuItem2 as MenuItem).textContent = "Bar";
+    (menuItem2 as MenuItem).id = "id2";
+
+    const menuItem3 = document.createElement("fast-menu-item");
+    (menuItem3 as MenuItem).textContent = "Baz";
+    (menuItem3 as MenuItem).id = "id3";
+
+    const menuItem4 = document.createElement("fast-menu-item");
+    (menuItem4 as MenuItem).textContent = "Bat";
+    (menuItem4 as MenuItem).id = "id4";
+
+    element.appendChild(menuItem1);
+    element.appendChild(menuItem2);
+    element.appendChild(menuItem3);
+    element.appendChild(menuItem4);
+
+    return { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 };
+}
+
 describe("Menu", () => {
     it("should include a role of menu", async () => {
-        const { element, connect, disconnect } = await fixture<Menu>("fast-menu");
+        const { element, connect, disconnect } = await fixture([FASTMenu(), FASTMenuItem()]);
 
         await connect();
 
@@ -41,12 +66,7 @@ describe("Menu", () => {
     });
 
     it("should focus on first menu item when focus is called", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu id="menu">
-                <fast-menu-item id="id1">Foo</fast-menu-item>
-                <fast-menu-item id="id2">Bar</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await setup();
 
         await connect();
         await DOM.nextUpdate();
@@ -58,10 +78,7 @@ describe("Menu", () => {
     });
 
     it("should not throw when focus is called with no items", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu id="menu">
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTMenu());
 
         await connect();
         await DOM.nextUpdate();
@@ -73,12 +90,7 @@ describe("Menu", () => {
     });
 
     it("should not throw when focus is called before initialization is complete", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu id="menu">
-                <fast-menu-item id="id1">Foo</fast-menu-item>
-                <fast-menu-item id="id2">Bar</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await setup();
 
         //don't wait for connect...
 
@@ -90,14 +102,7 @@ describe("Menu", () => {
 
 
     it("should set tabindex of the first focusable menu item to 0", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div>I put a div in my menu</div>
-                <fast-menu-item id="id1">Foo</fast-menu-item>
-                <fast-menu-item id="id2">Bar</fast-menu-item>
-                <fast-menu-item>Baz</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await setup();
 
         await connect();
 
@@ -107,14 +112,12 @@ describe("Menu", () => {
     });
 
     it("should not set any tabindex on non menu items elements", async () => {
-        const { connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div id="not-an-item">I put a div in my menu</div>
-                <fast-menu-item id="id1">Foo</fast-menu-item>
-                <fast-menu-item id="id2">Bar</fast-menu-item>
-                <fast-menu-item>Baz</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1 } = await setup();
+
+        const notMenuItem = document.createElement("div");
+        notMenuItem.id = "not-an-item";
+
+        element.insertBefore(notMenuItem, menuItem1);
 
         await connect();
 
@@ -124,14 +127,9 @@ describe("Menu", () => {
     });
 
     it("should focus disabled items", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div>I put a div in my menu</div>
-                <fast-menu-item disabled id="id1">Foo</fast-menu-item>
-                <fast-menu-item id="id2">Bar</fast-menu-item>
-                <fast-menu-item>Baz</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1 } = await setup();
+
+        (menuItem1 as MenuItem).disabled = true;
 
         await connect();
 
@@ -141,13 +139,24 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitem` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div role="menuitem" id="id1">Foo</div>
-                <div role="menuitem">Bar</div>
-                <div role="menuitem">Baz</div>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await setup();
+
+        const menuItem1 = document.createElement("div");
+        const menuItem2 = document.createElement("div");
+        const menuItem3 = document.createElement("div");
+
+        menuItem1.textContent = "Foo";
+        (menuItem1 as any).role = "menuitem";
+    
+        menuItem2.textContent = "Bar";
+        (menuItem2 as any).role = "menuitem";
+    
+        menuItem3.textContent = "Baz";
+        (menuItem3 as any).role = "menuitem";
+    
+        element.appendChild(menuItem1);
+        element.appendChild(menuItem2);
+        element.appendChild(menuItem3);
 
         await connect();
 
@@ -159,15 +168,26 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemcheckbox` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div role="menuitemcheckbox" id="id1">Foo</div>
-                <div role="menuitemcheckbox">Bar</div>
-                <div role="menuitemcheckbox">Baz</div>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTMenu());
+
+        const menuItem1 = document.createElement("div");
+        const menuItem2 = document.createElement("div");
+        const menuItem3 = document.createElement("div");
+
+        menuItem1.textContent = "Foo";
+        menuItem2.textContent = "Bar";
+        menuItem3.textContent = "Baz";
+    
+        element.appendChild(menuItem1);
+        element.appendChild(menuItem2);
+        element.appendChild(menuItem3);
+
+        menuItem1.setAttribute("role", "menuitemcheckbox");
+        menuItem2.setAttribute("role", "menuitemcheckbox");
+        menuItem3.setAttribute("role", "menuitemcheckbox");
 
         await connect();
+        await DOM.nextUpdate();
 
         expect(
             element.querySelector("[role='menuitemcheckbox']")?.getAttribute("tabindex")
@@ -177,15 +197,26 @@ describe("Menu", () => {
     });
 
     it("should accept elements with role of `menuitemradio` as focusable child", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <div role="menuitemradio" id="id1">Foo</div>
-                <div role="menuitemradio">Bar</div>
-                <div role="menuitemradio">Baz</div>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect } = await fixture(FASTMenu());
+
+        const menuItem1 = document.createElement("div");
+        const menuItem2 = document.createElement("div");
+        const menuItem3 = document.createElement("div");
+
+        menuItem1.textContent = "Foo";
+        menuItem2.textContent = "Bar";
+        menuItem3.textContent = "Baz";
+    
+        element.appendChild(menuItem1);
+        element.appendChild(menuItem2);
+        element.appendChild(menuItem3);
+
+        menuItem1.setAttribute("role", "menuitemradio");
+        menuItem2.setAttribute("role", "menuitemradio");
+        menuItem3.setAttribute("role", "menuitemradio");
 
         await connect();
+        await DOM.nextUpdate();
 
         expect(
             element.querySelector("[role='menuitemradio']")?.getAttribute("tabindex")
@@ -194,17 +225,84 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should not set indent class on non-menu items", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        const hr = document.createElement("hr");
+
+        element.insertBefore(hr, menuItem2);
+
+        hr.setAttribute("id", "hrid");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(document.getElementById("hrid")?.className).to.not.contain("indent");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 0 columns", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-0");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 1 column", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-1");
+
+        await disconnect();
+    });
+
+    it("should set class on menu items to 2 columns", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        const startSlot = document.createElement("div");
+
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+
+        startSlot.setAttribute("slot", "start");
+
+        menuItem3.appendChild(startSlot);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-2");
+
+        await disconnect();
+    });
+
+
     it("should navigate the menu on arrow up/down keys", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <fast-menu-item id="id1">One</fast-menu-item>
-                <fast-menu-item role="menuitem" id="id2">Two</fast-menu-item>
-                <div>I put a div in my menu</div>
-                <fast-menu-item role="menuitemradio" id="id3">Three</fast-menu-item>
-                <div>I put a div in my menu</div>
-                <fast-menu-item role="menuitemcheckbox" id="id4">Four</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
+
+        const notMenuItem1 = document.createElement("div");
+        const notMenuItem2 = document.createElement("div");
+
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem4 as MenuItem).role = MenuItemRole.menuitemcheckbox;
+
+        element.insertBefore(notMenuItem1, menuItem3);
+        element.insertBefore(notMenuItem2, menuItem4);
 
         await connect();
         await DOM.nextUpdate();
@@ -241,13 +339,11 @@ describe("Menu", () => {
     });
 
     it("should treat all checkbox menu items as individually selectable items", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <fast-menu-item role="menuitemcheckbox" id="id1">One</fast-menu-item>
-                <fast-menu-item role="menuitemcheckbox" id="id2">Two</fast-menu-item>
-                <fast-menu-item role="menuitemcheckbox" id="id3">Three</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        (menuItem1 as MenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem2 as MenuItem).role = MenuItemRole.menuitemcheckbox;
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemcheckbox;
 
         await connect();
         await DOM.nextUpdate();
@@ -288,13 +384,13 @@ describe("Menu", () => {
     });
 
     it("should treat all radio menu items as a 'radio group' and limit selection to one item within the group by default", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <fast-menu-item role="menuitemradio" id="id1">One</fast-menu-item>
-                <fast-menu-item role="menuitemradio" id="id2">Two</fast-menu-item>
-                <fast-menu-item role="menuitemradio" id="id3">Three</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
+
+        element.removeChild(menuItem4);
+        
+        (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
 
         await connect();
         await DOM.nextUpdate();
@@ -329,15 +425,18 @@ describe("Menu", () => {
     });
 
     it("should use elements with role='separator' to divide radio menu items into different radio groups ", async () => {
-        const { element, connect, disconnect } = await fixture(html<FASTMenu>`
-            <fast-menu>
-                <fast-menu-item role="menuitemradio" id="id1">One</fast-menu-item>
-                <fast-menu-item role="menuitemradio" id="id2">Two</fast-menu-item>
-                <div role="separator"></div>
-                <fast-menu-item role="menuitemradio" id="id3">Three</fast-menu-item>
-                <fast-menu-item role="menuitemradio" id="id4">Four</fast-menu-item>
-            </fast-menu>
-        `);
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
+        
+        (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
+        (menuItem4 as MenuItem).role = MenuItemRole.menuitemradio;
+
+        const separator = document.createElement("div");
+
+        element.insertBefore(separator, menuItem3);
+
+        separator.setAttribute("role", "separator");
 
         await connect();
         await DOM.nextUpdate();

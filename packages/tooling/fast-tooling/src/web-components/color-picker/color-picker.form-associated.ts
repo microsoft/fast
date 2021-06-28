@@ -1,18 +1,13 @@
-import { FASTElement } from "@microsoft/fast-element";
-import { FormAssociated } from "@microsoft/fast-foundation";
+import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
+
+class _ColorPicker extends FoundationElement {}
+interface _ColorPicker extends FormAssociated {}
 
 /**
- * A form-associated base class for the color picker component.
+ * A form-associated base class for the {@link @microsoft/fast-tooling#(ColorPicker:class)} component.
  *
  * @internal
  */
-export class FormAssociatedColorPicker extends FormAssociated(
-    class extends FASTElement {
-        public proxy: HTMLInputElement = document.createElement("input");
-    }
-) {}
-
-/**
- * @internal
- */
-export interface FormAssociatedColorPicker extends FormAssociated {}
+export class FormAssociatedColorPicker extends FormAssociated(_ColorPicker) {
+    proxy = document.createElement("input");
+}

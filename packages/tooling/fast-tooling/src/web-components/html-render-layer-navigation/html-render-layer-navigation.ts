@@ -1,18 +1,13 @@
-import { customElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import {
     ActivityType,
     HTMLRenderLayer,
     OverylayPosition,
 } from "../html-render-layer/html-render-layer";
-import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
-import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
 
-@customElement({
-    name: "fast-tooling-html-render-layer-navigation",
-    template: HTMLRenderLayerNavigationTemplate,
-    styles: HTMLRenderLayerNavigationStyles,
-})
-export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
+export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
+    public layerActivityId: string = "NavLayer";
+
     @observable
     public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 
@@ -27,6 +22,9 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
 
     @observable
     public clickLayerHide: boolean = false;
+
+    @observable
+    public hoverLayerHide: boolean = false;
 
     @observable
     public clickPillContent: string = "";
@@ -106,23 +104,42 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
         this.clickPillContent = "";
     }
 
+    private handleUpdate() {
+        if (this.clickLayerActive) {
+            this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+        }
+    }
+
     public elementActivity(
+        layerActivityId: string,
         activityType: ActivityType,
         dataDictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: Node
     ) {
+        if (layerActivityId === this.layerActivityId) {
+            return;
+        }
         switch (activityType) {
             case ActivityType.hover:
-                this.handleHighlight(dataDictionaryId, elementRef);
+                this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.blur:
                 this.handleUnHighlight();
                 break;
             case ActivityType.click:
-                this.handleSelect(dataDictionaryId, elementRef);
+                this.handleSelect(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.clear:
                 this.handleClear();
+                break;
+            case ActivityType.update:
+                this.handleUpdate();
+                break;
+            case ActivityType.takeFocus:
+                this.hoverLayerHide = true;
+                break;
+            case ActivityType.releaseFocus:
+                this.hoverLayerHide = false;
                 break;
         }
     }

@@ -1,6 +1,7 @@
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { DOM, html, ViewTemplate } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../fixture";
+import { DesignSystem, ElementDefinitionContext } from "@microsoft/fast-foundation";
+import { fixture } from "../../__test__/fixture";
 import {
     MessageSystem,
     MessageSystemNavigationTypeAction,
@@ -11,7 +12,7 @@ import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { nativeElementDefinitions } from "../../definitions";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 import { HTMLRender, HTMLRenderOriginatorId } from "./html-render";
-
+import { fastToolingHTMLRender } from "./";
 HTMLRender;
 HTMLRenderLayer;
 
@@ -29,18 +30,12 @@ class ActivityResult {
     }
 }
 
-export const HTMLRenderLayerNavigationTemplate = html<HTMLRenderLayerTest>`
-    <div id="testContainer"></div>
-`;
-
-@customElement({
-    name: "fast-tooling-html-render-layer-test",
-    template: HTMLRenderLayerNavigationTemplate,
-})
 export class HTMLRenderLayerTest extends HTMLRenderLayer {
+    public layerActivityId: string = "testLayer";
     public lastActivity: ActivityResult = null;
 
     public elementActivity(
+        layerActivityId: string,
         activityType: ActivityType,
         datadictionaryId: string,
         elementRef: HTMLElement
@@ -49,13 +44,31 @@ export class HTMLRenderLayerTest extends HTMLRenderLayer {
     }
 }
 
+export const HTMLRenderLayerNavigationTemplate: (
+    context: ElementDefinitionContext
+) => ViewTemplate<HTMLRenderLayerTest> = context => html<HTMLRenderLayerTest>`
+    <div id="testContainer"></div>
+`;
+
+const fastToolingHTMLRenderLayerTest = HTMLRenderLayerTest.compose({
+    baseName: "html-render-layer-test",
+    template: HTMLRenderLayerNavigationTemplate,
+});
+
 async function setup() {
     const { element, connect, disconnect } = await fixture<HTMLRender>(
         html`
             <fast-tooling-html-render>
-                <fast-tooling-html-render-layer-test role="htmlrenderlayer" />
+                <fast-tooling-html-render-layer-test
+                    role="htmlrenderlayer"
+                ></fast-tooling-html-render-layer-test>
             </fast-tooling-html-render>
-        `
+        `,
+        {
+            designSystem: DesignSystem.getOrCreate()
+                .withPrefix("fast-tooling")
+                .register(fastToolingHTMLRender(), fastToolingHTMLRenderLayerTest()),
+        }
     );
     const message = new MessageSystem({
         webWorker: fastMessageSystemWorker,

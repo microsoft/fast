@@ -2,6 +2,172 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Fri, 25 Jun 2021 02:02:57 GMT",
+      "tag": "@microsoft/fast-components_v2.0.0",
+      "version": "2.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update code comments for primary exports of fast-components",
+            "author": "chhol@microsoft.com",
+            "commit": "7d9ff4528ff1be8a7df9290b63c42f076857eaab",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "major": [
+          {
+            "comment": "fix(fast-components): update rollup index to use the new DS API",
+            "author": "roeisenb@microsoft.com",
+            "commit": "370b727537850f49a6cd8bf23bb34d7d462017f2",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "removing leftover color references and inline direction utilities",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "885e9a7d29643f57a6f0bf1c8bac2864ac8d4be7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "remove css capabilities from palette design tokens",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "98265db75d50a89ef2086488faf0be03ec972488",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "feat: styling and text alignment for menu",
+            "author": "jes@microsoft.com",
+            "commit": "a440e2bc478dd666d80d7958718f8fcc2b46bc77",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "update components to extend FoundationElement",
+            "author": "chhol@microsoft.com",
+            "commit": "6369ab1a3db8b693f14d4cf0ee67cc4e1d802dfb",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "remove deprecated APIs and Design System Provider infrastructure",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "361c2e74066a50206719168d6d0b26e67bd0aed2",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "update name casing for style exports to lowercase as they are functions",
+            "author": "chhol@microsoft.com",
+            "commit": "e3b519d12278ef7bdac30b20dd9da0a68ee0c79e",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "removes deprecated infrastructure from fast-color-explorer",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b3cae9b8e26fe85e60762336833de2bab18262eb",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "8e0491c4707319c64fe6f71b07f002ec769c3f9f",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "More design token cleanup",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "6de6117945e9624ae07a22eafaf5fda879ff6a1a",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "migrate directional-stylesheet utility",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ce4aacb7cfd4f630a1836117a99dc5003c0e489c",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "add support for default slotted content for components with visual indicators",
+            "author": "chhol@microsoft.com",
+            "commit": "0a6bd40f568fa0f640a15bc7e6d669e80d169036",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "ensure all base classes for composition are exported",
+            "author": "chhol@microsoft.com",
+            "commit": "3f78821cef5a1f52f76d5f3c4698a989d5e43085",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixes card fill color",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "281cd3ba3b43b9b4e9bb986857ef77b6221e54f3",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "migrate tree-item recipes to design tokens",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "bf6f5a9f4b6d3fffda7fe7d36adb393d5cc1cecc",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "0a5ede8bcfb46f51db3e2f84b4f1d77acb1ba435",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.0.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "361c2e74066a50206719168d6d0b26e67bd0aed2",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-components_v1.21.8",
+      "version": "1.21.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.8",
+            "author": "tlmii@users.noreply.github.com",
+            "commit": "ef8b84eca2eb82f84abc4f08986c384e0f3b3305",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-components_v1.21.7",
+      "version": "1.21.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.7",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Jun 2021 07:19:23 GMT",
+      "tag": "@microsoft/fast-components_v1.21.6",
+      "version": "1.21.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v1.24.6",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d1af72075ae857310f07183fb3e74583f27d0ded",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Jun 2021 07:29:18 GMT",
       "tag": "@microsoft/fast-components_v1.21.5",
       "version": "1.21.5",

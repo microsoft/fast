@@ -2,6 +2,92 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Fri, 25 Jun 2021 02:02:57 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.21",
+      "version": "2.8.21",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix tooling libraries to use the new design system registry and updated named imports",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "62f3d1ddb23c522139803541266810367dded081",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "update web components in fast-tooling package to use vNext api changes",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "db482deb1f6636edfb0e940b2218ec57d6a0ed1d",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "update fast-tooling references to web components",
+            "author": "chhol@microsoft.com",
+            "commit": "6369ab1a3db8b693f14d4cf0ee67cc4e1d802dfb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "370b727537850f49a6cd8bf23bb34d7d462017f2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.20",
+      "version": "2.8.20",
+      "comments": {
+        "patch": [
+          {
+            "comment": "force the CSS control to respect state changes involving dictionary ID updates",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "67aea44b590114e3ceed6247d1066437ac9a01a2",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "add update the state of the CSS control when the control based on the inline string value",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "0d65582e50995237c50a80cddf802b3a08fb5779",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Jun 2021 07:21:25 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.19",
+      "version": "2.8.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.0",
+            "author": "robarb@microsoft.com",
+            "commit": "ab4bcdd57cedf82ba48460ed4290def3787d6599",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Jun 2021 07:19:23 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.18",
+      "version": "2.8.18",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address a CSS specificy issue that appeared recently and resulted in the native browser dropdown arrow appearing",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "e7f1e1905413758a6156430a7b303abffe05e489",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Jun 2021 07:29:18 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.17",
       "version": "2.8.17",

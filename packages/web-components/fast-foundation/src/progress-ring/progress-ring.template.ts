@@ -1,12 +1,19 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress } from "../progress/base-progress";
+import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
+export const progressRingTemplate: (
+    context: ElementDefinitionContext,
+    definition: ProgressRingOptions
+) => ViewTemplate<BaseProgress> = (
+    context: ElementDefinitionContext,
+    definition: ProgressRingOptions
+) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -45,22 +52,7 @@ export const ProgressRingTemplate: ViewTemplate<BaseProgress> = html`
             x => typeof x.value !== "number",
             html<BaseProgress>`
                 <slot name="indeterminate" slot="indeterminate">
-                    <svg class="progress" part="progress" viewBox="0 0 16 16">
-                        <circle
-                            class="background"
-                            part="background"
-                            cx="8px"
-                            cy="8px"
-                            r="7px"
-                        ></circle>
-                        <circle
-                            class="indeterminate-indicator-1"
-                            part="indeterminate-indicator-1"
-                            cx="8px"
-                            cy="8px"
-                            r="7px"
-                        ></circle>
-                    </svg>
+                    ${definition.indeterminateIndicator || ""}
                 </slot>
             `
         )}

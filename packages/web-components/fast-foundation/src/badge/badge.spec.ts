@@ -1,16 +1,14 @@
 import { expect } from "chai";
-import { Badge, BadgeTemplate as template } from "./index";
+import { Badge, badgeTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-badge",
-    template,
+const FASTBadge = Badge.compose({
+    baseName: "badge",
+    template
 })
-class FASTBadge extends Badge {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTBadge>("fast-badge");
+    const { element, connect, disconnect } = await fixture(FASTBadge());
 
     return { element, connect, disconnect };
 }

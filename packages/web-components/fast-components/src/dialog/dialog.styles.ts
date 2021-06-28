@@ -1,7 +1,18 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    ElementDefinitionContext,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 
-export const DialogStyles = css`
+export const dialogStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => css`
     :host([hidden]) {
         display: none;
     }
@@ -40,9 +51,9 @@ export const DialogStyles = css`
         margin-bottom: auto;
         width: var(--dialog-width);
         height: var(--dialog-height);
-        background-color: var(--background-color);
+        background-color: ${fillColor};
         z-index: 1;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid transparent;
     }
 `;
