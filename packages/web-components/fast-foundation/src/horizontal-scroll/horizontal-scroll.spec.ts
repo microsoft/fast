@@ -118,11 +118,10 @@ describe("HorinzontalScroll", () => {
             await DOM.nextUpdate();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
-                await disconnect();
-            }, 1);
+            expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
+            await disconnect();
         });
 
         it("should disable the previous flipper when scrolled back to the beginning", async () => {
@@ -137,11 +136,10 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             element.scrollToPrevious();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                await setTimeout(() => expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true), 10);
-                await disconnect();
-            }, 1);
+            expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
+            await disconnect();
         });
 
         it("should disable the next flipper when it reaches the end of the content", async () => {
@@ -157,11 +155,10 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
             element.scrollToNext();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(45)
-                await disconnect();
-            }, 1);
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(45)
+            await disconnect();
         });
 
         it("should re-enable the next flipper when its scrolled back from the end", async () => {
@@ -178,13 +175,11 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
             element.scrollToPrevious();
+            await DOM.nextUpdate();
 
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
 
-            await setTimeout(async () => {
-                expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
-
-                await disconnect();
-            }, 1);
+            await disconnect();
         });
     });
 
@@ -213,18 +208,17 @@ describe("HorinzontalScroll", () => {
             await connect();
             await DOM.nextUpdate();
             element.scrollToNext();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                const position: number = getXPosition(element) || 0;
-                const cardsFit = (horizontalScrollWidth - horizontalScrollWidth % cardSpace) / cardSpace;
-                const cardStart = cardSpace * (cardsFit - 1);
-                const currentInView: boolean = (position + cardSpace) < horizontalScrollWidth;
-                const nextInView: boolean = (position - cardSpace * 2) < horizontalScrollWidth;
+            const position: number = getXPosition(element) || 0;
+            const cardsFit = (horizontalScrollWidth - horizontalScrollWidth % cardSpace) / cardSpace;
+            const cardStart = cardSpace * (cardsFit - 1);
+            const currentInView: boolean = (position + cardSpace) < horizontalScrollWidth;
+            const nextInView: boolean = (position - cardSpace * 2) < horizontalScrollWidth;
 
-                expect(currentInView && !nextInView).to.equal(true);
+            expect(currentInView && !nextInView).to.equal(true);
 
-                await disconnect();
-            }, 1);
+            await disconnect();
         });
 
         it("should not scroll past the beginning", async () => {
@@ -232,18 +226,18 @@ describe("HorinzontalScroll", () => {
 
             element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
             element.innerHTML = getCards(8);
+            element.speed = -1;
 
             await connect();
             await DOM.nextUpdate();
             element.scrollToPrevious();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                const scrollPosition: number | null = getXPosition(element);
+            const scrollPosition: number | null = getXPosition(element);
 
-                expect(scrollPosition !== null && scrollPosition >= 0).to.equal(true);
+            expect(scrollPosition !== null && scrollPosition >= 0).to.equal(true);
 
-                await disconnect();
-            }, 1);
+            await disconnect();
         });
 
         it("should not scroll past the last in view element", async () => {
@@ -251,6 +245,7 @@ describe("HorinzontalScroll", () => {
 
             element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
             element.innerHTML = getCards(8);
+            element.speed = -1;
 
             await connect();
             await DOM.nextUpdate();
@@ -261,15 +256,14 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             element.scrollToNext();
             element.scrollToNext();
+            await DOM.nextUpdate();
 
-            await setTimeout(async () => {
-                let cardViewWidth: number = cardSpace * 5 * -1;
-                const scrollPosition: number | null = getXPosition(element);
+            let cardViewWidth: number = cardSpace * 5 * -1;
+            const scrollPosition: number | null = getXPosition(element);
 
-                expect(scrollPosition !== null && scrollPosition > cardViewWidth).to.equal(true);
+            expect(scrollPosition !== null && scrollPosition > cardViewWidth).to.equal(true);
 
-                await disconnect();
-            }, 1);
+            await disconnect();
         });
         
         it("should change scroll stop on resize", async () => {
@@ -284,21 +278,20 @@ describe("HorinzontalScroll", () => {
             const scrollContent: any = element.shadowRoot?.querySelector(".content-container");
 
             element.scrollToNext();
-            await setTimeout(async () => {
-                const firstXPos: number | null = getXPosition(scrollContent);
-                element.scrollToPrevious();
+            await DOM.nextUpdate();
 
-                element.style.width = `${horizontalScrollWidth}px`;
-                element.scrollToNext();
+            const firstXPos: number | null = getXPosition(scrollContent);
+            element.scrollToPrevious();
 
-                await setTimeout(async () => {
-                    const secondXPos: number | null = getXPosition(scrollContent);
+            element.style.width = `${horizontalScrollWidth}px`;
+            element.scrollToNext();
+            await DOM.nextUpdate();
 
-                    expect(firstXPos === secondXPos).to.equal(false);
+            const secondXPos: number | null = getXPosition(scrollContent);
 
-                    await disconnect();
-                }, 1);
-            }, 1);
+            expect(firstXPos === secondXPos).to.equal(false);
+
+            await disconnect();
         });
 
     });
