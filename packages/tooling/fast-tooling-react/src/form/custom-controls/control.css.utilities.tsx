@@ -1,28 +1,10 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-
 import React from "react";
 import {
     RenderRefControlConfig,
     RenderSelectControlConfig,
 } from "./control.css.utilities.props";
-import {
-    FASTCheckbox,
-    FASTNumberField,
-    FASTOption,
-    FASTSelect,
-    FASTTextField,
-} from "@microsoft/fast-components";
-import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-/**
- * Ensure tree-shaking doesn't remove these components from the bundle.
- */
-FASTCheckbox;
-FASTNumberField;
-FASTOption;
-FASTSelect;
-FASTTextField;
-FASTColorPicker;
 
 export function renderDefault(config: RenderRefControlConfig): React.ReactNode {
     return renderTextInput(config);
@@ -45,11 +27,15 @@ function getInputChangeHandler(
     };
 }
 
+// TODO: is there a better way to retrieve design system context and use the tagFor?
+// this is currently an experimental component however this should be adjusted before
+// documentation and export
+
 export function renderTextInput(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-text-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -67,7 +53,7 @@ export function renderNumber(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -85,7 +71,7 @@ export function renderInteger(config: RenderRefControlConfig): React.ReactNode {
     return (
         <fast-number-field
             {...{
-                key: config.key,
+                key: `${config.dictionaryId}::${config.dataLocation}`,
                 events: {
                     input: getInputChangeHandler(config.handleChange),
                 },
@@ -147,7 +133,7 @@ export function renderSelection(config: RenderSelectControlConfig): React.ReactN
 
     return (
         <fast-select
-            key={config.key}
+            key={`${config.dictionaryId}::${config.dataLocation}`}
             events={{
                 change: getSelectionChangeHandler(config.handleChange),
             }}
@@ -157,7 +143,7 @@ export function renderSelection(config: RenderSelectControlConfig): React.ReactN
                     <fast-option
                         {...{
                             value: `${option.value}`,
-                            key: option.key,
+                            key: `${config.dictionaryId}::${config.dataLocation}::${option.key}`,
                             ...(`${option.value}` === currentValue
                                 ? {
                                       selected: "",
@@ -192,12 +178,12 @@ function getColorPickerChangeHandler(
 
 export function renderColorPicker(config: RenderRefControlConfig): React.ReactNode {
     return (
-        <color-picker
-            key={config.key}
+        <fast-tooling-color-picker
+            key={`${config.dictionaryId}::${config.dataLocation}`}
             value={config.value}
             events={{
                 change: getColorPickerChangeHandler(config.handleChange),
             }}
-        ></color-picker>
+        ></fast-tooling-color-picker>
     );
 }

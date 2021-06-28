@@ -1,13 +1,20 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { Slider } from "./slider";
+import type { Slider, SliderOptions } from "./slider";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
-export const SliderTemplate: ViewTemplate<Slider> = html`
+export const sliderTemplate: (
+    context: ElementDefinitionContext,
+    definition: SliderOptions
+) => ViewTemplate<Slider> = (
+    context: ElementDefinitionContext,
+    definition: SliderOptions
+) => html`
     <template
         role="slider"
         class="${x => (x.readOnly ? "readonly" : "")}
@@ -33,7 +40,7 @@ export const SliderTemplate: ViewTemplate<Slider> = html`
                 class="thumb-container"
                 style="${x => x.position}"
             >
-                <slot name="thumb"><div class="thumb-cursor"></div></slot>
+                <slot name="thumb">${definition.thumb || ""}</slot>
             </div>
         </div>
     </template>

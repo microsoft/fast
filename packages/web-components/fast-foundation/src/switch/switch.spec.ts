@@ -1,19 +1,16 @@
 import { expect, assert } from "chai";
-import { Switch, SwitchTemplate as template } from "./index";
+import { Switch, switchTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement, html } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-switch",
-    template,
+const FASTSwitch = Switch.compose({
+    baseName: "switch",
+    template
 })
-class FASTSwitch extends Switch {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTSwitch>(
-        "fast-switch"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTSwitch());
 
     return { element, connect, disconnect, parent };
 }
@@ -225,9 +222,7 @@ describe("Switch", () => {
 
     describe("events", () => {
         it("should fire an event on click", async () => {
-            const { element, connect, disconnect } = await fixture<FASTSwitch>(
-                "fast-switch"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasClicked: boolean = false;
 
             await connect();
@@ -248,9 +243,7 @@ describe("Switch", () => {
         });
 
         it("should fire an event when spacebar is invoked", async () => {
-            const { element, connect, disconnect } = await fixture<FASTSwitch>(
-                "fast-switch"
-            );
+            const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
                 key: "space",

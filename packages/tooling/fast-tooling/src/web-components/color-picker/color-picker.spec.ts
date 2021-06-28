@@ -1,25 +1,18 @@
-import { customElement } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../fixture";
-import { ColorPickerTemplate as template } from "./color-picker.template";
-import { FASTColorPicker as ColorPicker } from "./";
-
-@customElement({
-    name: "fast-color-picker",
-    template,
-})
-class FASTColorPicker extends ColorPicker {}
-FASTColorPicker;
+import { fastTextField } from "@microsoft/fast-components";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import { fixture } from "../../__test__/fixture";
+import { fastToolingColorPicker } from "./";
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTColorPicker>(
-        "fast-color-picker"
-    );
+    const { element, connect, disconnect } = await fixture(fastToolingColorPicker(), {
+        designSystem: DesignSystem.getOrCreate().register(fastTextField()),
+    });
 
     return { element, connect, disconnect };
 }
 
-describe("FASTColorPicker", () => {
+describe("ColorPicker", () => {
     it("should open the color picker when the component is focused", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -43,7 +36,6 @@ describe("FASTColorPicker", () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
-        // await DOM.nextUpdate();
 
         // Setting the tabindex to 0 to allow focus()
         // due to mismatch between user focus and programmatically calling focus

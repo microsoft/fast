@@ -1,14 +1,14 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
 
 import React from "react";
-import { FASTBadge } from "@microsoft/fast-components";
+import { fastBadge } from "@microsoft/fast-components";
 import h from "../../web-components/pragma";
 import { LogoProps } from "./logo.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTBadge;
+fastBadge;
 
 const backgroundStyle = {
     display: "flex",
@@ -21,6 +21,7 @@ const headerStyle = {
     fontSize: "var(--type-ramp-base-font-size)",
     fontWeight: 600,
     lineHeight: "var(--type-ramp-base-line-height)",
+    color: "#FFFFFF",
 };
 const imageStyle = { verticalAlign: "middle", height: "32px" };
 const spanStyle = { verticalAlign: "middle", margin: "0 10px" };

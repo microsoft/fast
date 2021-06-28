@@ -1,14 +1,18 @@
 import { css } from "@microsoft/fast-element";
 import {
-    neutralForegroundRestBehavior,
-    neutralForegroundHintBehavior,
+    fillColor,
+    bodyFont,
+    typeRampMinus1FontSize,
+    neutralForegroundHint,
+    typeRampPlus2FontSize,
+    neutralForegroundRest,
 } from "@microsoft/fast-components";
 import { display } from "@microsoft/fast-foundation";
 
 export const NavigationStyles = css`
     ${display("grid")} :host {
         grid-template-columns: auto 1fr auto;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         box-sizing: border-box;
         isolation: isolate;
         width: 100%;
@@ -48,8 +52,8 @@ export const NavigationStyles = css`
 
     :host(.in-footer) ::slotted(fast-anchor),
     :host(.in-footer) ::slotted(p) {
-        font-size: var(--type-ramp-minus-1-font-size);
-        color: var(--neutral-foreground-hint);
+        font-size: ${typeRampMinus1FontSize};
+        color: ${neutralForegroundHint};
     }
 
     :host(.in-footer) .end {
@@ -65,7 +69,7 @@ export const NavigationStyles = css`
     }
 
     :host(.in-header)::before {
-        background-color: var(--background-color);
+        background-color: ${fillColor};
         content: "";
         position: absolute;
         top: 0;
@@ -81,7 +85,7 @@ export const NavigationStyles = css`
     }
 
     :host(.in-footer) ::slotted(site-navigation-item) {
-        font-size: var(--type-ramp-plus-2-font-size);
+        font-size: ${typeRampPlus2FontSize};
     }
 
     @media screen and (min-width: 900px) {
@@ -131,11 +135,11 @@ export const NavigationStyles = css`
         }
 
         :host(.in-header) .anchor-wrapper {
-            background-color: var(--background-color);
-            color: ${neutralForegroundRestBehavior.var};
+            background-color: ${fillColor};
+            color: ${neutralForegroundRest};
             display: flex;
             flex-direction: column;
-            font-size: var(--type-ramp-plus-2-font-size);
+            font-size: ${typeRampPlus2FontSize};
             height: calc(100vh - 94px);
             left: 0;
             opacity: 0.95;
@@ -168,4 +172,4 @@ export const NavigationStyles = css`
             display: none;
         }
     }
-`.withBehaviors(neutralForegroundRestBehavior, neutralForegroundHintBehavior);
+`;

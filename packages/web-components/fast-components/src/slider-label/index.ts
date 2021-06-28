@@ -1,27 +1,18 @@
-import { customElement } from "@microsoft/fast-element";
-import { SliderLabel, SliderLabelTemplate as template } from "@microsoft/fast-foundation";
+import {
+    SliderLabel as FoundationSliderLabel,
+    sliderLabelTemplate as template,
+} from "@microsoft/fast-foundation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import {
     horizontalSliderStyles,
-    SliderLabelStyles as styles,
+    sliderLabelStyles as styles,
     verticalSliderStyles,
 } from "./slider-label.styles";
 
 /**
- * The FAST Slider Label Custom Element. Implements {@link @microsoft/fast-foundation#(SliderLabel:class)},
- * {@link @microsoft/fast-foundation#SliderLabelTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-slider-label\>
+ * @internal
  */
-@customElement({
-    name: "fast-slider-label",
-    template,
-    styles,
-})
-export class FASTSliderLabel extends SliderLabel {
+export class SliderLabel extends FoundationSliderLabel {
     protected sliderOrientationChanged(): void {
         if (this.sliderOrientation === Orientation.horizontal) {
             this.$fastController.addStyles(horizontalSliderStyles);
@@ -34,7 +25,23 @@ export class FASTSliderLabel extends SliderLabel {
 }
 
 /**
+ * A function that returns a {@link @microsoft/fast-foundation#SliderLabel} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#sliderLabelTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: \<fast-slider-label\>
+ */
+
+export const fastSliderLabel = SliderLabel.compose({
+    baseName: "slider-label",
+    template,
+    styles,
+});
+
+/**
  * Styles for SliderLabel
  * @public
  */
-export const SliderLabelStyles = styles;
+export const sliderLabelStyles = styles;

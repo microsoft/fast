@@ -2,13 +2,21 @@ import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import type { Toolbar } from "./toolbar";
+import type { FoundationElementDefinition } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Toolbar:class)} component.
  *
  * @public
  */
-export const ToolbarTemplate: ViewTemplate<Toolbar> = html`
+export const toolbarTemplate: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ViewTemplate<Toolbar> = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => html`
     <template
         aria-label="${x => x.ariaLabel}"
         aria-labelledby="${x => x.ariaLabelledby}"

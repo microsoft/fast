@@ -1,6 +1,7 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { isHTMLElement, keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
+import { attr, DOM, observable } from "@microsoft/fast-element";
+import { keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Tree view Custom HTML Element.
@@ -8,26 +9,14 @@ import { isTreeItemElement, TreeItem } from "../tree-item";
  *
  * @public
  */
-export class TreeView extends FASTElement {
+export class TreeView extends FoundationElement {
     public treeView: HTMLElement;
 
     @attr({ attribute: "render-collapsed-nodes" })
     public renderCollapsedNodes: boolean;
 
-    /**
-     * @deprecated - the tree itself is no longer a focusable area.
-     */
-    @observable
-    public focusable: boolean = true;
-
     @observable
     public currentSelected: HTMLElement | TreeItem | null;
-
-    /**
-     * @deprecated - this property is no longer needed.
-     */
-    @observable
-    private lastFocused: HTMLElement;
 
     @observable
     private nested: boolean;
@@ -74,12 +63,6 @@ export class TreeView extends FASTElement {
             target.removeAttribute("tabindex");
         }
     };
-
-    /**
-     * @deprecated - no longer needed
-     */
-    /* eslint-disable-next-line */
-    public handleFocus = (e: FocusEvent): void => {};
 
     public connectedCallback(): void {
         super.connectedCallback();

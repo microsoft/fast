@@ -303,7 +303,7 @@ export const DI = Object.freeze({
     },
 
     findResponsibleContainer(element: HTMLElement): Container {
-        const owned = (element as any).$container as ContainerImpl;
+        const owned = (element as any).$$container$$ as ContainerImpl;
 
         if (owned && owned.responsibleForOwnerRequests) {
             return owned;
@@ -333,7 +333,7 @@ export const DI = Object.freeze({
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container {
         return (
-            (element as any).$container ||
+            (element as any).$$container$$ ||
             new ContainerImpl(
                 element,
                 Object.assign({}, ContainerConfiguration.default, config, {
@@ -1143,7 +1143,7 @@ export class ContainerImpl implements Container {
 
     constructor(protected owner: any, protected config: ContainerConfiguration) {
         if (owner !== null) {
-            owner.$container = this;
+            owner.$$container$$ = this;
         }
 
         this.resolvers = new Map();

@@ -1,4 +1,9 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowDown,
@@ -10,6 +15,7 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { getDirection } from "../utilities/direction";
 import { convertPixelToPercent } from "./slider-utilities";
 import { FormAssociatedSlider } from "./slider.form-associated";
@@ -33,6 +39,14 @@ export interface SliderConfiguration {
     direction?: Direction;
     disabled?: boolean;
 }
+
+/**
+ * Slider configuration options
+ * @public
+ */
+export type SliderOptions = FoundationElementDefinition & {
+    thumb?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Slider Custom HTML Element.

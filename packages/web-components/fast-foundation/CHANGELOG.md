@@ -1,8 +1,37 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- feat(design-system): better integrate with DI and enforce constraints (roeisenb@microsoft.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- add API support for setting default slotted content as part of component composition (chhol@microsoft.com)
+- update card to extend foundation (chhol@microsoft.com)
+- feat: encapsulate and optimize ComponentPresentation resolution (roeisenb@microsoft.com)
+
+### Minor changes
+
+- fix(foundation-element): enable subclassing with customElement decorator (roeisenb@microsoft.com)
+- feat(design-system): enable overriding the shadow root mode (roeisenb@microsoft.com)
+- docs(fast-foundation): add api docs for design system and foundation ele (roeisenb@microsoft.com)
+
+## 1.24.8
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- prevent left/right arrows from scrolling when expanding/collapsing tree-item (tlmii@users.noreply.github.com)
 
 ## 1.24.7
 

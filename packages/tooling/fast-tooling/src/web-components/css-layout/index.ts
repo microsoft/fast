@@ -1,4 +1,3 @@
-import { customElement } from "@microsoft/fast-element";
 import { CSSLayoutTemplate as template } from "./css-layout.template";
 import { cssLayoutStyles as styles } from "./css-layout.styles";
 import { CSSLayout } from "./css-layout";
@@ -10,10 +9,9 @@ import { CSSLayout } from "./css-layout";
  * @remarks
  * HTML Element: \<css-layout\>
  */
-@customElement({
-    name: "css-layout",
+export const fastToolingCSSLayout = CSSLayout.compose({
+    baseName: "css-layout",
     template,
     styles,
-})
-export class FASTToolingCSSLayout extends CSSLayout {}
+});
 export { cssLayoutCssProperties } from "./css-layout.css-properties";

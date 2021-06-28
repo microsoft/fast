@@ -28,6 +28,16 @@ export interface CSSRefProps {
      * The value of the CSS declaration
      */
     value: string;
+
+    /**
+     * The current dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
+     * The current data location
+     */
+    dataLocation: string;
 }
 
 export interface CSSRefState {

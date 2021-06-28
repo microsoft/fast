@@ -1,7 +1,8 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * Determines if the element is a {@link (ListboxOption:class)}
@@ -19,11 +20,11 @@ export function isListboxOption(el: Element): el is ListboxOption {
 
 /**
  * An Option Custom HTML Element.
- * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA menuitem }.
+ * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
  *
  * @public
  */
-export class ListboxOption extends FASTElement {
+export class ListboxOption extends FoundationElement {
     /**
      * @internal
      */
