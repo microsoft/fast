@@ -1,22 +1,41 @@
-/** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-import h from "../../utilities/web-components/pragma"; /* Note: Import wrapped createElement. */
-
 import React from "react";
 import styles, { CSSControlClassNameContract } from "./control.css.style";
 import { CSSControlProps, CSSControlState } from "./control.css.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
-import { CSSProperty } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
+import {
+    CSSProperty,
+    mapCSSInlineStyleToCSSPropertyDictionary,
+} from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import { CSSStandardControlPlugin } from "./css";
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
+/**
+ * This is currently experimental, any use of the CSS control must include the following
+ * imports and register with the DesignSystem
+ *
+ * import { DesignSystem } from "@microsoft/fast-foundation";
+ * import {
+ *    fastCheckbox,
+ *    fastNumberField,
+ *    fastOption,
+ *    fastSelect,
+ *    fastTextField,
+ * } from "@microsoft/fast-components";
+ * import {
+ *     fastToolingColorPicker,
+ * } from "@microsoft/fast-tooling/dist/esm/web-components";
+ *
+ * DesignSystem.getOrCreate().register(
+ *    fastCheckbox(),
+ *    fastNumberField(),
+ *    fastOption(),
+ *    fastSelect(),
+ *    fastTextField(),
+ *    fastToolingColorPicker({ prefix: "fast-tooling" }),
+ * );
  */
-FASTDesignSystemProvider;
 
 /**
  * Custom form control definition for CSS
@@ -28,15 +47,13 @@ class CSSControl extends React.Component<
     constructor(props: CSSControlProps & ManagedClasses<CSSControlClassNameContract>) {
         super(props);
 
-        this.state = {};
+        this.state = mapCSSInlineStyleToCSSPropertyDictionary(this.props.value);
     }
 
     public render(): React.ReactNode {
         return (
             <div className={classNames(this.props.managedClasses.css)}>
-                <fast-design-system-provider use-defaults>
-                    {this.renderCSSProperties()}
-                </fast-design-system-provider>
+                {this.renderCSSProperties()}
             </div>
         );
     }
@@ -74,7 +91,11 @@ class CSSControl extends React.Component<
                     string,
                     CSSProperty
                 ]): React.ReactNode => {
-                    return this.renderCSSProperty(cssProperty, cssPropertyName);
+                    return this.renderCSSProperty(
+                        cssProperty,
+                        cssPropertyName,
+                        this.state[cssPropertyName] || ""
+                    );
                 }
             ),
         ];
@@ -82,7 +103,8 @@ class CSSControl extends React.Component<
 
     private renderCSSProperty(
         cssProperty: CSSProperty,
-        cssPropertyName: string
+        cssPropertyName: string,
+        cssPropertyValue: string
     ): React.ReactNode {
         if (!cssProperty || !cssProperty.name || !cssProperty.syntax) {
             return null;
@@ -95,6 +117,9 @@ class CSSControl extends React.Component<
                     syntax={cssProperty.syntax}
                     onChange={this.handleOnChange(cssPropertyName)}
                     mapsToProperty={cssPropertyName}
+                    value={cssPropertyValue}
+                    dictionaryId={this.props.dictionaryId}
+                    dataLocation={this.props.dataLocation}
                 />
             </fieldset>
         );

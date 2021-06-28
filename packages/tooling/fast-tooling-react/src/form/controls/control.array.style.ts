@@ -65,7 +65,7 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         "&::before": {
             content: "''",
             display: "block",
-            width: "calc(100% - 30px)",
+            width: "100%",
             "border-bottom": "1px solid transparent",
             position: "absolute",
             top: "0",
@@ -77,7 +77,7 @@ const styles: ComponentStyles<ArrayControlClassNameContract, {}> = {
         cursor: "pointer",
         height: "30px",
         "line-height": "30px",
-        "margin-bottom": "5px",
+        paddingBottom: "5px",
         "border-radius": borderRadiusCSSProperty,
         "&::before": {
             content: "''",

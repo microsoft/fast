@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "1.20.6",
+  "version": "2.0.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -25,7 +25,7 @@
     "build:pw": "yarn build:pw-tests && yarn build:pw-fixtures",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
-    "build": "yarn generate-default-palettes && yarn build:tsc && yarn generate-open-ui-definition && yarn build:rollup && yarn doc",
+    "build": "yarn build:tsc && yarn generate-open-ui-definition && yarn build:rollup && yarn doc",
     "clean:dist": "node ../../../build/clean.js dist",
     "clean:test": "node ../../../build/clean.js __test__/dist __test__/public",
     "dev": "tsc -p ./tsconfig.json -w",
@@ -33,7 +33,6 @@
     "doc": "api-extractor run --local",
     "eslint:fix": "eslint . --ext .ts --fix",
     "eslint": "eslint . --ext .ts",
-    "generate-default-palettes": "node -r esm build/generate-default-palettes.js",
     "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node -r esm build/generate-open-ui-definition",
     "validate-component-definitions": "node -r esm build/validate-component-definitions",
     "prepare": "yarn clean:dist && yarn build",
@@ -93,7 +92,7 @@
     "karma-webpack": "^4.0.2",
     "lodash-es": "4.17.15",
     "mocha": "^8.2.1",
-    "playwright": "^1.9.1",
+    "playwright": "^1.11.0",
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -112,9 +111,9 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-element": "^1.0.2",
-    "@microsoft/fast-foundation": "^1.20.0",
-    "@microsoft/fast-web-utilities": "^4.7.3",
+    "@microsoft/fast-element": "^1.4.0",
+    "@microsoft/fast-foundation": "^2.0.0",
+    "@microsoft/fast-web-utilities": "^4.8.0",
     "tslib": "^1.13.0",
     "vscode-html-languageservice": "^4.0.3"
   },

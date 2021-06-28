@@ -1,13 +1,19 @@
+import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     MessageSystem,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
 } from "../../../src";
 import { HTMLRender } from "../../../src/web-components/html-render/html-render";
-import { HTMLRenderLayerNavgation } from "../../../src/web-components/html-render-layer-navigation/html-render-layer-navigation";
+import { fastToolingHTMLRender } from "../../../src/web-components/html-render";
+import { fastToolingHTMLRenderLayerNavigation } from "../../../src/web-components/html-render-layer-navigation";
 import { nativeElementDefinitions } from "../../../src/definitions/";
 import dataDictionaryConfig from "../../../src/__test__/html-render/data-dictionary-config";
 import schemaDictionary from "../../../src/__test__/html-render/schema-dictionary";
+
+DesignSystem.getOrCreate()
+    .withPrefix("fast-tooling")
+    .register(fastToolingHTMLRender(), fastToolingHTMLRenderLayerNavigation());
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTMessageSystemWorker = require("../../../dist/message-system.min.js");
@@ -15,9 +21,6 @@ document.body.setAttribute("style", "margin: 0");
 
 const fastMessageSystemWorker = new FASTMessageSystemWorker();
 let fastMessageSystem: MessageSystem;
-
-HTMLRender;
-HTMLRenderLayerNavgation;
 
 const htmlRender: HTMLRender = document.getElementById("htmlRender") as HTMLRender;
 const button1: HTMLElement = document.getElementById("testbutton1");

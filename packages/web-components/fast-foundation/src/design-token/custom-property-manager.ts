@@ -5,6 +5,7 @@ import { css, DOM, ElementStyles, FASTElement } from "@microsoft/fast-element";
  */
 class CustomPropertyManagerImpl {
     private static cache = new Map<string, Map<any, ElementStyles>>();
+    private static appliedCache = new WeakMap<HTMLElement, Map<string, ElementStyles>>();
 
     /**
      * {@inheritdoc CustomPropertyManager.get}
@@ -30,6 +31,17 @@ class CustomPropertyManagerImpl {
         return v;
     }
 
+    private getOrCreateAppliedCache(element: HTMLElement): Map<string, ElementStyles> {
+        if (CustomPropertyManagerImpl.appliedCache.has(element)) {
+            return CustomPropertyManagerImpl.appliedCache.get(element)!;
+        }
+
+        return (
+            CustomPropertyManagerImpl.appliedCache.set(element, new Map()) &&
+            CustomPropertyManagerImpl.appliedCache.get(element)!
+        );
+    }
+
     /**
      * Creates an ElementStyles with the key/value CSS custom property
      * on the host
@@ -47,7 +59,9 @@ class CustomPropertyManagerImpl {
         value: any
     ): void {
         if (isFastElement(element)) {
-            element.$fastController.addStyles(this.getElementStyles(token, value));
+            const styles = this.getElementStyles(token, value);
+            element.$fastController.addStyles(styles);
+            this.getOrCreateAppliedCache(element).set(token.cssCustomProperty, styles);
         } else {
             DOM.queueUpdate(() =>
                 element.style.setProperty(token.cssCustomProperty, value)
@@ -55,14 +69,16 @@ class CustomPropertyManagerImpl {
         }
     }
 
-    public removeFrom(
-        element: HTMLElement,
-        token: { cssCustomProperty: string },
-        value: any
-    ): void {
+    public removeFrom(element: HTMLElement, token: { cssCustomProperty: string }): void {
         if (isFastElement(element)) {
-            element.$fastController.removeStyles(this.getElementStyles(token, value));
-        } else if (element.style.getPropertyValue(token.cssCustomProperty) === value) {
+            const cache = this.getOrCreateAppliedCache(element);
+            const styles = cache.get(token.cssCustomProperty);
+
+            if (styles) {
+                element.$fastController.removeStyles(styles);
+                cache.delete(token.cssCustomProperty);
+            }
+        } else {
             DOM.queueUpdate(() => element.style.removeProperty(token.cssCustomProperty));
         }
     }

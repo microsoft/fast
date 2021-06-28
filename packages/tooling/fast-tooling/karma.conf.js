@@ -61,20 +61,6 @@ module.exports = function (config) {
                 extensions: [".js", ".json"],
                 modules: ["node_modules"],
                 mainFields: ["module", "main"],
-                alias: {
-                    "@microsoft/fast-components": path.resolve(
-                        __dirname,
-                        "./node_modules/@microsoft/fast-components"
-                    ),
-                    "@microsoft/fast-foundation": path.resolve(
-                        __dirname,
-                        "./node_modules/@microsoft/fast-foundation"
-                    ),
-                    "@microsoft/fast-element": path.resolve(
-                        __dirname,
-                        "./node_modules/@microsoft/fast-element"
-                    ),
-                },
             },
             devtool: "inline-source-map",
             performance: {
@@ -167,10 +153,10 @@ module.exports = function (config) {
             thresholds: {
                 emitWarning: false,
                 global: {
-                    statements: 90,
-                    lines: 90,
-                    branches: 90,
-                    functions: 90,
+                    statements: 75,
+                    lines: 75,
+                    branches: 75,
+                    functions: 75,
                 },
             },
         };

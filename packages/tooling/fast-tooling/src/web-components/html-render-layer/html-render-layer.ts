@@ -1,4 +1,5 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
+import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     DataDictionary,
     MessageSystem,
@@ -11,12 +12,38 @@ export enum ActivityType {
     blur = "blur",
     click = "click",
     clear = "clear",
+    doubleClick = "dblclick",
+    update = "update",
+    takeFocus = "takeFocus",
+    releaseFocus = "release",
 }
 
-export abstract class HTMLRenderLayer extends FASTElement {
+export class OverylayPosition {
+    public top: number;
+    public left: number;
+    public width: number;
+    public height: number;
+
+    constructor(top: number, left: number, width: number, height: number) {
+        this.top = top;
+        this.left = left;
+        this.width = width;
+        this.height = height;
+    }
+}
+
+export interface HTMLRenderLayerCallbackType {
+    (layerActivityId: string, activityType: ActivityType): void;
+}
+
+export abstract class HTMLRenderLayer extends FoundationElement {
     public dataDictionary: DataDictionary<unknown>;
 
     public schemaDictionary: SchemaDictionary;
+
+    public activityCallback: HTMLRenderLayerCallbackType = null;
+
+    public abstract layerActivityId: string;
 
     @observable
     public messageSystem: MessageSystem;
@@ -39,8 +66,10 @@ export abstract class HTMLRenderLayer extends FASTElement {
     };
 
     public abstract elementActivity(
+        layerActivityId: string,
         activityType: ActivityType,
         datadictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: Node,
+        event: Event
     );
 }

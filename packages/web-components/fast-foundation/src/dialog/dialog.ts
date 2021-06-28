@@ -1,6 +1,7 @@
-import { attr, DOM, FASTElement } from "@microsoft/fast-element";
+import { attr, DOM } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import tabbable from "tabbable";
+import { tabbable } from "tabbable";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A Switch Custom HTML Element.
@@ -8,7 +9,7 @@ import tabbable from "tabbable";
  *
  * @public
  */
-export class Dialog extends FASTElement {
+export class Dialog extends FoundationElement {
     /**
      * Indicates the element is modal. When modal, user interaction will be limited to the contents of the element.
      * @public
@@ -74,7 +75,7 @@ export class Dialog extends FASTElement {
      */
     public dialog: HTMLDivElement;
 
-    private tabbableElements: HTMLElement[];
+    private tabbableElements: Array<HTMLElement | SVGElement>;
 
     private observer: MutationObserver;
 

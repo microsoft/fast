@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix hover typo on accent button style",
-  "packageName": "@microsoft/fast-components",
-  "email": "khamu@microsoft.com",
-  "dependentChangeType": "patch"
-}

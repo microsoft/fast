@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add missing dependency",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

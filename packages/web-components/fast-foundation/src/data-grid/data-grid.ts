@@ -1,14 +1,15 @@
 import {
     attr,
     DOM,
-    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import {
     eventFocus,
+    eventFocusOut,
     eventKeyDown,
     keyCodeArrowDown,
     keyCodeArrowUp,
@@ -92,7 +93,7 @@ export interface ColumnDefinition {
  *
  * @public
  */
-export class DataGrid extends FASTElement {
+export class DataGrid extends FoundationElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -256,12 +257,11 @@ export class DataGrid extends FASTElement {
     public defaultRowItemTemplate: ViewTemplate;
 
     /**
-     * Component prefix (ie. "fast" vs. "fluent" vs. "<mylib>").  Set by the component templates.
+     * Set by the component templates.
      *
-     * @internal
      */
     @observable
-    public prefix: string;
+    public rowElementTag: string;
 
     /**
      * Children that are rows
@@ -316,6 +316,7 @@ export class DataGrid extends FASTElement {
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
         this.addEventListener(eventKeyDown, this.handleKeydown);
+        this.addEventListener(eventFocusOut, this.handleFocusOut);
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
@@ -333,6 +334,7 @@ export class DataGrid extends FASTElement {
         this.removeEventListener("row-focused", this.handleRowFocus);
         this.removeEventListener(eventFocus, this.handleFocus);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
+        this.removeEventListener(eventFocusOut, this.handleFocusOut);
 
         // disconnect observer
         this.observer.disconnect();
@@ -349,6 +351,7 @@ export class DataGrid extends FASTElement {
         const focusRow: DataGridRow = e.target as DataGridRow;
         this.focusRowIndex = this.rowElements.indexOf(focusRow);
         this.focusColumnIndex = focusRow.focusColumnIndex;
+        this.setAttribute("tabIndex", "-1");
         this.isUpdatingFocus = false;
     }
 
@@ -357,6 +360,15 @@ export class DataGrid extends FASTElement {
      */
     public handleFocus(e: FocusEvent): void {
         this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, true);
+    }
+
+    /**
+     * @internal
+     */
+    public handleFocusOut(e: FocusEvent): void {
+        if (e.relatedTarget === null || !this.contains(e.relatedTarget as Element)) {
+            this.setAttribute("tabIndex", "0");
+        }
     }
 
     /**
@@ -476,11 +488,7 @@ export class DataGrid extends FASTElement {
         columnIndex: number,
         scrollIntoView: boolean
     ): void => {
-        if (
-            this.rowElements.length === 0 ||
-            this.columnDefinitions === null ||
-            this.columnDefinitions.length === 0
-        ) {
+        if (this.rowElements.length === 0) {
             this.focusRowIndex = 0;
             this.focusColumnIndex = 0;
             return;
@@ -539,7 +547,7 @@ export class DataGrid extends FASTElement {
 
         if (this.generateHeader !== GenerateHeaderOptions.none) {
             const generatedHeaderElement: HTMLElement = document.createElement(
-                `${this.prefix}-data-grid-row`
+                this.rowElementTag
             );
             this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;

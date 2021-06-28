@@ -4,6 +4,7 @@ import {
     CombinatorType,
     mapCombinatorType,
     mapCSSGroups,
+    mapCSSInlineStyleToCSSPropertyDictionary,
     mapCSSProperties,
     mapCSSSyntaxes,
     mapMixedCombinatorTypes,
@@ -998,5 +999,49 @@ describe("mapMixedCombinatorTypes", () => {
         const syntax1: string =
             "foo | [ [ bar | baz ] || [ qux | quux | quuz | corge | grault ] ] | garply";
         expect(mapMixedCombinatorTypes(syntax1)).to.equal(syntax1);
+    });
+});
+
+describe("mapCSSInlineStyleToCSSPropertyDictionary", () => {
+    it("should return an empty dictionary if the style is an empty string", () => {
+        expect(mapCSSInlineStyleToCSSPropertyDictionary("")).to.deep.equal({});
+    });
+    it("should return a dictionary with one item if the style contains one style item without an ending semi-colon", () => {
+        expect(
+            mapCSSInlineStyleToCSSPropertyDictionary("background-color: red")
+        ).to.deep.equal({
+            "background-color": "red",
+        });
+    });
+    it("should return a dictionary with one item if the style contains one style item with an ending semi-colon", () => {
+        expect(
+            mapCSSInlineStyleToCSSPropertyDictionary("background-color: red;")
+        ).to.deep.equal({
+            "background-color": "red",
+        });
+    });
+    it("should return a dictionary with multiple items if the style contains multiple items", () => {
+        expect(
+            mapCSSInlineStyleToCSSPropertyDictionary(
+                "background-color: red; border: 1px solid black; color: #FFFFFF; transform: translate(120px, 50%);"
+            )
+        ).to.deep.equal({
+            "background-color": "red",
+            border: "1px solid black",
+            color: "#FFFFFF",
+            transform: "translate(120px, 50%)",
+        });
+    });
+    it("should return a dictionary with multiple items with inconsistent spacing", () => {
+        expect(
+            mapCSSInlineStyleToCSSPropertyDictionary(
+                "background-color: red;  border: 1px solid black;color: #FFFFFF; transform: translate(120px, 50%)  "
+            )
+        ).to.deep.equal({
+            "background-color": "red",
+            border: "1px solid black",
+            color: "#FFFFFF",
+            transform: "translate(120px, 50%)",
+        });
     });
 });

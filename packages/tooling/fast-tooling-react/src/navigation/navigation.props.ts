@@ -39,7 +39,7 @@ export interface NavigationState {
     /**
      * Expanded navigation config items
      */
-    expandedNavigationConfigItems: { [key: string]: string[] };
+    expandedNavigationConfigItems: { [key: string]: Set<string> };
 
     /**
      * The navigation dictionary

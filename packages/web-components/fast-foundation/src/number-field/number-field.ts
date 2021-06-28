@@ -1,8 +1,24 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    DOM,
+    nullableNumberConverter,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { DelegatesARIATextbox } from "../text-field/index";
 import { FormAssociatedNumberField } from "./number-field.form-associated";
+
+/**
+ * Number Field configuration options
+ * @public
+ */
+export type NumberFieldOptions = FoundationElementDefinition & {
+    stepDownGlyph?: string | SyntheticViewTemplate;
+    stepUpGlyph?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Number Field Custom HTML Element.
@@ -193,7 +209,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const stepUpValue = this.step + parseFloat(this.value);
+        const stepUpValue = this.step + (parseFloat(this.value) || 0);
         this.value = this.getValidValue(stepUpValue);
 
         this.$emit("input");
@@ -205,7 +221,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const stepDownValue = parseFloat(this.value) - this.step;
+        const stepDownValue = (parseFloat(this.value) || 0) - this.step;
         this.value = this.getValidValue(stepDownValue);
 
         this.$emit("input");

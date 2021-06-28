@@ -1,28 +1,13 @@
-import { customElement, observable } from "@microsoft/fast-element";
-import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRenderLayerNavigationStyles } from "./html-render-layer-navigation.style";
-import { HTMLRenderLayerNavigationTemplate } from "./html-render-layer-navigation.template";
+import { observable } from "@microsoft/fast-element";
+import {
+    ActivityType,
+    HTMLRenderLayer,
+    OverylayPosition,
+} from "../html-render-layer/html-render-layer";
 
-class OverylayPosition {
-    public top: number;
-    public left: number;
-    public width: number;
-    public height: number;
+export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
+    public layerActivityId: string = "NavLayer";
 
-    constructor(top: number, left: number, width: number, height: number) {
-        this.top = top;
-        this.left = left;
-        this.width = width;
-        this.height = height;
-    }
-}
-
-@customElement({
-    name: "fast-tooling-html-render-layer-navigation",
-    template: HTMLRenderLayerNavigationTemplate,
-    styles: HTMLRenderLayerNavigationStyles,
-})
-export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     @observable
     public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
 
@@ -36,14 +21,53 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     public clickLayerActive: boolean = false;
 
     @observable
+    public clickLayerHide: boolean = false;
+
+    @observable
+    public hoverLayerHide: boolean = false;
+
+    @observable
     public clickPillContent: string = "";
 
     @observable
     public hoverPillContent: string = "";
 
+    private timeoutRef: number = null;
+    private currElementRef: HTMLElement = null;
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        window.addEventListener("scroll", this.handleWindowChange);
+        window.addEventListener("resize", this.handleWindowChange);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        window.removeEventListener("scroll", this.handleWindowChange);
+        window.removeEventListener("resize", this.handleWindowChange);
+    }
+
+    private handleWindowChange = () => {
+        if (this.hoverLayerActive) {
+            this.handleUnHighlight();
+        }
+        if (this.clickLayerActive) {
+            this.clickLayerHide = true;
+            if (this.timeoutRef !== null) {
+                window.clearTimeout(this.timeoutRef);
+            }
+            this.timeoutRef = window.setTimeout(() => {
+                this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                this.clickLayerHide = false;
+            }, 40);
+        }
+    };
+
     private GetPositionFromElement(target: HTMLElement): OverylayPosition {
-        const pos: DOMRectList = target.getClientRects();
-        return new OverylayPosition(pos[0].top, pos[0].left, pos[0].width, pos[0].height);
+        const pos: DOMRect = target.getBoundingClientRect();
+        return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
@@ -54,6 +78,7 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
                 : null;
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
+        this.currElementRef = elementRef;
         this.clickPillContent = title || "Untitled";
         this.hoverLayerActive = false;
     }
@@ -74,27 +99,47 @@ export class HTMLRenderLayerNavgation extends HTMLRenderLayer {
     }
 
     private handleClear() {
+        this.currElementRef = null;
         this.clickLayerActive = false;
         this.clickPillContent = "";
     }
 
+    private handleUpdate() {
+        if (this.clickLayerActive) {
+            this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+        }
+    }
+
     public elementActivity(
+        layerActivityId: string,
         activityType: ActivityType,
         dataDictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: Node
     ) {
+        if (layerActivityId === this.layerActivityId) {
+            return;
+        }
         switch (activityType) {
             case ActivityType.hover:
-                this.handleHighlight(dataDictionaryId, elementRef);
+                this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.blur:
                 this.handleUnHighlight();
                 break;
             case ActivityType.click:
-                this.handleSelect(dataDictionaryId, elementRef);
+                this.handleSelect(dataDictionaryId, elementRef as HTMLElement);
                 break;
             case ActivityType.clear:
                 this.handleClear();
+                break;
+            case ActivityType.update:
+                this.handleUpdate();
+                break;
+            case ActivityType.takeFocus:
+                this.hoverLayerHide = true;
+                break;
+            case ActivityType.releaseFocus:
+                this.hoverLayerHide = false;
                 break;
         }
     }
