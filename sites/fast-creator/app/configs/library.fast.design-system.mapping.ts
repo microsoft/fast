@@ -5,6 +5,7 @@ import {
     disabledOpacity,
     fillColor,
     focusStrokeWidth,
+    neutralForegroundRest,
     PaletteRGB,
     strokeWidth,
     SwatchRGB,
@@ -12,10 +13,8 @@ import {
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 export function setupFASTComponentDesignSystem(element: HTMLElement) {
-    element.setAttribute(
-        "style",
-        `background-color: var(${fillColor.cssCustomProperty});`
-    );
+    element.style.setProperty("background-color", `var(${fillColor.cssCustomProperty})`);
+    element.style.setProperty("color", `var(${neutralForegroundRest.cssCustomProperty})`);
 }
 
 export function mapFASTComponentsDesignSystem(
