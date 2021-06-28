@@ -1,4 +1,17 @@
-import { nativeElementSchemas, textSchema } from "@microsoft/site-utilities";
+import { nativeElementSchemas } from "@microsoft/site-utilities";
+import { NativeElementLibraryDefinition } from "./typings";
+import {
+    divExample,
+    heading1Example,
+    heading2Example,
+    heading3Example,
+    heading4Example,
+    heading5Example,
+    heading6Example,
+    imageExample,
+    labelExample,
+    spanExample,
+} from "./library.native.examples";
 import {
     divTag,
     heading1Tag,
@@ -13,134 +26,65 @@ import {
     spanTag,
 } from "./library.native.tags";
 
-export const imageExample = {
-    schemaId: nativeElementSchemas[imageTag].id,
-    data: {
-        src: "https://via.placeholder.com/320x180",
+export const nativeElementId = "native-elements";
+
+export const nativeElementLibrary: NativeElementLibraryDefinition = {
+    id: nativeElementId,
+    componentDictionary: {
+        [nativeElementSchemas[divTag].$id]: {
+            displayName: nativeElementSchemas[divTag].title,
+            schema: nativeElementSchemas[divTag],
+            example: divExample,
+        },
+        [nativeElementSchemas[imageTag].$id]: {
+            displayName: nativeElementSchemas[imageTag].title,
+            schema: nativeElementSchemas[imageTag],
+            example: imageExample,
+        },
+        [nativeElementSchemas[paragraphTag].$id]: {
+            displayName: nativeElementSchemas[paragraphTag].title,
+            schema: nativeElementSchemas[paragraphTag],
+            example: imageExample,
+        },
+        [nativeElementSchemas[spanTag].$id]: {
+            displayName: nativeElementSchemas[spanTag].title,
+            schema: nativeElementSchemas[spanTag],
+            example: spanExample,
+        },
+        [nativeElementSchemas[heading1Tag].$id]: {
+            displayName: nativeElementSchemas[heading1Tag].title,
+            schema: nativeElementSchemas[heading1Tag],
+            example: heading1Example,
+        },
+        [nativeElementSchemas[heading2Tag].$id]: {
+            displayName: nativeElementSchemas[heading2Tag].title,
+            schema: nativeElementSchemas[heading2Tag],
+            example: heading2Example,
+        },
+        [nativeElementSchemas[heading3Tag].$id]: {
+            displayName: nativeElementSchemas[heading3Tag].title,
+            schema: nativeElementSchemas[heading3Tag],
+            example: heading3Example,
+        },
+        [nativeElementSchemas[heading4Tag].$id]: {
+            displayName: nativeElementSchemas[heading4Tag].title,
+            schema: nativeElementSchemas[heading4Tag],
+            example: heading4Example,
+        },
+        [nativeElementSchemas[heading5Tag].$id]: {
+            displayName: nativeElementSchemas[heading5Tag].title,
+            schema: nativeElementSchemas[heading5Tag],
+            example: heading5Example,
+        },
+        [nativeElementSchemas[heading6Tag].$id]: {
+            displayName: nativeElementSchemas[heading6Tag].title,
+            schema: nativeElementSchemas[heading6Tag],
+            example: heading6Example,
+        },
+        [nativeElementSchemas[labelTag].$id]: {
+            displayName: nativeElementSchemas[labelTag].title,
+            schema: nativeElementSchemas[labelTag],
+            example: labelExample,
+        },
     },
-    dataLocation: "Slot",
-};
-
-export const heading1Example = {
-    schemaId: nativeElementSchemas[heading1Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const heading2Example = {
-    schemaId: nativeElementSchemas[heading2Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const heading3Example = {
-    schemaId: nativeElementSchemas[heading3Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const heading4Example = {
-    schemaId: nativeElementSchemas[heading4Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const heading5Example = {
-    schemaId: nativeElementSchemas[heading5Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const heading6Example = {
-    schemaId: nativeElementSchemas[heading6Tag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const paragraphExample = {
-    schemaId: nativeElementSchemas[paragraphTag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id ante non massa vulputate facilisis. Vestibulum ac consequat sem. Etiam sodales turpis nec ante hendrerit, ut cursus risus sollicitudin. Curabitur et suscipit ex, sit amet faucibus neque. In ac nunc elementum, porta purus sed, scelerisque dui. Nullam ut tincidunt mi, id imperdiet risus. Curabitur a metus in ligula pellentesque pellentesque. Vivamus porta velit sollicitudin turpis aliquam, sit amet accumsan purus gravida. Etiam euismod ex neque, vel lobortis ligula semper ac.",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const divExample = {
-    schemaId: nativeElementSchemas[divTag].id,
-    data: {},
-    dataLocation: "Slot",
-};
-
-export const spanExample = {
-    schemaId: nativeElementSchemas[spanTag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
-};
-
-export const labelExample = {
-    schemaId: nativeElementSchemas[labelTag].id,
-    data: {},
-    dataLocation: "Slot",
-    linkedData: [
-        {
-            schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
-            dataLocation: "Slot",
-        },
-    ],
 };
