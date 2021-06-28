@@ -29,7 +29,7 @@ export const frameworkContentPlacementData: FrameworkContentPlacementData[] = [
     },
     {
         body:
-            "While the React team works to fully support custom elements in v17, we provide integration support for v16.x.x.",
+            "While we are eagerly awaiting React to fully support custom elements, we provide integration support for v16.x.x.",
         header: "React",
     },
     {

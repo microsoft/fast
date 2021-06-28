@@ -1,7 +1,8 @@
 import React from "react";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { isEqual } from "lodash-es";
-import { fastDesignSystemDefaults, isDarkMode } from "@microsoft/fast-components";
+import { isDark, SwatchRGB } from "@microsoft/fast-components";
+import { parseColor } from "@microsoft/fast-colors";
 
 const styles: any = {
     gradient: {
@@ -53,6 +54,8 @@ class BaseGradient extends React.Component<GradientProps, {}> {
     private createItems(): React.ReactNode {
         return this.props.colors.map((item: string, index: number) => {
             let classNames: string = this.props.managedClasses.gradient_item;
+            const bg = parseColor(this.props.colors[index])!;
+            const darkMode = isDark(SwatchRGB.create(bg.r, bg.g, bg.b));
 
             if (
                 this.props.markedColor !== undefined &&
@@ -67,13 +70,7 @@ class BaseGradient extends React.Component<GradientProps, {}> {
                     className={classNames}
                     style={{
                         background: this.props.colors[index],
-                        color: isDarkMode(
-                            Object.assign({}, fastDesignSystemDefaults, {
-                                backgroundColor: this.props.colors[index],
-                            })
-                        )
-                            ? "white"
-                            : "black",
+                        color: darkMode ? "white" : "black",
                     }}
                     title={index.toString().concat(": ", item.toUpperCase())}
                     href={this.props.createAnchors ? `${item.toUpperCase()}` : undefined}

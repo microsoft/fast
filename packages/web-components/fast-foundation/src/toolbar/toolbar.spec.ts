@@ -2,20 +2,19 @@ import { customElement } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { Toolbar, ToolbarTemplate } from "./index";
+import { Toolbar, toolbarTemplate as template } from "./index";
 
-@customElement({
-  name: "fast-toolbar",
-  template: ToolbarTemplate,
+const FASTToolbar = Toolbar.compose({
+  baseName: "toolbar",
+  template,
   shadowOptions: {
     delegatesFocus: true
   }
 })
-class FASTToolbar extends Toolbar {}
 
 async function setup() {
-  const { element, connect, disconnect, parent } = await fixture<FASTToolbar>(
-    "fast-toolbar"
+  const { element, connect, disconnect, parent } = await fixture(
+    FASTToolbar()
   );
 
   const control1 = document.createElement("button");

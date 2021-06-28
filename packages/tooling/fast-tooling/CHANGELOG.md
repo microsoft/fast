@@ -1,8 +1,45 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.23.2
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.0 (roeisenb@microsoft.com)
+
+## 0.23.1
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Adding inline edit layer to HTMLRenderer (44823142+williamw2@users.noreply.github.com)
+
+## 0.23.0
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Minor changes
+
+- add a utility to convert inline css styles to a property dictionary (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
+- Bump @microsoft/fast-components to v1.21.7 (robarb@microsoft.com)
+
+## 0.22.3
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.6 (nicholasrice@users.noreply.github.com)
 
 ## 0.22.2
 

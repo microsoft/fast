@@ -1,6 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
 import { NavigationItem } from "./navigation-item";
-export { FASTAnchor } from "@microsoft/fast-components";
 
 export const NavigationItemTemplate = html<NavigationItem>`
     <li>

@@ -1,26 +1,31 @@
-import { customElement } from "@microsoft/fast-element";
-import { Tabs, TabsTemplate as template } from "@microsoft/fast-foundation";
-import { TabsStyles as styles } from "./tabs.styles";
+import { Tabs, tabsTemplate as template } from "@microsoft/fast-foundation";
+import { tabsStyles as styles } from "./tabs.styles";
 
 /**
- * The FAST Tabs Custom Element. Implements {@link @microsoft/fast-foundation#Tabs},
- * {@link @microsoft/fast-foundation#TabsTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Tabs} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#tabsTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-tabs\>
+ * Generates HTML Element: \<fast-tabs\>
  */
-@customElement({
-    name: "fast-tabs",
+export const fastTabs = Tabs.compose({
+    baseName: "tabs",
     template,
     styles,
-})
-export class FASTTabs extends Tabs {}
+});
+
 export * from "../tab";
 export * from "../tab-panel";
 /**
  * Styles for Tabs
  * @public
  */
-export const TabsStyles = styles;
+export const tabsStyles = styles;
+
+/**
+ * Base class for Tabs
+ * @public
+ */
+export { Tabs };

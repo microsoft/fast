@@ -19,19 +19,18 @@ import {
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
-import * as FASTComponents from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { createColorPalette } from "@microsoft/fast-components/src/color/create-color-palette";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { HTMLRenderReact } from "./web-components";
-
-// Prevent tree shaking
-FASTComponents;
+import {
+    mapFASTComponentsDesignSystem,
+    setupFASTComponentDesignSystem,
+} from "./configs/library.fast.design-system.mapping";
+import { registerFASTComponents } from "./configs/library.fast.registry";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
 document.head.appendChild(style);
+registerFASTComponents();
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -39,8 +38,7 @@ export interface PreviewState {
     activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown> | void;
     schemaDictionary: SchemaDictionary;
-    theme: FASTComponents.StandardLuminance;
-    designSystemDataDictionary: DataDictionary<unknown>;
+    designSystemDataDictionary: DataDictionary<unknown> | void;
     htmlRenderMessageSystem: MessageSystem;
     htmlRenderReady: boolean;
 }
@@ -53,7 +51,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     constructor(props: {}) {
         super(props);
-        const designSystemLinkedDataId: string = "design-system";
 
         this.ref = React.createRef();
         this.renderRef = React.createRef();
@@ -63,31 +60,15 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             activeDictionaryId: "",
             dataDictionary: void 0,
             schemaDictionary: {},
-            theme: FASTComponents.StandardLuminance.LightMode,
-            designSystemDataDictionary: [
-                {
-                    [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
-                        data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
-                            direction: Direction.ltr,
-                            "background-color": FASTComponents.neutralLayerL1(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance:
-                                        FASTComponents.StandardLuminance.LightMode,
-                                })
-                            ),
-                        },
-                    },
-                },
-                designSystemLinkedDataId,
-            ],
+            designSystemDataDictionary: void 0,
             htmlRenderMessageSystem: new MessageSystem({
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
             htmlRenderReady: false,
         };
+
+        setupFASTComponentDesignSystem(document.body);
+
         this.state.htmlRenderMessageSystem.add({
             onMessage: this.handleHtmlMessageSystem,
         });
@@ -97,13 +78,19 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
     public render(): React.ReactNode {
         if (this.state.dataDictionary !== undefined) {
-            const direction: Direction = (this.state.designSystemDataDictionary[0][
-                "design-system"
-            ].data as any)["direction"];
+            const directionValue: Direction =
+                this.state.designSystemDataDictionary &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any) &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
+                    "direction"
+                ]
+                    ? (this.state.designSystemDataDictionary[0]["design-system"]
+                          .data as any)["direction"]
+                    : Direction.ltr;
 
             return (
                 <React.Fragment>
-                    <div className="preview" dir={direction} ref={this.ref}>
+                    <div className={"preview"} dir={directionValue} ref={this.ref}>
                         <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
@@ -144,38 +131,40 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         }
 
         if (this.state.dataDictionary !== undefined && this.renderRef.current !== null) {
-            const designSystemProvider: any = this.renderRef.current.designRef;
-            [...designSystemProvider.attributes].forEach(attr =>
-                designSystemProvider.removeAttribute(attr.name)
-            );
+            if (
+                this.state.designSystemDataDictionary &&
+                (this.state.designSystemDataDictionary[0]["design-system"].data as any)
+            ) {
+                mapFASTComponentsDesignSystem(
+                    document.body,
+                    this.state.designSystemDataDictionary[0]["design-system"].data as any
+                );
+            }
+        }
+    }
 
-            Object.entries(
-                this.state.designSystemDataDictionary[0]["design-system"].data as any
-            ).forEach(([attribute, value]: [string, any]) => {
-                designSystemProvider.setAttribute(attribute, value);
-            });
-
-            const accentColor: string = (this.state.designSystemDataDictionary[0][
-                "design-system"
-            ].data as any)["accent-base-color"];
-
-            const generatedAccentPalette = createColorPalette(
-                parseColorHexRGB(accentColor)
-            );
-            (designSystemProvider as FASTComponents.FASTDesignSystemProvider).accentPalette = generatedAccentPalette;
-
-            designSystemProvider.setAttribute(
-                "style",
-                "background: var(--background-color); height: 100%;"
-            );
-
+    private attachComponentsAndInit(): void {
+        this.attachMappedComponents();
+        if (this.state.dataDictionary !== undefined) {
             this.state.htmlRenderMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: this.state.dataDictionary,
                 schemaDictionary: this.state.schemaDictionary,
             });
+            if (this.state.activeDictionaryId) {
+                this.state.htmlRenderMessageSystem.postMessage({
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: this.state.activeDictionaryId,
+                    options: {
+                        originatorId: "preview",
+                    },
+                    activeNavigationConfigId: "",
+                });
+            }
         }
     }
+
     private handleNavigation(): void {
         if (this.renderRef.current !== null) {
             this.state.htmlRenderMessageSystem.postMessage({
@@ -193,9 +182,9 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     private updateDOM(messageData: MessageSystemOutgoing): () => void {
         switch (messageData.type) {
             case MessageSystemType.initialize:
-            case MessageSystemType.data:
             case MessageSystemType.custom:
-                return this.attachMappedComponents;
+            case MessageSystemType.data:
+                return this.attachComponentsAndInit;
             case MessageSystemType.navigation:
                 return this.handleNavigation;
         }
@@ -212,7 +201,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 return;
             }
 
-            if (messageData !== undefined) {
+            if (
+                messageData !== undefined &&
+                (!(messageData as any).options ||
+                    ((messageData as any).options as any).originatorId !== "preview")
+            ) {
                 switch ((messageData as MessageSystemOutgoing).type) {
                     case MessageSystemType.initialize:
                         this.setState(
@@ -252,22 +245,39 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         break;
                     case MessageSystemType.custom:
                         if ((messageData as any).originatorId === "design-system") {
+                            const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
+                                this.state.designSystemDataDictionary &&
+                                (this.state.designSystemDataDictionary[0]["design-system"]
+                                    .data as any)
+                                    ? [
+                                          {
+                                              ["design-system"]: {
+                                                  schemaId: this.state
+                                                      .designSystemDataDictionary[0][
+                                                      "design-system"
+                                                  ].schemaId,
+                                                  data: {
+                                                      ...(messageData as any).data,
+                                                  },
+                                              },
+                                          },
+                                          "design-system",
+                                      ]
+                                    : [
+                                          {
+                                              ["design-system"]: {
+                                                  schemaId: "fastDesignTokens",
+                                                  data: {
+                                                      ...(messageData as any).data,
+                                                  },
+                                              },
+                                          },
+                                          "design-system",
+                                      ];
+
                             this.setState(
                                 {
-                                    designSystemDataDictionary: [
-                                        {
-                                            ["design-system"]: {
-                                                schemaId: this.state
-                                                    .designSystemDataDictionary[0][
-                                                    "design-system"
-                                                ].schemaId,
-                                                data: {
-                                                    ...(messageData as any).data,
-                                                },
-                                            },
-                                        },
-                                        "design-system",
-                                    ],
+                                    designSystemDataDictionary: updatedDesignSystemDataDictionary,
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
@@ -286,11 +296,28 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.options &&
                 message.data.options.originatorId === HTMLRenderOriginatorId
             ) {
+                this.setState({
+                    activeDictionaryId: message.data.activeDictionaryId,
+                });
                 window.postMessage(
                     {
                         type: MessageSystemType.custom,
                         action: ViewerCustomAction.call,
                         value: message.data.activeDictionaryId,
+                    },
+                    "*"
+                );
+            } else if (
+                message.data.type === MessageSystemType.data &&
+                message.data.action === MessageSystemNavigationTypeAction.update &&
+                message.data.options &&
+                message.data.options.originatorId === HTMLRenderOriginatorId
+            ) {
+                window.postMessage(
+                    {
+                        type: MessageSystemType.custom,
+                        action: ViewerCustomAction.call,
+                        data: message.data.data,
                     },
                     "*"
                 );

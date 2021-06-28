@@ -1,10 +1,32 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { createDataGridTemplate, DataGrid, DataGridRow } from "./index";
+import { 
+    dataGridTemplate, 
+    DataGrid, 
+    DataGridRow, 
+    dataGridRowTemplate, 
+    DataGridCell,
+    dataGridCellTemplate 
+} from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
+
+const FASTDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
+    template: dataGridCellTemplate
+})
+
+const FASTDataGridRow = DataGridRow.compose({
+    baseName: "data-grid-row",
+    template: dataGridRowTemplate
+})
+
+const FASTDataGrid = DataGrid.compose({
+    baseName: "data-grid",
+    template: dataGridTemplate
+})
 
 // Utility functions to generate test data
 export function newDataSet(rowCount: number): object[] {
@@ -54,22 +76,16 @@ const endEvent = new KeyboardEvent("keydown", {
 
 const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]';
 
-@customElement({
-    name: "fast-data-grid",
-    template: createDataGridTemplate("fast"),
-})
-class FASTDataGrid extends DataGrid {}
-
 async function setup() {
-    const { document, element, connect, disconnect } = await fixture<FASTDataGrid>(
-        "fast-data-grid"
+    const { document, element, connect, disconnect} = await fixture(
+        [FASTDataGrid(), FASTDataGridRow(), FASTDataGridCell()]
     );
-    return { document, element, connect, disconnect };
+    return { document, element, connect, disconnect};
 }
 
 describe("Data grid", () => {
     it("should set role to 'grid'", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { document, element, connect, disconnect } = await setup();
         await connect();
 
         expect(element.getAttribute("role")).to.equal("grid");
@@ -78,7 +94,7 @@ describe("Data grid", () => {
     });
 
     it("should have a tabIndex of 0 by default", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {  document, element, connect, disconnect } = await setup();
         await connect();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
@@ -115,7 +131,7 @@ describe("Data grid", () => {
     });
 
     it("should generate a basic grid with a row header based on rowsdata only", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {  document, element, connect, disconnect } = await setup();
         element.rowsData = newDataSet(5);
         await connect();
 
@@ -128,7 +144,7 @@ describe("Data grid", () => {
     });
 
     it("should not generate a header when generateHeader is set to 'none'", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {  document, element, connect, disconnect } = await setup();
         element.rowsData = newDataSet(5);
         element.generateHeader = GenerateHeaderOptions.none;
         await connect();
@@ -142,7 +158,7 @@ describe("Data grid", () => {
     });
 
     it("should generate a sticky header when generateHeader is set to 'sticky'", async () => {
-        const { element, connect, disconnect } = await setup();
+        const {  document, element, connect, disconnect } = await setup();
         element.rowsData = newDataSet(5);
         element.generateHeader = GenerateHeaderOptions.sticky;
         await connect();
@@ -156,7 +172,7 @@ describe("Data grid", () => {
     });
 
     it("should set the row index attribute of child rows'", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { document, element, connect, disconnect } = await setup();
         element.rowsData = newDataSet(5);
         element.generateHeader = GenerateHeaderOptions.sticky;
         await connect();

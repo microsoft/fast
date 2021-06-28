@@ -1,18 +1,17 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { ListboxOption } from "./listbox-option";
-import { ListboxOptionTemplate } from "../listbox-option/listbox-option.template";
+import { listboxOptionTemplate } from "../listbox-option/listbox-option.template";
 
-@customElement({
-    name: "fast-option",
-    template: ListboxOptionTemplate,
+const FASTOption = ListboxOption.compose({
+    baseName: "option",
+    template: listboxOptionTemplate,
 })
-class FASTOption extends ListboxOption {}
 
 describe("ListboxOption", () => {
     async function setup() {
-        const { element, connect, disconnect } = await fixture<FASTOption>("fast-option");
+        const { element, connect, disconnect } = await fixture(FASTOption());
 
         return { element, connect, disconnect };
     }
