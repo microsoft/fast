@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "migrate directional-stylesheet utility",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

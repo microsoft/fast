@@ -213,20 +213,28 @@ function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
         context: ControlContext.fill,
-        control: (config: ControlConfig): React.ReactNode => {
+        control: (controlConfig: ControlConfig): React.ReactNode => {
             return (
                 <CSSControl
+                    key={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
                     css={(CSSProperties as unknown) as CSSPropertiesDictionary}
                     cssControls={[
                         new CSSStandardControlPlugin({
                             id: "layout",
                             propertyNames: cssLayoutCssProperties,
                             control: (config: CSSControlConfig) => {
-                                return <CSSLayout onChange={config.onChange} />;
+                                return (
+                                    <CSSLayout
+                                        key={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        webComponentKey={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        value={config.css}
+                                        onChange={config.onChange}
+                                    />
+                                );
                             },
                         }),
                     ]}
-                    {...config}
+                    {...controlConfig}
                 />
             );
         },
@@ -257,7 +265,7 @@ export function renderFormTabs(
             }}
         >
             <fast-tab id={FormId.component}>Components</fast-tab>
-            <fast-tab id={FormId.designSystem}>Design System</fast-tab>
+            <fast-tab id={FormId.designSystem}>Design Tokens</fast-tab>
             <fast-tab-panel id={FormId.component + "Panel"}>
                 <style>{formStyleOverride}</style>
                 <ModularForm
@@ -287,6 +295,8 @@ export function renderFormTabs(
 
 export interface CSSLayoutProps {
     onChange: (config: { [key: string]: string }) => void;
+    webComponentKey: string;
+    value: { [key: string]: string };
 }
 
 export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
@@ -303,8 +313,20 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
     };
 
     render() {
+        const newValue: string = Object.entries(this.props.value)
+            .map(([key, value]: [string, string]) => {
+                return `${key}: ${value};`;
+            })
+            .reduce((prevValue, currValue) => {
+                return prevValue + " " + currValue;
+            }, "");
+
         return (
-            <fast-tooling-css-layout ref={this.setLayoutRef}></fast-tooling-css-layout>
+            <fast-tooling-css-layout
+                value={newValue}
+                key={this.props.webComponentKey}
+                ref={this.setLayoutRef}
+            ></fast-tooling-css-layout>
         );
     }
 }

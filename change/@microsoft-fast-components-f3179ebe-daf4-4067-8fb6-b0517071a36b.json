@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "ensure all base classes for composition are exported",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

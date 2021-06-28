@@ -487,7 +487,7 @@ export class ContainerImpl implements Container {
 // @public
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
-// @alpha
+// @public
 export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
     createCSS?(): string;
 }> extends DesignToken<T>, CSSDirective {
@@ -715,7 +715,7 @@ export class DelegatesARIAToolbar {
 export interface DelegatesARIAToolbar extends ARIAGlobalStatesAndProperties {
 }
 
-// @alpha
+// @public
 export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: HTMLElement) => T;
 
 // @public
@@ -744,7 +744,7 @@ export interface DesignSystemRegistrationContext {
 // @public
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
-// @alpha
+// @public
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
     readonly appliedTo: HTMLElement[];
     deleteValueFor(element: HTMLElement): this;
@@ -756,30 +756,30 @@ export interface DesignToken<T extends string | number | boolean | BigInteger | 
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
 }
 
-// @alpha
+// @public
 export const DesignToken: Readonly<{
     create: typeof create;
 }>;
 
-// @alpha (undocumented)
+// @public
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     target: HTMLElement;
     token: T;
 }
 
-// @alpha
+// @public
 export interface DesignTokenConfiguration {
     cssCustomPropertyName?: string | null;
     name: string;
 }
 
-// @alpha (undocumented)
+// @public
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     // (undocumented)
     handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
-// @alpha
+// @public
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
 // @alpha (undocumented)
@@ -1861,7 +1861,7 @@ export class StartEnd {
 // @public
 export const startTemplate: ViewTemplate<StartEnd>;
 
-// @alpha
+// @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;
 
 // @alpha (undocumented)
@@ -2228,7 +2228,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-system/component-presentation.d.ts:27:5 - (ae-incompatible-release-tags) The symbol "define" is marked as @public, but its signature references "Container" which is marked as @alpha
-// dist/dts/design-token/design-token.d.ts:89:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

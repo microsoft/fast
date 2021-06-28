@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "remove deprecated APIs and Design System Provider infrastructure",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

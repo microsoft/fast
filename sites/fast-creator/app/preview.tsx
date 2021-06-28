@@ -25,6 +25,7 @@ import {
     setupFASTComponentDesignSystem,
 } from "./configs/library.fast.design-system.mapping";
 import { registerFASTComponents } from "./configs/library.fast.registry";
+import { designTokensLinkedDataId } from "./creator";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
@@ -80,11 +81,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (this.state.dataDictionary !== undefined) {
             const directionValue: Direction =
                 this.state.designSystemDataDictionary &&
-                (this.state.designSystemDataDictionary[0]["design-system"].data as any) &&
-                (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
-                    "direction"
-                ]
-                    ? (this.state.designSystemDataDictionary[0]["design-system"]
+                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    .data as any) &&
+                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    .data as any)["direction"]
+                    ? (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
                           .data as any)["direction"]
                     : Direction.ltr;
 
@@ -133,11 +134,13 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         if (this.state.dataDictionary !== undefined && this.renderRef.current !== null) {
             if (
                 this.state.designSystemDataDictionary &&
-                (this.state.designSystemDataDictionary[0]["design-system"].data as any)
+                (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                    .data as any)
             ) {
                 mapFASTComponentsDesignSystem(
                     document.body,
-                    this.state.designSystemDataDictionary[0]["design-system"].data as any
+                    this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                        .data as any
                 );
             }
         }
@@ -244,35 +247,38 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                             );
                         break;
                     case MessageSystemType.custom:
-                        if ((messageData as any).originatorId === "design-system") {
+                        if (
+                            (messageData as any).originatorId === designTokensLinkedDataId
+                        ) {
                             const updatedDesignSystemDataDictionary: DataDictionary<unknown> =
                                 this.state.designSystemDataDictionary &&
-                                (this.state.designSystemDataDictionary[0]["design-system"]
-                                    .data as any)
+                                (this.state.designSystemDataDictionary[0][
+                                    designTokensLinkedDataId
+                                ].data as any)
                                     ? [
                                           {
-                                              ["design-system"]: {
+                                              [designTokensLinkedDataId]: {
                                                   schemaId: this.state
                                                       .designSystemDataDictionary[0][
-                                                      "design-system"
+                                                      designTokensLinkedDataId
                                                   ].schemaId,
                                                   data: {
                                                       ...(messageData as any).data,
                                                   },
                                               },
                                           },
-                                          "design-system",
+                                          designTokensLinkedDataId,
                                       ]
                                     : [
                                           {
-                                              ["design-system"]: {
+                                              [designTokensLinkedDataId]: {
                                                   schemaId: "fastDesignTokens",
                                                   data: {
                                                       ...(messageData as any).data,
                                                   },
                                               },
                                           },
-                                          "design-system",
+                                          designTokensLinkedDataId,
                                       ];
 
                             this.setState(

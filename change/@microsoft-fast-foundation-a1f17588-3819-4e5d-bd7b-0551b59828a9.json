@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "update components to extend FoundationElement",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

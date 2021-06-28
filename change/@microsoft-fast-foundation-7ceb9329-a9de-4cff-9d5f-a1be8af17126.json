@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "migrate directional-stylesheet utility",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
