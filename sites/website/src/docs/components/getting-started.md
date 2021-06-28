@@ -4,7 +4,7 @@ sidebar_label: Getting Started
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 ---
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-element)
+[![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
 
 The `fast-components` and `@fluentui/web-components` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `@fluentui/web-components` expresses Microsoft's Fluent design language.
 

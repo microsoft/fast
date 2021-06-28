@@ -1,3 +1,4 @@
+import { bodyFont, designUnit, typeRampBaseFontSize } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
@@ -5,14 +6,14 @@ export const ContentPlacementStyles = css`
     ${display("grid")} :host {
         justify-content: center;
         contain: layout;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         box-sizing: border-box;
         position: relative;
     }
 
     fast-card {
         background: transparent;
-        padding: calc(var(--design-unit) * 5px);
+        padding: calc(${designUnit} * 5px);
         text-align: left;
         display: flex;
         flex-direction: column;
@@ -22,11 +23,11 @@ export const ContentPlacementStyles = css`
     fast-card ::slotted([slot="body"]) {
         flex: 1 1 auto;
         margin: 0;
-        font-size: var(--type-ramp-base-font-size);
+        font-size: ${typeRampBaseFontSize};
     }
 
     fast-card ::slotted([slot="action"]) {
-        margin-top: calc(var(--design-unit) * 2px);
+        margin-top: calc(${designUnit} * 2px);
         align-self: start;
     }
 
@@ -37,6 +38,6 @@ export const ContentPlacementStyles = css`
 
     fast-card .contentPlacement_icon {
         opacity: 0;
-        margin-bottom: calc(var(--design-unit) * 5px);
+        margin-bottom: calc(${designUnit} * 5px);
     }
 `;

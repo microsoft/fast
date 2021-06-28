@@ -1,34 +1,32 @@
 import { assert, expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
-import { ListboxOptionTemplate, ListboxOption } from "../listbox-option";
+import { DOM } from "@microsoft/fast-element";
+import { listboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
-import { Combobox, ComboboxTemplate } from "./index";
+import { Combobox, comboboxTemplate as template } from "./index";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-combobox",
-    template: ComboboxTemplate,
+const FASTCombobox = Combobox.compose({
+    baseName: "combobox",
+    template
 })
-class FASTCombobox extends Combobox {}
 
-@customElement({
-    name: "fast-option",
-    template: ListboxOptionTemplate,
+const FASTOption = ListboxOption.compose({
+    baseName: "option",
+    template: listboxOptionTemplate
 })
-class FASTOption extends ListboxOption {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTCombobox>(
-        "fast-combobox"
+    const { element, connect, disconnect, parent } = await fixture(
+        [FASTCombobox(), FASTOption()]
     );
 
-    const option1 = document.createElement("fast-option") as FASTOption;
+    const option1 = document.createElement("fast-option") as ListboxOption;
     option1.textContent = "one";
 
-    const option2 = document.createElement("fast-option") as FASTOption;
+    const option2 = document.createElement("fast-option") as ListboxOption;
     option2.textContent = "two";
 
-    const option3 = document.createElement("fast-option") as FASTOption;
+    const option3 = document.createElement("fast-option") as ListboxOption;
     option3.textContent = "three";
 
     element.appendChild(option1);

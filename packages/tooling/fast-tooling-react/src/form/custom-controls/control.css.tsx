@@ -9,14 +9,33 @@ import {
     mapCSSInlineStyleToCSSPropertyDictionary,
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import { CSSStandardControlPlugin } from "./css";
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
+/**
+ * This is currently experimental, any use of the CSS control must include the following
+ * imports and register with the DesignSystem
+ *
+ * import { DesignSystem } from "@microsoft/fast-foundation";
+ * import {
+ *    fastCheckbox,
+ *    fastNumberField,
+ *    fastOption,
+ *    fastSelect,
+ *    fastTextField,
+ * } from "@microsoft/fast-components";
+ * import {
+ *     fastToolingColorPicker,
+ * } from "@microsoft/fast-tooling/dist/esm/web-components";
+ *
+ * DesignSystem.getOrCreate().register(
+ *    fastCheckbox(),
+ *    fastNumberField(),
+ *    fastOption(),
+ *    fastSelect(),
+ *    fastTextField(),
+ *    fastToolingColorPicker({ prefix: "fast-tooling" }),
+ * );
  */
-FASTDesignSystemProvider;
 
 /**
  * Custom form control definition for CSS

@@ -1,25 +1,31 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     BreadcrumbItem,
-    BreadcrumbItemTemplate as template,
+    BreadcrumbItemOptions,
+    breadcrumbItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { BreadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
+import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
 
 /**
- * The FAST BreadcrumbItem Element. Implements {@link @microsoft/fast-foundation#BreadcrumbItem},
- * {@link @microsoft/fast-foundation#BreadcrumbItemTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#BreadcrumbItem} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#breadcrumbItemTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-breadcrumb-item\>
+ * Generates HTML Element: \<fast-breadcrumb-item\>
  */
-@customElement({
-    name: "fast-breadcrumb-item",
+export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>({
+    baseName: "breadcrumb-item",
     template,
     styles,
+    separator: "/",
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTBreadcrumbItem extends BreadcrumbItem {}
+});
+
+/**
+ * Base class for BreadcrumbItem
+ * @public
+ */
+export { BreadcrumbItem };

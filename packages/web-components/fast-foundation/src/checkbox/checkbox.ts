@@ -1,6 +1,16 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated";
+
+/**
+ * Checkbox configuration options
+ * @public
+ */
+export type CheckboxOptions = FoundationElementDefinition & {
+    checkedIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Checkbox Custom HTML Element.

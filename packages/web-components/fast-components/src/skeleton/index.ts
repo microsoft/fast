@@ -1,25 +1,29 @@
-import { customElement } from "@microsoft/fast-element";
-import { Skeleton, SkeletonTemplate as template } from "@microsoft/fast-foundation";
-import { SkeletonStyles as styles } from "./skeleton.styles";
+import { Skeleton, skeletonTemplate as template } from "@microsoft/fast-foundation";
+import { skeletonStyles as styles } from "./skeleton.styles";
 
 /**
- * The FAST Skeleton Element. Implements {@link @microsoft/fast-foundation#Skeleton},
- * {@link @microsoft/fast-foundation#SkeletonTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Skeleton} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#skeletonTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-skeleton\>
+ * Generates HTML Element: \<fast-skeleton\>
  */
-@customElement({
-    name: "fast-skeleton",
+export const fastSkeleton = Skeleton.compose({
+    baseName: "skeleton",
     template,
     styles,
-})
-export class FASTSkeleton extends Skeleton {}
+});
 
 /**
  * Styles for Skeleton
  * @public
  */
-export const SkeletonStyles = styles;
+export const skeletonStyles = styles;
+
+/**
+ * Base class for Skeleton
+ * @public
+ */
+export { Skeleton };

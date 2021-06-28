@@ -1,26 +1,40 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    BreadcrumbItemOptions,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
-import {
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    neutralForegroundRestBehavior,
-    heightNumber,
-} from "../styles/index";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import {
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
+    bodyFont,
+    focusStrokeWidth,
+    neutralForegroundRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { heightNumber } from "../styles/index";
 
-export const BreadcrumbItemStyles = css`
+export const breadcrumbItemStyles: (
+    context: ElementDefinitionContext,
+    definition: BreadcrumbItemOptions
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: BreadcrumbItemOptions
+) =>
+    css`
     ${display("inline-flex")} :host {
         background: transparent;
         box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
         fill: currentColor;
-        line-height: var(--type-ramp-base-line-height);
+        line-height: ${typeRampBaseLineHeight};
         min-width: calc(${heightNumber} * 1px);
         outline: none;
     }
@@ -38,7 +52,7 @@ export const BreadcrumbItemStyles = css`
     .control {
         align-items: center;
         box-sizing: border-box;
-        color: ${accentForegroundRestBehavior.var};
+        color: ${accentForegroundRest};
         cursor: pointer;
         display: flex;
         fill: inherit;
@@ -48,11 +62,11 @@ export const BreadcrumbItemStyles = css`
     }
 
     .control:hover {
-        color: ${accentForegroundHoverBehavior.var};
+        color: ${accentForegroundHover};
     }
 
     .control:active {
-        color: ${accentForegroundActiveBehavior.var};
+        color: ${accentForegroundActive};
     }
 
     .control .content {
@@ -62,7 +76,7 @@ export const BreadcrumbItemStyles = css`
     .control .content::before {
         content: "";
         display: block;
-        height: calc(var(--outline-width) * 1px);
+        height: calc(${strokeWidth} * 1px);
         left: 0;
         position: absolute;
         right: 0;
@@ -71,20 +85,20 @@ export const BreadcrumbItemStyles = css`
     }
 
     .control:hover .content::before {
-        background: ${accentForegroundHoverBehavior.var};
+        background: ${accentForegroundHover};
     }
 
     .control:active .content::before {
-        background: ${accentForegroundActiveBehavior.var};
+        background: ${accentForegroundActive};
     }
 
     .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRestBehavior.var};
-        height: calc(var(--focus-outline-width) * 1px);
+        background: ${neutralForegroundRest};
+        height: calc(${focusStrokeWidth} * 1px);
     }
 
     .control:not([href]) {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: default;
     }
 
@@ -113,16 +127,16 @@ export const BreadcrumbItemStyles = css`
         margin-inline-start: 6px;
     }
 `.withBehaviors(
-    accentForegroundRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            .control:hover .content::before {
-                background: ${SystemColors.LinkText};
-            }
-        `
-    )
-);
+        forcedColorsStylesheetBehavior(
+            css`
+                .control:hover .content::before,
+                .control:${focusVisible} .content::before {
+                    background: ${SystemColors.LinkText};
+                }
+                .start,
+                .end {
+                    fill: ${SystemColors.ButtonText};
+                }
+            `
+        )
+    );

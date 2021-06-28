@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
 import { PluginUI, PluginUIProps } from "./core/ui";
 import { UIMessage } from "./core/messaging";
 
 /* eslint-disable */
 const styles = require("./global.css");
-FASTDesignSystemProvider;
 /* eslint-enable */
 /**
  * Dispatches a UI message to the host

@@ -12,12 +12,12 @@
     }
 
     .right-gradient {
-        --scroll-fade-next: var(--background-color);
+        --scroll-fade-next: var(--fill-color);
     }
 
     .both-gradient {
-        --scroll-fade-next: var(--background-color);
-        --scroll-fade-previous: var(--background-color);
+        --scroll-fade-next: var(--fill-color);
+        --scroll-fade-previous: var(--fill-color);
     }
 
     .top-align {
@@ -55,8 +55,6 @@
 
 <h2>Default</h2>
 <fast-horizontal-scroll>
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>
         Card number 1
         <fast-button>A button</fast-button>
@@ -124,15 +122,10 @@
 </fast-horizontal-scroll>
 
 <h2>Delay loaded content</h2>
-<fast-horizontal-scroll id="late-load">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
-</fast-horizontal-scroll>
+<fast-horizontal-scroll id="late-load"></fast-horizontal-scroll>
 
 <h2>Full width cards</h2>
 <fast-horizontal-scroll class="full-width">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -143,8 +136,6 @@
 
 <h2>Slow scroll (200 pixels/second)</h2>
 <fast-horizontal-scroll speed="200">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -187,8 +178,6 @@
 
 <h2>Right gradient</h2>
 <fast-horizontal-scroll class="right-gradient">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -209,8 +198,6 @@
 
 <h2>Gradient both sides</h2>
 <fast-horizontal-scroll class="both-gradient">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -231,8 +218,6 @@
 
 <h2>Varying heights and widths (default middle aligned)</h2>
 <fast-horizontal-scroll class="right-gradient">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card style="height: 75px;">Card number 2</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 3</fast-card>
@@ -253,8 +238,6 @@
 
 <h2>Top aligned</h2>
 <fast-horizontal-scroll class="right-gradient top-align">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card style="height: 75px;">Card number 2</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 3</fast-card>
@@ -275,8 +258,6 @@
 
 <h2>Bottom aligned</h2>
 <fast-horizontal-scroll class="right-gradient bottom-align">
-    <fast-flipper slot="previous-flipper" direction="previous"></fast-flipper>
-    <fast-flipper slot="next-flipper"></fast-flipper>
     <fast-card>Card number 1</fast-card>
     <fast-card style="height: 75px;">Card number 2</fast-card>
     <fast-card style="width: 100px; height: 300px;">Card number 3</fast-card>
@@ -324,8 +305,6 @@
     dir="rtl"
 >
     <fast-horizontal-scroll class="right-gradient">
-        <fast-flipper slot="previous-flipper"></fast-flipper>
-        <fast-flipper slot="next-flipper" direction="previous"></fast-flipper>
         <fast-card>Card number 1</fast-card>
         <fast-card>Card number 2</fast-card>
         <fast-card>Card number 3</fast-card>

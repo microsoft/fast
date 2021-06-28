@@ -1,29 +1,33 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Flipper } from "./flipper";
+import type { Flipper, FlipperOptions } from "./flipper";
 import { FlipperDirection } from "./flipper.options";
+import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Flipper} component.
  * @public
  */
-export const FlipperTemplate: ViewTemplate<Flipper> = html`
+export const flipperTemplate: (
+    context: ElementDefinitionContext,
+    definition: FlipperOptions
+) => ViewTemplate<Flipper> = (
+    context: ElementDefinitionContext,
+    definition: FlipperOptions
+) => html`
     <template
         role="button"
         aria-disabled="${x => (x.disabled ? true : void 0)}"
         tabindex="${x => (x.hiddenFromAT ? -1 : 0)}"
         class="${x => x.direction} ${x => (x.disabled ? "disabled" : "")}"
+        @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
         ${when(
             x => x.direction === FlipperDirection.next,
             html`
                 <span part="next" class="next">
                     <slot name="next">
-                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M4.023 15.273L11.29 8 4.023.727l.704-.704L12.71 8l-7.984 7.977-.704-.704z"
-                            />
-                        </svg>
+                        ${definition.next || ""}
                     </slot>
                 </span>
             `
@@ -33,11 +37,7 @@ export const FlipperTemplate: ViewTemplate<Flipper> = html`
             html`
                 <span part="previous" class="previous">
                     <slot name="previous">
-                        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M11.273 15.977L3.29 8 11.273.023l.704.704L4.71 8l7.266 7.273-.704.704z"
-                            />
-                        </svg>
+                        ${definition.previous || ""}
                     </slot>
                 </span>
             `
