@@ -1,4 +1,5 @@
 import { observable } from "@microsoft/fast-element";
+import { mapCSSInlineStyleToCSSPropertyDictionary } from "../../data-utilities/mapping.mdn-data";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
 import {
     alignContentOptions,
@@ -109,13 +110,29 @@ export class CSSLayout extends FormAssociatedCSSLayout {
     public flexWrapValue: string = "";
     public flexWrapName: string = "flex-wrap";
 
+    public valueChanged(previous: string, next: string) {
+        super.valueChanged(previous, next);
+
+        const cssPropertyDictionary = mapCSSInlineStyleToCSSPropertyDictionary(next);
+
+        this.flexEnabled = cssPropertyDictionary["display"] === "flex";
+        this.flexDirectionValue = cssPropertyDictionary[this.flexDirectionName] || "";
+        this.justifyContentValue = cssPropertyDictionary[this.justifyContentName] || "";
+        this.alignContentValue = cssPropertyDictionary[this.alignContentName] || "";
+        this.alignItemsValue = cssPropertyDictionary[this.alignItemsName] || "";
+        this.columnGapValue = this.resolvePxValue(
+            cssPropertyDictionary[this.columnGapName]
+        );
+        this.rowGapValue = this.resolvePxValue(cssPropertyDictionary[this.rowGapName]);
+        this.flexWrapValue = cssPropertyDictionary[this.flexWrapName] || "";
+    }
+
     /**
      * The onChange provided, set this to trigger CSS updates
      * in a data dictionary format
      *
      * @param config
      */
-
     public onChange: (config: { [key: string]: string }) => void = (config: {
         [key: string]: string;
         /* eslint-disable-next-line @typescript-eslint/no-empty-function */
@@ -175,6 +192,18 @@ export class CSSLayout extends FormAssociatedCSSLayout {
         this.columnGapValue = "";
         this.rowGapValue = "";
         this.flexWrapValue = "";
+    }
+
+    /**
+     * Removes the 'px' from an CSS value
+     * @returns
+     */
+    private resolvePxValue(value: string | undefined): string {
+        if (value && value.endsWith("px")) {
+            return value.replace("px", "");
+        }
+
+        return "";
     }
 
     /**

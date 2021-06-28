@@ -537,7 +537,10 @@ const columnGap = html`
 export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSSLayout>`
     <template>
         <div class="control-region">
-            <${context.tagFor(Switch)} @change="${(x, c) => x.handleToggleCSSLayout()}">
+            <${context.tagFor(Switch)} checked="${x => x.flexEnabled}" @change="${(
+    x,
+    c
+) => x.handleToggleCSSLayout()}">
                 Enable Flexbox
             </${context.tagFor(Switch)}>
         </div>
@@ -566,7 +569,7 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexDirectionName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.flexDirectionValue === x}"
                                     @change="${(x, c) =>
                                         c.parent.handleCSSChange(
@@ -607,7 +610,7 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.justifyContentName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.justifyContentValue === x}"
                                     @change="${(x, c) =>
                                         c.parent.handleCSSChange(
@@ -650,7 +653,7 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignContentName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.alignContentValue === x}"
                                     @change="${(x, c) =>
                                         c.parent.handleCSSChange(
@@ -688,8 +691,7 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignItemsName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
-                                        c.parent.alignItemsValue === x}"
+                                    ?checked="${(x, c) => c.parent.alignItemsValue === x}"
                                     @change="${(x, c) =>
                                         c.parent.handleCSSChange(
                                             "alignItemsValue",
@@ -710,9 +712,11 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                 ${rowGap}
                             </div>
                             <input
+                                name="${x => x.rowGapName}"
                                 class="css-row-gap"
                                 type="number"
                                 id="fast-tooling-css-row-gap"
+                                value="${x => x.rowGapValue}"
                                 @input="${(x, c) =>
                                     x.handleCSSChange("rowGapValue", c.event)}"
                             />
@@ -725,9 +729,11 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                 ${columnGap}
                             </div>
                             <input
+                                name="${x => x.columnGapName}"
                                 class="css-column-gap"
                                 type="number"
                                 id="fast-tooling-css-column-gap"
+                                value="${x => x.columnGapValue}"
                                 @input="${(x, c) =>
                                     x.handleCSSChange("columnGapValue", c.event)}"
                             />
@@ -758,7 +764,7 @@ export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexWrapName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) => c.parent.flexWrapValue === x}"
+                                    ?checked="${(x, c) => c.parent.flexWrapValue === x}"
                                     @change="${(x, c) =>
                                         c.parent.handleCSSChange(
                                             "flexWrapValue",

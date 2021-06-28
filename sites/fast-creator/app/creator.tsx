@@ -59,7 +59,7 @@ import {
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, ProjectFile } from "./creator.props";
-import { linkedDataExamples } from "./configs";
+import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview";
@@ -107,6 +107,7 @@ const schemaDictionary: SchemaDictionary = {
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
+export const designTokensLinkedDataId: string = "design-tokens";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
@@ -145,8 +146,6 @@ class Creator extends Editor<{}, CreatorState> {
     constructor(props: {}) {
         super(props);
 
-        const designSystemLinkedDataId: string = "design-system";
-
         this.devices = this.getDevices();
 
         if ((window as any).Worker) {
@@ -178,7 +177,7 @@ class Creator extends Editor<{}, CreatorState> {
             activeFormId: FormId.component,
             designSystemDataDictionary: [
                 {
-                    [designSystemLinkedDataId]: {
+                    [designTokensLinkedDataId]: {
                         schemaId: "fastDesignTokens",
                         data: {
                             "accent-base-color": "#DA1A5F",
@@ -187,7 +186,7 @@ class Creator extends Editor<{}, CreatorState> {
                         },
                     },
                 },
-                designSystemLinkedDataId,
+                designTokensLinkedDataId,
             ],
             dataDictionary: [
                 {
@@ -205,10 +204,10 @@ class Creator extends Editor<{}, CreatorState> {
 
     public render(): React.ReactNode {
         const accentColor: string = (this.state.designSystemDataDictionary[0][
-            "design-system"
+            designTokensLinkedDataId
         ].data as any)["accent-base-color"];
         const direction: Direction = (this.state.designSystemDataDictionary[0][
-            "design-system"
+            designTokensLinkedDataId
         ].data as any)["direction"];
         return (
             <div
@@ -241,55 +240,53 @@ class Creator extends Editor<{}, CreatorState> {
                             <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
                         </div>
-                        <fast-design-system-provider background-color="#333">
-                            <div className={this.canvasMenuBarClassNames}>
-                                {renderDeviceSelect(
-                                    this.state.deviceId,
-                                    this.handleUpdateDevice,
-                                    !this.state.previewReady
-                                )}
-                                <Dimension
-                                    width={this.state.viewerWidth}
-                                    height={this.state.viewerHeight}
-                                    onUpdateWidth={this.handleUpdateWidth}
-                                    onUpdateHeight={this.handleUpdateHeight}
-                                    onUpdateOrientation={this.handleUpdateOrientation}
-                                    onDimensionChange={this.handleDimensionChange}
+                        <div className={this.canvasMenuBarClassNames}>
+                            {renderDeviceSelect(
+                                this.state.deviceId,
+                                this.handleUpdateDevice,
+                                !this.state.previewReady
+                            )}
+                            <Dimension
+                                width={this.state.viewerWidth}
+                                height={this.state.viewerHeight}
+                                onUpdateWidth={this.handleUpdateWidth}
+                                onUpdateHeight={this.handleUpdateHeight}
+                                onUpdateOrientation={this.handleUpdateOrientation}
+                                onDimensionChange={this.handleDimensionChange}
+                                disabled={!this.state.previewReady}
+                            />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    marginLeft: "auto",
+                                }}
+                            >
+                                <ThemeSelector
+                                    id={"theme-selector"}
+                                    theme={this.state.theme}
+                                    onUpdateTheme={this.handleUpdateTheme}
                                     disabled={!this.state.previewReady}
                                 />
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        marginLeft: "auto",
-                                    }}
-                                >
-                                    <ThemeSelector
-                                        id={"theme-selector"}
-                                        theme={this.state.theme}
-                                        onUpdateTheme={this.handleUpdateTheme}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <DirectionSwitch
-                                        id={"direction-switch"}
-                                        direction={direction}
-                                        onUpdateDirection={this.handleUpdateDirection}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <AccentColorPicker
-                                        id={"accent-color-picker"}
-                                        accentBaseColor={
-                                            accentColor !== undefined
-                                                ? accentColor
-                                                : "#DA1A5F"
-                                        }
-                                        onAccentColorPickerChange={
-                                            this.handleAccentColorPickerChange
-                                        }
-                                        disabled={!this.state.previewReady}
-                                    />
-                                </div>
+                                <DirectionSwitch
+                                    id={"direction-switch"}
+                                    direction={direction}
+                                    onUpdateDirection={this.handleUpdateDirection}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <AccentColorPicker
+                                    id={"accent-color-picker"}
+                                    accentBaseColor={
+                                        accentColor !== undefined
+                                            ? accentColor
+                                            : "#DA1A5F"
+                                    }
+                                    onAccentColorPickerChange={
+                                        this.handleAccentColorPickerChange
+                                    }
+                                    disabled={!this.state.previewReady}
+                                />
                             </div>
-                        </fast-design-system-provider>
+                        </div>
                     </div>
                     <div
                         className={classNames(this.canvasContentClassNames, [
@@ -349,10 +346,20 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
-            onChange({
-                ...e,
-                value: linkedDataExamples[e.value[0].schemaId] || e.value,
-            });
+            Object.entries(elementLibraryContents).forEach(
+                ([elementLibraryId, schemaIds]: [string, string[]]) => {
+                    if (schemaIds.includes(e.value[0].schemaId)) {
+                        onChange({
+                            ...e,
+                            value:
+                                [
+                                    elementLibraries[elementLibraryId]
+                                        .componentDictionary[e.value[0].schemaId].example,
+                                ] || e.value,
+                        });
+                    }
+                }
+            );
         };
     };
 
@@ -375,8 +382,10 @@ class Creator extends Editor<{}, CreatorState> {
                 });
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.custom,
-                    originatorId: "design-system",
-                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                    originatorId: designTokensLinkedDataId,
+                    data: this.state.designSystemDataDictionary[0][
+                        designTokensLinkedDataId
+                    ].data,
                 } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
@@ -556,26 +565,28 @@ class Creator extends Editor<{}, CreatorState> {
             {
                 designSystemDataDictionary: [
                     {
-                        ["design-system"]: {
+                        [designTokensLinkedDataId]: {
                             schemaId: this.state.designSystemDataDictionary[0][
-                                "design-system"
+                                designTokensLinkedDataId
                             ].schemaId,
                             data: {
                                 ...(this.state.designSystemDataDictionary[0][
-                                    "design-system"
+                                    designTokensLinkedDataId
                                 ] as any).data,
                                 ...newData,
                             },
                         },
                     },
-                    "design-system",
+                    designTokensLinkedDataId,
                 ],
             },
             () => {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.custom,
-                    originatorId: "design-system",
-                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                    originatorId: designTokensLinkedDataId,
+                    data: this.state.designSystemDataDictionary[0][
+                        designTokensLinkedDataId
+                    ].data,
                 } as CustomMessageIncomingOutgoing<any>);
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
@@ -619,9 +630,8 @@ class Creator extends Editor<{}, CreatorState> {
      */
     public handleUpdateDirection = (): void => {
         const updatedDirection: Direction =
-            (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
-                "direction"
-            ] === Direction.ltr
+            (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                .data as any)["direction"] === Direction.ltr
                 ? Direction.rtl
                 : Direction.ltr;
 
