@@ -51,6 +51,26 @@ describe("A DesignToken", () => {
         it("should have a cssCustomProperty property that aligns with a provided cssCustomPropertyName configuration", () => {
             expect(DesignToken.create<number>({name: "name", cssCustomPropertyName: "css-custom-property"}).cssCustomProperty).to.equal("--css-custom-property")
         });
+
+        it("should emit derived dependent properties to a descendent node when a depended token changes for that node", () => {
+            const parent = addElement();
+            const child = addElement(parent)
+            const dependent = DesignToken.create<number>("dependent");
+            const depending = DesignToken.create<number>("depending")
+
+            dependent.setValueFor(parent, 6)
+            depending.setValueFor(parent, (element: HTMLElement) => dependent.getValueFor(element) * 2);
+
+            expect(window.getComputedStyle(parent).getPropertyValue(dependent.cssCustomProperty)).to.equal("6")
+            expect(window.getComputedStyle(parent).getPropertyValue(depending.cssCustomProperty)).to.equal("12")
+            expect(window.getComputedStyle(child).getPropertyValue(dependent.cssCustomProperty)).to.equal("6")
+            expect(window.getComputedStyle(child).getPropertyValue(depending.cssCustomProperty)).to.equal("12")
+
+            dependent.setValueFor(child, 7);
+
+            expect(window.getComputedStyle(child).getPropertyValue(dependent.cssCustomProperty)).to.equal("8")
+            expect(window.getComputedStyle(child).getPropertyValue(depending.cssCustomProperty)).to.equal("14")
+        })
     });
 
     describe("that is not a CSSDesignToken", () => {
