@@ -85,7 +85,7 @@ export interface ProjectFile {
     mobileFormVisible: boolean;
 
     /**
-     * The active navigation id
+     * The active navigation id for the left pane
      */
     activeNavigationId: NavigationId;
 
@@ -95,7 +95,7 @@ export interface ProjectFile {
     addedLibraries: string[];
 
     /**
-     * The active form id
+     * The active form id for the right pane
      */
     activeFormId: FormId;
 

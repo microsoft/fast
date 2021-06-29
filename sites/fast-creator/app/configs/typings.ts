@@ -20,7 +20,6 @@ interface WebComponentDefinition {
 export interface NativeElementLibraryDefinition {
     /**
      * This makes the library optional which will affect the UI.
-     * Defaults to false.
      */
     optional: boolean;
 

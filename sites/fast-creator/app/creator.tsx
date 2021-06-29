@@ -226,7 +226,6 @@ class Creator extends Editor<{}, CreatorState> {
                         title={"Creator"}
                         version={"ALPHA"}
                     />
-
                     <div style={{ height: "calc(100% - 48px)" }}>
                         {renderNavigationTabs(
                             this.state.activeNavigationId,
