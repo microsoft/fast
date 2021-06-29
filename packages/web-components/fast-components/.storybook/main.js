@@ -1,6 +1,9 @@
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 
 module.exports = {
+    features: {
+        postcss: false,
+    },
     stories: ["../src/**/*.stories.ts"],
     webpackFinal: async config => {
         config.module.rules.push({
