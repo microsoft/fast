@@ -58,7 +58,7 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { CreatorState, FormId, ProjectFile } from "./creator.props";
+import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
@@ -68,9 +68,10 @@ import {
     renderDeviceSelect,
     renderDevToolToggle,
     renderFormTabs,
+    renderNavigationTabs,
 } from "./web-components";
 import { Device } from "./web-components/devices";
-import fastDesignSystemSchema from "./configs/library.fast.design-system.schema.json";
+import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -101,7 +102,7 @@ const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-in
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
-    [fastDesignSystemSchema.id]: fastDesignSystemSchema,
+    [fastDesignTokensSchema.id]: fastDesignTokensSchema,
     [textSchema.id]: textSchema,
 };
 
@@ -175,6 +176,10 @@ class Creator extends Editor<{}, CreatorState> {
             mobileFormVisible: false,
             mobileNavigationVisible: false,
             activeFormId: FormId.component,
+            activeNavigationId: NavigationId.navigation,
+            addedLibraries: [
+                "fast-components", // TODO: remove this when additional libraries are added and dynamic imports are used
+            ],
             designSystemDataDictionary: [
                 {
                     [designTokensLinkedDataId]: {
@@ -221,11 +226,15 @@ class Creator extends Editor<{}, CreatorState> {
                         title={"Creator"}
                         version={"ALPHA"}
                     />
+
                     <div style={{ height: "calc(100% - 48px)" }}>
-                        <ModularNavigation
-                            messageSystem={this.fastMessageSystem}
-                            types={[DataType.object]}
-                        />
+                        {renderNavigationTabs(
+                            this.state.activeNavigationId,
+                            this.fastMessageSystem,
+                            this.state.addedLibraries,
+                            this.handleAddLibrary,
+                            this.handleNavigationVisibility
+                        )}
                     </div>
                     <ProjectFileTransfer
                         projectFile={this.state}
@@ -338,9 +347,21 @@ class Creator extends Editor<{}, CreatorState> {
         );
     }
 
+    private handleNavigationVisibility = (navigationId): void => {
+        this.setState({
+            activeNavigationId: navigationId,
+        });
+    };
+
     private handleFormVisibility = (formId): void => {
         this.setState({
             activeFormId: formId,
+        });
+    };
+
+    private handleAddLibrary = (libraryId: string) => {
+        this.setState({
+            addedLibraries: this.state.addedLibraries.concat([libraryId]),
         });
     };
 
