@@ -1,21 +1,15 @@
 import { composedParent } from "./composed-parent";
 
 export function composedContains(reference: HTMLElement, test: HTMLElement): boolean {
-    let current: HTMLElement | null = reference;
+    let current: HTMLElement | null = test;
 
-    if (test === current) {
-        return true; // match Node.contains() behavior
-    }
-
-    do {
-        const parent = composedParent(test);
-
-        if (parent === reference) {
+    while (current !== null) {
+        if (current === reference) {
             return true;
         }
 
-        current = parent;
-    } while (current !== null);
+        current = composedParent(current);
+    }
 
     return false;
 }
