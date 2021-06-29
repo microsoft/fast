@@ -1,4 +1,4 @@
-import { FASTElement, attr, observable } from "@microsoft/fast-element";
+import { FASTElement, attr, observable, DOM } from "@microsoft/fast-element";
 import {
     StandardLuminance,
     PaletteRGB,
@@ -13,6 +13,7 @@ import {
     baseHorizontalSpacingMultiplier,
     controlCornerRadius,
     strokeWidth,
+    neutralLayer1,
 } from "@microsoft/fast-components";
 import { RadioGroup, Slider } from "@microsoft/fast-foundation";
 import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-colors";
@@ -20,18 +21,11 @@ import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-
 export const drawerBreakpoint: string = "660px";
 
 export class FastFrame extends FASTElement {
+    @observable
+    public preview: HTMLElement;
+
     @attr({ attribute: "accent-color" })
     public accentColor: string = "#F33378";
-
-    @attr({ attribute: "background-color" })
-    public backgroundColor: string;
-    backgroundColorChanged() {
-        const color = parseColorHexRGB(this.backgroundColor);
-
-        if (color) {
-            fillColor.setValueFor(this, SwatchRGB.create(color.r, color.g, color.b));
-        }
-    }
 
     @attr
     public darkMode: boolean = true;
@@ -40,7 +34,9 @@ export class FastFrame extends FASTElement {
     public baseLayerLuminance: number = StandardLuminance.DarkMode;
     baseLayerLuminanceChanged() {
         if (typeof this.baseLayerLuminance === "number") {
-            baseLayerLuminance.setValueFor(this, this.baseLayerLuminance);
+            DOM.queueUpdate(() => {
+                baseLayerLuminance.setValueFor(this.preview, this.baseLayerLuminance);
+            });
         }
     }
 
@@ -68,7 +64,9 @@ export class FastFrame extends FASTElement {
     public neutralPalette: PaletteRGB;
     neutralPaletteChanged() {
         if (this.neutralPalette) {
-            neutralPalette.setValueFor(this, this.neutralPalette);
+            DOM.queueUpdate(() => {
+                neutralPalette.setValueFor(this.preview, this.neutralPalette);
+            });
         }
     }
 
@@ -76,26 +74,34 @@ export class FastFrame extends FASTElement {
     public accentPalette: PaletteRGB;
     accentPaletteChanged() {
         if (this.accentPalette) {
-            accentPalette.setValueFor(this, this.accentPalette);
+            DOM.queueUpdate(() => {
+                accentPalette.setValueFor(this.preview, this.accentPalette);
+            });
         }
     }
 
     @observable
     public density: number = 0;
     densityChanged() {
-        density.setValueFor(this, this.density);
+        DOM.queueUpdate(() => {
+            density.setValueFor(this.preview, this.density);
+        });
     }
 
     @observable
     public borderRadius: number = 3;
     borderRadiusChanged() {
-        controlCornerRadius.setValueFor(this, this.borderRadius);
+        DOM.queueUpdate(() => {
+            controlCornerRadius.setValueFor(this.preview, this.borderRadius);
+        });
     }
 
     @observable
     public strokeWidth: number = 1;
     strokeWidthChanged() {
-        strokeWidth.setValueFor(this, this.strokeWidth);
+        DOM.queueUpdate(() => {
+            strokeWidth.setValueFor(this.preview, this.strokeWidth);
+        });
     }
 
     @observable
@@ -189,10 +195,10 @@ export class FastFrame extends FASTElement {
     }
 
     private updateBackgroundColor(): void {
-        this.backgroundColor = neutralLayer1Recipe
-            .getValueFor(this)
-            .evaluate(this)
-            .toColorString();
+        // this.backgroundColor = neutralLayer1Recipe
+        //     .getValueFor(this)
+        //     .evaluate(this)
+        //     .toColorString();
     }
 
     public modeChange = (e: CustomEvent): void => {
@@ -227,6 +233,9 @@ export class FastFrame extends FASTElement {
     public connectedCallback() {
         super.connectedCallback();
 
+        fillColor.setValueFor(this.preview, (element: HTMLElement) =>
+            neutralLayer1Recipe.getValueFor(element).evaluate(element)
+        );
         this.updateBackgroundColor();
         density.setValueFor(this, 0);
         baseHeightMultiplier.setValueFor(this, 10);
