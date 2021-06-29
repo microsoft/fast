@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Tue, 29 Jun 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update the CSS layout component to accept inline CSS string values",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "014d97a2d16e2a9a0d801503722e2e145f3fea46",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-tooling_v0.23.2",
       "version": "0.23.2",
