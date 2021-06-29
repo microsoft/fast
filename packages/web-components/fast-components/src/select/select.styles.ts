@@ -10,6 +10,7 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
+    accentFillFocus,
     accentFillHover,
     accentFillRest,
     bodyFont,
@@ -19,7 +20,7 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentRest,
+    foregroundOnAccentFocus,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -102,8 +103,8 @@ export const selectStyles: (
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
-        background: ${accentFillHover};
-        color: ${foregroundOnAccentRest};
+        background: ${accentFillFocus};
+        color: ${foregroundOnAccentFocus};
     }
 
     :host([disabled]) {
