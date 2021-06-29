@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
+This log was last generated on Tue, 29 Jun 2021 07:14:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.23.3
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- update the CSS layout component to accept inline CSS string values (7559015+janechu@users.noreply.github.com)
 
 ## 0.23.2
 
