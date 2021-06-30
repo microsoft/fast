@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
+This log was last generated on Wed, 30 Jun 2021 07:19:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.1
+
+Wed, 30 Jun 2021 07:19:09 GMT
+
+### Patches
+
+- export the design system provider base class (nicholasrice@users.noreply.github.com)
+- Fixed foregroundOnAccent recipe to work in all states (47367562+bheston@users.noreply.github.com)
 
 ## 2.0.0
 
