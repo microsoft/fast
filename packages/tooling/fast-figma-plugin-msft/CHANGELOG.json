@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-figma-plugin-msft",
   "entries": [
     {
+      "date": "Wed, 30 Jun 2021 07:19:09 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.0.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "41b8432616afa284e2325913d7182a3b907fa789",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
       "version": "0.8.16",

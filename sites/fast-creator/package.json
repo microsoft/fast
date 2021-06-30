@@ -70,7 +70,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^2.0.0",
+    "@microsoft/fast-components": "^2.0.1",
     "@microsoft/fast-tooling": "^0.23.3",
     "@microsoft/fast-tooling-react": "^2.8.22",
     "@microsoft/fast-foundation": "^2.0.0",
