@@ -17,9 +17,7 @@ export const fastPeoplePicker = PeoplePicker.compose({
     baseName: "people-picker",
     template: peoplePickerTemplate,
     styles: peoplePickerStyles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
+    shadowOptions: null
 });
 
 /**

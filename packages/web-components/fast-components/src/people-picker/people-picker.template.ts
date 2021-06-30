@@ -39,15 +39,15 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
     const pickerTag = context.tagFor(Picker);
     return html<PeoplePicker>`
         <template>
-           <"${() => pickerTag}"
+           <${pickerTag}
                 ${ref("picker")}  
-                :defaultItemTemplate=${itemTemplate}
-                :defaultOptionTemplate=${optionTemplate}
+                :itemTemplate=${itemTemplate}
+                :optionTemplate=${optionTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
                 @menuopening="${(x, c) => x.handleMenuOpening(c.event as Event)}"
            >
-           </"${() => pickerTag}">
+           </${pickerTag}>
         </template>
     `;
 };
