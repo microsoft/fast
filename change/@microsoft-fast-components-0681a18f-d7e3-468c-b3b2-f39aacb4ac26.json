@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "export the design system provider base class",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
