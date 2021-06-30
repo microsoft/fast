@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties .",
+  "comment": "Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties.",
   "packageName": "@microsoft/fast-foundation",
   "email": "nicholasrice@users.noreply.github.com",
   "dependentChangeType": "patch"
