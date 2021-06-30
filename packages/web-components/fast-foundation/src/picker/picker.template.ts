@@ -4,7 +4,7 @@ import type { Picker } from "./picker";
 import { PickerMenu } from "./picker-menu";
 import { PickerList } from "./picker-list";
 
-const itemTemplate: ViewTemplate = html`
+const defaultItemTemplate: ViewTemplate = html`
     <button
         role="listitem"
         tabindex="0"
@@ -16,7 +16,7 @@ const itemTemplate: ViewTemplate = html`
     </button>
 `;
 
-const optionTemplate: ViewTemplate = html`
+const defaultOptionTemplate: ViewTemplate = html`
     <button
         role="listitem"
         tabindex="-1"
@@ -42,8 +42,8 @@ const optionTemplate: ViewTemplate = html`
         <template
             :selectedlisttag="${() => pickerListtag}"
             :pickermenutag="${() => pickerMenutag}"
-            :defaultItemTemplate="${itemTemplate}"
-            :defaultOptionTemplate="${optionTemplate}"
+            :defaultItemTemplate="${(x) => x.defaultItemTemplate === undefined ?defaultItemTemplate : x.defaultItemTemplate}"
+            :defaultOptionTemplate="${(x) => x.defaultOptionTemplate === undefined ?defaultOptionTemplate : x.defaultOptionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"

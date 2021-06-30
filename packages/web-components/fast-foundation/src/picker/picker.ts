@@ -20,6 +20,8 @@ import type { PickerMenu } from "./picker-menu";
  */
 export type PickerMenuPosition = "top" | "bottom";
 
+
+
 /**
  * A List Picker Custom HTML Element.
  *
@@ -331,14 +333,6 @@ export class Picker extends FoundationElement {
             this.optionsList = this.options.split(",");
         }
 
-        if (this.itemTemplate === undefined) {
-            this.itemTemplate = this.defaultItemTemplate;
-        }
-
-        if (this.optionTemplate === undefined) {
-            this.optionTemplate = this.defaultOptionTemplate;
-        }
-
         this.selectedList = document.createElement(this.selectedlisttag);
         this.selectedList.slot = "list-region";
         this.appendChild(this.selectedList);
@@ -365,7 +359,7 @@ export class Picker extends FoundationElement {
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.selectedOptions,
-            x => x.itemTemplate,
+            x => x.itemTemplate !== undefined ? x.itemTemplate: x.defaultItemTemplate,
             { positioning: true }
         ).createBehavior(this.itemsPlaceholder);
 
@@ -399,7 +393,7 @@ export class Picker extends FoundationElement {
 
         this.optionsRepeatBehavior = new RepeatDirective(
             x => x.optionsList,
-            x => x.optionTemplate,
+            x => x.optionTemplate !== undefined ? x.optionTemplate : x.defaultOptionTemplate,
             { positioning: true }
         ).createBehavior(this.optionsPlaceholder);
 

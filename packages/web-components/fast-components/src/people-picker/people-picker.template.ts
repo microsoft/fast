@@ -41,8 +41,8 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
         <template>
            <${pickerTag}
                 ${ref("picker")}  
-                :itemTemplate=${itemTemplate}
-                :optionTemplate=${optionTemplate}
+                :defaultItemTemplate=${itemTemplate}
+                :defaultOptionTemplate=${optionTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
                 @menuopening="${(x, c) => x.handleMenuOpening(c.event as Event)}"
