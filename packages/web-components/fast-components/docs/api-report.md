@@ -302,6 +302,72 @@ export const dataGridStyles: (context: import("@microsoft/fast-foundation").Elem
 // @public (undocumented)
 export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+// @public
+export class DesignSystemProvider extends FoundationElement {
+    constructor();
+    accentFillActiveDelta: number;
+    accentFillFocusDelta: number;
+    accentFillHoverDelta: number;
+    accentFillRestDelta: number;
+    accentForegroundActiveDelta: number;
+    accentForegroundFocusDelta: number;
+    accentForegroundHoverDelta: number;
+    accentForegroundRestDelta: number;
+    accentPalette: Palette;
+    baseHeightMultiplier: number;
+    baseHorizontalSpacingMultiplier: number;
+    baseLayerLuminance: number;
+    controlCornerRadius: number;
+    density: number;
+    designUnit: number;
+    direction: Direction;
+    disabledOpacity: number;
+    fillColor: Swatch;
+    focusStrokeWidth: number;
+    neutralFillActiveDelta: number;
+    neutralFillFocusDelta: number;
+    neutralFillHoverDelta: number;
+    neutralFillInputActiveDelta: number;
+    neutralFillInputFocusDelta: number;
+    neutralFillInputHoverDelta: number;
+    neutralFillInputRestDelta: number;
+    neutralFillLayerRestDelta: number;
+    neutralFillRestDelta: number;
+    neutralFillStealthActiveDelta: number;
+    neutralFillStealthFocusDelta: number;
+    neutralFillStealthHoverDelta: number;
+    neutralFillStealthRestDelta: number;
+    neutralFillStrongActiveDelta: number;
+    neutralFillStrongFocusDelta: number;
+    neutralFillStrongHoverDelta: number;
+    neutralPalette: Palette;
+    neutralStrokeActiveDelta: number;
+    neutralStrokeDividerRestDelta: number;
+    neutralStrokeFocusDelta: number;
+    neutralStrokeHoverDelta: number;
+    neutralStrokeRestDelta: number;
+    noPaint: boolean;
+    strokeWidth: number;
+    typeRampBaseFontSize: string;
+    typeRampBaseLineHeight: string;
+    typeRampMinus1FontSize: string;
+    typeRampMinus1LineHeight: string;
+    typeRampMinus2FontSize: string;
+    typeRampMinus2LineHeight: string;
+    typeRampPlus1FontSize: string;
+    typeRampPlus1LineHeight: string;
+    typeRampPlus2FontSize: string;
+    typeRampPlus2LineHeight: string;
+    typeRampPlus3FontSize: string;
+    typeRampPlus3LineHeight: string;
+    typeRampPlus4FontSize: string;
+    typeRampPlus4LineHeight: string;
+    typeRampPlus5FontSize: string;
+    typeRampPlus5LineHeight: string;
+    typeRampPlus6FontSize: string;
+    typeRampPlus6LineHeight: string;
+}
+
 // @public (undocumented)
 export const designUnit: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
@@ -401,8 +467,6 @@ export const fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-fou
 // @public
 export const fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridRow>;
 
-// Warning: (ae-forgotten-export) The symbol "DesignSystemProvider" needs to be exported by the entry point index.d.ts
-//
 // @public
 export const fastDesignSystemProvider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -530,6 +594,24 @@ export const focusStrokeOuterRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const focusStrokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const foregroundOnAccentActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const foregroundOnAccentActiveLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const foregroundOnAccentFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const foregroundOnAccentFocusLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const foregroundOnAccentHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const foregroundOnAccentHoverLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const foregroundOnAccentLargeRecipe: DesignToken<ColorRecipe>;

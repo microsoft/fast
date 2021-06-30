@@ -3,28 +3,44 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-components.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-components)
 
-`fast-components` is a library of Web Components that *composes* the exports of `fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](https://fast.design/docs/components/getting-started) to get started using the components.
+`@microsoft/fast-components` is a library of Web Components that *composes* the exports of `@microsoft/fast-foundation` with stylesheets aligning to the FAST design language. This composition step registers a custom element. See the [quick start](https://fast.design/docs/components/getting-started) to get started using the components.
 
 ## Installation
 
 ### From NPM
 
-To install the `fast-components` library, use either `npm` or `yarn` as follows:
+To install the `@microsoft/fast-components` library, use either `npm` or `yarn` as follows:
 
 ```shell
-npm install --save @microsoft/fast-components
+npm install --save @microsoft/fast-components @microsoft/fast-foundation
 ```
 
 ```shell
-yarn add @microsoft/fast-components
+yarn add @microsoft/fast-components @microsoft/fast-foundation
 ```
 
-Within your JavaScript or TypeScript code, you can then import library APIs like this:
+Within your JavaScript or TypeScript code, import and register desired components with the `DesignSystem`:
 
 ```ts
-import { FASTAnchor } from '@microsoft/fast-components';
+import { DesignSystem } from "@microsoft/fast-foundation"
+import { fastAnchor } from '@microsoft/fast-components';
+
+DesignSystem.getOrCreate().register(
+    fastAnchor()
+);
 ```
 
+Alternatively you can easily register all components:
+
+```ts
+import { DesignSystem } from "@microsoft/fast-foundation"
+import { allComponents } from '@microsoft/fast-components';
+
+DesignSystem.getOrCreate().register(
+    Object.values(allComponents).map(definition => definition())
+);
+```
+ 
 Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
 
 ### From CDN
