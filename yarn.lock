@@ -8426,7 +8426,7 @@ css-select@~1.2.0:
   integrity sha1-KzoRBTnFNV8c2NMUYj6HCxIeyFg=
   dependencies:
     boolbase "~1.0.0"
-    css-what "2.1.1"
+    css-what "2.1"
     domutils "1.5.1"
     nth-check "~1.0.1"
 
