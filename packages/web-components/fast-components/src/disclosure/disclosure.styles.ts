@@ -12,6 +12,8 @@ import {
     accentForegroundRest,
     bodyFont,
     controlCornerRadius,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
     foregroundOnAccentRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -51,10 +53,12 @@ export const disclosureStyles: (
 
     :host([appearance="accent"]) .invoker:active {
         background: ${accentFillActive};
+        color: ${foregroundOnAccentActive};
     }
 
     :host([appearance="accent"]) .invoker:hover {
         background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
     :host([appearance="lightweight"]) .invoker {
