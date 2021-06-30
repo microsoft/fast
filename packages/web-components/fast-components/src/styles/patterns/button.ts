@@ -20,6 +20,8 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillActive,
     neutralFillHover,
@@ -174,10 +176,12 @@ export const AccentButtonStyles = css`
 
     :host([appearance="accent"]:hover) {
         background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
     :host([appearance="accent"]:active) .control:active {
         background: ${accentFillActive};
+        color: ${foregroundOnAccentActive};
     }
 
     :host([appearance="accent"]) .control:${focusVisible} {
