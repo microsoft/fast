@@ -1,0 +1,67 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-picker",
+            "title": "picker",
+            "description": "The FAST picker element",
+            "attributes": [
+                {
+                    "name": "value",
+                    "description": "The value attribute",
+                    "default": "",
+                    "required": false,
+                    "type": "string"
+                },
+                {
+                    "name": "autofocus",
+                    "description": "The autofocus attribute",
+                    "required": false,
+                    "type": "boolean",
+                    "default": false
+                },
+                {
+                    "name": "placeholder",
+                    "description": "The placeholder attribute",
+                    "required": false,
+                    "type": "string",
+                    "default": ""
+                },
+                {
+                    "name": "name",
+                    "description": "The name attribute",
+                    "type": "string",
+                    "default": "",
+                    "required": false
+                },
+                {
+                    "name": "required",
+                    "description": "The required attribute",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "description": "The disabled attribute",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "description": "The readonly attribute",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                }
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "description": "The default slot"
+                }
+            ]
+        }
+    ]
+}

@@ -1,20 +1,21 @@
-import { css } from "@microsoft/fast-element";
-import { focusVisible, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    ElementDefinitionContext,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import { neutralFillInputRest, neutralForegroundRest } from "../design-tokens";
 
-export const PickerListStyles = css`
+export const pickerListStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
     :host {
         display: flex;
         flex-direction: row;
@@ -24,8 +25,8 @@ export const PickerListStyles = css`
 
     ::slotted(.input-element) {
         box-sizing: border-box;
-        background: ${neutralFillInputRestBehavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillInputRest};
+        color: ${neutralForegroundRest};
         border-width: 0;
         outline: 0;
         min-width: 260px;
@@ -46,16 +47,4 @@ export const PickerListStyles = css`
         color: ${SystemColors.HighlightText};
         fill: currentcolor;
     }
-`.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(css``)
-);
+`.withBehaviors(forcedColorsStylesheetBehavior(css``));

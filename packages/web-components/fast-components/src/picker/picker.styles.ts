@@ -1,76 +1,68 @@
-import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import {
+    controlCornerRadius,
+    neutralLayerFloating,
+    neutralStrokeRest,
+    strokeWidth,
+} from "../design-tokens";
 
-export const PickerStyles = css`
-    :host {
-        background: ${neutralFillInputRestBehavior.var};
-        display: block;
-        width: auto;
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
-        margin: 0;
-        border-radius: calc(var(--corner-radius) * 1px);
-        position: relative;
-    }
+export const pickerStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
+        :host {
+            background: ${neutralLayerFloating};
+            display: block;
+            width: auto;
+            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            margin: 0;
+            border-radius: calc(var(--corner-radius) * 1px);
+            position: relative;
+        }
 
-    .region {
-        z-index: 1000;
-        overflow: hidden;
-        display: flex;
-    }
+        .region {
+            z-index: 1000;
+            overflow: hidden;
+            display: flex;
+        }
 
-    .loaded {
-        opacity: 1;
-        pointer-events: none;
-    }
+        .loaded {
+            opacity: 1;
+            pointer-events: none;
+        }
 
-    .loading-display,
-    .no-options-display {
-        background: ${neutralLayerFloatingBehavior.var};
-        width: 100%;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-items: center;
-        padding: 8px;
-    }
+        .loading-display,
+        .no-options-display {
+            background: ${neutralLayerFloating};
+            width: 100%;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-items: center;
+            padding: 8px;
+        }
 
-    .loading-progress {
-        width: 42px;
-        height: 42px;
-    }
+        .loading-progress {
+            width: 42px;
+            height: 42px;
+        }
 
-    .bottom {
-        flex-direction: column;
-    }
+        .bottom {
+            flex-direction: column;
+        }
 
-    .top {
-        flex-direction: column-reverse;
-    }
-`.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(css``)
-);
+        .top {
+            flex-direction: column-reverse;
+        }
+    `.withBehaviors(forcedColorsStylesheetBehavior(css``));

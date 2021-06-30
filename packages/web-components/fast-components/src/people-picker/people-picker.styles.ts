@@ -7,26 +7,17 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    heightNumber,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    accentFillRest,
+    neutralFillInputRest,
+    neutralLayerFloating,
+} from "../design-tokens";
 
-export const PeoplePickerStyles = css`
+export const peoplePickerStyles = css`
     :host {
-        background: ${neutralFillInputRestBehavior.var};
+        background: ${neutralFillInputRest};
         display: block;
         width: auto;
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        border: calc(var(--outline-width) * 1px) solid ${accentFillRest};
         margin: 0;
         border-radius: calc(var(--corner-radius) * 1px);
         position: relative;
@@ -45,7 +36,7 @@ export const PeoplePickerStyles = css`
 
     .loading-display,
     .no-options-display {
-        background: ${neutralLayerFloatingBehavior.var};
+        background: ${neutralLayerFloating};
         width: 100%;
         height: 120px;
         display: flex;
@@ -67,17 +58,4 @@ export const PeoplePickerStyles = css`
     .top {
         flex-direction: column-reverse;
     }
-`.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    neutralFillHoverBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(css``)
-);
+`.withBehaviors(forcedColorsStylesheetBehavior(css``));

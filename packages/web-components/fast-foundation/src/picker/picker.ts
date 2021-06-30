@@ -1,12 +1,12 @@
 import {
     attr,
     DOM,
-    FASTElement,
     observable,
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import uniqueId from "lodash-es/uniqueId";
 import {
     AnchoredRegion,
@@ -25,7 +25,7 @@ export type PickerMenuPosition = "top" | "bottom";
  *
  * @public
  */
-export class Picker extends FASTElement {
+export class Picker extends FoundationElement {
     /**
      * Items pre-selected when component is first connected. Comma delineated string ie. "apples,oranges"
      * @public

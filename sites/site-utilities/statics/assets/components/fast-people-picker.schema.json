@@ -2,10 +2,10 @@
   "$schema": "http://json-schema.org/schema#",
   "$id": "fast-people-picker",
   "id": "fast-people-picker",
-  "title": "undefined",
+  "title": "people-picker",
   "description": "The FAST people-picker element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-people-picker",
   "properties": {
     "value": {

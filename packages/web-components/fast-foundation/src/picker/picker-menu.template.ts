@@ -1,11 +1,7 @@
 import {
-    children,
-    elements,
     html,
-    ref,
     slotted,
     ViewTemplate,
-    when,
 } from "@microsoft/fast-element";
 import type { PickerMenu } from "./picker-menu";
 
@@ -13,7 +9,10 @@ import type { PickerMenu } from "./picker-menu";
  * The template for the List Picker component.
  * @public
  */
-export function createPickerMenuTemplate(prefix: string): ViewTemplate {
+export const pickerMenuTemplate: (context, definition) => ViewTemplate<PickerMenu> = (
+    context,
+    definition
+) => {
     return html<PickerMenu>`
         <template role="list">
             <div class="options-display" part="options-display">

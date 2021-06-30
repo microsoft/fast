@@ -122,6 +122,48 @@ export class AnchoredRegion extends FoundationElement {
     viewportElement: HTMLElement | null;
     }
 
+// @public
+export interface AnchoredRegionConfig {
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
+    //
+    // (undocumented)
+    autoUpdateMode?: AutoUpdateMode;
+    // (undocumented)
+    fixedPlacement?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
+    //
+    // (undocumented)
+    horizontalDefaultPosition?: HorizontalPosition;
+    // (undocumented)
+    horizontalInset: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    //
+    // (undocumented)
+    horizontalPositioningMode: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    //
+    // (undocumented)
+    horizontalScaling: AxisScalingMode;
+    // (undocumented)
+    horizontalThreshold?: number;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
+    //
+    // (undocumented)
+    verticalDefaultPosition?: VerticalPosition;
+    // (undocumented)
+    verticalInset: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    //
+    // (undocumented)
+    verticalPositioningMode: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    //
+    // (undocumented)
+    verticalScaling: AxisScalingMode;
+    // (undocumented)
+    verticalThreshold?: number;
+}
+
 // @beta
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
 
@@ -858,6 +900,15 @@ export enum DividerRole {
 export const dividerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Divider>;
 
 // @public
+export const dropDownLeft: AnchoredRegionConfig;
+
+// @public
+export const dropDownLeftOrRight: AnchoredRegionConfig;
+
+// @public
+export const dropDownRight: AnchoredRegionConfig;
+
+// @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 // @public
@@ -922,6 +973,27 @@ export type FlipperOptions = FoundationElementDefinition & {
 
 // @public
 export const flipperTemplate: (context: ElementDefinitionContext, definition: FlipperOptions) => ViewTemplate<Flipper>;
+
+// @public
+export const flyoutAbove: AnchoredRegionConfig;
+
+// @public
+export const flyoutAboveOrBelow: AnchoredRegionConfig;
+
+// @public
+export const flyoutBelow: AnchoredRegionConfig;
+
+// @public
+export const flyoutBelowScaling: AnchoredRegionConfig;
+
+// @public
+export const flyoutLeft: AnchoredRegionConfig;
+
+// @public
+export const flyoutLeftOrRight: AnchoredRegionConfig;
+
+// @public
+export const flyoutRight: AnchoredRegionConfig;
 
 // @public
 export const focusVisible: string;
@@ -1241,64 +1313,6 @@ export enum ListboxRole {
 export const listboxTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Listbox>;
 
 // @public
-export class ListPicker extends FASTElement {
-    // (undocumented)
-    availableOptions: string[];
-    // @internal (undocumented)
-    connectedCallback(): void;
-    // @internal (undocumented)
-    defaultItemTemplate: ViewTemplate;
-    // @internal (undocumented)
-    defaultOptionTemplate: ViewTemplate;
-    // (undocumented)
-    defaultSelection: string;
-    // @internal
-    generatedOptionElements: HTMLElement[];
-    // (undocumented)
-    handleFocusOut: (e: FocusEvent) => void;
-    // (undocumented)
-    handleInputKeyDown: (e: KeyboardEvent) => boolean;
-    // (undocumented)
-    handleOptionClick: (e: MouseEvent) => boolean;
-    // (undocumented)
-    handleRegionLoaded: (e: Event) => void;
-    // (undocumented)
-    handleTextInput: (e: InputEvent) => boolean;
-    // @internal
-    inputBox: HTMLElement;
-    // @internal (undocumented)
-    itemTemplate: ViewTemplate;
-    // @internal
-    listbox: HTMLElement;
-    // @internal (undocumented)
-    listboxFocusIndex: number;
-    // @internal (undocumented)
-    listboxFocusOptionId: string | null;
-    // @internal (undocumented)
-    listboxId: string;
-    // @internal (undocumented)
-    listboxOpen: boolean;
-    // (undocumented)
-    options: string;
-    // @internal (undocumented)
-    optionTemplate: ViewTemplate;
-    // @internal
-    postOptionRegion: HTMLElement;
-    // @internal
-    preOptionRegion: HTMLElement;
-    // @internal (undocumented)
-    region: AnchoredRegion;
-    // (undocumented)
-    selectedOptions: string[];
-    // (undocumented)
-    selection: string;
-    // @internal (undocumented)
-    slottedPostOptions: HTMLElement[];
-    // @internal (undocumented)
-    slottedPreOptions: HTMLElement[];
-    }
-
-// @public
 export abstract class MatchMediaBehavior implements Behavior {
     constructor(query: MediaQueryList);
     bind(source: typeof FASTElement & HTMLElement): void;
@@ -1468,6 +1482,118 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 
 // @public
 export type ParentLocator = (owner: any) => Container | null;
+
+// @public
+export class Picker extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    defaultItemTemplate: ViewTemplate;
+    defaultOptionTemplate: ViewTemplate;
+    defaultSelection: string;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    flyoutOpen: boolean;
+    // (undocumented)
+    handleClick: (e: MouseEvent) => boolean;
+    // (undocumented)
+    handleFocusIn: (e: FocusEvent) => boolean;
+    // (undocumented)
+    handleFocusOut: (e: FocusEvent) => boolean;
+    // (undocumented)
+    handleItemClick: (e: MouseEvent, itemIndex: number) => boolean;
+    // (undocumented)
+    handleItemKeyDown: (e: KeyboardEvent, itemIndex: number) => boolean;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => boolean;
+    // (undocumented)
+    handleOptionClick: (e: MouseEvent, value: string) => boolean;
+    // (undocumented)
+    handleRegionLoaded: (e: Event) => void;
+    // (undocumented)
+    handleSelectionChange(): void;
+    // (undocumented)
+    protected hasFocus: boolean;
+    // @internal
+    inputElement: HTMLInputElement;
+    itemTemplate: ViewTemplate;
+    label: string;
+    labelledby: string;
+    loadingText: string;
+    maxSelected: number | undefined;
+    menuConfig: AnchoredRegionConfig;
+    // @internal
+    menuElement: PickerMenu;
+    // @internal (undocumented)
+    menuFocusIndex: number;
+    // @internal (undocumented)
+    menuFocusOptionId: string | null;
+    // @internal (undocumented)
+    menuId: string;
+    noSuggestionsText: string;
+    options: string;
+    // (undocumented)
+    optionsList: string[];
+    optionTemplate: ViewTemplate;
+    // @internal (undocumented)
+    pickermenutag: string;
+    // @internal (undocumented)
+    region: AnchoredRegion;
+    // @internal
+    selectedList: HTMLElement;
+    // @internal (undocumented)
+    selectedlisttag: string;
+    // @internal (undocumented)
+    selectedOptions: string[];
+    selection: string;
+    // @internal
+    showLoading: boolean;
+    // @internal (undocumented)
+    showNoOptions: boolean;
+    suggestionsAvailableText: string;
+    // (undocumented)
+    protected toggleFlyout(open: boolean): void;
+    // (undocumented)
+    updatePosition: () => void;
+}
+
+// @public
+export class PickerList extends FoundationElement {
+}
+
+// @public (undocumented)
+export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
+
+// @public
+export class PickerMenu extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    footerElements: HTMLElement[];
+    // (undocumented)
+    footerElementsChanged(): void;
+    // @internal (undocumented)
+    headerElements: HTMLElement[];
+    // (undocumented)
+    headerElementsChanged(): void;
+    // @internal (undocumented)
+    menuElements: HTMLElement[];
+    // (undocumented)
+    menuElementsChanged(): void;
+    // @internal
+    optionElements: HTMLElement[];
+    // (undocumented)
+    suggestionsAvailableText: string;
+    }
+
+// @public (undocumented)
+export type PickerMenuPosition = "top" | "bottom";
+
+// @public
+export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
+
+// @public
+export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {

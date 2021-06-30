@@ -1,6 +1,5 @@
-import { customElement } from "@microsoft/fast-element";
-import { PeoplePickerStyles as peoplePickerStyles } from "./people-picker.styles";
-import { createPeoplePickerTemplate } from "./people-picker.template";
+import { peoplePickerStyles } from "./people-picker.styles";
+import { peoplePickerTemplate } from "./people-picker.template";
 import { PeoplePicker } from "./people-picker";
 
 /**
@@ -14,15 +13,14 @@ import { PeoplePicker } from "./people-picker";
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-@customElement({
-    name: "fast-people-picker",
-    template: createPeoplePickerTemplate("fast"),
+export const fastPeoplePicker = PeoplePicker.compose({
+    baseName: "people-picker",
+    template: peoplePickerTemplate,
     styles: peoplePickerStyles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTPeoplePicker extends PeoplePicker {}
+});
 
 /**
  * Styles for PeoplePicker

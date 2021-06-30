@@ -1,4 +1,5 @@
 import { html, ref, ViewTemplate } from "@microsoft/fast-element";
+import { Picker } from "@microsoft/fast-foundation";
 import type { PeoplePicker } from "./people-picker";
 
 const itemTemplate: ViewTemplate = html`
@@ -31,10 +32,14 @@ const optionTemplate: ViewTemplate = html`
  * The template for the People Picker component.
  * @public
  */
-export function createPeoplePickerTemplate(prefix: string): ViewTemplate {
+export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeoplePicker> = (
+    context,
+    definition
+) => {
+    const pickerTag = context.tagFor(Picker);
     return html<PeoplePicker>`
         <template>
-           <${prefix}-picker
+           <"${() => pickerTag}"
                 ${ref("picker")}  
                 :defaultItemTemplate=${itemTemplate}
                 :defaultOptionTemplate=${optionTemplate}
@@ -42,7 +47,7 @@ export function createPeoplePickerTemplate(prefix: string): ViewTemplate {
                 :showLoading=${x => x.showLoading}
                 @menuopening="${(x, c) => x.handleMenuOpening(c.event as Event)}"
            >
-           </${prefix}-picker>
+           </"${() => pickerTag}">
         </template>
     `;
-}
+};

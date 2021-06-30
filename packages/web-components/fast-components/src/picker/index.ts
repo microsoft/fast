@@ -1,37 +1,14 @@
-import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import {
-    createPickerListTemplate,
-    createPickerMenuTemplate,
-    createPickerTemplate,
     Picker,
     PickerList,
+    pickerListTemplate,
     PickerMenu,
+    pickerMenuTemplate,
+    pickerTemplate,
 } from "@microsoft/fast-foundation";
-import { PickerStyles as pickerStyles } from "./picker.styles";
-import { PickerMenuStyles as pickerMenuStyles } from "./picker-menu.styles";
-import { PickerListStyles as pickerListStyles } from "./picker-list.styles";
-
-const itemTemplate: ViewTemplate = html`
-    <button
-        role="listitem"
-        tabindex="0"
-        @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
-        @keydown="${(x, c) =>
-            c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
-    >
-        ${x => x}
-    </button>
-`;
-
-const optionTemplate: ViewTemplate = html`
-    <button
-        role="listitem"
-        tabindex="-1"
-        @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
-    >
-        ${x => x}
-    </button>
-`;
+import { pickerStyles } from "./picker.styles";
+import { pickerMenuStyles } from "./picker-menu.styles";
+import { pickerListStyles } from "./picker-list.styles";
 
 /**
  * The FAST  Picker Custom Element. Implements {@link @microsoft/fast-foundation#Picker},
@@ -40,19 +17,16 @@ const optionTemplate: ViewTemplate = html`
  *
  * @public
  * @remarks
- * HTML Element: \<fast-picker\>
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
+ * * Generates HTML Element: \<fast-picker\>
  */
-@customElement({
-    name: "fast-picker",
-    template: createPickerTemplate("fast", itemTemplate, optionTemplate),
+export const fastPicker = Picker.compose({
+    baseName: "picker",
+    template: pickerTemplate,
     styles: pickerStyles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTPicker extends Picker {}
+});
 
 /**
  * Styles for Picker
@@ -61,19 +35,24 @@ export class FASTPicker extends Picker {}
 export const PickerStyles = pickerStyles;
 
 /**
+ * Base class for Picker
+ * @public
+ */
+export { Picker };
+
+/**
  *
  *
  *
  * @public
  * @remarks
  * HTML Element: \<fast-picker-menu\>
- *
  */
-@customElement({
-    name: "fast-picker-menu",
-    template: createPickerMenuTemplate("fast"),
+export const fastPickerMenu = PickerMenu.compose({
+    baseName: "picker-menu",
+    template: pickerMenuTemplate,
     styles: pickerMenuStyles,
-})
+});
 export class FASTPickerMenu extends PickerMenu {}
 
 /**
@@ -91,11 +70,11 @@ export const PickerMenuStyles = pickerMenuStyles;
  * HTML Element: \<fast-picker-list\>
  *
  */
-@customElement({
-    name: "fast-picker-list",
-    template: createPickerListTemplate("fast"),
+export const fastPickerList = PickerList.compose({
+    baseName: "picker-list",
+    template: pickerListTemplate,
     styles: pickerListStyles,
-})
+});
 export class FASTPickerList extends PickerList {}
 
 /**

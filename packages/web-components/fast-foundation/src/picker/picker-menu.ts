@@ -1,4 +1,5 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import uniqueId from "lodash-es/uniqueId";
 
 /**
@@ -6,7 +7,7 @@ import uniqueId from "lodash-es/uniqueId";
  *
  * @public
  */
-export class PickerMenu extends FASTElement {
+export class PickerMenu extends FoundationElement {
 
     /**
      *

@@ -125,6 +125,20 @@
     "@algolia/logger-common" "4.9.3"
     "@algolia/requester-common" "4.9.3"
 
+"@azure/msal-browser@^2.14.1":
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/@azure/msal-browser/-/msal-browser-2.14.2.tgz#4efa031ad16d5a3a527eddb6222e15dd6e2ea3e8"
+  integrity sha512-JKHE9Rer41CI8tweiyE91M8ZbGvQV9P+jOPB4ZtPxyxCi2f7ED3jNfdzyUJ1eGB+hCRnvO56M1Xc61T1R+JfYg==
+  dependencies:
+    "@azure/msal-common" "^4.3.0"
+
+"@azure/msal-common@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@azure/msal-common/-/msal-common-4.3.0.tgz#b540e92748656724088bf77192e59943a93135bc"
+  integrity sha512-jFqUWe83wVb6O8cNGGBFg2QlKvqM1ezUgJTEV7kIsAPX0RXhGFE4B1DLNt6hCnkTXDbw+KGW0zgxOEr4MJQwLw==
+  dependencies:
+    debug "^4.1.1"
+
 "@babel/code-frame@7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
@@ -1177,6 +1191,13 @@
     regenerator-runtime "^0.13.4"
 
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.14.0", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.4.4":
   version "7.14.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
   integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
@@ -3187,6 +3208,101 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
   integrity sha512-fclz9DF6nxyEgj/h2hONM8s+49CQBEGaXA+dfZzhUpGUJJLcZRHoBA/e/Xxf8Qoot5fxiTqpU9wJqgxg7gR13A==
+
+"@microsoft/mgt-components@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-components/-/mgt-components-2.2.0.tgz#27de54b1068e32d8df4cf5226526393077f134a5"
+  integrity sha512-X5jk9iIYvGCZwuLxT1WnXr8hPkR7ddgvxe+TtFBO/y0YyjiyqXQc5/cDdQrYNMypJGgM8paJ5hjP1VRXDJ8jCQ==
+  dependencies:
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+    "@microsoft/microsoft-graph-types" "^1.36.0"
+    "@microsoft/microsoft-graph-types-beta" "^0.7.0-preview"
+    office-ui-fabric-core "11.0.0"
+
+"@microsoft/mgt-element@2.2.0", "@microsoft/mgt-element@^2.0.1":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-element/-/mgt-element-2.2.0.tgz#859fa5b9e2467931e201934f19632e58af421b39"
+  integrity sha512-tlh9t3g0odKTGBVz681FgiI6Ti49g2VDuun3+9uYs8pNTDvOXdbuqcZJvbqnlGMLOfHFkMI6UNG/rymx8hQ4lQ==
+  dependencies:
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+    idb "6.0.0"
+    lit-element "^2.4.0"
+
+"@microsoft/mgt-msal-provider@2.2.0", "@microsoft/mgt-msal-provider@^2.0.1":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal-provider/-/mgt-msal-provider-2.2.0.tgz#968c472c6b1ba3a099c3b06edeb703c821dfd23b"
+  integrity sha512-RNem+ZawjKA0Pb09o+6Pj6gYifr4asFSavn1/5vQC2sjUDQcsy3/YmzenWLwesq2vTYfxTNKIJchO/xgJXgjeA==
+  dependencies:
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+    msal "^1.4.10"
+
+"@microsoft/mgt-msal2-provider@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal2-provider/-/mgt-msal2-provider-2.2.0.tgz#cd629c4b3072d97b15419c379c204495ef22f209"
+  integrity sha512-7XftnJFdMWlV6LzLiPCEmZZNvGojzs3+yRNHR6tfUAscfEwiEa4OscVPCs/M2qoDFBht2kDL0F5SRbWkZf64Pg==
+  dependencies:
+    "@azure/msal-browser" "^2.14.1"
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+
+"@microsoft/mgt-proxy-provider@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-proxy-provider/-/mgt-proxy-provider-2.2.0.tgz#66e29afa276fceb3bbaaf2851475a2dcee43ad25"
+  integrity sha512-riJtGGZBJ5KgU4faMzEOHZYfGWHn5QDqvFAIpi8QZoSO1yJZfPJMRp5urfr5GjY2PBcitGjMuX79i/fdVX25WQ==
+  dependencies:
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+
+"@microsoft/mgt-sharepoint-provider@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-sharepoint-provider/-/mgt-sharepoint-provider-2.2.0.tgz#5378ea149064d8a9099e8e8b9414bed5f218e4ad"
+  integrity sha512-cq/Sf1Z6JzYzPA+TEw8ckqVodAlN1Cqd/QK/k4nWx7++4H+aCnQiziGUGHVzQP4E4eIiE9ByExOz0WiLYsCu6A==
+  dependencies:
+    "@microsoft/mgt-element" "2.2.0"
+
+"@microsoft/mgt-teams-provider@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-teams-provider/-/mgt-teams-provider-2.2.0.tgz#9d480c5008739f04cbccac6694d7229bb4587e1d"
+  integrity sha512-fgHdxgNV7l7aTdz8rmWijhsiJmggNR3VpJgBdls3LPmC1XsOELJF/aOI5W/2K66PNYcKzZoxAZPL+zzY+Gea7A==
+  dependencies:
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-msal-provider" "2.2.0"
+    "@microsoft/microsoft-graph-client" "^2.2.1"
+    msal "^1.4.10"
+
+"@microsoft/mgt@^2.0.1":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt/-/mgt-2.2.0.tgz#0c6d27d37489281aa187617acebff10740e29ef4"
+  integrity sha512-W4NWgcfNOr8q7rRoxHKjIBUjxqRBArzDcKYy5g9HxK/68pKmq+7MTZWK9G46mmVHE1nu1zOqef1U+F2UgsCg/A==
+  dependencies:
+    "@microsoft/mgt-components" "2.2.0"
+    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-msal-provider" "2.2.0"
+    "@microsoft/mgt-msal2-provider" "2.2.0"
+    "@microsoft/mgt-proxy-provider" "2.2.0"
+    "@microsoft/mgt-sharepoint-provider" "2.2.0"
+    "@microsoft/mgt-teams-provider" "2.2.0"
+
+"@microsoft/microsoft-graph-client@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-client/-/microsoft-graph-client-2.2.1.tgz#0ef045e1210551f234466a234bb0c60ea2ad8334"
+  integrity sha512-fbDN3UJ+jtSP9llAejqmslMcv498YuIrS3OS/Luivb8OSjdUESZKdP0gcUunnuNIayePVT0/bGYSJTzAIptJQQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    msal "^1.4.4"
+    tslib "^1.9.3"
+
+"@microsoft/microsoft-graph-types-beta@^0.7.0-preview":
+  version "0.7.0-preview"
+  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-types-beta/-/microsoft-graph-types-beta-0.7.0-preview.tgz#d3b2a004b69738cc35941d5d1f1532a88a5d707c"
+  integrity sha512-yGsFq91LoLelDv4EMABnd4PeMZAsMKm5FieRf2OejOMlXEcemky8oQyIzo90SvH2xq62+PJgn41l/6NxerFY/w==
+
+"@microsoft/microsoft-graph-types@^1.36.0":
+  version "1.41.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-types/-/microsoft-graph-types-1.41.0.tgz#669113391f4efb02e888a8a3349e4e3d6d25ba35"
+  integrity sha512-GNGqnN3k4wo6zlxszBUdrzEXMQMeTRXRO2OP3h63LNbqRrRHUe6WY2EbGwL7gUhap7pOoyziZ+eG5YUvUNdBSA==
 
 "@microsoft/tsdoc-config@^0.13.4":
   version "0.13.9"
@@ -12091,6 +12207,11 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
+idb@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-6.0.0.tgz#00d6092b948138cf9bebc9dcddc4df8bf60bf0ac"
+  integrity sha512-+M367poGtpzAylX4pwcrZIa7cFQLfNkAOlMMLN2kw/2jGfJP6h+TB/unQNSVYwNtP8XqkLYrfuiVnxLQNP1tjA==
+
 ieee754@^1.1.13, ieee754@^1.1.4:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
@@ -14215,6 +14336,18 @@ listr2@^3.2.2:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
+lit-element@^2.4.0:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-2.5.1.tgz#3fa74b121a6cd22902409ae3859b7847d01aa6b6"
+  integrity sha512-ogu7PiJTA33bEK0xGu1dmaX5vhcRjBXCFexPja0e7P7jqLhTpNKYRPmE+GmiCaRVAbiQKGkUgkh/i6+bh++dPQ==
+  dependencies:
+    lit-html "^1.1.1"
+
+lit-html@^1.1.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-1.4.1.tgz#0c6f3ee4ad4eb610a49831787f0478ad8e9ae5e0"
+  integrity sha512-B9btcSgPYb1q4oSOb/PrOT6Z/H+r6xuNzfH4lFli/AWhYwdtrgQkQWBbIc6mdnf6E2IL3gDXdkkqNktpU0OZQA==
+
 load-bmfont@^1.3.1, load-bmfont@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/load-bmfont/-/load-bmfont-1.4.1.tgz#c0f5f4711a1e2ccff725a7b6078087ccfcddd3e9"
@@ -15470,6 +15603,13 @@ ms@^2.0.0, ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+msal@^1.4.10, msal@^1.4.4:
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/msal/-/msal-1.4.11.tgz#255e74e200ee5d603dca30e4e48e47fb57441370"
+  integrity sha512-8vW5/+irlcQQk87r8Qp3/kQEc552hr7FQLJ6GF5LLkqnwJDDxrswz6RYPiQhmiampymIs0PbHVZrNf8m+6DmgQ==
+  dependencies:
+    tslib "^1.9.3"
+
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"
@@ -16149,6 +16289,11 @@ octokit-pagination-methods@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/octokit-pagination-methods/-/octokit-pagination-methods-1.1.0.tgz#cf472edc9d551055f9ef73f6e42b4dbb4c80bea4"
   integrity sha512-fZ4qZdQ2nxJvtcasX7Ghl+WlWS/d9IgnBIwFZXVNNZUmzpno91SX5bc5vuxiuKoCtK78XxGGNuSCrDC7xYB3OQ==
+
+office-ui-fabric-core@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-core/-/office-ui-fabric-core-11.0.0.tgz#73f43c8d1bd40e87971c7cda0ff1aa7bfa246410"
+  integrity sha512-K6+KGnBXXjfSxxZpp+4oDXVLgUc//7OnXrn8F08VoJnGhEz27WUf4ZuMa32SjGoqirWlb4JlKkXbOpC9cis6dQ==
 
 omggif@^1.0.10, omggif@^1.0.9:
   version "1.0.10"
@@ -21434,7 +21579,7 @@ tslib@2.0.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
   integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
 
-tslib@^1.11.1, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.11.1, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

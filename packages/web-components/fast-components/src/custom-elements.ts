@@ -23,6 +23,7 @@ import { fastListbox } from "./listbox/index";
 import { fastMenuItem } from "./menu-item/index";
 import { fastMenu } from "./menu/index";
 import { fastNumberField } from "./number-field/index";
+import { fastPicker, fastPickerList, fastPickerMenu } from "./picker/index";
 import { fastProgressRing } from "./progress-ring/index";
 import { fastProgress } from "./progress/index";
 import { fastRadioGroup } from "./radio-group/index";
@@ -84,6 +85,9 @@ export {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerMenu,
     fastProgress,
     fastProgressRing,
     fastRadio,
@@ -137,6 +141,9 @@ export const allComponents = {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerMenu,
     fastProgress,
     fastProgressRing,
     fastRadio,

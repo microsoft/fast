@@ -1,5 +1,5 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Picker } from "@microsoft/fast-foundation";
+import { attr, observable } from "@microsoft/fast-element";
+import { FoundationElement, Picker } from "@microsoft/fast-foundation";
 import { PersonType, Providers, ProviderState, IDynamicPerson } from "@microsoft/mgt";
 import { findPeople, getPeople } from "./graph/graph.people";
 import { findUsers, findGroupMembers, getUsersForUserIds } from "./graph/graph.user";
@@ -29,7 +29,7 @@ export function debounce(func, time) {
  *
  * @public
  */
-export class PeoplePicker extends FASTElement {
+export class PeoplePicker extends FoundationElement {
     /**
      * Items pre-selected when component is first connected.
      * @public

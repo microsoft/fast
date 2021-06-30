@@ -5,7 +5,10 @@ import type { PickerList } from "./picker-list";
  *
  * @public
  */
-export function createPickerListTemplate(prefix: string): ViewTemplate {
+ export const pickerListTemplate: (context, definition) => ViewTemplate<PickerList> = (
+    context,
+    definition
+) => {
     return html<PickerList>`
         <template role="list">
             <slot></slot>

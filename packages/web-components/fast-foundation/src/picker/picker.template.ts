@@ -1,19 +1,47 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import { AnchoredRegion } from "../anchored-region";
 import type { Picker } from "./picker";
+import { PickerMenu } from "./picker-menu";
+import { PickerList } from "./picker-list";
+
+const itemTemplate: ViewTemplate = html`
+    <button
+        role="listitem"
+        tabindex="0"
+        @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
+        @keydown="${(x, c) =>
+            c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
+    >
+        ${x => x}
+    </button>
+`;
+
+const optionTemplate: ViewTemplate = html`
+    <button
+        role="listitem"
+        tabindex="-1"
+        @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
+    >
+        ${x => x}
+    </button>
+`;
+
 
 /**
  * The template for the List Picker component.
  * @public
  */
-export function createPickerTemplate(
-    prefix: string,
-    itemTemplate: ViewTemplate,
-    optionTemplate: ViewTemplate
-): ViewTemplate {
+ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
+    context,
+    definition
+) => {
+    const anchoredRegionTag = context.tagFor(AnchoredRegion);
+    const pickerMenutag = context.tagFor(PickerMenu);
+    const pickerListtag = context.tagFor(PickerList);
     return html<Picker>`
         <template
-            :selectedlisttag="${`${prefix}-picker-list`}"
-            :pickermenutag="${`${prefix}-picker-menu`}"
+            :selectedlisttag="${() => pickerListtag}"
+            :pickermenutag="${() => pickerMenutag}"
             :defaultItemTemplate="${itemTemplate}"
             :defaultOptionTemplate="${optionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
@@ -26,7 +54,7 @@ export function createPickerTemplate(
             ${when(
                 x => x.flyoutOpen,
                 html<Picker>`
-                <${prefix}-anchored-region
+                <${anchoredRegionTag}
                     class="region"
                     auto-update-mode="${x =>
                         x.menuConfig.autoUpdateMode !== undefined
@@ -74,17 +102,17 @@ export function createPickerTemplate(
                         html<Picker>`
                             <div class="loading-display" part="loading-display">
                                 <slot name="loading-region">
-                                    <${prefix}-progress-ring
+                                    <fast-progress-ring
                                         part="loading-progress"
                                         class="loading-progress
                                         slot="loading-region"
-                                    ></${prefix}-progress-ring>
+                                    ></fast-progress-ring>
                                     ${x => x.loadingText}
                                 </slot>
                             </div>
                         `
                     )}
-                </${prefix}-anchored-region>
+                </${anchoredRegionTag}>
             `
             )}
         </template>

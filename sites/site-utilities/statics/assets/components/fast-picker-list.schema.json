@@ -2,10 +2,10 @@
   "$schema": "http://json-schema.org/schema#",
   "$id": "fast-picker-list",
   "id": "fast-picker-list",
-  "title": "undefined",
+  "title": "Picker list",
   "description": "The FAST picker-list element",
   "type": "object",
-  "version": 1,
+  "version": 1.1,
   "mapsToTagName": "fast-picker-list",
   "properties": {
     "Slot": {

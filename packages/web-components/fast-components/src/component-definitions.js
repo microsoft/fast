@@ -48,6 +48,14 @@ import fastMenuItemDefinition from "./menu-item/menu-item.vscode.definition.json
 export { fastMenuItemDefinition };
 import fastNumberFieldDefinition from "./number-field/number-field.vscode.definition.json";
 export { fastNumberFieldDefinition };
+import fastPeoplePickerDefinition from "./people-picker/people-picker.vscode.definition.json";
+export { fastPeoplePickerDefinition };
+import fastPickerDefinition from "./picker/picker.vscode.definition.json";
+export { fastPickerDefinition };
+import fastPickerMenuDefinition from "./picker/picker-menu.vscode.definition.json";
+export { fastPickerMenuDefinition };
+import fastPickerListDefinition from "./picker/picker-list.vscode.definition.json";
+export { fastPickerListDefinition };
 import fastProgressRingDefinition from "./progress-ring/progress-ring.vscode.definition.json";
 export { fastProgressRingDefinition };
 import fastProgressDefinition from "./progress/progress.vscode.definition.json";
