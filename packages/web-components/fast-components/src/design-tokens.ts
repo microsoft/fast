@@ -44,7 +44,9 @@ const { create } = DesignToken;
 // General tokens
 
 /** @public */
-export const bodyFont = create<string>("body-font").withDefault("Segoe UI, sans-serif");
+export const bodyFont = create<string>("body-font").withDefault(
+    'aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif'
+);
 /** @public */
 export const baseHeightMultiplier = create<number>("base-height-multiplier").withDefault(
     10

@@ -14,6 +14,10 @@ import {
     controlCornerRadius,
     strokeWidth,
     neutralLayer1,
+    neutralLayer2,
+    neutralLayer2Recipe,
+    neutralLayerCardContainerRecipe,
+    neutralLayerCardContainer,
 } from "@microsoft/fast-components";
 import { RadioGroup, Slider } from "@microsoft/fast-foundation";
 import { ColorHSL, hslToRGB, parseColorHexRGB, rgbToHSL } from "@microsoft/fast-colors";
@@ -233,9 +237,8 @@ export class FastFrame extends FASTElement {
     public connectedCallback() {
         super.connectedCallback();
 
-        fillColor.setValueFor(this.preview, (element: HTMLElement) =>
-            neutralLayer1Recipe.getValueFor(element).evaluate(element)
-        );
+        fillColor.setValueFor(this.preview, neutralLayerCardContainer);
+
         this.updateBackgroundColor();
         density.setValueFor(this, 0);
         baseHeightMultiplier.setValueFor(this, 10);
