@@ -17,6 +17,8 @@ import {
     disabledOpacity,
     fillColor,
     focusStrokeOuter,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
@@ -123,9 +125,19 @@ export const radioStyles: (
         border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
     }
 
+    :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
+        background: ${foregroundOnAccentHover};
+        fill: ${foregroundOnAccentHover};
+    }
+
     :host([aria-checked="true"]:not([disabled])) .control:active {
         background: ${accentFillActive};
         border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
+    }
+
+    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
+        background: ${foregroundOnAccentActive};
+        fill: ${foregroundOnAccentActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {

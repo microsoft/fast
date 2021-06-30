@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 30 Jun 2021 07:19:09 GMT",
+      "tag": "@microsoft/fast-components_v2.0.1",
+      "version": "2.0.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "export the design system provider base class",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "41b8432616afa284e2325913d7182a3b907fa789",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Fixed foregroundOnAccent recipe to work in all states",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "bf9780907aafcedfc8b4d57668b20e28a5ad241f",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "README updates to align to vNext",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "6861b29966ffaa03d1ddedcc2eb92489fac996c2",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-components_v2.0.0",
       "version": "2.0.0",
