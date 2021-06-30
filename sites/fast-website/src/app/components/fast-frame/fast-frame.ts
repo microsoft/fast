@@ -148,7 +148,6 @@ export class FastFrame extends FASTElement {
                 this.neutralPalette = PaletteRGB.create(
                     SwatchRGB.create(parsedColor.r, parsedColor.g, parsedColor.b)
                 );
-                this.updateBackgroundColor();
             }
         }
     };
@@ -198,19 +197,11 @@ export class FastFrame extends FASTElement {
         );
     }
 
-    private updateBackgroundColor(): void {
-        // this.backgroundColor = neutralLayer1Recipe
-        //     .getValueFor(this)
-        //     .evaluate(this)
-        //     .toColorString();
-    }
-
     public modeChange = (e: CustomEvent): void => {
         this.darkMode = !this.darkMode;
         this.baseLayerLuminance = this.darkMode
             ? StandardLuminance.DarkMode
             : StandardLuminance.LightMode;
-        this.updateBackgroundColor();
     };
 
     private resetExpandedResponsive = (e): void => {
@@ -239,7 +230,6 @@ export class FastFrame extends FASTElement {
 
         fillColor.setValueFor(this.preview, neutralLayerCardContainer);
 
-        this.updateBackgroundColor();
         density.setValueFor(this, 0);
         baseHeightMultiplier.setValueFor(this, 10);
         baseHorizontalSpacingMultiplier.setValueFor(this, 3);
