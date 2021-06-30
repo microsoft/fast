@@ -84,67 +84,67 @@ export const typeRampBaseLineHeight = create<string>(
 ).withDefault("20px");
 /** @public */
 export const typeRampMinus1FontSize = create<string>(
-    "type-ramp-minus1-font-size"
+    "type-ramp-minus-1-font-size"
 ).withDefault("12px");
 /** @public */
 export const typeRampMinus1LineHeight = create<string>(
-    "type-ramp-minus1-line-height"
+    "type-ramp-minus-1-line-height"
 ).withDefault("16px");
 /** @public */
 export const typeRampMinus2FontSize = create<string>(
-    "type-ramp-minus2-font-size"
+    "type-ramp-minus-2-font-size"
 ).withDefault("10px");
 /** @public */
 export const typeRampMinus2LineHeight = create<string>(
-    "type-ramp-minus2-line-height"
+    "type-ramp-minus-2-line-height"
 ).withDefault("16px");
 /** @public */
 export const typeRampPlus1FontSize = create<string>(
-    "type-ramp-plus1-font-size"
+    "type-ramp-plus-1-font-size"
 ).withDefault("16px");
 /** @public */
 export const typeRampPlus1LineHeight = create<string>(
-    "type-ramp-plus1-line-height"
+    "type-ramp-plus-1-line-height"
 ).withDefault("24px");
 /** @public */
 export const typeRampPlus2FontSize = create<string>(
-    "type-ramp-plus2-font-size"
+    "type-ramp-plus-2-font-size"
 ).withDefault("20px");
 /** @public */
 export const typeRampPlus2LineHeight = create<string>(
-    "type-ramp-plus2-line-height"
+    "type-ramp-plus-2-line-height"
 ).withDefault("28px");
 /** @public */
 export const typeRampPlus3FontSize = create<string>(
-    "type-ramp-plus3-font-size"
+    "type-ramp-plus-3-font-size"
 ).withDefault("28px");
 /** @public */
 export const typeRampPlus3LineHeight = create<string>(
-    "type-ramp-plus3-line-height"
+    "type-ramp-plus-3-line-height"
 ).withDefault("36px");
 /** @public */
 export const typeRampPlus4FontSize = create<string>(
-    "type-ramp-plus4-font-size"
+    "type-ramp-plus-4-font-size"
 ).withDefault("34px");
 /** @public */
 export const typeRampPlus4LineHeight = create<string>(
-    "type-ramp-plus4-line-height"
+    "type-ramp-plus-4-line-height"
 ).withDefault("44px");
 /** @public */
 export const typeRampPlus5FontSize = create<string>(
-    "type-ramp-plus5-font-size"
+    "type-ramp-plus-5-font-size"
 ).withDefault("46px");
 /** @public */
 export const typeRampPlus5LineHeight = create<string>(
-    "type-ramp-plus5-line-height"
+    "type-ramp-plus-5-line-height"
 ).withDefault("56px");
 /** @public */
 export const typeRampPlus6FontSize = create<string>(
-    "type-ramp-plus6-font-size"
+    "type-ramp-plus-6-font-size"
 ).withDefault("60px");
 /** @public */
 export const typeRampPlus6LineHeight = create<string>(
-    "type-ramp-plus6-line-height"
+    "type-ramp-plus-6-line-height"
 ).withDefault("72px");
 
 // Color recipe values
