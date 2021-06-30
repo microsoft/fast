@@ -316,6 +316,25 @@ describe("A DesignToken", () => {
                 removeElement(parent);
             });
 
+            it("should set a CSS custom property equal to the resolved value for an element in a shadow DOM of a derived token value with a dependent token", async () => {
+                const parent = addElement();
+                const child = addElement(parent);
+                const target = document.createElement("div");
+                child.shadowRoot!.appendChild(target);
+                const tokenA = DesignToken.create<number>("A");
+                const tokenB = DesignToken.create<number>("B");
+
+                tokenA.setValueFor(parent, 6);
+                tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenA.setValueFor(target, 7);
+
+                await DOM.nextUpdate();
+
+                expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
+                removeElement(parent);
+            });
+
             it("should set a CSS custom property equal to the resolved value for an both elements for which a dependent token is set when setting a derived token value", async () => {
                 const parent = addElement();
                 const target = addElement(parent);

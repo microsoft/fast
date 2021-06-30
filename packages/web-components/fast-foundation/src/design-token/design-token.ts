@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { composedParent } from "../utilities";
+import { composedContains } from "../utilities/composed-contains";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
@@ -468,7 +469,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
-        return this.target.contains(node.target);
+        return composedContains(this.target, node.target);
     }
 
     private findParentNode(): DesignTokenNode<T> | null {
