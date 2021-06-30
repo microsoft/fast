@@ -1,15 +1,31 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-} from "../styles/recipes";
+    ElementDefinitionContext,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
+    bodyFont,
+    controlCornerRadius,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
+    foregroundOnAccentRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+} from "../design-tokens";
 
-export const DisclosureStyles = css`
+export const disclosureStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => css`
     .disclosure {
         transition: height 0.35s;
     }
@@ -23,11 +39,11 @@ export const DisclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker {
-        background: ${accentFillRestBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        border-radius: calc(var(--corner-radius) * 1px);
+        background: ${accentFillRest};
+        color: ${foregroundOnAccentRest};
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        border-radius: calc(${controlCornerRadius} * 1px);
         outline: none;
         cursor: pointer;
         margin: 16px 0;
@@ -36,29 +52,30 @@ export const DisclosureStyles = css`
     }
 
     :host([appearance="accent"]) .invoker:active {
-        background: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        color: ${foregroundOnAccentActive};
     }
 
     :host([appearance="accent"]) .invoker:hover {
-        background: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
     :host([appearance="lightweight"]) .invoker {
         background: transparent;
-        color: ${accentForegroundRestBehavior.var};
-        border-bottom: calc(var(--outline-width) * 1px) solid
-            var(--accent-foreground-rest);
+        color: ${accentForegroundRest};
+        border-bottom: calc(${strokeWidth} * 1px) solid ${accentForegroundRest};
         cursor: pointer;
         width: max-content;
         margin: 16px 0;
     }
 
     :host([appearance="lightweight"]) .invoker:active {
-        border-bottom-color: ${accentForegroundActiveBehavior.var};
+        border-bottom-color: ${accentForegroundActive};
     }
 
     :host([appearance="lightweight"]) .invoker:hover {
-        border-bottom-color: ${accentForegroundHoverBehavior.var};
+        border-bottom-color: ${accentForegroundHover};
     }
 
     .disclosure[open] .invoker ~ * {
@@ -73,12 +90,4 @@ export const DisclosureStyles = css`
             opacity: 1;
         }
     }
-`.withBehaviors(
-    accentFillRestBehavior,
-    accentForegroundRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentFillHoverBehavior,
-    accentFillActiveBehavior
-);
+`;

@@ -1,19 +1,15 @@
-import { customElement } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { TextField, TextFieldTemplate as template, TextFieldTemplate } from "./index";
+import { TextField, textFieldTemplate as template } from "./index";
 import { TextFieldType } from "./text-field";
 
-@customElement({
-    name: "fast-text-field",
+const FASTTextField = TextField.compose({
+    baseName: "text-field",
     template,
 })
-class FASTTextField extends TextField {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTTextField>(
-        "fast-text-field"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTTextField());
 
     return { element, connect, disconnect, parent };
 }

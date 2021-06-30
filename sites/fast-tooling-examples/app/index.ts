@@ -1,31 +1,32 @@
 import {
-    FASTAnchor,
-    FASTBadge,
-    FASTDesignSystemProvider,
-    FASTDivider,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
-    neutralLayerL1,
+    baseLayerLuminance,
+    fastAnchor,
+    fastBadge,
+    fastDivider,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+    fillColor,
     StandardLuminance,
+    SwatchRGB,
 } from "@microsoft/fast-components";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/dist/esm/fast-design-system";
 import "./style.css";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import examples from "./registry";
 import toolingGuidance from "./.tmp/tooling-guidance";
 import toolingReactGuidance from "./.tmp/tooling-react-guidance";
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
-
-// prevent tree shaking
-FASTAnchor;
-FASTBadge;
-FASTDivider;
-FASTDesignSystemProvider;
-FASTTabs;
-FASTTab;
-FASTTabPanel;
 FASTInlineLogo;
+
+DesignSystem.getOrCreate().register(
+    fastAnchor(),
+    fastBadge(),
+    fastDivider(),
+    fastTabs(),
+    fastTab(),
+    fastTabPanel()
+);
 
 /**
  * The links to examples
@@ -106,9 +107,6 @@ function initializeGuidance(id: string) {
 }
 
 function initialize() {
-    // set up the design system provider to be in light theme
-    const designSystemProvider = document.getElementById("design-system");
-
     if (
         exampleIds.find(exampleId => {
             return `/${exampleId}` === window.location.pathname;
@@ -127,16 +125,14 @@ function initialize() {
         initializeGuidance(window.location.pathname.slice(1));
     }
 
-    if (designSystemProvider !== null) {
-        designSystemProvider.setAttribute(
-            "background-color",
-            neutralLayerL1(
-                Object.assign({}, fastDesignSystemDefaults, {
-                    baseLayerLuminance: StandardLuminance.LightMode,
-                })
-            )
-        );
-    }
+    baseLayerLuminance.withDefault(StandardLuminance.LightMode);
+    fillColor.withDefault(
+        SwatchRGB.create(
+            StandardLuminance.LightMode,
+            StandardLuminance.LightMode,
+            StandardLuminance.LightMode
+        )
+    );
 }
 
 /**

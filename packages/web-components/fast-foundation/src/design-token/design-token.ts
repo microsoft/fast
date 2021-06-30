@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { composedParent } from "../utilities";
+import { composedContains } from "../utilities/composed-contains";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
@@ -20,7 +21,7 @@ const defaultElement = document.body;
 
 /**
  * Describes a DesignToken instance.
- * @alpha
+ * @public
  */
 export interface DesignToken<
     T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
@@ -74,7 +75,7 @@ export interface DesignToken<
 
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
- * @alpha
+ * @public
  */
 export interface CSSDesignToken<
     T extends
@@ -95,7 +96,8 @@ export interface CSSDesignToken<
 }
 
 /**
- * @alpha
+ * Change record provided to to a {@link DesignTokenSubscriber} when a token changes for a target.
+ * @public
  */
 export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
     /**
@@ -110,7 +112,8 @@ export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
 }
 
 /**
- * @alpha
+ * A subscriber that should receive {@link DesignTokenChangeRecord | change records} when a token changes for a target
+ * @public
  */
 export interface DesignTokenSubscriber<T extends DesignToken<any>> {
     handleChange(record: DesignTokenChangeRecord<T>): void;
@@ -466,7 +469,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
-        return this.target.contains(node.target);
+        return composedContains(this.target, node.target);
     }
 
     private findParentNode(): DesignTokenNode<T> | null {
@@ -580,7 +583,7 @@ function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
 
 /**
  * Factory object for creating {@link (DesignToken:interface)} instances.
- * @alpha
+ * @public
  */
 export const DesignToken = Object.freeze({
     create,

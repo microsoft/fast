@@ -2,6 +2,112 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 25 Jun 2021 02:02:57 GMT",
+      "tag": "@microsoft/fast-foundation_v2.0.0",
+      "version": "2.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "mark design-token public",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e4f573db1bfd0a5ed65d0c12abdd6c971c44f1e0",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix incorrect name for select tests",
+            "author": "chhol@microsoft.com",
+            "commit": "e3b519d12278ef7bdac30b20dd9da0a68ee0c79e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "fix(foundation-element): enable subclassing with customElement decorator",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bb03c73e250f25d9eefd6e5f3126e0dbc28326d6",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat(design-system): enable overriding the shadow root mode",
+            "author": "roeisenb@microsoft.com",
+            "commit": "1f2aad19546389e299d43b5fda1de6e60b83e390",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "docs(fast-foundation): add api docs for design system and foundation ele",
+            "author": "roeisenb@microsoft.com",
+            "commit": "a94dd0f7b4aceddd93dab23e81c2b1eaa4f3dd62",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "major": [
+          {
+            "comment": "remove deprecated APIs and Design System Provider infrastructure",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "361c2e74066a50206719168d6d0b26e67bd0aed2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat(design-system): better integrate with DI and enforce constraints",
+            "author": "roeisenb@microsoft.com",
+            "commit": "370b727537850f49a6cd8bf23bb34d7d462017f2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "migrate directional-stylesheet utility",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ce4aacb7cfd4f630a1836117a99dc5003c0e489c",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "update components to extend FoundationElement",
+            "author": "chhol@microsoft.com",
+            "commit": "6369ab1a3db8b693f14d4cf0ee67cc4e1d802dfb",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat: styling and text alignment for menu",
+            "author": "jes@microsoft.com",
+            "commit": "a440e2bc478dd666d80d7958718f8fcc2b46bc77",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add API support for setting default slotted content as part of component composition",
+            "author": "chhol@microsoft.com",
+            "commit": "0a6bd40f568fa0f640a15bc7e6d669e80d169036",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "update card to extend foundation",
+            "author": "chhol@microsoft.com",
+            "commit": "1b73fe768e7ad339ecdd749373db07cff34302a7",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "feat: encapsulate and optimize ComponentPresentation resolution",
+            "author": "roeisenb@microsoft.com",
+            "commit": "4b220ef887dfa33c3e257df0cb789b511b293eff",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-foundation_v1.24.8",
+      "version": "1.24.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "prevent left/right arrows from scrolling when expanding/collapsing tree-item",
+            "author": "tlmii@users.noreply.github.com",
+            "commit": "ef8b84eca2eb82f84abc4f08986c384e0f3b3305",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Jun 2021 07:21:25 GMT",
       "tag": "@microsoft/fast-foundation_v1.24.7",
       "version": "1.24.7",

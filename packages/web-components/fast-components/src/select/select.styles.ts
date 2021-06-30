@@ -1,39 +1,53 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { elevation } from "../styles/elevation";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundFocusBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/recipes";
+    accentFillActive,
+    accentFillFocus,
+    accentFillHover,
+    accentFillRest,
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccentFocus,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralFillStealthRest,
+    neutralForegroundRest,
+    neutralLayerFloating,
+    neutralStrokeRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
-export const SelectStyles = css`
+export const selectStyles: (
+    context: ElementDefinitionContext,
+    definition: SelectOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+    css`
     ${display("inline-flex")} :host {
         --elevation: 14;
-        background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRestBehavior.var};
+        background: ${neutralFillInputRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         box-sizing: border-box;
-        color: ${neutralForegroundRestBehavior.var};
-        font-family: var(--body-font);
+        color: ${neutralForegroundRest};
+        font-family: ${bodyFont};
         height: calc(${heightNumber} * 1px);
         position: relative;
         user-select: none;
@@ -44,15 +58,15 @@ export const SelectStyles = css`
 
     .listbox {
         ${elevation}
-        background: ${neutralLayerFloatingBehavior.var};
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        background: ${neutralLayerFloating};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
         box-sizing: border-box;
         display: inline-flex;
         flex-direction: column;
         left: 0;
         max-height: calc(var(--max-height) - (${heightNumber} * 1px));
-        padding: calc(var(--design-unit) * 1px) 0;
+        padding: calc(${designUnit} * 1px) 0;
         overflow-y: auto;
         position: absolute;
         width: 100%;
@@ -68,38 +82,34 @@ export const SelectStyles = css`
         box-sizing: border-box;
         cursor: pointer;
         display: flex;
-        font-size: var(--type-ramp-base-font-size);
+        font-size: ${typeRampBaseFontSize};
         font-family: inherit;
-        line-height: var(--type-ramp-base-line-height);
+        line-height: ${typeRampBaseLineHeight};
         min-height: 100%;
-        padding: 0 calc(var(--design-unit) * 2.25px);
+        padding: 0 calc(${designUnit} * 2.25px);
         width: 100%;
     }
 
     :host(:not([disabled]):hover) {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${accentFillHover};
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) ${
-            neutralFocusBehavior.var
-        };
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${
-            neutralFocusInnerAccentBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
-        background: ${accentFillHoverBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
+        border-color: ${focusStrokeOuter};
+        background: ${accentFillFocus};
+        color: ${foregroundOnAccentFocus};
     }
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]) .control {
@@ -108,14 +118,14 @@ export const SelectStyles = css`
     }
 
     :host([disabled]:hover) {
-        background: ${neutralFillStealthRestBehavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralFillStealthRest};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${neutralFillInputActive};
+        border-color: ${accentFillActive};
     }
 
     :host([open][position="above"]) .listbox,
@@ -177,8 +187,8 @@ export const SelectStyles = css`
         ${`` /* Glyph size is temporary - replace when glyph-size var is added */}
         fill: currentcolor;
         height: 1em;
-        min-height: calc(var(--design-unit) * 4px);
-        min-width: calc(var(--design-unit) * 4px);
+        min-height: calc(${designUnit} * 4px);
+        min-width: calc(${designUnit} * 4px);
         width: 1em;
     }
 
@@ -188,13 +198,8 @@ export const SelectStyles = css`
     }
 
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundFocusBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
             :host(:not([disabled]):hover),
             :host(:not([disabled]):active) {
                 border-color: ${SystemColors.Highlight};
@@ -202,7 +207,7 @@ export const SelectStyles = css`
 
             :host(:not([disabled]):${focusVisible}) {
                 background-color: ${SystemColors.ButtonFace};
-                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight};
                 color: ${SystemColors.ButtonText};
                 fill: currentcolor;
                 forced-color-adjust: none;
@@ -239,7 +244,7 @@ export const SelectStyles = css`
             :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
@@ -253,13 +258,5 @@ export const SelectStyles = css`
                 fill: currentcolor;
             }
         `
-    ),
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralFocusInnerAccentBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerFloatingBehavior,
-    neutralOutlineRestBehavior
-);
+        )
+    );

@@ -5,17 +5,16 @@ import "@microsoft/fast-website/src/app/css/root.css";
 import "@microsoft/fast-website/src/app/css/site-wrapper.css";
 import React from "react";
 
-export { FASTAnchor, SiteNavigation } from "@microsoft/fast-website";
+export { SiteNavigation } from "@microsoft/fast-website";
 
 export class Footer extends React.Component<{}, {}> {
     render(): React.ReactNode {
         return (
             <div className={"footer-region"}>
-                <fast-design-system-provider
-                    class="site-wrapper"
-                    use-defaults
+                <div
+                    className={"site-wrapper"}
                     dangerouslySetInnerHTML={{ __html: FooterTemplate() }}
-                ></fast-design-system-provider>
+                ></div>
             </div>
         );
     }

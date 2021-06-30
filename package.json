@@ -20,13 +20,14 @@
       "sites/website"
     ],
     "nohoist": [
-      "**/react-syntax-highlighter",
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
       "**/@types/mocha",
       "**/@types/node",
-      "**/chai"
+      "**/chai",
+      "**/html-minifier-terser",
+      "**/react-syntax-highlighter"
     ]
   },
   "repository": {
@@ -113,6 +114,7 @@
   },
   "resolutions": {
     "@types/react": "*",
+    "clean-css": "^4.2.3",
     "glob-parent": "^5.1.2",
     "immer": "^8.0.1",
     "is-svg": "^4.2.2",
@@ -127,7 +129,9 @@
     "url-parse": "^1.5.0",
     "xmlhttprequest-ssl": "^1.6.2",
     "dns-packet": "^1.3.4",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "ws": "^7.4.6",
+    "browserslist": "^4.16.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

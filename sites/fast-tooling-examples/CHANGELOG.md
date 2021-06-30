@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-tooling-examples
 
-This log was last generated on Sun, 20 Jun 2021 07:21:25 GMT and should not be manually modified.
+This log was last generated on Tue, 29 Jun 2021 07:14:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.19
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 0.4.19
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (roeisenb@microsoft.com)
+
+## 0.4.19
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (tlmii@users.noreply.github.com)
 
 ## 0.4.19
 

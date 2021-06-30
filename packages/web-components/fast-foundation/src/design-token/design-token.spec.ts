@@ -2,15 +2,23 @@
 import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { DesignSystem } from "../design-system";
+import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
 
-new DesignSystem().register(
-    FoundationElement.compose({ type: class extends FoundationElement { }, template: html`<slot></slot>`, baseName: "custom-element" })()
-).applyTo(document.body)
+const elementName = uniqueElementName();
+
+DesignSystem.getOrCreate()
+    .register(
+        FoundationElement.compose({ 
+            type: class extends FoundationElement { }, 
+            baseName: elementName,
+            template: html`<slot></slot>`
+        })()
+    );
 
 function addElement(parent = document.body): FASTElement & HTMLElement {
-    const el = document.createElement("fast-custom-element") as any;
+    const el = document.createElement(`fast-${elementName}`) as any;
     parent.appendChild(el);
     return el;
 }
@@ -294,6 +302,25 @@ describe("A DesignToken", () => {
             it("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", async () => {
                 const parent = addElement();
                 const target = addElement(parent);
+                const tokenA = DesignToken.create<number>("A");
+                const tokenB = DesignToken.create<number>("B");
+
+                tokenA.setValueFor(parent, 6);
+                tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenA.setValueFor(target, 7);
+
+                await DOM.nextUpdate();
+
+                expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
+                expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
+                removeElement(parent);
+            });
+
+            it("should set a CSS custom property equal to the resolved value for an element in a shadow DOM of a derived token value with a dependent token", async () => {
+                const parent = addElement();
+                const child = addElement(parent);
+                const target = document.createElement("div");
+                child.shadowRoot!.appendChild(target);
                 const tokenA = DesignToken.create<number>("A");
                 const tokenB = DesignToken.create<number>("B");
 

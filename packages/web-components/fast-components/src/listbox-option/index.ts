@@ -1,29 +1,33 @@
-import { customElement } from "@microsoft/fast-element";
 import {
     ListboxOption,
-    ListboxOptionTemplate as template,
+    listboxOptionTemplate as template,
 } from "@microsoft/fast-foundation";
-import { OptionStyles as styles } from "./listbox-option.styles";
+import { optionStyles as styles } from "./listbox-option.styles";
 
 /**
- * The FAST option Custom Element. Implements {@link @microsoft/fast-foundation#ListboxOption}
- * {@link @microsoft/fast-foundation#ListboxOptionTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#ListboxOption} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#listboxOptionTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-option\>
+ * Generates HTML Element: \<fast-option\>
  *
  */
-@customElement({
-    name: "fast-option",
+export const fastOption = ListboxOption.compose({
+    baseName: "option",
     template,
     styles,
-})
-export class FASTOption extends ListboxOption {}
+});
 
 /**
  * Styles for Option
  * @public
  */
-export const OptionStyles = styles;
+export const optionStyles = styles;
+
+/**
+ * Base class for ListboxOption
+ * @public
+ */
+export { ListboxOption };

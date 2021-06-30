@@ -2,6 +2,86 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 30 Jun 2021 07:19:09 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.0.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "41b8432616afa284e2325913d7182a3b907fa789",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 29 Jun 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update the CSS layout component to accept inline CSS string values",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "014d97a2d16e2a9a0d801503722e2e145f3fea46",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 25 Jun 2021 02:02:57 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.2",
+      "version": "0.23.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix tooling libraries to use the new design system registry and updated named imports",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "62f3d1ddb23c522139803541266810367dded081",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "fixing prettier changes",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5a7639252207860f0959e29895ea4aaebe315710",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "update web components in fast-tooling package to use vNext api changes",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "db482deb1f6636edfb0e940b2218ec57d6a0ed1d",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.0.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "370b727537850f49a6cd8bf23bb34d7d462017f2",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 23 Jun 2021 22:58:18 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.1",
+      "version": "0.23.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding inline edit layer to HTMLRenderer",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "23ea41e00b797c3f6f7ef12af9f08e0afb49eff1",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Jun 2021 07:21:25 GMT",
       "tag": "@microsoft/fast-tooling_v0.23.0",
       "version": "0.23.0",

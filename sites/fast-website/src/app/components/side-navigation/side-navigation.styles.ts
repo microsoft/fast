@@ -1,16 +1,20 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import {
-    accentForegroundActiveBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundHoverBehavior,
+    accentFillHover,
+    accentForegroundActive,
+    foregroundOnAccentRest,
+    bodyFont,
+    designUnit,
+    focusStrokeWidth,
+    controlCornerRadius,
 } from "@microsoft/fast-components";
 
 export const SideNavigationStyles = css`
     ${display("flex")} :host {
-        --design-unit-large: calc(var(--design-unit) * 5px);
+        --design-unit-large: calc(${designUnit} * 5px);
         contain: content;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
     }
 
     .item-list {
@@ -26,31 +30,27 @@ export const SideNavigationStyles = css`
     }
 
     .icon {
-        fill: var(--accent-foreground-cut-rest);
+        fill: ${foregroundOnAccentRest};
         width: 20px;
         height: 20px;
     }
 
     .list-item:hover .icon {
-        fill: var(--accent-fill-hover);
+        fill: ${accentFillHover};
     }
 
     .scroll-indicator {
         height: 36px;
-        width: calc(var(--focus-outline-width) * 1px);
-        background-color: ${accentForegroundCutRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        margin: calc(var(--design-unit) * 2px) var(--design-unit-large) 0;
+        width: calc(${focusStrokeWidth} * 1px);
+        background-color: ${foregroundOnAccentRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        margin: calc(${designUnit} * 2px) var(--design-unit-large) 0;
         transition: 300ms ease-in-out;
         transition-property: background-color, height;
     }
 
     .scroll-indicator-active {
         height: 52px;
-        background-color: ${accentForegroundActiveBehavior.var};
+        background-color: ${accentForegroundActive};
     }
-`.withBehaviors(
-    accentForegroundActiveBehavior,
-    accentForegroundCutRestBehavior,
-    accentForegroundHoverBehavior
-);
+`;
