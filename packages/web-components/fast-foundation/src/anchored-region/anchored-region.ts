@@ -947,9 +947,9 @@ export class AnchoredRegion extends FoundationElement {
             this.$emit("loaded", this, { bubbles: false });
         }
 
+        this.updatePositionClasses();
+        
         if (positionChanged) {
-            this.updatePositionClasses();
-
             // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
