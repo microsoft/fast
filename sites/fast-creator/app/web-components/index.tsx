@@ -16,9 +16,6 @@ import {
     fastTabs,
     fastTextField,
 } from "@microsoft/fast-components";
-import { fastToolingHTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
-import { fastToolingHTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render";
-import { fastToolingHTMLRenderLayerNavigation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { DataType, MessageSystem } from "@microsoft/fast-tooling";
@@ -56,10 +53,7 @@ DesignSystem.getOrCreate().register(
     fastTabPanel(),
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
-    fastToolingHTMLRender({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerInlineEdit({ prefix: "fast-tooling" })
+    fastToolingCSSLayout({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -427,23 +421,6 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
                 key={this.props.webComponentKey}
                 ref={this.setLayoutRef}
             ></fast-tooling-css-layout>
-        );
-    }
-}
-
-export class HTMLRenderReact extends React.Component {
-    public renderRef: React.RefObject<HTMLDivElement>;
-
-    private setRenderRef = el => {
-        this.renderRef = el;
-    };
-
-    render() {
-        return (
-            <fast-tooling-html-render ref={this.setRenderRef}>
-                <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
-                <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
-            </fast-tooling-html-render>
         );
     }
 }

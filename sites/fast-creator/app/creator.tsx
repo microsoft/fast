@@ -62,7 +62,7 @@ import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
-import { previewReady } from "./preview";
+import { previewReady } from "./preview/preview";
 import { Footer } from "./site-footer";
 import {
     renderDeviceSelect,
@@ -72,6 +72,7 @@ import {
 } from "./web-components";
 import { Device } from "./web-components/devices";
 import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
+import { designTokensLinkedDataId } from "./utilities";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -108,7 +109,6 @@ const schemaDictionary: SchemaDictionary = {
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
-export const designTokensLinkedDataId: string = "design-tokens";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";

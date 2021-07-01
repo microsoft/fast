@@ -19,13 +19,13 @@ import {
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { HTMLRenderReact } from "./web-components";
 import {
     mapFASTComponentsDesignSystem,
     setupFASTComponentDesignSystem,
-} from "./configs/library.fast.design-system.mapping";
-import { registerFASTComponents } from "./configs/library.fast.registry";
-import { designTokensLinkedDataId } from "./creator";
+} from "../configs/library.fast.design-system.mapping";
+import { registerFASTComponents } from "../configs/library.fast.registry";
+import { designTokensLinkedDataId } from "../utilities";
+import { HTMLRenderReact } from "./web-components";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
