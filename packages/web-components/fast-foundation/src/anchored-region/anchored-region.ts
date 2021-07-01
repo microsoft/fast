@@ -666,7 +666,16 @@ export class AnchoredRegion extends FoundationElement {
         ) {
             this.regionRect = regionEntry.boundingClientRect;
             this.anchorRect = anchorEntry.boundingClientRect;
-            this.viewportRect = viewportEntry.boundingClientRect;
+            if (this.viewportElement === document.documentElement){
+                this.viewportRect = new DOMRectReadOnly(
+                    viewportEntry.boundingClientRect.x + document.documentElement.scrollLeft, 
+                    viewportEntry.boundingClientRect.y + document.documentElement.scrollTop, 
+                    viewportEntry.boundingClientRect.width,
+                    viewportEntry.boundingClientRect.height
+                );
+            } else {
+                this.viewportRect = viewportEntry.boundingClientRect;
+            }
 
             this.updateRegionOffset();
 
@@ -948,7 +957,7 @@ export class AnchoredRegion extends FoundationElement {
         }
 
         this.updatePositionClasses();
-        
+
         if (positionChanged) {
             // emit change event
             this.$emit("positionchange", this, { bubbles: false });
@@ -1159,7 +1168,7 @@ export class AnchoredRegion extends FoundationElement {
     };
 
     /**
-     *  Get the width available for a particular horizontal position
+     *  Get the space available for a particular relative position
      */
     private getAvailableSpace = (
         positionOption: AnchoredRegionPositionLabel,
