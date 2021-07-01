@@ -1,19 +1,15 @@
 import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
     Calendar,
-    createDataGridCellTemplate,
-    createDataGridRowTemplate,
-    createDataGridTemplate,
     DataGrid,
     DataGridCell,
+    dataGridCellTemplate,
     DataGridRow,
+    dataGridRowTemplate,
+    dataGridTemplate,
 } from "@microsoft/fast-foundation";
 import { FASTCalendarTemplate as template } from "./calendar.template";
 import { CalendarStyles as styles } from "./calendar.styles";
-
-const gridTemplate: ViewTemplate = createDataGridTemplate("fast");
-const rowTemplate: ViewTemplate = createDataGridRowTemplate("fast");
-const cellTemplate: ViewTemplate = createDataGridCellTemplate("fast");
 
 /**
  * The FAST Calendar Element. Implements {@link @microsoft/fast-foundation#Calendar},
@@ -40,26 +36,23 @@ export const CalendarStyles = styles;
 /**
  * Custom grid component for the calendar component
  */
-@customElement({
-    name: "fast-calendar-grid",
-    template: gridTemplate,
-})
-export class FASTCalendardGrid extends DataGrid {}
+export const FASTCalendardGrid = DataGrid.compose({
+    baseName: "calendar-grid",
+    template: dataGridTemplate,
+});
 
 /**
  * Custom grid row component for the calendar component
  */
-@customElement({
-    name: "fast-calendar-grid-row",
-    template: rowTemplate,
-})
-export class FASTCalendarGridRow extends DataGridRow {}
+export const FASTCalendarGridRow = DataGridRow.compose({
+    baseName: "calendar-grid-row",
+    template: dataGridRowTemplate,
+});
 
 /**
  * Custom grid cell component for the calendar component
  */
-@customElement({
-    name: "fast-calendar-grid-cell",
-    template: cellTemplate,
-})
-export class FASTCalendarGridCell extends DataGridCell {}
+export const FASTCalendarGridCell = DataGridCell.compose({
+    baseName: "calendar-grid-cell",
+    template: dataGridCellTemplate,
+});

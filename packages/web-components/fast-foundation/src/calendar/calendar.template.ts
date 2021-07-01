@@ -29,6 +29,7 @@ export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
  */
 export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
+        part="day"
         class="day${(x, c) =>
             x.month !== (c.parent.month ?? c.parentContext.parent.month) ? ` off` : ``}${(
             x,

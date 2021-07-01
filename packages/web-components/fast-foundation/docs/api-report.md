@@ -263,7 +263,7 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 export const buttonTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Button>;
 
 // @public
-export class Calendar extends FASTElement {
+export class Calendar extends FoundationElement {
     getDays(info?: CalendarInfo): CalendarDateInfo[];
     getLocaleDay(month?: number, day?: number, year?: number): string;
     getLocaleMonth(month?: number): string;
@@ -658,10 +658,10 @@ export enum DataGridRowTypes {
 }
 
 // @public
-export type DateStyle = "long" | "narrow" | "short";
+export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
 // @public
-export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
+export type DateStyle = "long" | "narrow" | "short";
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {

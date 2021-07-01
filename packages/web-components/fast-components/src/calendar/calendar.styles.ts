@@ -1,11 +1,8 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import {
-    accentForegroundActiveBehavior,
-    heightNumber,
-    neutralForegroundRestBehavior,
-} from "../styles/index";
+import { heightNumber } from "../styles/index";
+import { accentForegroundActive, neutralForegroundRest } from "../design-tokens";
 
 /**
  * Styles used by the calendar title and contents
@@ -17,7 +14,7 @@ export const CalendarStyles = css`
         --cell-height: calc(${heightNumber} * 1px);
         --weekday-background: transparent;
         --weekday-color: inherit;
-        --current-day: ${accentForegroundActiveBehavior.var};
+        --current-day: ${accentForegroundActive};
         --current-day-border: none;
         --current-day-background: none;
         --inactive-day-color: ${SystemColors.GrayText};
@@ -50,6 +47,7 @@ export const CalendarStyles = css`
         vertical-align: top;
         border-bottom: var(--cell-border);
         border-right: var(--cell-border);
+        position: relative;
     }
 
     .day.off {
@@ -62,4 +60,4 @@ export const CalendarStyles = css`
         outline: var(--current-day-border);
         outline-offset: -1px;
     }
-`.withBehaviors(accentForegroundActiveBehavior, neutralForegroundRestBehavior);
+`;

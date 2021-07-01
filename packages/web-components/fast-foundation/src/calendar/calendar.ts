@@ -1,4 +1,5 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * enum representing the different month and weekday formats
@@ -42,7 +43,7 @@ export type CalendarDateInfo = {
  * Calendar component
  * @public
  */
-export class Calendar extends FASTElement {
+export class Calendar extends FoundationElement {
     /**
      * String repesentation of the full locale including market, calendar type and numbering system
      * @public
