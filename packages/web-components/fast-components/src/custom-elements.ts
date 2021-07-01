@@ -49,6 +49,7 @@ import type { Button } from "./button/index";
 import type { Card } from "./card/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
+import type { PeoplePicker } from "./people-picker/people-picker";
 import type { SliderLabel } from "./slider-label/index";
 import type { TextArea } from "./text-area/index";
 import type { TextField } from "./text-field/index";
