@@ -4,7 +4,8 @@
   },
   "[markdown]": {
     "editor.quickSuggestions": false,
-    "editor.wordWrap": "on",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 90,
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": false
   },
