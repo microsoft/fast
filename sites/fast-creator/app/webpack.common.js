@@ -14,9 +14,6 @@ module.exports = {
     name: "root",
     entry: {
         main: path.resolve(appDir, "index.tsx"),
-        focusVisible: require.resolve(
-            "../../../node_modules/focus-visible/dist/focus-visible.min.js"
-        ),
     },
     resolve: {
         extensions: [".svg", ".ts", ".tsx", ".js"],
