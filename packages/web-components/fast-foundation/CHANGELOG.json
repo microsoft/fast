@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 01 Jul 2021 07:15:57 GMT",
+      "tag": "@microsoft/fast-foundation_v2.1.0",
+      "version": "2.1.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "8c885780279ee8b8acddc2a0428fc09b4e1788c0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "ensure DesignToken considers shadow DOM when determining DOM hierarchy",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "0ab5dec4ad2a9ce717d90912127e094d094ede6d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-foundation_v2.0.0",
       "version": "2.0.0",

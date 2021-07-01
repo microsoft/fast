@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update default value for bodyFont Design Token",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
