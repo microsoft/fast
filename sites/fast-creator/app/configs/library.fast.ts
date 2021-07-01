@@ -54,6 +54,7 @@ export const fastComponentId = "fast-components";
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
     id: fastComponentId,
     displayName: "FAST Components",
+    optional: true,
     import: `./${importScriptLocation}`,
     componentDictionary: {
         [fastComponentSchemas[fastAnchorTag].$id]: {

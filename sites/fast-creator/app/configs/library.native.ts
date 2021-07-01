@@ -30,6 +30,8 @@ export const nativeElementId = "native-elements";
 
 export const nativeElementLibrary: NativeElementLibraryDefinition = {
     id: nativeElementId,
+    displayName: "HTML Elements",
+    optional: false,
     componentDictionary: {
         [nativeElementSchemas[divTag].$id]: {
             displayName: nativeElementSchemas[divTag].title,

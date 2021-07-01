@@ -19,6 +19,11 @@ interface WebComponentDefinition {
 
 export interface NativeElementLibraryDefinition {
     /**
+     * This makes the library optional which will affect the UI.
+     */
+    optional: boolean;
+
+    /**
      * The unique ID for the component library
      */
     id: string;
@@ -27,25 +32,20 @@ export interface NativeElementLibraryDefinition {
      * The dictionary of components in this component library
      */
     componentDictionary: { [key: string]: WebComponentDefinition };
-}
-
-export interface WebComponentLibraryDefinition extends NativeElementLibraryDefinition {
-    /**
-     * The unique ID for the component library
-     */
-    id: string;
 
     /**
      * The display name for the component library
      */
     displayName: string;
+}
 
+export interface WebComponentLibraryDefinition extends NativeElementLibraryDefinition {
     /**
      * The script location
      */
     import: string;
 }
 
-export type ElementDefinition =
+export type ElementLibraryDefinition =
     | NativeElementLibraryDefinition
     | WebComponentLibraryDefinition;
