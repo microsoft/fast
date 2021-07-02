@@ -2,6 +2,7 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
+import { DisplayMode } from "./utilities/shared";
 
 export enum FormId {
     component,
@@ -13,10 +14,6 @@ export enum NavigationId {
     libraries,
 }
 
-export enum DisplayMode {
-    default,
-    preview,
-}
 /**
  * Data for a single view
  */

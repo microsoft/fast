@@ -24,11 +24,13 @@ import {
     setupFASTComponentDesignSystem,
 } from "../configs/library.fast.design-system.mapping";
 import { elementLibraries } from "../configs";
-import { creatorOriginatorId } from "../creator";
-import { DisplayMode } from "../creator.props";
 import {
+    creatorOriginatorId,
     CustomMessageSystemActions,
     designTokensLinkedDataId,
+    DisplayMode,
+    displayModeMessageInteractive,
+    displayModeMessagePreview,
     previewOriginatorId,
 } from "../utilities";
 import { WebComponentLibraryDefinition } from "../configs/typings";
@@ -73,7 +75,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
             htmlRenderReady: false,
-            displayMode: DisplayMode.default,
+            displayMode: DisplayMode.interactive,
         };
 
         setupFASTComponentDesignSystem(document.body);
@@ -341,7 +343,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 const mode: DisplayMode =
                                     action[1] === "preview"
                                         ? DisplayMode.preview
-                                        : DisplayMode.default;
+                                        : DisplayMode.interactive;
                                 this.setState({ displayMode: mode });
                                 this.state.htmlRenderMessageSystem.postMessage({
                                     type: MessageSystemType.custom,
@@ -349,8 +351,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                         originatorId: creatorOriginatorId,
                                         action:
                                             mode === DisplayMode.preview
-                                                ? "displayMode::preview"
-                                                : "displayMode::default",
+                                                ? displayModeMessagePreview
+                                                : displayModeMessageInteractive,
                                     },
                                 });
                             }

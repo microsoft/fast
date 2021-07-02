@@ -56,13 +56,7 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import {
-    CreatorState,
-    DisplayMode,
-    FormId,
-    NavigationId,
-    ProjectFile,
-} from "./creator.props";
+import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
@@ -78,8 +72,12 @@ import {
 import { Device } from "./web-components/devices";
 import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
 import {
+    creatorOriginatorId,
     CustomMessageSystemActions,
     designTokensLinkedDataId,
+    DisplayMode,
+    displayModeMessageInteractive,
+    displayModeMessagePreview,
     previewOriginatorId,
     rootOriginatorId,
 } from "./utilities";
@@ -119,7 +117,6 @@ const schemaDictionary: SchemaDictionary = {
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
-export const creatorOriginatorId: string = "fast-creator::root";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
@@ -213,7 +210,7 @@ class Creator extends Editor<{}, CreatorState> {
             ],
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
-            displayMode: DisplayMode.default,
+            displayMode: DisplayMode.interactive,
         };
     }
 
@@ -229,7 +226,7 @@ class Creator extends Editor<{}, CreatorState> {
                 className={this.getContainerClassNames()}
                 style={{
                     gridTemplateColumns:
-                        this.state.displayMode === DisplayMode.default
+                        this.state.displayMode === DisplayMode.interactive
                             ? "260px auto 280px"
                             : "0px auto 0px",
                 }}
@@ -746,7 +743,7 @@ class Creator extends Editor<{}, CreatorState> {
     private handlePreviewModeSwitch = (newState: boolean): void => {
         this.setState(
             {
-                displayMode: newState ? DisplayMode.preview : DisplayMode.default,
+                displayMode: newState ? DisplayMode.preview : DisplayMode.interactive,
             },
             () => {
                 // Send message
@@ -755,8 +752,8 @@ class Creator extends Editor<{}, CreatorState> {
                     options: {
                         originatorId: creatorOriginatorId,
                         action: newState
-                            ? "displayMode::preview"
-                            : "displayMode::default",
+                            ? displayModeMessagePreview
+                            : displayModeMessageInteractive,
                     },
                 });
                 this.handleWindowResize();
