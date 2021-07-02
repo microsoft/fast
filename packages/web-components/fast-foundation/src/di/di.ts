@@ -37,7 +37,13 @@ if (!("metadata" in Reflect)) {
 }
 
 /**
- * @alpha
+ * Represents a custom callback for resolving a request from the container.
+ * The handler is the container that is invoking the callback. The requestor
+ * is the original container that made the request. The handler and the requestor
+ * may not be the same if the request has bubbled up to a parent container in the DI hierarchy.
+ * The resolver is the instance of the resolver that stores the callback. This is provided in case
+ * the callback needs a place or key against which to store state across resolutions.
+ * @public
  */
 export type ResolveCallback<T = any> = (
     handler: Container,
@@ -46,7 +52,10 @@ export type ResolveCallback<T = any> = (
 ) => T;
 
 /**
- * @alpha
+ * A constant key that can be used to represent an interface to a registered dependency.
+ * The key can be used in DI registrations but also doubles as a decorator for
+ * resolving the associated, registered dependency.
+ * @public
  */
 export type InterfaceSymbol<K = any> = (
     target: any,
@@ -54,8 +63,8 @@ export type InterfaceSymbol<K = any> = (
     index?: number
 ) => void;
 
-// This interface exists only to break a circular type referencing issue in the IServiceLocator interface.
-// Otherwise IServiceLocator references IResolver, which references IContainer, which extends IServiceLocator.
+// This interface exists only to break a circular type referencing issue in the ServiceLocator interface.
+// Otherwise ServiceLocator references Resolver, which references Container, which extends ServiceLocator.
 interface ResolverLike<C, K = any> {
     readonly $isResolver: true;
     resolve(handler: C, requestor: C): Resolved<K>;
@@ -63,29 +72,57 @@ interface ResolverLike<C, K = any> {
 }
 
 /**
- * @alpha
+ * Internally, the DI system maps "keys" to "resolvers". A resolve controls
+ * how a dependency is resolved. Resolvers for transient, singleton, etc. are
+ * provided out of the box, but you can also implement Resolver yourself and supply
+ * custom logic for resolution.
+ * @public
  */
 /* eslint-disable-next-line */
 export interface Resolver<K = any> extends ResolverLike<Container, K> {}
 
 /**
- * @alpha
+ * Implemented by objects that wish to register dependencies in the container.
+ * @public
  */
 export interface Registration<K = any> {
+    /**
+     * Registers desired dependencies with the provided container.
+     * @param container The container to register dependencies within.
+     * @param key The key to register services under, if overridden.
+     */
     register(container: Container, key?: Key): Resolver<K>;
 }
 
 /**
- * @alpha
+ * Transforms an object after it is created but before it is returned
+ * to the requestor.
+ * @public
  */
 export type Transformer<K> = (instance: Resolved<K>) => Resolved<K>;
 
 /**
- * @alpha
+ * Used by the default Resolver to create instances of objects when needed.
+ * @public
  */
 export interface Factory<T extends Constructable = any> {
+    /**
+     * The concrete type this factory creates.
+     */
     readonly Type: T;
+
+    /**
+     * Registers a transformer function to alter the object after instantiation but before
+     * returning the final constructed instance.
+     * @param transformer The transformer function.
+     */
     registerTransformer(transformer: Transformer<T>): void;
+
+    /**
+     * Constructs an instance of the factory's object.
+     * @param container The container the object is being constructor for.
+     * @param dynamicDependencies Dynamic dependencies supplied to the constructor.
+     */
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
 }
 
