@@ -53,13 +53,15 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (this.hoverLayerActive) {
             this.handleUnHighlight();
         }
-        if (this.clickLayerActive) {
+        if (this.clickLayerActive && this.currElementRef !== null) {
             this.clickLayerHide = true;
             if (this.timeoutRef !== null) {
                 window.clearTimeout(this.timeoutRef);
             }
             this.timeoutRef = window.setTimeout(() => {
-                this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                if (this.clickLayerActive && this.currElementRef !== null) {
+                    this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                }
                 this.clickLayerHide = false;
             }, 40);
         }
@@ -99,6 +101,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private handleClear() {
+        this.clickLayerActive = false;
         this.currElementRef = null;
         this.clickLayerActive = false;
         this.clickPillContent = "";

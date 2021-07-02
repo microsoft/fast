@@ -18,12 +18,14 @@ import {
     fastComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
-import { Direction } from "@microsoft/fast-web-utilities";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     mapFASTComponentsDesignSystem,
     setupFASTComponentDesignSystem,
 } from "../configs/library.fast.design-system.mapping";
 import { elementLibraries } from "../configs";
+import { creatorOriginatorId } from "../creator";
+import { DisplayMode } from "../creator.props";
 import {
     CustomMessageSystemActions,
     designTokensLinkedDataId,
@@ -31,6 +33,7 @@ import {
 } from "../utilities";
 import { WebComponentLibraryDefinition } from "../configs/typings";
 import { HTMLRenderReact } from "./web-components";
+
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
@@ -46,6 +49,7 @@ export interface PreviewState {
     designSystemDataDictionary: DataDictionary<unknown> | void;
     htmlRenderMessageSystem: MessageSystem;
     htmlRenderReady: boolean;
+    displayMode: DisplayMode;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
@@ -70,6 +74,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
             htmlRenderReady: false,
+            displayMode: DisplayMode.default,
         };
 
         setupFASTComponentDesignSystem(document.body);
@@ -95,7 +100,14 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             return (
                 <React.Fragment>
-                    <div className={"preview"} dir={directionValue} ref={this.ref}>
+                    <div
+                        className={classNames("preview", [
+                            "previewMode",
+                            this.state.displayMode === DisplayMode.preview,
+                        ])}
+                        dir={directionValue}
+                        ref={this.ref}
+                    >
                         <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
@@ -319,6 +331,31 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 },
                                 "*"
                             );
+                        }
+                        else if (
+                            (messageData as any).options &&
+                            (messageData as any).options.originatorId ===
+                                creatorOriginatorId
+                        ) {
+                            const action: string[] = ((messageData as any).options
+                                .action as string).split("::");
+                            if (action[0] === "displayMode") {
+                                const mode: DisplayMode =
+                                    action[1] === "preview"
+                                        ? DisplayMode.preview
+                                        : DisplayMode.default;
+                                this.setState({ displayMode: mode });
+                                this.state.htmlRenderMessageSystem.postMessage({
+                                    type: MessageSystemType.custom,
+                                    options: {
+                                        originatorId: creatorOriginatorId,
+                                        action:
+                                            mode === DisplayMode.preview
+                                                ? "displayMode::preview"
+                                                : "displayMode::default",
+                                    },
+                                });
+                            }
                         }
                         break;
                 }

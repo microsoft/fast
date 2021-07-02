@@ -13,6 +13,10 @@ export enum NavigationId {
     libraries,
 }
 
+export enum DisplayMode {
+    default,
+    preview,
+}
 /**
  * Data for a single view
  */
@@ -118,6 +122,11 @@ export interface ProjectFile {
      * The last mapped data dictionary to monaco editor value
      */
     lastMappedDataDictionaryToMonacoEditorHTMLValue: string;
+
+    /**
+     * The display mode
+     */
+    displayMode: DisplayMode;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;

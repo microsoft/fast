@@ -18,6 +18,7 @@ import {
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
+import { toggleStyle } from "@microsoft/site-utilities/src/components/style";
 import { DataType, MessageSystem } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
@@ -92,7 +93,7 @@ export function renderDeviceSelect(
 ): React.ReactNode {
     return (
         <fast-select
-            selectedIndex={selectedDeviceId}
+            value={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
                     onChangeCallback((e.target as Select).value);
@@ -423,4 +424,42 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
             ></fast-tooling-css-layout>
         );
     }
+}
+
+export class HTMLRenderReact extends React.Component {
+    public renderRef: React.RefObject<HTMLDivElement>;
+
+    private setRenderRef = el => {
+        this.renderRef = el;
+    };
+
+    render() {
+        return (
+            <fast-tooling-html-render ref={this.setRenderRef}>
+                <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
+            </fast-tooling-html-render>
+        );
+    }
+}
+
+export function renderPreviewSwitch(
+    switchState: boolean,
+    onChangeCallback: (newState: boolean) => void,
+    disable: boolean
+): React.ReactNode {
+    return (
+        <fast-switch
+            checked={switchState ? true : null}
+            disabled={disable ? true : null}
+            events={{
+                change: (e: React.ChangeEvent): void => {
+                    onChangeCallback(!switchState);
+                },
+            }}
+            style={toggleStyle}
+        >
+            <span>Preview</span>
+        </fast-switch>
+    );
 }

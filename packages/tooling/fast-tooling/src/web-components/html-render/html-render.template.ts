@@ -7,7 +7,7 @@ export const HTMLRenderTemplate: (
 ) => ViewTemplate<HTMLRender> = context => {
     return html<HTMLRender>`
         <div
-            class="container"
+            class="${x => (x.interactiveMode ? "container interactive" : "container")}"
             @click="${(x, c) => x.containerClickHandler(c.event as MouseEvent)}"
         >
             <div
