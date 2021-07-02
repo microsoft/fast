@@ -1,15 +1,16 @@
-**This guide describes APIs and systems that are alpha and subject to change. Please keep that in mind before using these tools. If you have feedback, please don't hesitate to file an issue!**
+---
+id: design-tokens
+title: Design Tokens
+sidebar_label: Design Tokens
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/design-tokens.md
+---
 
-# Design Tokens
 The FAST Design Token implementation is designed to provide first-class support for Design Tokens and make setting, getting, and using Design Tokens simple.
 
 ## What is a Design Token
 A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [the Design Tokens Community Group](https://github.com/design-tokens/community-group#design-tokens) for more information on Design Tokens themselves.
 
-## Using Design Tokens in FAST
-This usage guide walks through creating and using a Design Token *background-color*, which is represented in code as a hexadecimal color string.
-
-### 1. Create a Token
+## Create a Token
 The first step to using a token is to create it:
 
 ```ts
@@ -20,7 +21,7 @@ export const fillColor = DesignToken.create<string>("fill-color");
 
 The type assertion informs what types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
 
-### 2. Setting the Design Token
+## Setting Values
 A `DesignToken` *value* is set for a `FASTElement` or `HTMLBodyElement` node. This allows tokens to be set to different values for distinct DOM trees:
 
 ```ts
@@ -31,7 +32,14 @@ fillColor.setValueFor(ancestor, "#FFFFFF");
 fillColor.setValueFor(descendent, "#F7F7F7");
  ```
 
-### 3. Getting the Design Token value
+## Setting a Default Value
+A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
+
+```ts
+fillColor.withDefault("#FFFFFF");
+```
+
+## Getting Values
 Once the value is set for a node, the value is available to use for that node or any descendent node. The value returned will be the value set for the nearest ancestor (or the element itself).
 
 ```ts
@@ -39,7 +47,7 @@ fillColor.getValueFor(ancestor); // "#FFFFFF"
 fillColor.getValueFor(descendent); // "#F7F7F7"
 ```
 
-### 4. Deleting Design Token values
+## Deleting Values
 Values can be deleted for a node. Doing so causes retrieval of the nearest ancestor's value instead:
 
 ```ts
@@ -47,13 +55,7 @@ fillColor.deleteValueFor(descendent);
 fillColor.getValueFor(descendent); // "#FFFFFF"
 ```
 
-### 5. Setting a default value
-A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
-
-```ts
-fillColor.withDefault("#FFFFFF");
-```
-### 6. CSS Custom Property emission
+## CSS Custom Property emission
 Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a (derived value)[#derived-design-token-values], the CSS custom property will also be emitted when any dependent tokens change.
 
 A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration with `cssCustomPropertyName` set to `null` during creation:
@@ -68,7 +70,7 @@ A DesignToken can also be configured to emit to a CSS custom property that is di
 DesignToken.create<number>({name: "my-token", cssCustomPropertyName: "my-css-custom-property-name"}); // Emits to --my-css-custom-property-name
 ```
 
-#### Values with a 'createCSS' method
+### Values with a 'createCSS' method
 It is sometimes useful to be able to set a token to a complex object but still use that value in CSS. If a DesignToken is assigned a value with a `createCSS` method on it, the product of that method will be used when emitting to a CSS custom property instead of the Design Token value itself:
 
 ```ts
@@ -90,7 +92,7 @@ const value = {
 fancyFillColor.setValueFor(descendent, value)
 ```
 
-### Subscription
+## Subscription
 `DesignToken` supports subscription, notifying a subscriber when a value changes. Subscriptions can subscribe to *any* change throughout the document tree or they can subscribe changes for specific elements.
 
 **Example: Subscribe to changes for any element**

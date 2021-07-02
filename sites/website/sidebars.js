@@ -83,6 +83,7 @@ module.exports = {
                 "design-systems/overview",
                 "design-systems/fast-frame",
                 "design-systems/creating-a-component-library",
+                "design-systems/design-tokens",
                 "design-systems/high-contrast",
             ],
         },

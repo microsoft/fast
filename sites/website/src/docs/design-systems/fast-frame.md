@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 FAST Frame (@microsoft/fast-components) is a collection of highly configurable Web Components, Design Tokens, stylesheets, and styling tools in the `@microsoft/fast-components` package.
 
 ## Using FAST Frame Components
-### Create a Design System
+### Create a `DesignSystem`
 Web components from FAST Frame must be registered with a Design System prior to being used in HTML. To create a `DesignSystem`, import the factory from `@microsoft/fast-foundation` and create the instances:
 
 ```ts

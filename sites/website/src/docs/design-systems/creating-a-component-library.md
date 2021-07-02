@@ -104,7 +104,7 @@ export const myElementRegistration = MyElement.compose({
 
 Note that the registration is composed with a "defaultContent" value. This value can be provided during composition or as a conditional in the template; either approach will work.
 
-### Registering Components in an application
+### Registering Library Components in an Application
 To register the component, an application author will import the registration and register it in their DesignSystem, overriding any properties as necessary:
 
 ```ts
