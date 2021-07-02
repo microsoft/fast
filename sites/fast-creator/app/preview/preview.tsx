@@ -23,15 +23,19 @@ import {
     mapFASTComponentsDesignSystem,
     setupFASTComponentDesignSystem,
 } from "../configs/library.fast.design-system.mapping";
-import { registerFASTComponents } from "../configs/library.fast.registry";
-import { designTokensLinkedDataId } from "../utilities";
+import { elementLibraries } from "../configs";
+import {
+    CustomMessageSystemActions,
+    designTokensLinkedDataId,
+    previewOriginatorId,
+} from "../utilities";
+import { WebComponentLibraryDefinition } from "../configs/typings";
 import { HTMLRenderReact } from "./web-components";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
 document.head.appendChild(style);
-registerFASTComponents();
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -194,7 +198,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         return this.attachMappedComponents;
     }
 
-    private handleMessage = (message: MessageEvent): void => {
+    private handleMessage = async (message: MessageEvent): Promise<void> => {
         if (message.origin === location.origin) {
             let messageData: unknown;
 
@@ -286,6 +290,34 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                     designSystemDataDictionary: updatedDesignSystemDataDictionary,
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
+                            );
+                        } else if (
+                            (messageData as any).data &&
+                            (messageData as any).data.action ===
+                                CustomMessageSystemActions.libraryAdd
+                        ) {
+                            // Import the web component library
+                            await (elementLibraries[
+                                (messageData as any).data.id
+                            ] as WebComponentLibraryDefinition).import();
+                            // Register elements from the web component library
+                            (elementLibraries[
+                                (messageData as any).data.id
+                            ] as WebComponentLibraryDefinition).register();
+
+                            window.postMessage(
+                                {
+                                    type: MessageSystemType.custom,
+                                    action: ViewerCustomAction.call,
+                                    options: {
+                                        originatorId: previewOriginatorId,
+                                    },
+                                    data: {
+                                        action: CustomMessageSystemActions.libraryAdded,
+                                        id: (messageData as any).data.id,
+                                    },
+                                },
+                                "*"
                             );
                         }
                         break;
