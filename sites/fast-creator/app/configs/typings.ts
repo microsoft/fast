@@ -43,7 +43,12 @@ export interface WebComponentLibraryDefinition extends NativeElementLibraryDefin
     /**
      * The script location
      */
-    import: string;
+    import: () => void;
+
+    /**
+     * Register web components within this function
+     */
+    register: () => void;
 }
 
 export type ElementLibraryDefinition =

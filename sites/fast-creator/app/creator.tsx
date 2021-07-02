@@ -4,7 +4,6 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
-    DataType,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
@@ -17,7 +16,6 @@ import {
     defaultDevices,
     Display,
     LinkedDataControl,
-    ModularNavigation,
     ModularViewer,
     StandardControlPlugin,
     ViewerCustomAction,
@@ -72,7 +70,12 @@ import {
 } from "./web-components";
 import { Device } from "./web-components/devices";
 import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
-import { designTokensLinkedDataId } from "./utilities";
+import {
+    CustomMessageSystemActions,
+    designTokensLinkedDataId,
+    previewOriginatorId,
+    rootOriginatorId,
+} from "./utilities";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -177,9 +180,7 @@ class Creator extends Editor<{}, CreatorState> {
             mobileNavigationVisible: false,
             activeFormId: FormId.component,
             activeNavigationId: NavigationId.navigation,
-            addedLibraries: [
-                "fast-components", // TODO: remove this when additional libraries are added and dynamic imports are used
-            ],
+            addedLibraries: [],
             designSystemDataDictionary: [
                 {
                     [designTokensLinkedDataId]: {
@@ -359,6 +360,20 @@ class Creator extends Editor<{}, CreatorState> {
     };
 
     private handleAddLibrary = (libraryId: string) => {
+        this.fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.call,
+            options: {
+                originatorId: rootOriginatorId,
+            },
+            data: {
+                action: CustomMessageSystemActions.libraryAdd,
+                id: libraryId,
+            },
+        } as CustomMessageIncomingOutgoing<any>);
+    };
+
+    private handleLibraryAdded = (libraryId: string) => {
         this.setState({
             addedLibraries: this.state.addedLibraries.concat([libraryId]),
         });
@@ -389,7 +404,13 @@ class Creator extends Editor<{}, CreatorState> {
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
         ) {
-            if (e.data.value && e.data.value === previewReady) {
+            if (
+                e.data &&
+                e.data.options &&
+                e.data.options.originatorId === previewOriginatorId
+            ) {
+                this.handleLibraryAdded(e.data.data.id);
+            } else if (e.data.value && e.data.value === previewReady) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,
