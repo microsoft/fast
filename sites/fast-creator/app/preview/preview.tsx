@@ -330,8 +330,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 },
                                 "*"
                             );
-                        }
-                        else if (
+                        } else if (
                             (messageData as any).options &&
                             (messageData as any).options.originatorId ===
                                 creatorOriginatorId
