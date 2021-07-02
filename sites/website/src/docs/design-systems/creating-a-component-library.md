@@ -35,7 +35,7 @@ const myElementStyles = css`/* ... */`;
 const myElementTemplate = html`<!-- ... -->`;
 ```
 
-A `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with an [ElementDefinitionContext](/TODO) and [FoundationElementDefinition](/TODO) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and is what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options:
+A `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with an [ElementDefinitionContext](/docs/api/fast-foundation.elementdefinitioncontext) and [FoundationElementDefinition](/docs/api/fast-foundation.foundationelementdefinition) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and is what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";

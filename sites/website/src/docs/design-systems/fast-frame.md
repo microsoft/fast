@@ -36,7 +36,7 @@ Now with the above script loaded, add the registered custom element to your HTML
 ```
 
 ## Configuring Components
-FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [“creating a component library”](/TODO) documentation. 
+FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [“creating a component library”](/docs/design-systems/creating-a-component-library) documentation. 
 
 ### Configuring the DesignSystem
 The `DesignSystem` is the entry-point for most component configuration. It can be used control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
@@ -63,7 +63,7 @@ In this case, the element can be used in HTML using the ‘faster’:
 ```
 
 #### `DesignSystem.withShadowRootMode()`
-Unless specified during [component definition creation](/TODO), all components registered with the DesignSystem are defined with an [open shadow root mode.](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
+Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with an [open shadow root mode.](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
 
 ```ts
 DesignSystem
@@ -137,11 +137,11 @@ DesignSystem
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
 
 ## Configuring Styles
-FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](/TODO) and an [adaptive color system](/TODO).
+FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](/docs/design-systems/design-tokens) and an [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system).
 
 
 ### FAST Frame Design Tokens
-FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](/TODO)
+FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](/docs/design-systems/fast-frame#adaptive-color-system)
 
 #### Typography
 | Level              | Font Size Token Name            | Line Height Token Name           |
@@ -295,5 +295,5 @@ A special layer to support experiences primarily built with cards, especially in
 
 A special layer for floating layers, like flyouts or menus. It will be lighter than any other layers if possible, but will also be white in default light mode, as will neutral layer one.
 
-#### Adaptive Color "Dont's"
-The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the [DesignToken.setValueFor()](/TODO) API.
+#### Adaptive Color "Don'ts"
+The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the [DesignToken.setValueFor()](/docs/design-systems/design-tokens#setting-values) API.
