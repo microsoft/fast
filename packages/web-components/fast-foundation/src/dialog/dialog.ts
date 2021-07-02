@@ -1,5 +1,5 @@
 import { attr, DOM } from "@microsoft/fast-element";
-import { isHTMLElement, keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
+import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
 
