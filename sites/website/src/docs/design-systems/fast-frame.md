@@ -4,11 +4,11 @@ title: The FAST Frame Design System
 sidebar_label: FAST Frame
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
-FAST Frame (@microsoft/fast-components) is a collection of highly configurable Web Components, Design Tokens, stylesheets, and styling tools in the `@microsoft/fast-components` package.
+FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a collection of highly configurable Web Components, Design Tokens, stylesheets, and styling tools.
 
 ## Using FAST Frame Components
 ### Create a `DesignSystem`
-Web components from FAST Frame must be registered with a Design System prior to being used in HTML. To create a `DesignSystem`, import the factory from `@microsoft/fast-foundation` and create the instances:
+Web components from FAST Frame must be registered with a `DesignSystem` prior to being used in HTML. To create a `DesignSystem`, import the factory from `@microsoft/fast-foundation` and create the instances:
 
 ```ts
 import { DesignSystem  } from "@microsoft/fast-foundation";
@@ -16,7 +16,7 @@ const designSystem = DesignSystem.getOrCreate()
 ```
 
 ### Register Components
-With the Design System created, registration of components is easy. Simply import the registration of the component you want to use from `@microsoft/fast-foundation` and register it with the Design System:
+With the Design System created, registration of components is easy. Simply import the registration of the component you want to use from `@microsoft/fast-components` and register it with the Design System:
 
 
 ```ts
@@ -24,23 +24,24 @@ With the Design System created, registration of components is easy. Simply impor
 import { fastButton } from "@microsoft/fast-components";
 
 // ...
-designSystem.register(fastButton()
+designSystem.register(fastButton())
 
 ```
 
 ### Add Element to HTML
-Now with the above script loaded, add the registered custom element to your HTML document (or template):
+Now with the above script loaded in your document, add the registered custom element to your HTML document (or template):
 
 ```html
 <fast-button>Click me!</fast-button>
 ```
 
 ## Configuring Components
-FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [“creating a component library”](/docs/design-systems/creating-a-component-library) documentation. 
+FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [creating a component library](/docs/design-systems/creating-a-component-library) documentation. 
 
 ### Configuring the DesignSystem
 The `DesignSystem` is the entry-point for most component configuration. It can be used control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
-For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided during component registration. 
+j
+For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided [during component registration](/docs/design-systems/fast-frame#configuring-components-during-registration). 
 
 #### `DesignSystem.withPrefix()`
 As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](/docs/design-systems/fast-frame/#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
@@ -183,7 +184,7 @@ The current base recipes are closely related to their algorithm, but that's a co
 
 Recipes are currently used for color values, but they are not limited to that and their usage will be expanded soon.
 
-**To better visualize how this works, FAST built an application specificity for exploring the system. Check out [the Color Explorer.](https://color.fast.design/
+**To better visualize how this works, FAST built an application specificity for exploring the system. Check out [the Color Explorer.](https://color.fast.design/)**
 #### Common functionality
 
 Most color recipes are based on a `palette`. Currently `fast-components` has built-in support for `accent` and `neutral` palettes.
