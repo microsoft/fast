@@ -56,7 +56,13 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { CreatorState, DisplayMode, FormId, NavigationId, ProjectFile } from "./creator.props";
+import {
+    CreatorState,
+    DisplayMode,
+    FormId,
+    NavigationId,
+    ProjectFile,
+} from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";

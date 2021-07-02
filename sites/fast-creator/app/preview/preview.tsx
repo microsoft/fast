@@ -34,7 +34,6 @@ import {
 import { WebComponentLibraryDefinition } from "../configs/typings";
 import { HTMLRenderReact } from "./web-components";
 
-
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
