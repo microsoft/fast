@@ -47,15 +47,17 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-
-export const importScriptLocation = "fast-components.min.js";
+import { registerFASTComponents } from "./library.fast.registry";
 export const fastComponentId = "fast-components";
 
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
     id: fastComponentId,
     displayName: "FAST Components",
     optional: true,
-    import: `./${importScriptLocation}`,
+    import: async () => {
+        await import("./library.fast.import");
+    },
+    register: registerFASTComponents,
     componentDictionary: {
         [fastComponentSchemas[fastAnchorTag].$id]: {
             displayName: fastComponentSchemas[fastAnchorTag].title,
