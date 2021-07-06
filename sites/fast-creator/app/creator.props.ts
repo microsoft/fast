@@ -8,6 +8,11 @@ export enum FormId {
     designSystem,
 }
 
+export enum NavigationId {
+    navigation,
+    libraries,
+}
+
 /**
  * Data for a single view
  */
@@ -80,7 +85,17 @@ export interface ProjectFile {
     mobileFormVisible: boolean;
 
     /**
-     * The active form id
+     * The active navigation id for the left pane
+     */
+    activeNavigationId: NavigationId;
+
+    /**
+     * Libraries that have been added to the project
+     */
+    addedLibraries: string[];
+
+    /**
+     * The active form id for the right pane
      */
     activeFormId: FormId;
 

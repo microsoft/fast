@@ -1,10 +1,24 @@
-import { fastLinkedDataExamples } from "./library.fast.examples";
-import { nativeLinkedDataExamples } from "./library.native.examples";
-import { ExampleData } from "./typings";
+import { fastComponentLibrary } from "./library.fast";
+import { nativeElementLibrary } from "./library.native";
+import { ElementLibraryDefinition } from "./typings";
 
-const linkedDataExamples: ExampleData = {
-    ...fastLinkedDataExamples,
-    ...nativeLinkedDataExamples,
+const elementLibraries: { [key: string]: ElementLibraryDefinition } = {
+    [fastComponentLibrary.id]: fastComponentLibrary,
+    [nativeElementLibrary.id]: nativeElementLibrary,
 };
 
-export { linkedDataExamples };
+const elementLibraryContents: { [key: string]: string[] } = (() => {
+    const elementLibraryContents = {};
+
+    Object.values(elementLibraries).forEach(elementLibrary => {
+        elementLibraryContents[elementLibrary.id] = Object.values(
+            elementLibrary.componentDictionary
+        ).map(component => {
+            return component.schema.$id;
+        });
+    });
+
+    return elementLibraryContents;
+})();
+
+export { elementLibraries, elementLibraryContents };
