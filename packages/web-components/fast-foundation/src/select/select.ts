@@ -29,6 +29,52 @@ export type SelectOptions = FoundationElementDefinition &
  */
 export class Select extends FormAssociatedSelect {
     /**
+     * The internal value property.
+     *
+     * @internal
+     */
+    private _value: string;
+
+    /**
+     * The value displayed on the button.
+     *
+     * @public
+     */
+    @observable
+    public displayValue: string = "";
+
+    /**
+     * Indicates the initial state of the position attribute.
+     *
+     * @internal
+     */
+    private forcedPosition: boolean = false;
+
+    /**
+     * Reset the element to its first selectable option when its parent form is reset.
+     *
+     * @internal
+     */
+    public formResetCallback = (): void => {
+        this.setProxyOptions();
+        this.setDefaultSelectedOption();
+        this.value = this.firstSelectedOption.value;
+    };
+
+    /**
+     * @internal
+     */
+    private indexWhenOpened: number;
+
+    /**
+     * The max height for the listbox when opened.
+     *
+     * @internal
+     */
+    @observable
+    public maxHeight: number = 0;
+
+    /**
      * The open attribute.
      *
      * @internal
@@ -44,14 +90,30 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
-    private indexWhenOpened: number;
+    /**
+     * Holds the current state for the calculated position of the listbox.
+     *
+     * @public
+     */
+    @observable
+    public position: SelectPosition = SelectPosition.below;
 
     /**
-     * The internal value property.
+     * Reflects the placement for the listbox when the select is open.
      *
-     * @internal
+     * @public
      */
-    private _value: string;
+    @attr({ attribute: "position" })
+    public positionAttribute: SelectPosition;
+
+    /**
+     * The role of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: role
+     */
+    public role: SelectRole = SelectRole.combobox;
 
     /**
      * The value property.
@@ -97,147 +159,6 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
-    private updateValue(shouldEmit?: boolean) {
-        if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-            this.displayValue = this.firstSelectedOption
-                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
-                : this.value;
-        }
-
-        if (shouldEmit) {
-            this.$emit("input");
-            this.$emit("change", this, {
-                bubbles: true,
-                composed: undefined,
-            });
-        }
-    }
-
-    /**
-     * Updates the proxy value when the selected index changes.
-     *
-     * @param prev - the previous selected index
-     * @param next - the next selected index
-     *
-     * @internal
-     */
-    public selectedIndexChanged(prev, next): void {
-        super.selectedIndexChanged(prev, next);
-        this.updateValue();
-    }
-
-    /**
-     * Reflects the placement for the listbox when the select is open.
-     *
-     * @public
-     */
-    @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
-
-    /**
-     * Indicates the initial state of the position attribute.
-     *
-     * @internal
-     */
-    private forcedPosition: boolean = false;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
-
-    /**
-     * Holds the current state for the calculated position of the listbox.
-     *
-     * @public
-     */
-    @observable
-    public position: SelectPosition = SelectPosition.below;
-
-    /**
-     * Reference to the internal listbox element.
-     *
-     * @internal
-     */
-    public listbox: HTMLDivElement;
-
-    /**
-     * Calculate and apply listbox positioning based on available viewport space.
-     *
-     * @param force - direction to force the listbox to display
-     * @public
-     */
-    public setPositioning(): void {
-        const currentBox = this.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const availableBottom = viewportHeight - currentBox.bottom;
-
-        this.position = this.forcedPosition
-            ? this.positionAttribute
-            : currentBox.top > availableBottom
-            ? SelectPosition.above
-            : SelectPosition.below;
-
-        this.positionAttribute = this.forcedPosition
-            ? this.positionAttribute
-            : this.position;
-
-        this.maxHeight =
-            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
-    }
-
-    /**
-     * The max height for the listbox when opened.
-     *
-     * @internal
-     */
-    @observable
-    public maxHeight: number = 0;
-    private maxHeightChanged(): void {
-        if (this.listbox) {
-            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
-        }
-    }
-
-    /**
-     * The value displayed on the button.
-     *
-     * @public
-     */
-    @observable
-    public displayValue: string = "";
-
-    /**
-     * Synchronize the `aria-disabled` property when the `disabled` property changes.
-     *
-     * @param prev - The previous disabled value
-     * @param next - The next disabled value
-     *
-     * @internal
-     */
-    public disabledChanged(prev: boolean, next: boolean): void {
-        if (super.disabledChanged) {
-            super.disabledChanged(prev, next);
-        }
-        this.ariaDisabled = this.disabled ? "true" : "false";
-    }
-
-    /**
-     * Reset the element to its first selectable option when its parent form is reset.
-     *
-     * @internal
-     */
-    public formResetCallback = (): void => {
-        this.setProxyOptions();
-        this.setDefaultSelectedOption();
-        this.value = this.firstSelectedOption.value;
-    };
-
     /**
      * Handle opening and closing the listbox when the select is clicked.
      *
@@ -271,6 +192,26 @@ export class Select extends FormAssociatedSelect {
         return true;
     }
 
+    public connectedCallback() {
+        super.connectedCallback();
+        this.forcedPosition = !!this.positionAttribute;
+    }
+
+    /**
+     * Synchronize the `aria-disabled` property when the `disabled` property changes.
+     *
+     * @param prev - The previous disabled value
+     * @param next - The next disabled value
+     *
+     * @internal
+     */
+    public disabledChanged(prev: boolean, next: boolean): void {
+        if (super.disabledChanged) {
+            super.disabledChanged(prev, next);
+        }
+        this.ariaDisabled = this.disabled ? "true" : "false";
+    }
+
     /**
      * Handle focus state when the element or its children lose focus.
      *
@@ -293,40 +234,6 @@ export class Select extends FormAssociatedSelect {
             if (this.indexWhenOpened !== this.selectedIndex) {
                 this.updateValue(true);
             }
-        }
-    }
-
-    /**
-     * Synchronize the form-associated proxy and update the value property of the element.
-     *
-     * @param prev - the previous collection of slotted option elements
-     * @param next - the next collection of slotted option elements
-     *
-     * @internal
-     */
-    public slottedOptionsChanged(prev, next): void {
-        super.slottedOptionsChanged(prev, next);
-        this.setProxyOptions();
-        this.updateValue();
-    }
-
-    /**
-     * Reset and fill the proxy to match the component's options.
-     *
-     * @internal
-     */
-    private setProxyOptions(): void {
-        if (this.proxy instanceof HTMLSelectElement && this.options) {
-            this.proxy.options.length = 0;
-            this.options.forEach(option => {
-                const proxyOption =
-                    option.proxy ||
-                    (option instanceof HTMLOptionElement ? option.cloneNode() : null);
-
-                if (proxyOption) {
-                    this.proxy.appendChild(proxyOption);
-                }
-            });
         }
     }
 
@@ -381,9 +288,101 @@ export class Select extends FormAssociatedSelect {
         return true;
     }
 
-    public connectedCallback() {
-        super.connectedCallback();
-        this.forcedPosition = !!this.positionAttribute;
+    /**
+     * Updates the proxy value when the selected index changes.
+     *
+     * @param prev - the previous selected index
+     * @param next - the next selected index
+     *
+     * @internal
+     */
+    public selectedIndexChanged(prev, next): void {
+        super.selectedIndexChanged(prev, next);
+        this.updateValue();
+    }
+
+    /**
+     * Calculate and apply listbox positioning based on available viewport space.
+     *
+     * @param force - direction to force the listbox to display
+     * @public
+     */
+    public setPositioning(): void {
+        const currentBox = this.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const availableBottom = viewportHeight - currentBox.bottom;
+
+        this.position = this.forcedPosition
+            ? this.positionAttribute
+            : currentBox.top > availableBottom
+            ? SelectPosition.above
+            : SelectPosition.below;
+
+        this.positionAttribute = this.forcedPosition
+            ? this.positionAttribute
+            : this.position;
+
+        this.maxHeight =
+            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
+    }
+
+    /**
+     * Reset and fill the proxy to match the component's options.
+     *
+     * @internal
+     */
+    private setProxyOptions(): void {
+        if (this.proxy instanceof HTMLSelectElement && this.options) {
+            this.proxy.options.length = 0;
+            this.options.forEach(option => {
+                const proxyOption =
+                    option.proxy ||
+                    (option instanceof HTMLOptionElement ? option.cloneNode() : null);
+
+                if (proxyOption) {
+                    this.proxy.appendChild(proxyOption);
+                }
+            });
+        }
+    }
+
+    /**
+     * Synchronize the form-associated proxy and update the value property of the element.
+     *
+     * @param prev - the previous collection of slotted option elements
+     * @param next - the next collection of slotted option elements
+     *
+     * @internal
+     */
+    public slottedOptionsChanged(prev, next): void {
+        super.slottedOptionsChanged(prev, next);
+        this.setProxyOptions();
+        this.updateValue();
+    }
+
+    /**
+     * Synchronize the value and display value with the first selected option,
+     * then emit `input` and `change` events.
+     *
+     * @param shouldEmit - emit `input` and `change` events
+     *
+     * @internal
+     */
+    private updateValue(shouldEmit?: boolean) {
+        if (this.$fastController.isConnected) {
+            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
+            this.displayValue = this.firstSelectedOption
+                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
+                : this.value;
+        }
+
+        if (shouldEmit) {
+            this.$emit("input");
+            this.$emit("change", this, {
+                bubbles: true,
+                composed: undefined,
+            });
+        }
     }
 }
 
