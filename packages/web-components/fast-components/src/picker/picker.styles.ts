@@ -5,10 +5,7 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
-    controlCornerRadius,
     neutralLayerFloating,
-    neutralStrokeRest,
-    strokeWidth,
 } from "../design-tokens";
 
 export const pickerStyles: (
@@ -20,14 +17,6 @@ export const pickerStyles: (
 ) =>
     css`
         :host {
-            background: ${neutralLayerFloating};
-            display: block;
-            width: auto;
-            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-            border-radius: calc(${controlCornerRadius} * 1px);
-            margin: 0;
-            border-radius: calc(var(--corner-radius) * 1px);
-            position: relative;
         }
 
         .region {

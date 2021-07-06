@@ -1,17 +1,27 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
+    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    bodyFont,
     controlCornerRadius,
     designUnit,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccentActive,
+    neutralForegroundRest,
+    neutralLayer3,
     neutralLayerFloating,
     strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
 } from "../design-tokens";
-import { elevation } from "../styles/index";
+import { elevation, heightNumber } from "../styles/index";
 
 export const pickerMenuStyles: (
     context: ElementDefinitionContext,
@@ -23,9 +33,10 @@ export const pickerMenuStyles: (
     css`
         :host {
             background: ${neutralLayerFloating};
+            --elevation: 11;
             z-index: 1000;
             display: flex;
-            width: 260px;
+            width: 100%;
             max-height: 100%;
             min-height: 58px;
             flex-direction: column;
@@ -45,17 +56,41 @@ export const pickerMenuStyles: (
         }
 
         ::slotted([role="listitem"]) {
-            width: 100%;
-            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            font-family: ${bodyFont};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+            box-sizing: border-box;
+            color: ${neutralForegroundRest};
+            cursor: pointer;
+            fill: currentcolor;
+            font-size: ${typeRampBaseFontSize};
+            height: calc(${heightNumber} * 1px);
+            line-height: ${typeRampBaseLineHeight};
+            margin: 0 calc(${designUnit} * 1px);
+            outline: none;
+            overflow: hidden;
+            padding: 0 calc(${designUnit} * 2.25px);
+            user-select: none;
+            white-space: nowrap;
         }
 
-        ::slotted([aria-selected="true"][role="listitem"]) {
-            background: ${SystemColors.Highlight};
-            border-color: ${SystemColors.ButtonText};
-            box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
-                ${SystemColors.HighlightText};
-            color: ${SystemColors.HighlightText};
-            fill: currentcolor;
+        ::slotted(:${focusVisible}[role="listitem"]) {
+            border-color: ${focusStrokeOuter};
+            background: ${neutralLayer3};
+            color: ${neutralForegroundRest};
+        }
+    
+        ::slotted(:hover[role="listitem"]) {
+            background: ${neutralLayer3};
+            color: ${neutralForegroundRest};
+        }
+
+        ::slotted([role="listitem"][aria-selected="true"]) {
+            background: ${accentFillActive};
+            color: ${foregroundOnAccentActive};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

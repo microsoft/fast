@@ -5,7 +5,7 @@ import { PickerMenu } from "./picker-menu";
 import { PickerList } from "./picker-list";
 
 const defaultItemTemplate: ViewTemplate = html`
-    <button
+    <div
         role="listitem"
         tabindex="0"
         @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
@@ -13,17 +13,17 @@ const defaultItemTemplate: ViewTemplate = html`
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
     >
         ${x => x}
-    </button>
+    </div>
 `;
 
 const defaultOptionTemplate: ViewTemplate = html`
-    <button
+    <div
         role="listitem"
         tabindex="-1"
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
     >
         ${x => x}
-    </button>
+    </div>
 `;
 
 
