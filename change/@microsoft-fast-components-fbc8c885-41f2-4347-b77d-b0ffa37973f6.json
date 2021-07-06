@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "focus trap improvement",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
