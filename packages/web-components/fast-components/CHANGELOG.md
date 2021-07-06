@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 30 Jun 2021 07:19:09 GMT and should not be manually modified.
+This log was last generated on Sun, 04 Jul 2021 07:15:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.1.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.2.0 (john.kreitlow@microsoft.com)
+
+## 2.0.2
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- correct names for typography tokens (nicholasrice@users.noreply.github.com)
+- Update default value for bodyFont Design Token (nicholasrice@users.noreply.github.com)
 
 ## 2.0.1
 

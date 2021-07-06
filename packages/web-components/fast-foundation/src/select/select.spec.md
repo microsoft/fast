@@ -59,7 +59,10 @@ Extends [`listbox`](../listbox/listbox.spec.md) and [form associated custom elem
 
 *Events*:
 
-- `change` - emits when the `value` is changed via user interaction.
+|Event|description|bubbles|composed|
+|-|-|-|-|
+|`input`|emits when the `value` is changed via user interaction.|yes|yes|
+|`change`|emits when the `value` is changed via user interaction.|yes|no|
 
 *Slots*:
 
