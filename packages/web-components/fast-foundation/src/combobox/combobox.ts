@@ -94,18 +94,27 @@ export class Combobox extends FormAssociatedCombobox {
         this.updateValue();
     };
 
+    /**
+     * @internal
+     */
+    private get isAutocompleteBoth(): boolean {
+        return this.autocomplete === ComboboxAutocomplete.both;
+    }
+
+    /**
+     * @internal
+     */
     private get isAutocompleteInline(): boolean {
         return (
             this.autocomplete === ComboboxAutocomplete.inline || this.isAutocompleteBoth
         );
     }
 
+    /**
+     * @internal
+     */
     private get isAutocompleteList(): boolean {
         return this.autocomplete === ComboboxAutocomplete.list || this.isAutocompleteBoth;
-    }
-
-    private get isAutocompleteBoth(): boolean {
-        return this.autocomplete === ComboboxAutocomplete.both;
     }
 
     /**
@@ -183,20 +192,20 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The placement for the listbox when the combobox is open.
-     *
-     * @public
-     */
-    @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
-
-    /**
      * The current state of the calculated position of the listbox.
      *
      * @public
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
+
+    /**
+     * The placement for the listbox when the combobox is open.
+     *
+     * @public
+     */
+    @attr({ attribute: "position" })
+    public positionAttribute: SelectPosition;
 
     /**
      * The role of the element.
@@ -505,6 +514,21 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
+     * Ensure that the entire list of options is used when setting the selected property.
+     *
+     * @internal
+     * @remarks
+     * Overrides: `Listbox.selectedOptionsChanged`
+     */
+    public selectedOptionsChanged(prev, next): void {
+        if (this.$fastController.isConnected) {
+            this._options.forEach(o => {
+                o.selected = next.includes(o);
+            });
+        }
+    }
+
+    /**
      * Move focus to the previous selectable option.
      *
      * @internal
@@ -579,21 +603,6 @@ export class Combobox extends FormAssociatedCombobox {
 
         this.maxHeight =
             this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
-    }
-
-    /**
-     * Ensure that the entire list of options is used when setting the selected property.
-     *
-     * @internal
-     * @remarks
-     * Overrides: `Listbox.selectedOptionsChanged`
-     */
-    public selectedOptionsChanged(prev, next): void {
-        if (this.$fastController.isConnected) {
-            this._options.forEach(o => {
-                o.selected = next.includes(o);
-            });
-        }
     }
 
     /**
