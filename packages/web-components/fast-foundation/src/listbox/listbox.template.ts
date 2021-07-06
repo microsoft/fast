@@ -17,6 +17,7 @@ export const listboxTemplate: (
 ) => html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-multiselectable="${x => x.ariaMultiselectable}"
         class="listbox"
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"

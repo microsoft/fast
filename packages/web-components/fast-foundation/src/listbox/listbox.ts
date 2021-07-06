@@ -76,6 +76,19 @@ export class Listbox extends FoundationElement {
     }
 
     /**
+     * Indicates if the listbox is in multi-selection mode.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: `multiple`
+     */
+    @attr({ mode: "boolean" })
+    public multiple: boolean = false;
+    multipleChanged(prev: unknown, next: boolean): void {
+        this.ariaMultiselectable = next ? "true" : "false";
+    }
+
+    /**
      * The list of options.
      *
      * @public
@@ -433,7 +446,7 @@ export class DelegatesARIAListbox {
      * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-activedescendant
+     * HTML Attribute: `aria-activedescendant`
      */
     @observable
     public ariaActiveDescendant: string = "";
@@ -442,7 +455,7 @@ export class DelegatesARIAListbox {
      * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-disabled
+     * HTML Attribute: `aria-disabled`
      */
     @observable
     public ariaDisabled: "true" | "false";
@@ -451,10 +464,19 @@ export class DelegatesARIAListbox {
      * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: `aria-expanded`
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-multiselectable`
+     */
+    @observable
+    public ariaMultiselectable: "true" | "false" | undefined;
 }
 
 /**

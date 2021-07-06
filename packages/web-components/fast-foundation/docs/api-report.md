@@ -785,6 +785,7 @@ export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
+    ariaMultiselectable: "true" | "false" | undefined;
 }
 
 // @internal
@@ -1306,6 +1307,9 @@ export class Listbox extends FoundationElement {
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
+    multiple: boolean;
+    // (undocumented)
+    multipleChanged(prev: unknown, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal

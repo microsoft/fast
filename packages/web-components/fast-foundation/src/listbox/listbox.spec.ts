@@ -99,4 +99,24 @@ describe("Listbox", () => {
 
         await disconnect();
     });
+
+    it("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.multiple = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.equal("true");
+
+        element.multiple = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.equal("false");
+
+        await disconnect();
+    });
 });
