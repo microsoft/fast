@@ -14,7 +14,94 @@ import { ListboxRole } from "./listbox.options";
  */
 export class Listbox extends FoundationElement {
     /**
-     * The index of the selected option
+     * The internal unfiltered list of selectable options.
+     *
+     * @internal
+     */
+    protected _options: ListboxOption[] = [];
+
+    /**
+     * The disabled state of the listbox.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+
+    /**
+     * Returns the first selected option.
+     *
+     * @internal
+     */
+    public get firstSelectedOption(): ListboxOption {
+        return this.selectedOptions[0];
+    }
+
+    /**
+     * Move focus to an option whose label matches characters typed by the user.
+     * Consecutive keystrokes are batched into a buffer of search text used
+     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
+     * between consecutive keystrokes, the search restarts.
+     *
+     * @param key - the key to be evaluated
+     */
+    public handleTypeAhead = (key: string): void => {
+        if (this.typeaheadTimeout) {
+            window.clearTimeout(this.typeaheadTimeout);
+        }
+
+        this.typeaheadTimeout = window.setTimeout(
+            () => (this.typeAheadExpired = true),
+            Listbox.TYPE_AHEAD_TIMEOUT_MS
+        );
+
+        if (key.length > 1) {
+            return;
+        }
+
+        this.typeaheadBuffer = `${
+            this.typeAheadExpired ? "" : this.typeaheadBuffer
+        }${key}`;
+    };
+
+    /**
+     * The count of available options.
+     *
+     * @public
+     */
+    public get length(): number {
+        return this.options?.length ?? 0;
+    }
+
+    /**
+     * The list of options.
+     *
+     * @public
+     */
+    public get options(): ListboxOption[] {
+        Observable.track(this, "options");
+        return this._options;
+    }
+
+    public set options(value: ListboxOption[]) {
+        this._options = value;
+        Observable.notify(this, "options");
+    }
+
+    /**
+     * The role of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: role
+     */
+    @attr
+    public role: string = ListboxRole.listbox;
+
+    /**
+     * The index of the selected option.
      *
      * @public
      */
@@ -23,6 +110,14 @@ export class Listbox extends FoundationElement {
     public selectedIndexChanged(prev: number, next: number): void {
         this.setSelectedOptions();
     }
+
+    /**
+     * A standard `click` event creates a `focus` event before firing, so a
+     * `mousedown` event is used to skip that initial focus.
+     *
+     * @internal
+     */
+    private shouldSkipFocus: boolean = false;
 
     /**
      * Typeahead timeout in milliseconds.
@@ -69,26 +164,6 @@ export class Listbox extends FoundationElement {
     protected typeAheadExpired: boolean = true;
 
     /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    @attr
-    public role: string = ListboxRole.listbox;
-
-    /**
-     * The disabled state of the listbox.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: disabled
-     */
-    @attr({ mode: "boolean" })
-    public disabled: boolean;
-
-    /**
      * @internal
      */
     @observable
@@ -112,26 +187,13 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * The internal unfiltered list of selectable options.
+     * A static filter to include only enabled elements
      *
-     * @internal
-     */
-    protected _options: ListboxOption[] = [];
-
-    /**
-     * The list of options.
-     *
+     * @param n - element to filter
      * @public
      */
-    public get options(): ListboxOption[] {
-        Observable.track(this, "options");
-        return this._options;
-    }
-
-    public set options(value: ListboxOption[]) {
-        this._options = value;
-        Observable.notify(this, "options");
-    }
+    public static slottedOptionFilter = (n: HTMLElement) =>
+        isListboxOption(n) && !n.disabled && !n.hidden;
 
     /**
      * A collection of the selected options.
@@ -149,10 +211,19 @@ export class Listbox extends FoundationElement {
     }
 
     /**
+     * Handles click events for listbox options
+     *
      * @internal
      */
-    public get firstSelectedOption(): ListboxOption {
-        return this.selectedOptions[0];
+    public clickHandler(e: MouseEvent): boolean | void {
+        const captured = (e.target as HTMLElement).closest(
+            `option,[role=option]`
+        ) as ListboxOption;
+
+        if (captured && !captured.disabled) {
+            this.selectedIndex = this.options.indexOf(captured);
+            return true;
+        }
     }
 
     /**
@@ -168,14 +239,6 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * A standard `click` event creates a `focus` event before firing, so a
-     * `mousedown` event is used to skip that initial focus.
-     *
-     * @internal
-     */
-    private shouldSkipFocus: boolean = false;
-
-    /**
      * @internal
      */
     public focusinHandler(e: FocusEvent): void {
@@ -185,136 +248,6 @@ export class Listbox extends FoundationElement {
         }
 
         this.shouldSkipFocus = false;
-    }
-
-    /**
-     * Prevents `focusin` events from firing before `click` events when the
-     * element is unfocused.
-     *
-     * @internal
-     */
-    public mousedownHandler(e: MouseEvent): boolean | void {
-        this.shouldSkipFocus = !this.contains(document.activeElement);
-        return true;
-    }
-
-    /**
-     * @internal
-     */
-    protected setDefaultSelectedOption() {
-        if (this.options && this.$fastController.isConnected) {
-            const selectedIndex = this.options.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
-
-            if (selectedIndex !== -1) {
-                this.selectedIndex = selectedIndex;
-                return;
-            }
-
-            this.selectedIndex = 0;
-        }
-    }
-
-    /**
-     * Sets an option as selected and gives it focus.
-     *
-     * @param index - option index to select
-     * @public
-     */
-    protected setSelectedOptions() {
-        if (this.$fastController.isConnected && this.options) {
-            const selectedOption = this.options[this.selectedIndex] || null;
-
-            this.selectedOptions = this.options.filter(el =>
-                el.isSameNode(selectedOption)
-            );
-            this.ariaActiveDescendant = this.firstSelectedOption
-                ? this.firstSelectedOption.id
-                : "";
-            this.focusAndScrollOptionIntoView();
-        }
-    }
-
-    /**
-     * A static filter to include only enabled elements
-     *
-     * @param n - element to filter
-     * @public
-     */
-    public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.disabled && !n.hidden;
-
-    /**
-     * Moves focus to the first selectable option
-     *
-     * @public
-     */
-    public selectFirstOption(): void {
-        if (!this.disabled) {
-            this.selectedIndex = 0;
-        }
-    }
-
-    /**
-     * Moves focus to the last selectable option
-     *
-     * @internal
-     */
-    public selectLastOption(): void {
-        if (!this.disabled) {
-            this.selectedIndex = this.options.length - 1;
-        }
-    }
-
-    /**
-     * Moves focus to the next selectable option
-     *
-     * @internal
-     */
-    public selectNextOption(): void {
-        if (
-            !this.disabled &&
-            this.options &&
-            this.selectedIndex < this.options.length - 1
-        ) {
-            this.selectedIndex += 1;
-        }
-    }
-
-    public get length(): number {
-        if (this.options) {
-            return this.options.length;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Moves focus to the previous selectable option
-     *
-     * @internal
-     */
-    public selectPreviousOption(): void {
-        if (!this.disabled && this.selectedIndex > 0) {
-            this.selectedIndex = this.selectedIndex - 1;
-        }
-    }
-
-    /**
-     * Handles click events for listbox options
-     *
-     * @internal
-     */
-    public clickHandler(e: MouseEvent): boolean | void {
-        const captured = (e.target as HTMLElement).closest(
-            `option,[role=option]`
-        ) as ListboxOption;
-
-        if (captured && !captured.disabled) {
-            this.selectedIndex = this.options.indexOf(captured);
-            return true;
-        }
     }
 
     /**
@@ -393,31 +326,101 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * Move focus to an option whose label matches characters typed by the user.
-     * Consecutive keystrokes are batched into a buffer of search text used
-     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
-     * between consecutive keystrokes, the search restarts.
+     * Prevents `focusin` events from firing before `click` events when the
+     * element is unfocused.
      *
-     * @param key - the key to be evaluated
+     * @internal
      */
-    public handleTypeAhead = (key: string): void => {
-        if (this.typeaheadTimeout) {
-            window.clearTimeout(this.typeaheadTimeout);
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        this.shouldSkipFocus = !this.contains(document.activeElement);
+        return true;
+    }
+
+    /**
+     * Moves focus to the first selectable option
+     *
+     * @public
+     */
+    public selectFirstOption(): void {
+        if (!this.disabled) {
+            this.selectedIndex = 0;
         }
+    }
 
-        this.typeaheadTimeout = window.setTimeout(
-            () => (this.typeAheadExpired = true),
-            Listbox.TYPE_AHEAD_TIMEOUT_MS
-        );
-
-        if (key.length > 1) {
-            return;
+    /**
+     * Moves focus to the last selectable option
+     *
+     * @internal
+     */
+    public selectLastOption(): void {
+        if (!this.disabled) {
+            this.selectedIndex = this.options.length - 1;
         }
+    }
 
-        this.typeaheadBuffer = `${
-            this.typeAheadExpired ? "" : this.typeaheadBuffer
-        }${key}`;
-    };
+    /**
+     * Moves focus to the next selectable option
+     *
+     * @internal
+     */
+    public selectNextOption(): void {
+        if (
+            !this.disabled &&
+            this.options &&
+            this.selectedIndex < this.options.length - 1
+        ) {
+            this.selectedIndex += 1;
+        }
+    }
+
+    /**
+     * Moves focus to the previous selectable option
+     *
+     * @internal
+     */
+    public selectPreviousOption(): void {
+        if (!this.disabled && this.selectedIndex > 0) {
+            this.selectedIndex = this.selectedIndex - 1;
+        }
+    }
+
+    /**
+     * @internal
+     */
+    protected setDefaultSelectedOption() {
+        if (this.options && this.$fastController.isConnected) {
+            const selectedIndex = this.options.findIndex(
+                el => el.getAttribute("selected") !== null
+            );
+
+            if (selectedIndex !== -1) {
+                this.selectedIndex = selectedIndex;
+                return;
+            }
+
+            this.selectedIndex = 0;
+        }
+    }
+
+    /**
+     * Sets an option as selected and gives it focus.
+     *
+     * @param index - option index to select
+     * @public
+     */
+    protected setSelectedOptions() {
+        if (this.$fastController.isConnected && this.options) {
+            const selectedOption = this.options[this.selectedIndex] || null;
+
+            this.selectedOptions = this.options.filter(el =>
+                el.isSameNode(selectedOption)
+            );
+            this.ariaActiveDescendant = this.firstSelectedOption
+                ? this.firstSelectedOption.id
+                : "";
+            this.focusAndScrollOptionIntoView();
+        }
+    }
 }
 
 /**
