@@ -40,6 +40,21 @@ export class PeoplePicker extends FoundationElement {
     public defaultSelection: string;
 
     /**
+     * Currently selected items. Comma delineated string
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: selection
+     */
+    @attr({ attribute: "selection" })
+    public selection: string = "";
+    private selectionChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.handleSelectionChange();
+        }
+    }
+
+    /**
      *  value determining if search is filtered to a group.
      *
      * @public
@@ -130,7 +145,7 @@ export class PeoplePicker extends FoundationElement {
     @attr({ attribute: "show-max" })
     public showMax: number = 6;
 
-       /**
+    /**
      * The text to present to assistive technolgies when no suggestions are available.
      *
      * @public
@@ -236,7 +251,6 @@ export class PeoplePicker extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.showLoading = true;
-        this.addEventListener("input", this.handleTextInput);
     }
 
     /**
@@ -246,13 +260,13 @@ export class PeoplePicker extends FoundationElement {
         super.disconnectedCallback();
     }
 
-    private handleTextInput = (e: InputEvent): void => {
-        this.startSearch();
-    };
-
     public handleMenuOpening(e: Event): void {
         this.showLoading = true;
         this.startSearch();
+    }
+
+    public handleMenuClosing(e: Event): void {
+        return;
     }
 
     private startSearch = (): void => {
@@ -274,7 +288,7 @@ export class PeoplePicker extends FoundationElement {
     private async loadState(): Promise<void> {
         let people = this.people;
         // TODO: scomea - better api for picker value
-        const input = this.picker.inputElement.value.toLowerCase();
+        const input = this.picker.query.toLowerCase();
         const provider = Providers.globalProvider;
         if (!people && provider && provider.state === ProviderState.SignedIn) {
             const graph = provider.graph.forComponent(this);
@@ -390,8 +404,19 @@ export class PeoplePicker extends FoundationElement {
         this.foundPeople = this.filterPeople(people);
     }
 
-    public handleSelectionChange(e: Event): void {
+    public handleSelectionChange(): void {
         this.$emit("selectionchange", { bubbles: false });
+    }
+
+    public onPickerSelectionChange(e: Event): void {
+        if (this.selection === this.picker.selection) {
+            return;
+        }
+        this.selection = this.picker.selection;
+    }
+
+    public onPickerQueryChange(e: Event): void {
+        this.startSearch();
     }
 
     /**

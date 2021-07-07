@@ -32,7 +32,7 @@ export const pickerListStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>
-        css`
+    css`
     :host {
         display: flex;
         flex-direction: row;
@@ -108,19 +108,19 @@ export const pickerListStyles: (
         color: ${foregroundOnAccentActive};
     }
 `.withBehaviors(
-    forcedColorsStylesheetBehavior(
-        css`
-            ::slotted(:hover[role="combobox"]) {
-                background: ${SystemColors.Field};
-                border-color: ${SystemColors.Highlight};
-            }
-            :slotted(:focus-within:enabled[role="combobox"]) {
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
-            }
-            input::placeholder {
-                color: ${SystemColors.GrayText};
-            }
-        `
-    )
-);
+        forcedColorsStylesheetBehavior(
+            css`
+                ::slotted(:hover[role="combobox"]) {
+                    background: ${SystemColors.Field};
+                    border-color: ${SystemColors.Highlight};
+                }
+                :slotted(:focus-within:enabled[role="combobox"]) {
+                    border-color: ${SystemColors.Highlight};
+                    box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
+                }
+                input::placeholder {
+                    color: ${SystemColors.GrayText};
+                }
+            `
+        )
+    );

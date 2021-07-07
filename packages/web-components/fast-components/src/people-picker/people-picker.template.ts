@@ -45,11 +45,15 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
                 :defaultOptionTemplate=${optionTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
+                selection=${x => x.selection}
                 no-suggestions-text=${x => x.noSuggestionsText}
                 suggestions-available-text=${x => x.suggestionsAvailableText}
                 loading-text=${x => x.loadingText}
                 @menuopening="${(x, c) => x.handleMenuOpening(c.event as Event)}"
-                @selectionchange="${(x, c) => x.handleSelectionChange(c.event as Event)}"
+                @menuclosing="${(x, c) => x.handleMenuClosing(c.event as Event)}"
+                @selectionchange="${(x, c) =>
+                    x.onPickerSelectionChange(c.event as Event)}"
+                @querychange="${(x, c) => x.onPickerQueryChange(c.event as Event)}"
            >
            </${pickerTag}>
         </template>

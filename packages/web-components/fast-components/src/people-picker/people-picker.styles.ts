@@ -13,12 +13,12 @@ import {
 } from "../design-tokens";
 
 export const peoplePickerStyles = css`
-::slotted([aria-selected="true"][role="listitem"]) {
-    background: ${SystemColors.Highlight};
-    border-color: ${SystemColors.ButtonText};
-    box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
-        ${SystemColors.HighlightText};
-    color: ${SystemColors.HighlightText};
-    fill: currentcolor;
-}
+    ::slotted([aria-selected="true"][role="listitem"]) {
+        background: ${SystemColors.Highlight};
+        border-color: ${SystemColors.ButtonText};
+        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
+            ${SystemColors.HighlightText};
+        color: ${SystemColors.HighlightText};
+        fill: currentcolor;
+    }
 `.withBehaviors(forcedColorsStylesheetBehavior(css``));

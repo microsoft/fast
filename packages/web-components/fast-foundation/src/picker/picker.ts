@@ -186,6 +186,22 @@ export class Picker extends FoundationElement {
     }
 
     /**
+     * The text value currently in the input field
+     *
+     * @public
+     */
+    @observable
+    public query: string;
+    private queryChanged(): void {
+        if (this.$fastController.isConnected) {
+            if(this.inputElement.value !== this.query){
+                this.inputElement.value = this.query;
+            }
+            this.$emit("querychange", { bubbles: false });
+        }
+    }
+
+    /**
      *
      *
      * @internal
@@ -428,7 +444,10 @@ export class Picker extends FoundationElement {
         this.disableMenu();
         return;
     }
-    private handleTextInput(e: InputEvent): void {}
+
+    private handleTextInput = (e: InputEvent): void => {
+        this.query = this.inputElement.value;
+    }
 
     private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();

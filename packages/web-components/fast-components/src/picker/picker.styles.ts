@@ -4,9 +4,7 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import {
-    neutralLayerFloating,
-} from "../design-tokens";
+import { neutralLayerFloating } from "../design-tokens";
 
 export const pickerStyles: (
     context: ElementDefinitionContext,

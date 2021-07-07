@@ -1537,6 +1537,7 @@ export class Picker extends FoundationElement {
     optionTemplate: ViewTemplate;
     // @internal (undocumented)
     pickermenutag: string;
+    query: string;
     // @internal (undocumented)
     region: AnchoredRegion;
     // @internal
