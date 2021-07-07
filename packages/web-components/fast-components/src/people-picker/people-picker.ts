@@ -25,6 +25,11 @@ export function debounce(func, time) {
 }
 
 /**
+ *
+ */
+ export type SelectionMode = "single" | "multiple";
+
+/**
  * A List Picker Custom HTML Element.
  *
  * @public
@@ -124,16 +129,23 @@ export class PeoplePicker extends FoundationElement {
     @attr({ attribute: "placeholder" })
     public placeholder: string;
 
-    // Proposal - remove "selection-mode" from people picker api in favor of Picker's "max-selected" attribute which is more flexible than simply "single" or "multiple"
-    // /**
-    //  *
-    //  *
-    //  * @public
-    //  * @remarks
-    //  * HTML Attribute: selection-mode
-    //  */
-    // @attr({ attribute: "selection-mode" })
-    // public selectionMode: SelectionMode;
+   
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: selection-mode
+     */
+    @attr({ attribute: "selection-mode" })
+    public selectionMode: SelectionMode;
+    public selectionModeChanged(): void {
+        if (this.selectionMode === "multiple") {
+            this.maxSelected = undefined;
+        } else {
+            this.maxSelected = 1;
+        }
+    }
 
     /**
      * The maximum number of options to display
@@ -235,6 +247,15 @@ export class PeoplePicker extends FoundationElement {
     @observable
     public showLoading: boolean = false;
 
+    
+    /**
+     *
+     *
+     * @internal
+     */
+     @observable
+     public maxSelected: number | undefined;
+
     /**
      *
      *
@@ -287,7 +308,6 @@ export class PeoplePicker extends FoundationElement {
      */
     private async loadState(): Promise<void> {
         let people = this.people;
-        // TODO: scomea - better api for picker value
         const input = this.picker.query.toLowerCase();
         const provider = Providers.globalProvider;
         if (!people && provider && provider.state === ProviderState.SignedIn) {

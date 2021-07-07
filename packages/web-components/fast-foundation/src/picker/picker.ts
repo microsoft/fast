@@ -29,15 +29,6 @@ export type PickerMenuPosition = "top" | "bottom";
  */
 export class Picker extends FoundationElement {
     /**
-     * Items pre-selected when component is first connected. Comma delineated string ie. "apples,oranges"
-     * @public
-     * @remarks
-     * HTML Attribute: default-selection
-     */
-    @attr({ attribute: "default-selection" })
-    public defaultSelection: string;
-
-    /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
      * @public
@@ -339,10 +330,6 @@ export class Picker extends FoundationElement {
 
         if (this.menuConfig === undefined) {
             this.menuConfig = flyoutBelowScaling;
-        }
-
-        if (this.defaultSelection !== undefined && this.selection === "") {
-            this.selection = this.defaultSelection;
         }
 
         if (this.options !== undefined) {

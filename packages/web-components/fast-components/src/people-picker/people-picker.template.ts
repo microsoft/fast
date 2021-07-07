@@ -45,6 +45,7 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
                 :defaultOptionTemplate=${optionTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
+                max-selected=${x => x.maxSelected}
                 selection=${x => x.selection}
                 no-suggestions-text=${x => x.noSuggestionsText}
                 suggestions-available-text=${x => x.suggestionsAvailableText}
