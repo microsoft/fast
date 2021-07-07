@@ -34,6 +34,11 @@ export interface FoundationElementDefinition {
     baseName: string;
 
     /**
+     * The actual FAST base class of the component.
+     */
+    baseClass?: Constructable;
+
+    /**
      * The template to render for the custom element.
      */
     readonly template?: EagerOrLazyFoundationOption<ElementViewTemplate, this>;
@@ -216,7 +221,7 @@ export class FoundationElementRegistry<
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
 
-        context.tryDefineElement(name, this.type, x => {
+        context.tryDefineElement(name, overrideDefinition.baseClass ?? this.type, x => {
             const presentation = new DefaultComponentPresentation(
                 resolveOption(definition.template, x, definition),
                 resolveOption(definition.styles, x, definition)

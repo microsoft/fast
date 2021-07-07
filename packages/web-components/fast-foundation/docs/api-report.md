@@ -1034,6 +1034,7 @@ export class FoundationElement extends FASTElement {
 // @public
 export interface FoundationElementDefinition {
     readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
+    baseClass?: Constructable;
     baseName: string;
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
     readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
