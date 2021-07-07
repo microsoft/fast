@@ -67,7 +67,7 @@ export const pickerMenuStyles: (
             cursor: pointer;
             fill: currentcolor;
             font-size: ${typeRampBaseFontSize};
-            height: calc(${heightNumber} * 1px);
+            min-height: calc(${heightNumber} * 1px);
             line-height: ${typeRampBaseLineHeight};
             margin: 0 calc(${designUnit} * 1px);
             outline: none;

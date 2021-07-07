@@ -13,49 +13,12 @@ import {
 } from "../design-tokens";
 
 export const peoplePickerStyles = css`
-    :host {
-        background: ${neutralFillInputRest};
-        display: block;
-        width: auto;
-        border: calc(var(--outline-width) * 1px) solid ${accentFillRest};
-        margin: 0;
-        border-radius: calc(var(--corner-radius) * 1px);
-        position: relative;
-    }
-
-    .region {
-        z-index: 1000;
-        overflow: hidden;
-        display: flex;
-    }
-
-    .loaded {
-        opacity: 1;
-        pointer-events: none;
-    }
-
-    .loading-display,
-    .no-options-display {
-        background: ${neutralLayerFloating};
-        width: 100%;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-items: center;
-        padding: 8px;
-    }
-
-    .loading-progress {
-        width: 42px;
-        height: 42px;
-    }
-
-    .bottom {
-        flex-direction: column;
-    }
-
-    .top {
-        flex-direction: column-reverse;
-    }
+::slotted([aria-selected="true"][role="listitem"]) {
+    background: ${SystemColors.Highlight};
+    border-color: ${SystemColors.ButtonText};
+    box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset
+        ${SystemColors.HighlightText};
+    color: ${SystemColors.HighlightText};
+    fill: currentcolor;
+}
 `.withBehaviors(forcedColorsStylesheetBehavior(css``));

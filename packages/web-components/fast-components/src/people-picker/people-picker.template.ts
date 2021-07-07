@@ -3,7 +3,7 @@ import { Picker } from "@microsoft/fast-foundation";
 import type { PeoplePicker } from "./people-picker";
 
 const itemTemplate: ViewTemplate = html`
-    <button
+    <div
         role="listitem"
         tabindex="0"
         @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
@@ -11,11 +11,11 @@ const itemTemplate: ViewTemplate = html`
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
     >
         <mgt-person user-id="${x => x}" view="oneLine"></mgt-person>
-    </button>
+    </div>
 `;
 
 const optionTemplate: ViewTemplate = html`
-    <button
+    <div
         role="listitem"
         tabindex="-1"
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
@@ -25,7 +25,7 @@ const optionTemplate: ViewTemplate = html`
             view="twoLines"
             line2-property="jobTitle"
         ></mgt-person>
-    </button>
+    </div>
 `;
 
 /**
@@ -45,7 +45,11 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
                 :defaultOptionTemplate=${optionTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
+                no-suggestions-text=${x => x.noSuggestionsText}
+                suggestions-available-text=${x => x.suggestionsAvailableText}
+                loading-text=${x => x.loadingText}
                 @menuopening="${(x, c) => x.handleMenuOpening(c.event as Event)}"
+                @selectionchange="${(x, c) => x.handleSelectionChange(c.event as Event)}"
            >
            </${pickerTag}>
         </template>

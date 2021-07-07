@@ -84,7 +84,7 @@ export class Picker extends FoundationElement {
      * HTML Attribute: no-suggestions-text
      */
     @attr({ attribute: "no-suggestions-text" })
-    public noSuggestionsText: string;
+    public noSuggestionsText: string = "No suggestions available";
 
     /**
      *  The text to present to assistive technolgies when suggestions are available.
@@ -94,7 +94,7 @@ export class Picker extends FoundationElement {
      * HTML Attribute: suggestions-available-text
      */
     @attr({ attribute: "suggestions-available-text" })
-    public suggestionsAvailableText: string;
+    public suggestionsAvailableText: string = "Suggestions available";
 
     /**
      * The text to present to assistive technologies when suggestions are loading.
@@ -104,7 +104,7 @@ export class Picker extends FoundationElement {
      * HTML Attribute: loading-text
      */
     @attr({ attribute: "loading-text" })
-    public loadingText: string;
+    public loadingText: string = "Loading suggestions";
 
     /**
      * Applied to the aria-label attribute of the input element

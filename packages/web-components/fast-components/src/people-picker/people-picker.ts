@@ -130,6 +130,36 @@ export class PeoplePicker extends FoundationElement {
     @attr({ attribute: "show-max" })
     public showMax: number = 6;
 
+       /**
+     * The text to present to assistive technolgies when no suggestions are available.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: no-suggestions-text
+     */
+    @attr({ attribute: "no-suggestions-text" })
+    public noSuggestionsText: string;
+
+    /**
+     *  The text to present to assistive technolgies when suggestions are available.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: suggestions-available-text
+     */
+    @attr({ attribute: "suggestions-available-text" })
+    public suggestionsAvailableText: string;
+
+    /**
+     * The text to present to assistive technologies when suggestions are loading.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: loading-text
+     */
+    @attr({ attribute: "loading-text" })
+    public loadingText: string;
+
     /**
      *
      *
@@ -241,7 +271,7 @@ export class PeoplePicker extends FoundationElement {
      * Async query to Graph for members of group if determined by developer.
      * set's `this.groupPeople` to those members.
      */
-    protected async loadState(): Promise<void> {
+    private async loadState(): Promise<void> {
         let people = this.people;
         // TODO: scomea - better api for picker value
         const input = this.picker.inputElement.value.toLowerCase();
@@ -358,6 +388,10 @@ export class PeoplePicker extends FoundationElement {
         }
 
         this.foundPeople = this.filterPeople(people);
+    }
+
+    public handleSelectionChange(e: Event): void {
+        this.$emit("selectionchange", { bubbles: false });
     }
 
     /**

@@ -34,7 +34,7 @@ export const pickerStyles: (
         .no-options-display {
             background: ${neutralLayerFloating};
             width: 100%;
-            height: 120px;
+            height: 160px;
             display: flex;
             flex-direction: column;
             align-items: center;
