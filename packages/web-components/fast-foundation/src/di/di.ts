@@ -72,7 +72,7 @@ interface ResolverLike<C, K = any> {
 }
 
 /**
- * Internally, the DI system maps "keys" to "resolvers". A resolve controls
+ * Internally, the DI system maps "keys" to "resolvers". A resolver controls
  * how a dependency is resolved. Resolvers for transient, singleton, etc. are
  * provided out of the box, but you can also implement Resolver yourself and supply
  * custom logic for resolution.
@@ -190,8 +190,8 @@ export interface ServiceLocator {
 export interface Registry {
     /**
      * Registers dependencies in the specified container.
-     * @param container The container to register dependencies in.
-     * @param params Parameters that affect the registration process.
+     * @param container - The container to register dependencies in.
+     * @param params - Parameters that affect the registration process.
      * @remarks
      * If this registry doubles as a Registration, it should return a Resolver
      * for the registered dependency.
@@ -204,45 +204,119 @@ export interface Registry {
  * @public
  */
 export interface Container extends ServiceLocator {
+    /**
+     * Registers dependencies with the container via registration objects.
+     * @param params - The registration objects.
+     */
     register(...params: any[]): Container;
+
+    /**
+     * Registers a resolver with the container for the specified key.
+     * @param key - The key to register the resolver under.
+     * @param resolver - The resolver to register.
+     */
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
+
+    /**
+     * Registers a transformer with the container for the specified key.
+     * @param key - The key to resolved to register the transformer with.
+     * @param transformer - The transformer to register.
+     */
     registerTransformer<K extends Key, T = K>(
         key: K,
         transformer: Transformer<T>
     ): boolean;
+
+    /**
+     * Gets a resolver for the specified key.
+     * @param key - The key to get the resolver for.
+     * @param autoRegister - Indicates whether or not to try to auto-register a dependency for
+     * the key if one is not explicitly registered.
+     */
     getResolver<K extends Key, T = K>(
         key: K | Key,
         autoRegister?: boolean
     ): Resolver<T> | null;
+
+    /**
+     * Registers a factory with the container for the specified key.
+     * @param key - The key to register the factory under.
+     * @param factory - The factory to register.
+     */
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
+
+    /**
+     * Gets the factory for the specified key.
+     * @param key - The key to get the factory for.
+     */
     getFactory<T extends Constructable>(key: T): Factory<T>;
+
+    /**
+     * Creates a child dependency injection container parented to this container.
+     * @param config - The configuration for the new container.
+     */
     createChild(
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container;
 }
 
 /**
- * @alpha
+ * A utility class used that constructs and registers resolvers for a dependency
+ * injection container. Supports a standard set of object lifetimes.
+ * @public
  */
 export class ResolverBuilder<K> {
+    /**
+     *
+     * @param container - The container to create resolvers for.
+     * @param key - The key to register resolvers under.
+     */
     public constructor(private container: Container, private key: Key) {}
 
+    /**
+     * Creates a resolver for an existing object instance.
+     * @param value - The instance to resolve.
+     * @returns The resolver.
+     */
     public instance(value: K): Resolver<K> {
         return this.registerResolver(ResolverStrategy.instance, value);
     }
 
+    /**
+     * Creates a resolver that enforces a singleton lifetime.
+     * @param value - The type to create and cache the singleton for.
+     * @returns The resolver.
+     */
     public singleton(value: Constructable): Resolver<K> {
         return this.registerResolver(ResolverStrategy.singleton, value);
     }
 
+    /**
+     * Creates a resolver that creates a new instance for every dependency request.
+     * @param value - The type to create instances of.
+     * @returns - The resolver.
+     */
     public transient(value: Constructable): Resolver<K> {
         return this.registerResolver(ResolverStrategy.transient, value);
     }
 
+    /**
+     * Creates a resolver that invokes a callback function for every dependency resolution
+     * request, allowing custom logic to return the dependency.
+     * @param value - The callback to call during resolution.
+     * @returns The resolver.
+     */
     public callback(value: ResolveCallback<K>): Resolver<K> {
         return this.registerResolver(ResolverStrategy.callback, value);
     }
 
+    /**
+     * Creates a resolver that invokes a callback function the first time that a dependency
+     * resolution is requested. The returned value is then cached and provided for all
+     * subsequent requests.
+     * @param value - The callback to call during the first resolution.
+     * @returns The resolver.
+     */
     public cachedCallback(value: ResolveCallback<K>): Resolver<K> {
         return this.registerResolver(
             ResolverStrategy.callback,
@@ -250,6 +324,11 @@ export class ResolverBuilder<K> {
         );
     }
 
+    /**
+     * Aliases the current key to a different key.
+     * @param destinationKey - The key to point the alias to.
+     * @returns The resolver.
+     */
     public aliasTo(destinationKey: Key): Resolver<K> {
         return this.registerResolver(ResolverStrategy.alias, destinationKey);
     }
@@ -262,20 +341,32 @@ export class ResolverBuilder<K> {
 }
 
 /**
- * @alpha
+ * Represents an object that can register itself.
+ * @public
  */
 export type RegisterSelf<T extends Constructable> = {
+    /**
+     * Registers itself with the container.
+     * @param container - The container to register with.
+     */
     register(container: Container): Resolver<InstanceType<T>>;
+
+    /**
+     * Indicates whether during auto registration the object should be
+     * registered in the requesting container rather than the handling container.
+     */
     registerInRequestor: boolean;
 };
 
 /**
- * @alpha
+ * A key that is used to register dependencies with a dependency injection container.
+ * @public
  */
 export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
 /**
- * @alpha
+ * Represents something resolved from a service locator.
+ * @public
  */
 export type Resolved<K> = K extends InterfaceSymbol<infer T>
     ? T
@@ -288,7 +379,9 @@ export type Resolved<K> = K extends InterfaceSymbol<infer T>
     : K;
 
 /**
- * @alpha
+ * A class that declares constructor injected dependencies through
+ * a static "inject" field array of keys.
+ * @public
  */
 export type Injectable<T = {}> = Constructable<T> & { inject?: Key[] };
 
@@ -307,40 +400,82 @@ function cloneArrayWithPossibleProps<T>(source: readonly T[]): T[] {
 }
 
 /**
- * @alpha
+ * A function capable of locating the parent container based on a container's owner.
+ * @remarks
+ * A container owner is usually an HTMLElement instance.
+ * @public
  */
 export type ParentLocator = (owner: any) => Container | null;
 
 /**
- * @alpha
+ * Configuration for a dependency injection container.
+ * @public
  */
 export interface ContainerConfiguration {
+    /**
+     * The locator function used to find the parent of the container.
+     */
     parentLocator: ParentLocator;
+
+    /**
+     * Indicates whether this container should resolve dependencies that are directly made
+     * by its owner. The default is "false" which results in the parent container being used.
+     */
     responsibleForOwnerRequests: boolean;
+
+    /**
+     * Gets the default resolver to use during auto-registration.
+     * @param key - The key to register the dependency with.
+     * @param handler - The container that is handling the auto-registration request.
+     */
     defaultResolver(key: Key, handler: Container): Resolver;
 }
 
 /**
- * @alpha
+ * A set of default resolvers useful in configuring a container.
+ * @public
  */
 export const DefaultResolver = Object.freeze({
+    /**
+     * Disables auto-registration and throws for all un-registered dependencies.
+     * @param key - The key to create the resolver for.
+     */
     none(key: Key): Resolver {
         throw Error(
             `${key.toString()} not registered, did you forget to add @singleton()?`
         );
     },
+
+    /**
+     * Provides default singleton resolution behavior during auto-registration.
+     * @param key - The key to create the resolver for.
+     * @returns The resolver.
+     */
     singleton(key: Key): Resolver {
         return new ResolverImpl(key, ResolverStrategy.singleton, key);
     },
+
+    /**
+     * Provides default transient resolution behavior during auto-registration.
+     * @param key - The key to create the resolver for.
+     * @returns The resolver.
+     */
     transient(key: Key): Resolver {
         return new ResolverImpl(key, ResolverStrategy.transient, key);
     },
 });
 
 /**
- * @alpha
+ * Configuration for a dependency injection container.
+ * @public
  */
 export const ContainerConfiguration = Object.freeze({
+    /**
+     * The default configuration used when creating a DOM-disconnected container.
+     * @remarks
+     * The default creates a root container, with no parent container. It does not handle
+     * owner requests and it uses singleton resolution behavior for auto-registration.
+     */
     default: Object.freeze({
         parentLocator: () => null,
         responsibleForOwnerRequests: false,
@@ -349,7 +484,8 @@ export const ContainerConfiguration = Object.freeze({
 });
 
 /**
- * @alpha
+ * Used to configure a dependency injection interface key.
+ * @public
  */
 export interface InterfaceConfiguration {
     /**
