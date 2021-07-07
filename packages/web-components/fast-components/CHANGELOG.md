@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 04 Jul 2021 07:15:28 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.3.0 (scomea@microsoft.com)
 
 ## 2.1.0
 
