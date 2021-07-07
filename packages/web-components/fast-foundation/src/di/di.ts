@@ -82,14 +82,15 @@ interface ResolverLike<C, K = any> {
 export interface Resolver<K = any> extends ResolverLike<Container, K> {}
 
 /**
- * Implemented by objects that wish to register dependencies in the container.
+ * Implemented by objects that wish to register dependencies in the container
+ * by creating resolvers.
  * @public
  */
 export interface Registration<K = any> {
     /**
-     * Registers desired dependencies with the provided container.
-     * @param container The container to register dependencies within.
-     * @param key The key to register services under, if overridden.
+     * Creates a resolver for a desired dependency.
+     * @param container - The container to register the dependency within.
+     * @param key - The key to register dependency under, if overridden.
      */
     register(container: Container, key?: Key): Resolver<K>;
 }
@@ -114,28 +115,68 @@ export interface Factory<T extends Constructable = any> {
     /**
      * Registers a transformer function to alter the object after instantiation but before
      * returning the final constructed instance.
-     * @param transformer The transformer function.
+     * @param transformer - The transformer function.
      */
     registerTransformer(transformer: Transformer<T>): void;
 
     /**
      * Constructs an instance of the factory's object.
-     * @param container The container the object is being constructor for.
-     * @param dynamicDependencies Dynamic dependencies supplied to the constructor.
+     * @param container - The container the object is being constructor for.
+     * @param dynamicDependencies - Dynamic dependencies supplied to the constructor.
      */
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
 }
 
 /**
- * @alpha
+ * Implemented by objects capable of resolving services and other dependencies.
+ * @public
  */
 export interface ServiceLocator {
+    /**
+     * Determines whether the locator has the ability to provide an implementation
+     * for the requested key.
+     * @param key - The dependency key to lookup.
+     * @param searchAncestors - Indicates whether to search the entire hierarchy of service locators.
+     */
     has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
+
+    /**
+     * Gets a dependency by key.
+     * @param key - The key to lookup.
+     */
     get<K extends Key>(key: K): Resolved<K>;
+
+    /**
+     * Gets a dependency by key.
+     * @param key - The key to lookup.
+     */
     get<K extends Key>(key: Key): Resolved<K>;
+
+    /**
+     * Gets a dependency by key.
+     * @param key - The key to lookup.
+     */
     get<K extends Key>(key: K | Key): Resolved<K>;
+
+    /**
+     * Gets an array of all dependencies by key.
+     * @param key - The key to lookup.
+     * @param searchAncestors - Indicates whether to search the entire hierarchy of service locators.
+     */
     getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+
+    /**
+     * Gets an array of all dependencies by key.
+     * @param key - The key to lookup.
+     * @param searchAncestors - Indicates whether to search the entire hierarchy of service locators.
+     */
     getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
+
+    /**
+     * Gets an array of all dependencies by key.
+     * @param key - The key to lookup.
+     * @param searchAncestors - Indicates whether to search the entire hierarchy of service locators.
+     */
     getAll<K extends Key>(
         key: K | Key,
         searchAncestors?: boolean
@@ -143,22 +184,28 @@ export interface ServiceLocator {
 }
 
 /**
- * @alpha
+ * Implemented by objects that which to register dependencies in a container.
+ * @public
  */
 export interface Registry {
-    register(container: Container, ...params: unknown[]): void | Resolver | Container;
+    /**
+     * Registers dependencies in the specified container.
+     * @param container The container to register dependencies in.
+     * @param params Parameters that affect the registration process.
+     * @remarks
+     * If this registry doubles as a Registration, it should return a Resolver
+     * for the registered dependency.
+     */
+    register(container: Container, ...params: unknown[]): void | Resolver;
 }
 
 /**
- * @alpha
+ * Implemented by dependency injection containers.
+ * @public
  */
 export interface Container extends ServiceLocator {
     register(...params: any[]): Container;
-    registerResolver<K extends Key, T = K>(
-        key: K,
-        resolver: Resolver<T>,
-        isDisposable?: boolean
-    ): Resolver<T>;
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     registerTransformer<K extends Key, T = K>(
         key: K,
         transformer: Transformer<T>
@@ -1463,7 +1510,7 @@ export class ContainerImpl implements Container {
     private jitRegister(keyAsValue: any, handler: ContainerImpl): Resolver {
         if (typeof keyAsValue !== "function") {
             throw new Error(
-                `Attempted to jitRegister something that is not a constructor: '${keyAsValue}'. Did you forget to register this resource?`
+                `Attempted to jitRegister something that is not a constructor: '${keyAsValue}'. Did you forget to register this dependency?`
             );
         }
 
