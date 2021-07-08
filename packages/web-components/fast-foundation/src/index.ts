@@ -2,6 +2,7 @@ export * from "./accordion-item/index";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
+export * from "./avatar/index";
 export * from "./badge/index";
 export * from "./breadcrumb-item/index";
 export * from "./breadcrumb/index";
@@ -9,10 +10,8 @@ export * from "./button/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
-export * from "./custom-properties/index";
 export * from "./data-grid/index";
 export * from "./design-system/index";
-export * from "./design-system-provider/index";
 export {
     DesignToken,
     CSSDesignToken,

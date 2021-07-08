@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 
-export const HTMLRenderStyles = css`
+export const htmlRenderStyles = (context, definition) => css`
     .container {
         width: 100%;
         height: 100%;

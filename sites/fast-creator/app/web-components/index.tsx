@@ -1,29 +1,31 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
-    FASTButton,
-    FASTSelect,
-    FASTSlider,
-    FASTSliderLabel,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastToolingColorPicker,
+    fastToolingCSSLayout,
+} from "@microsoft/fast-tooling/dist/esm/web-components";
+import {
+    fastButton,
+    fastSelect,
+    fastSlider,
+    fastSliderLabel,
+    fastSwitch,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+    fastTextField,
 } from "@microsoft/fast-components";
-import { FASTColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { FASTToolingCSSLayout } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { HTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
-import { HTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
-import { HTMLRenderLayerNavgation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation/html-render-layer-navigation";
+import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
-import { MessageSystem } from "@microsoft/fast-tooling";
+import { DataType, MessageSystem } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
     ModularForm,
+    ModularNavigation,
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
 
-import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
@@ -31,24 +33,28 @@ import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilit
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
 import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
-import { FormId } from "../creator.props";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import { FormId, NavigationId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
+import { elementLibraries } from "../configs";
 import { defaultDevices, Device } from "./devices";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
-FASTColorPicker;
-FASTSlider;
-FASTSliderLabel;
-FASTTab;
-FASTTabs;
-FASTTabPanel;
-HTMLRender;
-HTMLRenderLayerInlineEdit;
-HTMLRenderLayerNavgation;
-FASTToolingCSSLayout;
+DesignSystem.getOrCreate().register(
+    fastButton(),
+    fastSelect(),
+    fastSlider(),
+    fastSliderLabel(),
+    fastTabs(),
+    fastTab(),
+    fastSwitch(),
+    fastTabPanel(),
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" }),
+    fastToolingCSSLayout({ prefix: "fast-tooling" })
+);
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
     return (
@@ -89,7 +95,7 @@ export function renderDeviceSelect(
             selectedIndex={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
-                    onChangeCallback((e.target as FASTSelect).value);
+                    onChangeCallback((e.target as Select).value);
                 },
             }}
             disabled={disable ? true : null}
@@ -108,7 +114,7 @@ function getColorPickerControl(
         context: ControlContext.fill,
         control: (config: ControlConfig): React.ReactNode => {
             return (
-                <color-picker
+                <fast-tooling-color-picker
                     value={config.value || config.default}
                     events={{
                         change: (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -117,7 +123,7 @@ function getColorPickerControl(
                             });
                         },
                     }}
-                ></color-picker>
+                ></fast-tooling-color-picker>
             );
         },
     });
@@ -127,7 +133,7 @@ export function getColorPickerControls(
     updateHandler: (updatedData: { [key: string]: unknown }) => void
 ): StandardControlPlugin[] {
     return [
-        getColorPickerControl("background-color", updateHandler),
+        getColorPickerControl("fill-color", updateHandler),
         getColorPickerControl("accent-base-color", updateHandler),
     ];
 }
@@ -192,12 +198,9 @@ export function getSliderControls(
 ): StandardControlPlugin[] {
     return [
         getSliderControl("base-layer-luminance", updateHandler, 0, 1, 0.1, 1),
-        getSliderControl("density", updateHandler, -2, 2),
-        getSliderControl("base-height-multiplier", updateHandler, 5, 15),
-        getSliderControl("base-horizontal-spacing-multiplier", updateHandler, 0, 6),
-        getSliderControl("corner-radius", updateHandler, 0, 22, 1, 3),
-        getSliderControl("outline-width", updateHandler, 0, 12, 1, 1),
-        getSliderControl("focus-outline-width", updateHandler, 0, 12, 1, 2),
+        getSliderControl("control-corner-radius", updateHandler, 0, 22, 1, 3),
+        getSliderControl("stroke-width", updateHandler, 0, 12, 1, 1),
+        getSliderControl("focus-stroke-width", updateHandler, 0, 12, 1, 2),
         getSliderControl("disabled-opacity", updateHandler, 0, 1, 0.1, 0.3),
     ];
 }
@@ -206,24 +209,130 @@ function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
         context: ControlContext.fill,
-        control: (config: ControlConfig): React.ReactNode => {
+        control: (controlConfig: ControlConfig): React.ReactNode => {
             return (
                 <CSSControl
+                    key={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
                     css={(CSSProperties as unknown) as CSSPropertiesDictionary}
                     cssControls={[
                         new CSSStandardControlPlugin({
                             id: "layout",
                             propertyNames: cssLayoutCssProperties,
                             control: (config: CSSControlConfig) => {
-                                return <CSSLayout onChange={config.onChange} />;
+                                return (
+                                    <CSSLayout
+                                        key={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        webComponentKey={`${controlConfig.dictionaryId}::${controlConfig.dataLocation}`}
+                                        value={config.css}
+                                        onChange={config.onChange}
+                                    />
+                                );
                             },
                         }),
                     ]}
-                    {...config}
+                    {...controlConfig}
                 />
             );
         },
     });
+}
+
+function renderStartIcon(isIncluded: boolean): React.ReactNode {
+    if (isIncluded) {
+        return (
+            <svg
+                width="12"
+                height="9"
+                viewBox="0 0 12 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M11.8639 0.65511C12.0533 0.856064 12.0439 1.17251 11.8429 1.36191L3.91309 8.8358C3.67573 9.05952 3.30311 9.05263 3.07417 8.82028L0.393838 6.09995C0.200027 5.90325 0.202372 5.58667 0.399074 5.39286C0.595777 5.19905 0.912351 5.2014 1.10616 5.3981L3.51192 7.83975L11.1571 0.634189C11.358 0.44479 11.6745 0.454157 11.8639 0.65511Z"
+                    fill="#FFFFFF"
+                />
+            </svg>
+        );
+    }
+
+    return (
+        <svg
+            width="11"
+            height="11"
+            viewBox="0 0 11 11"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M6 0.5C6 0.223858 5.77614 0 5.5 0C5.22386 0 5 0.223858 5 0.5V5H0.5C0.223858 5 0 5.22386 0 5.5C0 5.77614 0.223858 6 0.5 6H5V10.5C5 10.7761 5.22386 11 5.5 11C5.77614 11 6 10.7761 6 10.5V6H10.5C10.7761 6 11 5.77614 11 5.5C11 5.22386 10.7761 5 10.5 5H6V0.5Z"
+                fill="#FFFFFF"
+            />
+        </svg>
+    );
+}
+
+export function renderNavigationTabs(
+    activeId: any,
+    fastMessageSystem: MessageSystem,
+    addedLibraries: string[],
+    handleAddLibrary: (libraryId: string) => void,
+    handleNavigationTabsVisibility: (navigationId: any) => void
+): React.ReactNode {
+    return (
+        <fast-tabs
+            activeId={activeId}
+            events={{
+                change: (e: React.ChangeEvent<HTMLElement>) => {
+                    if ((e as any).detail) {
+                        handleNavigationTabsVisibility((e as any).detail.id);
+                    }
+                },
+            }}
+        >
+            <fast-tab id={NavigationId.navigation}>Navigation</fast-tab>
+            <fast-tab id={NavigationId.libraries}>Libraries</fast-tab>
+            <fast-tab-panel id={NavigationId.navigation + "Panel"}>
+                <ModularNavigation
+                    messageSystem={fastMessageSystem}
+                    types={[DataType.object]}
+                />
+            </fast-tab-panel>
+            <fast-tab-panel id={NavigationId.libraries + "Panel"}>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        padding: "10px",
+                    }}
+                >
+                    {Object.values(elementLibraries).map(elementLibrary => {
+                        if (elementLibrary.optional) {
+                            const isIncluded: boolean = addedLibraries.includes(
+                                elementLibrary.id
+                            );
+                            return (
+                                <fast-button
+                                    key={elementLibrary.id}
+                                    events={{
+                                        click: (e: React.ChangeEvent) => {
+                                            handleAddLibrary(elementLibrary.id);
+                                        },
+                                    }}
+                                    disabled={isIncluded}
+                                >
+                                    <span slot="start">
+                                        {renderStartIcon(isIncluded)}
+                                    </span>
+                                    {elementLibrary.displayName}
+                                </fast-button>
+                            );
+                        }
+                    })}
+                </div>
+            </fast-tab-panel>
+        </fast-tabs>
+    );
 }
 
 export function renderFormTabs(
@@ -250,7 +359,7 @@ export function renderFormTabs(
             }}
         >
             <fast-tab id={FormId.component}>Components</fast-tab>
-            <fast-tab id={FormId.designSystem}>Design System</fast-tab>
+            <fast-tab id={FormId.designSystem}>Design Tokens</fast-tab>
             <fast-tab-panel id={FormId.component + "Panel"}>
                 <style>{formStyleOverride}</style>
                 <ModularForm
@@ -280,6 +389,8 @@ export function renderFormTabs(
 
 export interface CSSLayoutProps {
     onChange: (config: { [key: string]: string }) => void;
+    webComponentKey: string;
+    value: { [key: string]: string };
 }
 
 export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
@@ -296,33 +407,20 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
     };
 
     render() {
-        return <css-layout ref={this.setLayoutRef}></css-layout>;
-    }
-}
+        const newValue: string = Object.entries(this.props.value)
+            .map(([key, value]: [string, string]) => {
+                return `${key}: ${value};`;
+            })
+            .reduce((prevValue, currValue) => {
+                return prevValue + " " + currValue;
+            }, "");
 
-export class HTMLRenderReact extends React.Component {
-    public designRef: React.RefObject<HTMLDivElement>;
-    public renderRef: React.RefObject<HTMLDivElement>;
-
-    private setDesignRef = el => {
-        this.designRef = el;
-    };
-
-    private setRenderRef = el => {
-        this.renderRef = el;
-    };
-
-    constructor(props) {
-        super(props);
-    }
-    render() {
         return (
-            <fast-design-system-provider ref={this.setDesignRef}>
-                <fast-tooling-html-render ref={this.setRenderRef}>
-                    <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
-                    <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
-                </fast-tooling-html-render>
-            </fast-design-system-provider>
+            <fast-tooling-css-layout
+                value={newValue}
+                key={this.props.webComponentKey}
+                ref={this.setLayoutRef}
+            ></fast-tooling-css-layout>
         );
     }
 }

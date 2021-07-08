@@ -9,9 +9,9 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
-    "@microsoft/fast-components": "^1.21.8",
+    "@microsoft/fast-components": "^2.2.0",
     "@microsoft/fast-element": "^1.4.0",
-    "@microsoft/fast-foundation": "^1.24.8",
+    "@microsoft/fast-foundation": "^2.3.0",
     "@microsoft/fast-web-utilities": "^4.8.0",
     "@microsoft/site-utilities": "^0.9.0",
     "@rollup/plugin-alias": "^3.1.1",

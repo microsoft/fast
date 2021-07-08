@@ -2,6 +2,116 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.25",
+      "version": "2.8.25",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.6",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 04 Jul 2021 07:15:28 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.24",
+      "version": "2.8.24",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.5",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "3f9131d61d0b3149fc99d77db6e5fb1d0231a5d1",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Jul 2021 07:15:57 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.23",
+      "version": "2.8.23",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.4",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "77eb5ec9e41f14335c1fcc13b7c477605e0e3a8e",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 30 Jun 2021 07:19:09 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.22",
+      "version": "2.8.22",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.3",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "41b8432616afa284e2325913d7182a3b907fa789",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 29 Jun 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.22",
+      "version": "2.8.22",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.3",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "014d97a2d16e2a9a0d801503722e2e145f3fea46",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 25 Jun 2021 02:02:57 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.21",
+      "version": "2.8.21",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix tooling libraries to use the new design system registry and updated named imports",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "62f3d1ddb23c522139803541266810367dded081",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "update web components in fast-tooling package to use vNext api changes",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "db482deb1f6636edfb0e940b2218ec57d6a0ed1d",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "update fast-tooling references to web components",
+            "author": "chhol@microsoft.com",
+            "commit": "6369ab1a3db8b693f14d4cf0ee67cc4e1d802dfb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "370b727537850f49a6cd8bf23bb34d7d462017f2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 23 Jun 2021 22:58:18 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.20",
       "version": "2.8.20",

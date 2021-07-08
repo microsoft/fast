@@ -1,28 +1,53 @@
-import { customElement } from "@microsoft/fast-element";
-import { Toolbar, ToolbarTemplate } from "@microsoft/fast-foundation";
-import { ToolbarStyles } from "./toolbar.styles";
+import {
+    composedParent,
+    Toolbar as FoundationToolbar,
+    toolbarTemplate as template,
+} from "@microsoft/fast-foundation";
+import { Swatch } from "../color/swatch";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
+import { toolbarStyles as styles } from "./toolbar.styles";
 
 /**
- * The FAST toolbar Custom Element. Implements {@link @microsoft/fast-foundation#Toolbar},
- * {@link @microsoft/fast-foundation#ToolbarTemplate}
+ * @internal
+ */
+export class Toolbar extends FoundationToolbar {
+    connectedCallback() {
+        super.connectedCallback();
+
+        const parent = composedParent(this);
+
+        if (parent) {
+            fillColor.setValueFor(
+                this,
+                (target: HTMLElement): Swatch =>
+                    neutralFillLayerRecipe
+                        .getValueFor(target)
+                        .evaluate(target, fillColor.getValueFor(parent))
+            );
+        }
+    }
+}
+
+/**
+ * A function that returns a {@link @microsoft/fast-foundation#Toolbar} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#ToolbarTemplate}
  *
  * @public
  * @remarks
- * HTML Element: `<fast-toolbar>`
+ *
+ * Generates HTML Element: \<fast-toolbar\>
  *
  */
-@customElement({
-    name: "fast-toolbar",
-    template: ToolbarTemplate,
-    styles: ToolbarStyles,
+export const fastToolbar = Toolbar.compose({
+    baseName: "toolbar",
+    template,
+    styles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTToolbar extends Toolbar {}
-
+});
 /**
  * Styles for Toolbar.
  * @public
  */
-export { ToolbarStyles };
+export const toolbarStyles = styles;

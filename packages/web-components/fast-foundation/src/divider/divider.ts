@@ -1,4 +1,5 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import { DividerRole } from "./divider.options";
 
 export { DividerRole };
@@ -9,7 +10,7 @@ export { DividerRole };
  *
  * @public
  */
-export class Divider extends FASTElement {
+export class Divider extends FoundationElement {
     /**
      * The role of the element.
      *

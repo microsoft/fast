@@ -1,8 +1,48 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 23 Jun 2021 22:58:18 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.23.6
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.0 (scomea@microsoft.com)
+
+## 0.23.5
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.1.0 (john.kreitlow@microsoft.com)
+
+## 0.23.4
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.2 (nicholasrice@users.noreply.github.com)
+
+## 0.23.3
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- update the CSS layout component to accept inline CSS string values (7559015+janechu@users.noreply.github.com)
+
+## 0.23.2
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.0 (roeisenb@microsoft.com)
 
 ## 0.23.1
 

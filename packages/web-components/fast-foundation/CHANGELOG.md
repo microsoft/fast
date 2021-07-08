@@ -1,8 +1,57 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 23 Jun 2021 22:58:18 GMT and should not be manually modified.
+This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+## 2.2.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+## 2.1.0
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Minor changes
+
+- ensure DesignToken considers shadow DOM when determining DOM hierarchy (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties. (nicholasrice@users.noreply.github.com)
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- feat(design-system): better integrate with DI and enforce constraints (roeisenb@microsoft.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- add API support for setting default slotted content as part of component composition (chhol@microsoft.com)
+- update card to extend foundation (chhol@microsoft.com)
+- feat: encapsulate and optimize ComponentPresentation resolution (roeisenb@microsoft.com)
+
+### Minor changes
+
+- fix(foundation-element): enable subclassing with customElement decorator (roeisenb@microsoft.com)
+- feat(design-system): enable overriding the shadow root mode (roeisenb@microsoft.com)
+- docs(fast-foundation): add api docs for design system and foundation ele (roeisenb@microsoft.com)
 
 ## 1.24.8
 
