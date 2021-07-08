@@ -1,0 +1,20 @@
+{
+  "name": "@microsoft/fast-animation",
+  "entries": [
+    {
+      "date": "Thu, 08 Jul 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.4",
+      "version": "4.1.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update css-loader, mini-css-extract-plugin, and postcss-loader in fast-animation",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "c79ee7690f39f8aae16f50b67de5ce7925fd9612",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    }
+  ]
+}
