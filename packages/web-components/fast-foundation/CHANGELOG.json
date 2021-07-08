@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-foundation_v2.3.0",
+      "version": "2.3.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "focus trap improvement",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 04 Jul 2021 07:15:28 GMT",
+      "tag": "@microsoft/fast-foundation_v2.2.0",
+      "version": "2.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "select should emit an input event before the change event",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "3f9131d61d0b3149fc99d77db6e5fb1d0231a5d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Jul 2021 07:15:57 GMT",
+      "tag": "@microsoft/fast-foundation_v2.1.0",
+      "version": "2.1.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "8c885780279ee8b8acddc2a0428fc09b4e1788c0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "ensure DesignToken considers shadow DOM when determining DOM hierarchy",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "0ab5dec4ad2a9ce717d90912127e094d094ede6d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-foundation_v2.0.0",
       "version": "2.0.0",

@@ -4,7 +4,6 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
-    DataType,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
@@ -17,7 +16,6 @@ import {
     defaultDevices,
     Display,
     LinkedDataControl,
-    ModularNavigation,
     ModularViewer,
     StandardControlPlugin,
     ViewerCustomAction,
@@ -58,19 +56,26 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
-import { CreatorState, FormId, ProjectFile } from "./creator.props";
+import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
 import { ProjectFileTransfer } from "./components";
-import { previewReady } from "./preview";
+import { previewReady } from "./preview/preview";
 import { Footer } from "./site-footer";
 import {
     renderDeviceSelect,
     renderDevToolToggle,
     renderFormTabs,
+    renderNavigationTabs,
 } from "./web-components";
 import { Device } from "./web-components/devices";
-import fastDesignSystemSchema from "./configs/library.fast.design-system.schema.json";
+import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
+import {
+    CustomMessageSystemActions,
+    designTokensLinkedDataId,
+    previewOriginatorId,
+    rootOriginatorId,
+} from "./utilities";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -101,13 +106,12 @@ const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-in
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
-    [fastDesignSystemSchema.id]: fastDesignSystemSchema,
+    [fastDesignTokensSchema.id]: fastDesignTokensSchema,
     [textSchema.id]: textSchema,
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
 export const defaultElementDataId: string = "root";
-export const designTokensLinkedDataId: string = "design-tokens";
 
 class Creator extends Editor<{}, CreatorState> {
     public static displayName: string = "Creator";
@@ -175,6 +179,8 @@ class Creator extends Editor<{}, CreatorState> {
             mobileFormVisible: false,
             mobileNavigationVisible: false,
             activeFormId: FormId.component,
+            activeNavigationId: NavigationId.navigation,
+            addedLibraries: [],
             designSystemDataDictionary: [
                 {
                     [designTokensLinkedDataId]: {
@@ -222,10 +228,13 @@ class Creator extends Editor<{}, CreatorState> {
                         version={"ALPHA"}
                     />
                     <div style={{ height: "calc(100% - 48px)" }}>
-                        <ModularNavigation
-                            messageSystem={this.fastMessageSystem}
-                            types={[DataType.object]}
-                        />
+                        {renderNavigationTabs(
+                            this.state.activeNavigationId,
+                            this.fastMessageSystem,
+                            this.state.addedLibraries,
+                            this.handleAddLibrary,
+                            this.handleNavigationVisibility
+                        )}
                     </div>
                     <ProjectFileTransfer
                         projectFile={this.state}
@@ -338,9 +347,35 @@ class Creator extends Editor<{}, CreatorState> {
         );
     }
 
+    private handleNavigationVisibility = (navigationId): void => {
+        this.setState({
+            activeNavigationId: navigationId,
+        });
+    };
+
     private handleFormVisibility = (formId): void => {
         this.setState({
             activeFormId: formId,
+        });
+    };
+
+    private handleAddLibrary = (libraryId: string) => {
+        this.fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.call,
+            options: {
+                originatorId: rootOriginatorId,
+            },
+            data: {
+                action: CustomMessageSystemActions.libraryAdd,
+                id: libraryId,
+            },
+        } as CustomMessageIncomingOutgoing<any>);
+    };
+
+    private handleLibraryAdded = (libraryId: string) => {
+        this.setState({
+            addedLibraries: this.state.addedLibraries.concat([libraryId]),
         });
     };
 
@@ -369,7 +404,13 @@ class Creator extends Editor<{}, CreatorState> {
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
         ) {
-            if (e.data.value && e.data.value === previewReady) {
+            if (
+                e.data &&
+                e.data.options &&
+                e.data.options.originatorId === previewOriginatorId
+            ) {
+                this.handleLibraryAdded(e.data.data.id);
+            } else if (e.data.value && e.data.value === previewReady) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,
