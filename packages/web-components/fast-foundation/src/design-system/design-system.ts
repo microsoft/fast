@@ -76,6 +76,12 @@ export interface ElementDefinitionContext {
  */
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
+interface ElementDefinitionParams
+    extends Pick<ElementDefinitionContext, "name" | "type"> {
+    baseClass?: Constructable;
+    callback: ElementDefinitionCallback;
+}
+
 /**
  * Design system contextual APIs and configuration usable within component
  * registries.
@@ -95,11 +101,7 @@ export interface DesignSystemRegistrationContext {
      * @param callback - A callback to invoke if definition will happen.
      * @public
      */
-    tryDefineElement(
-        name: string,
-        type: Constructable,
-        callback: ElementDefinitionCallback
-    );
+    tryDefineElement(ctx: ElementDefinitionParams);
 }
 
 /**
@@ -275,11 +277,9 @@ class DefaultDesignSystem implements DesignSystem {
 
         this.context = {
             elementPrefix: this.prefix,
-            tryDefineElement(
-                name: string,
-                type: Constructable,
-                callback: ElementDefinitionCallback
-            ) {
+            tryDefineElement(ctx: ElementDefinitionParams) {
+                const { name, baseClass, callback } = ctx;
+                let { type } = ctx;
                 let elementName: string | null = name;
                 let foundByName = elementTypesByTag.get(elementName);
 
@@ -300,6 +300,9 @@ class DefaultDesignSystem implements DesignSystem {
 
                     elementTypesByTag.set(elementName!, type);
                     elementTagsByType.set(type, elementName!);
+                    if (baseClass) {
+                        elementTagsByType.set(baseClass, elementName!);
+                    }
                 }
 
                 elementDefinitionEntries.push(
