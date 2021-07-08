@@ -512,9 +512,15 @@ function getParamTypes(
 }
 
 /**
- * @alpha
+ * The gateway to dependency injection APIs.
+ * @public
  */
 export const DI = Object.freeze({
+    /**
+     * Creates a new dependency injection container.
+     * @param config - The configuration for the container.
+     * @returns A newly created dependency injection container.
+     */
     createContainer(config?: Partial<ContainerConfiguration>): Container {
         return new ContainerImpl(
             null,
@@ -522,17 +528,34 @@ export const DI = Object.freeze({
         );
     },
 
-    findResponsibleContainer(element: HTMLElement): Container {
-        const owned = (element as any).$$container$$ as ContainerImpl;
+    /**
+     * Finds the dependency injection container responsible for providing dependencies
+     * to the specified node.
+     * @param node - The node to find the responsible container for.
+     * @returns The container responsible for providing dependencies to the node.
+     * @remarks
+     * This will be the same as the parent container if the specified node
+     * does not itself host a container configured with responsibleForOwnerRequests.
+     */
+    findResponsibleContainer(node: Node): Container {
+        const owned = (node as any).$$container$$ as ContainerImpl;
 
         if (owned && owned.responsibleForOwnerRequests) {
             return owned;
         }
 
-        return DI.findParentContainer(element);
+        return DI.findParentContainer(node);
     },
 
-    findParentContainer(element: HTMLElement) {
+    /**
+     * Find the dependency injection container up the DOM tree from this node.
+     * @param node - The node to find the parent container for.
+     * @returns The parent container of this node.
+     * @remarks
+     * This will be the same as the responsible container if the specified node
+     * does not itself host a container configured with responsibleForOwnerRequests.
+     */
+    findParentContainer(node: Node) {
         const event = new CustomEvent<DOMParentLocatorEventDetail>(
             DILocateParentEventType,
             {
@@ -543,29 +566,58 @@ export const DI = Object.freeze({
             }
         );
 
-        element.dispatchEvent(event);
+        node.dispatchEvent(event);
 
         return event.detail.container || DI.getOrCreateDOMContainer();
     },
 
+    /**
+     * Returns a dependency injection container if one is explicitly owned by the specified
+     * node. If one is not owned, then a new container is created and assigned to the node.
+     * @param node - The node to find or create the container for.
+     * @param config - The configuration for the container if one needs to be created.
+     * @returns The located or created container.
+     * @remarks
+     * This API does not search for a responsible or parent container. It looks only for a container
+     * directly defined on the specified node and creates one at that location if one does not
+     * already exist.
+     */
     getOrCreateDOMContainer(
-        element: HTMLElement = document.body,
+        node: Node = document.body,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container {
         return (
-            (element as any).$$container$$ ||
+            (node as any).$$container$$ ||
             new ContainerImpl(
-                element,
+                node,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator:
-                        element === document.body ? () => null : DI.findParentContainer,
+                        node === document.body ? () => null : DI.findParentContainer,
                 })
             )
         );
     },
+
+    /**
+     * Gets the "design:paramtypes" metadata for the specified type.
+     * @param Type - The type to get the metadata for.
+     * @returns The metadata array or undefined if no metadata is found.
+     */
     getDesignParamtypes: getParamTypes("design:paramtypes"),
+
+    /**
+     * Gets the "di:paramtypes" metadata for the specified type.
+     * @param Type - The type to get the metadata for.
+     * @returns The metadata array or undefined if no metadata is found.
+     */
     getAnnotationParamtypes: getParamTypes("di:paramtypes"),
 
+    /**
+     *
+     * @param Type - Gets the "di:paramtypes" metadata for the specified type. If none is found,
+     * an empty metadata array is created and added.
+     * @returns The metadata array.
+     */
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[] {
         let annotationParamtypes = this.getAnnotationParamtypes(Type);
 
@@ -580,6 +632,11 @@ export const DI = Object.freeze({
         return annotationParamtypes;
     },
 
+    /**
+     * Gets the dependency keys representing what is needed to instantiate the specified type.
+     * @param Type - The type to get the dependencies for.
+     * @returns An array of dependency keys.
+     */
     getDependencies(Type: Constructable | Injectable): Key[] {
         // Note: Every detail of this getDependencies method is pretty deliberate at the moment, and probably not yet 100% tested from every possible angle,
         // so be careful with making changes here as it can have a huge impact on complex end user apps.
@@ -1220,19 +1277,6 @@ export class ResolverImpl implements Resolver, Registration {
     }
 }
 
-/**
- * @alpha
- */
-export interface Invoker<T extends Constructable = any> {
-    invoke(container: Container, fn: T, dependencies: Key[]): Resolved<T>;
-    invokeWithDynamicDependencies(
-        container: Container,
-        fn: T,
-        staticDependencies: Key[],
-        dynamicDependencies: Key[]
-    ): Resolved<T>;
-}
-
 function containerGetKey(this: Container, d: Key) {
     return this.get(d);
 }
@@ -1338,7 +1382,7 @@ const DILocateParentEventType = "__DI_LOCATE_PARENT__";
 const factories = new Map<Key, Factory>();
 
 /**
- * @alpha
+ * @internal
  */
 export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
@@ -1369,7 +1413,7 @@ export class ContainerImpl implements Container {
         this.resolvers = new Map();
         this.resolvers.set(Container, containerResolver);
 
-        if (owner instanceof HTMLElement) {
+        if (owner instanceof Node) {
             owner.addEventListener(
                 DILocateParentEventType,
                 (e: CustomEvent<DOMParentLocatorEventDetail>) => {
