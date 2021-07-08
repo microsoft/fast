@@ -1,0 +1,49 @@
+<h1>Switch</h1>
+<h2>Default</h2>
+<div style="display: flex; flex-direction: column;">
+    <fast-switch></fast-switch>
+    <fast-switch>
+        Dark Mode
+    </fast-switch>
+    <fast-switch checked>
+        New Feature
+        <span slot="checked-message">On</span>
+        <span slot="unchecked-message">Off</span>
+    </fast-switch>
+    <fast-switch>
+        Theme
+        <span slot="checked-message">Dark</span>
+        <span slot="unchecked-message">Light</span>
+    </fast-switch>
+    <fast-switch readonly checked>
+        Readonly
+        <span slot="checked-message">Yes</span>
+        <span slot="unchecked-message">No</span>
+    </fast-switch>
+</div>
+
+<h2>Checked</h2>
+<fast-switch checked></fast-switch>
+
+<!-- Required -->
+<h2>Required</h2>
+<fast-switch required></fast-switch>
+
+<!-- Disabled -->
+<h2>Disabled</h2>
+<div style="display: flex; flex-direction: column;">
+    <fast-switch disabled></fast-switch>
+    <fast-switch disabled>label</fast-switch>
+    <fast-switch disabled checked>checked</fast-switch>
+    <fast-switch disabled checked>
+        checked
+        <span slot="checked-message">On</span>
+        <span slot="unchecked-message">Off</span>
+    </fast-switch>
+</div>
+
+<h2>Inline</h2>
+<fast-switch style="margin-right: 12px;">Light Speed</fast-switch>
+<fast-switch style="margin-right: 12px;">Ridiculous Speed</fast-switch>
+<fast-switch style="margin-right: 12px;">Ludicrous Speed</fast-switch>
+<fast-switch checked>Plaid Speed</fast-switch>

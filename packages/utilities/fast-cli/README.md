@@ -15,11 +15,11 @@ The FAST command line tool
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g fast-cli
+$ npm install -g @microsoft/fast-cli
 $ fast COMMAND
 running command...
 $ fast (-v|--version|version)
-fast-cli/0.1.0 darwin-x64 node-v12.18.2
+@microsoft/fast-cli/0.1.0 darwin-x64 node-v12.18.2
 $ fast --help [COMMAND]
 USAGE
   $ fast COMMAND
@@ -28,29 +28,25 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`fast hello [FILE]`](#fast-hello-file)
+* [`fast generate [FILE]`](#fast-generate-file)
 * [`fast help [COMMAND]`](#fast-help-command)
-* [`fast new [FILE]`](#fast-new-file)
+* [`fast new [PROJECTNAME]`](#fast-new-projectname)
 
-## `fast hello [FILE]`
+## `fast generate [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ fast hello [FILE]
+  $ fast generate [FILE]
 
 OPTIONS
   -f, --force
   -h, --help       show CLI help
   -n, --name=name  name to print
-
-EXAMPLE
-  $ fast hello
-  hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/Microsoft/fast/blob/v0.1.0/src/commands/hello.ts)_
+_See code: [src/commands/generate.ts](https://github.com/Microsoft/fast/blob/v0.1.0/src/commands/generate.ts)_
 
 ## `fast help [COMMAND]`
 
@@ -69,18 +65,16 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `fast new [FILE]`
+## `fast new [PROJECTNAME]`
 
-describe the command here
+Scaffolds out a new FAST design system project
 
 ```
 USAGE
-  $ fast new [FILE]
+  $ fast new [PROJECTNAME]
 
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+ARGUMENTS
+  PROJECTNAME  [default: my-project] The desired name of your project
 ```
 
 _See code: [src/commands/new.ts](https://github.com/Microsoft/fast/blob/v0.1.0/src/commands/new.ts)_

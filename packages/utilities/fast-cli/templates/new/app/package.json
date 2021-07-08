@@ -1,0 +1,19 @@
+{
+  "description": "A FAST Project",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack serve"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "ts-loader": "^8.0.17",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@fluentui/web-components": "^0.22.1",
+    "@microsoft/fast-router": "^0.1.0",
+    "lodash-es": "^4.17.21"
+  }
+}

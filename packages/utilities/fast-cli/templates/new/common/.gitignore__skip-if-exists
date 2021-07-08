@@ -1,0 +1,6 @@
+.rollupcache
+coverage
+tsdoc-metadata.json
+temp
+__test__/dist
+__test__/public

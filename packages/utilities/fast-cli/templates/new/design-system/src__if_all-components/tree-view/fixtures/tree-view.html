@@ -1,0 +1,146 @@
+<svg style="display: none;">
+    <defs>
+        <symbol id="icon" viewBox="0 0 16 16">
+            <path
+                d="M6.5 7.7h-1v-1h1v1zm4.1 0h-1v-1h1v1zm4.1-1v2.1h-1v2.6l-.1.6-.3.5c-.1.1-.3.3-.5.3l-.6.1H10l-3.5 3v-3H3.9l-.6-.1-.5-.3c-.1-.1-.3-.3-.3-.5l-.1-.6V8.8h-1V6.7h1V5.2l.1-.6.3-.5c.1-.1.3-.3.5-.3l.6-.1h3.6V1.9a.8.8 0 01-.4-.4L7 1V.6l.2-.3.3-.2L8 0l.4.1.3.2.3.3V1l-.1.5-.4.4v1.7h3.6l.6.1.5.3c.1.1.3.3.3.5l.1.6v1.5h1.1zm-2.1-1.5l-.2-.4-.4-.2H3.9l-.4.2-.1.4v6.2l.2.4.4.2h3.6v1.8L9.7 12h2.5l.4-.2.2-.4V5.2zM5.8 8.9l1 .7 1.2.2a5 5 0 001.2-.2l1-.7.7.7c-.4.4-.8.7-1.4.9-.5.2-1 .3-1.6.3s-1.1-.1-1.6-.3A3 3 0 015 9.6l.8-.7z"
+            />
+        </symbol>
+    </defs>
+</svg>
+<h1>Tree View</h1>
+<h2>With items (don't render collapsed nodes)</h2>
+<fast-tree-view render-collapsed-nodes="false">
+    <fast-divider></fast-divider>
+    <fast-tree-item>
+        Root item 1
+        <fast-divider></fast-divider>
+        <fast-tree-item expanded>
+            Flowers
+            <fast-tree-item>Daisy</fast-tree-item>
+            <fast-tree-item disabled>Sunflower</fast-tree-item>
+            <fast-tree-item expanded>
+                Rose
+                <fast-divider role="presentation"></fast-divider>
+                <fast-tree-item>Pink</fast-tree-item>
+                <fast-tree-item>Red</fast-tree-item>
+                <fast-tree-item>White</fast-tree-item>
+            </fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>Nested item 2</fast-tree-item>
+        <fast-tree-item>Nested item 3</fast-tree-item>
+    </fast-tree-item>
+    <fast-tree-item>
+        Root item 2
+        <fast-tree-item>
+            Flowers
+            <fast-divider></fast-divider>
+            <fast-tree-item disabled>Daisy</fast-tree-item>
+            <fast-tree-item>Sunflower</fast-tree-item>
+            <fast-tree-item>Rose</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>Nested item 2</fast-tree-item>
+        <fast-tree-item>Nested item 3</fast-tree-item>
+    </fast-tree-item>
+    <fast-tree-item>
+        Root item 3
+    </fast-tree-item>
+</fast-tree-view>
+
+<h2>Flat tree</h2>
+<fast-tree-view>
+    <fast-tree-item>Daisy</fast-tree-item>
+    <fast-tree-item>Sunflower</fast-tree-item>
+    <fast-tree-item selected>Rose</fast-tree-item>
+    <fast-tree-item>Petunia</fast-tree-item>
+    <fast-tree-item>Tulip</fast-tree-item>
+</fast-tree-view>
+
+<h2>Some expanded</h2>
+<fast-tree-view>
+    <fast-tree-item expanded>
+        Root item
+        <fast-tree-item expanded>
+            Flowers
+            <fast-tree-item>Daisy</fast-tree-item>
+            <fast-tree-item>Sunflower</fast-tree-item>
+            <fast-tree-item>Rose</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item disabled>
+            Planes
+            <fast-tree-item>Tomcat</fast-tree-item>
+            <fast-tree-item disabled>Hawker Harrier</fast-tree-item>
+            <fast-tree-item>Cesna</fast-tree-item>
+        </fast-tree-item>
+    </fast-tree-item>
+</fast-tree-view>
+
+<h2>Pre-selected tree item</h2>
+<fast-tree-view>
+    <fast-tree-item expanded>
+        Root item
+        <fast-tree-item>
+            Flowers
+            <fast-tree-item>Daisy</fast-tree-item>
+            <fast-tree-item>Sunflower</fast-tree-item>
+            <fast-tree-item>Rose</fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item expanded>
+            Planes
+            <fast-tree-item selected>Tomcat</fast-tree-item>
+            <fast-tree-item>Hawker Harrier</fast-tree-item>
+            <fast-tree-item>Cesna</fast-tree-item>
+        </fast-tree-item>
+    </fast-tree-item>
+</fast-tree-view>
+
+<h2>With several nested items (expanded)</h2>
+<fast-tree-view>
+    <fast-tree-item expanded>
+        Root item
+        <svg slot="start">
+            <use href="#icon"></use>
+        </svg>
+        <svg slot="end">
+            <use href="#icon"></use>
+        </svg>
+        <fast-tree-item expanded>
+            Nested Root item 1
+            <svg slot="start">
+                <use href="#icon"></use>
+            </svg>
+            <svg slot="end">
+                <use href="#icon"></use>
+            </svg>
+            <fast-tree-item>
+                <svg slot="start">
+                    <use href="#icon"></use>
+                </svg>
+                <svg slot="end">
+                    <use href="#icon"></use>
+                </svg>
+                Nested item 4
+            </fast-tree-item>
+            <fast-tree-item>
+                Nested item 5
+            </fast-tree-item>
+        </fast-tree-item>
+        <fast-tree-item>
+            Nested item 2
+            <svg slot="start">
+                <use href="#icon"></use>
+            </svg>
+            <svg slot="end">
+                <use href="#icon"></use>
+            </svg>
+        </fast-tree-item>
+        <fast-tree-item>
+            Nested item 3
+            <svg slot="start">
+                <use href="#icon"></use>
+            </svg>
+            <svg slot="end">
+                <use href="#icon"></use>
+            </svg>
+        </fast-tree-item>
+    </fast-tree-item>
+</fast-tree-view>
