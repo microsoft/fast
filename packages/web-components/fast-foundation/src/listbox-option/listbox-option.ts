@@ -37,11 +37,6 @@ export class ListboxOption extends FoundationElement {
     private _value: string;
 
     /**
-     * @internal
-     */
-    public proxy: HTMLOptionElement;
-
-    /**
      * The defaultSelected state of the option.
      * @public
      */
@@ -51,7 +46,7 @@ export class ListboxOption extends FoundationElement {
         if (!this.dirtySelected) {
             this.selected = this.defaultSelected;
 
-            if (this.proxy instanceof HTMLOptionElement) {
+            if (this.hasProxy) {
                 this.proxy.selected = this.defaultSelected;
             }
         }
@@ -64,6 +59,11 @@ export class ListboxOption extends FoundationElement {
     private dirtySelected: boolean = false;
 
     /**
+     * Track whether the value has been changed from the initial value
+     */
+    public dirtyValue: boolean = false;
+
+    /**
      * The disabled state of the option.
      * @public
      * @remarks
@@ -72,8 +72,66 @@ export class ListboxOption extends FoundationElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
     protected disabledChanged(prev, next): void {
-        if (this.proxy instanceof HTMLOptionElement) {
+        if (this.hasProxy) {
             this.proxy.disabled = this.disabled;
+        }
+    }
+
+    public get form(): HTMLFormElement | null {
+        return this.proxy?.form;
+    }
+
+    private get hasProxy() {
+        return this.proxy instanceof HTMLOptionElement;
+    }
+
+    /**
+     * The initial value of the option. This value sets the `value` property
+     * only when the `value` property has not been explicitly set.
+     *
+     * @remarks
+     * HTML Attribute: value
+     */
+    @attr({ attribute: "value", mode: "fromView" })
+    public initialValue: string;
+    public initialValueChanged(previous: string, next: string): void {
+        // If the value is clean and the component is connected to the DOM
+        // then set value equal to the attribute value.
+        if (!this.dirtyValue) {
+            this.value = this.initialValue;
+            this.dirtyValue = false;
+        }
+    }
+
+    /**
+     * Returns the value or text content
+     * @public
+     */
+    public get label() {
+        return this.value ?? this.textContent ?? "";
+    }
+
+    /**
+     * @internal
+     */
+    public proxy: HTMLOptionElement;
+
+    /**
+     * The checked state of the control.
+     *
+     * @public
+     */
+    @observable
+    public selected: boolean = this.defaultSelected;
+    protected selectedChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (!this.dirtySelected) {
+                this.dirtySelected = true;
+            }
+
+            if (this.hasProxy) {
+                this.proxy.selected = this.selected;
+            }
         }
     }
 
@@ -89,50 +147,8 @@ export class ListboxOption extends FoundationElement {
     protected selectedAttributeChanged(): void {
         this.defaultSelected = this.selectedAttribute;
 
-        if (this.proxy instanceof HTMLOptionElement) {
+        if (this.hasProxy) {
             this.proxy.defaultSelected = this.defaultSelected;
-        }
-    }
-
-    /**
-     * The checked state of the control.
-     *
-     * @public
-     */
-    @observable
-    public selected: boolean = this.defaultSelected;
-    protected selectedChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (!this.dirtySelected) {
-                this.dirtySelected = true;
-            }
-
-            if (this.proxy instanceof HTMLOptionElement) {
-                this.proxy.selected = this.selected;
-            }
-        }
-    }
-
-    /**
-     * Track whether the value has been changed from the initial value
-     */
-    public dirtyValue: boolean = false;
-
-    /**
-     * The initial value of the option. This value sets the `value` property
-     * only when the `value` property has not been explicitly set.
-     *
-     * @remarks
-     * HTML Attribute: value
-     */
-    @attr({ attribute: "value", mode: "fromView" })
-    protected initialValue: string;
-    public initialValueChanged(previous: string, next: string): void {
-        // If the value is clean and the component is connected to the DOM
-        // then set value equal to the attribute value.
-        if (!this.dirtyValue) {
-            this.value = this.initialValue;
-            this.dirtyValue = false;
         }
     }
 
@@ -140,8 +156,23 @@ export class ListboxOption extends FoundationElement {
         return this.value ? this.value : this.textContent ? this.textContent : "";
     }
 
+    /**
+     * Returns the text content of the option.
+     *
+     * @public
+     */
     public get text(): string {
         return this.textContent as string;
+    }
+
+    /**
+     * The value of the option.
+     *
+     * @public
+     */
+    public get value(): string {
+        Observable.track(this, "value");
+        return this._value ?? this.text;
     }
 
     public set value(next: string) {
@@ -149,20 +180,11 @@ export class ListboxOption extends FoundationElement {
 
         this.dirtyValue = true;
 
-        if (this.proxy instanceof HTMLElement) {
+        if (this.hasProxy) {
             this.proxy.value = next;
         }
 
         Observable.notify(this, "value");
-    }
-
-    public get value(): string {
-        Observable.track(this, "value");
-        return this._value ? this._value : this.text;
-    }
-
-    public get form(): HTMLFormElement | null {
-        return this.proxy ? this.proxy.form : null;
     }
 
     public constructor(
@@ -189,14 +211,6 @@ export class ListboxOption extends FoundationElement {
         if (selected) {
             this.selected = selected;
         }
-
-        this.proxy = new Option(
-            `${this.textContent}`,
-            this.initialValue,
-            this.defaultSelected,
-            this.selected
-        );
-        this.proxy.disabled = this.disabled;
     }
 }
 

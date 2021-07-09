@@ -335,13 +335,27 @@ export class Select extends FormAssociatedSelect {
         if (this.proxy instanceof HTMLSelectElement && this.options) {
             this.proxy.options.length = 0;
             this.options.forEach(option => {
-                const proxyOption =
-                    option.proxy ||
-                    (option instanceof HTMLOptionElement ? option.cloneNode() : null);
+                let proxyOption;
 
-                if (proxyOption) {
-                    this.proxy.appendChild(proxyOption);
+                if (option instanceof HTMLOptionElement) {
+                    proxyOption = option.cloneNode();
+                } else {
+                    option.proxy =
+                        option.proxy ??
+                        new Option(
+                            `${option.textContent}`,
+                            option.initialValue,
+                            option.defaultSelected,
+                            option.selected
+                        );
+
+                    option.proxy.hidden = true;
+                    option.proxy.disabled = option.disabled;
+
+                    proxyOption = option.proxy;
                 }
+
+                this.proxy.appendChild(proxyOption);
             });
         }
     }
