@@ -53,6 +53,11 @@ export interface ViewerHandledProps extends ViewerManagedClasses {
      * used for sending and receiving data to the message system
      */
     messageSystem: MessageSystem;
+
+    /**
+     * The preview mode of the viewer
+     */
+    preview?: boolean;
 }
 
 export type ViewerProps = ViewerUnhandledProps & ViewerHandledProps;
