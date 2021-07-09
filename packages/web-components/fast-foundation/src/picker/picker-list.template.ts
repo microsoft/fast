@@ -1,4 +1,4 @@
-import { html, ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import type { PickerList } from "./picker-list";
 
 /**
@@ -10,7 +10,21 @@ import type { PickerList } from "./picker-list";
     definition
 ) => {
     return html<PickerList>`
-        <template role="list">
+        <template 
+            role="list" 
+            class="picker-list"
+        >
+            <input
+                role="combobox"
+                type="text"
+                autocapitalize="off"
+                autocomplete="off"
+                haspopup="list"
+                class="input-element"
+                aria-label="todo"
+                aria-labelledby="todo"
+                ${ref("inputElement")}
+            ></input>
             <slot></slot>
         </template>
     `;

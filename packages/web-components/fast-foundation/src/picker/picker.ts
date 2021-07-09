@@ -14,13 +14,12 @@ import {
     flyoutBelowScaling,
 } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
+import type { PickerList } from "./picker-list";
 
 /**
  *
  */
 export type PickerMenuPosition = "top" | "bottom";
-
-
 
 /**
  * A List Picker Custom HTML Element.
@@ -185,8 +184,8 @@ export class Picker extends FoundationElement {
     public query: string;
     private queryChanged(): void {
         if (this.$fastController.isConnected) {
-            if(this.inputElement.value !== this.query){
-                this.inputElement.value = this.query;
+            if(this.selectedList.inputElement.value !== this.query){
+                this.selectedList.inputElement.value = this.query;
             }
             this.$emit("querychange", { bubbles: false });
         }
@@ -279,18 +278,11 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     * reference to the edit box
-     *
-     * @internal
-     */
-    public inputElement: HTMLInputElement;
-
-    /**
      * reference to the selected item list
      *
      * @internal
      */
-    public selectedList: HTMLElement;
+    public selectedList: PickerList;
 
     /**
      * reference to the menu
@@ -317,7 +309,7 @@ export class Picker extends FoundationElement {
     protected hasFocus = false;
 
     private itemsRepeatBehavior: RepeatBehavior | null;
-    private itemsPlaceholder: Node | null = null;
+    // private itemsPlaceholder: Node | null = null;
 
     private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node | null = null;
@@ -336,37 +328,9 @@ export class Picker extends FoundationElement {
             this.optionsList = this.options.split(",");
         }
 
-        this.selectedList = document.createElement(this.selectedlisttag);
+        this.selectedList = document.createElement(this.selectedlisttag) as PickerList;
         this.selectedList.slot = "list-region";
         this.appendChild(this.selectedList);
-
-        this.itemsPlaceholder = document.createComment("");
-        this.selectedList.append(this.itemsPlaceholder);
-
-        this.inputElement = document.createElement("input");
-        this.inputElement.setAttribute("role", "combobox");
-        this.inputElement.setAttribute("type", "text");
-        this.inputElement.setAttribute("autocapitalize", "off");
-        this.inputElement.setAttribute("autocomplete", "off");
-        this.inputElement.setAttribute("haspopup", "list");
-        this.inputElement.setAttribute("aria-label", this.label);
-        this.inputElement.setAttribute("aria-labelledby", this.labelledby);
-        this.inputElement.setAttribute("part", "input-element");
-        this.inputElement.classList.add("input-element");
-
-        this.selectedList.appendChild(this.inputElement);
-        this.inputElement.addEventListener("input", this.handleTextInput);
-        this.inputElement.addEventListener("click", this.handleInputClick);
-
-        this.handleSelectionChange();
-
-        this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.selectedOptions,
-            x => x.itemTemplate !== undefined ? x.itemTemplate: x.defaultItemTemplate,
-            { positioning: true }
-        ).createBehavior(this.itemsPlaceholder);
-
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         const match: string = this.pickermenutag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
@@ -401,21 +365,43 @@ export class Picker extends FoundationElement {
         ).createBehavior(this.optionsPlaceholder);
 
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
+
+        DOM.queueUpdate(()=>{
+            this.initialize();
+        });
     }
 
     public disconnectedCallback() {
         super.disconnectedCallback();
         this.toggleFlyout(false);
-        this.inputElement.removeEventListener("input", this.handleTextInput);
-        this.inputElement.removeEventListener("click", this.handleInputClick);
+        this.selectedList.inputElement.removeEventListener("input", this.handleTextInput);
+        this.selectedList.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
-    protected toggleFlyout(open: boolean): void {
+    private initialize(): void {
+
+        this.handleSelectionChange();
+
+        this.itemsRepeatBehavior = new RepeatDirective(
+            x => x.selectedOptions,
+            x => x.itemTemplate !== undefined ? x.itemTemplate: x.defaultItemTemplate,
+            { positioning: true }
+        ).createBehavior(this.selectedList.itemsPlaceholderElement);
+
+        
+        this.selectedList.inputElement.addEventListener("input", this.handleTextInput);
+        this.selectedList.inputElement.addEventListener("click", this.handleInputClick);
+
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+
+    }
+
+    private toggleFlyout(open: boolean): void {
         if (this.flyoutOpen === open) {
             return;
         }
 
-        if (open && document.activeElement === this.inputElement) {
+        if (open && document.activeElement === this.selectedList.inputElement) {
             this.flyoutOpen = open;
             DOM.queueUpdate(() => {
                 if (this.menuElement !== undefined) {
@@ -433,12 +419,13 @@ export class Picker extends FoundationElement {
     }
 
     private handleTextInput = (e: InputEvent): void => {
-        this.query = this.inputElement.value;
+        this.query = this.selectedList.inputElement.value;
     }
 
     private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
+    
     private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
         if (this.flyoutOpen) {
@@ -517,7 +504,7 @@ export class Picker extends FoundationElement {
             }
 
             case "ArrowRight": {
-                if (document.activeElement !== this.inputElement) {
+                if (document.activeElement !== this.selectedList.inputElement) {
                     this.incrementFocusedItem(1);
                     return false;
                 }
@@ -526,7 +513,7 @@ export class Picker extends FoundationElement {
             }
 
             case "ArrowLeft": {
-                if (this.inputElement.selectionStart === 0) {
+                if (this.selectedList.inputElement.selectionStart === 0) {
                     this.incrementFocusedItem(-1);
                     return false;
                 }
@@ -540,8 +527,8 @@ export class Picker extends FoundationElement {
                     return true;
                 }
 
-                if (document.activeElement === this.inputElement) {
-                    if (this.inputElement.selectionStart === 0) {
+                if (document.activeElement === this.selectedList.inputElement) {
+                    if (this.selectedList.inputElement.selectionStart === 0) {
                         this.selection = this.selectedOptions
                             .slice(0, this.selectedOptions.length - 1)
                             .toString();
@@ -604,7 +591,7 @@ export class Picker extends FoundationElement {
         }
         this.selection = `${this.selection}${this.selection === "" ? "" : ","}${value}`;
         this.toggleFlyout(false);
-        this.inputElement.value = "";
+        this.selectedList.inputElement.value = "";
         return false;
     };
 
@@ -625,8 +612,8 @@ export class Picker extends FoundationElement {
         if (e.defaultPrevented) {
             return false;
         }
-        if (this.inputElement) {
-            this.inputElement.focus();
+        if (this.selectedList.inputElement) {
+            this.selectedList.inputElement.focus();
         }
         return false;
     };
@@ -674,20 +661,20 @@ export class Picker extends FoundationElement {
             return;
         }
         this.region.viewportElement = document.body;
-        this.region.anchorElement = this.inputElement;
+        this.region.anchorElement = this.selectedList.inputElement;
     };
 
     private checkMaxItems = (): void => {
-        if (this.inputElement === undefined) {
+        if (this.selectedList.inputElement === undefined) {
             return;
         }
         if (
             this.maxSelected !== undefined &&
             this.selectedOptions.length >= this.maxSelected
         ) {
-            this.inputElement.hidden = true;
+            this.selectedList.inputElement.hidden = true;
         } else {
-            this.inputElement.hidden = false;
+            this.selectedList.inputElement.hidden = false;
         }
     };
 
@@ -701,7 +688,7 @@ export class Picker extends FoundationElement {
     private incrementFocusedItem(increment: number) {
         const selectedItems: Element[] = Array.from(this.selectedList.children);
         if (selectedItems.length === 0) {
-            this.inputElement.focus();
+            this.selectedList.inputElement.focus();
             return;
         }
 
@@ -714,7 +701,7 @@ export class Picker extends FoundationElement {
                 Math.max(0, currentFocusedItemIndex + increment)
             );
             if (newFocusedItemIndex === selectedItems.length) {
-                this.inputElement.focus();
+                this.selectedList.inputElement.focus();
             } else {
                 (selectedItems[newFocusedItemIndex] as HTMLElement).focus();
             }
@@ -724,11 +711,9 @@ export class Picker extends FoundationElement {
     private disableMenu = (): void => {
         this.menuFocusIndex = -1;
         this.menuFocusOptionId = null;
-        if (this.inputElement !== undefined) {
-            this.inputElement.removeAttribute("aria-activedescendant");
-            this.inputElement.removeAttribute("aria-owns");
-            this.inputElement.removeAttribute("aria-expanded");
-        }
+        this.selectedList?.inputElement?.removeAttribute("aria-activedescendant");
+        this.selectedList?.inputElement?.removeAttribute("aria-owns");
+        this.selectedList?.inputElement?.removeAttribute("aria-expanded");
         //this.menuElement.scrollTo(0, 0);
     };
 
@@ -758,9 +743,9 @@ export class Picker extends FoundationElement {
 
         this.menuFocusOptionId = this.menuElement.optionElements[this.menuFocusIndex].id;
 
-        this.inputElement.setAttribute("aria-owns", this.menuId);
-        this.inputElement.setAttribute("aria-expanded", "true");
-        this.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
+        this.selectedList.inputElement.setAttribute("aria-owns", this.menuId);
+        this.selectedList.inputElement.setAttribute("aria-expanded", "true");
+        this.selectedList.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
 
         const focusedOption = this.menuElement.optionElements[this.menuFocusIndex];
 

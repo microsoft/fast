@@ -5,4 +5,30 @@ import { FoundationElement } from "../foundation-element";
  *
  * @public
  */
-export class PickerList extends FoundationElement {}
+export class PickerList extends FoundationElement {
+
+    /**
+     *
+     *
+     * @public
+     */
+     public inputElement: HTMLInputElement;
+
+    /**
+     *
+     *
+     * @public
+     */
+    public itemsPlaceholderElement: Node;
+
+
+     /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        this.itemsPlaceholderElement = document.createComment("");
+        this.prepend(this.itemsPlaceholderElement);
+    }
+}

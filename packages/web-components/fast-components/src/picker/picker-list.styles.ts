@@ -33,7 +33,7 @@ export const pickerListStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-    :host {
+    .picker-list {
         display: flex;
         flex-direction: row;
         column-gap: calc(${designUnit} * 1px);
@@ -42,7 +42,7 @@ export const pickerListStyles: (
         z-index: 1000;
     }
 
-    ::slotted([role="combobox"]) {
+    [role="combobox"] {
         min-width: 260px;
         width: auto;
         box-sizing: border-box;
@@ -59,17 +59,17 @@ export const pickerListStyles: (
         padding: 0 calc(${designUnit} * 2px + 1px);
     }
 
-    ::slotted(:active[role="combobox"]) {
+    :active[role="combobox"] {
         background: ${neutralFillInputHover};
         border-color: ${accentFillActive};
     }
 
-    ::slotted(:focus-within[role="combobox"]) {
+    ::focus-within[role="combobox"] {
         border-color: ${focusStrokeOuter};
         box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
     }
     
-    ::slotted([role="listitem"]) {
+    [role="listitem"] {
         min-width: 80px;
         display: flex;
         align-items: center;
@@ -92,29 +92,29 @@ export const pickerListStyles: (
         white-space: nowrap;
     }
 
-    ::slotted(:${focusVisible}[role="listitem"]) {
+    :${focusVisible}[role="listitem"] {
         border-color: ${focusStrokeOuter};
         background: ${neutralLayer3};
         color: ${neutralForegroundRest};
     }
 
-    ::slotted(:hover[role="listitem"]) {
+    :hover[role="listitem"] {
         background: ${neutralLayer3};
         color: ${neutralForegroundRest};
     }
 
-    ::slotted([role="listitem"][aria-selected="true"]) {
+    [role="listitem"][aria-selected="true"] {
         background: ${accentFillActive};
         color: ${foregroundOnAccentActive};
     }
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                ::slotted(:hover[role="combobox"]) {
+                :hover[role="combobox"] {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.Highlight};
                 }
-                :slotted(:focus-within:enabled[role="combobox"]) {
+                :focus-within:enabled[role="combobox"] {
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
                 }

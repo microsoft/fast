@@ -74,6 +74,7 @@ export const fastPickerList = PickerList.compose({
     baseName: "picker-list",
     template: pickerListTemplate,
     styles: pickerListStyles,
+    shadowOptions: null,
 });
 export class FASTPickerList extends PickerList {}
 
