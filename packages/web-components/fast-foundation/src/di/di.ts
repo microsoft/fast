@@ -710,6 +710,18 @@ export const DI = Object.freeze({
         return dependencies;
     },
 
+    /**
+     * Defines a property on a web component class. The value of this property will
+     * be resolved from the dependency injection container responsible for the element
+     * instance, based on where it is connected in the DOM.
+     * @param target - The target to define the property on.
+     * @param propertyName - The name of the property to define.
+     * @param key - The dependency injection key.
+     * @param respectConnection - Indicates whether or not to update the property value if the
+     * hosting component is disconnected and then re-connected at a different location in the DOM.
+     * @remarks
+     * The respectConnection option is only applicable to elements that descend from FASTElement.
+     */
     defineProperty(
         target: {},
         propertyName: string,
@@ -752,6 +764,17 @@ export const DI = Object.freeze({
         });
     },
 
+    /**
+     * Creates a dependency injection key.
+     * @param nameConfigOrCallback - A friendly name for the key or a lambda that configures a
+     * default resolution for the dependency.
+     * @param configuror - If a friendly name was provided for the first parameter, then an optional
+     * lambda that configures a default resolution for the dependency can be provided second.
+     * @returns The created key.
+     * @remarks
+     * The created key can be used as a property decorator or constructor parameter decorator,
+     * in addition to its standard use in an inject array or through direct container APIs.
+     */
     createInterface<K extends Key>(
         nameConfigOrCallback?:
             | string
@@ -811,6 +834,16 @@ export const DI = Object.freeze({
         return Interface;
     },
 
+    /**
+     * A decorator that specifies what to inject into its target.
+     * @param dependencies - The dependencies to inject.
+     * @returns The decorator to be applied to the target class.
+     * @remarks
+     * The decorator can be used to decorate a class, listing all of the classes dependencies.
+     * Or it can be used to decorate a constructor paramter, indicating what to inject for that
+     * parameter.
+     * Or it can be used for a web component property, indicating what that property should resolve to.
+     */
     inject(
         ...dependencies: Key[]
     ): (
@@ -865,6 +898,8 @@ export const DI = Object.freeze({
      * // Foo is now strongly typed with register
      * Foo.register(container);
      * ```
+     *
+     * @public
      */
     transient<T extends Constructable>(
         target: T & Partial<RegisterSelf<T>>
@@ -897,7 +932,7 @@ export const DI = Object.freeze({
      * Foo.register(container);
      * ```
      *
-     * @alpha
+     * @public
      */
     singleton<T extends Constructable>(
         target: T & Partial<RegisterSelf<T>>,
@@ -915,12 +950,14 @@ export const DI = Object.freeze({
 });
 
 /**
- * @alpha
+ * The interface key that resolves the dependency injection container itself.
+ * @public
  */
 export const Container = DI.createInterface<Container>("Container");
 
 /**
- * @alpha
+ * The interface key that resolves the service locator itself.
+ * @public
  */
 export const ServiceLocator = (Container as unknown) as InterfaceSymbol<ServiceLocator>;
 
@@ -947,7 +984,16 @@ function createResolver(
 }
 
 /**
- * @alpha
+ * A decorator that specifies what to inject into its target.
+ * @param dependencies - The dependencies to inject.
+ * @returns The decorator to be applied to the target class.
+ * @remarks
+ * The decorator can be used to decorate a class, listing all of the classes dependencies.
+ * Or it can be used to decorate a constructor paramter, indicating what to inject for that
+ * parameter.
+ * Or it can be used for a web component property, indicating what that property should resolve to.
+ *
+ * @public
  */
 export const inject = DI.inject;
 
@@ -967,9 +1013,10 @@ function transientDecorator<T extends Constructable>(
  * class Foo { }
  * ```
  *
- * @alpha
+ * @public
  */
 export function transient<T extends Constructable>(): typeof transientDecorator;
+
 /**
  * Registers the `target` class as a transient dependency; each time the dependency is resolved
  * a new instance will be created.
@@ -982,11 +1029,12 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  * class Foo { }
  * ```
  *
- * @alpha
+ * @public
  */
 export function transient<T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
 ): T & RegisterSelf<T>;
+
 export function transient<T extends Constructable>(
     target?: T & Partial<RegisterSelf<T>>
 ): (T & RegisterSelf<T>) | typeof transientDecorator {
@@ -1012,15 +1060,17 @@ function singletonDecorator<T extends Constructable>(
  * class Foo { }
  * ```
  *
- * @alpha
+ * @public
  */
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
+
 /**
- * @alpha
+ * @public
  */
 export function singleton<T extends Constructable>(
     options?: SingletonOptions
 ): typeof singletonDecorator;
+
 /**
  * Registers the `target` class as a singleton dependency; the class will only be created once. Each
  * consecutive time the dependency is resolved, the same instance will be returned.
@@ -1033,13 +1083,14 @@ export function singleton<T extends Constructable>(
  * class Foo { }
  * ```
  *
- * @alpha
+ * @public
  */
 export function singleton<T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
 ): T & RegisterSelf<T>;
+
 /**
- * @alpha
+ * @public
  */
 export function singleton<T extends Constructable>(
     targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions
