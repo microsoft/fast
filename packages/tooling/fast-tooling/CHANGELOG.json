@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.6",
+      "version": "0.23.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 04 Jul 2021 07:15:28 GMT",
       "tag": "@microsoft/fast-tooling_v0.23.5",
       "version": "0.23.5",

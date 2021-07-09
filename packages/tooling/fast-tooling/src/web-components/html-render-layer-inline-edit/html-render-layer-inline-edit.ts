@@ -1,4 +1,4 @@
-import { customElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { MessageSystemDataTypeAction, MessageSystemType } from "../../message-system";
 import {
     ActivityType,
