@@ -1132,7 +1132,11 @@ function createAllResolver(
 }
 
 /**
- * @alpha
+ * A decorator and DI resolver that will resolve an array of all dependencies
+ * registered with the specified key.
+ * @param key - The key to resolve all dependencies for.
+ * @param searchAncestors - [optional] Indicates whether to search ancestor containers.
+ * @public
  */
 export const all = createAllResolver(
     (key: any, handler: Container, requestor: Container, searchAncestors: boolean) =>
@@ -1140,7 +1144,7 @@ export const all = createAllResolver(
 );
 
 /**
- * Lazily inject a dependency depending on whether the [[`Key`]] is present at the time of function call.
+ * A decorator that lazily injects a dependency depending on whether the [[`Key`]] is present at the time of function call.
  *
  * You need to make your argument a function that returns the type, for example
  * ```ts
@@ -1163,10 +1167,10 @@ export const all = createAllResolver(
  * `@lazy` does not manage the lifecycle of the underlying key. If you want a singleton, you have to register as a
  * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
  *
- * @param key - [[`Key`]]
+ * @param key - The key to lazily resolve.
  * see {@link DI.createInterface} on interactions with interfaces
  *
- * @alpha
+ * @public
  */
 export const lazy = createResolver(
     (key: Key, handler: Container, requestor: Container) => {
@@ -1175,7 +1179,7 @@ export const lazy = createResolver(
 );
 
 /**
- * Allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example
+ * A decorator that allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example
  * ```ts
  * class Foo {
  *   constructor( @inject('mystring') public str: string = 'somestring' )
@@ -1189,14 +1193,13 @@ export const lazy = createResolver(
  * }
  * container.get(Foo).str // somestring
  * ```
- * if you use it without a default it will inject `undefined`, so rember to mark your input type as
+ * if you use it without a default it will inject `undefined`, so remember to mark your input type as
  * possibly `undefined`!
  *
- * @param key - [[`Key`]]
- *
+ * @param key - The key to optionally resolve.
  * see {@link DI.createInterface} on interactions with interfaces
  *
- * @alpha
+ * @public
  */
 export const optional = createResolver(
     (key: Key, handler: Container, requestor: Container) => {
@@ -1209,9 +1212,9 @@ export const optional = createResolver(
 );
 
 /**
- * Ignore tells the container not to try to inject a dependency.
+ * A decorator that tells the container not to try to inject a dependency.
  *
- * @alpha
+ * @public
  */
 export function ignore(
     target: Injectable,
@@ -1227,7 +1230,14 @@ export function ignore(
 (ignore as any).resolve = () => undefined;
 
 /**
- * @alpha
+ * A decorator that indicates that a new instance should be injected scoped to the
+ * container that requested the instance.
+ * @param key - The dependency key for the new instance.
+ * @remarks
+ * This creates a resolver with an instance strategy pointing to the new instance, effectively
+ * making this a singleton, scoped to the container or DOM's subtree.
+ *
+ * @public
  */
 export const newInstanceForScope = createResolver(
     (key: any, handler: Container, requestor: Container) => {
@@ -1239,7 +1249,12 @@ export const newInstanceForScope = createResolver(
 );
 
 /**
- * @alpha
+ * A decorator that indicates that a new instance should be injected.
+ * @param key - The dependency key for the new instance.
+ * @remarks
+ * The instance is not internally cached with a resolver as newInstanceForScope does.
+ *
+ * @public
  */
 export const newInstanceOf = createResolver(
     (key: any, handler: Container, _requestor: Container) =>
@@ -1796,7 +1811,9 @@ function cacheCallbackResult<T>(fun: ResolveCallback<T>): ResolveCallback<T> {
 
 /**
  * You can use the resulting Registration of any of the factory methods
- * to register with the container, e.g.
+ * to register with the container.
+ *
+ * @example
  * ```
  * class Foo {}
  * const container = DI.createContainer();
@@ -1804,31 +1821,36 @@ function cacheCallbackResult<T>(fun: ResolveCallback<T>): ResolveCallback<T> {
  * container.get(Foo);
  * ```
  *
- * @alpha
+ * @public
  */
 export const Registration = Object.freeze({
     /**
-     * allows you to pass an instance.
+     * Allows you to pass an instance.
      * Every time you request this {@link Key} you will get this instance back.
+     *
+     * @example
      * ```
      * Registration.instance(Foo, new Foo()));
      * ```
      *
-     * @param key -
-     * @param value -
+     * @param key - The key to register the instance under.
+     * @param value - The instance to return when the key is requested.
      */
     instance<T>(key: Key, value: T): Registration<T> {
         return new ResolverImpl(key, ResolverStrategy.instance, value);
     },
+
     /**
      * Creates an instance from the class.
      * Every time you request this {@link Key} you will get the same one back.
+     *
+     * @example
      * ```
      * Registration.singleton(Foo, Foo);
      * ```
      *
-     * @param key -
-     * @param value -
+     * @param key - The key to register the singleton under.
+     * @param value - The class to instantiate as a singleton when first requested.
      */
     singleton<T extends Constructable>(
         key: Key,
@@ -1836,15 +1858,18 @@ export const Registration = Object.freeze({
     ): Registration<InstanceType<T>> {
         return new ResolverImpl(key, ResolverStrategy.singleton, value);
     },
+
     /**
      * Creates an instance from a class.
      * Every time you request this {@link Key} you will get a new instance.
+     *
+     * @example
      * ```
      * Registration.instance(Foo, Foo);
      * ```
      *
-     * @param key -
-     * @param value -
+     * @param key - The key to register the instance type under.
+     * @param value - The class to instantiate each time the key is requested.
      */
     transient<T extends Constructable>(
         key: Key,
@@ -1852,33 +1877,40 @@ export const Registration = Object.freeze({
     ): Registration<InstanceType<T>> {
         return new ResolverImpl(key, ResolverStrategy.transient, value);
     },
+
     /**
-     * Creates an instance from the method passed.
-     * Every time you request this {@link Key} you will get a new instance.
+     * Delegates to a callback function to provide the dependency.
+     * Every time you request this {@link Key} the callback will be invoked to provide
+     * the dependency.
+     *
+     * @example
      * ```
      * Registration.callback(Foo, () => new Foo());
-     * Registration.callback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
+     * Registration.callback(Bar, (c: Container) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key -
-     * @param callback -
+     * @param key - The key to register the callback for.
+     * @param callback - The function that is expected to return the dependency.
      */
     callback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(key, ResolverStrategy.callback, callback);
     },
+
     /**
-     * Creates an instance from the method passed.
-     * On the first request for the {@link Key} your callback is called and returns an instance.
-     * subsequent requests for the {@link Key}, the initial instance returned will be returned.
-     * If you pass the same Registration to another container the same cached value will be used.
-     * Should all references to the resolver returned be removed, the cache will expire.
+     * Delegates to a callback function to provide the dependency and then caches the
+     * dependency for future requests.
+     *
+     * @example
      * ```
      * Registration.cachedCallback(Foo, () => new Foo());
-     * Registration.cachedCallback(Bar, (c: IContainer) => new Bar(c.get(Foo)));
+     * Registration.cachedCallback(Bar, (c: Container) => new Bar(c.get(Foo)));
      * ```
      *
-     * @param key -
-     * @param callback -
+     * @param key - The key to register the callback for.
+     * @param callback - The function that is expected to return the dependency.
+     * @remarks
+     * If you pass the same Registration to another container, the same cached value will be used.
+     * Should all references to the resolver returned be removed, the cache will expire.
      */
     cachedCallback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>> {
         return new ResolverImpl(
@@ -1887,9 +1919,11 @@ export const Registration = Object.freeze({
             cacheCallbackResult(callback)
         );
     },
+
     /**
-     * creates an alternate {@link Key} to retrieve an instance by.
-     * Returns the same scope as the original {@link Key}.
+     * Creates an alternate {@link Key} to retrieve an instance by.
+     *
+     * @example
      * ```
      * Register.singleton(Foo, Foo)
      * Register.aliasTo(Foo, MyFoos);
@@ -1897,8 +1931,8 @@ export const Registration = Object.freeze({
      * container.getAll(MyFoos) // contains an instance of Foo
      * ```
      *
-     * @param originalKey -
-     * @param aliasKey -
+     * @param originalKey - The original key that has been registered.
+     * @param aliasKey - The alias to the original key.
      */
     aliasTo<T>(originalKey: T, aliasKey: Key): Registration<Resolved<T>> {
         return new ResolverImpl(aliasKey, ResolverStrategy.alias, originalKey);
@@ -1939,10 +1973,9 @@ function buildAllResponse(
 
 const defaultFriendlyName = "(anonymous)";
 
-/**
- * @alpha
- */
-export interface DOMParentLocatorEventDetail {
+// making this private because I think we may want to
+// refactor to use the new proposed community context standard
+interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
 
