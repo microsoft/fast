@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 11 Jul 2021 07:15:10 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.26",
+      "version": "2.8.26",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding support for preview mode styles to the viewer",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d2694b4992c3787447597882397f588d701933a9",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.7",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 07 Jul 2021 07:19:51 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.25",
       "version": "2.8.25",
