@@ -94,6 +94,7 @@ export const textFieldStyles: (
 
     .start,
     .end {
+        display: flex;
         margin: auto;
         fill: currentcolor;
     }
