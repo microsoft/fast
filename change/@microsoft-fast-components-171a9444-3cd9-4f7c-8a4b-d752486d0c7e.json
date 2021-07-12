@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "text-field: start/end display flex",
+  "packageName": "@microsoft/fast-components",
+  "email": "ben@platform5.ch",
+  "dependentChangeType": "patch"
+}
