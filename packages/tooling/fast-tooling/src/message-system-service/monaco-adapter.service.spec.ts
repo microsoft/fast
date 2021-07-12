@@ -603,7 +603,7 @@ xdescribe("MonacoAdapter", () => {
                             $id: "span",
                             type: "object",
                             mapsToTagName: "span",
-                        }
+                        },
                     ],
                 },
             } as any);
