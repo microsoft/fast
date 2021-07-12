@@ -196,6 +196,11 @@ class Form extends React.Component<
                     options: e.data.options,
                 });
                 break;
+            case MessageSystemType.schemaDictionary:
+                this.setState({
+                    schemaDictionary: e.data.schemaDictionary,
+                });
+                break;
         }
     };
 

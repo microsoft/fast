@@ -15,6 +15,7 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
@@ -167,6 +168,15 @@ export class HTMLRender extends FoundationElement {
                             null
                         );
                     }
+                }
+            }
+            if (
+                e.data.type === MessageSystemType.schemaDictionary &&
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
+            ) {
+                if (e.data.action === MessageSystemSchemaDictionaryTypeAction.add) {
+                    this.schemaDictionary = e.data.schemaDictionary;
                 }
             }
         }
