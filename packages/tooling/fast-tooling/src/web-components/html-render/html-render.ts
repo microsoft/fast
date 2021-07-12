@@ -15,6 +15,7 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
@@ -39,6 +40,9 @@ export class HTMLRender extends FoundationElement {
     private activeDictionaryId: string = "";
 
     private renderLayers: HTMLRenderLayer[] = [];
+
+    @observable
+    public interactiveMode: boolean = true;
 
     @observable
     public markup: HTMLElement;
@@ -124,6 +128,57 @@ export class HTMLRender extends FoundationElement {
                     );
                 }
             }
+            if (
+                e.data.type === MessageSystemType.custom &&
+                e.data.options &&
+                e.data.options.originatorId !== this.messageOriginatorId
+            ) {
+                const action: string[] = (e.data.options.action as string).split("::");
+                if (action[0] === "displayMode") {
+                    this.interactiveMode = action[1] !== "preview";
+                    if (this.interactiveMode) {
+                        this.updateLayers(
+                            this.layerActivityId,
+                            ActivityType.releaseFocus,
+                            null,
+                            null,
+                            null
+                        );
+                        // give everything time to update positions
+                        if (this.selectTimeout) {
+                            window.clearTimeout(this.selectTimeout);
+                        }
+                        this.selectTimeout = window.setTimeout(
+                            this.selectActiveDictionaryId,
+                            100
+                        );
+                    } else {
+                        this.updateLayers(
+                            this.layerActivityId,
+                            ActivityType.clear,
+                            "",
+                            null,
+                            null
+                        );
+                        this.updateLayers(
+                            this.layerActivityId,
+                            ActivityType.takeFocus,
+                            null,
+                            null,
+                            null
+                        );
+                    }
+                }
+            }
+            if (
+                e.data.type === MessageSystemType.schemaDictionary &&
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
+            ) {
+                if (e.data.action === MessageSystemSchemaDictionaryTypeAction.add) {
+                    this.schemaDictionary = e.data.schemaDictionary;
+                }
+            }
         }
     };
 
@@ -142,13 +197,15 @@ export class HTMLRender extends FoundationElement {
         }
         if (el) {
             this.currentElement = el;
-            this.updateLayers(
-                this.layerActivityId,
-                ActivityType.click,
-                this.activeDictionaryId,
-                this.currentElement,
-                null
-            );
+            if (this.interactiveMode) {
+                this.updateLayers(
+                    this.layerActivityId,
+                    ActivityType.click,
+                    this.activeDictionaryId,
+                    this.currentElement,
+                    null
+                );
+            }
         }
     };
 
@@ -193,6 +250,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     public hoverHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (
             targetEl.dataId !== null &&
@@ -214,6 +274,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     public blurHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         this.updateLayers(this.layerActivityId, ActivityType.blur, "", null, null);
         return false;
     }
@@ -249,6 +312,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     public clickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (targetEl.dataId !== null) {
             this.selectElement(targetEl.el, targetEl.dataId);
@@ -258,6 +324,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     public dblClickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         // Get the element of the double click event
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (
@@ -323,6 +392,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     public keyUpHandler(e: KeyboardEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         if (e.key === "Tab") {
             const currTab: number = this.currentElement
                 ? Number(this.currentElement.getAttribute("taborder"))
@@ -355,12 +427,18 @@ export class HTMLRender extends FoundationElement {
     }
 
     public keyDownHandler(e: KeyboardEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         e.preventDefault();
         e.stopPropagation();
         return false;
     }
 
     public containerClickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         this.clearElement();
         e.stopPropagation();
         return false;

@@ -57,10 +57,10 @@
     "vscode-web-custom-data": "^0.3.1"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^2.1.0",
-    "@microsoft/fast-foundation": "^2.2.0",
-    "@microsoft/fast-tooling": "^0.23.5",
-    "@microsoft/fast-tooling-react": "^2.8.24",
+    "@microsoft/fast-components": "^2.2.0",
+    "@microsoft/fast-foundation": "^2.3.0",
+    "@microsoft/fast-tooling": "^0.23.7",
+    "@microsoft/fast-tooling-react": "^2.8.26",
     "@skatejs/val": "^0.5.0",
     "monaco-editor": "^0.21.2",
     "vscode-html-languageservice": "^3.1.3"

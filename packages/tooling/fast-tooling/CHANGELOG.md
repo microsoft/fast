@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 04 Jul 2021 07:15:28 GMT and should not be manually modified.
+This log was last generated on Sun, 11 Jul 2021 07:15:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.23.7
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode interaction logic to HTMLRender (44823142+williamw2@users.noreply.github.com)
+
+## 0.23.6
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.0 (scomea@microsoft.com)
 
 ## 0.23.5
 

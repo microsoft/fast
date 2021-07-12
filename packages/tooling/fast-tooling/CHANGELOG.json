@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Sun, 11 Jul 2021 07:15:10 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.7",
+      "version": "0.23.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding support for preview mode interaction logic to HTMLRender",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d2694b4992c3787447597882397f588d701933a9",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.6",
+      "version": "0.23.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 04 Jul 2021 07:15:28 GMT",
       "tag": "@microsoft/fast-tooling_v0.23.5",
       "version": "0.23.5",
