@@ -1,0 +1,10 @@
+<%_ const klass = _.upperFirst(_.camelCase(name.split(':').slice(-1).join(':'))) _%>
+
+import <%= klass %>Template from "./fixtures/<%= name %>.html";
+import "./index";
+
+export default {
+    title: "<%= klass %>",
+};
+
+export const <%= klass %> = () => <%= klass %>Template;

@@ -1,7 +1,7 @@
 {
-  "name": "/* @echo name */",
+  "name": "my-project",
   "version": "1.0.0",
-  "author": "/* @echo author */",
+  "author": "author",
   "license": "MIT",
   "devDependencies": {
     "typescript": "^3.9.0",

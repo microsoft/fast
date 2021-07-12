@@ -1,0 +1,8 @@
+import { customElement, FASTElement } from "@microsoft/fast-element";
+
+<%_ const klass = _.upperFirst(_.camelCase(name.split(':').slice(-1).join(':'))) _%>
+
+@customElement({
+    name: "msft-<%= name %>",
+})
+export class Msft<%= klass %> extends FASTElement {}

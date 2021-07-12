@@ -4,7 +4,7 @@ import { Command } from "@oclif/command";
 const { spawn } = require("child_process");
 
 // TODO: Path to be updated to local or repo
-const template = path.join(__dirname, "../../../../../../templates/new");
+const template = path.join(__dirname, "../../templates/new");
 
 export default class New extends Command {
     static description: string = "Scaffolds out a new FAST design system project";
