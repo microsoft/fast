@@ -105,6 +105,7 @@ export const FastFrameStyles = css`
         padding: calc(var(--gutter) * 2px);
         position: relative;
         border-radius: 0 calc(${controlCornerRadius} * 1px) calc(${controlCornerRadius} * 1px) 0;
+        background: ${fillColor};
     }
 
     .image-container {

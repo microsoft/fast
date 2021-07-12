@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { composedParent } from "../utilities";
+import { composedContains } from "../utilities/composed-contains";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
@@ -191,10 +192,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     ): this {
         this._appliedTo.add(element);
         if (value instanceof DesignTokenImpl) {
-            const _value = value;
-            value = ((_element: HTMLElement) =>
-                DesignTokenNode.for<T>(_value, _element)
-                    .value) as DerivedDesignTokenValue<T>;
+            const tokenValue = value;
+
+            value = ((target: HTMLElement) =>
+                tokenValue.getValueFor(target)) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
         [
@@ -468,7 +469,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
-        return this.target.contains(node.target);
+        return composedContains(this.target, node.target);
     }
 
     private findParentNode(): DesignTokenNode<T> | null {

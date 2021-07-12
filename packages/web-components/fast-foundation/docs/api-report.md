@@ -408,6 +408,9 @@ export const ComponentPresentation: Readonly<{
 }>;
 
 // @public
+export function composedContains(reference: HTMLElement, test: HTMLElement): boolean;
+
+// @public
 export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null;
 
 // @alpha

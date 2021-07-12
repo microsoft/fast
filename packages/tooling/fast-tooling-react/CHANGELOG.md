@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Tue, 29 Jun 2021 07:14:52 GMT and should not be manually modified.
+This log was last generated on Sun, 11 Jul 2021 07:15:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.26
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode styles to the viewer (44823142+williamw2@users.noreply.github.com)
+
+## 2.8.25
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.6 (scomea@microsoft.com)
+
+## 2.8.24
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.5 (john.kreitlow@microsoft.com)
+
+## 2.8.23
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.4 (nicholasrice@users.noreply.github.com)
 
 ## 2.8.22
 

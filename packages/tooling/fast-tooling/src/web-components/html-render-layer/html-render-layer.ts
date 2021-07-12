@@ -62,6 +62,9 @@ export abstract class HTMLRenderLayer extends FoundationElement {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
             }
+            if (e.data.type === MessageSystemType.schemaDictionary) {
+                this.schemaDictionary = e.data.schemaDictionary;
+            }
         }
     };
 
