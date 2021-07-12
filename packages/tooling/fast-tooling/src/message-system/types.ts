@@ -7,4 +7,5 @@ export enum MessageSystemType {
     navigationDictionary = "navigation-dictionary",
     initialize = "initialize",
     validation = "validation",
+    schemaDictionary = "schema-dictionary",
 }
