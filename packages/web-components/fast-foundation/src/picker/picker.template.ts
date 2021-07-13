@@ -2,48 +2,53 @@ import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import type { Picker } from "./picker";
 import { PickerMenu } from "./picker-menu";
+import { PickerMenuOption } from "./picker-menu-option";
 import { PickerList } from "./picker-list";
+import { PickerListItem } from "./picker-list-item";
 
-const defaultItemTemplate: ViewTemplate = html`
-    <div
-        role="listitem"
-        tabindex="0"
+function createListItemTemplate(context): ViewTemplate {
+    const pickerListItemTag: string = context.tagFor(PickerListItem);
+    return html`
+    <${pickerListItemTag}
         @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
         @keydown="${(x, c) =>
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
+        value="${x => x}"
     >
-        ${x => x}
-    </div>
-`;
+    </${pickerListItemTag}>
+    `;
+}
 
-const defaultOptionTemplate: ViewTemplate = html`
-    <div
-        role="listitem"
-        tabindex="-1"
+function createMenuOptionTemplate(context): ViewTemplate {
+    const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
+    return html`
+    <${pickerMenuOptionTag}
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
+        value="${x => x}"
     >
-        ${x => x}
-    </div>
-`;
-
+    </${pickerMenuOptionTag}>
+    `;
+}
 
 /**
  * The template for the List Picker component.
  * @public
  */
- export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
+export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
     context,
     definition
 ) => {
-    const anchoredRegionTag = context.tagFor(AnchoredRegion);
-    const pickerMenutag = context.tagFor(PickerMenu);
-    const pickerListtag = context.tagFor(PickerList);
+    const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
+    const pickerMenutag: string = context.tagFor(PickerMenu);
+    const pickerListtag: string = context.tagFor(PickerList);
+    const listItemTemplate: ViewTemplate = createListItemTemplate(context);
+    const menuOptionTemplate: ViewTemplate = createMenuOptionTemplate(context);
     return html<Picker>`
         <template
             :selectedlisttag="${() => pickerListtag}"
             :pickermenutag="${() => pickerMenutag}"
-            :defaultItemTemplate="${(x) => x.defaultItemTemplate === undefined ?defaultItemTemplate : x.defaultItemTemplate}"
-            :defaultOptionTemplate="${(x) => x.defaultOptionTemplate === undefined ?defaultOptionTemplate : x.defaultOptionTemplate}"
+            :defaultListItemTemplate="${listItemTemplate}"
+            :defaultMenuOptionTemplate="${menuOptionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
@@ -117,4 +122,4 @@ const defaultOptionTemplate: ViewTemplate = html`
             )}
         </template>
     `;
-}
+};

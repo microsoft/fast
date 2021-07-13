@@ -105,6 +105,11 @@ export class Picker extends FoundationElement {
      */
     @attr({ attribute: "label" })
     public label: string;
+    private labelChanged(): void {
+        if (this.$fastController.isConnected && this.selectedList !== undefined) {
+            this.selectedList.setAttribute("label", this.label);
+        }
+    }
 
     /**
      * Applied to the aria-labelledby attribute of the input element
@@ -115,6 +120,11 @@ export class Picker extends FoundationElement {
      */
     @attr({ attribute: "labelledby" })
     public labelledby: string;
+    private labelledbyChanged(): void {
+        if (this.$fastController.isConnected && this.selectedList !== undefined) {
+            this.selectedList.setAttribute("labelledby", this.labelledby);
+        }
+    }
 
     /**
      * Allows alternate flyout menu configurations.
@@ -135,7 +145,10 @@ export class Picker extends FoundationElement {
      * @public
      */
     @observable
-    public itemTemplate: ViewTemplate;
+    public listItemTemplate: ViewTemplate;
+    private listItemTemplateChanged(): void {
+        this.updateListItemTemplate();
+    }
 
     /**
      * Default template to use for selected items (usually specified in the component template).
@@ -143,7 +156,15 @@ export class Picker extends FoundationElement {
      * @public
      */
     @observable
-    public defaultItemTemplate: ViewTemplate;
+    public defaultListItemTemplate?: ViewTemplate;
+
+    /**
+     * The item template currently in use.
+     *
+     * @internal
+     */
+    @observable
+    public activeListItemTemplate?: ViewTemplate;
 
     /**
      * Template to use for available options.
@@ -151,7 +172,10 @@ export class Picker extends FoundationElement {
      * @public
      */
     @observable
-    public optionTemplate: ViewTemplate;
+    public menuOptionTemplate: ViewTemplate;
+    private menuOptionTemplateChanged(): void {
+        this.updateOptionTemplate();
+    }
 
     /**
      * Default template to use for available options(usually specified in the template).
@@ -159,7 +183,15 @@ export class Picker extends FoundationElement {
      * @public
      */
     @observable
-    public defaultOptionTemplate: ViewTemplate;
+    public defaultMenuOptionTemplate?: ViewTemplate;
+
+    /**
+     * The option template currently in use.
+     *
+     * @internal
+     */
+    @observable
+    public activeMenuOptionTemplate?: ViewTemplate;
 
     /**
      *
@@ -184,7 +216,7 @@ export class Picker extends FoundationElement {
     public query: string;
     private queryChanged(): void {
         if (this.$fastController.isConnected) {
-            if(this.selectedList.inputElement.value !== this.query){
+            if (this.selectedList.inputElement.value !== this.query) {
                 this.selectedList.inputElement.value = this.query;
             }
             this.$emit("querychange", { bubbles: false });
@@ -245,7 +277,7 @@ export class Picker extends FoundationElement {
      * @internal
      */
     @observable
-    public menuFocusOptionId: string | null = null;
+    public menuFocusOptionId: string | undefined;
 
     /**
      *  todo: attribute for this
@@ -309,10 +341,9 @@ export class Picker extends FoundationElement {
     protected hasFocus = false;
 
     private itemsRepeatBehavior: RepeatBehavior | null;
-    // private itemsPlaceholder: Node | null = null;
 
     private optionsRepeatBehavior: RepeatBehavior | null;
-    private optionsPlaceholder: Node | null = null;
+    private optionsPlaceholder: Node;
 
     /**
      * @internal
@@ -329,7 +360,8 @@ export class Picker extends FoundationElement {
         }
 
         this.selectedList = document.createElement(this.selectedlisttag) as PickerList;
-        this.selectedList.slot = "list-region";
+        this.selectedList.label = this.label;
+        this.selectedList.labelledby = this.labelledby;
         this.appendChild(this.selectedList);
 
         const match: string = this.pickermenutag.toUpperCase();
@@ -348,6 +380,37 @@ export class Picker extends FoundationElement {
         }
 
         this.menuId = this.menuElement.id;
+        this.optionsPlaceholder = document.createComment("");
+        this.menuElement.append(this.optionsPlaceholder);
+
+        DOM.queueUpdate(() => this.initialize());
+    }
+
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.toggleFlyout(false);
+        this.selectedList.inputElement.removeEventListener("input", this.handleTextInput);
+        this.selectedList.inputElement.removeEventListener(
+            "click",
+            this.handleInputClick
+        );
+    }
+
+    private initialize(): void {
+        console.debug("initialize");
+
+        this.updateListItemTemplate();
+        this.updateOptionTemplate();
+
+        this.itemsRepeatBehavior = new RepeatDirective(
+            x => x.selectedOptions,
+            x => x.activeListItemTemplate,
+            { positioning: true }
+        ).createBehavior(this.selectedList.itemsPlaceholderElement);
+
+        this.selectedList.inputElement.addEventListener("input", this.handleTextInput);
+        this.selectedList.inputElement.addEventListener("click", this.handleInputClick);
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
         this.menuElement.addEventListener(
@@ -355,45 +418,15 @@ export class Picker extends FoundationElement {
             this.handleMenuOptionsUpdated
         );
 
-        this.optionsPlaceholder = document.createComment("");
-        this.menuElement.append(this.optionsPlaceholder);
-
         this.optionsRepeatBehavior = new RepeatDirective(
             x => x.optionsList,
-            x => x.optionTemplate !== undefined ? x.optionTemplate : x.defaultOptionTemplate,
+            x => x.activeMenuOptionTemplate,
             { positioning: true }
         ).createBehavior(this.optionsPlaceholder);
 
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
 
-        DOM.queueUpdate(()=>{
-            this.initialize();
-        });
-    }
-
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-        this.toggleFlyout(false);
-        this.selectedList.inputElement.removeEventListener("input", this.handleTextInput);
-        this.selectedList.inputElement.removeEventListener("click", this.handleInputClick);
-    }
-
-    private initialize(): void {
-
         this.handleSelectionChange();
-
-        this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.selectedOptions,
-            x => x.itemTemplate !== undefined ? x.itemTemplate: x.defaultItemTemplate,
-            { positioning: true }
-        ).createBehavior(this.selectedList.itemsPlaceholderElement);
-
-        
-        this.selectedList.inputElement.addEventListener("input", this.handleTextInput);
-        this.selectedList.inputElement.addEventListener("click", this.handleInputClick);
-
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
-
     }
 
     private toggleFlyout(open: boolean): void {
@@ -420,12 +453,12 @@ export class Picker extends FoundationElement {
 
     private handleTextInput = (e: InputEvent): void => {
         this.query = this.selectedList.inputElement.value;
-    }
+    };
 
     private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
-    
+
     private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
         if (this.flyoutOpen) {
@@ -710,7 +743,7 @@ export class Picker extends FoundationElement {
 
     private disableMenu = (): void => {
         this.menuFocusIndex = -1;
-        this.menuFocusOptionId = null;
+        this.menuFocusOptionId = undefined;
         this.selectedList?.inputElement?.removeAttribute("aria-activedescendant");
         this.selectedList?.inputElement?.removeAttribute("aria-owns");
         this.selectedList?.inputElement?.removeAttribute("aria-expanded");
@@ -745,7 +778,10 @@ export class Picker extends FoundationElement {
 
         this.selectedList.inputElement.setAttribute("aria-owns", this.menuId);
         this.selectedList.inputElement.setAttribute("aria-expanded", "true");
-        this.selectedList.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
+        this.selectedList.inputElement.setAttribute(
+            "aria-activedescendant",
+            this.menuFocusOptionId
+        );
 
         const focusedOption = this.menuElement.optionElements[this.menuFocusIndex];
 
@@ -753,4 +789,20 @@ export class Picker extends FoundationElement {
 
         this.menuElement.scrollTo(0, focusedOption.offsetTop);
     };
+
+    private updateListItemTemplate(): void {
+        console.debug("item template");
+        this.activeListItemTemplate =
+            this.listItemTemplate === undefined
+                ? this.defaultListItemTemplate
+                : this.listItemTemplate;
+    }
+
+    private updateOptionTemplate(): void {
+        console.debug("option template");
+        this.activeMenuOptionTemplate =
+            this.menuOptionTemplate === undefined
+                ? this.defaultMenuOptionTemplate
+                : this.menuOptionTemplate;
+    }
 }
