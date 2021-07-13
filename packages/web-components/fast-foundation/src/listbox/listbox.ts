@@ -458,7 +458,7 @@ export class Listbox extends FoundationElement {
  */
 export class DelegatesARIAListbox {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://w3c.github.io/aria/#aria-activedescendant} for more information
      * @public
      * @remarks
      * HTML Attribute: `aria-activedescendant`
@@ -467,7 +467,7 @@ export class DelegatesARIAListbox {
     public ariaActiveDescendant: string = "";
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://w3c.github.io/aria/#listbox} for more information
      * @public
      * @remarks
      * HTML Attribute: `aria-disabled`
@@ -476,7 +476,7 @@ export class DelegatesARIAListbox {
     public ariaDisabled: "true" | "false";
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://w3c.github.io/aria/#listbox} for more information
      * @public
      * @remarks
      * HTML Attribute: `aria-expanded`
@@ -485,7 +485,7 @@ export class DelegatesARIAListbox {
     public ariaExpanded: "true" | "false" | undefined;
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://w3c.github.io/aria/#listbox} for more information
      * @public
      * @remarks
      * HTML Attribute: `aria-multiselectable`
