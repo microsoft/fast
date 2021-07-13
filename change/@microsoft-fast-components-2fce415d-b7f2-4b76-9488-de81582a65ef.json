@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: export tooltipStyles",
-  "packageName": "@microsoft/fast-components",
-  "email": "derekdon@protonmail.com",
-  "dependentChangeType": "patch"
-}

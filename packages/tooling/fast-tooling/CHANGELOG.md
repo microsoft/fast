@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 11 Jul 2021 07:15:10 GMT and should not be manually modified.
+This log was last generated on Tue, 13 Jul 2021 07:14:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.24.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it (7559015+janechu@users.noreply.github.com)
+- new schemas can be added to the schema dictionary in the MessageSystem (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+- Bump @microsoft/fast-foundation to v2.4.0 (roeisenb@microsoft.com)
 
 ## 0.23.7
 

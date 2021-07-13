@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
