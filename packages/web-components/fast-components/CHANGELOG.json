@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 13 Jul 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-components_v2.2.1",
+      "version": "2.2.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "text-field: start/end display flex",
+            "author": "ben@platform5.ch",
+            "commit": "76cb8ab887a58d1d5990359e08131407a3c607ba",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: export tooltipStyles",
+            "author": "derekdon@protonmail.com",
+            "commit": "891ea72854facc32dcbe7d768fc5f0c2417ed74e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 11 Jul 2021 07:15:10 GMT",
       "tag": "@microsoft/fast-components_v2.2.0",
       "version": "2.2.0",

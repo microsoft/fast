@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "docs(di): make API public, stabilize, and add docs",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

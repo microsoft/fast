@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "new schemas can be added to the schema dictionary in the MessageSystem",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
