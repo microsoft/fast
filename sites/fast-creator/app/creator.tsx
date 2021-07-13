@@ -6,6 +6,7 @@ import {
     CustomMessageIncomingOutgoing,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
@@ -109,7 +110,6 @@ fillColor.setValueFor(
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const schemaDictionary: SchemaDictionary = {
-    ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
     [fastDesignTokensSchema.id]: fastDesignTokensSchema,
     [textSchema.id]: textSchema,
@@ -402,10 +402,23 @@ class Creator extends Editor<{}, CreatorState> {
         } as CustomMessageIncomingOutgoing<any>);
     };
 
-    private handleLibraryAdded = (libraryId: string) => {
-        this.setState({
-            addedLibraries: this.state.addedLibraries.concat([libraryId]),
-        });
+    private handleLibraryAdded = (libraryId: string): void => {
+        this.setState(
+            {
+                addedLibraries: this.state.addedLibraries.concat([libraryId]),
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: Object.values(
+                        elementLibraries[libraryId].componentDictionary
+                    ).map(componentDictionaryItem => {
+                        return componentDictionaryItem.schema;
+                    }),
+                });
+            }
+        );
     };
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
