@@ -1,9 +1,9 @@
-import { customElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { MessageSystemDataTypeAction, MessageSystemType } from "../../message-system";
 import {
     ActivityType,
     HTMLRenderLayer,
-    OverylayPosition,
+    OverlayPosition,
 } from "../html-render-layer/html-render-layer";
 import { HTMLRenderOriginatorId } from "../html-render/html-render";
 import { HTMLRenderLayerInlineEditStyles as styles } from "./html-render-layer-inline-edit.style";
@@ -16,7 +16,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     public textAreaActive: boolean = false;
 
     @observable
-    public textPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
+    public textPosition: OverlayPosition = new OverlayPosition(0, 0, 0, 0);
 
     @observable
     public textValue: string = "";
@@ -76,11 +76,11 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         this.cancelEdit();
     }
 
-    private getPositionFromElement(target: Node): OverylayPosition {
+    private getPositionFromElement(target: Node): OverlayPosition {
         const range = document.createRange();
         range.selectNode(target);
         const pos: DOMRect = range.getBoundingClientRect();
-        return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
+        return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
     private applySizeAndPositionToTextbox() {

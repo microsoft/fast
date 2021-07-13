@@ -18,20 +18,28 @@ import {
     fastComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
-import { Direction } from "@microsoft/fast-web-utilities";
-import { HTMLRenderReact } from "./web-components";
+import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import {
     mapFASTComponentsDesignSystem,
     setupFASTComponentDesignSystem,
-} from "./configs/library.fast.design-system.mapping";
-import { registerFASTComponents } from "./configs/library.fast.registry";
-import { designTokensLinkedDataId } from "./creator";
+} from "../configs/library.fast.design-system.mapping";
+import { elementLibraries } from "../configs";
+import {
+    creatorOriginatorId,
+    CustomMessageSystemActions,
+    designTokensLinkedDataId,
+    DisplayMode,
+    displayModeMessageInteractive,
+    displayModeMessagePreview,
+    previewOriginatorId,
+} from "../utilities";
+import { WebComponentLibraryDefinition } from "../configs/typings";
+import { HTMLRenderReact } from "./web-components";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
 document.head.appendChild(style);
-registerFASTComponents();
 
 export const previewReady: string = "PREVIEW::READY";
 
@@ -42,6 +50,7 @@ export interface PreviewState {
     designSystemDataDictionary: DataDictionary<unknown> | void;
     htmlRenderMessageSystem: MessageSystem;
     htmlRenderReady: boolean;
+    displayMode: DisplayMode;
 }
 
 class Preview extends Foundation<{}, {}, PreviewState> {
@@ -66,6 +75,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 webWorker: this.htmlRenderMessageSystemWorker,
             }),
             htmlRenderReady: false,
+            displayMode: DisplayMode.interactive,
         };
 
         setupFASTComponentDesignSystem(document.body);
@@ -91,7 +101,14 @@ class Preview extends Foundation<{}, {}, PreviewState> {
 
             return (
                 <React.Fragment>
-                    <div className={"preview"} dir={directionValue} ref={this.ref}>
+                    <div
+                        className={classNames("preview", [
+                            "previewMode",
+                            this.state.displayMode === DisplayMode.preview,
+                        ])}
+                        dir={directionValue}
+                        ref={this.ref}
+                    >
                         <HTMLRenderReact ref={this.renderRef} />
                         <div />
                     </div>
@@ -194,7 +211,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
         return this.attachMappedComponents;
     }
 
-    private handleMessage = (message: MessageEvent): void => {
+    private handleMessage = async (message: MessageEvent): Promise<void> => {
         if (message.origin === location.origin) {
             let messageData: unknown;
 
@@ -246,6 +263,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
                         break;
+                    case MessageSystemType.schemaDictionary:
+                        this.setState({
+                            schemaDictionary: (messageData as any).schemaDictionary,
+                        });
+                        break;
                     case MessageSystemType.custom:
                         if (
                             (messageData as any).originatorId === designTokensLinkedDataId
@@ -287,6 +309,58 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
+                        } else if (
+                            (messageData as any).data &&
+                            (messageData as any).data.action ===
+                                CustomMessageSystemActions.libraryAdd
+                        ) {
+                            // Import the web component library
+                            await (elementLibraries[
+                                (messageData as any).data.id
+                            ] as WebComponentLibraryDefinition).import();
+                            // Register elements from the web component library
+                            (elementLibraries[
+                                (messageData as any).data.id
+                            ] as WebComponentLibraryDefinition).register();
+
+                            window.postMessage(
+                                {
+                                    type: MessageSystemType.custom,
+                                    action: ViewerCustomAction.call,
+                                    options: {
+                                        originatorId: previewOriginatorId,
+                                    },
+                                    data: {
+                                        action: CustomMessageSystemActions.libraryAdded,
+                                        id: (messageData as any).data.id,
+                                    },
+                                },
+                                "*"
+                            );
+                        } else if (
+                            (messageData as any).options &&
+                            (messageData as any).options.originatorId ===
+                                creatorOriginatorId
+                        ) {
+                            const action: string[] = ((messageData as any).options
+                                .action as string).split("::");
+                            if (action[0] === "displayMode") {
+                                const mode: DisplayMode =
+                                    action[1] === "preview"
+                                        ? DisplayMode.preview
+                                        : DisplayMode.interactive;
+                                this.setState({ displayMode: mode });
+                                this.state.htmlRenderMessageSystem.postMessage({
+                                    type: MessageSystemType.custom,
+                                    options: {
+                                        originatorId: creatorOriginatorId,
+                                        action:
+                                            mode === DisplayMode.preview
+                                                ? displayModeMessagePreview
+                                                : displayModeMessageInteractive,
+                                    },
+                                });
+                            }
                         }
                         break;
                 }

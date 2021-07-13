@@ -1,8 +1,8 @@
 import { fastComponentLibrary } from "./library.fast";
 import { nativeElementLibrary } from "./library.native";
-import { ElementDefinition } from "./typings";
+import { ElementLibraryDefinition } from "./typings";
 
-const elementLibraries: { [key: string]: ElementDefinition } = {
+const elementLibraries: { [key: string]: ElementLibraryDefinition } = {
     [fastComponentLibrary.id]: fastComponentLibrary,
     [nativeElementLibrary.id]: nativeElementLibrary,
 };

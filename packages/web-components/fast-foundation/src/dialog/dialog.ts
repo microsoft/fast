@@ -1,6 +1,6 @@
 import { attr, DOM } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
-import { tabbable } from "tabbable";
+import { isTabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -75,10 +75,6 @@ export class Dialog extends FoundationElement {
      */
     public dialog: HTMLDivElement;
 
-    private tabbableElements: Array<HTMLElement | SVGElement>;
-
-    private observer: MutationObserver;
-
     /**
      * @internal
      */
@@ -110,10 +106,6 @@ export class Dialog extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.observer = new MutationObserver(this.onChildListChange);
-        // only observe if nodes are added or removed
-        this.observer.observe(this as Element, { childList: true });
-
         document.addEventListener("keydown", this.handleDocumentKeydown);
 
         // Ensure the DOM is updated
@@ -127,9 +119,6 @@ export class Dialog extends FoundationElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
-        // disconnect observer
-        this.observer.disconnect();
-
         // remove keydown event listener
         document.removeEventListener("keydown", this.handleDocumentKeydown);
 
@@ -139,17 +128,8 @@ export class Dialog extends FoundationElement {
         }
     }
 
-    private onChildListChange = (mutations: MutationRecord[]): void => {
-        if (mutations.length) {
-            this.tabbableElements = tabbable(this);
-        }
-    };
-
     private trapFocusChanged = (): void => {
         if (this.trapFocus) {
-            // store references to tabbable elements
-            this.tabbableElements = tabbable(this as Element);
-
             // Add an event listener for focusin events if we should be trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
 
@@ -168,6 +148,7 @@ export class Dialog extends FoundationElement {
             switch (e.keyCode) {
                 case keyCodeEscape:
                     this.dismiss();
+                    e.preventDefault();
                     break;
 
                 case keyCodeTab:
@@ -185,38 +166,48 @@ export class Dialog extends FoundationElement {
     };
 
     private handleTabKeyDown = (e: KeyboardEvent): void => {
-        if (!this.trapFocus) {
+        if (!this.trapFocus || this.hidden) {
             return;
         }
 
-        const tabbableElementCount: number = this.tabbableElements.length;
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
 
-        if (tabbableElementCount === 0) {
-            this.dialog.focus();
+        if (bounds.length === 0) {
+            return;
+        }
+
+        if (bounds.length === 1) {
+            // keep focus on single element
+            bounds[0].focus();
             e.preventDefault();
             return;
         }
 
-        if (e.shiftKey && e.target === this.tabbableElements[0]) {
-            this.tabbableElements[tabbableElementCount - 1].focus();
+        if (e.shiftKey && e.target === bounds[0]) {
+            bounds[bounds.length - 1].focus();
             e.preventDefault();
-        } else if (
-            !e.shiftKey &&
-            e.target === this.tabbableElements[tabbableElementCount - 1]
-        ) {
-            this.tabbableElements[0].focus();
+        } else if (!e.shiftKey && e.target === bounds[bounds.length - 1]) {
+            bounds[0].focus();
             e.preventDefault();
         }
+
+        return;
+    };
+
+    private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
+        const bounds: HTMLElement[] = [];
+
+        return Dialog.reduceTabbableItems(bounds, this);
     };
 
     /**
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        if (this.tabbableElements.length === 0) {
-            this.dialog.focus();
-        } else {
-            this.tabbableElements[0].focus();
+        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
+
+        if (bounds.length > 0) {
+            bounds[0].focus();
         }
     };
 
@@ -226,4 +217,63 @@ export class Dialog extends FoundationElement {
     private shouldForceFocus = (currentFocusElement: Element | null): boolean => {
         return !this.hidden && !this.contains(currentFocusElement);
     };
+
+    /**
+     * Reduce a collection to only its focusable elements.
+     *
+     * @param elements - Collection of elements to reduce
+     * @param element - The current element
+     *
+     * @internal
+     */
+    private static reduceTabbableItems(
+        elements: HTMLElement[],
+        element: FoundationElement & HTMLElement
+    ) {
+        if (element.getAttribute("tabindex") === "-1") {
+            return elements;
+        }
+
+        if (
+            isTabbable(element) ||
+            (Dialog.isFocusableFastElement(element) && Dialog.hasTabbableShadow(element))
+        ) {
+            elements.push(element);
+            return elements;
+        }
+
+        if (element.childElementCount) {
+            return elements.concat(
+                Array.from(element.children).reduce(Dialog.reduceTabbableItems, [])
+            );
+        }
+
+        return elements;
+    }
+
+    /**
+     * Test if element is focusable fast element
+     *
+     * @param element - The element to check
+     *
+     * @internal
+     */
+    private static isFocusableFastElement(
+        element: FoundationElement & HTMLElement
+    ): boolean {
+        return !!element.$fastController?.definition.shadowOptions?.delegatesFocus;
+    }
+
+    /**
+     * Test if the element has a focusable shadow
+     *
+     * @param element - The element to check
+     *
+     * @internal
+     */
+    private static hasTabbableShadow(element: FoundationElement & HTMLElement) {
+        return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
+            return isTabbable(x);
+        });
+    }
 }
