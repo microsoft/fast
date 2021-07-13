@@ -2,17 +2,17 @@ import { observable } from "@microsoft/fast-element";
 import {
     ActivityType,
     HTMLRenderLayer,
-    OverylayPosition,
+    OverlayPosition,
 } from "../html-render-layer/html-render-layer";
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     public layerActivityId: string = "NavLayer";
 
     @observable
-    public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
+    public hoverPosition: OverlayPosition = new OverlayPosition(0, 0, 0, 0);
 
     @observable
-    public clickPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
+    public clickPosition: OverlayPosition = new OverlayPosition(0, 0, 0, 0);
 
     @observable
     public hoverLayerActive: boolean = false;
@@ -67,9 +67,9 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         }
     };
 
-    private GetPositionFromElement(target: HTMLElement): OverylayPosition {
+    private GetPositionFromElement(target: HTMLElement): OverlayPosition {
         const pos: DOMRect = target.getBoundingClientRect();
-        return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
+        return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {

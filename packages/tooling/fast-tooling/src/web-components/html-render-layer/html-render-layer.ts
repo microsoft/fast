@@ -18,7 +18,7 @@ export enum ActivityType {
     releaseFocus = "release",
 }
 
-export class OverylayPosition {
+export class OverlayPosition {
     public top: number;
     public left: number;
     public width: number;
