@@ -27,6 +27,7 @@ import {
     foregroundOnAccentRest,
     neutralFillHover,
     neutralForegroundRest,
+    neutralLayer3,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -126,6 +127,31 @@ export const optionStyles: (
 
     ::slotted([slot="start"]) {
         margin-inline-end: 1ch;
+    }
+
+    /* checked, not selected */
+    :host([aria-checked="true"]:not([aria-selected="true"])) {
+        /* border-color: ${focusStrokeOuter}; */
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
+    }
+
+    /* checked, not selected, hover */
+    :host([aria-checked="true"]:not([aria-selected="true"]):hover) {
+        background: ${neutralFillHover};
+    }
+
+    /* checked, selected */
+    :host([aria-checked="true"][aria-selected="true"]) {
+        border-color: ${focusStrokeOuter};
+        background: ${accentFillFocus};
+        color: ${foregroundOnAccentFocus};
+    }
+
+    /* checked, selected, hover */
+    :host([aria-checked="true"][aria-selected="true"]:hover) {
+        background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
 `.withBehaviors(

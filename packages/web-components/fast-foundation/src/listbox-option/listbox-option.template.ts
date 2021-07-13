@@ -16,9 +16,12 @@ export const listboxOptionTemplate: (
     definition: ListboxOptionOptions
 ) => html`
     <template
-        aria-selected="${x => x.selected}"
-        class="${x => (x.selected ? "selected" : "")} ${x =>
-            x.disabled ? "disabled" : ""}"
+        aria-checked="${x => x.ariaChecked}"
+        aria-selected="${x => x.ariaSelected}"
+        class="${x =>
+            [x.checked && "checked", x.selected && "selected", x.disabled && "disabled"]
+                .filter(Boolean)
+                .join(" ")}"
         role="option"
     >
         ${startSlotTemplate(context, definition)}

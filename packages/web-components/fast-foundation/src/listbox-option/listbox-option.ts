@@ -1,6 +1,8 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import type { Listbox } from "../listbox/listbox";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
@@ -114,6 +116,11 @@ export class ListboxOption extends FoundationElement {
     /**
      * @internal
      */
+    private parentListbox: Listbox | null;
+
+    /**
+     * @internal
+     */
     public proxy: HTMLOptionElement;
 
     /**
@@ -123,16 +130,16 @@ export class ListboxOption extends FoundationElement {
      */
     @observable
     public selected: boolean = this.defaultSelected;
-    protected selectedChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (!this.dirtySelected) {
-                this.dirtySelected = true;
-            }
-
-            if (this.hasProxy) {
-                this.proxy.selected = this.selected;
-            }
+    protected selectedChanged(prev: unknown, next: boolean): void {
+        if (!this.dirtySelected) {
+            this.dirtySelected = true;
         }
+
+        if (this.hasProxy) {
+            this.proxy.selected = next;
+        }
+
+        this.ariaSelected = String(next) as "true" | "false";
     }
 
     /**
@@ -152,8 +159,17 @@ export class ListboxOption extends FoundationElement {
         }
     }
 
-    public get label() {
-        return this.value ? this.value : this.textContent ? this.textContent : "";
+    /**
+     * The checked state is used when the parent listbox is in multiple selection mode.
+     * For accessibility reasons, the checked state should not be present
+     *
+     * @internal
+     */
+    @observable
+    public checked?: boolean;
+    public checkedChanged(prev: unknown, next?: boolean): void {
+        this.ariaChecked =
+            typeof next === "boolean" ? (String(next) as "true" | "false") : undefined;
     }
 
     /**
@@ -187,6 +203,14 @@ export class ListboxOption extends FoundationElement {
         Observable.notify(this, "value");
     }
 
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.parentListbox = this.closest("[role=listbox]");
+        if (this.parentListbox?.getAttribute("multiple") !== null) {
+            this.checked = false;
+        }
+    }
+
     public constructor(
         text?: string,
         value?: string,
@@ -215,7 +239,42 @@ export class ListboxOption extends FoundationElement {
 }
 
 /**
+ * Includes ARIA states and properties relating to the ARIA option role.
+ *
+ * @public
+ */
+export class DelegatesARIAListboxOption {
+    /**
+     * See {@link https://w3c.github.io/aria/#option} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-checked`
+     */
+    @attr({ attribute: "aria-checked" })
+    public ariaChecked?: "true" | "false";
+
+    /**
+     * See {@link https://w3c.github.io/aria/#aria-selected} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-selected`
+     */
+    @attr({ attribute: "aria-selected" })
+    public ariaSelected: "true" | "false" | undefined;
+}
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface ListboxOption extends StartEnd {}
-applyMixins(ListboxOption, StartEnd);
+/* eslint-disable-next-line */
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAListboxOption, ARIAGlobalStatesAndProperties);
+
+/**
+ * @internal
+ */
+export interface ListboxOption extends DelegatesARIAListboxOption, StartEnd {}
+applyMixins(ListboxOption, DelegatesARIAListboxOption, StartEnd);
