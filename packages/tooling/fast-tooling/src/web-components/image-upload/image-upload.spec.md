@@ -10,10 +10,7 @@ the component will perform the configured action on that file (i.e. convert it t
 that can be used in the `src` attribute of an img tag or as a CSS `background-image`.
 
 ## Implementation
-The component will be a form-associated control that will use an input type=file element as its base. In addition a `ImageFileAction` interface will be defined that 
-specifies methods for taking action on the image file once it is selected. The component will expect an `onchange` callback function as well as an instance
-of the `ImageFileAction` interface. When an image file is selected by the user the component will execute the code provided by the `ImageFileAction` class 
-which will produce a URL string which will then be returned through the `onchange` callback function.
+The component will be a form-associated control that will use an input type=file element as its base. In addition a `ImageFileAction` interface will be defined that  specifies methods for taking action on the image file once it is selected. The component will expect an `onchange` callback function as well as an instance of the `ImageFileAction` interface. When an image file is selected by the user the component will execute the code provided by the `ImageFileAction` class  which will produce a URL string which will then be returned through the `onchange` callback function.
 
 ## Out of scope
 The initial implementation of the component will only include one implementation of the `ImageFileAction` interface which will utilize the `URL.createObjectURL()` 
