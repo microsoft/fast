@@ -83,9 +83,17 @@ export class Listbox extends FoundationElement {
      * HTML Attribute: `multiple`
      */
     @attr({ mode: "boolean" })
-    public multiple: boolean = false;
+    public multiple: boolean;
     multipleChanged(prev: unknown, next: boolean): void {
-        this.ariaMultiselectable = next ? "true" : "false";
+        if (this.$fastController.isConnected) {
+            this.options.forEach(o => {
+                o.checked = next ? false : undefined;
+            });
+
+            this.ariaMultiselectable = next ? "true" : undefined;
+
+            this.setSelectedOptions();
+        }
     }
 
     /**
@@ -219,7 +227,14 @@ export class Listbox extends FoundationElement {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => {
                 o.selected = next.includes(o);
+
+                // ensure `checked` state is null if not in multiple mode
+                o.checked = this.multiple ? false : undefined;
             });
+
+            if (this.multiple && this.firstSelectedOption) {
+                this.firstSelectedOption.checked = true;
+            }
         }
     }
 

@@ -115,7 +115,7 @@ describe("Listbox", () => {
 
         await DOM.nextUpdate();
 
-        expect(element.getAttribute("aria-multiselectable")).to.equal("false");
+        expect(element.getAttribute("aria-multiselectable")).to.not.exist;
 
         await disconnect();
     });
