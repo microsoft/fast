@@ -1,4 +1,10 @@
-import type { AutoUpdateMode, AxisPositioningMode, AxisScalingMode, HorizontalPosition,  VerticalPosition  } from "./anchored-region";
+import type {
+    AutoUpdateMode,
+    AxisPositioningMode,
+    AxisScalingMode,
+    HorizontalPosition,
+    VerticalPosition,
+} from "./anchored-region";
 
 /**
  * A utility interface to facilitate passing around anchored region
@@ -6,70 +12,70 @@ import type { AutoUpdateMode, AxisPositioningMode, AxisScalingMode, HorizontalPo
  *
  * @public
  */
- export interface AnchoredRegionConfig {
+export interface AnchoredRegionConfig {
     /**
-     * 
+     *
      */
     fixedPlacement?: boolean;
 
     /**
-     * 
+     *
      */
     autoUpdateMode?: AutoUpdateMode;
 
     /**
-     * 
+     *
      */
     verticalPositioningMode: AxisPositioningMode;
 
     /**
-     * 
+     *
      */
     verticalDefaultPosition?: VerticalPosition;
 
     /**
-     * 
+     *
      */
     verticalInset: boolean;
 
     /**
-     * 
+     *
      */
     verticalScaling: AxisScalingMode;
 
     /**
-     * 
+     *
      */
     verticalThreshold?: number;
 
     /**
-     * 
+     *
      */
     horizontalPositioningMode: AxisPositioningMode;
 
-     /**
-      * 
-      */
+    /**
+     *
+     */
     horizontalDefaultPosition?: HorizontalPosition;
 
-     /**
-      * 
-      */
+    /**
+     *
+     */
     horizontalInset: boolean;
 
-     /**
-      * 
-      */
+    /**
+     *
+     */
     horizontalScaling: AxisScalingMode;
 
-     /**
-      * 
-      */
+    /**
+     *
+     */
     horizontalThreshold?: number;
- }
+}
 
 /**
- * A flyout that always places itself below the anchor and has 
+ * A flyout that always places itself below the anchor and has
  * a width to match the anchor
  */
 export const flyoutBelow: AnchoredRegionConfig = {
@@ -82,14 +88,14 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: true,
     horizontalScaling: "anchor",
-}
+};
 
 /**
- * A flyout that always places itself below the anchor, has 
+ * A flyout that always places itself below the anchor, has
  * a width to match the anchor, and scales to span the space
  * between the anchor and the edge of the viewport
  */
- export const flyoutBelowScaling: AnchoredRegionConfig = {
+export const flyoutBelowScaling: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: false,
@@ -99,13 +105,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: true,
     horizontalScaling: "anchor",
-}
+};
 
 /**
- * A flyout that always places itself above the anchor and has 
+ * A flyout that always places itself above the anchor and has
  * a width to match the anchor
  */
- export const flyoutAbove: AnchoredRegionConfig = {
+export const flyoutAbove: AnchoredRegionConfig = {
     verticalDefaultPosition: "top",
     verticalPositioningMode: "locktodefault",
     verticalInset: false,
@@ -115,13 +121,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: true,
     horizontalScaling: "anchor",
-}
+};
 
 /**
  * A flyout that places itself above or below the anchor
- * based on available space.   
+ * based on available space.
  */
- export const flyoutAboveOrBelow: AnchoredRegionConfig = {
+export const flyoutAboveOrBelow: AnchoredRegionConfig = {
     verticalPositioningMode: "dynamic",
     verticalInset: false,
     verticalScaling: "content",
@@ -130,13 +136,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: true,
     horizontalScaling: "anchor",
-}
+};
 
 /**
- * A flyout that always places itself to the left of the anchor and has 
+ * A flyout that always places itself to the left of the anchor and has
  * a height to match the anchor
  */
- export const flyoutLeft: AnchoredRegionConfig = {
+export const flyoutLeft: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -146,13 +152,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};
 
 /**
- * A flyout that always places itself to the right of the anchor and has 
+ * A flyout that always places itself to the right of the anchor and has
  * a height to match the anchor
  */
- export const flyoutRight: AnchoredRegionConfig = {
+export const flyoutRight: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -162,13 +168,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};
 
 /**
- * A flyout that always places itself to the right of the anchor and has 
+ * A flyout that always places itself to the right of the anchor and has
  * a height to match the anchor
  */
- export const flyoutLeftOrRight: AnchoredRegionConfig = {
+export const flyoutLeftOrRight: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -177,13 +183,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "dynamic",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};
 
 /**
- * A flyout that always places itself to the left of the anchor 
+ * A flyout that always places itself to the left of the anchor
  * drops down vertically
  */
- export const dropDownLeft: AnchoredRegionConfig = {
+export const dropDownLeft: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -193,13 +199,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};
 
 /**
- * A flyout that always places itself to the right of the anchor 
+ * A flyout that always places itself to the right of the anchor
  * drops down vertically
  */
- export const dropDownRight: AnchoredRegionConfig = {
+export const dropDownRight: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -209,13 +215,13 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "locktodefault",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};
 
 /**
  * A flyout that places itself to the left or right of the anchor depending on space and
  * drops down vertically
  */
- export const dropDownLeftOrRight: AnchoredRegionConfig = {
+export const dropDownLeftOrRight: AnchoredRegionConfig = {
     verticalDefaultPosition: "bottom",
     verticalPositioningMode: "locktodefault",
     verticalInset: true,
@@ -224,4 +230,4 @@ export const flyoutBelow: AnchoredRegionConfig = {
     horizontalPositioningMode: "dynamic",
     horizontalInset: false,
     horizontalScaling: "content",
-}
+};

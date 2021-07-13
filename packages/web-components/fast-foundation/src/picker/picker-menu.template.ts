@@ -1,8 +1,4 @@
-import {
-    html,
-    slotted,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
 import type { PickerMenu } from "./picker-menu";
 
 /**
@@ -17,18 +13,12 @@ export const pickerMenuTemplate: (context, definition) => ViewTemplate<PickerMen
         <template role="list">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">
-                    <slot
-                        name="header-region"
-                        ${slotted("headerElements")}
-                    ></slot>
+                    <slot name="header-region" ${slotted("headerElements")}></slot>
                 </div>
 
                 <slot ${slotted("menuElements")}></slot>
                 <div class="footer-region" part="footer-region">
-                    <slot
-                        name="footer-region"
-                        ${slotted("footerElements")}
-                    ></slot>
+                    <slot name="footer-region" ${slotted("footerElements")}></slot>
                 </div>
                 <div
                     role="alert"
@@ -41,4 +31,4 @@ export const pickerMenuTemplate: (context, definition) => ViewTemplate<PickerMen
             </div>
         </template>
     `;
-}
+};

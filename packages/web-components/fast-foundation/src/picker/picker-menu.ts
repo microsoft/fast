@@ -8,7 +8,6 @@ import uniqueId from "lodash-es/uniqueId";
  * @public
  */
 export class PickerMenu extends FoundationElement {
-
     /**
      *
      *
@@ -71,7 +70,7 @@ export class PickerMenu extends FoundationElement {
         this.addSlottedListItems(this.headerElements);
         this.addSlottedListItems(this.menuElements);
         this.addSlottedListItems(this.footerElements);
-        this.$emit("optionsupdated", {bubbles:false});
+        this.$emit("optionsupdated", { bubbles: false });
     }
 
     private addSlottedListItems(slotChildren: HTMLElement[]) {

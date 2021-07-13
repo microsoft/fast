@@ -27,7 +27,7 @@ export function debounce(func, time) {
 /**
  *
  */
- export type SelectionMode = "single" | "multiple";
+export type SelectionMode = "single" | "multiple";
 
 /**
  * A List Picker Custom HTML Element.
@@ -129,7 +129,6 @@ export class PeoplePicker extends FoundationElement {
     @attr({ attribute: "placeholder" })
     public placeholder: string;
 
-   
     /**
      *
      *
@@ -247,14 +246,13 @@ export class PeoplePicker extends FoundationElement {
     @observable
     public showLoading: boolean = false;
 
-    
     /**
      *
      *
      * @internal
      */
-     @observable
-     public maxSelected: number | undefined;
+    @observable
+    public maxSelected: number | undefined;
 
     /**
      *
