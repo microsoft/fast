@@ -263,6 +263,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
                         break;
+                    case MessageSystemType.schemaDictionary:
+                        this.setState({
+                            schemaDictionary: (messageData as any).schemaDictionary,
+                        });
+                        break;
                     case MessageSystemType.custom:
                         if (
                             (messageData as any).originatorId === designTokensLinkedDataId
