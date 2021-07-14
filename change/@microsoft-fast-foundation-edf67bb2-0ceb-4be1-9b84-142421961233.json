@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Hide step-up and step-down for number-field when readonly",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}

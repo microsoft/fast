@@ -654,6 +654,24 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should set value to max if the max changes to a value less than the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const max = 10;
+            const value = 10 + max;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("max", max.toString());
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
         it("should set value to min when value is less than min", async () => {
             const { element, connect, disconnect } = await setup();
             const min = 10;
@@ -662,6 +680,24 @@ describe("NumberField", () => {
             element.setAttribute("value", `${min - 10}`);
 
             await connect();
+            expect(element.value).to.equal(min.toString());
+
+            await disconnect();
+        });
+
+        it("should set value to min when value is less than min", async () => {
+            const { element, connect, disconnect } = await setup();
+            const min = 10;
+            const value = min - 10;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("min", min.toString());
+            await DOM.nextUpdate();
+
             expect(element.value).to.equal(min.toString());
 
             await disconnect();
@@ -762,7 +798,37 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should update the proxy value when incrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
 
+            element.step = step;
+            element.value = `${value}`;
+            element.stepUp();
+
+            await connect();
+            expect(element.value).to.equal(`${value + step}`);
+            expect(element.proxy.value).to.equal(`${value + step}`);
+
+            await disconnect();
+        });
+
+        it("should update the proxy value when decrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
+
+            element.step = step;
+            element.value = `${value}`;
+            element.stepDown();
+
+            await connect();
+            expect(element.value).to.equal(`${value - step}`);
+            expect(element.proxy.value).to.equal(`${value - step}`);
+
+            await disconnect();
+        });
     });
 
     describe("hide step", () => {
@@ -774,6 +840,25 @@ describe("NumberField", () => {
             expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
 
             element.setAttribute("hide-step", "");
+
+            await DOM.nextUpdate();
+
+            expect(
+                element.shadowRoot?.querySelector(".controls")).to.equal(null);
+
+            await disconnect();
+        });
+    });
+
+    describe("readonly", () => {
+        it("should not render step controls when `readonly` attribute is present", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
+
+            element.setAttribute("readonly", "");
 
             await DOM.nextUpdate();
 

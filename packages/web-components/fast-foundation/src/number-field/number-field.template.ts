@@ -71,7 +71,7 @@ export const numberFieldTemplate: (
                 ${ref("control")}
             />
             ${when(
-                x => !x.hideStep,
+                x => !x.hideStep && !x.readOnly && !x.disabled,
                 html`
                     <div class="controls" part="controls">
                         <div class="step-up" part="step-up" @click="${x => x.stepUp()}">
