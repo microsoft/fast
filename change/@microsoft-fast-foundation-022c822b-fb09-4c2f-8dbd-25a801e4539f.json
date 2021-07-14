@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "extend design token type signature",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
