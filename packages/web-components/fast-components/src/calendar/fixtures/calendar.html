@@ -1,0 +1,234 @@
+<style>
+    fast-calendar {
+        width: 600px;
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
+    }
+
+    .long-days {
+        width: 800px;
+    }
+
+    .events {
+        --cell-height: 80px;
+        width: 1000px;
+    }
+
+    .borders {
+        --cell-border: 1px solid #666;
+        --weekday-background: #024;
+        --weekday-color: #fff;
+        --current-day: orange;
+        --current-day-border: 1px solid;
+        color: lightskyblue;
+        --inactive-day-color: transparent;
+        text-align: center;
+        width: 700px;
+        --cell-height: 100px;
+    }
+
+    .borders::part(days) {
+        background: #222;
+    }
+
+    .borders::part(title) {
+        color: orange;
+    }
+
+    .light-borders {
+        --cell-border: 1px solid #333;
+        --weekday-background: #333;
+    }
+
+    .compact {
+        width: 280px;
+        text-align: center;
+    }
+
+    #click-output {
+        background: #fff;
+        width: 400px;
+        height: 20px;
+        padding: 10px;
+        font-family: Arial;
+        transition: none;
+    }
+
+    #click-output.loaded {
+        background: #333;
+        transition: all ease-out 1s;
+    }
+
+    .calendar-change {
+        position: relative;
+        margin: 20px 40px;
+    }
+
+    .calendar-change #previous,
+    .calendar-change #next {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        transform: translateX(-50%);
+        border: 0;
+        background: 0;
+    }
+
+    .calendar-change #next {
+        right: 0;
+        left: auto;
+        transform: translateX(50%);
+    }
+
+    #year {
+        max-width: 1300px;
+    }
+
+    #year fast-calendar {
+        --inactive-day-color: transparent;
+        display: inline-block;
+        color: #aaa;
+        --weekday-color: #fff;
+    }
+
+    #year fast-calendar::part(title) {
+        color: #fff;
+    }
+</style>
+<script>
+    const bindScript = (id, script) => {
+        document.getElementById(id).addEventListener("click", script);
+    };
+</script>
+<h1>Calendar</h1>
+
+<h2>Default</h2>
+<fast-calendar></fast-calendar>
+
+<h2>Calendar for April 2020</h2>
+<fast-calendar month="4" year="2020"></fast-calendar>
+
+<h2>Expanded weekday labels</h2>
+<fast-calendar class="long-days" weekdayFormat="long"></fast-calendar>
+
+<h2>Shortened month and weekday labels</h2>
+<fast-calendar
+    class="compact"
+    month="12"
+    monthFormat="short"
+    weekdayFormat="narrow"
+></fast-calendar>
+
+<h2>With borders</h2>
+<fast-calendar class="borders"></fast-calendar>
+
+<h2>Calendar with events</h2>
+<fast-calendar class="events light-borders" month="1" year="2021">
+    <div slot="1-1-2021">New Year's Day</div>
+    <div slot="1-1-2021">Hangover Day</div>
+    <div slot="1-5-2021">National Bird Day</div>
+    <div slot="1-10-2021">Houseplant Appreciation Day</div>
+    <div slot="1-13-2021">National Take the Stairs Day</div>
+    <div slot="1-18-2021">Martin Luther King Jr. Birthday</div>
+    <div slot="1-26-2021">Spouse's Day</div>
+</fast-calendar>
+
+<h2>Calendar with click handler</h2>
+<fast-calendar class="events light-borders" id="click" month="1" year="2021">
+    <div slot="1-13-2021">Another test slot</div>
+    <div slot="1-4-2021">Test slot</div>
+    <div slot="1-29-2021">Test slot</div>
+    <div slot="1-29-2021">Second slot</div>
+</fast-calendar>
+<div class="click-out">
+    <h3>Click output:</h3>
+    <div id="click-output"></div>
+</div>
+<script>
+    let calendar = document.getElementById("click");
+    const calendarClick = evt => {
+        const { path } = evt;
+        const output = document.getElementById("click-output");
+        output.className = "";
+        output.innerHTML = "";
+        for (let i = 0; i < path.length; i++) {
+            const target = path[i];
+            if (target.slot) {
+                output.innerHTML = `Clicked on a slot with text '${target.innerHTML}'`;
+                break;
+            }
+            if (target.classList?.contains("day")) {
+                const { day, month, year } = target.dataset;
+                output.innerHTML = `${parseInt(month) + 1}-${day}-${year} was clicked`;
+                break;
+            }
+        }
+        setTimeout(() => (output.className = "loaded"), 1);
+    };
+    calendar.addEventListener("click", calendarClick);
+</script>
+
+<h2>Changing calendar</h2>
+<fast-calendar class="light-borders calendar-change" minWeeks="6">
+    <button id="previous" class="calendar-control" tabindex="-1">
+        <fast-flipper
+            id="previous-flipper"
+            slot="end"
+            direction="previous"
+            aria-hidden="false"
+        ></fast-flipper>
+    </button>
+    <button id="next" class="calendar-control" tabindex="-1">
+        <fast-flipper id="next-flipper" slot="end" aria-hidden="false"></fast-flipper>
+    </button>
+</fast-calendar>
+
+<script>
+    const changeCalendar = (direction, event) => {
+        const calendar = event.path.find(
+            node => !!node.tagName && node.tagName.toLowerCase().indexOf("calendar") >= 0
+        );
+        const { month, year } = calendar;
+        const nextMonth = month + direction;
+        calendar.year = year + (nextMonth > 12 ? 1 : nextMonth < 1 ? -1 : 0);
+        calendar.month = nextMonth < 1 ? 12 : nextMonth > 12 ? 1 : nextMonth;
+    };
+    bindScript("previous", changeCalendar.bind(this, -1));
+    bindScript("next", changeCalendar.bind(this, 1));
+</script>
+
+<h2>German calendar</h2>
+<fast-calendar class="long-days" weekdayFormat="long" locale="de-DE"></fast-calendar>
+
+<h2>Thai Buddhist calendar</h2>
+<fast-calendar locale="th-TH-u-ca-buddhist-nu-thai"></fast-calendar>
+
+<h2>Arabic calendar</h2>
+<fast-calendar
+    style="direction: rtl;"
+    class="events"
+    locale="ar-XE-u-ca-islamic-nu-arab"
+    month="1"
+    year="2021"
+>
+    <div slot="1-1-2021">January 1</div>
+    <div slot="1-2-2021">January 2</div>
+</fast-calendar>
+
+<h2>Year calendar view</h2>
+<div id="year"></div>
+<script>
+    (year => {
+        const container = document.getElementById("year");
+        const addMonth = (_, index) => {
+            const monthCalendar = document.createElement("fast-calendar");
+            monthCalendar.className = "compact";
+            monthCalendar.weekdayFormat = "narrow";
+            monthCalendar.minWeeks = 6;
+            monthCalendar.month = index + 1;
+            if (year) monthCalendar.year = year;
+            container.appendChild(monthCalendar);
+        };
+        new Array(12).fill(null).forEach(addMonth);
+    })();
+</script>

@@ -1,0 +1,74 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-calendar",
+            "title": "Calendar",
+            "description": "The FAST calendar element",
+            "attributes": [
+                {
+                    "name": "month",
+                    "title": "Month",
+                    "description":
+                        "Month of the calendar to render. The default will be the current month.",
+                    "type": "number",
+                    "default": 5,
+                    "required": false
+                },
+                {
+                    "name": "year",
+                    "title": "Year",
+                    "description":
+                        "Year of the calendar to render. The default will be the current year.",
+                    "type": "number",
+                    "default": 2021,
+                    "required": false
+                },
+                {
+                    "name": "locale",
+                    "title": "Locale",
+                    "description":
+                        "Locale information for the calendar. This will include language, country, calendar type and numbering type. Defaults to browser locale.",
+                    "type": "string",
+                    "default": "",
+                    "required": false
+                },
+                {
+                    "name": "weekdayFormat",
+                    "title": "Weekday format",
+                    "description":
+                        "The rendering style for the weekday labels. Values include short, long and narrow.",
+                    "type": "string",
+                    "default": "short",
+                    "required": false
+                },
+                {
+                    "name": "monthFormat",
+                    "title": "Month format",
+                    "description":
+                        "The rendering style for the month name. Values include short, long and narrow.",
+                    "type": "string",
+                    "default": "long",
+                    "required": false
+                }
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The content of the calendar added to the beginning of the title container"
+                },
+                {
+                    "name": "start",
+                    "title": "Start slot",
+                    "description": "Contents of the start slot are positioned before the calendar"
+                },
+                {
+                    "name": "end",
+                    "title": "End slot",
+                    "description": "Contents of the end slot are positioned after the calendar"
+                }
+            ]
+        }
+    ]
+}

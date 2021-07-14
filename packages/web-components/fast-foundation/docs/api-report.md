@@ -263,6 +263,51 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 export const buttonTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Button>;
 
 // @public
+export class Calendar extends FoundationElement {
+    getDays(info?: CalendarInfo): CalendarDateInfo[];
+    getLocaleDay(month?: number, day?: number, year?: number): string;
+    getLocaleMonth(month?: number): string;
+    getLocaleWeekDays(): string[];
+    getLocaleYear(year?: number): string;
+    getMonthInfo(year?: number, month?: number): CalendarInfo;
+    // @internal
+    isRTL(): boolean;
+    isToday(year: number, month: number, day: number): boolean;
+    locale: string;
+    localeFormatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
+    minWeeks: number;
+    month: number;
+    monthFormat: DateStyle;
+    weekdayFormat: DateStyle;
+    year: number;
+}
+
+// @public
+export type CalendarDateInfo = {
+    day: number;
+    month: number;
+    year: number;
+};
+
+// @public
+export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo>;
+
+// @public
+export type CalendarInfo = MonthInfo & {
+    previous: MonthInfo;
+    next: MonthInfo;
+};
+
+// @public
+export const CalendarTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const CalendarTitleTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const CalendarWeekdayTemplate: ViewTemplate<Calendar>;
+
+// @public
 export class Card extends FoundationElement {
 }
 
@@ -606,6 +651,9 @@ export enum DataGridRowTypes {
 
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
+
+// @public
+export type DateStyle = "long" | "narrow" | "short";
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
@@ -1343,6 +1391,14 @@ export const menuItemTemplate: (context: ElementDefinitionContext, definition: M
 export const menuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Menu>;
 
 // @public
+export type MonthInfo = {
+    month: number;
+    year: number;
+    length: number;
+    start: number;
+};
+
+// @alpha (undocumented)
 export const newInstanceForScope: (key: any) => any;
 
 // @public

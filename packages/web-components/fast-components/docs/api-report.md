@@ -18,6 +18,7 @@ import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { BreadcrumbItemOptions } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
+import { Calendar } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
@@ -68,6 +69,7 @@ import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public (undocumented)
 export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -256,6 +258,9 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 
 // @public
 export const buttonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const CalendarStyles: import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Card" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -446,6 +451,25 @@ export const fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-f
 //
 // @public
 export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Button>;
+
+// @public
+export class FASTCalendar extends Calendar {
+}
+
+// @public
+export const FASTCalendardGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => ViewTemplate<DataGrid, any>;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => ViewTemplate<DataGrid, any>;
+}, typeof DataGrid>;
+
+// @public
+export const FASTCalendarGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridCell>;
+
+// @public
+export const FASTCalendarGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridRow>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 //

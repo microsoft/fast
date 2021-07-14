@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adding fast-calendar component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
