@@ -35,7 +35,7 @@ One important detail to note is that we do not use the `@customElement` decorato
 
 ### Define Templates and Styles 
 
-There are two ways to define templates and styles. Just like `FASTElement`, a component that extends `FoundationElement` can be used with the [`html`](/docs/fast-element/declaring-templates) and [`css`](/docs/fast-element/leveraging-css) tagged template literals.
+With our `Counter` component class written, we now need to define its templates and styles. There are two ways to accomplish this. Just like `FASTElement`, a component that extends `FoundationElement` can be used with the [`html`](/docs/fast-element/declaring-templates) and [`css`](/docs/fast-element/leveraging-css) tagged template literals. So, we could define our template and styles in the same fashion as any other component, like this:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";
@@ -44,7 +44,7 @@ const counterStyles = css`/* ... */`;
 const counterTemplate = html`<!-- ... -->`;
 ```
 
-A `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](/docs/api/fast-foundation.elementdefinitioncontext) and [FoundationElementDefinition](/docs/api/fast-foundation.foundationelementdefinition) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options:
+However, a `FoundationElement` also supports a lazily-defined template and style type. This lazy option is a function invoked with [ElementDefinitionContext](/docs/api/fast-foundation.elementdefinitioncontext) and [FoundationElementDefinition](/docs/api/fast-foundation.foundationelementdefinition) options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility, and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:
 
 ```ts
 import { html, css  } from "@microsoft/fast-element";
@@ -61,11 +61,11 @@ const counterTemplate = (
 ) => html`<!-- ... -->`;
 ```
 
-Let’s take a closer look at what these two arguments give us.
+Let’s take a closer look at what the two arguments to these lazily evaluated functions give us.
 
 #### What is the `ElementDefinitionContext`?
 
-The first argument is the `ElementDefinitionContext`. This context object provides information that is available *during* the attempt to register the element. For example, it will tell you the HTML element `name` that the component will be defined as. You can also see what the default `shadowRootMode` of the `DesignSystem` is. Most of the other APIs are used internally by `FoundationElement.compose` (see below) to define the element, but one particular API of note is the `tagFor()` method of the context. This API is used to inspect the tag-name of other components and allows usage of other library components in a template or stylesheet without knowing ahead of time what the tag-name for the element will be. Here's an example of how the reusable `Counter` component would leverage this to ensure that the `Button`'s tag name is correct, even if the app developer decides to rename `Button` in some way.
+The first argument is the `ElementDefinitionContext`. This context object provides information that is available *during* the attempt to register the element. For example, it will tell you the HTML element tag `name` that the component will be defined as. You can also see what the default `shadowRootMode` of the `DesignSystem` is. Most of the other APIs are used internally by `FoundationElement.compose` (see below) to define the element, but one particular API of note is the `tagFor()` method of the context. This API is used to inspect the tag-name of other components and allows usage of other library components in a template or stylesheet without knowing ahead of time what the tag-name for the element will be. Here's an example of how the reusable `Counter` component would leverage this to ensure that the `Button`'s tag name is correct, even if the app developer decides to rename `Button` in some way.
 
 ```ts
 import { html } from "@microsoft/fast-element";
@@ -84,17 +84,18 @@ const counterTemplate = (context: ElementDefinitionContext) => {
 
 #### What is the `FoundationElementDefinition`?
 
-The `FoundationElementDefinition` is the configuration for which the element was defined, allowing inspection of the aggregated options configuration for the component.
+The `FoundationElementDefinition` is the configuration for the element itself. This argument allows you to inspect the aggregated options configured for the component, giving you access the `shadowOptions`, `elementOptions`, and more.
 
-This definition can be extended arbitrarily by components during registration, which is what facilitates default slotted content overrides and arbitrary element configuration. For example, we could enable the `Counter`'s default `Button` message to be configured by the application developer. Here's what that would look like:
+This definition can also be arbitrarily extended by library authors, allowing custom configuration to flow through the registration process. For example, this mechanism can facilitate default slotted content overrides. To see how our `Counter` could leverage this, let's enable the `Button` content to be overridden by the application developer. Here's what that would look like:
 
 ```ts
 import { html } from "@microsoft/fast-element";
 import { ElementDefinitionContext, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { Button } from "@microsoft/fast-components";
 
+// Extend the configuration with custom properties
 interface CounterDefinition extends FoundationElementDefinition {
-    defaultButtonMessage?: string;
+    defaultButtonContent?: string;
 }
 
 const counterTemplate = (context: ElementDefinitionContext, definition: CounterDefinition) => {
@@ -103,28 +104,28 @@ const counterTemplate = (context: ElementDefinitionContext, definition: CounterD
 	return html`
     <div>The count is ${x => x.count}.</div>
     <${buttonTag} @click=${x => x.increment()}>
-      <slot>${definition.defaultButtonMessage}</slot>
+      <slot>${definition.defaultButtonContent}</slot> <!--Use the custom configuration-->
     </${buttonTag}>
   `;
 }
 ```
 
-During component registration with the `DesignSystem`, an application author can provide a `defaultButtonMessage` field as a configuration, which is used by the template if it exists.
+When the library author creates the registration function (see next section), they can provide the default content. Then, during component registration with the `DesignSystem`, an application author can optionally provide a `defaultButtonContent` field as a configuration to override this setting.
 
 ### Compose and Export Registration
 
-The final step in the process is to create and export the registration function so that application authors can register the component in their `DesignSystem`. Here's how we would create the registration function for `Counter`:
+The final step in the process is to create and export the registration function so that application authors can register the component in their `DesignSystem`. Here's how we would create the registration function for `Counter`, using our extended `CounterDefinition` configuration:
 
 ```ts
 export const counter = Counter.compose<CounterDefinition>({
   baseName: 'counter',
   template,
   styles,
-  defaultButtonMessage: "Count!"
+  defaultButtonContent: "Count!"
 });
 ```
 
-Note that the registration is composed with a "defaultButtonMessage" value. This value can be provided during composition or as a conditional in the template; either approach will work.
+Here we provide the base component name of `counter`, which will be combined with the `DesignSystem` element prefix during registration. We also provide our lazy template and styles. Finally, we specify the `defaultButtonContent` value.
 
 ### Registering Library Components in an Application
 
@@ -135,8 +136,10 @@ import { counter } from "your-package";
 import { DesignSystem } from "@microsoft/fast-foundation";
 
 DesignSystem.getOrCreate()
-  .withPrefix('yours')
+  .withPrefix('your')
   .register(
-	  counter({ defaultButtonMessage: "Please count." })
+	  counter({ defaultButtonContent: "Please count." })
   );
 ```
+
+The advantage of setting `defaultButtonContent` here is that it overrides the `Counter`'s default slotted content for **all** instances of `your-counter`. Instead of having to define it everywhere in the app that the button is used, the app author provides the configuration once in a centralized location. This can be extremely useful in scenarios where components contain default icons that the app author may need to swap.
