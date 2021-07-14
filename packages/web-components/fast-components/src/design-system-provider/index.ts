@@ -141,9 +141,9 @@ function designToken<T>(token: DesignToken<T>) {
 
 /**
  * The FAST DesignSystemProvider Element.
- * @internal
+ * @public
  */
-class DesignSystemProvider extends FoundationElement {
+export class DesignSystemProvider extends FoundationElement {
     constructor() {
         super();
 
