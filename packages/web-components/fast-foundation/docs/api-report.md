@@ -488,9 +488,9 @@ export class ContainerImpl implements Container {
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @public
-export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
+export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | ({
     createCSS?(): string;
-}> extends DesignToken<T>, CSSDirective {
+} & Record<PropertyKey, any>)> extends DesignToken<T>, CSSDirective {
     readonly cssCustomProperty: string;
 }
 
