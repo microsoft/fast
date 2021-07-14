@@ -4,10 +4,13 @@ title: The FAST Frame Design System
 sidebar_label: FAST Frame
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
+
 FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a collection of highly configurable Web Components, Design Tokens, stylesheets, and styling tools.
 
 ## Using FAST Frame Components
+
 ### Create a `DesignSystem`
+
 Web components from FAST Frame must be registered with a `DesignSystem` prior to being used in HTML. To create a `DesignSystem`, import the factory from `@microsoft/fast-foundation` and create the instances:
 
 ```ts
@@ -16,6 +19,7 @@ const designSystem = DesignSystem.getOrCreate()
 ```
 
 ### Register Components
+
 With the Design System created, registration of components is easy. Simply import the registration of the component you want to use from `@microsoft/fast-components` and register it with the Design System:
 
 
@@ -29,6 +33,7 @@ designSystem.register(fastButton())
 ```
 
 ### Add Element to HTML
+
 Now with the above script loaded in your document, add the registered custom element to your HTML document (or template):
 
 ```html
@@ -36,14 +41,17 @@ Now with the above script loaded in your document, add the registered custom ele
 ```
 
 ## Configuring Components
+
 FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the [creating a component library](/docs/design-systems/creating-a-component-library) documentation. 
 
 ### Configuring the DesignSystem
-The `DesignSystem` is the entry-point for most component configuration. It can be used control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
-j
+
+The `DesignSystem` is the entry-point for most component configuration. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.
+
 For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided [during component registration](/docs/design-systems/fast-frame#configuring-components-during-registration). 
 
 #### `DesignSystem.withPrefix()`
+
 As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](/docs/design-systems/fast-frame/#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
 
 This prefix can be changed for all components registered by the DesignSystem using the `DesignSystem.withPrefix()` API:
@@ -58,12 +66,15 @@ DesignSystem
     .register(fastButton())
 
 ```
+
 In this case, the element can be used in HTML using the ‘faster’:
+
 ```html
 <faster-button>Click me!</faster-button>
 ```
 
 #### `DesignSystem.withShadowRootMode()`
+
 Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with an [open shadow root mode.](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
 
 ```ts
@@ -74,6 +85,7 @@ DesignSystem
 ```
 
 #### `DesignSystem.withElementDisambiguation()`
+
 If two elements registered with the DesignSystem share the same tag name, the name can be disambiguated using `DesignSystem.withElementDisambiguation()`, allowing opportunity to provide a new name if there are conflicts:
 
 ```ts
@@ -86,9 +98,11 @@ DesignSystem
 ```
 
 ### Configuring Components During Registration
+
 The DesignSystem APIs described above impact all components registered to the DesignSystem, but those options can also be configured or overridden on a per-component basis. Configuring the component itself takes priority over any DesignSystem configuration. 
 
 #### Prefix
+
 The prefix for a component can be configured for a component registration by providing a configuration object with a prefix field during registration:
 
 ```ts
@@ -101,6 +115,7 @@ DesignSystem
 ```
 
 #### Template
+
 To use a custom template for a component, provide a `template` field to the configuration object during registration:
 
 ```ts
@@ -112,6 +127,7 @@ DesignSystem
 ```
 
 #### Styles
+
 Styles for a component can be configured as well, by providing a `styles` field to the configuration object during registration:
 
 ```ts
@@ -123,6 +139,7 @@ DesignSystem
 ```
 
 #### Shadow Options
+
 Shadow options can be configured as well, including both [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) and [focus delegation](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus):
 
 ```ts
@@ -135,16 +152,20 @@ DesignSystem
 		})
 	);
 ```
+
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
 
 ## Configuring Styles
+
 FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](/docs/design-systems/design-tokens) and an [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system).
 
 
 ### FAST Frame Design Tokens
+
 FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](/docs/design-systems/fast-frame#adaptive-color-system)
 
 #### Typography
+
 | Level              | Font Size Token Name            | Line Height Token Name           |
 |--------------------|---------------------------------|----------------------------------|
 | Minus 2 (smallest) | `typeRampMinus2FontSize`        | `typeRampMinus2LineHeight`       |
@@ -159,6 +180,7 @@ FAST exposes the following Design Tokens that can be used to configure component
 -------------------------------------------------
 
 #### Sizing
+
 - `baseHeightMultiplier`: TODO - Bheston
 - `baseHorizontalSpacingMultiplier` TODO - Behston
 - `controlCornerRadius`: Controls the corner radius used by controls with backplates
@@ -166,12 +188,14 @@ FAST exposes the following Design Tokens that can be used to configure component
 - `designUnit`: The unit size of the Design Grid. All controls size themselves as a multiple of this unit.
 
 #### Misc.
+
 - `direction`: The primary document direction (LTR or RTL)
 - `disabledOpacity`: The opacity of disabled controls.
 - `strokeWidth`: Controls the width of the stroke of a component that has a stroke.
 - `focusStrokeWidth`: Controls with width of the stroke of a component that has a stroke when it has document focus.
 
 ### Adaptive Color System
+
 FAST Frame implements an adaptive color system that provides some unique advantages:
 - Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements.
 - Easily swap from light mode to dark, or anywhere in-between.
@@ -297,4 +321,5 @@ A special layer to support experiences primarily built with cards, especially in
 A special layer for floating layers, like flyouts or menus. It will be lighter than any other layers if possible, but will also be white in default light mode, as will neutral layer one.
 
 #### Adaptive Color "Don'ts"
+
 The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the [DesignToken.setValueFor()](/docs/design-systems/design-tokens#setting-values) API.
