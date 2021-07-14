@@ -9,6 +9,12 @@ import { fastBadge } from "./badge/index";
 import { fastBreadcrumbItem } from "./breadcrumb-item/index";
 import { fastBreadcrumb } from "./breadcrumb/index";
 import { fastButton } from "./button/index";
+import {
+    fastCalendar,
+    fastCalendarGrid,
+    fastCalendarGridCell,
+    fastCalendarGridRow,
+} from "./calendar/index";
 import { fastCard } from "./card/index";
 import { fastCheckbox } from "./checkbox/index";
 import { fastCombobox } from "./combobox/index";
@@ -67,6 +73,10 @@ export {
     fastBreadcrumb,
     fastBreadcrumbItem,
     fastButton,
+    fastCalendar,
+    fastCalendarGrid,
+    fastCalendarGridCell,
+    fastCalendarGridRow,
     fastCard,
     fastCheckbox,
     fastCombobox,
@@ -117,6 +127,10 @@ export const allComponents = {
     fastBreadcrumb,
     fastBreadcrumbItem,
     fastButton,
+    fastCalendar,
+    fastCalendarGrid,
+    fastCalendarGridCell,
+    fastCalendarGridRow,
     fastCard,
     fastCheckbox,
     fastCombobox,

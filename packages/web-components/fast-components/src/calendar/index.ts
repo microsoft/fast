@@ -1,4 +1,3 @@
-import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
     Calendar,
     DataGrid,
@@ -20,12 +19,11 @@ import { CalendarStyles as styles } from "./calendar.styles";
  * @remarks
  * HTML Element: \<fast-calendar\>
  */
-@customElement({
-    name: "fast-calendar",
+export const fastCalendar = Calendar.compose({
+    baseName: "calendar",
     template,
     styles,
-})
-export class FASTCalendar extends Calendar {}
+});
 
 /**
  * Styles for Calendar
@@ -36,7 +34,7 @@ export const CalendarStyles = styles;
 /**
  * Custom grid component for the calendar component
  */
-export const FASTCalendardGrid = DataGrid.compose({
+export const fastCalendarGrid = DataGrid.compose({
     baseName: "calendar-grid",
     template: dataGridTemplate,
 });
@@ -44,7 +42,7 @@ export const FASTCalendardGrid = DataGrid.compose({
 /**
  * Custom grid row component for the calendar component
  */
-export const FASTCalendarGridRow = DataGridRow.compose({
+export const fastCalendarGridRow = DataGridRow.compose({
     baseName: "calendar-grid-row",
     template: dataGridRowTemplate,
 });
@@ -52,7 +50,25 @@ export const FASTCalendarGridRow = DataGridRow.compose({
 /**
  * Custom grid cell component for the calendar component
  */
-export const FASTCalendarGridCell = DataGridCell.compose({
+export const fastCalendarGridCell = DataGridCell.compose({
     baseName: "calendar-grid-cell",
     template: dataGridCellTemplate,
 });
+
+/**
+ * Base class for DataGrid
+ * @public
+ */
+export { DataGrid };
+
+/**
+ * Base class for DataGridRow
+ * @public
+ */
+export { DataGridRow };
+
+/**
+ * Base class for DataGridCell
+ * @public
+ */
+export { DataGridCell };
