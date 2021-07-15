@@ -1,5 +1,5 @@
 import { fastComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "./typings";
+import { WebComponentLibraryDefinition } from "../typings";
 import {
     fastAnchorExample,
     fastBadgeExample,

@@ -28,7 +28,7 @@ import {
     heading2Example,
     imageExample,
     paragraphExample,
-} from "./library.native.examples";
+} from "../native/library.native.examples";
 
 export const fastAnchorExample = {
     schemaId: fastComponentSchemas[fastAnchorTag].id,

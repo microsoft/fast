@@ -32,7 +32,6 @@ import {
     Dimension,
     DirectionSwitch,
     Editor,
-    fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
@@ -59,7 +58,7 @@ import {
 } from "@microsoft/fast-components";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
-import { divTag } from "./configs/library.native.tags";
+import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview/preview";
 import { Footer } from "./site-footer";
@@ -71,7 +70,7 @@ import {
     renderPreviewSwitch,
 } from "./web-components";
 import { Device } from "./web-components/devices";
-import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
+import fastDesignTokensSchema from "./configs/fast/library.fast.design-tokens.schema.json";
 import {
     creatorOriginatorId,
     CustomMessageSystemActions,

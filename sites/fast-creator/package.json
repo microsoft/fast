@@ -69,6 +69,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
+    "@fluentui/web-components": "^1.2.3",
     "@microsoft/fast-components": "^2.4.0",
     "@microsoft/fast-tooling": "^0.25.2",
     "@microsoft/fast-tooling-react": "^2.9.5",
