@@ -3,8 +3,10 @@ import { HTMLRenderLayerNavigationTemplate as template } from "./html-render-lay
 import { htmlRenderLayerNavigationStyles as styles } from "./html-render-layer-navigation.style";
 
 /**
+ * A web component for use in the default slot of the \<html-render\> web component.
+ * It is used to navigate the DOM.
  *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<html-render-layer-navigation\>
  */

@@ -3,8 +3,9 @@ import { ColorPickerTemplate as template } from "./color-picker.template";
 import { colorPickerStyles as styles } from "./color-picker.styles";
 
 /**
+ * A web component used for updating color values.
  *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<color-picker\>
  */
