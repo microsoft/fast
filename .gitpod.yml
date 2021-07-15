@@ -4,13 +4,6 @@ tasks:
     command: |
       cd sites/fast-component-explorer && yarn start
 
-ports:
-  - port: 3000
-    visibility: private
-  - port: 4000
-    onOpen: open-preview
-    visibility: private
-
 github:
   prebuilds:
     # enable for the master/default branch (defaults to true)
