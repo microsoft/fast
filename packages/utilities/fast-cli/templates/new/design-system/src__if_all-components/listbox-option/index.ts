@@ -5,16 +5,15 @@ import {
 import { optionStyles as styles } from "./listbox-option.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#ListboxOption} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#listboxOptionTemplate}
- *
+ * A function that returns a Option registration for configuring the component with a DesignSystem.
+ * Implements Option
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-option\>
+ * Generates HTML Element: \</* @echo namespace */-option\>
  *
  */
-export const fastOption = ListboxOption.compose({
+export const /* @echo namespace */Option = ListboxOption.compose({
     baseName: "option",
     template,
     styles,

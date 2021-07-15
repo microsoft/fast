@@ -11,7 +11,7 @@
 <h1>Toolbar</h1>
 
 <h2>Default</h2>
-<fast-toolbar>
+<<!-- @echo namespace -->-toolbar>
     <button>Button</button>
     <select>
         <option>Option 1</option>
@@ -31,133 +31,133 @@
         Checkbox 3
     </label>
     <input type="text" name="text" id="text-input" />
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Toolbar with slotted label</h2>
-<fast-toolbar id="toolbar-slotted-label">
+<<!-- @echo namespace -->-toolbar id="toolbar-slotted-label">
     <label slot="label">Slotted label</label>
     <button>One</button>
     <button>Two</button>
     <button>Three</button>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Toolbar with external label</h2>
 <label id="toolbar-label" for="toolbar-external-label">External label</label>
-<fast-toolbar id="toolbar-external-label" aria-labelledby="toolbar-label">
+<<!-- @echo namespace -->-toolbar id="toolbar-external-label" aria-labelledby="toolbar-label">
     <button>One</button>
     <button>Two</button>
     <button>Three</button>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Toolbar with invisible label</h2>
-<fast-toolbar id="toolbar-invisible-label" aria-label="Invisible label">
+<<!-- @echo namespace -->-toolbar id="toolbar-invisible-label" aria-label="Invisible label">
     <button>One</button>
     <button>Two</button>
     <button>Three</button>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Vertical orientation</h2>
-<fast-toolbar id="toolbar-vertical-orientation" orientation="vertical">
+<<!-- @echo namespace -->-toolbar id="toolbar-vertical-orientation" orientation="vertical">
     <button>One</button>
     <button>Two</button>
     <button>Three</button>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>FAST components</h2>
-<fast-toolbar id="toolbar-fast-components">
-    <fast-button>Button</fast-button>
-    <fast-radio-group>
-        <fast-radio checked>One</fast-radio>
-        <fast-radio>Two</fast-radio>
-        <fast-radio>Three</fast-radio>
-    </fast-radio-group>
-    <fast-combobox>
-        <fast-option>Please Please Me</fast-option>
-        <fast-option>With The Beatles</fast-option>
-        <fast-option>A Hard Day's Night</fast-option>
-        <fast-option>Beatles for Sale</fast-option>
-        <fast-option>Help!</fast-option>
-        <fast-option>Rubber Soul</fast-option>
-        <fast-option>Revolver</fast-option>
-        <fast-option>Sgt. Pepper's Lonely Hearts Club Band</fast-option>
-        <fast-option>Magical Mystery Tour</fast-option>
-        <fast-option>The Beatles</fast-option>
-        <fast-option>Yellow Submarine</fast-option>
-        <fast-option>Abbey Road</fast-option>
-        <fast-option>Let It Be</fast-option>
-    </fast-combobox>
-    <fast-button>Button</fast-button>
-    <fast-select>
-        <fast-option>Option 1</fast-option>
-        <fast-option>Second option</fast-option>
-        <fast-option>Option 3</fast-option>
-    </fast-select>
-    <fast-checkbox>Checkbox</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-<!-- @echo namespace -->-components">
+    <<!-- @echo namespace -->-button>Button</<!-- @echo namespace -->-button>
+    <<!-- @echo namespace -->-radio-group>
+        <<!-- @echo namespace -->-radio checked>One</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio>Two</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio>Three</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
+    <<!-- @echo namespace -->-combobox>
+        <<!-- @echo namespace -->-option>Please Please Me</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>With The Beatles</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>A Hard Day's Night</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Beatles for Sale</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Help!</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Rubber Soul</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Revolver</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Sgt. Pepper's Lonely Hearts Club Band</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Magical Mystery Tour</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>The Beatles</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Yellow Submarine</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Abbey Road</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Let It Be</<!-- @echo namespace -->-option>
+    </<!-- @echo namespace -->-combobox>
+    <<!-- @echo namespace -->-button>Button</<!-- @echo namespace -->-button>
+    <<!-- @echo namespace -->-select>
+        <<!-- @echo namespace -->-option>Option 1</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Second option</<!-- @echo namespace -->-option>
+        <<!-- @echo namespace -->-option>Option 3</<!-- @echo namespace -->-option>
+    </<!-- @echo namespace -->-select>
+    <<!-- @echo namespace -->-checkbox>Checkbox</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Disabled Elements</h2>
-<fast-toolbar id="toolbar-first-disabled" orientation="vertical">
-    <fast-checkbox disabled>One</fast-checkbox>
-    <fast-checkbox>Two</fast-checkbox>
-    <fast-checkbox>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-first-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox disabled>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-second-disabled" orientation="vertical">
-    <fast-checkbox>One</fast-checkbox>
-    <fast-checkbox disabled>Two</fast-checkbox>
-    <fast-checkbox>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-second-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-last-disabled" orientation="vertical">
-    <fast-checkbox>One</fast-checkbox>
-    <fast-checkbox>Two</fast-checkbox>
-    <fast-checkbox disabled>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-last-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-last-two-disabled" orientation="vertical">
-    <fast-checkbox>One</fast-checkbox>
-    <fast-checkbox disabled>Two</fast-checkbox>
-    <fast-checkbox disabled>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-last-two-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-first-last-disabled" orientation="vertical">
-    <fast-checkbox disabled>One</fast-checkbox>
-    <fast-checkbox>Two</fast-checkbox>
-    <fast-checkbox disabled>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-first-last-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox disabled>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-first-two-disabled" orientation="vertical">
-    <fast-checkbox disabled>One</fast-checkbox>
-    <fast-checkbox disabled>Two</fast-checkbox>
-    <fast-checkbox>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-first-two-disabled" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox disabled>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-disabled-all" orientation="vertical">
-    <fast-checkbox disabled>One</fast-checkbox>
-    <fast-checkbox disabled>Two</fast-checkbox>
-    <fast-checkbox disabled>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-disabled-all" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox disabled>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox disabled>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>RTL Mode</h2>
-<fast-toolbar id="toolbar-rtl" dir="rtl">
-    <fast-checkbox>One</fast-checkbox>
-    <fast-checkbox>Two</fast-checkbox>
-    <fast-checkbox>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-rtl" dir="rtl">
+    <<!-- @echo namespace -->-checkbox>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-rtl-vertical" dir="rtl" orientation="vertical">
-    <fast-checkbox>One</fast-checkbox>
-    <fast-checkbox>Two</fast-checkbox>
-    <fast-checkbox>Three</fast-checkbox>
-</fast-toolbar>
+<<!-- @echo namespace -->-toolbar id="toolbar-rtl-vertical" dir="rtl" orientation="vertical">
+    <<!-- @echo namespace -->-checkbox>One</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Two</<!-- @echo namespace -->-checkbox>
+    <<!-- @echo namespace -->-checkbox>Three</<!-- @echo namespace -->-checkbox>
+</<!-- @echo namespace -->-toolbar>
 
 <h2>Start/End Slots</h2>
-<fast-toolbar id="toolbar-start-end-slots">
+<<!-- @echo namespace -->-toolbar id="toolbar-start-end-slots">
     <svg slot="start"><use href="#icon" /></svg>
     <svg slot="end"><use href="#icon" /></svg>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>
 
-<fast-toolbar id="toolbar-start-end-slots-vertical" orientation="vertical">
+<<!-- @echo namespace -->-toolbar id="toolbar-start-end-slots-vertical" orientation="vertical">
     <svg slot="start"><use href="#icon" /></svg>
     <svg slot="end"><use href="#icon" /></svg>
-</fast-toolbar>
+</<!-- @echo namespace -->-toolbar>

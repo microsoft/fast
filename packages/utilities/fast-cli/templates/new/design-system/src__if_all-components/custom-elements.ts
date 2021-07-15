@@ -1,89 +1,89 @@
 /**
  * Export all custom element definitions
  */
-import { fastAccordion, fastAccordionItem } from "./accordion/index";
-import { fastAnchor } from "./anchor/index";
-import { fastAnchoredRegion } from "./anchored-region/index";
-import { fastAvatar } from "./avatar/index";
-import { fastBadge } from "./badge/index";
-import { fastBreadcrumbItem } from "./breadcrumb-item/index";
-import { fastBreadcrumb } from "./breadcrumb/index";
-import { fastButton } from "./button/index";
-import { fastCard } from "./card/index";
-import { fastCheckbox } from "./checkbox/index";
-import { fastCombobox } from "./combobox/index";
-import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
-import { fastDialog } from "./dialog/index";
-import { fastDisclosure } from "./disclosure/index";
-import { fastDivider } from "./divider/index";
-import { fastFlipper } from "./flipper/index";
-import { fastHorizontalScroll } from "./horizontal-scroll/index";
-import { fastOption } from "./listbox-option/index";
-import { fastListbox } from "./listbox/index";
-import { fastMenuItem } from "./menu-item/index";
-import { fastMenu } from "./menu/index";
-import { fastNumberField } from "./number-field/index";
-import { fastProgressRing } from "./progress-ring/index";
-import { fastProgress } from "./progress/index";
-import { fastRadioGroup } from "./radio-group/index";
-import { fastRadio } from "./radio/index";
-import { fastSelect } from "./select/index";
-import { fastSkeleton } from "./skeleton/index";
-import { fastSliderLabel } from "./slider-label/index";
-import { fastSlider } from "./slider/index";
-import { fastSwitch } from "./switch/index";
-import { fastTab, fastTabPanel, fastTabs } from "./tabs/index";
-import { fastTextArea } from "./text-area/index";
-import { fastTextField } from "./text-field/index";
-import { fastToolbar } from "./toolbar/index";
-import { fastTooltip } from "./tooltip/index";
-import { fastTreeItem } from "./tree-item/index";
-import { fastTreeView } from "./tree-view/index";
+import { /* @echo namespace */Accordion, /* @echo namespace */AccordionItem } from "./accordion/index";
+import { /* @echo namespace */Anchor } from "./anchor/index";
+import { /* @echo namespace */AnchoredRegion } from "./anchored-region/index";
+import { /* @echo namespace */Avatar } from "./avatar/index";
+import { /* @echo namespace */Badge } from "./badge/index";
+import { /* @echo namespace */BreadcrumbItem } from "./breadcrumb-item/index";
+import { /* @echo namespace */Breadcrumb } from "./breadcrumb/index";
+import { /* @echo namespace */Button } from "./button/index";
+import { /* @echo namespace */Card } from "./card/index";
+import { /* @echo namespace */Checkbox } from "./checkbox/index";
+import { /* @echo namespace */Combobox } from "./combobox/index";
+import { /* @echo namespace */DataGrid, /* @echo namespace */DataGridCell, /* @echo namespace */DataGridRow } from "./data-grid/index";
+import { /* @echo namespace */Dialog } from "./dialog/index";
+import { /* @echo namespace */Disclosure } from "./disclosure/index";
+import { /* @echo namespace */Divider } from "./divider/index";
+import { /* @echo namespace */Flipper } from "./flipper/index";
+import { /* @echo namespace */HorizontalScroll } from "./horizontal-scroll/index";
+import { /* @echo namespace */Option } from "./listbox-option/index";
+import { /* @echo namespace */Listbox } from "./listbox/index";
+import { /* @echo namespace */MenuItem } from "./menu-item/index";
+import { /* @echo namespace */Menu } from "./menu/index";
+import { /* @echo namespace */NumberField } from "./number-field/index";
+import { /* @echo namespace */ProgressRing } from "./progress-ring/index";
+import { /* @echo namespace */Progress } from "./progress/index";
+import { /* @echo namespace */RadioGroup } from "./radio-group/index";
+import { /* @echo namespace */Radio } from "./radio/index";
+import { /* @echo namespace */Select } from "./select/index";
+import { /* @echo namespace */Skeleton } from "./skeleton/index";
+import { /* @echo namespace */SliderLabel } from "./slider-label/index";
+import { /* @echo namespace */Slider } from "./slider/index";
+import { /* @echo namespace */Switch } from "./switch/index";
+import { /* @echo namespace */Tab, /* @echo namespace */TabPanel, /* @echo namespace */Tabs } from "./tabs/index";
+import { /* @echo namespace */TextArea } from "./text-area/index";
+import { /* @echo namespace */TextField } from "./text-field/index";
+import { /* @echo namespace */Toolbar } from "./toolbar/index";
+import { /* @echo namespace */Tooltip } from "./tooltip/index";
+import { /* @echo namespace */TreeItem } from "./tree-item/index";
+import { /* @echo namespace */TreeView } from "./tree-view/index";
 
 export {
-    fastAccordion,
-    fastAccordionItem,
-    fastAnchor,
-    fastAnchoredRegion,
-    fastAvatar,
-    fastBadge,
-    fastBreadcrumb,
-    fastBreadcrumbItem,
-    fastButton,
-    fastCard,
-    fastCheckbox,
-    fastCombobox,
-    fastDataGrid,
-    fastDataGridCell,
-    fastDataGridRow,
-    fastDialog,
-    fastDisclosure,
-    fastDivider,
-    fastFlipper,
-    fastHorizontalScroll,
-    fastListbox,
-    fastOption,
-    fastMenu,
-    fastMenuItem,
-    fastNumberField,
-    fastProgress,
-    fastProgressRing,
-    fastRadio,
-    fastRadioGroup,
-    fastSelect,
-    fastSkeleton,
-    fastSlider,
-    fastSliderLabel,
-    fastSwitch,
-    fastTabs,
-    fastTab,
-    fastTabPanel,
-    fastTextArea,
-    fastTextField,
-    fastTooltip,
-    fastToolbar,
-    fastTreeView,
-    fastTreeItem,
+    /* @echo namespace */Accordion,
+    /* @echo namespace */AccordionItem,
+    /* @echo namespace */Anchor,
+    /* @echo namespace */AnchoredRegion,
+    /* @echo namespace */Avatar,
+    /* @echo namespace */Badge,
+    /* @echo namespace */Breadcrumb,
+    /* @echo namespace */BreadcrumbItem,
+    /* @echo namespace */Button,
+    /* @echo namespace */Card,
+    /* @echo namespace */Checkbox,
+    /* @echo namespace */Combobox,
+    /* @echo namespace */DataGrid,
+    /* @echo namespace */DataGridCell,
+    /* @echo namespace */DataGridRow,
+    /* @echo namespace */Dialog,
+    /* @echo namespace */Disclosure,
+    /* @echo namespace */Divider,
+    /* @echo namespace */Flipper,
+    /* @echo namespace */HorizontalScroll,
+    /* @echo namespace */Listbox,
+    /* @echo namespace */Option,
+    /* @echo namespace */Menu,
+    /* @echo namespace */MenuItem,
+    /* @echo namespace */NumberField,
+    /* @echo namespace */Progress,
+    /* @echo namespace */ProgressRing,
+    /* @echo namespace */Radio,
+    /* @echo namespace */RadioGroup,
+    /* @echo namespace */Select,
+    /* @echo namespace */Skeleton,
+    /* @echo namespace */Slider,
+    /* @echo namespace */SliderLabel,
+    /* @echo namespace */Switch,
+    /* @echo namespace */Tabs,
+    /* @echo namespace */Tab,
+    /* @echo namespace */TabPanel,
+    /* @echo namespace */TextArea,
+    /* @echo namespace */TextField,
+    /* @echo namespace */Tooltip,
+    /* @echo namespace */Toolbar,
+    /* @echo namespace */TreeView,
+    /* @echo namespace */TreeItem,
 };
 
 /**
@@ -91,47 +91,47 @@ export {
  * @public
  */
 export const allComponents = {
-    fastAccordion,
-    fastAccordionItem,
-    fastAnchor,
-    fastAnchoredRegion,
-    fastAvatar,
-    fastBadge,
-    fastBreadcrumb,
-    fastBreadcrumbItem,
-    fastButton,
-    fastCard,
-    fastCheckbox,
-    fastCombobox,
-    fastDataGrid,
-    fastDataGridCell,
-    fastDataGridRow,
-    fastDialog,
-    fastDisclosure,
-    fastDivider,
-    fastFlipper,
-    fastHorizontalScroll,
-    fastListbox,
-    fastOption,
-    fastMenu,
-    fastMenuItem,
-    fastNumberField,
-    fastProgress,
-    fastProgressRing,
-    fastRadio,
-    fastRadioGroup,
-    fastSelect,
-    fastSkeleton,
-    fastSlider,
-    fastSliderLabel,
-    fastSwitch,
-    fastTabs,
-    fastTab,
-    fastTabPanel,
-    fastTextArea,
-    fastTextField,
-    fastTooltip,
-    fastToolbar,
-    fastTreeView,
-    fastTreeItem,
+    /* @echo namespace */Accordion,
+    /* @echo namespace */AccordionItem,
+    /* @echo namespace */Anchor,
+    /* @echo namespace */AnchoredRegion,
+    /* @echo namespace */Avatar,
+    /* @echo namespace */Badge,
+    /* @echo namespace */Breadcrumb,
+    /* @echo namespace */BreadcrumbItem,
+    /* @echo namespace */Button,
+    /* @echo namespace */Card,
+    /* @echo namespace */Checkbox,
+    /* @echo namespace */Combobox,
+    /* @echo namespace */DataGrid,
+    /* @echo namespace */DataGridCell,
+    /* @echo namespace */DataGridRow,
+    /* @echo namespace */Dialog,
+    /* @echo namespace */Disclosure,
+    /* @echo namespace */Divider,
+    /* @echo namespace */Flipper,
+    /* @echo namespace */HorizontalScroll,
+    /* @echo namespace */Listbox,
+    /* @echo namespace */Option,
+    /* @echo namespace */Menu,
+    /* @echo namespace */MenuItem,
+    /* @echo namespace */NumberField,
+    /* @echo namespace */Progress,
+    /* @echo namespace */ProgressRing,
+    /* @echo namespace */Radio,
+    /* @echo namespace */RadioGroup,
+    /* @echo namespace */Select,
+    /* @echo namespace */Skeleton,
+    /* @echo namespace */Slider,
+    /* @echo namespace */SliderLabel,
+    /* @echo namespace */Switch,
+    /* @echo namespace */Tabs,
+    /* @echo namespace */Tab,
+    /* @echo namespace */TabPanel,
+    /* @echo namespace */TextArea,
+    /* @echo namespace */TextField,
+    /* @echo namespace */Tooltip,
+    /* @echo namespace */Toolbar,
+    /* @echo namespace */TreeView,
+    /* @echo namespace */TreeItem,
 };

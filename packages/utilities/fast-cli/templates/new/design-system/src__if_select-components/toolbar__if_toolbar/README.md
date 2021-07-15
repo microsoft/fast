@@ -1,4 +1,4 @@
-# fast-toolbar
+# /* @echo namespace */-toolbar
 
 An implementation of a [toolbar](https://w3c.github.io/aria-practices/#toolbar) as a web-component.
 

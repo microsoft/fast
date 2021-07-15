@@ -6,15 +6,14 @@ import {
 import { checkboxStyles as styles } from "./checkbox.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Checkbox} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#checkboxTemplate}
- *
+ * A function that returns a Checkbox registration for configuring the component with a DesignSystem.
+ * Implements Checkbox
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-checkbox\>
+ * Generates HTML Element: \</* @echo namespace */-checkbox\>
  */
-export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
+export const /* @echo namespace */Checkbox = Checkbox.compose<CheckboxOptions>({
     baseName: "checkbox",
     template,
     styles,

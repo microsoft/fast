@@ -4,15 +4,12 @@ import { accordionStyles as styles } from "./accordion.styles";
 export * from "../accordion-item/index";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Accordion} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#accordionTemplate}
- *
- *
+ * A function that returns a Accordion registration for configuring the component with a DesignSystem.
+ * Implements Accordion
  * @public
- * @remarks
- * Generates the HTML Element: \<fast-accordion\>
+ * Generates HTML Element: \</* @echo namespace */-accordion\>
  */
-export const fastAccordion = Accordion.compose({
+export const /* @echo namespace*/Accordion = Accordion.compose({
     baseName: "accordion",
     template,
     styles,

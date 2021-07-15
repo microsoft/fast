@@ -29,16 +29,16 @@ export class Toolbar extends FoundationToolbar {
 }
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Toolbar} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#ToolbarTemplate}
+ * A function that returns a Toolbar registration for configuring the component with a DesignSystem.
+ * Implements Toolbar
  *
  * @public
  * @remarks
  *
- * Generates HTML Element: \<fast-toolbar\>
+ * Generates HTML Element: \</* @echo namespace */-toolbar\>
  *
  */
-export const fastToolbar = Toolbar.compose({
+export const /* @echo namespace */Toolbar = Toolbar.compose({
     baseName: "toolbar",
     template,
     styles,

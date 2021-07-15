@@ -1,12 +1,12 @@
 <style>
-    fast-disclosure {
+    <!-- @echo namespace -->-disclosure {
         margin-top: 12px;
     }
 </style>
 <h1>Disclosure</h1>
 The Flash (or simply Flash) is the name of several superheroes appearing in American comic
 books published by DC Comics.
-<fast-disclosure title="More about Flash">
+<<!-- @echo namespace -->-disclosure title="More about Flash">
     <span slot="end">⚡️</span>
     <div>
         Created by writer Gardner Fox and artist Harry Lampert, the original Flash first
@@ -15,12 +15,12 @@ books published by DC Comics.
         speed", which includes the ability to run, move, and think extremely fast, use
         superhuman reflexes, and seemingly violate certain laws of physics.
     </div>
-</fast-disclosure>
+</<!-- @echo namespace -->-disclosure>
 <br />
 <br />
-<fast-divider role="presentation"></fast-divider>
+<<!-- @echo namespace -->-divider role="presentation"></<!-- @echo namespace -->-divider>
 <h2>Default expanded</h2>
-<fast-disclosure expanded title="More about Green Arrow">
+<<!-- @echo namespace -->-disclosure expanded title="More about Green Arrow">
     <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
         Comics. Created by Mort Weisinger and designed by George Papp, he first appeared
@@ -28,39 +28,39 @@ books published by DC Comics.
         wealthy businessman and owner of Queen Industries who is also a well-known
         celebrity in Star City.
     </div>
-</fast-disclosure>
+</<!-- @echo namespace -->-disclosure>
 <br />
 <br />
-<fast-divider role="presentation"></fast-divider>
+<<!-- @echo namespace -->-divider role="presentation"></<!-- @echo namespace -->-divider>
 <h2>Helper methods (toggle(), show(), hide())</h2>
 
-<fast-disclosure id="supergirl" title="Read about Supergirl">
+<<!-- @echo namespace -->-disclosure id="supergirl" title="Read about Supergirl">
     <div>
         Supergirl is an American superhero television series developed by Ali Adler, Greg
         Berlanti and Andrew Kreisberg that originally aired on CBS and premiered on
         October 26, 2015. It is based on the DC Comics character Supergirl, created by
         Otto Binder and Al Plastino, and stars Melissa Benoist in the title role.
     </div>
-</fast-disclosure>
+</<!-- @echo namespace -->-disclosure>
 <br />
 <br />
 <br />
-<fast-button onclick="getElementById('supergirl').toggle()" appearance="outline">
+<<!-- @echo namespace -->-button onclick="getElementById('supergirl').toggle()" appearance="outline">
     Toggle
-</fast-button>
+</<!-- @echo namespace -->-button>
 &nbsp;
-<fast-button onclick="getElementById('supergirl').show()" appearance="outline">
+<<!-- @echo namespace -->-button onclick="getElementById('supergirl').show()" appearance="outline">
     Show
-</fast-button>
+</<!-- @echo namespace -->-button>
 &nbsp;
-<fast-button onclick="getElementById('supergirl').hide()" appearance="outline">
+<<!-- @echo namespace -->-button onclick="getElementById('supergirl').hide()" appearance="outline">
     Hide
-</fast-button>
+</<!-- @echo namespace -->-button>
 <br />
 <br />
-<fast-divider role="presentation"></fast-divider>
+<<!-- @echo namespace -->-divider role="presentation"></<!-- @echo namespace -->-divider>
 <h2>With lightweight (also extra slots)</h2>
-<fast-disclosure appearance="lightweight">
+<<!-- @echo namespace -->-disclosure appearance="lightweight">
     <span slot="start">👩🏻‍🦳</span>
     <strong slot="title">Read about White Canary</strong>
     <div>
@@ -76,4 +76,4 @@ books published by DC Comics.
         al-Sahfer), which translates to "Whistling Bird". She later adopts the code name
         of White Canary before joining the Legends of Tomorrow.
     </div>
-</fast-disclosure>
+</<!-- @echo namespace -->-disclosure>

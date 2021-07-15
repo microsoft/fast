@@ -2,237 +2,237 @@
  * Export all custom element definitions
  */
 // @if accordion
-import { fastAccordion, fastAccordionItem } from "./accordion/index";
+import { /* @echo namespace */Accordion, /* @echo namespace */AccordionItem } from "./accordion/index";
 // @endif
 // @if anchor
-import { fastAnchor } from "./anchor/index";
+import { /* @echo namespace */Anchor } from "./anchor/index";
 // @endif
 // @if anchored-region
-import { fastAnchoredRegion } from "./anchored-region/index";
+import { /* @echo namespace */AnchoredRegion } from "./anchored-region/index";
 // @endif
 // @if avatar
-import { fastAvatar } from "./avatar/index";
+import { /* @echo namespace */Avatar } from "./avatar/index";
 // @endif
 // @if badge
-import { fastBadge } from "./badge/index";
+import { /* @echo namespace */Badge } from "./badge/index";
 // @endif
 // @if breadcrumb-item
-import { fastBreadcrumbItem } from "./breadcrumb-item/index";
+import { /* @echo namespace */BreadcrumbItem } from "./breadcrumb-item/index";
 // @endif
 // @if breadcrumb
-import { fastBreadcrumb } from "./breadcrumb/index";
+import { /* @echo namespace */Breadcrumb } from "./breadcrumb/index";
 // @endif
 // @if  button || anchor
-import { fastButton } from "./button/index";
+import { /* @echo namespace */Button } from "./button/index";
 // @endif
 // @if card
-import { fastCard } from "./card/index";
+import { /* @echo namespace */Card } from "./card/index";
 // @endif
 // @if checkbox
-import { fastCheckbox } from "./checkbox/index";
+import { /* @echo namespace */Checkbox } from "./checkbox/index";
 // @endif
 // @if combobox
-import { fastCombobox } from "./combobox/index";
+import { /* @echo namespace */Combobox } from "./combobox/index";
 // @endif
 // @if data-grid
-import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
+import { /* @echo namespace */DataGrid, /* @echo namespace */DataGridCell, /* @echo namespace */DataGridRow } from "./data-grid/index";
 // @endif
 // @if dialog
-import { fastDialog } from "./dialog/index";
+import { /* @echo namespace */Dialog } from "./dialog/index";
 // @endif
 // @if disclosure
-import { fastDisclosure } from "./disclosure/index";
+import { /* @echo namespace */Disclosure } from "./disclosure/index";
 // @endif
 // @if divider
-import { fastDivider } from "./divider/index";
+import { /* @echo namespace */Divider } from "./divider/index";
 // @endif
 // @if flipper
-import { fastFlipper } from "./flipper/index";
+import { /* @echo namespace */Flipper } from "./flipper/index";
 // @endif
 // @if horizontal-scroll
-import { fastHorizontalScroll } from "./horizontal-scroll/index";
+import { /* @echo namespace */HorizontalScroll } from "./horizontal-scroll/index";
 // @endif
 // @if option
-import { fastOption } from "./listbox-option/index";
+import { /* @echo namespace */Option } from "./listbox-option/index";
 // @endif
 // @if listbox
-import { fastListbox } from "./listbox/index";
+import { /* @echo namespace */Listbox } from "./listbox/index";
 // @endif
 // @if menu-item
-import { fastMenuItem } from "./menu-item/index";
+import { /* @echo namespace */MenuItem } from "./menu-item/index";
 // @endif
 // @if menu
-import { fastMenu } from "./menu/index";
+import { /* @echo namespace */Menu } from "./menu/index";
 // @endif
 // @if number-field
-import { fastNumberField } from "./number-field/index";
+import { /* @echo namespace */NumberField } from "./number-field/index";
 // @endif
 // @if progress-ring
-import { fastProgressRing } from "./progress-ring/index";
+import { /* @echo namespace */ProgressRing } from "./progress-ring/index";
 // @endif
 // @if progress
-import { fastProgress } from "./progress/index";
+import { /* @echo namespace */Progress } from "./progress/index";
 // @endif
 // @if radio-group
-import { fastRadioGroup } from "./radio-group/index";
+import { /* @echo namespace */RadioGroup } from "./radio-group/index";
 // @endif
 // @if radio
-import { fastRadio } from "./radio/index";
+import { /* @echo namespace */Radio } from "./radio/index";
 // @endif
 // @if select
-import { fastSelect } from "./select/index";
+import { /* @echo namespace */Select } from "./select/index";
 // @endif
 // @if skeleton
-import { fastSkeleton } from "./skeleton/index";
+import { /* @echo namespace */Skeleton } from "./skeleton/index";
 // @endif
 // @if slider-label
-import { fastSliderLabel } from "./slider-label/index";
+import { /* @echo namespace */SliderLabel } from "./slider-label/index";
 // @endif
 // @if slider
-import { fastSlider } from "./slider/index";
+import { /* @echo namespace */Slider } from "./slider/index";
 // @endif
 // @if switch
-import { fastSwitch } from "./switch/index";
+import { /* @echo namespace */Switch } from "./switch/index";
 // @endif
 // @if tabs
-import { fastTab, fastTabPanel, fastTabs } from "./tabs/index";
+import { /* @echo namespace */Tab, /* @echo namespace */TabPanel, /* @echo namespace */Tabs } from "./tabs/index";
 // @endif
 // @if text-area
-import { fastTextArea } from "./text-area/index";
+import { /* @echo namespace */TextArea } from "./text-area/index";
 // @endif
 // @if text-field
-import { fastTextField } from "./text-field/index";
+import { /* @echo namespace */TextField } from "./text-field/index";
 // @endif
 // @if toolbar
-import { fastToolbar } from "./toolbar/index";
+import { /* @echo namespace */Toolbar } from "./toolbar/index";
 // @endif
 // @if tool-tip
-import { fastTooltip } from "./tooltip/index";
+import { /* @echo namespace */Tooltip } from "./tooltip/index";
 // @endif
 // @if tree-item
-import { fastTreeItem } from "./tree-item/index";
+import { /* @echo namespace */TreeItem } from "./tree-item/index";
 // @endif
 // @if tree-view
-import { fastTreeView } from "./tree-view/index";
+import { /* @echo namespace */TreeView } from "./tree-view/index";
 // @endif
 
 export {
     // @if accordion
-    fastAccordion,
-    fastAccordionItem,
+    /* @echo namespace */Accordion,
+    /* @echo namespace */AccordionItem,
     // @endif
     // @if anchor
-    fastAnchor,
+    /* @echo namespace */Anchor,
     // @endif
     // @if anchored-region
-    fastAnchoredRegion,
+    /* @echo namespace */AnchoredRegion,
     // @endif
     // @if avatar
-    fastAvatar,
+    /* @echo namespace */Avatar,
     // @endif
     // @if badge
-    fastBadge,
+    /* @echo namespace */Badge,
     // @endif
     // @if breadcrumb
-    fastBreadcrumb,
+    /* @echo namespace */Breadcrumb,
     // @endif
     // @if breadcrumb-item
-    fastBreadcrumbItem,
+    /* @echo namespace */BreadcrumbItem,
     // @endif
     // @if button || anchor
-    fastButton,
+    /* @echo namespace */Button,
     // @endif
     // @if card
-    fastCard,
+    /* @echo namespace */Card,
     // @endif
     // @if checkbox
-    fastCheckbox,
+    /* @echo namespace */Checkbox,
     // @endif
     // @if combobox
-    fastCombobox,
+    /* @echo namespace */Combobox,
     // @endif
     // @if data-grid
-    fastDataGrid,
-    fastDataGridCell,
-    fastDataGridRow,
+    /* @echo namespace */DataGrid,
+    /* @echo namespace */DataGridCell,
+    /* @echo namespace */DataGridRow,
     // @endif
     // @if dialog
-    fastDialog,
+    /* @echo namespace */Dialog,
     // @endif
     // @if disclosure
-    fastDisclosure,
+    /* @echo namespace */Disclosure,
     // @endif
     // @if divider
-    fastDivider,
+    /* @echo namespace */Divider,
     // @endif
     // @if flipper
-    fastFlipper,
+    /* @echo namespace */Flipper,
     // @endif
     // @if horizontal-scroll
-    fastHorizontalScroll,
+    /* @echo namespace */HorizontalScroll,
     // @endif
     // @if listbox
-    fastListbox,
+    /* @echo namespace */Listbox,
     // @endif
     // @if option
-    fastOption,
+    /* @echo namespace */Option,
     // @endif
     // @if menu
-    fastMenu,
+    /* @echo namespace */Menu,
     // @endif
     // @if menu-item
-    fastMenuItem,
-    fastNumberField,
+    /* @echo namespace */MenuItem,
+    /* @echo namespace */NumberField,
     // @endif
     // @if number-field
-    fastProgress,
+    /* @echo namespace */Progress,
     // @endif
     // @if progress-ring
-    fastProgressRing,
+    /* @echo namespace */ProgressRing,
     // @endif
     // @if radio
-    fastRadio,
+    /* @echo namespace */Radio,
     // @endif
     // @if radio-group
-    fastRadioGroup,
+    /* @echo namespace */RadioGroup,
     // @endif
     // @if select
-    fastSelect,
+    /* @echo namespace */Select,
     // @endif
     // @if skeleton
-    fastSkeleton,
+    /* @echo namespace */Skeleton,
     // @endif
     // @if slider
-    fastSlider,
+    /* @echo namespace */Slider,
     // @endif
     // @if slider-label
-    fastSliderLabel,
+    /* @echo namespace */SliderLabel,
     // @endif
     // @if switch
-    fastSwitch,
+    /* @echo namespace */Switch,
     // @endif
     // @if tabs
-    fastTabs,
-    fastTab,
-    fastTabPanel,
+    /* @echo namespace */Tabs,
+    /* @echo namespace */Tab,
+    /* @echo namespace */TabPanel,
     // @endif
     // @if text-area
-    fastTextArea,
+    /* @echo namespace */TextArea,
     // @endif
     // @if text-field
-    fastTextField,
+    /* @echo namespace */TextField,
     // @endif
     // @if tool-tip
-    fastTooltip,
+    /* @echo namespace */Tooltip,
     // @endif
     // @if toolbar
-    fastToolbar,
+    /* @echo namespace */Toolbar,
     // @endif
     // @if tree-view
-    fastTreeView,
+    /* @echo namespace */TreeView,
     // @endif
     // @if tree-item
-    fastTreeItem,
+    /* @echo namespace */TreeItem,
     // @endif
 };
 
@@ -242,120 +242,120 @@ export {
  */
 export const allComponents = {
     // @if accordion
-    fastAccordion,
-    fastAccordionItem,
+    /* @echo namespace */Accordion,
+    /* @echo namespace */AccordionItem,
     // @endif
     // @if anchor
-    fastAnchor,
+    /* @echo namespace */Anchor,
     // @endif
     // @if anchored-region
-    fastAnchoredRegion,
+    /* @echo namespace */AnchoredRegion,
     // @endif
     // @if avatar
-    fastAvatar,
+    /* @echo namespace */Avatar,
     // @endif
     // @if badge
-    fastBadge,
+    /* @echo namespace */Badge,
     // @endif
     // @if breadcrumb
-    fastBreadcrumb,
+    /* @echo namespace */Breadcrumb,
     // @endif
     // @if breadcrumb-item
-    fastBreadcrumbItem,
+    /* @echo namespace */BreadcrumbItem,
     // @endif
     // @if button || anchor
-    fastButton,
+    /* @echo namespace */Button,
     // @endif
     // @if card
-    fastCard,
+    /* @echo namespace */Card,
     // @endif
     // @if checkbox
-    fastCheckbox,
+    /* @echo namespace */Checkbox,
     // @endif
     // @if combobox
-    fastCombobox,
+    /* @echo namespace */Combobox,
     // @endif
     // @if data-grid
-    fastDataGrid,
-    fastDataGridCell,
-    fastDataGridRow,
+    /* @echo namespace */DataGrid,
+    /* @echo namespace */DataGridCell,
+    /* @echo namespace */DataGridRow,
     // @endif
     // @if dialog
-    fastDialog,
+    /* @echo namespace */Dialog,
     // @endif
     // @if disclosure
-    fastDisclosure,
+    /* @echo namespace */Disclosure,
     // @endif
     // @if divider
-    fastDivider,
+    /* @echo namespace */Divider,
     // @endif
     // @if flipper
-    fastFlipper,
+    /* @echo namespace */Flipper,
     // @endif
     // @if horizontal-scroll
-    fastHorizontalScroll,
+    /* @echo namespace */HorizontalScroll,
     // @endif
     // @if listbox
-    fastListbox,
+    /* @echo namespace */Listbox,
     // @endif
     // @if option
-    fastOption,
+    /* @echo namespace */Option,
     // @endif
     // @if menu
-    fastMenu,
+    /* @echo namespace */Menu,
     // @endif
     // @if menu-item
-    fastMenuItem,
-    fastNumberField,
+    /* @echo namespace */MenuItem,
+    /* @echo namespace */NumberField,
     // @endif
     // @if number-field
-    fastProgress,
+    /* @echo namespace */Progress,
     // @endif
     // @if progress-ring
-    fastProgressRing,
+    /* @echo namespace */ProgressRing,
     // @endif
     // @if radio
-    fastRadio,
+    /* @echo namespace */Radio,
     // @endif
     // @if radio-group
-    fastRadioGroup,
+    /* @echo namespace */RadioGroup,
     // @endif
     // @if select
-    fastSelect,
+    /* @echo namespace */Select,
     // @endif
     // @if skeleton
-    fastSkeleton,
+    /* @echo namespace */Skeleton,
     // @endif
     // @if slider
-    fastSlider,
+    /* @echo namespace */Slider,
     // @endif
     // @if slider-label
-    fastSliderLabel,
+    /* @echo namespace */SliderLabel,
     // @endif
     // @if switch
-    fastSwitch,
+    /* @echo namespace */Switch,
     // @endif
     // @if tabs
-    fastTabs,
-    fastTab,
-    fastTabPanel,
+    /* @echo namespace */Tabs,
+    /* @echo namespace */Tab,
+    /* @echo namespace */TabPanel,
     // @endif
     // @if text-area
-    fastTextArea,
+    /* @echo namespace */TextArea,
     // @endif
     // @if text-field
-    fastTextField,
+    /* @echo namespace */TextField,
     // @endif
     // @if tool-tip
-    fastTooltip,
+    /* @echo namespace */Tooltip,
     // @endif
     // @if toolbar
-    fastToolbar,
+    /* @echo namespace */Toolbar,
     // @endif
     // @if tree-view
-    fastTreeView,
+    /* @echo namespace */TreeView,
     // @endif
     // @if tree-item
-    fastTreeItem,
+    /* @echo namespace */TreeItem,
     // @endif
 };

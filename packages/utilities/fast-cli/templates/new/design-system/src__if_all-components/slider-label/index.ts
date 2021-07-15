@@ -25,16 +25,16 @@ export class SliderLabel extends FoundationSliderLabel {
 }
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#SliderLabel} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#sliderLabelTemplate}
+ * A function that returns a Slider Label registration for configuring the component with a DesignSystem.
+ * Implements Slider Label
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-slider-label\>
+ * Generates HTML Element: \</* @echo namespace */-slider-label\>
  */
 
-export const fastSliderLabel = SliderLabel.compose({
+export const /* @echo namespace */SliderLabel = SliderLabel.compose({
     baseName: "slider-label",
     template,
     styles,

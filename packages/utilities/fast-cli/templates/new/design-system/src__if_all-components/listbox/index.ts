@@ -2,16 +2,15 @@ import { Listbox, listboxTemplate as template } from "@microsoft/fast-foundation
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Listbox} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#listboxTemplate}
+ * A function that returns a Listbox registration for configuring the component with a DesignSystem.
+ * Implements Listbox
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-listbox\>
- *
+ * Generates HTML Element: \</* @echo namespace */-listbox\>
  */
-export const fastListbox = Listbox.compose({
+export const /* @echo namespace */Listbox = Listbox.compose({
     baseName: "listbox",
     template,
     styles,

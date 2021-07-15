@@ -56,17 +56,16 @@ export class Button extends FoundationButton {
 }
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Button} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#buttonTemplate}
- *
+ * A function that returns a Button registration for configuring the component with a DesignSystem.
+ * Implements Button
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-button\>
+ * Generates HTML Element: \</* @echo namespace*/-button\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastButton = Button.compose({
+export const /* @echo namespace */Button = Button.compose({
     baseName: "button",
     template,
     styles,

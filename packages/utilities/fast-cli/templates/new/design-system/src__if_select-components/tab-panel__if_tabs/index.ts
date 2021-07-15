@@ -2,15 +2,15 @@ import { TabPanel, tabPanelTemplate as template } from "@microsoft/fast-foundati
 import { tabPanelStyles as styles } from "./tab-panel.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#TabPanel} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#tabPanelTemplate}
+ * A function that returns a Tab Panel registration for configuring the component with a DesignSystem.
+ * Implements Tab Panel
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tab-panel\>
+ * Generates HTML Element: \</* @echo namespace */-tab-panel\>
  */
-export const fastTabPanel = TabPanel.compose({
+export const /* @echo namespace */TabPanel = TabPanel.compose({
     baseName: "tab-panel",
     template,
     styles,

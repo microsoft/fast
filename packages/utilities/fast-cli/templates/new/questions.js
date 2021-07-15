@@ -11,6 +11,10 @@ module.exports = [
     message: 'Who is the author?',
   },
   {
+    name: 'namespace',
+    message: 'What would you like your namespace prefix to be?',
+  },
+  {
     if: 'design-system',
     message: 'Would you like to include all components?',
     choices: [

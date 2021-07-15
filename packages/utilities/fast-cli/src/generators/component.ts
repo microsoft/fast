@@ -37,19 +37,34 @@ class ComponentGenerator extends Generator {
         );
 
         this.fs.copyTpl(
-            this.templatePath("base.html"),
-            this.destinationPath(`src/${this.options.name}/scenario/base.html`),
+            this.templatePath("_component.template.ts.ejs"),
+            this.destinationPath(
+                `src/${this.options.name}/${this.options.name}.template.ts`
+            ),
             opts
         );
 
         this.fs.copyTpl(
-            this.templatePath("index.html"),
-            this.destinationPath(`src/${this.options.name}/fixtures/index.html`)
+            this.templatePath("base.html.ejs"),
+            this.destinationPath(`src/${this.options.name}/fixtures/base.html`),
+            opts
         );
 
         this.fs.copyTpl(
             this.templatePath("index.ts.ejs"),
             this.destinationPath(`src/${this.options.name}/index.ts`),
+            opts
+        );
+
+        this.fs.copyTpl(
+            this.templatePath("_component.ts.ejs"),
+            this.destinationPath(`src/${this.options.name}/${this.options.name}.ts`),
+            opts
+        );
+
+        this.fs.copyTpl(
+            this.templatePath("README.md.ejs"),
+            this.destinationPath(`src/${this.options.name}/README.md`),
             opts
         );
     }

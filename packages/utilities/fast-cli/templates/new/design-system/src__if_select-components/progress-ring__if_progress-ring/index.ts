@@ -6,15 +6,15 @@ import {
 import { progressRingStyles as styles } from "./progress-ring.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#progressRingTemplate}
+ * A function that returns a Progres Ring registration for configuring the component with a DesignSystem.
+ * Implements Progres Ring
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-progress-ring\>
+ * Generates HTML Element: \</* @echo namespace */-progress-ring\>
  */
-export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
+export const /* @echo namespace */ProgressRing = ProgressRing.compose<ProgressRingOptions>({
     baseName: "progress-ring",
     template,
     styles,

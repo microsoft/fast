@@ -1,5 +1,5 @@
 <style>
-    fast-avatar {
+    <!-- @echo namespace -->-avatar {
         --avatar-fill-accent-primary: #cf4073;
         --avatar-fill-accent-secondary: #0078d4;
         --avatar-color-foo: hsl(0, 0%, 100%);
@@ -8,12 +8,12 @@
         --badge-fill-primary: var(--accent-fill-rest);
     }
 
-    fast-badge {
+    <!-- @echo namespace -->-badge {
         right: 0px;
         bottom: 0px;
     }
 
-    fast-badge::part(control) {
+    <!-- @echo namespace -->-badge::part(control) {
         min-width: 8px;
         height: 8px;
     }
@@ -28,7 +28,7 @@
     <h2>Circle shaped avatar</h2>
 
     <h3>Circle avatar with image</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         alt="Annie's profile image"
         link="#"
         shape="circle"
@@ -36,10 +36,10 @@
         color="bar"
     >
         <img class="image" slot="media" src="https://via.placeholder.com/32" />
-    </fast-avatar>
+    </<!-- @echo namespace -->-avatar>
 
     <h3>Circle avatar with text content</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         alt="Carlos's profile image"
         link="#"
         shape="circle"
@@ -47,70 +47,70 @@
         color="foo"
     >
         CR
-    </fast-avatar>
+    </<!-- @echo namespace -->-avatar>
 
     <h3>Circle avatar with image and badge</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         src="https://via.placeholder.com/32"
         alt="Harper's profile image"
         link="#"
         shape="circle"
         fill="accent-primary"
     >
-        <fast-badge slot="badge" fill="primary" circular></fast-badge>
-    </fast-avatar>
+        <<!-- @echo namespace -->-badge slot="badge" fill="primary" circular></<!-- @echo namespace -->-badge>
+    </<!-- @echo namespace -->-avatar>
 
     <h3>Circle avatar with text content and badge</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         alt="Bob's profile image"
         link="#"
         shape="circle"
         fill="accent-secondary"
     >
         BV
-        <fast-badge slot="badge" fill="primary" circular></fast-badge>
-    </fast-avatar>
+        <<!-- @echo namespace -->-badge slot="badge" fill="primary" circular></<!-- @echo namespace -->-badge>
+    </<!-- @echo namespace -->-avatar>
 
     <h2>Square shaped avatar</h2>
 
     <h3>Square avatar with image</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         src="https://via.placeholder.com/32"
         alt="Fang's profile image"
         link="#"
         shape="square"
         fill="accent-secondary"
-    ></fast-avatar>
+    ></<!-- @echo namespace -->-avatar>
 
     <h3>Square avatar with text content and badge</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         alt="Scott's profile image"
         link="#"
         shape="square"
         fill="accent-primary"
     >
         SW
-    </fast-avatar>
+    </<!-- @echo namespace -->-avatar>
 
     <h3>Square avatar with image and badge</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         src="https://via.placeholder.com/32"
         alt="Albert's profile image"
         link="#"
         shape="square"
         fill="accent-secondary"
     >
-        <fast-badge slot="badge" fill="primary" circular></fast-badge>
-    </fast-avatar>
+        <<!-- @echo namespace -->-badge slot="badge" fill="primary" circular></<!-- @echo namespace -->-badge>
+    </<!-- @echo namespace -->-avatar>
 
     <h3>Square avatar with text content and badge</h3>
-    <fast-avatar
+    <<!-- @echo namespace -->-avatar
         alt="Austin's profile image"
         link="#"
         shape="square"
         fill="accent-secondary"
     >
         JS
-        <fast-badge slot="badge" fill="primary" circular></fast-badge>
-    </fast-avatar>
+        <<!-- @echo namespace -->-badge slot="badge" fill="primary" circular></<!-- @echo namespace -->-badge>
+    </<!-- @echo namespace -->-avatar>
 </div>

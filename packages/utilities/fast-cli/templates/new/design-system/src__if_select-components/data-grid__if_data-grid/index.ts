@@ -11,13 +11,13 @@ import { dataGridRowStyles as rowStyles } from "./data-grid-row.styles";
 import { dataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#DataGridCell} registration for configuring the component with a DesignSystem.
- *
+ * A function that returns a Data Grid Cell registration for configuring the component with a DesignSystem.
+ * 
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-cell\>
+ * Generates HTML Element: \</* @echo namespace */-data-grid-cell\>
  */
-export const fastDataGridCell = DataGridCell.compose({
+export const /* @echo namespace */DataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
     template: dataGridCellTemplate,
     styles: cellStyles,
@@ -30,13 +30,13 @@ export const fastDataGridCell = DataGridCell.compose({
 export const dataGridCellStyles = cellStyles;
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#DataGridRow} registration for configuring the component with a DesignSystem.
+ * A function that returns a Data Grid Row registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-row\>
+ * Generates HTML Element: \</* @echo namespace */-data-grid-row\>
  */
-export const fastDataGridRow = DataGridRow.compose({
+export const /* @echo namespace */DataGridRow = DataGridRow.compose({
     baseName: "data-grid-row",
     template: dataGridRowTemplate,
     styles: rowStyles,
@@ -49,13 +49,13 @@ export const fastDataGridRow = DataGridRow.compose({
 export const dataGridRowStyles = rowStyles;
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#DataGrid} registration for configuring the component with a DesignSystem.
+ * A function that returns a Data Grid registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid\>
+ * Generates HTML Element: \</* @echo namespace */-data-grid\>
  */
-export const fastDataGrid = DataGrid.compose({
+export const /* @echo namespace */DataGrid = DataGrid.compose({
     baseName: "data-grid",
     template: dataGridTemplate,
     styles: gridStyles,

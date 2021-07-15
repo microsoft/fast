@@ -6,15 +6,15 @@ import {
 import { switchStyles as styles } from "./switch.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Switch} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#switchTemplate}
+ * A function that returns a Switch registration for configuring the component with a DesignSystem.
+ * Implements Switch
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-switch\>
+ * Generates HTML Element: \</* @echo namespace */-switch\>
  */
-export const fastSwitch = Switch.compose<SwitchOptions>({
+export const /* @echo namespace */Switch = Switch.compose<SwitchOptions>({
     baseName: "switch",
     template,
     styles,

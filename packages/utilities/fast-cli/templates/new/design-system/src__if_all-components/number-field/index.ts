@@ -45,17 +45,17 @@ export class NumberField extends FoundationNumberField {
 export const numberFieldStyles = styles;
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#NumberField} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#numberFieldTemplate}
+ * A function that returns a Number Field registration for configuring the component with a DesignSystem.
+ * Implements Number Field
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-number-field\>
+ * Generates HTML Element: \</* @echo namespace */-number-field\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastNumberField = NumberField.compose<NumberFieldOptions>({
+export const /* @echo namespace */NumberField = NumberField.compose<NumberFieldOptions>({
     baseName: "number-field",
     styles,
     template,

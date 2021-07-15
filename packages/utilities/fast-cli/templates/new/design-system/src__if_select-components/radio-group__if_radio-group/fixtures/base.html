@@ -27,68 +27,68 @@
 
 <h2>Defaults</h2>
 <div>
-    <fast-radio-group name="numbers">
+    <<!-- @echo namespace -->-radio-group name="numbers">
         <label style="color: --var(neutral-foreground-rest);" slot="label">
             Numbers
         </label>
-        <fast-radio value="one">One</fast-radio>
-        <fast-radio value="two">Two</fast-radio>
-    </fast-radio-group>
+        <<!-- @echo namespace -->-radio value="one">One</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="two">Two</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div>
-    <fast-radio-group id="vertical" orientation="vertical" name="trees">
+    <<!-- @echo namespace -->-radio-group id="vertical" orientation="vertical" name="trees">
         <label style="color: --var(neutral-foreground-rest);" slot="label">
             Trees
         </label>
-        <fast-radio id="fir" value="fir">Fir</fast-radio>
-        <fast-radio value="juniper">Juniper</fast-radio>
-        <fast-radio id="hemlock" value="hemlock" checked>Hemlock</fast-radio>
-        <fast-radio value="pine" checked>Pine</fast-radio>
-    </fast-radio-group>
+        <<!-- @echo namespace -->-radio id="fir" value="fir">Fir</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="juniper">Juniper</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio id="hemlock" value="hemlock" checked>Hemlock</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="pine" checked>Pine</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
-    <fast-radio-group name="players">
+    <<!-- @echo namespace -->-radio-group name="players">
         <label style="color: --var(neutral-foreground-rest);" slot="label">
             Best basketball players
         </label>
-        <fast-radio value="airjordan">Michael Jordan</fast-radio>
-    </fast-radio-group>
+        <<!-- @echo namespace -->-radio value="airjordan">Michael Jordan</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
     <label style="color: --var(neutral-foreground-rest);">
         Single radio (no group)
     </label>
-    <fast-radio value="single-life">Single life</fast-radio>
+    <<!-- @echo namespace -->-radio value="single-life">Single life</<!-- @echo namespace -->-radio>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
     <label style="color: --var(neutral-foreground-rest);" id="label1">
         Outside label
     </label>
-    <fast-radio-group required="true" aria-labelledby="label1" name="fruits">
-        <fast-radio value="apples">Apples</fast-radio>
-        <fast-radio value="oranges">Oranges</fast-radio>
-        <fast-radio value="bananas">Bananas</fast-radio>
-        <fast-radio value="kiwi">Kiwi</fast-radio>
-        <fast-radio value="grapefruit">Grapefruit</fast-radio>
-        <fast-radio value="mango">Mango</fast-radio>
-        <fast-radio value="blueberries">Blueberries</fast-radio>
-        <fast-radio value="strawberries">Strawberries</fast-radio>
-        <fast-radio value="pineapple">Pineapple</fast-radio>
-    </fast-radio-group>
+    <<!-- @echo namespace -->-radio-group required="true" aria-labelledby="label1" name="fruits">
+        <<!-- @echo namespace -->-radio value="apples">Apples</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="oranges">Oranges</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="bananas">Bananas</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="kiwi">Kiwi</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="grapefruit">Grapefruit</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="mango">Mango</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="blueberries">Blueberries</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="strawberries">Strawberries</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="pineapple">Pineapple</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div role="toolbar" style="display: flex; flex-direction: column; margin-top: 12px;">
     <div style="display: flex; flex-direction: row; align-items: stretch; width: 100%;">
         <button style="width: 40px; margin-right: 4px;">go</button>
-        <fast-radio-group required="true" name="navigation">
-            <fast-radio value="back">back</fast-radio>
-            <fast-radio value="forward">forward</fast-radio>
-            <fast-radio value="refresh">refresh</fast-radio>
-        </fast-radio-group>
+        <<!-- @echo namespace -->-radio-group required="true" name="navigation">
+            <<!-- @echo namespace -->-radio value="back">back</<!-- @echo namespace -->-radio>
+            <<!-- @echo namespace -->-radio value="forward">forward</<!-- @echo namespace -->-radio>
+            <<!-- @echo namespace -->-radio value="refresh">refresh</<!-- @echo namespace -->-radio>
+        </<!-- @echo namespace -->-radio-group>
         <button style="width: 40px; margin-left: 4px;">stop</button>
     </div>
 </div>
@@ -97,30 +97,30 @@
     <label style="color: --var(neutral-foreground-rest);" id="label2">
         Disabled radio group
     </label>
-    <fast-radio-group disabled aria-labelledby="label2" name="cars">
-        <fast-radio value="lambo">Lamborghini</fast-radio>
-        <fast-radio value="ferari">Ferari</fast-radio>
-    </fast-radio-group>
+    <<!-- @echo namespace -->-radio-group disabled aria-labelledby="label2" name="cars">
+        <<!-- @echo namespace -->-radio value="lambo">Lamborghini</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="ferari">Ferari</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
     <label style="color: --var(neutral-foreground-rest);" id="label3">
         readonly radio group
     </label>
-    <fast-radio-group readonly aria-labelledby="label3" name="office">
-        <fast-radio value="word">Word</fast-radio>
-        <fast-radio value="excel">Excel</fast-radio>
-    </fast-radio-group>
+    <<!-- @echo namespace -->-radio-group readonly aria-labelledby="label3" name="office">
+        <<!-- @echo namespace -->-radio value="word">Word</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="excel">Excel</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-top: 12px;">
     <label style="color: --var(neutral-foreground-rest);" id="label4">
         Preset selected-value
     </label>
-    <fast-radio-group value="maverick" aria-labelledby="label4" name="best-pilot">
-        <fast-radio value="ice-man">Ice Man</fast-radio>
-        <fast-radio value="maverick">Maverick</fast-radio>
-        <fast-radio value="viper">Viper</fast-radio>
-        <fast-radio value="jester">Jester</fast-radio>
-    </fast-radio-group>
+    <<!-- @echo namespace -->-radio-group value="maverick" aria-labelledby="label4" name="best-pilot">
+        <<!-- @echo namespace -->-radio value="ice-man">Ice Man</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="maverick">Maverick</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="viper">Viper</<!-- @echo namespace -->-radio>
+        <<!-- @echo namespace -->-radio value="jester">Jester</<!-- @echo namespace -->-radio>
+    </<!-- @echo namespace -->-radio-group>
 </div>

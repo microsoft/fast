@@ -6,15 +6,14 @@ import {
 import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#BreadcrumbItem} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#breadcrumbItemTemplate}
- *
+ * A function that returns a Breadcrumb Item registration for configuring the component with a DesignSystem.
+ * Implements Breadcrumb Item
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-breadcrumb-item\>
+ * Generates HTML Element: \</* @echo namespace */-breadcrumb-item\>
  */
-export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>({
+export const /* @echo namespace */BreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>({
     baseName: "breadcrumb-item",
     template,
     styles,

@@ -1,125 +1,125 @@
 <h1>Select</h1>
 
 <h2>Default</h2>
-<fast-select>
-    <fast-option>This option has no value</fast-option>
-    <fast-option disabled>This option is disabled</fast-option>
-    <fast-option value="hi">This option has a value</fast-option>
-    <fast-option selected>This option is selected by default</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select>
+    <<!-- @echo namespace -->-option>This option has no value</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option disabled>This option is disabled</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="hi">This option has a value</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option selected>This option is selected by default</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>No options</h2>
-<fast-select></fast-select>
+<<!-- @echo namespace -->-select></<!-- @echo namespace -->-select>
 
 <h2>With Label</h2>
 <label for="shirt-size">Choose a T-Shirt size:</label>
-<fast-select id="shirt-size">
-    <fast-option value="s">Small</fast-option>
-    <fast-option value="m">Medium</fast-option>
-    <fast-option value="l">Large</fast-option>
-    <fast-option value="xl">Extra Large</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select id="shirt-size">
+    <<!-- @echo namespace -->-option value="s">Small</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="m">Medium</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="l">Large</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="xl">Extra Large</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Disabled</h2>
-<fast-select disabled>
-    <fast-option>This option is not selectable</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select disabled>
+    <<!-- @echo namespace -->-option>This option is not selectable</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
-<fast-select>
-    <fast-option disabled>This option is disabled</fast-option>
-    <fast-option>This option is not disabled</fast-option>
-    <fast-option>This option is not disabled</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select>
+    <<!-- @echo namespace -->-option disabled>This option is disabled</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>This option is not disabled</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>This option is not disabled</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Selected Option</h2>
-<fast-select>
-    <fast-option>Option One</fast-option>
-    <fast-option selected>Option Two</fast-option>
-    <fast-option>Option Three</fast-option>
-    <fast-option>Option Four</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select>
+    <<!-- @echo namespace -->-option>Option One</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option selected>Option Two</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Three</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Four</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Custom Indicator</h2>
-<fast-select>
+<<!-- @echo namespace -->-select>
     <svg slot="indicator" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M6.5 7.7h-1v-1h1v1zm4.1 0h-1v-1h1v1zm4.1-1v2.1h-1v2.6l-.1.6-.3.5c-.1.1-.3.3-.5.3l-.6.1H10l-3.5 3v-3H3.9l-.6-.1-.5-.3c-.1-.1-.3-.3-.3-.5l-.1-.6V8.8h-1V6.7h1V5.2l.1-.6.3-.5c.1-.1.3-.3.5-.3l.6-.1h3.6V1.9a.8.8 0 01-.4-.4L7 1V.6l.2-.3.3-.2L8 0l.4.1.3.2.3.3V1l-.1.5-.4.4v1.7h3.6l.6.1.5.3c.1.1.3.3.3.5l.1.6v1.5h1.1zm-2.1-1.5l-.2-.4-.4-.2H3.9l-.4.2-.1.4v6.2l.2.4.4.2h3.6v1.8L9.7 12h2.5l.4-.2.2-.4V5.2zM5.8 8.9l1 .7 1.2.2a5 5 0 001.2-.2l1-.7.7.7c-.4.4-.8.7-1.4.9-.5.2-1 .3-1.6.3s-1.1-.1-1.6-.3A3 3 0 015 9.6l.8-.7z"
         />
     </svg>
-    <fast-option>Option One</fast-option>
-    <fast-option>Option Two</fast-option>
-    <fast-option>Option Three</fast-option>
-    <fast-option>Option Four</fast-option>
-</fast-select>
+    <<!-- @echo namespace -->-option>Option One</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Two</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Three</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Four</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Long list</h2>
-<fast-select id="state" name="state">
-    <fast-option value="AL">Alabama</fast-option>
-    <fast-option value="AK">Alaska</fast-option>
-    <fast-option value="AZ">Arizona</fast-option>
-    <fast-option value="AR">Arkansas</fast-option>
-    <fast-option value="CA">California</fast-option>
-    <fast-option value="CO">Colorado</fast-option>
-    <fast-option value="CT">Connecticut</fast-option>
-    <fast-option value="DE">Delaware</fast-option>
-    <fast-option value="FL">Florida</fast-option>
-    <fast-option value="GA">Georgia</fast-option>
-    <fast-option value="HI">Hawaii</fast-option>
-    <fast-option value="ID">Idaho</fast-option>
-    <fast-option value="IL">Illinois</fast-option>
-    <fast-option value="IN">Indiana</fast-option>
-    <fast-option value="IA">Iowa</fast-option>
-    <fast-option value="KS">Kansas</fast-option>
-    <fast-option value="KY">Kentucky</fast-option>
-    <fast-option value="LA">Louisiana</fast-option>
-    <fast-option value="ME">Maine</fast-option>
-    <fast-option value="MD">Maryland</fast-option>
-    <fast-option value="MA">Massachussets</fast-option>
-    <fast-option value="MI">Michigain</fast-option>
-    <fast-option value="MN">Minnesota</fast-option>
-    <fast-option value="MS">Mississippi</fast-option>
-    <fast-option value="MO">Missouri</fast-option>
-    <fast-option value="MT">Montana</fast-option>
-    <fast-option value="NE">Nebraska</fast-option>
-    <fast-option value="NV">Nevada</fast-option>
-    <fast-option value="NH">New Hampshire</fast-option>
-    <fast-option value="NJ">New Jersey</fast-option>
-    <fast-option value="NM">New Mexico</fast-option>
-    <fast-option value="NY">New York</fast-option>
-    <fast-option value="NC">North Carolina</fast-option>
-    <fast-option value="ND">North Dakota</fast-option>
-    <fast-option value="OH">Ohio</fast-option>
-    <fast-option value="OK">Oklahoma</fast-option>
-    <fast-option value="OR">Oregon</fast-option>
-    <fast-option value="PA">Pennsylvania</fast-option>
-    <fast-option value="RI">Rhode Island</fast-option>
-    <fast-option value="SC">South Carolina</fast-option>
-    <fast-option value="SD">South Dakota</fast-option>
-    <fast-option value="TX">Texas</fast-option>
-    <fast-option value="TN">Tennessee</fast-option>
-    <fast-option value="UT">Utah</fast-option>
-    <fast-option value="VT">Vermont</fast-option>
-    <fast-option value="VA">Virginia</fast-option>
-    <fast-option value="WA">Washington</fast-option>
-    <fast-option value="WI">Wisconsin</fast-option>
-    <fast-option value="WV">West Virginia</fast-option>
-    <fast-option value="WY">Wyoming</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select id="state" name="state">
+    <<!-- @echo namespace -->-option value="AL">Alabama</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="AK">Alaska</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="AZ">Arizona</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="AR">Arkansas</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="CA">California</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="CO">Colorado</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="CT">Connecticut</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="DE">Delaware</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="FL">Florida</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="GA">Georgia</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="HI">Hawaii</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="ID">Idaho</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="IL">Illinois</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="IN">Indiana</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="IA">Iowa</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="KS">Kansas</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="KY">Kentucky</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="LA">Louisiana</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="ME">Maine</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MD">Maryland</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MA">Massachussets</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MI">Michigain</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MN">Minnesota</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MS">Mississippi</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MO">Missouri</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="MT">Montana</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NE">Nebraska</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NV">Nevada</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NH">New Hampshire</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NJ">New Jersey</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NM">New Mexico</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NY">New York</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="NC">North Carolina</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="ND">North Dakota</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="OH">Ohio</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="OK">Oklahoma</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="OR">Oregon</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="PA">Pennsylvania</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="RI">Rhode Island</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="SC">South Carolina</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="SD">South Dakota</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="TX">Texas</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="TN">Tennessee</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="UT">Utah</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="VT">Vermont</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="VA">Virginia</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="WA">Washington</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="WI">Wisconsin</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="WV">West Virginia</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option value="WY">Wyoming</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Forced positions</h2>
-<fast-select position="above">
-    <fast-option>Position forced above</fast-option>
-    <fast-option>Option Two</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select position="above">
+    <<!-- @echo namespace -->-option>Position forced above</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Two</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
-<fast-select position="below">
-    <fast-option>Position forced below</fast-option>
-    <fast-option>Option Two</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select position="below">
+    <<!-- @echo namespace -->-option>Position forced below</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Option Two</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>
 
 <h2>Custom Styles</h2>
-<fast-select id="select-with-short-options" style="--design-unit: 2;">
-    <fast-option>This option is short</fast-option>
-    <fast-option>In a visual height sense</fast-option>
-    <fast-option>Not character count</fast-option>
-</fast-select>
+<<!-- @echo namespace -->-select id="select-with-short-options" style="--design-unit: 2;">
+    <<!-- @echo namespace -->-option>This option is short</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>In a visual height sense</<!-- @echo namespace -->-option>
+    <<!-- @echo namespace -->-option>Not character count</<!-- @echo namespace -->-option>
+</<!-- @echo namespace -->-select>

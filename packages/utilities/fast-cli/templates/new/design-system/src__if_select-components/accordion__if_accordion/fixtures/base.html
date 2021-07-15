@@ -1,12 +1,12 @@
 <style>
-    fast-accordion-item.disabled::part(button) {
+    <!-- @echo namespace -->-accordion-item.disabled::part(button) {
         pointer-events: none;
     }
 </style>
 <h1>Accordion</h1>
 <h2>Default</h2>
-<fast-accordion>
-    <fast-accordion-item expanded>
+<<!-- @echo namespace -->-accordion>
+    <<!-- @echo namespace -->-accordion-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -15,20 +15,20 @@
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </fast-accordion-item>
-    <fast-accordion-item expanded>
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item expanded>
         <span slot="heading">Panel two</span>
-        <fast-button tabindex="0">Button</fast-button>
-        <fast-button tabindex="0">Button</fast-button>
-    </fast-accordion-item>
-    <fast-accordion-item expanded>
+        <<!-- @echo namespace -->-button tabindex="0">Button</<!-- @echo namespace -->-button>
+        <<!-- @echo namespace -->-button tabindex="0">Button</<!-- @echo namespace -->-button>
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item expanded>
         <span slot="heading">Panel three</span>
         Panel three content
-    </fast-accordion-item>
-</fast-accordion>
+    </<!-- @echo namespace -->-accordion-item>
+</<!-- @echo namespace -->-accordion>
 <h2>Single expand</h2>
-<fast-accordion expand-mode="single">
-    <fast-accordion-item>
+<<!-- @echo namespace -->-accordion expand-mode="single">
+    <<!-- @echo namespace -->-accordion-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -37,19 +37,19 @@
         </div>
         <span slot="heading">Panel one</span>
         Panel one content
-    </fast-accordion-item>
-    <fast-accordion-item class="disabled">
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item class="disabled">
         <span slot="heading">Panel Two</span>
         Panel two content
-    </fast-accordion-item>
-    <fast-accordion-item>
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item>
         <span slot="heading">Panel three</span>
         Panel three content
-    </fast-accordion-item>
-</fast-accordion>
+    </<!-- @echo namespace -->-accordion-item>
+</<!-- @echo namespace -->-accordion>
 <h2>With disabled item</h2>
-<fast-accordion>
-    <fast-accordion-item>
+<<!-- @echo namespace -->-accordion>
+    <<!-- @echo namespace -->-accordion-item>
         <div slot="start">
             <button>1</button>
         </div>
@@ -58,8 +58,8 @@
         </div>
         <span slot="heading">Panel two</span>
         Panel one content
-    </fast-accordion-item>
-    <fast-accordion-item class="disabled">
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item class="disabled">
         <div slot="start">
             <button>1</button>
         </div>
@@ -68,8 +68,8 @@
         </div>
         <span slot="heading">Disabled</span>
         Disabled content
-    </fast-accordion-item>
-    <fast-accordion-item expanded>
+    </<!-- @echo namespace -->-accordion-item>
+    <<!-- @echo namespace -->-accordion-item expanded>
         <div slot="start">
             <button>1</button>
         </div>
@@ -78,11 +78,11 @@
         </div>
         <span slot="heading">Panel three</span>
         Panel three content
-    </fast-accordion-item>
-</fast-accordion>
+    </<!-- @echo namespace -->-accordion-item>
+</<!-- @echo namespace -->-accordion>
 <h2>Custom expanded and collapsed icons</h2>
-<fast-accordion>
-    <fast-accordion-item expanded>
+<<!-- @echo namespace -->-accordion>
+    <<!-- @echo namespace -->-accordion-item expanded>
         <span slot="heading">Panel one</span>
         <svg
             slot="collapsed-icon"
@@ -107,5 +107,5 @@
             />
         </svg>
         Panel one content
-    </fast-accordion-item>
-</fast-accordion>
+    </<!-- @echo namespace -->-accordion-item>
+</<!-- @echo namespace -->-accordion>

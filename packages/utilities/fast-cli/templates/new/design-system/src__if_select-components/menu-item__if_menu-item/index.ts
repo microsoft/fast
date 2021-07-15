@@ -6,15 +6,15 @@ import {
 import { menuItemStyles as styles } from "./menu-item.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#MenuItem} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#menuItemTemplate}
+ * A function that returns a Menu Item registration for configuring the component with a DesignSystem.
+ * Implements Menu Item
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-menu-item\>
+ * Generates HTML Element: \</* @echo namespace */-menu-item\>
  */
-export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
+export const /* @echo namespace */MenuItem = MenuItem.compose<MenuItemOptions>({
     baseName: "menu-item",
     template,
     styles,

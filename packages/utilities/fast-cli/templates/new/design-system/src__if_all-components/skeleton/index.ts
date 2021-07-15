@@ -2,15 +2,15 @@ import { Skeleton, skeletonTemplate as template } from "@microsoft/fast-foundati
 import { skeletonStyles as styles } from "./skeleton.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Skeleton} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#skeletonTemplate}
+ * A function that returns a Skeleton registration for configuring the component with a DesignSystem.
+ * Implements Skeleton
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-skeleton\>
+ * Generates HTML Element: \</* @echo namespace */-skeleton\>
  */
-export const fastSkeleton = Skeleton.compose({
+export const /* @echo namespace */Skeleton = Skeleton.compose({
     baseName: "skeleton",
     template,
     styles,

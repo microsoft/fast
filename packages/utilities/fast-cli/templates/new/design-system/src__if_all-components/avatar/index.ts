@@ -53,15 +53,14 @@ export const imgTemplate = html<Avatar>`
 `;
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Avatar} registration for configuring the component with a DesignSystem.
- *  {@link @microsoft/fast-foundation#AvatarTemplate}
- *
+ * A function that returns a Avatar registration for configuring the component with a DesignSystem.
+ * Implements Avatar
  *
  * @public
  * @remarks
  * Generates HTML Element: \<fast-avatar\>
  */
-export const fastAvatar = Avatar.compose<AvatarOptions>({
+export const /* @echo namespace*/Avatar = Avatar.compose<AvatarOptions>({
     baseName: "avatar",
     template,
     styles,

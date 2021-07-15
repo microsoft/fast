@@ -2,15 +2,15 @@ import { Dialog, dialogTemplate as template } from "@microsoft/fast-foundation";
 import { dialogStyles as styles } from "./dialog.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Dialog} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#dialogTemplate}
+ * A function that returns a Dialog registration for configuring the component with a DesignSystem.
+ * Implements Dialog
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-dialog\>
+ * Generates HTML Element: \</* @echo namespace */-dialog\>
  */
-export const fastDialog = Dialog.compose({
+export const /* @echo namespace */Dialog = Dialog.compose({
     baseName: "dialog",
     template,
     styles,

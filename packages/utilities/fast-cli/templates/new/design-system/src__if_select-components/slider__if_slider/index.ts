@@ -6,15 +6,15 @@ import {
 import { sliderStyles as styles } from "./slider.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Slider} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#sliderTemplate}
+ * A function that returns a Slider registration for configuring the component with a DesignSystem.
+ * Implements Slider
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-slider\>
+ * Generates HTML Element: \</* @echo namespace */-slider\>
  */
-export const fastSlider = Slider.compose<SliderOptions>({
+export const /* @echo namespace */Slider = Slider.compose<SliderOptions>({
     baseName: "slider",
     template,
     styles,

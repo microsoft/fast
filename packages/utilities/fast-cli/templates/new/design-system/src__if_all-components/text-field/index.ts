@@ -38,17 +38,17 @@ export class TextField extends FoundationTextField {
 }
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#TextField} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#textFieldTemplate}
+ * A function that returns a Text Fields registration for configuring the component with a DesignSystem.
+ * Implements Text Fields
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-field\>
+ * Generates HTML Element: \</* @echo namespace */-text-field\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastTextField = TextField.compose({
+export const /* @echo namespace */TextField = TextField.compose({
     baseName: "text-field",
     template,
     styles,

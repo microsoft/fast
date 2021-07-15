@@ -1,0 +1,16 @@
+import { html } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import type { <%= _.upperFirst(name) %> } from "./<%= name %>";
+import type { ElementDefinitionContext } from "@microsoft/fast-foundation";
+import type { FoundationElementDefinition } from "@microsoft/fast-foundation";
+
+export const <%= name %>Template: (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+) => ViewTemplate<<%= _.upperFirst(name) %>> = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+) =>
+  html`
+    <slot></slot>
+  `;

@@ -6,16 +6,16 @@ import {
 import { treeItemStyles as styles } from "./tree-item.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#TreeItem} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#treeItemTemplate}
+ * A function that returns a Tree Item registration for configuring the component with a DesignSystem.
+ * Implements Tree Item
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tree-item\>
+ * Generates HTML Element: \ /* @echo namespace */-tree-item\>
  *
  */
-export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
+export const /* @echo namespace */TreeItem = TreeItem.compose<TreeItemOptions>({
     baseName: "tree-item",
     template,
     styles,

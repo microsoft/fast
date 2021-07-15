@@ -38,17 +38,17 @@ export class TextArea extends FoundationTextArea {
 }
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#TextArea} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#textAreaTemplate}
+ * A function that returns a Text Area registration for configuring the component with a DesignSystem.
+ * Implements Text Area
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-area\>
+ * Generates HTML Element: \</* @echo namespace */-text-area\>
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastTextArea = TextArea.compose({
+export const /* @echo namespace */TextArea = TextArea.compose({
     baseName: "text-area",
     template,
     styles,
