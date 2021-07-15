@@ -8,10 +8,7 @@ import {
 } from "../message-system";
 import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
 import { MessageSystemSchemaDictionaryTypeAction } from "../message-system/message-system.utilities.props";
-import {
-    MonacoAdapter,
-    monacoAdapterId,
-} from "./monaco-adapter.service";
+import { MonacoAdapter, monacoAdapterId } from "./monaco-adapter.service";
 import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
