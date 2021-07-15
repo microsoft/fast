@@ -61,6 +61,15 @@
                     "required": false
                 },
                 {
+                    "name": "horizontal-viewport-lock",
+                    "title": "Horizontal viewport lock",
+                    "description":
+                        "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
                     "name": "horizontal-threshold",
                     "title": "Horizontal threshold",
                     "description":
@@ -105,6 +114,15 @@
                     "title": "Vertical inset",
                     "description":
                         "Determines whether the region should overlap the anchor on the vertical axis",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "vertical-viewport-lock",
+                    "title": "Vertical viewport lock",
+                    "description":
+                        "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis",
                     "type": "boolean",
                     "default": false,
                     "required": false

@@ -243,23 +243,23 @@ export class Tooltip extends FoundationElement {
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
-        this.classList.toggle("top", this.region.verticalPosition === "top");
-        this.classList.toggle("bottom", this.region.verticalPosition === "bottom");
-        this.classList.toggle("inset-top", this.region.verticalPosition === "insetTop");
+        this.classList.toggle("top", this.region.verticalPosition === "start");
+        this.classList.toggle("bottom", this.region.verticalPosition === "end");
+        this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
         this.classList.toggle(
             "inset-bottom",
-            this.region.verticalPosition === "insetBottom"
+            this.region.verticalPosition === "insetEnd"
         );
 
-        this.classList.toggle("left", this.region.horizontalPosition === "left");
-        this.classList.toggle("right", this.region.horizontalPosition === "right");
+        this.classList.toggle("left", this.region.horizontalPosition === "start");
+        this.classList.toggle("right", this.region.horizontalPosition === "end");
         this.classList.toggle(
             "inset-left",
-            this.region.horizontalPosition === "insetLeft"
+            this.region.horizontalPosition === "insetStart"
         );
         this.classList.toggle(
             "inset-right",
-            this.region.horizontalPosition === "insetRight"
+            this.region.horizontalPosition === "insetEnd"
         );
     };
 
