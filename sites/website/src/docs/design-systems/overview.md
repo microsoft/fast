@@ -13,7 +13,7 @@ FAST helps by both providing a highly configurable design system that you can dr
 
 ## A highly configurable design system
 
-[FAST Frame](/docs/design-systems/fast-frame) is the name of our highly configurable design system. It's made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the exported [Design Tokens](docs/design-systems/design-tokens), element templates and styles can be augmented or overridden, and shadow roots can be opened or closed as necessary for your application. If you’re looking to get up and running with FAST Web Components and the FAST Frame design system, [start here.](/docs/design-systems/fast-frame).
+[FAST Frame](/docs/design-systems/fast-frame) is the name of our highly configurable design system. It's made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the exported [Design Tokens](docs/design-systems/design-tokens), element templates and styles can be augmented or overridden, and shadow roots can be opened or closed as necessary for your application. If you’re looking to get up and running with FAST Web Components and the FAST Frame design system, [start here](/docs/design-systems/fast-frame).
 
 ## Creating your own design system
 

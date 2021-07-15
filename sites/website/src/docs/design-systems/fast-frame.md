@@ -5,36 +5,40 @@ sidebar_label: FAST Frame
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
 
-FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a collection of highly configurable Web Components, Design Tokens, stylesheets, and styling tools.
+FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@microsoft/fast-components)) is a highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. You can drop it into any app to start with a robust component library and an adaptive and accessible UI system immediately.
 
 ## Using FAST Frame Components
 
 ### Create a `DesignSystem`
 
-Web components from FAST Frame must be registered with a `DesignSystem` prior to being used in HTML. To create a `DesignSystem`, import the factory from `@microsoft/fast-foundation` and create the instances:
+Web components from FAST Frame must be registered with the `DesignSystem` prior to being used in HTML. To set up the `DesignSystem`, import the DesignSystem gateway from `@microsoft/fast-foundation` and request an instance of the system:
 
 ```ts
 import { DesignSystem  } from "@microsoft/fast-foundation";
-const designSystem = DesignSystem.getOrCreate()
+
+const designSystem = DesignSystem.getOrCreate();
 ```
 
 ### Register Components
 
-With the Design System created, registration of components is easy. Simply import the registration of the component you want to use from `@microsoft/fast-components` and register it with the Design System:
+With the Design System in hand, registration of components is easy. Simply import the registrations of the components you want to use from `@microsoft/fast-components` and register them with the Design System:
 
 
 ```ts
 // ...
-import { fastButton } from "@microsoft/fast-components";
+import { fastButton, fastMenu } from "@microsoft/fast-components";
 
 // ...
-designSystem.register(fastButton())
+designSystem.register(
+	fastButton(),
+	fastMenu()
+);
 
 ```
 
 ### Add Element to HTML
 
-Now with the above script loaded in your document, add the registered custom element to your HTML document (or template):
+Once you've registered the components as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:
 
 ```html
 <fast-button>Click me!</fast-button>
