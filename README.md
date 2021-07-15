@@ -1,4 +1,3 @@
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
 
