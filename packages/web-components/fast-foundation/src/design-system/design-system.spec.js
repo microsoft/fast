@@ -1,0 +1,209 @@
+import { expect } from "chai";
+import { DI } from "../di";
+import { uniqueElementName } from "../test-utilities/fixture";
+import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
+describe("DesignSystem", () => {
+    it("Should return the same instance for the same element", () => {
+        const host = document.createElement("div");
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.getOrCreate(host);
+        expect(ds1).to.equal(ds2);
+    });
+    it("Should find the responsible design system for an element in the hierarchy", () => {
+        const host = document.createElement("div");
+        const child = document.createElement("div");
+        host.appendChild(child);
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.responsibleFor(child);
+        expect(ds1).to.equal(ds2);
+    });
+    it("Should initialize with a default prefix of 'fast'", () => {
+        const host = document.createElement("div");
+        let prefix = "";
+        DesignSystem.getOrCreate(host).register({
+            register(container) {
+                prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+            },
+        });
+        expect(prefix).to.equal("fast");
+    });
+    it("Should initialize with a provided prefix", () => {
+        const host = document.createElement("div");
+        let prefix = "";
+        DesignSystem.getOrCreate(host)
+            .withPrefix("custom")
+            .register({
+                register(container) {
+                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                },
+            });
+        expect(prefix).to.equal("custom");
+    });
+    it("Should apply registries to the container associated with the host", () => {
+        let capturedContainer = null;
+        const host = document.createElement("div");
+        DesignSystem.getOrCreate(host).register({
+            register(container) {
+                capturedContainer = container;
+            },
+        });
+        const container = DI.getOrCreateDOMContainer(host);
+        expect(container).equals(capturedContainer);
+    });
+    it("Should provide a way for registries to define elements", () => {
+        let capturedDefine;
+        const host = document.createElement("div");
+        DesignSystem.getOrCreate(host).register({
+            register(container) {
+                capturedDefine = container.get(DesignSystemRegistrationContext)
+                    .tryDefineElement;
+            },
+        });
+        expect(capturedDefine).to.not.be.null;
+    });
+    it("Should provide a way for registries to get the default prefix", () => {
+        let capturePrefix = null;
+        const host = document.createElement("div");
+        DesignSystem.getOrCreate(host)
+            .withPrefix("custom")
+            .register({
+                register(container) {
+                    capturePrefix = container.get(DesignSystemRegistrationContext)
+                        .elementPrefix;
+                },
+            });
+        expect(capturePrefix).to.equal("custom");
+    });
+    it("Should register elements", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        expect(customElements.get(elementName)).to.be.undefined;
+        DesignSystem.getOrCreate(host).register({
+            register(container) {
+                const context = container.get(DesignSystemRegistrationContext);
+                context.tryDefineElement(elementName, customElement, x =>
+                    x.defineElement()
+                );
+            },
+        });
+        expect(customElements.get(elementName)).to.equal(customElement);
+    });
+    it("Should detect duplicate elements and allow disambiguation", () => {
+        const elementName = uniqueElementName();
+        const elementName2 = uniqueElementName();
+        const host = document.createElement("div");
+        let capturedType = null;
+        DesignSystem.getOrCreate(host)
+            .withElementDisambiguation((name, type, existingType) => {
+                capturedType = existingType;
+                return elementName2;
+            })
+            .register(
+                {
+                    register(container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => x.defineElement()
+                        );
+                    },
+                },
+                {
+                    register(container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => x.defineElement()
+                        );
+                    },
+                }
+            );
+        expect(capturedType).to.not.be.null;
+        expect(customElements.get(elementName)).to.not.be.undefined;
+        expect(customElements.get(elementName2)).to.not.be.undefined;
+    });
+    it("Should skip defining duplicate elements by default", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        const system = DesignSystem.getOrCreate(host);
+        expect(() => {
+            system.register(
+                {
+                    register(container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(elementName, customElement, x =>
+                            x.defineElement()
+                        );
+                    },
+                },
+                {
+                    register(container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => x.defineElement()
+                        );
+                    },
+                }
+            );
+        }).not.to.throw();
+        expect(customElements.get(elementName)).to.equal(customElement);
+    });
+    it("Should have an undefined shadow mode by default", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode = null;
+        DesignSystem.getOrCreate(host).register({
+            register(container) {
+                const context = container.get(DesignSystemRegistrationContext);
+                context.tryDefineElement(elementName, customElement, x => {
+                    mode = x.shadowRootMode;
+                    x.defineElement();
+                });
+            },
+        });
+        expect(mode).to.equal(undefined);
+    });
+    it("Should pass through open shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode = null;
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode("open")
+            .register({
+                register(container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+        expect(mode).to.equal("open");
+    });
+    it("Should pass through closed shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode = null;
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode("closed")
+            .register({
+                register(container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+        expect(mode).to.equal("closed");
+    });
+});

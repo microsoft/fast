@@ -1,0 +1,15 @@
+import { BezierCurve } from "./index";
+export declare const linear: BezierCurve;
+export declare const easeOut: BezierCurve;
+export declare const easeOutSmooth: BezierCurve;
+export declare const easeIn: BezierCurve;
+export declare const drillIn: BezierCurve;
+export declare const backToApp: BezierCurve;
+export declare const appToApp: BezierCurve;
+export declare const fastIn: BezierCurve;
+export declare const fastOut: BezierCurve;
+export declare const fastInOut: BezierCurve;
+export declare const exponential: BezierCurve;
+export declare const fastInFortySevenPercent: BezierCurve;
+export declare const exponentialReversed: BezierCurve;
+export declare const navPane: BezierCurve;
