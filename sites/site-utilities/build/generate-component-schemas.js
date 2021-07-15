@@ -1,5 +1,8 @@
 import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
-import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling";
+/**
+ * Node is erroring when importing from the root, therefore we are importing directly from the data-utilities folder
+ */
+import { mapWebComponentDefinitionToJSONSchema } from "@microsoft/fast-tooling/dist/esm/data-utilities";
 import fs from "fs";
 import path from "path";
 
