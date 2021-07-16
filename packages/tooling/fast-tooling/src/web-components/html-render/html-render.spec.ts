@@ -11,7 +11,7 @@ import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-con
 import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { nativeElementDefinitions } from "../../definitions";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRender, HTMLRenderOriginatorId } from "./html-render";
+import { HTMLRender, htmlRenderOriginatorId } from "./html-render";
 import { fastToolingHTMLRender } from "./";
 HTMLRender;
 HTMLRenderLayer;
@@ -154,7 +154,7 @@ xdescribe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === HTMLRenderOriginatorId &&
+                    e.data.options.originatorId === htmlRenderOriginatorId &&
                     e.data.activeDictionaryId === "root"
                 ) {
                     messageSent = true;
@@ -193,7 +193,7 @@ xdescribe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === HTMLRenderOriginatorId
+                    e.data.options.originatorId === htmlRenderOriginatorId
                 ) {
                     messageSent = e.data.activeDictionaryId;
                 }
@@ -267,7 +267,7 @@ xdescribe("HTMLRender", () => {
                     e.data.type === MessageSystemType.navigation &&
                     e.data.action === MessageSystemNavigationTypeAction.update &&
                     e.data.options &&
-                    e.data.options.originatorId === HTMLRenderOriginatorId &&
+                    e.data.options.originatorId === htmlRenderOriginatorId &&
                     e.data.activeDictionaryId === ""
                 ) {
                     messageSent = true;

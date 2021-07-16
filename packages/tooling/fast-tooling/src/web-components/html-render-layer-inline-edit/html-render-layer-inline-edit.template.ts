@@ -1,7 +1,7 @@
 import { html, ref } from "@microsoft/fast-element";
 import { HTMLRenderLayerInlineEdit } from "./html-render-layer-inline-edit";
 
-export const HTMLRenderLayerInlineEditTemplate = html<HTMLRenderLayerInlineEdit>`
+export const htmlRenderLayerInlineEditTemplate = html<HTMLRenderLayerInlineEdit>`
     <div class="edit-region">
         <textarea
             ${ref("textAreaRef")}
