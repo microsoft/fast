@@ -41,12 +41,12 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
         data-year="${x => x.year}"
         data-month="${x => x.month - 1}"
         data-day="${x => x.day}"
+        @click="${(x, c) => c.parentContext.parent.handleDateSelect(x)}"
     >
         <div class="date" part="date">
             ${(x, c) => {
                 const parent = c.parent.getLocaleDay ? c.parent : c.parentContext.parent;
-                const getLocaleDay = parent.getLocaleDay.bind(parent);
-                return getLocaleDay(x.month, x.day, x.year);
+                return parent.getLocaleDay(x.month, x.day, x.year);
             }}
         </div>
         <slot name="${x => x.month}-${x => x.day}-${x => x.year}"></slot>

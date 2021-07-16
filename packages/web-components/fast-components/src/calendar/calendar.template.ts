@@ -32,32 +32,6 @@ const getWeeks = (calendar: Calendar): CalendarDateInfo[][] =>
         );
 
 /**
- * Template for a calendar grid row including the weekday labels as a header
- */
-const FASTCalendarWeekdayTemplate: ViewTemplate<Calendar, CalendarDateInfo[]> = html`
-    <fast-calendar-grid-row
-        class="days"
-        role="row"
-        row-type="header"
-        grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
-    >
-        ${repeat(
-            (x, c) => x.getLocaleWeekDays(),
-            html`
-                <fast-calendar-grid-cell
-                    tabindex="-1"
-                    role="column-header"
-                    grid-column=${(x, c) => c.index + 1}
-                >
-                    ${CalendarWeekdayTemplate}
-                </fast-calendar-grid-cell>
-            `,
-            { positioning: true }
-        )}
-    </fast-calendar-grid-row>
-`;
-
-/**
  * template for a calendar grid row containing a week of days
  */
 const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
@@ -73,7 +47,10 @@ const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
                 <fast-calendar-grid-cell
                     tabindex="-1"
                     role="gridcell"
-                    grid-column=${(x, c) => c.index + 1}
+                    grid-column="${(x, c) => c.index + 1}"
+                    day=${x => x.day}
+                    month=${x => x.month}
+                    year=${x => x.year}
                 >
                     ${CalendarDayTemplate}
                 </fast-calendar-grid-cell>
@@ -89,8 +66,11 @@ const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
 export const FASTCalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
         ${CalendarTitleTemplate}
+        <div class="days">
+            ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
+        </div>
         <fast-calendar-grid generate-header="none">
-            ${FASTCalendarWeekdayTemplate} ${repeat(getWeeks, FASTCalendarWeekTamplate)}
+            ${repeat(getWeeks, FASTCalendarWeekTamplate)}
         </fast-calendar-grid>
     </template>
 `;

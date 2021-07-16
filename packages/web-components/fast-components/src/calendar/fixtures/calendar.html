@@ -55,7 +55,7 @@
     }
 
     #click-output.loaded {
-        background: #333;
+        background: #a33;
         transition: all ease-out 1s;
     }
 
@@ -141,31 +141,20 @@
     <div slot="1-29-2021">Second slot</div>
 </fast-calendar>
 <div class="click-out">
-    <h3>Click output:</h3>
+    <h3>Selected:</h3>
     <div id="click-output"></div>
 </div>
 <script>
-    let calendar = document.getElementById("click");
-    const calendarClick = evt => {
-        const { path } = evt;
+    let calendarSelect = document.getElementById("click");
+    const dateSelect = evt => {
+        const { day, month, year } = evt.detail;
         const output = document.getElementById("click-output");
         output.className = "";
         output.innerHTML = "";
-        for (let i = 0; i < path.length; i++) {
-            const target = path[i];
-            if (target.slot) {
-                output.innerHTML = `Clicked on a slot with text '${target.innerHTML}'`;
-                break;
-            }
-            if (target.classList?.contains("day")) {
-                const { day, month, year } = target.dataset;
-                output.innerHTML = `${parseInt(month) + 1}-${day}-${year} was clicked`;
-                break;
-            }
-        }
+        output.innerHTML = `${month}-${day}-${year} was selected`;
         setTimeout(() => (output.className = "loaded"), 1);
     };
-    calendar.addEventListener("click", calendarClick);
+    calendarSelect.addEventListener("date-select", dateSelect);
 </script>
 
 <h2>Changing calendar</h2>

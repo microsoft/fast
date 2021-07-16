@@ -1,3 +1,4 @@
+import { attr } from "@microsoft/fast-element";
 import {
     Calendar,
     DataGrid,
@@ -7,6 +8,7 @@ import {
     dataGridRowTemplate,
     dataGridTemplate,
 } from "@microsoft/fast-foundation";
+import { keyCodeEnter, keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { FASTCalendarTemplate as template } from "./calendar.template";
 import { CalendarStyles as styles } from "./calendar.styles";
 
@@ -47,10 +49,49 @@ export const fastCalendarGridRow = DataGridRow.compose({
     template: dataGridRowTemplate,
 });
 
+export class CalendarGridCell extends DataGridCell {
+    /**
+     * Day of the date cell that this wraps
+     * @public
+     */
+    @attr
+    public day;
+
+    /**
+     * Month of the date cell that this wraps
+     * @public
+     */
+    @attr
+    public month;
+
+    /**
+     * Year of the date cell that this wraps
+     * @public
+     */
+    @attr
+    public year;
+
+    /**
+     *
+     * @param e - keyboard event
+     * Emits a date selection if the user hit either the enter or space keys
+     */
+    public handleKeydown(e: KeyboardEvent): void {
+        if (e.keyCode === keyCodeEnter || e.keyCode === keyCodeSpace) {
+            (this as any).$emit("date-select", {
+                day: this.day,
+                month: this.month,
+                year: this.year,
+            });
+        }
+        super.handleKeydown(e);
+    }
+}
+
 /**
  * Custom grid cell component for the calendar component
  */
-export const fastCalendarGridCell = DataGridCell.compose({
+export const fastCalendarGridCell = CalendarGridCell.compose({
     baseName: "calendar-grid-cell",
     template: dataGridCellTemplate,
 });

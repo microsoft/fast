@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -256,5 +256,15 @@ export class Calendar extends FoundationElement {
         }
 
         return days;
+    }
+
+    /**
+     *
+     * @param date - Date cell
+     *
+     * Emits the "date-select" event with the day, month and year.
+     */
+    public handleDateSelect(day?: any): void {
+        (this as FASTElement).$emit("date-select", day);
     }
 }
