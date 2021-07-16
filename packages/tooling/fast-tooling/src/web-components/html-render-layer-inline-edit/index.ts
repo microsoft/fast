@@ -1,5 +1,5 @@
 import { HTMLRenderLayerInlineEdit } from "./html-render-layer-inline-edit";
-import { HTMLRenderLayerInlineEditTemplate as template } from "./html-render-layer-inline-edit.template";
+import { htmlRenderLayerInlineEditTemplate as template } from "./html-render-layer-inline-edit.template";
 import { htmlRenderLayerInlineEditStyles as styles } from "./html-render-layer-inline-edit.style";
 
 /**

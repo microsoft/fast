@@ -1,4 +1,4 @@
-import { CSSLayoutTemplate as template } from "./css-layout.template";
+import { cssLayoutTemplate as template } from "./css-layout.template";
 import { cssLayoutStyles as styles } from "./css-layout.styles";
 import { CSSLayout } from "./css-layout";
 

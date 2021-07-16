@@ -1,5 +1,5 @@
 import { HTMLRenderLayerNavigation } from "./html-render-layer-navigation";
-import { HTMLRenderLayerNavigationTemplate as template } from "./html-render-layer-navigation.template";
+import { htmlRenderLayerNavigationTemplate as template } from "./html-render-layer-navigation.template";
 import { htmlRenderLayerNavigationStyles as styles } from "./html-render-layer-navigation.style";
 
 /**

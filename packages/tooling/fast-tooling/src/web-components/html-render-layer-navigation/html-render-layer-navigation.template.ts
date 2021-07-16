@@ -2,7 +2,7 @@ import { html, ViewTemplate } from "@microsoft/fast-element";
 import { ElementDefinitionContext } from "@microsoft/fast-foundation";
 import { HTMLRenderLayerNavigation } from "./html-render-layer-navigation";
 
-export const HTMLRenderLayerNavigationTemplate: (
+export const htmlRenderLayerNavigationTemplate: (
     context: ElementDefinitionContext
 ) => ViewTemplate<HTMLRenderLayerNavigation> = context => {
     return html`
