@@ -24,16 +24,18 @@
 
     <h2>Custom menu</h2>
     <fast-picker
-        no-suggestions-text="No suggestions available"
-        suggestions-available-text="Suggestions available"
-        loading-text="Loading"
-        label="Select people"
+        default-selection=""
+        selection=""
+        options="apples,oranges,bananas,pears,strawberries"
+        label="Select some things"
     >
-        <fast-picker-menu id="custom-menu" slot="menu-region">
-            <button slot="header-region" role="listitem" tabindex="-1">pre-option</button>
-            <button slot="footer-region" role="listitem" tabindex="-1">
+        <fast-picker-menu id="custom-menu">
+            <fast-picker-menu-option slot="header-region">
+                pre-option
+            </fast-picker-menu-option>
+            <fast-picker-menu-option slot="footer-region">
                 post-option
-            </button>
+            </fast-picker-menu-option>
         </fast-picker-menu>
     </fast-picker>
 

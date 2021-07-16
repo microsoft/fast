@@ -13,7 +13,6 @@ const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
  * @public
  */
 export class PickerListItem extends FoundationElement {
-
     /**
      * The underlying string value of the item
      *
@@ -25,7 +24,7 @@ export class PickerListItem extends FoundationElement {
     public value: string;
 
     /**
-     * 
+     *
      *
      * @public
      */

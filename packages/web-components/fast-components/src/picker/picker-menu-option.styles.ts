@@ -31,4 +31,44 @@ export const pickerMenuOptionStyles: (
 ) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => css``.withBehaviors(forcedColorsStylesheetBehavior(css``));
+) =>
+    css`
+:host {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    font-family: ${bodyFont};
+    border-radius: calc(${controlCornerRadius} * 1px);
+    border: calc(${focusStrokeWidth} * 1px) solid transparent;
+    box-sizing: border-box;
+    color: ${neutralForegroundRest};
+    cursor: pointer;
+    fill: currentcolor;
+    font-size: ${typeRampBaseFontSize};
+    min-height: calc(${heightNumber} * 1px);
+    line-height: ${typeRampBaseLineHeight};
+    margin: 0 calc(${designUnit} * 1px);
+    outline: none;
+    overflow: hidden;
+    padding: 0 calc(${designUnit} * 2.25px);
+    user-select: none;
+    white-space: nowrap;
+}
+
+:host(:${focusVisible}[role="listitem"]) {
+    border-color: ${focusStrokeOuter};
+    background: ${neutralLayer3};
+    color: ${neutralForegroundRest};
+}
+
+:host(:hover) {
+    background: ${neutralLayer3};
+    color: ${neutralForegroundRest};
+}
+
+:host([aria-selected="true"]) {
+    background: ${accentFillActive};
+    color: ${foregroundOnAccentActive};
+}
+
+`.withBehaviors(forcedColorsStylesheetBehavior(css``));

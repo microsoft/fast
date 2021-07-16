@@ -10,7 +10,7 @@ export const pickerMenuTemplate: (context, definition) => ViewTemplate<PickerMen
     definition
 ) => {
     return html<PickerMenu>`
-        <template role="list">
+        <template role="list" slot="menu-region">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">
                     <slot name="header-region" ${slotted("headerElements")}></slot>

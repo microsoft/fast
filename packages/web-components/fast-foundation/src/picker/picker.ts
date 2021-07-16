@@ -194,7 +194,7 @@ export class Picker extends FoundationElement {
     public activeMenuOptionTemplate?: ViewTemplate;
 
     /**
-     * 
+     *
      *
      * @public
      */
@@ -202,7 +202,7 @@ export class Picker extends FoundationElement {
     public listItemContentsTemplate: ViewTemplate;
 
     /**
-     * 
+     *
      *
      * @public
      */
@@ -387,7 +387,6 @@ export class Picker extends FoundationElement {
 
         if (this.menuElement === undefined) {
             this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
-            this.menuElement.slot = "menu-region";
             this.appendChild(this.menuElement);
         }
 

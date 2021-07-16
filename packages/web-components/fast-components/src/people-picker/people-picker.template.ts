@@ -7,11 +7,11 @@ const itemContentsTemplate: ViewTemplate = html`
 `;
 
 const optionContentsTemplate: ViewTemplate = html`
-        <mgt-person
-            user-id="${x => x.value}"
-            view="twoLines"
-            line2-property="jobTitle"
-        ></mgt-person>
+    <mgt-person
+        user-id="${x => x.value}"
+        view="twoLines"
+        line2-property="jobTitle"
+    ></mgt-person>
 `;
 
 /**
