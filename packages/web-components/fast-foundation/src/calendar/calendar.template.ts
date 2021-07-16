@@ -8,11 +8,15 @@ import type { Calendar, CalendarDateInfo } from "./calendar";
  * @public
  */
 export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
-    <div class="title" part="title">
-        ${startTemplate}
-        <slot></slot>
-        ${x => x.getLocaleMonth()} ${x => x.getLocaleYear()} ${endTemplate}
-    </div>
+    <slot name="title">
+        <div class="title" part="title">
+            ${startTemplate}
+            <slot></slot>
+            <span part="title-year">${x => x.getLocaleMonth()}</span>
+            <span part="title-month">${x => x.getLocaleYear()}</span>
+            ${endTemplate}
+        </div>
+    </slot>
 `;
 
 /**
@@ -20,7 +24,7 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
  * @public
  */
 export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
-    <div class="week-day">${x => x}</div>
+    <div class="week-day" part="week-day">${x => x}</div>
 `;
 
 /**
@@ -43,7 +47,13 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
         data-day="${x => x.day}"
         @click="${(x, c) => c.parentContext.parent.handleDateSelect(x)}"
     >
-        <div class="date" part="date">
+        <div
+            class="date"
+            part="${(x, c) => {
+                const isToday = c.parent.isToday || c.parentContext.parent.isToday;
+                return !!isToday(x.year, x.month, x.day) ? `today` : `date`;
+            }}"
+        >
             ${(x, c) => {
                 const parent = c.parent.getLocaleDay ? c.parent : c.parentContext.parent;
                 return parent.getLocaleDay(x.month, x.day, x.year);
@@ -60,8 +70,10 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
 export const CalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
         ${CalendarTitleTemplate}
-        <div class="days">
+        <div class="week-days" part="week-days">
             ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
+        </div>
+        <div class="days" part="days">
             ${repeat(x => x.getDays(), CalendarDayTemplate)}
         </div>
     </template>

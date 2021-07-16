@@ -14,25 +14,105 @@
         width: 1000px;
     }
 
+    /*
+        Custom calendar, blue and orange theme with borders
+    */
     .borders {
+        width: 700px;
+        --cell-height: 100px;
         --cell-border: 1px solid #666;
         --weekday-background: #024;
         --weekday-color: #fff;
-        --current-day: orange;
+        --current-day-color: orange;
         --current-day-border: 1px solid;
-        color: lightskyblue;
         --inactive-day-color: transparent;
-        text-align: center;
-        width: 700px;
-        --cell-height: 100px;
     }
 
-    .borders::part(days) {
+    .borders::part(date),
+    .borders::part(today) {
+        color: lightskyblue;
+        text-align: center;
+    }
+
+    .borders::part(day) {
         background: #222;
+        transition: all 0.5s linear;
+    }
+
+    .borders::part(day):hover {
+        background: #000;
+        cursor: pointer;
     }
 
     .borders::part(title) {
         color: orange;
+    }
+
+    /*
+        Custom calendar with circle backgrounds for the days
+    */
+    .borders2 {
+        width: 420px;
+        --cell-height: 60px;
+    }
+
+    .borders2::part(title) {
+        font-size: 70px;
+        letter-spacing: -8px;
+        text-align: right;
+        margin: 0 10px -50px 0;
+        color: #222;
+    }
+
+    .borders2::part(week-day) {
+        color: purple;
+        font-size: 2em;
+    }
+
+    .borders2::part(date),
+    .borders2::part(today) {
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background: #333;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .borders2::part(today) {
+        background: purple;
+        margin: auto;
+        color: #fff;
+    }
+
+    .borders2::part(date):hover,
+    .borders2::part(today):hover {
+        background: #fff;
+        color: purple;
+    }
+
+    .borders3 {
+        width: 420px;
+        --cell-border: 1px dashed #666;
+        --cell-height: 60px;
+        --current-day-color: #0f0;
+    }
+
+    .borders3::part(week-day) {
+        background: #080;
+    }
+
+    .borders3::part(date),
+    .borders3::part(today) {
+        text-align: center;
+        line-height: 50px;
+    }
+
+    .borders3::part(week):hover {
+        background: #030;
+        cursor: pointer;
     }
 
     .light-borders {
@@ -94,6 +174,16 @@
     #year fast-calendar::part(title) {
         color: #fff;
     }
+
+    #year fast-calendar::part(today) {
+        background: #da1a5f;
+        color: #fff;
+        border-radius: 50%;
+        text-align: center;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+    }
 </style>
 <script>
     const bindScript = (id, script) => {
@@ -119,8 +209,10 @@
     weekdayFormat="narrow"
 ></fast-calendar>
 
-<h2>With borders</h2>
+<h2>With borders, font colors and background colors</h2>
 <fast-calendar class="borders"></fast-calendar>
+<fast-calendar class="borders2" weekdayFormat="narrow"></fast-calendar>
+<fast-calendar class="borders3" weekdayFormat="narrow"></fast-calendar>
 
 <h2>Calendar with events</h2>
 <fast-calendar class="events light-borders" month="1" year="2021">

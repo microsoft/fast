@@ -37,6 +37,7 @@ const getWeeks = (calendar: Calendar): CalendarDateInfo[][] =>
 const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
     <fast-calendar-grid-row
         class="days"
+        part="week"
         role="row"
         row-type="default"
         grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
@@ -66,7 +67,7 @@ const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
 export const FASTCalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
         ${CalendarTitleTemplate}
-        <div class="days">
+        <div class="week-days" part="week-days">
             ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
         </div>
         <fast-calendar-grid generate-header="none">

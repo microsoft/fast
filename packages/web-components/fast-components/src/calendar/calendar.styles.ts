@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles/index";
-import { accentForegroundActive, neutralForegroundRest } from "../design-tokens";
+import { accentForegroundActive } from "../design-tokens";
 
 /**
  * Styles used by the calendar title and contents
@@ -10,13 +10,8 @@ import { accentForegroundActive, neutralForegroundRest } from "../design-tokens"
  */
 export const CalendarStyles = css`
     ${display("block")} :host {
-        --cell-border: none;
         --cell-height: calc(${heightNumber} * 1px);
-        --weekday-background: transparent;
-        --weekday-color: inherit;
-        --current-day: ${accentForegroundActive};
-        --current-day-border: none;
-        --current-day-background: none;
+        --current-day-color: ${accentForegroundActive};
         --inactive-day-color: ${SystemColors.GrayText};
     }
 
@@ -24,6 +19,12 @@ export const CalendarStyles = css`
         border-left: var(--cell-border);
         display: grid;
         grid-template-columns: repeat(7, 1fr);
+    }
+
+    .week-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border-bottom: var(--cell-border);
     }
 
     .title {
@@ -34,7 +35,6 @@ export const CalendarStyles = css`
 
     .week-day {
         background-color: var(--weekday-background);
-        border-bottom: var(--cell-border);
         color: var(--weekday-color);
         padding: 5px 0;
         text-align: center;
@@ -52,11 +52,12 @@ export const CalendarStyles = css`
 
     .day.off {
         color: var(--inactive-day-color);
+        background: var(--inactive-day-background);
     }
 
     .today {
         background: var(--current-day-background);
-        color: var(--current-day);
+        color: var(--current-day-color);
         outline: var(--current-day-border);
         outline-offset: -1px;
     }
