@@ -238,6 +238,7 @@ The current base recipes are closely related to their algorithm, but that's a co
 Recipes are currently used for color values, but they are not limited to that and their usage will be expanded soon.
 
 **To better visualize how this works, FAST built an application specificity for exploring the system. Check out [the Color Explorer.](https://color.fast.design/)**
+
 #### Common functionality
 
 Most color recipes are based on a `palette`. Currently `fast-components` has built-in support for `accent` and `neutral` palettes.
@@ -325,6 +326,7 @@ Stateful.
 Used for strong outline, either alone or with a fill.
 
 #### Layers
+
 The layer recipes are used for different sections of an app or site. They are designed to be able to stack, but that is not required. When stacked in sequence, the layers will lighten on top of each other.
 
 The key feature of layering is to support the primary container color for light or dark mode. This produces absolute colors based on the `baseLayerLuminance` value, which sets the luminance for layer one. This is any value between 0 for black or 1 for white.
