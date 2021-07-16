@@ -22,5 +22,6 @@ export const breadcrumbStyles: (
 
     .list {
         display: flex;
+        flex-wrap: wrap;
     }
 `;
