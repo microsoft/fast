@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import "../../__tests__/mocks/match-media";
 import { configure, mount, shallow } from "enzyme";
 import { StandardControlTemplate } from "./template.control.standard";
 import { StandardControlTemplateProps } from "./template.control.standard.props";

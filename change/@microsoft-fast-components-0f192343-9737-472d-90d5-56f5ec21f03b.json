@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "correct names for typography tokens",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

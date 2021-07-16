@@ -21,6 +21,8 @@ As defined by the W3C:
 
 - **Focus management:** In all circumstances, focus should move to an element contained in the dialog. Per the W3C, "Unless a condition where doing otherwise is advisable, focus is initially set on the *first* focusable element" (emphasis mine). If an element within the dialog is set to be focused by an app author, our control should not override that behavior. In both modal and non-modal dialogs, tab focus should remain within the dialog content region and not move outside it. When the dialog is closed, users may also want a way to return focus to the element which invoked the dialog.
 
+Web components complicate the dialog focus queue implementation as the typical methods of identifying tabbable elements (ie. using [tabbable](https://github.com/focus-trap/tabbable)) does not necessarily recognize custom elements. Authors may be able to work around this by assigning a tabindex of '0' to elements.  The dialog should, however, be able to correctly identify Fast based web components without this.  Additionally, tabbable elements within the shadow dom of a web component will not be recognized as being part of the dialog's tab queue.  A workaround for this case could be for authors to ensure such components are not the first or last elements of a dialog internal tab queue.  These issues are being actively investigated. 
+
 ### Prior Art/Examples
 - [FAST Dialog (React)](https://www.npmjs.com/package/@microsoft/fast-components-react-msft)
 - [Material UI](https://material-ui.com/components/dialogs/)

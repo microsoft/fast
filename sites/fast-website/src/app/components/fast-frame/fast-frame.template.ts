@@ -1,4 +1,4 @@
-import { html, repeat } from "@microsoft/fast-element";
+import { html, ref, repeat } from "@microsoft/fast-element";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
@@ -213,7 +213,10 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
             </fast-tabs>
-            <div class="${x => (x.expanded ? "preview preview-expanded" : "preview")}">
+            <div
+                ${ref("preview")}
+                class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
+            >
                 <div class="responsive-expand-flipper">
                     <fast-flipper
                         direction="${x => (x.expanded ? "next" : "previous")}"

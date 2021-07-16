@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-animation
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Thu, 08 Jul 2021 07:17:00 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 4.1.4
+
+Thu, 08 Jul 2021 07:17:00 GMT
+
+### Patches
+
+- update css-loader, mini-css-extract-plugin, and postcss-loader in fast-animation (john.kreitlow@microsoft.com)
 
 ## [4.1.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-animation@4.1.1...@microsoft/fast-animation@4.1.3) (2021-02-08)
 

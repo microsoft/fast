@@ -1062,6 +1062,9 @@ export const toolbarStyles: (context: import("@microsoft/fast-foundation").Eleme
 
 export { Tooltip }
 
+// @public
+export const tooltipStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
 export { TreeItem }
 
 // @public
