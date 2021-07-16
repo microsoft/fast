@@ -5,6 +5,7 @@ import {
     fastBadgeExample,
     fastButtonExample,
     fastCardExample,
+    fastCheckboxExample,
     fastDialogExample,
     fastDividerExample,
     fastFlipperExample,
@@ -82,7 +83,7 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
         [fastComponentSchemas[fastCheckboxTag].$id]: {
             displayName: fastComponentSchemas[fastCheckboxTag].title,
             schema: fastComponentSchemas[fastCheckboxTag],
-            example: fastCardExample,
+            example: fastCheckboxExample,
         },
         [fastComponentSchemas[fastDialogTag].$id]: {
             displayName: fastComponentSchemas[fastDialogTag].title,

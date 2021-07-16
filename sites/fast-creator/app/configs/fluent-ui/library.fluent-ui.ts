@@ -5,6 +5,7 @@ import {
     fluentBadgeExample,
     fluentButtonExample,
     fluentCardExample,
+    fluentCheckboxExample,
     fluentDialogExample,
     fluentDividerExample,
     fluentFlipperExample,
@@ -47,7 +48,7 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
-import { registerFASTComponents } from "./library.fluent-ui.registry";
+import { registerFluentUIComponents } from "./library.fluent-ui.registry";
 export const fluentUIComponentId = "fluent-ui-components";
 
 export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
@@ -57,7 +58,7 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     import: async () => {
         await import("./library.fluent-ui.import");
     },
-    register: registerFASTComponents,
+    register: registerFluentUIComponents,
     componentDictionary: {
         [fluentUIComponentSchemas[fluentAnchorTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentAnchorTag].title,
@@ -82,7 +83,7 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
         [fluentUIComponentSchemas[fluentCheckboxTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentCheckboxTag].title,
             schema: fluentUIComponentSchemas[fluentCheckboxTag],
-            example: fluentCardExample,
+            example: fluentCheckboxExample,
         },
         [fluentUIComponentSchemas[fluentDialogTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentDialogTag].title,

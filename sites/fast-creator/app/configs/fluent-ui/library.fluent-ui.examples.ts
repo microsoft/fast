@@ -1,6 +1,11 @@
 import { fluentUIComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import { uniqueId } from "lodash-es";
 import {
+    heading2Example,
+    imageExample,
+    paragraphExample,
+} from "../native/library.native.examples";
+import {
     fluentAnchorTag,
     fluentBadgeTag,
     fluentButtonTag,
@@ -24,11 +29,6 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
-import {
-    heading2Example,
-    imageExample,
-    paragraphExample,
-} from "../native/library.native.examples";
 
 export const fluentAnchorExample = {
     schemaId: fluentUIComponentSchemas[fluentAnchorTag].id,
@@ -109,6 +109,13 @@ export const fluentCheckboxExample = {
     schemaId: fluentUIComponentSchemas[fluentCheckboxTag].id,
     data: {},
     dataLocation: "Slot",
+    linkedData: [
+        {
+            schemaId: textSchema.id,
+            data: "Lorem ipsum",
+            dataLocation: "Slot",
+        },
+    ],
 };
 export const fluentDialogExample = {
     schemaId: fluentUIComponentSchemas[fluentDialogTag].id,

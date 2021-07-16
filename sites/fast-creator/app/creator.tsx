@@ -207,6 +207,7 @@ class Creator extends Editor<{}, CreatorState> {
                 },
                 defaultElementDataId,
             ],
+            schemaDictionary: nativeElementExtendedSchemas,
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
             displayMode: DisplayMode.interactive,
@@ -504,6 +505,10 @@ class Creator extends Editor<{}, CreatorState> {
             if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
+        }
+
+        if (e.data.type === MessageSystemType.schemaDictionary) {
+            updatedState.schemaDictionary = e.data.schemaDictionary;
         }
 
         this.setState(updatedState as CreatorState);

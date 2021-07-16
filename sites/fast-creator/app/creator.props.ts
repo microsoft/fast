@@ -1,6 +1,6 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { DataDictionary } from "@microsoft/fast-tooling";
+import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { DisplayMode } from "./utilities/shared";
 
@@ -109,6 +109,11 @@ export interface ProjectFile {
      * The dictionary of data
      */
     dataDictionary: DataDictionary<unknown>;
+
+    /**
+     * The schema dictionary
+     */
+    schemaDictionary: SchemaDictionary;
 
     /**
      * Preview background transparency

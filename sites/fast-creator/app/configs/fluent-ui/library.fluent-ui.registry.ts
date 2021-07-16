@@ -1,92 +1,13 @@
 import { DesignSystem } from "@microsoft/fast-foundation";
-import {
-    fluentAccordion,
-    fluentAccordionItem,
-    fluentAnchor,
-    fluentAnchoredRegion,
-    fluentBadge,
-    fluentBreadcrumb,
-    fluentBreadcrumbItem,
-    fluentButton,
-    fluentCard,
-    fluentCheckbox,
-    fluentCombobox,
-    fluentDataGrid,
-    fluentDataGridCell,
-    fluentDataGridRow,
-    fluentDialog,
-    fluentDivider,
-    fluentFlipper,
-    fluentHorizontalScroll,
-    fluentListbox,
-    fluentMenu,
-    fluentMenuItem,
-    fluentNumberField,
-    fluentOption,
-    fluentProgress,
-    fluentProgressRing,
-    fluentRadio,
-    fluentRadioGroup,
-    fluentSelect,
-    fluentSkeleton,
-    fluentSlider,
-    fluentSliderLabel,
-    fluentSwitch,
-    fluentTab,
-    fluentTabPanel,
-    fluentTabs,
-    fluentTextArea,
-    fluentTextField,
-    fluentTooltip,
-    fluentTreeItem,
-    fluentTreeView,
-} from "@fluentui/web-components"; // TODO: this should use the allComponents export when it is made available
+import { allComponents } from "@fluentui/web-components";
+import { setupFluentUIComponentDesignSystem } from "./library.fluent-ui.design-system.mapping";
 
-export function registerFASTComponents(): void {
+export function registerFluentUIComponents(): void {
+    setupFluentUIComponentDesignSystem(document.body);
+
     DesignSystem.getOrCreate().register(
-        [
-            fluentAccordion,
-            fluentAccordionItem,
-            fluentAnchor,
-            fluentAnchoredRegion,
-            fluentBadge,
-            fluentBreadcrumb,
-            fluentBreadcrumbItem,
-            fluentButton,
-            fluentCard,
-            fluentCheckbox,
-            fluentCombobox,
-            fluentDataGrid,
-            fluentDataGridCell,
-            fluentDataGridRow,
-            fluentDialog,
-            fluentDivider,
-            fluentFlipper,
-            fluentHorizontalScroll,
-            fluentListbox,
-            fluentMenu,
-            fluentMenuItem,
-            fluentNumberField,
-            fluentOption,
-            fluentProgress,
-            fluentProgressRing,
-            fluentRadio,
-            fluentRadioGroup,
-            fluentSelect,
-            fluentSkeleton,
-            fluentSlider,
-            fluentSliderLabel,
-            fluentSwitch,
-            fluentTab,
-            fluentTabPanel,
-            fluentTabs,
-            fluentTextArea,
-            fluentTextField,
-            fluentTooltip,
-            fluentTreeItem,
-            fluentTreeView,
-        ].map((component: () => any) => {
-            return component();
+        Object.values(allComponents).map((component: (config: any) => any) => {
+            return component({ prefix: "fluent" });
         })
     );
 }

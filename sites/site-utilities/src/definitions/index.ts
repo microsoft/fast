@@ -4,7 +4,7 @@ import {
     nativeElementExtendedDefinitions,
 } from "@microsoft/fast-tooling/dist/esm/definitions";
 import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
-import * as fluentUIComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions"; // TODO:
+import * as fluentUIComponentDefinitions from "@fluentui/web-components/dist/esm/component-definitions";
 
 const fastComponentExtendedDefinitions = extendElementDefinitions(
     fastComponentDefinitions
