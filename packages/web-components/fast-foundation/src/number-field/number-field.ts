@@ -197,7 +197,7 @@ export class NumberField extends FormAssociatedNumberField {
 
         if (value != this.value) {
             this.value = value;
-            if (this.proxy instanceof HTMLElement) {
+            if (this.proxy instanceof HTMLInputElement) {
                 this.proxy.value = this.value;
             }
             this.$emit("input");
