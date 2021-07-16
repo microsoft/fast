@@ -7,15 +7,23 @@ import { MessageSystemService } from "./message-system.service";
 
 export type shortcutsMessageSystemAction = "initialize";
 export type shortcutsMessageSystemListenerType = "keypress";
-
 export type shortcutsMessageId = "fast-tooling::shortcuts-service";
 
+/**
+ * @alpha
+ */
 export const shortcutsId: shortcutsMessageId = "fast-tooling::shortcuts-service";
 
+/**
+ * @alpha
+ */
 export interface ShortcutOptions {
     originatorId: shortcutsMessageId;
 }
 
+/**
+ * @alpha
+ */
 export interface ShortcutMessageOutgoing extends CustomMessage<{}, ShortcutOptions> {
     /**
      * The custom message id
@@ -33,6 +41,9 @@ export interface ShortcutMessageOutgoing extends CustomMessage<{}, ShortcutOptio
     shortcuts: ShortcutsActionCallbackConfig[];
 }
 
+/**
+ * @alpha
+ */
 export interface ShortcutsConfig {
     /**
      * The shortcut event listener used to attach to a DOM node
@@ -46,11 +57,20 @@ export interface ShortcutsConfig {
     eventListenerType: shortcutsMessageSystemListenerType;
 }
 
+/**
+ * @alpha
+ */
 export interface ShortcutsRegisterConfig {
     id: shortcutsMessageId;
     config: ShortcutsConfig;
 }
 
+/**
+ *
+ * @alpha
+ * @remarks
+ * A MessageSystemService to register shortcuts.
+ */
 export class Shortcuts extends MessageSystemService<
     ShortcutsActionCallbackConfig,
     ShortcutsRegisterConfig

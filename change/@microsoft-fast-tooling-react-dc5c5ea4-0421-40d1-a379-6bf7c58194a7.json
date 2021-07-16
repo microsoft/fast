@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Adding support for preview mode styles to the viewer",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "44823142+williamw2@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

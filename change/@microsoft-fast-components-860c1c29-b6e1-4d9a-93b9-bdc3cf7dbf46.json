@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update storybook from 6.1.17 to 6.3.3",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}

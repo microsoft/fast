@@ -1,8 +1,46 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.9.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.24.2 (chhol@microsoft.com)
+
+## 2.9.1
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.24.1 (44823142+williamw2@users.noreply.github.com)
+
+## 2.9.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+- Bump @microsoft/fast-tooling to v0.24.0 (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.4.0 (roeisenb@microsoft.com)
+
+## 2.8.26
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode styles to the viewer (44823142+williamw2@users.noreply.github.com)
 
 ## 2.8.25
 

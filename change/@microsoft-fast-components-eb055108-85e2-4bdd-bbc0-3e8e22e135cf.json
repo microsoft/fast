@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "breadcrumb: allow wrapping of items in the list container",
+  "packageName": "@microsoft/fast-components",
+  "email": "ben@platform5.ch",
+  "dependentChangeType": "patch"
+}

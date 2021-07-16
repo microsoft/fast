@@ -1,5 +1,6 @@
 import { configure, mount, shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import "../../../__tests__/mocks/match-media";
 import React from "react";
 import defaultStrings from "../../form.strings";
 import {

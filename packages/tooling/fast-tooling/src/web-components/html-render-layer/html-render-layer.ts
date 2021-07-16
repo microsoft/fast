@@ -18,7 +18,7 @@ export enum ActivityType {
     releaseFocus = "release",
 }
 
-export class OverylayPosition {
+export class OverlayPosition {
     public top: number;
     public left: number;
     public width: number;
@@ -60,6 +60,9 @@ export abstract class HTMLRenderLayer extends FoundationElement {
                 e.data.type === MessageSystemType.data
             ) {
                 this.dataDictionary = e.data.dataDictionary;
+                this.schemaDictionary = e.data.schemaDictionary;
+            }
+            if (e.data.type === MessageSystemType.schemaDictionary) {
                 this.schemaDictionary = e.data.schemaDictionary;
             }
         }

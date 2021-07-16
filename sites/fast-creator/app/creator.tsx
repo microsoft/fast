@@ -4,12 +4,15 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
+    fastToolingColorPicker,
+    htmlRenderOriginatorId,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
+    monacoAdapterId,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import {
     ControlConfig,
     ControlType,
@@ -36,7 +39,6 @@ import {
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     baseLayerLuminance,
@@ -55,7 +57,6 @@ import {
     StandardLuminance,
     SwatchRGB,
 } from "@microsoft/fast-components";
-import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
@@ -109,7 +110,6 @@ fillColor.setValueFor(
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const schemaDictionary: SchemaDictionary = {
-    ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
     [fastDesignTokensSchema.id]: fastDesignTokensSchema,
     [textSchema.id]: textSchema,
@@ -402,10 +402,23 @@ class Creator extends Editor<{}, CreatorState> {
         } as CustomMessageIncomingOutgoing<any>);
     };
 
-    private handleLibraryAdded = (libraryId: string) => {
-        this.setState({
-            addedLibraries: this.state.addedLibraries.concat([libraryId]),
-        });
+    private handleLibraryAdded = (libraryId: string): void => {
+        this.setState(
+            {
+                addedLibraries: this.state.addedLibraries.concat([libraryId]),
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: Object.values(
+                        elementLibraries[libraryId].componentDictionary
+                    ).map(componentDictionaryItem => {
+                        return componentDictionaryItem.schema;
+                    }),
+                });
+            }
+        );
     };
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
@@ -467,7 +480,7 @@ class Creator extends Editor<{}, CreatorState> {
                         e.data.value === "" ? this.state.dataDictionary[1] : e.data.value,
                     activeNavigationConfigId: "",
                     options: {
-                        originatorId: HTMLRenderOriginatorId,
+                        originatorId: htmlRenderOriginatorId,
                     },
                 });
             } else if (e.data.data) {
@@ -477,7 +490,7 @@ class Creator extends Editor<{}, CreatorState> {
                     data: e.data.data,
                     dataLocation: "",
                     options: {
-                        originatorId: HTMLRenderOriginatorId,
+                        originatorId: htmlRenderOriginatorId,
                     },
                 });
             }

@@ -3,6 +3,7 @@ import Foundation from "@microsoft/fast-components-foundation-react";
 import {
     DataDictionary,
     DataMessageOutgoing,
+    htmlRenderOriginatorId,
     InitializeMessageOutgoing,
     MessageSystem,
     MessageSystemNavigationTypeAction,
@@ -11,7 +12,6 @@ import {
     NavigationMessageOutgoing,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
@@ -253,7 +253,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                         if (
                             !(messageData as any).options ||
                             ((messageData as any).options as any).originatorId !==
-                                HTMLRenderOriginatorId
+                                htmlRenderOriginatorId
                         )
                             this.setState(
                                 {
@@ -262,6 +262,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                                 },
                                 this.updateDOM(messageData as MessageSystemOutgoing)
                             );
+                        break;
+                    case MessageSystemType.schemaDictionary:
+                        this.setState({
+                            schemaDictionary: (messageData as any).schemaDictionary,
+                        });
                         break;
                     case MessageSystemType.custom:
                         if (
@@ -369,7 +374,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.type === MessageSystemType.navigation &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
                 message.data.options &&
-                message.data.options.originatorId === HTMLRenderOriginatorId
+                message.data.options.originatorId === htmlRenderOriginatorId
             ) {
                 this.setState({
                     activeDictionaryId: message.data.activeDictionaryId,
@@ -386,7 +391,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 message.data.type === MessageSystemType.data &&
                 message.data.action === MessageSystemNavigationTypeAction.update &&
                 message.data.options &&
-                message.data.options.originatorId === HTMLRenderOriginatorId
+                message.data.options.originatorId === htmlRenderOriginatorId
             ) {
                 window.postMessage(
                     {

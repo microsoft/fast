@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 15 Jul 2021 01:41:48 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "extend design token type signature",
+            "author": "chhol@microsoft.com",
+            "commit": "35773aadf50b51e3d64dd8969398d2c473d437ed",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 13 Jul 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.4.0",
+      "version": "2.4.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "docs(di): make API public, stabilize, and add docs",
+            "author": "roeisenb@microsoft.com",
+            "commit": "3a9f152446a1a9e0afd6fd84c808eba46839aeeb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 07 Jul 2021 07:19:51 GMT",
       "tag": "@microsoft/fast-foundation_v2.3.0",
       "version": "2.3.0",

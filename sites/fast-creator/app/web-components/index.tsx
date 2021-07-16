@@ -2,10 +2,6 @@
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
-    fastToolingColorPicker,
-    fastToolingCSSLayout,
-} from "@microsoft/fast-tooling/dist/esm/web-components";
-import {
     fastButton,
     fastSelect,
     fastSlider,
@@ -19,20 +15,24 @@ import {
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
 import { toggleStyle } from "@microsoft/site-utilities/src/components/style";
-import { DataType, MessageSystem } from "@microsoft/fast-tooling";
+import {
+    cssLayoutCssProperties,
+    DataType,
+    fastToolingColorPicker,
+    fastToolingCSSLayout,
+    MessageSystem,
+} from "@microsoft/fast-tooling";
 import {
     ControlConfig,
     ModularForm,
     ModularNavigation,
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
-
 import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
-import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import { FormId, NavigationId } from "../creator.props";

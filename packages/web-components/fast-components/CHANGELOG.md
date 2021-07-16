@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 2.2.1
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- text-field: start/end display flex (ben@platform5.ch)
+- fix: export tooltipStyles (derekdon@protonmail.com)
 
 ## 2.2.0
 
