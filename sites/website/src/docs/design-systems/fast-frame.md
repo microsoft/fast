@@ -79,7 +79,7 @@ In this case, the element can be used in HTML using the ‘faster’:
 
 #### `DesignSystem.withShadowRootMode()`
 
-Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with an [open shadow root mode.](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
+Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with [the shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) originally specified by the component developer (typically "open", as that is both recommended and the default). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
 
 ```ts
 DesignSystem
@@ -113,7 +113,7 @@ The prefix for a component can be configured for a component registration by pro
 DesignSystem
 	.getOrCreate()
 	.register(
-		fastButton({prefix: "faster"})
+		fastButton({ prefix: "faster" })
 	);
 
 ```
@@ -126,7 +126,11 @@ To use a custom template for a component, provide a `template` field to the conf
 DesignSystem
 	.getOrCreate()
 	.register(
-		fastButton({template: html`<p>My new template</p>`})
+		fastButton({ 
+			template: html`
+				<p>A completely new template</p>
+			` 
+		})
 	)
 ```
 
@@ -138,7 +142,27 @@ Styles for a component can be configured as well, by providing a `styles` field 
 DesignSystem
 	.getOrCreate()
 	.register(
-		fastButton({styles: css`/* … */`})
+		fastButton({ 
+			styles: css`
+				/* completely replace the original styles */
+			` 
+		})
+	)
+```
+
+It's also worth noting that this can be used to simply extend the existing styles, by importing the originals and composing those with new styles. Here's what that would look like:
+
+```ts
+DesignSystem
+	.getOrCreate()
+	.register(
+		fastButton({
+			styles: css`
+				/* import and compose the original styles */
+				${buttonStyles}
+				/* add your style augmentations here */
+			`
+		})
 	)
 ```
 
@@ -150,9 +174,11 @@ Shadow options can be configured as well, including both [shadow root mode](http
 DesignSystem
 	.getOrCreate()
 	.register(
-		fastButton({ shadowOptions: {
-			 mode: "closed",
-			 delegatesFocus: true }
+		fastButton({ 
+			shadowOptions: {
+				mode: "closed",
+			 	delegatesFocus: true 
+			}
 		})
 	);
 ```
@@ -162,7 +188,6 @@ For more information on shadow options, see [Element.attachShadow()](https://dev
 ## Configuring Styles
 
 FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](/docs/design-systems/design-tokens) and an [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system).
-
 
 ### FAST Frame Design Tokens
 
