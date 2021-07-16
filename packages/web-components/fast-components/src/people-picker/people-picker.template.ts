@@ -2,30 +2,16 @@ import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Picker } from "@microsoft/fast-foundation";
 import type { PeoplePicker } from "./people-picker";
 
-const itemTemplate: ViewTemplate = html`
-    <div
-        role="listitem"
-        tabindex="0"
-        @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
-        @keydown="${(x, c) =>
-            c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
-    >
-        <mgt-person user-id="${x => x}" view="oneLine"></mgt-person>
-    </div>
+const itemContentsTemplate: ViewTemplate = html`
+    <mgt-person user-id="${x => x.value}" view="oneLine"></mgt-person>
 `;
 
-const optionTemplate: ViewTemplate = html`
-    <div
-        role="listitem"
-        tabindex="-1"
-        @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
-    >
+const optionContentsTemplate: ViewTemplate = html`
         <mgt-person
-            user-id="${x => x}"
+            user-id="${x => x.value}"
             view="twoLines"
             line2-property="jobTitle"
         ></mgt-person>
-    </div>
 `;
 
 /**
@@ -41,8 +27,8 @@ export const peoplePickerTemplate: (context, definition) => ViewTemplate<PeopleP
         <template>
            <${pickerTag}
                 ${ref("picker")}  
-                :defaultItemTemplate=${itemTemplate}
-                :defaultOptionTemplate=${optionTemplate}
+                :listItemContentsTemplate=${itemContentsTemplate}
+                :menuOptionContentsTemplate=${optionContentsTemplate}
                 :optionsList=${x => x.optionsList}
                 :showLoading=${x => x.showLoading}
                 max-selected=${x => x.maxSelected}

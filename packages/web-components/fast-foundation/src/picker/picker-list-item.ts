@@ -1,4 +1,4 @@
-import { attr, html, HTMLView, ViewTemplate } from "@microsoft/fast-element";
+import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
 const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
@@ -13,7 +13,6 @@ const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
  * @public
  */
 export class PickerListItem extends FoundationElement {
-    public contentsTemplate: ViewTemplate;
 
     /**
      * The underlying string value of the item
@@ -24,6 +23,14 @@ export class PickerListItem extends FoundationElement {
      */
     @attr({ attribute: "value" })
     public value: string;
+
+    /**
+     * 
+     *
+     * @public
+     */
+    @observable
+    public contentsTemplate: ViewTemplate;
 
     private customView: HTMLView | null = null;
     // private isActive: boolean = false;

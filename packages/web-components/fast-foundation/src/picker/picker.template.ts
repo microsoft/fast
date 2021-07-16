@@ -14,6 +14,7 @@ function createListItemTemplate(context): ViewTemplate {
         @keydown="${(x, c) =>
             c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
         value="${x => x}"
+        :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
     >
     </${pickerListItemTag}>
     `;
@@ -25,6 +26,7 @@ function createMenuOptionTemplate(context): ViewTemplate {
     <${pickerMenuOptionTag}
         @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
         value="${x => x}"
+        :contentsTemplate="${(x, c) => c.parent.menuOptionContentsTemplate}"
     >
     </${pickerMenuOptionTag}>
     `;

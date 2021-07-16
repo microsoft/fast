@@ -194,6 +194,22 @@ export class Picker extends FoundationElement {
     public activeMenuOptionTemplate?: ViewTemplate;
 
     /**
+     * 
+     *
+     * @public
+     */
+    @observable
+    public listItemContentsTemplate: ViewTemplate;
+
+    /**
+     * 
+     *
+     * @public
+     */
+    @observable
+    public menuOptionContentsTemplate: ViewTemplate;
+
+    /**
      *
      *
      * @public
