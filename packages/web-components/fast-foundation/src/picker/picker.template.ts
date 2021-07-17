@@ -54,7 +54,6 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
-            @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         >
             <slot name="list-region"></slot>
 

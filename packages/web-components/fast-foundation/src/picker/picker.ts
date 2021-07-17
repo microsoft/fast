@@ -656,16 +656,6 @@ export class Picker extends FoundationElement {
         return true;
     };
 
-    public handleClick = (e: MouseEvent): boolean => {
-        if (e.defaultPrevented) {
-            return false;
-        }
-        if (this.selectedList.inputElement) {
-            this.selectedList.inputElement.focus();
-        }
-        return false;
-    };
-
     public handleItemClick = (e: MouseEvent, itemIndex: number): boolean => {
         if (e.defaultPrevented) {
             return false;
@@ -734,16 +724,23 @@ export class Picker extends FoundationElement {
     };
 
     private incrementFocusedItem(increment: number) {
-        const selectedItems: Element[] = Array.from(this.selectedList.children);
+        const selectedItems: Element[] = Array.from(
+            this.selectedList.querySelectorAll("[role='listitem']")
+        );
         if (selectedItems.length === 0) {
             this.selectedList.inputElement.focus();
             return;
         }
 
         if (document.activeElement !== null) {
-            const currentFocusedItemIndex: number = selectedItems.indexOf(
+            let currentFocusedItemIndex: number = selectedItems.indexOf(
                 document.activeElement
             );
+            if (currentFocusedItemIndex === -1) {
+                // use the input element
+                currentFocusedItemIndex = selectedItems.length;
+            }
+
             const newFocusedItemIndex = Math.min(
                 selectedItems.length,
                 Math.max(0, currentFocusedItemIndex + increment)
