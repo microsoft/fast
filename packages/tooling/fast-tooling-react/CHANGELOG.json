@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 18 Jul 2021 07:16:22 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.3",
+      "version": "2.9.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix issue with jest testing when exporting web components from fast-tooling package",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "bc681d48fb43349f8d0808f44cc6b8e2d1011461",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.0",
+            "author": "ben@platform5.ch",
+            "commit": "442a9ef1012dba49179fad629e4ba8aab312d8a7",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jul 2021 01:41:48 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.9.2",
       "version": "2.9.2",
