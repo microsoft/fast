@@ -23,11 +23,11 @@ import { FoundationElement } from "@microsoft/fast-foundation";
 import { attr } from "@microsoft/fast-element";
 
 export class Counter extends FoundationElement {
-	@attr count = 0;
+    @attr count = 0;
 
-  increment() {
-    this.count++;
-  }
+    increment() {
+        this.count++;
+    }
 }
 ```
 
@@ -51,13 +51,13 @@ import { html, css  } from "@microsoft/fast-element";
 import { ElementDefinitionContext, FoundationElementDefinition } from "@microsoft/fast-foundation";
 
 const counterStyles = (
-  context: ElementDefinitionContext,
-  definition: FoundationElementDefinition
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
 ) => css`/* ... */`;
 
 const counterTemplate = (
-  context: ElementDefinitionContext,
-  definition: FoundationElementDefinition
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
 ) => html`<!-- ... -->`;
 ```
 
@@ -73,12 +73,12 @@ import { Button } from "@microsoft/fast-components";
 import type { ElementDefinitionContext } from "@microsoft/fast-foundation";
 
 const counterTemplate = (context: ElementDefinitionContext) => {
-	const buttonTag = context.tagFor(Button);
+    const buttonTag = context.tagFor(Button);
 
-	return html`
-    <div>The count is ${x => x.count}.</div>
-    <${buttonTag} @click=${x => x.increment()}>Count!</${buttonTag}>
-  `;
+    return html`
+        <div>The count is ${x => x.count}.</div>
+        <${buttonTag} @click=${x => x.increment()}>Count!</${buttonTag}>
+    `;
 }
 ```
 
@@ -99,14 +99,14 @@ interface CounterDefinition extends FoundationElementDefinition {
 }
 
 const counterTemplate = (context: ElementDefinitionContext, definition: CounterDefinition) => {
-  const buttonTag = context.tagFor(Button);
+    const buttonTag = context.tagFor(Button);
 
-	return html`
-    <div>The count is ${x => x.count}.</div>
-    <${buttonTag} @click=${x => x.increment()}>
-      <slot>${definition.defaultButtonContent}</slot> <!--Use the custom configuration-->
-    </${buttonTag}>
-  `;
+    return html`
+        <div>The count is ${x => x.count}.</div>
+        <${buttonTag} @click=${x => x.increment()}>
+            <slot>${definition.defaultButtonContent}</slot> <!--Use the custom configuration-->
+        </${buttonTag}>
+    `;
 }
 ```
 
@@ -118,10 +118,10 @@ The final step in the process is to create and export the registration function 
 
 ```ts
 export const counter = Counter.compose<CounterDefinition>({
-  baseName: 'counter',
-  template,
-  styles,
-  defaultButtonContent: "Count!"
+    baseName: 'counter',
+    template,
+    styles,
+    defaultButtonContent: "Count!"
 });
 ```
 
@@ -136,10 +136,10 @@ import { counter } from "your-package";
 import { DesignSystem } from "@microsoft/fast-foundation";
 
 DesignSystem.getOrCreate()
-  .withPrefix('your')
-  .register(
-	  counter({ defaultButtonContent: "Please count." })
-  );
+    .withPrefix('your')
+    .register(
+        counter({ defaultButtonContent: "Please count." })
+    );
 ```
 
 The advantage of setting `defaultButtonContent` here is that it overrides the `Counter`'s default slotted content for **all** instances of `your-counter`. Instead of having to define it everywhere in the app that the button is used, the app author provides the configuration once in a centralized location. This can be extremely useful in scenarios where components contain default icons that the app author may need to swap.

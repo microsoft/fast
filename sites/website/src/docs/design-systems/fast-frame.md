@@ -30,8 +30,8 @@ import { fastButton, fastMenu } from "@microsoft/fast-components";
 
 // ...
 designSystem.register(
-	fastButton(),
-	fastMenu()
+    fastButton(),
+    fastMenu()
 );
 
 ```
@@ -68,7 +68,6 @@ DesignSystem
     .getOrCreate()
     .withPrefix("faster")
     .register(fastButton())
-
 ```
 
 In this case, the element can be used in HTML using the ‘faster’:
@@ -98,7 +97,7 @@ DesignSystem
     .withElementDisambiguation((name: string, type: Constructable<{}>) => {
         return `disambiguated-${name}`;
     })
-    .register(/* ... */
+    .register(/* ... */)
 ```
 
 ### Configuring Components During Registration
@@ -115,7 +114,6 @@ DesignSystem
 	.register(
 		fastButton({ prefix: "faster" })
 	);
-
 ```
 
 #### Template
@@ -210,15 +208,15 @@ FAST exposes the following Design Tokens that can be used to configure component
 
 #### Sizing
 
-- `baseHeightMultiplier`: TODO - Bheston
-- `baseHorizontalSpacingMultiplier` TODO - Behston
-- `controlCornerRadius`: Controls the corner radius used by controls with backplates
-- `density`: Controls spacing between components
-- `designUnit`: The unit size of the Design Grid. All controls size themselves as a multiple of this unit.
+- `baseHeightMultiplier`: This value, multiplied by `designUnit`, sets the base height of most controls. Works with adaptive `density` values.
+- `baseHorizontalSpacingMultiplier` (future): This value, multiplied by `designUnit`, sets the internal horizontal padding of most controls. Works with adaptive `density` values.
+- `controlCornerRadius`: Sets the corner radius used by controls with backplates.
+- `density` (in process): An adjustment to sizing tokens `baseHeightMultiplier` and `baseHorizontalSpacingMultiplier`.
+- `designUnit`: The unit size of the Design Grid. Used to calculate height and spacing sizes for controls.
 
 #### Misc.
 
-- `direction`: The primary document direction (LTR or RTL)
+- `direction`: The primary document direction (LTR or RTL).
 - `disabledOpacity`: The opacity of disabled controls.
 - `strokeWidth`: Controls the width of the stroke of a component that has a stroke.
 - `focusStrokeWidth`: Controls with width of the stroke of a component that has a stroke when it has document focus.

@@ -11,14 +11,22 @@ The FAST Design Token implementation is designed to provide first-class support 
 
 A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [the Design Tokens Community Group](https://github.com/design-tokens/community-group#design-tokens) for more information on Design Tokens themselves.
 
+## FAST Frame Design Tokens
+
+The `@microsoft/fast-components` have extensive support for predefined design token. See [configuring styles](/docs/design-systems/fast-frame#configuring-styles) for details on adjusting or using the existing tokens, or read on to create your own.
+
 ## Create a Token
+
+:::note
+Note that this example uses color because it's an easy concept to describe, but we generally discourage the use of fixed colors as they don't benefit from the [adaptive color system](/docs/design-systems/fast-frame#adaptive-color-system) with support for light and dark mode and other adjustments.
+:::
 
 The first step to using a token is to create it:
 
 ```ts
 import { DesignToken } from "@microsoft/fast-foundation";
 
-export const fillColor = DesignToken.create<string>("fill-color");
+export const specialColor = DesignToken.create<string>("special-color");
 ```
 
 The type assertion informs what types the token can be set to (and what type will be retrieved), and the name parameter will serve as the CSS Custom Property name (more on that later).
@@ -31,8 +39,8 @@ A `DesignToken` *value* is set for a `FASTElement` or `HTMLBodyElement` node. Th
 const ancestor = document.querySelector("my-element") as FASTElement;
 const descendent = ancestor.querySelector("my-element") as FASTElement;
 
-fillColor.setValueFor(ancestor, "#FFFFFF");
-fillColor.setValueFor(descendent, "#F7F7F7");
+specialColor.setValueFor(ancestor, "#FFFFFF");
+specialColor.setValueFor(descendent, "#F7F7F7");
  ```
 
 ## Setting a Default Value
@@ -40,7 +48,7 @@ fillColor.setValueFor(descendent, "#F7F7F7");
 A default value can be set for a token, so that the default value is returned from `getValueFor()` in cases where no other token value is found for a node tree.
 
 ```ts
-fillColor.withDefault("#FFFFFF");
+specialColor.withDefault("#FFFFFF");
 ```
 
 ## Getting Values
@@ -48,8 +56,8 @@ fillColor.withDefault("#FFFFFF");
 Once the value is set for a node, the value is available to use for that node or any descendent node. The value returned will be the value set for the nearest ancestor (or the element itself).
 
 ```ts
-fillColor.getValueFor(ancestor); // "#FFFFFF"
-fillColor.getValueFor(descendent); // "#F7F7F7"
+specialColor.getValueFor(ancestor); // "#FFFFFF"
+specialColor.getValueFor(descendent); // "#F7F7F7"
 ```
 
 ## Deleting Values
@@ -57,13 +65,13 @@ fillColor.getValueFor(descendent); // "#F7F7F7"
 Values can be deleted for a node. Doing so causes retrieval of the nearest ancestor's value instead:
 
 ```ts
-fillColor.deleteValueFor(descendent);
-fillColor.getValueFor(descendent); // "#FFFFFF"
+specialColor.deleteValueFor(descendent);
+specialColor.getValueFor(descendent); // "#FFFFFF"
 ```
 
 ## CSS Custom Property emission
 
-Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a (derived value)[#derived-design-token-values], the CSS custom property will also be emitted when any dependent tokens change.
+Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a [derived value](#derived-design-token-values), the CSS custom property will also be emitted when any dependent tokens change.
 
 A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration with `cssCustomPropertyName` set to `null` during creation:
 
@@ -95,7 +103,7 @@ interface RGBColor {
     createCSS(): string;
 }
 
-const fancyFillColor = DesignToken.create<RGBColor>("fancy-fill-color");
+const extraSpecialColor = DesignToken.create<RGBColor>("extra-special-color");
 
 const value = {
     r: 255,
@@ -106,7 +114,7 @@ const value = {
     }
 }
 
-fancyFillColor.setValueFor(descendent, value)
+extraSpecialColor.setValueFor(descendent, value)
 ```
 
 ## Subscription
@@ -122,7 +130,7 @@ const subscriber = {
     }
 };
 
-fillColor.subscribe(subscriber);
+specialColor.subscribe(subscriber);
 ```
 
 **Example: Subscribe to changes a specific element**
@@ -131,15 +139,15 @@ fillColor.subscribe(subscriber);
 // ...
 const target = document.body.querySelector("#my-element");
 
-fillColor.subscribe(subscriber, target);
+specialColor.subscribe(subscriber, target);
 ```
 
 Subscribers can be unsubscribed using the `unsubscribe()` method:
 
 ```ts
 // ...
-fillColor.unsubscribe(subscriber);
-fillColor.unsubscribe(subscriber, target);
+specialColor.unsubscribe(subscriber);
+specialColor.unsubscribe(subscriber, target);
 ```
 
 ## Using Design Tokens in CSS
@@ -151,7 +159,7 @@ import { css } from "@microsoft/fast-element";
 
 const styles = css`
     :host {
-        background: ${fillColor};
+        background: ${specialColor};
     }
 `
 ```
@@ -160,7 +168,7 @@ At runtime, the directive is replaced with a CSS custom property, and the Direct
 
 ## Derived Design Token Values
 
-In the examples above, the design token is always being set to a simple string value. But, we can also set a Design Token to be a function that *derives* a value. A derived value receives the target element as it's only argument and must return a value with a type matching the Design Token:
+In the examples above, the design token is always being set to a simple string value. But, we can also set a Design Token to be a function that *derives* a value. A derived value receives the target element as its only argument and must return a value with a type matching the Design Token:
 
 ```ts
 const token = DesignToken.create<number>("token");
@@ -174,7 +182,7 @@ The above example is contrived, but the target element can be used to retrieve *
 const foregroundColor = DesignToken.create<string>("foreground-color");
 
 foregroundColor.setValueFor(target, (element) => 
-     fillColor.getValueFor(element) === "#FFFFFF"
+     specialColor.getValueFor(element) === "#FFFFFF"
         ? "#2B2B2B" 
         : "#262626"
 );
@@ -185,17 +193,16 @@ For derived Design Token values, any change to dependent tokens will force the d
 ```ts
 import { observable } from "@microsoft/fast-element";
 
-class ModeManager {
+class ThemeManager {
     @observable
-    mode: "light" | "dark" = "light"
+    theme: "blue" | "red" = "blue"
 }
 
-const modeManager = new ModeManager();
+const themeManager = new ThemeManager();
 
-fillColor.setValueFor(target, () => modeManager.mode === "light" ? "#FFFFFF" : "#242424");
-foregroundColor.setValueFor(target, () => modeManager.mode === "light" ? "#2B2B2B" : "#F5F5F5");
+specialColor.setValueFor(target, () => themeManager.theme === "blue" ? "#0000FF" : "#FF0000");
 
-modeManager.mode = "dark"; // Forces the derived tokens to re-evaluate and CSS custom properties to update if applicable
+themeManager.theme = "red"; // Forces the derived tokens to re-evaluate and CSS custom properties to update if applicable
 ```
 
 
@@ -203,11 +210,11 @@ modeManager.mode = "dark"; // Forces the derived tokens to re-evaluate and CSS c
 In some design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
 
 ```ts
-const neutralFill = DesignToken.create<string>("neutral-fill");
-const buttonFill = DesignToken.create<string>("button-fill");
+const specialColor = DesignToken.create<string>("special-color");
+const buttonSpecialColor = DesignToken.create<string>("button-special-color");
 
-neutralFill.setValueFor(target, "#EDEDED");
-buttonFill.setValueFor(target, neutralFill);
+specialColor.setValueFor(target, "#EDEDED");
+buttonSpecialColor.setValueFor(target, specialColor);
 
-buttonFill.getValueFor(target); // "#EDEDED"
+buttonSpecialColor.getValueFor(target); // "#EDEDED"
 ```
