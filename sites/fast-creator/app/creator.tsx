@@ -4,12 +4,15 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
+    fastToolingColorPicker,
+    htmlRenderOriginatorId,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
+    monacoAdapterId,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import {
     ControlConfig,
     ControlType,
@@ -36,7 +39,6 @@ import {
     ThemeSelector,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     baseLayerLuminance,
@@ -55,7 +57,6 @@ import {
     StandardLuminance,
     SwatchRGB,
 } from "@microsoft/fast-components";
-import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/library.native.tags";
@@ -67,12 +68,17 @@ import {
     renderDevToolToggle,
     renderFormTabs,
     renderNavigationTabs,
+    renderPreviewSwitch,
 } from "./web-components";
 import { Device } from "./web-components/devices";
 import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
 import {
+    creatorOriginatorId,
     CustomMessageSystemActions,
     designTokensLinkedDataId,
+    DisplayMode,
+    displayModeMessageInteractive,
+    displayModeMessagePreview,
     previewOriginatorId,
     rootOriginatorId,
 } from "./utilities";
@@ -104,7 +110,6 @@ fillColor.setValueFor(
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
 const schemaDictionary: SchemaDictionary = {
-    ...fastComponentExtendedSchemas,
     ...nativeElementExtendedSchemas,
     [fastDesignTokensSchema.id]: fastDesignTokensSchema,
     [textSchema.id]: textSchema,
@@ -205,6 +210,7 @@ class Creator extends Editor<{}, CreatorState> {
             ],
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
+            displayMode: DisplayMode.interactive,
         };
     }
 
@@ -218,7 +224,12 @@ class Creator extends Editor<{}, CreatorState> {
         return (
             <div
                 className={this.getContainerClassNames()}
-                style={{ gridTemplateColumns: "260px auto 280px" }}
+                style={{
+                    gridTemplateColumns:
+                        this.state.displayMode === DisplayMode.interactive
+                            ? "260px auto 280px"
+                            : "0px auto 0px",
+                }}
             >
                 <div className={this.paneStartClassNames}>
                     <Logo
@@ -258,8 +269,8 @@ class Creator extends Editor<{}, CreatorState> {
                             <Dimension
                                 width={this.state.viewerWidth}
                                 height={this.state.viewerHeight}
-                                onUpdateWidth={this.handleUpdateWidth}
-                                onUpdateHeight={this.handleUpdateHeight}
+                                onUpdateWidth={this.onUpdateWidth}
+                                onUpdateHeight={this.onUpdateHeight}
                                 onUpdateOrientation={this.handleUpdateOrientation}
                                 onDimensionChange={this.handleDimensionChange}
                                 disabled={!this.state.previewReady}
@@ -270,6 +281,11 @@ class Creator extends Editor<{}, CreatorState> {
                                     marginLeft: "auto",
                                 }}
                             >
+                                {renderPreviewSwitch(
+                                    this.state.displayMode === DisplayMode.preview,
+                                    this.handlePreviewModeSwitch,
+                                    !this.state.previewReady
+                                )}
                                 <ThemeSelector
                                     id={"theme-selector"}
                                     theme={this.state.theme}
@@ -298,10 +314,17 @@ class Creator extends Editor<{}, CreatorState> {
                         </div>
                     </div>
                     <div
-                        className={classNames(this.canvasContentClassNames, [
-                            "canvas-content__dev-tools-hidden",
-                            !this.state.devToolsVisible,
-                        ])}
+                        className={classNames(
+                            this.canvasContentClassNames,
+                            [
+                                "canvas-content__dev-tools-hidden",
+                                !this.state.devToolsVisible,
+                            ],
+                            [
+                                "canvas-content__preview",
+                                this.state.displayMode === DisplayMode.preview,
+                            ]
+                        )}
                     >
                         <div
                             ref={this.viewerContainerRef}
@@ -318,9 +341,15 @@ class Creator extends Editor<{}, CreatorState> {
                                 onUpdateHeight={this.onUpdateHeight}
                                 onUpdateWidth={this.onUpdateWidth}
                                 responsive={true}
+                                preview={this.state.displayMode === DisplayMode.preview}
                             />
                         </div>
-                        <div className={"dev-tools"}>
+                        <div
+                            className={classNames("dev-tools", [
+                                "preview",
+                                this.state.displayMode === DisplayMode.preview,
+                            ])}
+                        >
                             <div
                                 ref={this.editorContainerRef}
                                 style={{ height: "100%", paddingTop: "24px" }}
@@ -373,10 +402,23 @@ class Creator extends Editor<{}, CreatorState> {
         } as CustomMessageIncomingOutgoing<any>);
     };
 
-    private handleLibraryAdded = (libraryId: string) => {
-        this.setState({
-            addedLibraries: this.state.addedLibraries.concat([libraryId]),
-        });
+    private handleLibraryAdded = (libraryId: string): void => {
+        this.setState(
+            {
+                addedLibraries: this.state.addedLibraries.concat([libraryId]),
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: Object.values(
+                        elementLibraries[libraryId].componentDictionary
+                    ).map(componentDictionaryItem => {
+                        return componentDictionaryItem.schema;
+                    }),
+                });
+            }
+        );
     };
 
     private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
@@ -438,7 +480,7 @@ class Creator extends Editor<{}, CreatorState> {
                         e.data.value === "" ? this.state.dataDictionary[1] : e.data.value,
                     activeNavigationConfigId: "",
                     options: {
-                        originatorId: HTMLRenderOriginatorId,
+                        originatorId: htmlRenderOriginatorId,
                     },
                 });
             } else if (e.data.data) {
@@ -448,7 +490,7 @@ class Creator extends Editor<{}, CreatorState> {
                     data: e.data.data,
                     dataLocation: "",
                     options: {
-                        originatorId: HTMLRenderOriginatorId,
+                        originatorId: htmlRenderOriginatorId,
                     },
                 });
             }
@@ -509,12 +551,15 @@ class Creator extends Editor<{}, CreatorState> {
             }
 
             this.windowResizing = window.setTimeout(() => {
-                this.setState({
-                    viewerWidth: 0,
-                    viewerHeight: 0,
-                });
+                const device: Device | void = this.getDeviceById(this.state.deviceId);
+                if (device && device.display === Display.responsive) {
+                    this.setState({
+                        viewerWidth: 0,
+                        viewerHeight: 0,
+                    });
 
-                this.setViewerToFullSize();
+                    this.setViewerToFullSize();
+                }
                 this.updateMonacoEditor();
             });
         }
@@ -551,25 +596,32 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleUpdateDevice = (deviceId: string): void => {
         const device: Device | void = this.getDeviceById(deviceId);
-        let viewerHeight: number = this.state.viewerHeight;
-        let viewerWidth: number = this.state.viewerWidth;
 
         if (device) {
-            viewerHeight =
-                device.display === Display.responsive
-                    ? this.state.viewerHeight
-                    : (device.height as number);
-            viewerWidth =
-                device.display === Display.responsive
-                    ? this.state.viewerWidth
-                    : (device.width as number);
+            if (
+                device.display === Display.responsive &&
+                this.state.deviceId !== Display.responsive
+            ) {
+                // if we are changing from a fixed device to response then trigger a window resize event
+                // to reset the size of the viewer.
+                this.setState(
+                    {
+                        deviceId,
+                    },
+                    () => {
+                        this.handleWindowResize();
+                    }
+                );
+            } else {
+                const viewerHeight: number = device.height as number;
+                const viewerWidth: number = device.width as number;
+                this.setState({
+                    deviceId,
+                    viewerHeight,
+                    viewerWidth,
+                });
+            }
         }
-
-        this.setState({
-            deviceId,
-            viewerHeight,
-            viewerWidth,
-        });
     };
 
     private handleUpdateOrientation = (): void => {
@@ -581,7 +633,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private setResponsiveDeviceId(): void {
         const activeDevice: Device | void = this.getDeviceById(this.state.deviceId);
-
         if (activeDevice && activeDevice.display !== Display.responsive) {
             this.setState({
                 deviceId: Display.responsive,
@@ -590,13 +641,13 @@ class Creator extends Editor<{}, CreatorState> {
     }
 
     public onUpdateHeight = (viewerHeight: number): void => {
-        this.handleUpdateHeight(viewerHeight);
         this.setResponsiveDeviceId();
+        this.handleUpdateHeight(viewerHeight);
     };
 
     public onUpdateWidth = (viewerWidth: number): void => {
-        this.handleUpdateWidth(viewerWidth);
         this.setResponsiveDeviceId();
+        this.handleUpdateWidth(viewerWidth);
     };
 
     private updateDesignSystemDataDictionaryState = (newData: {
@@ -689,8 +740,36 @@ class Creator extends Editor<{}, CreatorState> {
                 devToolsVisible: !this.state.devToolsVisible,
             },
             () => {
-                this.setViewerToFullSize();
+                const device: Device | void = this.getDeviceById(this.state.deviceId);
+                if (device && device.display === Display.responsive) {
+                    this.setViewerToFullSize();
+                }
                 this.updateMonacoEditor();
+            }
+        );
+    };
+
+    /**
+     * Handle the preview mode switch change event
+     * @param newState - The new state of the switch
+     */
+    private handlePreviewModeSwitch = (newState: boolean): void => {
+        this.setState(
+            {
+                displayMode: newState ? DisplayMode.preview : DisplayMode.interactive,
+            },
+            () => {
+                // Send message
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    options: {
+                        originatorId: creatorOriginatorId,
+                        action: newState
+                            ? displayModeMessagePreview
+                            : displayModeMessageInteractive,
+                    },
+                });
+                this.handleWindowResize();
             }
         );
     };

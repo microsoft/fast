@@ -2,10 +2,6 @@
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
-    fastToolingColorPicker,
-    fastToolingCSSLayout,
-} from "@microsoft/fast-tooling/dist/esm/web-components";
-import {
     fastButton,
     fastSelect,
     fastSlider,
@@ -18,20 +14,25 @@ import {
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
-import { DataType, MessageSystem } from "@microsoft/fast-tooling";
+import { toggleStyle } from "@microsoft/site-utilities/src/components/style";
+import {
+    cssLayoutCssProperties,
+    DataType,
+    fastToolingColorPicker,
+    fastToolingCSSLayout,
+    MessageSystem,
+} from "@microsoft/fast-tooling";
 import {
     ControlConfig,
     ModularForm,
     ModularNavigation,
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
-
 import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
-import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import { FormId, NavigationId } from "../creator.props";
@@ -92,7 +93,7 @@ export function renderDeviceSelect(
 ): React.ReactNode {
     return (
         <fast-select
-            selectedIndex={selectedDeviceId}
+            value={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
                     onChangeCallback((e.target as Select).value);
@@ -423,4 +424,25 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
             ></fast-tooling-css-layout>
         );
     }
+}
+
+export function renderPreviewSwitch(
+    switchState: boolean,
+    onChangeCallback: (newState: boolean) => void,
+    disable: boolean
+): React.ReactNode {
+    return (
+        <fast-switch
+            checked={switchState ? true : null}
+            disabled={disable ? true : null}
+            events={{
+                change: (e: React.ChangeEvent): void => {
+                    onChangeCallback(!switchState);
+                },
+            }}
+            style={toggleStyle}
+        >
+            <span>Preview</span>
+        </fast-switch>
+    );
 }

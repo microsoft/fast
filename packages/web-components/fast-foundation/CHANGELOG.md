@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 01 Jul 2021 07:15:57 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Minor changes
+
+- extend design token type signature (chhol@microsoft.com)
+
+## 2.4.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- docs(di): make API public, stabilize, and add docs (roeisenb@microsoft.com)
+
+## 2.3.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+## 2.2.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
 
 ## 2.1.0
 

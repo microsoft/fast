@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 
-export const HTMLRenderLayerInlineEditStyles = css`
+export const htmlRenderLayerInlineEditStyles = css`
     .edit-region {
         position: fixed;
         top: 0;

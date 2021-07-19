@@ -86,7 +86,9 @@ export interface CSSDesignToken<
         | null
         | Array<any>
         | symbol
-        | { createCSS?(): string }
+        | ({
+              createCSS?(): string;
+          } & Record<PropertyKey, any>)
 > extends DesignToken<T>, CSSDirective {
     /**
      * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
