@@ -4,15 +4,15 @@ sidebar_label: Getting Started
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 ---
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-element)
+[![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
 
-The `fast-components` and `@fluentui/web-components` libraries contain Web Components built on top of our standard component and design system foundation. `fast-components` express the FAST design language while `@fluentui/web-components` expresses Microsoft's Fluent design language.
+The `@microsoft/fast-components` and `@fluentui/web-components` libraries contain Web Components built on top of our standard component and design system foundation. `@microsoft/fast-components` expresses the FAST design language (FAST Frame) while `@fluentui/web-components` expresses Microsoft's Fluent design language.
 
 ## Installation
 
 ### From NPM
 
-To install the components, first, choose between `fast-components` and `@fluentui/web-components`. Assuming a selection of `fast-components`, you would use either `npm` or `yarn` as follows:
+To install the components, first, choose between `@microsoft/fast-components` and `@fluentui/web-components`. Assuming a selection of `@microsoft/fast-components`, you would use either `npm` or `yarn` as follows:
 
 ```shell
 npm install --save @microsoft/fast-components
@@ -22,17 +22,15 @@ npm install --save @microsoft/fast-components
 yarn add @microsoft/fast-components
 ```
 
-To use a Web Component as a custom element in HTML, the custom element name must be registered with a backing JavaScript class. Importing the necessary class from `@microsoft/fast-components` into your JavaScript bundle will perform that registration, as long as the imported class **does not get tree shaken** by your bundler or build system:
+To use a Web Component as a custom element in HTML, the custom element name must be registered with a backing JavaScript class. Importing the necessary component definition from `@microsoft/fast-components` into your JavaScript bundle and registering it with a `DesignSystem` will perform the custom element definition:
 
 ```js
-import { FASTDesignSystemProvider, FASTButton } from "@microsoft/fast-components";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import { fastButton } from "@microsoft/fast-components";
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTButton;
+DesignSystem.getOrCreate().register(
+    fastButton()
+);
 ```
 
 :::tip
@@ -54,34 +52,19 @@ A pre-bundled script that contains all APIs needed to use the components is avai
 ```
 
 :::important
-The above CDN location points to the latest release of `fast-components`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
+The above CDN location points to the latest release of `@microsoft/fast-components`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
 :::
 
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
 :::
 
-## Add the design system provider
-
-The [Design System Provider](/docs/design-systems/overview#the-designSystemProvider) provides design information to child components. So, we must always wrap the portion of our site or app that uses the components with a provider element:
-
-```html
-<!-- ... -->
-<body>
-    <fast-design-system-provider use-defaults>
-    </fast-design-system-provider>
-</body>
-<!-- ... -->
-```
-
 ## Add components
 
-With the provider in place, add any components as a child of the `fast-design-system-provider`. That's it! For a comprehensive list of all elements, see the Components section.
+With the provider in place, add any components to the HTML. That's it! For a comprehensive list of all elements, see the [Components](/docs/components) section.
 
 ```html
 <!-- ... -->
-<fast-design-system-provider use-defaults>
-    <fast-button>Hello world</fast-button>
-</fast-design-system-provider>
+<fast-button>Hello world</fast-button>
 <!-- ... -->
 ```

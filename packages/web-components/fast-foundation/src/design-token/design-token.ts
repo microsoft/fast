@@ -7,6 +7,8 @@ import {
     Observable,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
+import { composedParent } from "../utilities";
+import { composedContains } from "../utilities/composed-contains";
 import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
@@ -19,12 +21,21 @@ const defaultElement = document.body;
 
 /**
  * Describes a DesignToken instance.
- * @alpha
+ * @public
  */
 export interface DesignToken<
     T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
 > {
+    /**
+     * The name of the token
+     */
     readonly name: string;
+
+    /**
+     * A list of elements for which the DesignToken has a value set
+     */
+    readonly appliedTo: HTMLElement[];
+
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
@@ -49,11 +60,22 @@ export interface DesignToken<
      * Associates a default value to the token
      */
     withDefault(value: DesignTokenValue<T> | DesignToken<T>): this;
+
+    /**
+     * Subscribes a subscriber to change records for a token. If an element is provided, only
+     * change records for that element will be emitted.
+     */
+    subscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
+
+    /**
+     * Unsubscribes a subscriber from change records for a token.
+     */
+    unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 }
 
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
- * @alpha
+ * @public
  */
 export interface CSSDesignToken<
     T extends
@@ -64,7 +86,9 @@ export interface CSSDesignToken<
         | null
         | Array<any>
         | symbol
-        | { createCSS?(): string }
+        | ({
+              createCSS?(): string;
+          } & Record<PropertyKey, any>)
 > extends DesignToken<T>, CSSDirective {
     /**
      * The {@link (DesignToken:interface)} formatted as a CSS custom property if the token is
@@ -73,8 +97,28 @@ export interface CSSDesignToken<
     readonly cssCustomProperty: string;
 }
 
-interface DesignTokenSubscriber {
-    handleChange(token: DesignToken<any>, element: HTMLElement): void;
+/**
+ * Change record provided to to a {@link DesignTokenSubscriber} when a token changes for a target.
+ * @public
+ */
+export interface DesignTokenChangeRecord<T extends DesignToken<any>> {
+    /**
+     * The element for which the value was changed
+     */
+    target: HTMLElement;
+
+    /**
+     * The token that was changed
+     */
+    token: T;
+}
+
+/**
+ * A subscriber that should receive {@link DesignTokenChangeRecord | change records} when a token changes for a target
+ * @public
+ */
+export interface DesignTokenSubscriber<T extends DesignToken<any>> {
+    handleChange(record: DesignTokenChangeRecord<T>): void;
 }
 
 /**
@@ -85,8 +129,14 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
     private cssVar: string | undefined;
-    private subscribers = new Set<DesignTokenSubscriber>();
-    private setFor = new Set<HTMLElement>();
+    private subscribers = new WeakMap<
+        HTMLElement | this,
+        Set<DesignTokenSubscriber<this>>
+    >();
+    private _appliedTo = new Set<HTMLElement>();
+    public get appliedTo() {
+        return [...this._appliedTo];
+    }
 
     public static from<T>(
         nameOrConfig: string | DesignTokenConfiguration
@@ -106,6 +156,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         token: DesignToken<T> | CSSDesignToken<T>
     ): token is CSSDesignToken<T> {
         return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
+    }
+
+    private getOrCreateSubscriberSet(
+        target: HTMLElement | this = this
+    ): Set<DesignTokenSubscriber<this>> {
+        return (
+            this.subscribers.get(target) ||
+            (this.subscribers.set(target, new Set()) && this.subscribers.get(target)!)
+        );
     }
 
     constructor(configuration: Required<DesignTokenConfiguration>) {
@@ -133,20 +192,23 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         element: HTMLElement,
         value: DesignTokenValue<T> | DesignToken<T>
     ): this {
-        this.setFor.add(element);
+        this._appliedTo.add(element);
         if (value instanceof DesignTokenImpl) {
-            const _value = value;
-            value = ((_element: HTMLElement) =>
-                DesignTokenNode.for<T>(_value, _element)
-                    .value) as DerivedDesignTokenValue<T>;
+            const tokenValue = value;
+
+            value = ((target: HTMLElement) =>
+                tokenValue.getValueFor(target)) as DerivedDesignTokenValue<T>;
         }
         DesignTokenNode.for<T>(this, element).set(value);
-        this.subscribers.forEach(x => x.handleChange(this, element));
+        [
+            ...this.getOrCreateSubscriberSet(this),
+            ...this.getOrCreateSubscriberSet(element),
+        ].forEach(x => x.handleChange({ token: this, target: element }));
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
-        this.setFor.delete(element);
+        this._appliedTo.delete(element);
         DesignTokenNode.for(this, element).delete();
         return this;
     }
@@ -157,23 +219,21 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return this;
     }
 
-    /**
-     * Subscribe a subscriber to set and delete operations.
-     * On initial subscription, the subscriber will be invoked for every
-     * element the token has been set for.
-     */
-    public subscribe(subscriber: DesignTokenSubscriber): void {
-        if (!this.subscribers.has(subscriber)) {
-            this.subscribers.add(subscriber);
-            this.setFor.forEach(x => subscriber.handleChange(this, x));
+    public subscribe(
+        subscriber: DesignTokenSubscriber<this>,
+        target?: HTMLElement
+    ): void {
+        const subscriberSet = this.getOrCreateSubscriberSet(target);
+        if (!subscriberSet.has(subscriber)) {
+            subscriberSet.add(subscriber);
         }
     }
 
-    /**
-     * Unsubscribe a subscribe to set and delete operations.
-     */
-    public unsubscribe(subscriber: DesignTokenSubscriber): void {
-        this.subscribers.delete(subscriber);
+    public unsubscribe(
+        subscriber: DesignTokenSubscriber<this>,
+        target?: HTMLElement
+    ): void {
+        this.getOrCreateSubscriberSet(target).delete(subscriber);
     }
 }
 
@@ -266,11 +326,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     private resolveRealValue(): T {
         const rawValue = this.resolveRawValue();
 
-        if (rawValue === void 0) {
-            throw new Error(
-                `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
-            );
-        }
         if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
             if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
                 this.setupBindingObserver(rawValue);
@@ -286,7 +341,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         }
     }
 
-    private resolveRawValue(): DesignTokenValue<T> | undefined {
+    private resolveRawValue(): DesignTokenValue<T> {
         /* eslint-disable-next-line */
         let current: DesignTokenNode<T> | undefined = this;
 
@@ -299,6 +354,20 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
             current = childToParent.get(current);
         } while (current !== undefined);
+
+        // If there is no parent, try to resolve parent and try again.
+        if (!childToParent.has(this)) {
+            const parent = this.findParentNode();
+
+            if (parent) {
+                parent.appendChild(this);
+                return this.resolveRawValue();
+            }
+        }
+
+        throw new Error(
+            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
+        );
     }
 
     private resolveCSSValue(value: T) {
@@ -350,6 +419,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private cssCustomPropertySubscriber = {
         handleChange: () => {
+            CustomPropertyManager.removeFrom(
+                this.target,
+                this.token as CSSDesignToken<T>
+            );
             CustomPropertyManager.addTo(
                 this.target,
                 this.token as CSSDesignToken<T>,
@@ -359,8 +432,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         dispose: () => {
             CustomPropertyManager.removeFrom(
                 this.target,
-                this.token as CSSDesignToken<T>,
-                this.resolveCSSValue(this.value)
+                this.token as CSSDesignToken<T>
             );
         },
     };
@@ -399,7 +471,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
-        return this.target.contains(node.target);
+        return composedContains(this.target, node.target);
     }
 
     private findParentNode(): DesignTokenNode<T> | null {
@@ -407,8 +479,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             return null;
         }
 
-        if (this.target !== document.body && this.target.parentNode) {
-            const container = DI.getOrCreateDOMContainer(this.target.parentElement!);
+        const parent = composedParent(this.target);
+
+        if (this.target !== document.body && parent) {
+            const container = DI.getOrCreateDOMContainer(parent);
 
             // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
             if (container.has(DesignTokenNode.channel(this.token), true)) {
@@ -420,9 +494,9 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     }
 
     private tokenDependencySubscriber = {
-        handleChange: (token: DesignToken<any>, element: HTMLElement) => {
+        handleChange: (record: DesignTokenChangeRecord<DesignToken<any>>) => {
             const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(this.token, element);
+            const target = DesignTokenNode.for(this.token, record.target);
 
             // Only act on downstream nodes
             if (
@@ -439,20 +513,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      * The resolved value for a node.
      */
     public get value(): T {
-        try {
-            return this.resolveRealValue();
-        } catch (e) {
-            if (!childToParent.has(this)) {
-                const parent = this.findParentNode();
-
-                if (parent) {
-                    parent.appendChild(this);
-                    return this.resolveRealValue();
-                }
-            }
-
-            throw e;
-        }
+        return this.resolveRealValue();
     }
 
     /**
@@ -474,12 +535,16 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         if (this.bindingObserver) {
             const records = this.bindingObserver.records();
 
-            for (const dep of records) {
+            for (const record of records) {
                 if (
-                    dep.propertySource instanceof DesignTokenNode &&
-                    dep.propertySource.token instanceof DesignTokenImpl
+                    record.propertySource instanceof DesignTokenNode &&
+                    record.propertySource.token instanceof DesignTokenImpl
                 ) {
-                    dep.propertySource.token.subscribe(this.tokenDependencySubscriber);
+                    const { token } = record.propertySource;
+                    token.subscribe(this.tokenDependencySubscriber);
+                    token.appliedTo.forEach(target =>
+                        this.tokenDependencySubscriber.handleChange({ token, target })
+                    );
                 }
             }
         }
@@ -520,7 +585,7 @@ function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
 
 /**
  * Factory object for creating {@link (DesignToken:interface)} instances.
- * @alpha
+ * @public
  */
 export const DesignToken = Object.freeze({
     create,

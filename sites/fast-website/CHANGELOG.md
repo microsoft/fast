@@ -1,8 +1,184 @@
 # Change Log - @microsoft/fast-website
 
-This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.16
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (ben@platform5.ch)
+
+## 1.3.16
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (chhol@microsoft.com)
+
+## 1.3.16
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (ben@platform5.ch)
+
+## 1.3.16
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (roeisenb@microsoft.com)
+
+## 1.3.16
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (tlmii@users.noreply.github.com)
+
+## 1.3.16
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Sun, 06 Jun 2021 07:35:11 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (khamu@microsoft.com)
+
+## 1.3.16
+
+Wed, 02 Jun 2021 07:47:44 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Mon, 31 May 2021 07:44:04 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 27 May 2021 07:34:58 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.3.16
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
 
 ## 1.3.16
 

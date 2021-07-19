@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import "../../__tests__/mocks/match-media";
 import { configure, mount, shallow } from "enzyme";
 import { StandardControlTemplate } from "./template.control.standard";
 import { StandardControlTemplateProps } from "./template.control.standard.props";
@@ -119,6 +120,7 @@ describe("StandardControlTemplate", () => {
             <StandardControlTemplate
                 {...props}
                 data={"foo"}
+                softRemove={true}
                 required={false}
                 onChange={handleChange}
                 managedClasses={managedClasses}
@@ -156,6 +158,7 @@ describe("StandardControlTemplate", () => {
             <StandardControlTemplate
                 {...props}
                 data={data}
+                softRemove={true}
                 onChange={handleChange}
                 managedClasses={managedClasses}
             />

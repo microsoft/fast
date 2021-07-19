@@ -9,18 +9,17 @@
   "mapsToTagName": "fast-data-grid",
   "properties": {
     "generate-header": {
-      "default": true,
-      "title": "Generate header",
-      "description": "Whether the grid should auto generate a header row",
-      "mapsToAttribute": "generate-header",
-      "type": "boolean"
-    },
-    "grid-template-columns": {
       "enum": [
         "none",
         "default",
         "sticky"
       ],
+      "title": "Generate header",
+      "description": "Whether the grid should auto generate a header row",
+      "mapsToAttribute": "generate-header",
+      "type": "string"
+    },
+    "grid-template-columns": {
       "title": "Grid template columns",
       "description": "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
       "mapsToAttribute": "grid-template-columns",

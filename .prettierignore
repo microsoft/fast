@@ -1,4 +1,5 @@
 *.spec.ts
+*.spec.tsx
 **/__test-images__
 **/__tests__
 **/.tmp

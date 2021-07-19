@@ -1,6 +1,6 @@
 import { css, customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { DI, Registration } from "../di";
+import { DI } from "../di";
 import { fixture, uniqueElementName } from "../test-utilities/fixture";
 import {
     ComponentPresentation,
@@ -46,11 +46,10 @@ async function setup(tag: string) {
     `;
     const builtinStyles = css``;
 
-    container.register(
-        Registration.instance(
-            ComponentPresentation.keyFrom(tag),
-            new DefaultComponentPresentation(builtinTemplate, builtinStyles)
-        )
+    ComponentPresentation.define(
+        tag,
+        new DefaultComponentPresentation(builtinTemplate, builtinStyles),
+        container
     );
 
     return { element, connect, disconnect, builtinTemplate, builtinStyles };
@@ -132,12 +131,11 @@ describe("FoundationElement", () => {
             });
 
             const host = document.createElement("div");
-            const container = new DesignSystem().register(myElement()).applyTo(host);
+            DesignSystem.getOrCreate(host).register(myElement());
 
             const fullName = `fast-${baseName}`;
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(fullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(fullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(styles);
             expect(presentation.template).to.equal(template);
@@ -171,11 +169,10 @@ describe("FoundationElement", () => {
             });
 
             const host = document.createElement("div");
-            const container = new DesignSystem().register(myElement()).applyTo(host);
+            DesignSystem.getOrCreate(host).register(myElement());
 
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(fullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(fullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(styles);
             expect(presentation.template).to.equal(template);
@@ -200,25 +197,125 @@ describe("FoundationElement", () => {
             };
 
             const host = document.createElement("div");
-            const container = new DesignSystem()
-                .register(myElement(overrides))
-                .applyTo(host);
+            DesignSystem.getOrCreate(host)
+                .register(myElement(overrides));
 
             const originalFullName = `fast-${originalName}`;
             const overrideFullName = `my-${overrideName}`;
 
-            expect(
-                container.has(ComponentPresentation.keyFrom(originalFullName), false)
-            ).to.equal(false);
             expect(customElements.get(originalFullName)).to.be.undefined;
 
-            const presentation = container.get<DefaultComponentPresentation>(
-                ComponentPresentation.keyFrom(overrideFullName)
-            );
+            const presentation = ComponentPresentation
+                .forTag(overrideFullName, host) as DefaultComponentPresentation;
 
             expect(presentation.styles).to.equal(overrides.styles);
             expect(presentation.template).to.equal(overrides.template);
             expect(customElements.get(overrideFullName)).to.equal(MyElement);
+        });
+    });
+
+    describe("shadow mode", () => {
+        it("should be open by default", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.instanceof(ShadowRoot);
+        });
+
+        it("can be overridden to closed by the design system", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: {
+                    mode: 'open'
+                }
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('closed')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.null;
+        });
+
+        it("can be be override to open by the design system", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: {
+                    mode: 'closed'
+                }
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('open')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.instanceof(ShadowRoot);
+        });
+
+        it("is not overridden when the component targets light DOM", () => {
+            class MyElement extends FoundationElement {}
+            const baseName = uniqueElementName();
+            const fullName = `fast-${baseName}`;
+            const myElement = MyElement.compose({
+                styles: css``,
+                template: html`test`,
+                baseName,
+                shadowOptions: null
+            });
+
+            const host = document.createElement("div");
+            DesignSystem.getOrCreate(host)
+                .withShadowRootMode('open')
+                .register(myElement());
+
+            const element = document.createElement(fullName);
+            expect(element.shadowRoot).to.be.null;
+        });
+    });
+
+    describe("subclasses", () => {
+        it("should be able to use the @customElement decorator", async () => {
+            class BaseClass extends FoundationElement {}
+
+            const name = `fast-${uniqueElementName()}`;
+            @customElement({
+                name,
+                template: html`test`
+            })
+            class Subclass extends BaseClass {}
+
+            const { element, parent, connect, disconnect } = await fixture<Subclass>(name);
+
+            await connect();
+
+            expect(element.shadowRoot!.innerHTML).to.equal('test');
+
+            await disconnect();
         });
     });
 });

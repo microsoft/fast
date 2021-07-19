@@ -7,7 +7,7 @@
 }
 
 .logo::part(content)::before {
-    top: calc(100% - (var(--outline-width) * 1px));
+    top: calc(100% - (var(--stroke-width) * 1px));
 }
 
 .logo svg {

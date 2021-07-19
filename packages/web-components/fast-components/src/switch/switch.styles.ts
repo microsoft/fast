@@ -1,29 +1,44 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    SwitchOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    heightNumber,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-} from "../styles/index";
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    disabledOpacity,
+    fillColor,
+    focusStrokeOuter,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
+    foregroundOnAccentRest,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
+    neutralForegroundRest,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const SwitchStyles = css`
+export const switchStyles: (
+    context: ElementDefinitionContext,
+    definition: SwitchOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
+    css`
     :host([hidden]) {
         display: none;
     }
@@ -31,8 +46,8 @@ export const SwitchStyles = css`
     ${display("inline-flex")} :host {
         align-items: center;
         outline: none;
-        font-family: var(--body-font);
-        margin: calc(var(--design-unit) * 1px) 0;
+        font-family: ${bodyFont};
+        margin: calc(${designUnit} * 1px) 0;
         ${
             /*
              * Chromium likes to select label text or the default slot when
@@ -42,7 +57,7 @@ export const SwitchStyles = css`
     }
 
     :host([disabled]) {
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]) .label,
@@ -57,51 +72,48 @@ export const SwitchStyles = css`
         outline: none;
         box-sizing: border-box;
         width: calc(${heightNumber} * 1px);
-        height: calc((${heightNumber} / 2 + var(--design-unit)) * 1px);
-        background: ${neutralFillInputRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid ${neutralOutlineRestBehavior.var};
+        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+        background: ${neutralFillInputRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     }
 
     .switch:hover {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${neutralStrokeHover};
         cursor: pointer;
     }
 
     host([disabled]) .switch:hover,
     host([readonly]) .switch:hover {
-        background: ${neutralFillInputHoverBehavior.var};
-        border-color: ${neutralOutlineHoverBehavior.var};
+        background: ${neutralFillInputHover};
+        border-color: ${neutralStrokeHover};
         cursor: ${disabledCursor};
     }
 
     :host(:not([disabled])) .switch:active {
-        background: ${neutralFillInputActiveBehavior.var};
-        border-color: ${neutralOutlineActiveBehavior.var};
+        background: ${neutralFillInputActive};
+        border-color: ${neutralStrokeActive};
     }
 
     :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
-        border-color: ${neutralFocusBehavior.var};
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
     .checked-indicator {
         position: absolute;
         top: 5px;
         bottom: 5px;
-        background: ${neutralForegroundRestBehavior.var};
-        border-radius: calc(var(--corner-radius) * 1px);
+        background: ${neutralForegroundRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
         transition: all 0.2s ease-in-out;
     }
 
     .status-message {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
 
     :host([disabled]) .status-message,
@@ -110,13 +122,13 @@ export const SwitchStyles = css`
     }
 
     .label {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
 
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-end: calc(var(--design-unit) * 2px + 2px);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        } margin-inline-end: calc(${designUnit} * 2px + 2px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         cursor: pointer;
     }
 
@@ -128,33 +140,38 @@ export const SwitchStyles = css`
     ::slotted(*) {
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        } margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([aria-checked="true"]) .checked-indicator {
-        background: ${accentForegroundCutRestBehavior.var};
+        background: ${foregroundOnAccentRest};
     }
 
     :host([aria-checked="true"]) .switch {
-        background: ${accentFillRestBehavior.var};
-        border-color: ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .switch:hover {
-        background: ${accentFillHoverBehavior.var};
-        border-color: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
+    }
+
+    :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
+        background: ${foregroundOnAccentHover};
     }
 
     :host([aria-checked="true"]:not([disabled])) .switch:active {
-        background: ${accentFillActiveBehavior.var};
-        border-color: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
+    }
+
+    :host([aria-checked="true"]:not([disabled])) .switch:active .checked-indicator {
+        background: ${foregroundOnAccentActive};
     }
 
     :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
-        box-shadow: 0 0 0 2px var(--background-color), 0 0 0 4px ${
-            neutralFocusBehavior.var
-        };
-        border-color: transparent;
+        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
     .unchecked-message {
@@ -173,20 +190,8 @@ export const SwitchStyles = css`
         display: block;
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundCutRestBehavior,
-    neutralFillInputActiveBehavior,
-    neutralFillInputHoverBehavior,
-    neutralFillInputRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundRestBehavior,
-    neutralOutlineActiveBehavior,
-    neutralOutlineHoverBehavior,
-    neutralOutlineRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
             .checked-indicator,
             :host(:not([disabled])) .switch:active .checked-indicator {
                 forced-color-adjust: none;
@@ -234,29 +239,29 @@ export const SwitchStyles = css`
                 border-color: ${SystemColors.GrayText};
             }
         `
-    ),
-    new DirectionalStyleSheetBehavior(
-        css`
-            .checked-indicator {
-                left: 5px;
-                right: calc(((${heightNumber} / 2) + 1) * 1px);
-            }
+        ),
+        new DirectionalStyleSheetBehavior(
+            css`
+                .checked-indicator {
+                    left: 5px;
+                    right: calc(((${heightNumber} / 2) + 1) * 1px);
+                }
 
-            :host([aria-checked="true"]) .checked-indicator {
-                left: calc(((${heightNumber} / 2) + 1) * 1px);
-                right: 5px;
-            }
-        `,
-        css`
-            .checked-indicator {
-                right: 5px;
-                left: calc(((${heightNumber} / 2) + 1) * 1px);
-            }
+                :host([aria-checked="true"]) .checked-indicator {
+                    left: calc(((${heightNumber} / 2) + 1) * 1px);
+                    right: 5px;
+                }
+            `,
+            css`
+                .checked-indicator {
+                    right: 5px;
+                    left: calc(((${heightNumber} / 2) + 1) * 1px);
+                }
 
-            :host([aria-checked="true"]) .checked-indicator {
-                right: calc(((${heightNumber} / 2) + 1) * 1px);
-                left: 5px;
-            }
-        `
-    )
-);
+                :host([aria-checked="true"]) .checked-indicator {
+                    right: calc(((${heightNumber} / 2) + 1) * 1px);
+                    left: 5px;
+                }
+            `
+        )
+    );

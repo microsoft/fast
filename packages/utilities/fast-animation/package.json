@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-animation",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -79,7 +79,7 @@
     "@types/react-redux": "^4.4.47",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.2",
-    "css-loader": "^0.27.1",
+    "css-loader": "^5.2.6",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-loader": "^4.0.0",
@@ -88,10 +88,10 @@
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.4.0",
     "lodash-es": "4.17.15",
-    "mini-css-extract-plugin": "^0.5.0",
+    "mini-css-extract-plugin": "^1.6.1",
     "modernizr-webpack-plugin": "^1.0.5",
-    "postcss": "^5.2.16",
-    "postcss-loader": "^3.0.0",
+    "postcss": "^8.3.5",
+    "postcss-loader": "^4.2.0",
     "prettier": "2.0.2",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",

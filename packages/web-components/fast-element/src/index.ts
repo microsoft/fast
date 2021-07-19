@@ -15,7 +15,7 @@ export {
     ComposableStyles,
     StyleTarget,
 } from "./styles/element-styles";
-export { css } from "./styles/css";
+export { css, cssPartial } from "./styles/css";
 export { CSSDirective } from "./styles/css-directive";
 export * from "./templating/view";
 export * from "./observation/observable";

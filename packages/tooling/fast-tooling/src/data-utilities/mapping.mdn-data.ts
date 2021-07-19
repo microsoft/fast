@@ -100,6 +100,13 @@ export interface CSSPropertiesDictionary {
 }
 
 /**
+ * A dictionary of CSS declarations
+ */
+export interface CSSDeclarationDictionary {
+    [key: string]: string;
+}
+
+/**
  * The refrences can be to:
  * - CSS syntax such as <line-style> which are specified in the CSS syntax dictionary
  * - CSS types such as <length> which are specified in the CSS type dictionary
@@ -1207,4 +1214,27 @@ export function mapCSSSyntaxes(mdnCSS: MDNCSS): CSSSyntaxDictionary {
             },
             {}
         );
+}
+
+/**
+ * Converts an inline CSS string to a property dictionary data format
+ */
+export function mapCSSInlineStyleToCSSPropertyDictionary(
+    style: string
+): CSSDeclarationDictionary {
+    const cssPropertyDictionary = {};
+
+    if (style) {
+        style.split(";").forEach((cssDeclaration: string) => {
+            const cssPropertyAndValue = cssDeclaration.split(":");
+
+            if (cssPropertyAndValue.length === 2) {
+                cssPropertyDictionary[
+                    cssPropertyAndValue[0].trim()
+                ] = cssPropertyAndValue[1].trim();
+            }
+        });
+    }
+
+    return cssPropertyDictionary;
 }

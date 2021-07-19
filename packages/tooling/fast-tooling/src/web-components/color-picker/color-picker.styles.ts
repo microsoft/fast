@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 
-export const colorPickerStyles = css`
+export const colorPickerStyles = (context, definition) => css`
     .root .color-ui {
         display: none;
         padding: 2px;

@@ -34,12 +34,15 @@ dist/
 www/
 storybook-static
 
-#Ignore Mac .DS_Store
+# Ignore Mac .DS_Store
 .DS_Store
 
-#Ignore VSCode in Root
+# Ignore VSCode in Root
 /.vscode/
 /.vs/
+
+# Ignore Intellij IDEA
+.idea
 
 # tmp directories
 .tmp/

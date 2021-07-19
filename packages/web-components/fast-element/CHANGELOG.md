@@ -1,7 +1,26 @@
-# Change Log
+# Change Log - @microsoft/fast-element
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 1.4.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Minor changes
+
+- Add cssPartial template function to facilitate partial CSS abstractions. (nicholasrice@users.noreply.github.com)
+
+## 1.3.0
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Minor changes
+
+- undefined (nicholasrice@users.noreply.github.com)
+- fix: ensure that custom events are cancelable by default (roeisenb@microsoft.com)
+- perf: improve startup time and reduce library size (roeisenb@microsoft.com)
 
 ## [1.0.2](https://github.com/Microsoft/fast/compare/@microsoft/fast-element@1.0.1...@microsoft/fast-element@1.0.2) (2021-04-06)
 

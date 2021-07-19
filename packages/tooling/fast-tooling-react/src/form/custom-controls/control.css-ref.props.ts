@@ -23,6 +23,21 @@ export interface CSSRefProps {
      * The syntax or reference used to determine the form element UI
      */
     syntax: XOR<CSSPropertySyntax, XOR<CSSPropertyRef, CSSSyntaxRef>>;
+
+    /**
+     * The value of the CSS declaration
+     */
+    value: string;
+
+    /**
+     * The current dictionary ID
+     */
+    dictionaryId: string;
+
+    /**
+     * The current data location
+     */
+    dataLocation: string;
 }
 
 export interface CSSRefState {

@@ -22,7 +22,6 @@ class StandardControlTemplate extends ControlTemplateUtilities<
             ManagedClasses<StandardControlTemplateClassNameContract>
     > = {
         context: ControlContext.default,
-        softRemove: true,
         managedClasses: {},
     };
 

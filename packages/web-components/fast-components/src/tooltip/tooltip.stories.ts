@@ -1,7 +1,7 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
+import type { Tooltip as FoundationTooltip } from "@microsoft/fast-foundation";
 import TooltipTemplate from "./fixtures/base.html";
-import type { FASTTooltip } from "./index";
 import "../button";
 import "./index";
 
@@ -9,7 +9,7 @@ function onShowClick(): void {
     for (let i = 1; i <= 4; i++) {
         const tooltipInstance = document.getElementById(
             `tooltip-show-${i}`
-        ) as FASTTooltip;
+        ) as FoundationTooltip;
         tooltipInstance.visible = !tooltipInstance.visible;
     }
 }
@@ -21,7 +21,7 @@ function onAnchorMouseEnter(e: MouseEvent): void {
 
     const tooltipInstance = document.getElementById(
         "tooltip-anchor-switch"
-    ) as FASTTooltip;
+    ) as FoundationTooltip;
     tooltipInstance.anchorElement = e.target as HTMLElement;
 }
 
