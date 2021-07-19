@@ -21,7 +21,12 @@ import {
 } from "../../message-system";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
 
-export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
+/**
+ * An ID that signifies the origin of a MessageSystem message.
+ *
+ * @alpha
+ */
+export const htmlRenderOriginatorId = "fast-tooling::html-renderer";
 
 export class HTMLRender extends FoundationElement {
     private layerActivityId: string = "HTMLRender";
@@ -29,7 +34,7 @@ export class HTMLRender extends FoundationElement {
 
     private schemaDictionary: SchemaDictionary;
 
-    private messageOriginatorId: string = HTMLRenderOriginatorId;
+    private messageOriginatorId: string = htmlRenderOriginatorId;
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 
