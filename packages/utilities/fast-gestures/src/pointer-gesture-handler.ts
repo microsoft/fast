@@ -140,10 +140,13 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     public get pointersArray(): Pointer[] {
-        return Array.from(this._pointers, ([pointerId, pointerInfo]: [number, PointerInfoInternal]) => ({
-            pointerId,
-            pointerInfo,
-        }));
+        return Array.from(
+            this._pointers,
+            ([pointerId, pointerInfo]: [number, PointerInfoInternal]) => ({
+                pointerId,
+                pointerInfo,
+            })
+        );
     }
 
     constructor(
@@ -430,7 +433,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     private handlePointerStart = (e: PointerEvent): void => {
-        if ( this.isHtmlElement(this.target) && this.isHtmlElement(e.target)) {
+        if (this.isHtmlElement(this.target) && this.isHtmlElement(e.target)) {
             this.activePointer = this.updatePointerInfo(e);
 
             // If there is a primary pointer, ensure it's set as the active pointer
