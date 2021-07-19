@@ -1,8 +1,36 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Tue, 13 Jul 2021 07:14:52 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.0
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Minor changes
+
+- update the exporting of services and web components in tooling and match the new pathing in sites (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.3 (ben@platform5.ch)
+
+## 0.24.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 0.24.1
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- fix: spelling issue in HTML render layer (44823142+williamw2@users.noreply.github.com)
 
 ## 0.24.0
 

@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 13 Jul 2021 07:14:52 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
 
 ## 2.2.1
 

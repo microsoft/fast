@@ -2,7 +2,7 @@ import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
 import { ElementDefinitionContext } from "@microsoft/fast-foundation";
 import { HTMLRender } from "./html-render";
 
-export const HTMLRenderTemplate: (
+export const htmlRenderTemplate: (
     context: ElementDefinitionContext
 ) => ViewTemplate<HTMLRender> = context => {
     return html<HTMLRender>`

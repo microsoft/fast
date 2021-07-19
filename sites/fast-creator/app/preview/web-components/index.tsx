@@ -1,8 +1,10 @@
 import React from "react";
 import { DesignSystem } from "@microsoft/fast-foundation";
-import { fastToolingHTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
-import { fastToolingHTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render";
-import { fastToolingHTMLRenderLayerNavigation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation";
+import {
+    fastToolingHTMLRender,
+    fastToolingHTMLRenderLayerInlineEdit,
+    fastToolingHTMLRenderLayerNavigation,
+} from "@microsoft/fast-tooling";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle

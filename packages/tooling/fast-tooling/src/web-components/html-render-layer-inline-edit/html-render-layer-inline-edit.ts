@@ -5,9 +5,7 @@ import {
     HTMLRenderLayer,
     OverlayPosition,
 } from "../html-render-layer/html-render-layer";
-import { HTMLRenderOriginatorId } from "../html-render/html-render";
-import { HTMLRenderLayerInlineEditStyles as styles } from "./html-render-layer-inline-edit.style";
-import { HTMLRenderLayerInlineEditTemplate as template } from "./html-render-layer-inline-edit.template";
+import { htmlRenderOriginatorId } from "../html-render/html-render";
 
 export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     public layerActivityId: string = "InlineEditLayer";
@@ -159,7 +157,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
             dataLocation: "",
             data: newValue,
             options: {
-                originatorId: HTMLRenderOriginatorId,
+                originatorId: htmlRenderOriginatorId,
             },
         });
         this.currentDataId = null;
@@ -218,15 +216,3 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         }
     }
 }
-
-/**
- *
- * @public
- * @remarks
- * HTML Element: \<html-render-layer-navigation\>
- */
-export const fastToolingHTMLRenderLayerInlineEdit = HTMLRenderLayerInlineEdit.compose({
-    baseName: "html-render-layer-inline-edit",
-    template,
-    styles,
-});

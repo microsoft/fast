@@ -1,11 +1,11 @@
-import { CSSLayoutTemplate as template } from "./css-layout.template";
+import { cssLayoutTemplate as template } from "./css-layout.template";
 import { cssLayoutStyles as styles } from "./css-layout.styles";
 import { CSSLayout } from "./css-layout";
 
 /**
- * The FAST Tooling CSS layout Element.
+ * A web component used for updating CSS layout values.
  *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<css-layout\>
  */

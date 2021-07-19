@@ -8,6 +8,9 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemType,
+    MonacoAdapter,
+    MonacoAdapterAction,
+    MonacoAdapterActionCallbackConfig,
 } from "@microsoft/fast-tooling";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 // This is only used as a typescript reference, the actual monaco import must
@@ -16,11 +19,6 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
-import { MonacoAdapter } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
-import {
-    MonacoAdapterAction,
-    MonacoAdapterActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service-action";
 import { schemaDictionary } from "../../schemas";
 import { EditorState } from "./editor.props";
 
