@@ -12,8 +12,8 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
         <div class="title" part="title">
             ${startTemplate}
             <slot></slot>
-            <span part="title-year">${x => x.getLocaleMonth()}</span>
-            <span part="title-month">${x => x.getLocaleYear()}</span>
+            <span part="month">${x => x.getLocaleMonth()}</span>
+            <span part="year">${x => x.getLocaleYear()}</span>
             ${endTemplate}
         </div>
     </slot>
@@ -34,17 +34,10 @@ export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
 export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
         part="day"
-        class="day${(x, c) =>
-            x.month !== (c.parent.month ?? c.parentContext.parent.month) ? ` off` : ``}${(
-            x,
-            c
-        ) => {
-            const isToday = c.parent.isToday || c.parentContext.parent.isToday;
-            return !!isToday(x.year, x.month, x.day) ? ` today` : ``;
-        }}"
-        data-year="${x => x.year}"
-        data-month="${x => x.month - 1}"
-        data-day="${x => x.day}"
+        class="${(x, c) =>
+            c.parent.getDayClassNames
+                ? c.parent.getDayClassNames(x)
+                : c.parentContext.parent.getDayClassNames(x)}"
         @click="${(x, c) => c.parentContext.parent.handleDateSelect(x)}"
     >
         <div

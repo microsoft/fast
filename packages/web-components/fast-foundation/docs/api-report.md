@@ -264,12 +264,16 @@ export const buttonTemplate: (context: ElementDefinitionContext, definition: Fou
 
 // @public
 export class Calendar extends FoundationElement {
+    dateInString(date: CalendarDateInfo, datesString: string): boolean;
+    disabledDates: string;
+    getDayClassNames(date: CalendarDateInfo): string;
     getDays(info?: CalendarInfo): CalendarDateInfo[];
     getLocaleDay(month?: number, day?: number, year?: number): string;
     getLocaleMonth(month?: number): string;
     getLocaleWeekDays(): string[];
     getLocaleYear(year?: number): string;
     getMonthInfo(year?: number, month?: number): CalendarInfo;
+    handleDateSelect(day?: CalendarDateInfo): void;
     // @internal
     isRTL(): boolean;
     isToday(year: number, month: number, day: number): boolean;
@@ -278,6 +282,7 @@ export class Calendar extends FoundationElement {
     minWeeks: number;
     month: number;
     monthFormat: DateStyle;
+    selectedDates: string;
     weekdayFormat: DateStyle;
     year: number;
 }
@@ -287,6 +292,8 @@ export type CalendarDateInfo = {
     day: number;
     month: number;
     year: number;
+    disabled?: boolean;
+    selected?: boolean;
 };
 
 // @public
@@ -1398,7 +1405,7 @@ export type MonthInfo = {
     start: number;
 };
 
-// @alpha (undocumented)
+// @public
 export const newInstanceForScope: (key: any) => any;
 
 // @public

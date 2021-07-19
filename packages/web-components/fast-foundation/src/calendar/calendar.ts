@@ -37,6 +37,8 @@ export type CalendarDateInfo = {
     day: number;
     month: number;
     year: number;
+    disabled?: boolean;
+    selected?: boolean;
 };
 
 /**
@@ -87,6 +89,20 @@ export class Calendar extends FoundationElement {
      */
     @attr
     public minWeeks: number = 0;
+
+    /**
+     * A list of dates that should be shown as disabled
+     * @public
+     */
+    @attr
+    public disabledDates: string = "";
+
+    /**
+     * A list of dates that should be shown as highlighted
+     * @public
+     */
+    @attr
+    public selectedDates: string = "";
 
     /**
      * The number of miliseconds in a day
@@ -219,6 +235,7 @@ export class Calendar extends FoundationElement {
      * @param month - month of the date to check
      * @param day - day of the date to check
      * @returns true if the date is the current date otherwise returns false
+     * @public
      */
     public isToday(year: number, month: number, day: number): boolean {
         const today = new Date();
@@ -233,38 +250,90 @@ export class Calendar extends FoundationElement {
      * A list of calendar days
      * @param info - an object containing the information needed to render a calendar month
      * @returns a list of days in a calendar month
+     * @public
      */
     public getDays(info: CalendarInfo = this.getMonthInfo()): CalendarDateInfo[] {
         const { start, length, previous, next } = info;
         const days: CalendarDateInfo[] = [];
-        let day = 1 - start;
+        let dayCount = 1 - start;
 
         while (
             days.length < start + length ||
             days.length < this.minWeeks * 7 ||
             days.length % 7 !== 0
         ) {
-            const { month, year } = day < 1 ? previous : day > length ? next : info;
+            const { month, year } =
+                dayCount < 1 ? previous : dayCount > length ? next : info;
+            const day =
+                dayCount < 1
+                    ? previous.length + dayCount
+                    : dayCount > length
+                    ? dayCount - length
+                    : dayCount;
+            const disabled = this.dateInString({ day, month, year }, this.disabledDates);
+            const selected = this.dateInString({ day, month, year }, this.selectedDates);
             const date: CalendarDateInfo = {
-                day: day < 1 ? previous.length + day : day > length ? day - length : day,
+                day,
                 month,
                 year,
+                disabled,
+                selected,
             };
 
             days.push(date);
-            day++;
+            dayCount++;
         }
 
         return days;
     }
 
     /**
-     *
-     * @param date - Date cell
-     *
-     * Emits the "date-select" event with the day, month and year.
+     * A helper function that checks if a date exists in a list of dates
+     * @param date - A date objec that includes the day, month and year
+     * @param string - a comma separated list of dates
+     * @returns - Returns true if it found the date in the list of dates
+     * @public
      */
-    public handleDateSelect(day?: any): void {
+    public dateInString(date: CalendarDateInfo, datesString: string): boolean {
+        const dates = datesString.split(",").map(str => str.trim());
+        return !!dates.find(d => d === `${date.month}-${date.day}-${date.year}`);
+    }
+
+    /**
+     * Creates a class string for the day container
+     * @param date - date of the calendar cell
+     * @returns - string of class names
+     * @public
+     */
+    public getDayClassNames(date: CalendarDateInfo): string {
+        const { day, month, year, disabled, selected } = date;
+        let className: string = "day";
+
+        if (this.isToday(year, month, day)) {
+            className += " today";
+        }
+
+        if (this.month !== month) {
+            className += " off";
+        }
+
+        if (disabled) {
+            className += " disabled";
+        }
+
+        if (selected) {
+            className += " selected";
+        }
+
+        return className;
+    }
+
+    /**
+     * Emits the "date-select" event with the day, month and year.
+     * @param date - Date cell
+     * @public
+     */
+    public handleDateSelect(day?: CalendarDateInfo): void {
         (this as FASTElement).$emit("date-select", day);
     }
 }

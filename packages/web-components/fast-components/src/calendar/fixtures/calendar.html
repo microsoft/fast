@@ -115,6 +115,83 @@
         cursor: pointer;
     }
 
+    .borders4 {
+        width: 560px;
+        --current-day-color: #fff;
+        color: aqua;
+    }
+
+    .borders4::part(month) {
+        color: purple;
+    }
+
+    .borders4::part(week-days) {
+        border-bottom: 1px solid;
+    }
+
+    .borders4::part(week-day) {
+        color: purple;
+    }
+
+    .borders4::part(day) {
+        text-align: center;
+    }
+
+    .borders4::part(date),
+    .borders4::part(today) {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+
+    .borders4::part(today) {
+        background: purple;
+        border-radius: 50%;
+    }
+    .borders4::part(week),
+    .borders4::part(day) {
+        position: relative;
+    }
+
+    .borders4::part(week):hover::before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: red;
+        top: 50%;
+        left: 0;
+    }
+
+    .borders4::part(day):hover::before,
+    .borders4::part(today):hover::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 1px;
+        height: 100%;
+        background: red;
+    }
+
+    .borders4::part(day):hover::after,
+    .borders4::part(today):hover::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 1px solid red;
+    }
+
     .light-borders {
         --cell-border: 1px solid #333;
         --weekday-background: #333;
@@ -209,10 +286,11 @@
     weekdayFormat="narrow"
 ></fast-calendar>
 
-<h2>With borders, font colors and background colors</h2>
+<h2>Styling for borders, font colors and background colors</h2>
 <fast-calendar class="borders"></fast-calendar>
 <fast-calendar class="borders2" weekdayFormat="narrow"></fast-calendar>
 <fast-calendar class="borders3" weekdayFormat="narrow"></fast-calendar>
+<fast-calendar class="borders4" weekdayFormat="narrow"></fast-calendar>
 
 <h2>Calendar with events</h2>
 <fast-calendar class="events light-borders" month="1" year="2021">
@@ -224,6 +302,20 @@
     <div slot="1-18-2021">Martin Luther King Jr. Birthday</div>
     <div slot="1-26-2021">Spouse's Day</div>
 </fast-calendar>
+
+<h2>Disabled dates</h2>
+<fast-calendar
+    month="12"
+    year="2021"
+    disabledDates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
+></fast-calendar>
+
+<h2>Selected dates</h2>
+<fast-calendar
+    month="12"
+    year="2021"
+    selectedDates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
+></fast-calendar>
 
 <h2>Calendar with click handler</h2>
 <fast-calendar class="events light-borders" id="click" month="1" year="2021">

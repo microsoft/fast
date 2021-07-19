@@ -13,6 +13,8 @@ export const CalendarStyles = css`
         --cell-height: calc(${heightNumber} * 1px);
         --current-day-color: ${accentForegroundActive};
         --inactive-day-color: ${SystemColors.GrayText};
+        --disabled-day-color: ${SystemColors.GrayText};
+        --selected-day-outline: 1px solid ${accentForegroundActive};
     }
 
     .days {
@@ -53,6 +55,18 @@ export const CalendarStyles = css`
     .day.off {
         color: var(--inactive-day-color);
         background: var(--inactive-day-background);
+    }
+
+    .day.disabled {
+        color: var(--disabled-day-color);
+        background: var(--disabled-day-background);
+        outline: var(--disabled-day-outline);
+    }
+
+    .day.selected {
+        color: var(--selected-day-color);
+        background: var(--selected-day-background);
+        outline: var(--selected-day-outline);
     }
 
     .today {
