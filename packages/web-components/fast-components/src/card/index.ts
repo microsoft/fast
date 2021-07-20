@@ -30,7 +30,7 @@ export class Card extends FoundationCard {
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Card} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#CardTemplate}
+ * Implements {@link @microsoft/fast-foundation#cardTemplate}
  *
  *
  * @public

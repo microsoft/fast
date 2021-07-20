@@ -30,7 +30,7 @@ export class Toolbar extends FoundationToolbar {
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Toolbar} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#ToolbarTemplate}
+ * Implements {@link @microsoft/fast-foundation#toolbarTemplate}
  *
  * @public
  * @remarks
